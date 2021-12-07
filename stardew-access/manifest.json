@@ -1,0 +1,10 @@
+{
+  "Name": "Stardew Access",
+  "Author": "Mohammad Shoaib",
+  "Version": "1.0.0",
+  "Description": "<One or two sentences about the mod>",
+  "UniqueID": "shoaib.stardewaccess",
+  "EntryDll": "stardew-access.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}
