@@ -40,19 +40,49 @@ namespace stardew_access
             // Add patches
             harmony.Patch(
                original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.draw), new Type[] {typeof(SpriteBatch)}),
-               postfix: new HarmonyMethod(typeof(MainClass), nameof(MainClass.dialogBoxPostfix))
+               postfix: new HarmonyMethod(typeof(MainClass), nameof(MainClass.DialoguePatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.drawHoverText), new Type[] { typeof(SpriteBatch), typeof(string), typeof(SpriteFont), typeof(int), typeof(int), typeof(int) , typeof(string) , typeof(int) , typeof(string[]) , typeof(Item) , typeof(int) , typeof(int), typeof(int), typeof(int), typeof(int), typeof(float), typeof(CraftingRecipe) , typeof(IList < Item >) }),
-                postfix: new HarmonyMethod(typeof(MainClass), nameof(MainClass.iClickableMenuDrawHoverTextPostFix))
+                postfix: new HarmonyMethod(typeof(MainClass), nameof(MainClass.HoverTextPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(TitleMenu), nameof(TitleMenu.draw) , new Type[] {typeof(SpriteBatch)}),
+                postfix: new HarmonyMethod(typeof(MainClass), nameof(TitleMenuPatch))
             );
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
-            helper.Events.GameLoop.OneSecondUpdateTicked += this.OnOneSecondUpdateTicked;
+            //helper.Events.GameLoop.OneSecondUpdateTicked += this.OnOneSecondUpdateTicked;
         }
 
-        private static void dialogBoxPostfix(DialogueBox __instance, SpriteBatch b)
+        private static void TitleMenuPatch(TitleMenu __instance, SpriteBatch b)
+        {
+            try
+            {
+                __instance.allClickableComponents.ForEach(component =>
+                {
+                    if(component.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                    {
+                        string name = component.name;
+                        string label = component.label;
+                        string toSpeak = $"{name} {label}";
+
+                        if(prevText != toSpeak)
+                        {
+                            prevText = toSpeak;
+                            screenReader.Speak(toSpeak, true);
+                        }
+                    }
+                });
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private static void DialoguePatch(DialogueBox __instance, SpriteBatch b)
         {
             try
             {
@@ -91,7 +121,7 @@ namespace stardew_access
             }
         }
 
-        private static void iClickableMenuDrawHoverTextPostFix(SpriteBatch b, string text, SpriteFont font, int xOffset = 0, int yOffset = 0, int moneyAmountToDisplayAtBottom = -1, string boldTitleText = null, int healAmountToDisplay = -1, string[] buffIconsToDisplay = null, Item hoveredItem = null, int currencySymbol = 0, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1, int overrideX = -1, int overrideY = -1, float alpha = 1f, CraftingRecipe craftingIngredients = null, IList<Item> additional_craft_materials = null)
+        private static void HoverTextPatch(SpriteBatch b, string text, SpriteFont font, int xOffset = 0, int yOffset = 0, int moneyAmountToDisplayAtBottom = -1, string boldTitleText = null, int healAmountToDisplay = -1, string[] buffIconsToDisplay = null, Item hoveredItem = null, int currencySymbol = 0, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1, int overrideX = -1, int overrideY = -1, float alpha = 1f, CraftingRecipe craftingIngredients = null, IList<Item> additional_craft_materials = null)
         {
             try
             {
