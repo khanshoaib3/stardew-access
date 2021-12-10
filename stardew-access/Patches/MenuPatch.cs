@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -69,6 +67,13 @@ namespace stardew_access.Patches
                     if (__instance.Farmer == null)
                         return;
 
+                    if (___menu.deleteButtons[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                    {
+                        // Fix for delete button hover text not narrating
+                        ScreenReader.sayWithChecker($"Delete {__instance.Farmer.farmName} Farm", true);
+                        return;
+                    }
+
                     String farmerName = __instance.Farmer.Name;
                     String farmName = __instance.Farmer.farmName;
                     String money = __instance.Farmer.Money.ToString();
@@ -85,6 +90,20 @@ namespace stardew_access.Patches
             catch (Exception e)
             {
                 MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
+
+        internal static void ExitPagePatch(ExitPage __instance)
+        {
+            if (__instance.exitToTitle.visible &&
+                __instance.exitToTitle.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+            {
+                ScreenReader.sayWithChecker("Exit to Title Button", true);
+            }
+            if (__instance.exitToDesktop.visible &&
+                __instance.exitToDesktop.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+            {
+                ScreenReader.sayWithChecker("Exit to Desktop Button", true);
             }
         }
     }

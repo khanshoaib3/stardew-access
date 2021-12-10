@@ -33,6 +33,10 @@ namespace stardew_access.Patches
         {
             try
             {
+                // Fix for delete button hover text not narrating
+                if (Game1.activeClickableMenu is LoadGameMenu || Game1.activeClickableMenu is TitleMenu)
+                    return;
+
                 StringBuilder toSpeak = new StringBuilder();
 
                 #region Add title if any
@@ -47,7 +51,6 @@ namespace stardew_access.Patches
                 #region Add crafting ingredients
                 if (craftingIngredients != null)
                 {
-
                     toSpeak.Append($"\n{craftingIngredients.description}");
                     toSpeak.Append("\nIngredients\n");
 

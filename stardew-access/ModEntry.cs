@@ -22,28 +22,29 @@ namespace stardew_access
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            #region Initializations
             // Inititalize monitor
             monitor = Monitor;
-
             // Initialize the screen reader
             ScreenReader.initializeScreenReader();
-
             // Init harmony
-            harmony = new Harmony(ModManifest.UniqueID);
+            harmony = new Harmony(ModManifest.UniqueID); 
+            #endregion
 
-            // Add patches
+            #region Harmony Patches
+
             harmony.Patch(
-               original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.draw), new Type[] {typeof(SpriteBatch)}),
+               original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.draw), new Type[] { typeof(SpriteBatch) }),
                postfix: new HarmonyMethod(typeof(DialoguePatch), nameof(DialoguePatch.CharachterDialoguePatch))
             );
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.drawHoverText), new Type[] { typeof(SpriteBatch), typeof(string), typeof(SpriteFont), typeof(int), typeof(int), typeof(int) , typeof(string) , typeof(int) , typeof(string[]) , typeof(Item) , typeof(int) , typeof(int), typeof(int), typeof(int), typeof(int), typeof(float), typeof(CraftingRecipe) , typeof(IList < Item >) }),
+                original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.drawHoverText), new Type[] { typeof(SpriteBatch), typeof(string), typeof(SpriteFont), typeof(int), typeof(int), typeof(int), typeof(string), typeof(int), typeof(string[]), typeof(Item), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(float), typeof(CraftingRecipe), typeof(IList<Item>) }),
                 postfix: new HarmonyMethod(typeof(DialoguePatch), nameof(DialoguePatch.HoverTextPatch))
             );
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(TitleMenu), nameof(TitleMenu.draw) , new Type[] {typeof(SpriteBatch)}),
+                original: AccessTools.Method(typeof(TitleMenu), nameof(TitleMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.TitleMenuPatch))
             );
 
@@ -52,6 +53,12 @@ namespace stardew_access
                 postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.LoadGameMenuPatch))
             );
 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(ExitPage), nameof(ExitPage.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.ExitPagePatch))
+            );
+
+            #endregion
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
         }
 
