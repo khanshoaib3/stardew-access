@@ -16,7 +16,7 @@ namespace stardew_access.Game
             player = Game1.player;
         }
 
-        public static int getHealth()
+        internal static int getHealth()
         {
             if(player == null)
                 initPlayer();
@@ -28,7 +28,7 @@ namespace stardew_access.Game
             return healthPercentage;
         }
 
-        public static int getStamina()
+        internal static int getStamina()
         {
             if (player == null)
                 initPlayer();
@@ -41,7 +41,7 @@ namespace stardew_access.Game
             return staminaPercentage;
         }
 
-        public static int getPositionX()
+        internal static int getPositionX()
         {
             if (player == null)
                 initPlayer();
@@ -50,7 +50,7 @@ namespace stardew_access.Game
             return x;
         }
 
-        public static int getPositionY()
+        internal static int getPositionY()
         {
             if (player == null)
                 initPlayer();

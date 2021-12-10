@@ -35,12 +35,17 @@ namespace stardew_access
 
             harmony.Patch(
                original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.draw), new Type[] { typeof(SpriteBatch) }),
-               postfix: new HarmonyMethod(typeof(DialoguePatch), nameof(DialoguePatch.CharachterDialoguePatch))
+               postfix: new HarmonyMethod(typeof(DialoguePatcher), nameof(DialoguePatcher.DialoguePatch))
+            );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.receiveLeftClick)),
+               postfix: new HarmonyMethod(typeof(DialoguePatcher), nameof(DialoguePatcher.ClearDialogueString))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.drawHoverText), new Type[] { typeof(SpriteBatch), typeof(string), typeof(SpriteFont), typeof(int), typeof(int), typeof(int), typeof(string), typeof(int), typeof(string[]), typeof(Item), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(float), typeof(CraftingRecipe), typeof(IList<Item>) }),
-                postfix: new HarmonyMethod(typeof(DialoguePatch), nameof(DialoguePatch.HoverTextPatch))
+                postfix: new HarmonyMethod(typeof(DialoguePatcher), nameof(DialoguePatcher.HoverTextPatch))
             );
 
             harmony.Patch(
@@ -59,6 +64,7 @@ namespace stardew_access
             );
 
             #endregion
+
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
         }
 

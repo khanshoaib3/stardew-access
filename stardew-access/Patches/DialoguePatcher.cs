@@ -6,20 +6,62 @@ using System.Text;
 
 namespace stardew_access.Patches
 {
-    internal class DialoguePatch
+    internal class DialoguePatcher
     {
-        public static void CharachterDialoguePatch(DialogueBox __instance, SpriteBatch b)
+        private static string currentDialogue = " ";
+
+        internal static void DialoguePatch(DialogueBox __instance, SpriteBatch b)
         {
             try
             {
-                Dialogue dialogue = __instance.characterDialogue;
-                string speakerName = dialogue.speaker.Name;
-                List<string> dialogues = dialogue.dialogues;
-                int dialogueIndex = dialogue.currentDialogueIndex;
-                MainClass.monitor.Log("" + dialogue.isCurrentStringContinuedOnNextScreen, LogLevel.Debug);
-                string toSpeak = $"{speakerName} said, {dialogues[dialogueIndex]}";
+                if (__instance.transitioning)
+                    return;
 
-                ScreenReader.sayWithChecker(toSpeak, false);
+                if (__instance.characterDialogue != null)
+                {
+                    // For Normal Character dialogues
+                    Dialogue dialogue = __instance.characterDialogue;
+                    string speakerName = dialogue.speaker.Name;
+                    List<string> dialogues = dialogue.dialogues;
+                    int dialogueIndex = dialogue.currentDialogueIndex;
+                    MainClass.monitor.Log("" + dialogue.isCurrentStringContinuedOnNextScreen, LogLevel.Debug);
+                    string toSpeak = $"{speakerName} said, {dialogues[dialogueIndex]}";
+
+                    if (currentDialogue != toSpeak)
+                    {
+                        currentDialogue = toSpeak;
+                        ScreenReader.say(toSpeak, false);
+                    }
+                }
+                else if (__instance.isQuestion)
+                {
+                    // For Dialogues with responses/answers like the dialogue when we click on tv
+                    string toSpeak = " ";
+
+                    if (currentDialogue != __instance.getCurrentString()) {
+                        toSpeak = __instance.getCurrentString();
+                        currentDialogue = toSpeak;
+                    }
+
+                    for (int i = 0; i < __instance.responses.Count; i++)
+                    {
+                        if (i == __instance.selectedResponse)
+                        {
+                            toSpeak += $" \t\n Selected response: {__instance.responses[i].responseText}";
+                        }
+                    }
+
+                    ScreenReader.sayWithChecker(toSpeak, false);
+                }
+                else
+                {
+                    // Basic dialogues like `No mails in the mail box`
+                    if (currentDialogue != __instance.getCurrentString())
+                    {
+                        currentDialogue = __instance.getCurrentString();
+                        ScreenReader.say(__instance.getCurrentString(), false);
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -28,8 +70,13 @@ namespace stardew_access.Patches
 
         }
 
+        internal static void ClearDialogueString()
+        {
+            // CLears the currentDialogue string on closing dialog
+            currentDialogue = " ";
+        }
 
-        public static void HoverTextPatch(string? text, int moneyAmountToDisplayAtBottom = -1, string? boldTitleText = null, string[]? buffIconsToDisplay = null, Item? hoveredItem = null, CraftingRecipe? craftingIngredients = null)
+        internal static void HoverTextPatch(string? text, int moneyAmountToDisplayAtBottom = -1, string? boldTitleText = null, string[]? buffIconsToDisplay = null, Item? hoveredItem = null, CraftingRecipe? craftingIngredients = null)
         {
             try
             {

@@ -7,7 +7,7 @@ namespace stardew_access.Patches
     internal class MenuPatch
     {
 
-        public static void TitleMenuPatch(TitleMenu __instance)
+        internal static void TitleMenuPatch(TitleMenu __instance)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace stardew_access.Patches
             }
         }
 
-        public static void LoadGameMenuPatch(LoadGameMenu.SaveFileSlot __instance, LoadGameMenu ___menu, int i)
+        internal static void LoadGameMenuPatch(LoadGameMenu.SaveFileSlot __instance, LoadGameMenu ___menu, int i)
         {
             try
             {
@@ -95,15 +95,23 @@ namespace stardew_access.Patches
 
         internal static void ExitPagePatch(ExitPage __instance)
         {
-            if (__instance.exitToTitle.visible &&
-                __instance.exitToTitle.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+            try
             {
-                ScreenReader.sayWithChecker("Exit to Title Button", true);
+                if (__instance.exitToTitle.visible &&
+                        __instance.exitToTitle.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                {
+                    ScreenReader.sayWithChecker("Exit to Title Button", true);
+                }
+                if (__instance.exitToDesktop.visible &&
+                    __instance.exitToDesktop.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                {
+                    ScreenReader.sayWithChecker("Exit to Desktop Button", true);
+                }
             }
-            if (__instance.exitToDesktop.visible &&
-                __instance.exitToDesktop.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+            catch (Exception e)
             {
-                ScreenReader.sayWithChecker("Exit to Desktop Button", true);
+
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
     }
