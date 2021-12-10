@@ -5,7 +5,7 @@ namespace stardew_access.Game
 {
     internal class CurrentPlayer
     {
-        private static Farmer player = null;
+        private static Farmer? player = null;
 
         CurrentPlayer()
         {
@@ -39,6 +39,24 @@ namespace stardew_access.Game
             int staminaPercentage = (int)(currentStamine * 100) / maxStamina;
 
             return staminaPercentage;
+        }
+
+        public static int getPositionX()
+        {
+            if (player == null)
+                initPlayer();
+
+            int x = (int)player.getTileLocation().X;
+            return x;
+        }
+
+        public static int getPositionY()
+        {
+            if (player == null)
+                initPlayer();
+
+            int y = (int)player.getTileLocation().Y;
+            return y;
         }
     }
 }
