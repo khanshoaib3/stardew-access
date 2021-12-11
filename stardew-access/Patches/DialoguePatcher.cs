@@ -24,7 +24,6 @@ namespace stardew_access.Patches
                     string speakerName = dialogue.speaker.Name;
                     List<string> dialogues = dialogue.dialogues;
                     int dialogueIndex = dialogue.currentDialogueIndex;
-                    MainClass.monitor.Log("" + dialogue.isCurrentStringContinuedOnNextScreen, LogLevel.Debug);
                     string toSpeak = $"{speakerName} said, {dialogues[dialogueIndex]}";
 
                     if (currentDialogue != toSpeak)
@@ -138,7 +137,6 @@ namespace stardew_access.Patches
                         try
                         {
                             int count = int.Parse(buffName.Substring(0, buffName.IndexOf(' ')));
-                            MainClass.monitor.Log("" + count);
                             if (count != 0)
                                 toSpeak.Append($"{buffName}\n");
                         }

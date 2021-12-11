@@ -6,6 +6,7 @@ using HarmonyLib;
 using StardewValley.Menus;
 using Microsoft.Xna.Framework.Graphics;
 using stardew_access.Patches;
+using AutoHotkey.Interop;
 
 namespace stardew_access
 {
@@ -14,6 +15,7 @@ namespace stardew_access
     {
         private Harmony? harmony;
         public static IMonitor? monitor;
+        AutoHotkeyEngine ahk;
 
         /*********
         ** Public methods
@@ -23,12 +25,27 @@ namespace stardew_access
         public override void Entry(IModHelper helper)
         {
             #region Initializations
-            // Inititalize monitor
-            monitor = Monitor;
-            // Initialize the screen reader
-            ScreenReader.initializeScreenReader();
-            // Init harmony
-            harmony = new Harmony(ModManifest.UniqueID); 
+            
+            monitor = Monitor; // Inititalize monitor
+            Game1.options.setGamepadMode("force_on");
+
+            // Initialize AutoHotKey
+            try
+            {
+                ahk = AutoHotkeyEngine.Instance;
+                ahk.ExecRaw("^j::\nSend {LButton}");
+                ahk.ExecRaw("^l::\nSend {RButton}");
+            }
+            catch (Exception e)
+            {
+
+                monitor.Log($"Unable to initialize AutoHotKey:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+
+            ScreenReader.initializeScreenReader(); // Initialize the screen reader
+            
+            harmony = new Harmony(ModManifest.UniqueID); // Init harmony
+
             #endregion
 
             #region Harmony Patches
@@ -63,6 +80,11 @@ namespace stardew_access
                 postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.ExitPagePatch))
             );
 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(CharacterCustomization), nameof(CharacterCustomization.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.NewGameMenuPatch))
+            );
+
             #endregion
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
@@ -70,22 +92,31 @@ namespace stardew_access
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            // ignore if player hasn't loaded a save yet
-            if (!Context.IsWorldReady)
-              return;
-
-            // Narrate Health And Energy
-            if (Equals(e.Button, SButton.I))
+            if (Game1.activeClickableMenu == null)
             {
-                string toSpeak = $"Health is {CurrentPlayer.getHealth()} and Stamina is {CurrentPlayer.getStamina()}";
-                ScreenReader.say(toSpeak, true);
-            }
+                // Narrate health and stamina
+                if (Equals(e.Button, SButton.H))
+                {
+                    string toSpeak = $"Health is {CurrentPlayer.getHealth()} and Stamina is {CurrentPlayer.getStamina()}";
+                    ScreenReader.say(toSpeak, true);
+                }
 
-            // Narrate Position
-            if (Equals(e.Button, SButton.K))
-            {
-                string toSpeak = $"X: {CurrentPlayer.getPositionX()} , Y: {CurrentPlayer.getPositionX()}";
-                ScreenReader.say(toSpeak, true);
+                // Narrate Position
+                if (Equals(e.Button, SButton.K))
+                {
+                    string toSpeak = $"X: {CurrentPlayer.getPositionX()} , Y: {CurrentPlayer.getPositionX()}";
+                    ScreenReader.say(toSpeak, true);
+                }
+
+                if (Equals(e.Button, SButton.J))
+                {
+                    Game1.pressActionButton(Game1.input.GetKeyboardState(), Game1.input.GetMouseState(), Game1.input.GetGamePadState());
+                }
+                
+                if (Equals(e.Button, SButton.L))
+                {
+                    Game1.pressUseToolButton();
+                }
             }
         }
 

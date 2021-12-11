@@ -1,4 +1,5 @@
-﻿using StardewModdingAPI;
+﻿using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -6,6 +7,8 @@ namespace stardew_access.Patches
 {
     internal class MenuPatch
     {
+        private static int saveGameIndex = -1;
+        private static bool isRunning = false;
 
         internal static void TitleMenuPatch(TitleMenu __instance)
         {
@@ -91,6 +94,95 @@ namespace stardew_access.Patches
             {
                 MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
+        }
+
+        internal static void NewGameMenuPatch(CharacterCustomization __instance, TextBox ___nameBox, TextBox ___farmnameBox, TextBox ___favThingBox, ClickableTextureComponent ___skipIntroButton, ClickableTextureComponent ___okButton, ClickableComponent ___backButton)
+        {
+            try
+            {
+                if (__instance.source != CharacterCustomization.Source.NewGame)
+                    return;
+
+
+                bool isNextArrowPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right);
+                bool isPrevArrowPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left);
+                if (isNextArrowPressed && !isRunning)
+                {
+                    _ = CycleThroughItems(true, ___nameBox, ___farmnameBox, ___favThingBox, ___skipIntroButton, ___okButton, ___backButton);
+                }
+                else if (isPrevArrowPressed && !isRunning)
+                {
+                    _ = CycleThroughItems(false, ___nameBox, ___farmnameBox, ___favThingBox, ___skipIntroButton, ___okButton, ___backButton);
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
+
+        private static async Task CycleThroughItems(bool increase, TextBox ___nameBox, TextBox ___farmnameBox, TextBox ___favThingBox, ClickableTextureComponent ___skipIntroButton, ClickableTextureComponent ___okButton, ClickableComponent ___backButton)
+        {
+            isRunning = true;
+            if (increase)
+            {
+                saveGameIndex++;
+                if (saveGameIndex > 6)
+                    saveGameIndex = 0; 
+            } else
+            {
+                saveGameIndex--;
+                if (saveGameIndex < 0)
+                    saveGameIndex = 6;
+            }
+
+            await Task.Delay(200);
+
+            switch (saveGameIndex)
+            {
+                case 0:
+                    {
+                        Rectangle bounds = new Rectangle(___nameBox.X, ___nameBox.Y, ___nameBox.Width, ___nameBox.Height);
+                        Game1.input.SetMousePosition(bounds.Center.X, bounds.Center.Y);
+                        ScreenReader.say("Enter Farmer's Name", true);
+                    }
+                    break;
+
+                case 1:
+                    {
+                        Rectangle bounds = new Rectangle(___farmnameBox.X, ___farmnameBox.Y, ___farmnameBox.Width, ___farmnameBox.Height);
+                        Game1.input.SetMousePosition(bounds.Center.X, bounds.Center.Y);
+                        ScreenReader.say("Enter Farm's Name", true);
+                    }
+                    break;
+                case 3:
+                    {
+                        Rectangle bounds = new Rectangle(___favThingBox.X, ___favThingBox.Y, ___favThingBox.Width, ___favThingBox.Height);
+                        Game1.input.SetMousePosition(bounds.Center.X, bounds.Center.Y);
+                        ScreenReader.say("Enter Favourite Thing", true);
+                    }
+                    break;
+                case 4:
+                    {
+                        ___skipIntroButton.snapMouseCursor();
+                        ScreenReader.say("Skip Intro Button", true);
+                    }
+                    break;
+                case 5:
+                    {
+                        ___okButton.snapMouseCursor();
+                        ScreenReader.say("Ok Button", true);
+                    }
+                    break;
+                case 6:
+                    {
+                        ___backButton.snapMouseCursor();
+                        ScreenReader.say("Back Button", true);
+                    }
+                    break;
+            }
+
+            isRunning = false;
         }
 
         internal static void ExitPagePatch(ExitPage __instance)
