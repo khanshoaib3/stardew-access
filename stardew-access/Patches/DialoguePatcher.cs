@@ -83,6 +83,9 @@ namespace stardew_access.Patches
                 if (Game1.activeClickableMenu is LoadGameMenu || Game1.activeClickableMenu is TitleMenu)
                     return;
 
+                if (Game1.activeClickableMenu is LetterViewerMenu || Game1.activeClickableMenu is QuestLog)
+                    return;
+
                 StringBuilder toSpeak = new StringBuilder();
 
                 #region Add title if any

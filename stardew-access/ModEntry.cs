@@ -91,6 +91,11 @@ namespace stardew_access
                 postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.LetterViewerMenuPatch))
             );
 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(QuestLog), nameof(QuestLog.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.QuestLogPatch))
+            );
+
             #endregion
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;

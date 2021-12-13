@@ -2,6 +2,7 @@
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Quests;
 
 namespace stardew_access.Patches
 {
@@ -10,6 +11,81 @@ namespace stardew_access.Patches
         private static int saveGameIndex = -1;
         private static bool isRunning = false;
         private static string currentLetterText = " ";
+
+        internal static void QuestLogPatch(QuestLog __instance, int ___questPage, List<List<IQuest>> ___pages, int ___currentPage, IQuest ____shownQuest, List<string> ____objectiveText)
+        {
+            try
+            {
+                if (___questPage == -1)
+                {
+                    #region Quest Lists
+                    for (int i = 0; i < __instance.questLogButtons.Count; i++)
+                    {
+                        if (___pages.Count() > 0 && ___pages[___currentPage].Count() > i)
+                        {
+                            string name = ___pages[___currentPage][i].GetName();
+                            int daysLeft = ___pages[___currentPage][i].GetDaysLeft();
+                            string toSpeak = $"Quest: {name}";
+                            if (daysLeft > 0)
+                                toSpeak += $"\t\n {daysLeft} days left";
+                            if (__instance.questLogButtons[i].containsPoint(Game1.getOldMouseX(), Game1.getOldMouseY()))
+                            {
+                                ScreenReader.sayWithChecker(toSpeak, true);
+                            }
+                        }
+                    }
+                    #endregion
+                }
+                else
+                {
+                    #region Individual quest
+                    string description = Game1.parseText(____shownQuest.GetDescription(), Game1.dialogueFont, __instance.width - 128);
+                    string title = ____shownQuest.GetName();
+                    string toSpeak = " ";
+                    if (____shownQuest.ShouldDisplayAsComplete())
+                    {
+                        #region Quest completed menu
+                        //   SpriteText.drawString(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:QuestLog.cs.11376"), xPositionOnScreen + 32 + 4, rewardBox.bounds.Y + 21 + 4);
+                        if (__instance.HasMoneyReward())
+                        {
+                            /*b.Draw(Game1.mouseCursors, new Vector2(rewardBox.bounds.X + 16, (float)(rewardBox.bounds.Y + 16) - Game1.dialogueButtonScale / 2f), new Rectangle(280, 410, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);*/
+                            /*SpriteText.drawString(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:LoadGameMenu.cs.11020", _shownQuest.GetMoneyReward()), xPositionOnScreen + 448, rewardBox.bounds.Y + 21 + 4);*/
+                        }
+                        #endregion
+                    }
+                    else
+                    {
+                        #region Quest in-complete menu
+                        toSpeak = $"Title: {title}. \t\n Description: {description}";
+
+                        for (int j = 0; j < ____objectiveText.Count; j++)
+                        {
+                            if (____shownQuest != null)
+                            {
+                                _ = ____shownQuest is SpecialOrder;
+                            }
+                            string parsed_text = Game1.parseText(____objectiveText[j], width: __instance.width - 192, whichFont: Game1.dialogueFont);
+
+                            toSpeak += $"\t\nOrder {j + 1}: {parsed_text} \t\n";
+                        }
+
+                        int daysLeft = ____shownQuest.GetDaysLeft();
+
+                        if (daysLeft > 0)
+                            toSpeak += $"\t\n{daysLeft} days left.";
+                        #endregion
+                    }
+
+                    ScreenReader.sayWithChecker(toSpeak, true); 
+                    #endregion
+                }
+            }
+            catch (Exception e)
+            {
+
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
 
         internal static void LetterViewerMenuPatch(LetterViewerMenu __instance)
         {
