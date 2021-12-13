@@ -7,6 +7,7 @@ using StardewValley.Menus;
 using Microsoft.Xna.Framework.Graphics;
 using stardew_access.Patches;
 using AutoHotkey.Interop;
+using Microsoft.Xna.Framework;
 
 namespace stardew_access
 {
@@ -85,9 +86,30 @@ namespace stardew_access
                 postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.NewGameMenuPatch))
             );
 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(LetterViewerMenu), nameof(LetterViewerMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.LetterViewerMenuPatch))
+            );
+
             #endregion
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
+        }
+
+        private void onUpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            if (!Context.IsPlayerFree)
+                return;
+
+            
+        }
+
+        private void On1SecUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
+        {
+
+            
+            
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -104,7 +126,7 @@ namespace stardew_access
                 // Narrate Position
                 if (Equals(e.Button, SButton.K))
                 {
-                    string toSpeak = $"X: {CurrentPlayer.getPositionX()} , Y: {CurrentPlayer.getPositionX()}";
+                    string toSpeak = $"X: {CurrentPlayer.getPositionX()} , Y: {CurrentPlayer.getPositionY()}";
                     ScreenReader.say(toSpeak, true);
                 }
 

@@ -58,5 +58,23 @@ namespace stardew_access.Game
             int y = (int)player.getTileLocation().Y;
             return y;
         }
+
+        internal static int getToolHItPositionX()
+        {
+            if (player == null)
+                initPlayer();
+
+            int x = (int)player.GetGrabTile().X;
+            return x;
+        }
+
+        internal static int getToolHItPositionY()
+        {
+            if (player == null)
+                initPlayer();
+
+            int y = (int)player.GetGrabTile().Y;
+            return y;
+        }
     }
 }

@@ -9,6 +9,67 @@ namespace stardew_access.Patches
     {
         private static int saveGameIndex = -1;
         private static bool isRunning = false;
+        private static string currentLetterText = " ";
+
+        internal static void LetterViewerMenuPatch(LetterViewerMenu __instance)
+        {
+            try
+            {
+                if (!__instance.IsActive())
+                    return;
+
+                #region Texts in the letter
+                string title = __instance.mailTitle;
+                string message = __instance.mailMessage[__instance.page];
+
+                string toSpeak = $"{title} \t\n\t {message}.";
+
+                if (__instance.ShouldShowInteractable())
+                {
+                    if (__instance.moneyIncluded > 0)
+                    {
+                        string moneyText = Game1.content.LoadString("Strings\\UI:LetterViewer_MoneyIncluded", __instance.moneyIncluded);
+                        toSpeak += $"\t\n\t ,Included money: {moneyText}";
+                    }
+                    else if (__instance.learnedRecipe != null && __instance.learnedRecipe.Length > 0)
+                    {
+                        string recipeText = Game1.content.LoadString("Strings\\UI:LetterViewer_LearnedRecipe", __instance.cookingOrCrafting);
+                        toSpeak += $"\t\n\t ,Learned Recipe: {recipeText}";
+                    }
+                }
+
+                if (__instance.ShouldShowInteractable() && __instance.questID != -1)
+                {
+                    toSpeak += "\t\n\t ,Close this menu to accept or press left click button";
+                }
+
+                if (currentLetterText != toSpeak)
+                {
+                    currentLetterText = toSpeak;
+                    ScreenReader.say(toSpeak, false);
+                }
+                #endregion
+
+                #region Narrate items given in the mail
+                if (__instance.ShouldShowInteractable())
+                {
+                    foreach (ClickableComponent c in __instance.itemsToGrab)
+                    {
+                        string name = c.name;
+                        string label = c.label;
+
+                        if (c.containsPoint(Game1.getMousePosition().X, Game1.getMousePosition().Y))
+                            ScreenReader.sayWithChecker($"Grab: {name} \t\n {label}", false);
+                    }
+                } 
+                #endregion
+            }
+            catch (Exception e)
+            {
+
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
 
         internal static void TitleMenuPatch(TitleMenu __instance)
         {

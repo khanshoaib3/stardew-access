@@ -21,7 +21,7 @@ namespace stardew_access
             }
             catch (Exception ex)
             {
-                MainClass.monitor.Log($"Error initializing NVDA:\n{ex.StackTrace}", LogLevel.Error);
+                MainClass.monitor.Log($"Error initializing NVDA:\n{ex.StackTrace}", LogLevel.Info);
             }
 
             // Initialize JAWS
@@ -31,7 +31,7 @@ namespace stardew_access
             }
             catch (Exception ex)
             {
-                MainClass.monitor.Log($"Error initializing JAWS:\n{ex.StackTrace}", LogLevel.Error);
+                MainClass.monitor.Log($"Error initializing JAWS:\n{ex.StackTrace}", LogLevel.Info);
             }
 
             // Initialize SAPI
@@ -41,7 +41,7 @@ namespace stardew_access
             }
             catch (Exception ex)
             {
-                MainClass.monitor.Log($"Error initializing SAPI:\n{ex.StackTrace}", LogLevel.Error);
+                MainClass.monitor.Log($"Error initializing SAPI:\n{ex.StackTrace}", LogLevel.Info);
             }
 
             if (nvdaOutput != null && nvdaOutput.IsAvailable())
