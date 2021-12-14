@@ -7,6 +7,9 @@ using StardewValley.Menus;
 using Microsoft.Xna.Framework.Graphics;
 using stardew_access.Patches;
 using AutoHotkey.Interop;
+using Microsoft.Xna.Framework;
+using StardewValley.TerrainFeatures;
+using System.Linq;
 
 namespace stardew_access
 {
@@ -25,7 +28,7 @@ namespace stardew_access
         public override void Entry(IModHelper helper)
         {
             #region Initializations
-            
+
             monitor = Monitor; // Inititalize monitor
             Game1.options.setGamepadMode("force_on");
 
@@ -43,7 +46,7 @@ namespace stardew_access
             }
 
             ScreenReader.initializeScreenReader(); // Initialize the screen reader
-            
+
             harmony = new Harmony(ModManifest.UniqueID); // Init harmony
 
             #endregion
@@ -136,11 +139,37 @@ namespace stardew_access
                 {
                     Game1.pressActionButton(Game1.input.GetKeyboardState(), Game1.input.GetMouseState(), Game1.input.GetGamePadState());
                 }
-                
+
                 if (Equals(e.Button, SButton.L))
                 {
                     Game1.pressUseToolButton();
                 }
+
+                /*if (Equals(e.Button, SButton.G))
+                {
+                    if (Context.IsPlayerFree)
+                    {
+                        Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
+                        Vector2 gt = Game1.player.GetGrabTile();
+                        
+                        StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)gt.X, (int)gt.Y);
+
+                        if(obj != null)
+                            monitor.Log($"obj:{obj.name}", LogLevel.Debug);
+
+                        if (terrainFeature.ContainsKey(gt))
+                        {
+                            Netcode.NetRef<TerrainFeature> terrain = terrainFeature[gt];
+
+                            if (terrain.Get() is HoeDirt dirt)
+                            {
+                                monitor.Log($"here{(terrain.Get() as HoeDirt).crop.GetType()}", LogLevel.Debug);
+                                monitor.Log("here2", LogLevel.Debug);
+                            }
+
+                        }
+                    }
+                }*/
             }
         }
 
