@@ -80,11 +80,13 @@ namespace stardew_access.Patches
                     if (currentDailyQuestText != toSpeak)
                     {
                         currentDailyQuestText = toSpeak;
-                        toSpeak += "\t\n Left click to accept quest.";
 
                         // Snap to accept quest button
                         if (__instance.acceptQuestButton.visible)
+                        {
+                            toSpeak += "\t\n Left click to accept quest.";
                             __instance.acceptQuestButton.snapMouseCursorToCenter();
+                        }
 
                         ScreenReader.say(toSpeak, true);
                     }
@@ -108,7 +110,7 @@ namespace stardew_access.Patches
                         {
                             string name = ___pages[___currentPage][i].GetName();
                             int daysLeft = ___pages[___currentPage][i].GetDaysLeft();
-                            string toSpeak = $"Quest: {name}";
+                            string toSpeak = $"{name} quest";
 
                             if (daysLeft > 0 && ___pages[___currentPage][i].ShouldDisplayAsComplete())
                                 toSpeak += $"\t\n {daysLeft} days left";
@@ -212,14 +214,16 @@ namespace stardew_access.Patches
                     }
                 }
 
-                if (__instance.ShouldShowInteractable() && __instance.questID != -1)
-                {
-                    toSpeak += "\t\n\t ,Close this menu to accept or press left click button";
-                }
-
                 if (currentLetterText != toSpeak)
                 {
                     currentLetterText = toSpeak;
+
+                    // snap mouse to accept quest button
+                    if (__instance.acceptQuestButton.visible)
+                    {
+                        toSpeak += "\t\n Left click to accept quest.";
+                        __instance.acceptQuestButton.snapMouseCursorToCenter();
+                    }
                     ScreenReader.say(toSpeak, false);
                 }
                 #endregion
@@ -320,7 +324,7 @@ namespace stardew_access.Patches
                         !__instance.Farmer.seasonForSaveGame.HasValue ||
                         !__instance.Farmer.yearForSaveGame.HasValue) ? __instance.Farmer.dateStringForSaveGame : Utility.getDateStringFor(__instance.Farmer.dayOfMonthForSaveGame.Value, __instance.Farmer.seasonForSaveGame.Value, __instance.Farmer.yearForSaveGame.Value));
 
-                    string toSpeak = $"{farmName} Farm, \t\n Farmer:{farmerName}, \t\nMoney:{money}, \t\nHours Played:{hoursPlayed}, \t\nDate:{dateStringForSaveGame}";
+                    string toSpeak = $"{farmName} Farm Selected, \t\n Farmer:{farmerName}, \t\nMoney:{money}, \t\nHours Played:{hoursPlayed}, \t\nDate:{dateStringForSaveGame}";
 
                     ScreenReader.sayWithChecker(toSpeak, true);
                 }
