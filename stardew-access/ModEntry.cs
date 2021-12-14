@@ -34,8 +34,8 @@ namespace stardew_access
             try
             {
                 ahk = AutoHotkeyEngine.Instance;
-                ahk.ExecRaw("^j::\nSend {LButton}");
-                ahk.ExecRaw("^l::\nSend {RButton}");
+                ahk.ExecRaw("[::\nSend {LButton}");
+                ahk.ExecRaw("]::\nSend {RButton}");
             }
             catch (Exception e)
             {
@@ -96,6 +96,11 @@ namespace stardew_access
                 postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.QuestLogPatch))
             );
 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Billboard), nameof(Billboard.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.BillboardPatch))
+            );
+
             #endregion
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
@@ -107,14 +112,7 @@ namespace stardew_access
             if (!Context.IsPlayerFree)
                 return;
 
-            
-        }
-
-        private void On1SecUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
-        {
-
-            
-            
+            MenuPatch.resetGlobalVars();
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)

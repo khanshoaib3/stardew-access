@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -11,11 +12,93 @@ namespace stardew_access.Patches
         private static int saveGameIndex = -1;
         private static bool isRunning = false;
         private static string currentLetterText = " ";
+        private static string currentDailyQuestText = " ";
+
+        internal static void BillboardPatch(Billboard __instance, bool ___dailyQuestBoard)
+        {
+            if (!___dailyQuestBoard)
+            {
+                #region Callender
+                /*b.DrawString(Game1.dialogueFont, Utility.getSeasonNameFromNumber(Utility.getSeasonNumber(Game1.currentSeason)), new Vector2(xPositionOnScreen + 160, yPositionOnScreen + 80), Game1.textColor);
+                        b.DrawString(Game1.dialogueFont, Game1.content.LoadString("Strings\\UI:Billboard_Year", Game1.year), new Vector2(xPositionOnScreen + 448, yPositionOnScreen + 80), Game1.textColor);
+                        for (int i = 0; i < calendarDays.Count; i++)
+                        {
+                            if (calendarDays[i].name.Length > 0)
+                            {
+                                if (calendarDays[i].name.Equals(nightMarketLocalized))
+                                {
+                                    Utility.drawWithShadow(b, Game1.mouseCursors, new Vector2(calendarDays[i].bounds.X + 12, (float)(calendarDays[i].bounds.Y + 60) - Game1.dialogueButtonScale / 2f), new Rectangle(346, 392, 8, 8), Color.White, 0f, Vector2.Zero, 4f, flipped: false, 1f);
+                                }
+                                else
+                                {
+                                    Utility.drawWithShadow(b, billboardTexture, new Vector2(calendarDays[i].bounds.X + 40, (float)(calendarDays[i].bounds.Y + 56) - Game1.dialogueButtonScale / 2f), new Rectangle(1 + (int)(Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 600.0 / 100.0) * 14, 398, 14, 12), Color.White, 0f, Vector2.Zero, 4f, flipped: false, 1f);
+                                }
+                            }
+                            if (calendarDays[i].hoverText.Length > 0)
+                            {
+                                b.Draw(calendarDays[i].texture, new Vector2(calendarDays[i].bounds.X + 48, calendarDays[i].bounds.Y + 28), calendarDays[i].sourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+                            }
+                            if (_upcomingWeddings.ContainsKey(calendarDays[i]))
+                            {
+                                foreach (string item in _upcomingWeddings[calendarDays[i]])
+                                {
+                                    _ = item;
+                                    b.Draw(Game1.mouseCursors2, new Vector2(calendarDays[i].bounds.Right - 56, calendarDays[i].bounds.Top - 12), new Rectangle(112, 32, 16, 14), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+                                }
+                            }
+                            if (Game1.dayOfMonth > i + 1)
+                            {
+                                b.Draw(Game1.staminaRect, calendarDays[i].bounds, Color.Gray * 0.25f);
+                            }
+                            else if (Game1.dayOfMonth == i + 1)
+                            {
+                                int offset = (int)(4f * Game1.dialogueButtonScale / 8f);
+                                IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(379, 357, 3, 3), calendarDays[i].bounds.X - offset, calendarDays[i].bounds.Y - offset, calendarDays[i].bounds.Width + offset * 2, calendarDays[i].bounds.Height + offset * 2, Color.Blue, 4f, drawShadow: false);
+                            }
+                        }*/ 
+                #endregion
+            }
+            else
+            {
+                #region Daily Quest Board
+                if (Game1.questOfTheDay == null || Game1.questOfTheDay.currentObjective == null || Game1.questOfTheDay.currentObjective.Length == 0)
+                {
+                    // No quests
+                    string toSpeak = "No quests for today!";
+                    if(currentDailyQuestText != toSpeak)
+                    {
+                        currentDailyQuestText = toSpeak;
+                        ScreenReader.say(toSpeak, true);
+                    }
+                }
+                else
+                {
+                    SpriteFont font = ((LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.ko) ? Game1.smallFont : Game1.dialogueFont);
+                    string description = Game1.parseText(Game1.questOfTheDay.questDescription, font, 640);
+                    string toSpeak = description;
+
+                    if (currentDailyQuestText != toSpeak)
+                    {
+                        currentDailyQuestText = toSpeak;
+                        toSpeak += "\t\n Left click to accept quest.";
+
+                        // Snap to accept quest button
+                        if (__instance.acceptQuestButton.visible)
+                            __instance.acceptQuestButton.snapMouseCursorToCenter();
+
+                        ScreenReader.say(toSpeak, true);
+                    }
+                } 
+                #endregion
+            }
+        }
 
         internal static void QuestLogPatch(QuestLog __instance, int ___questPage, List<List<IQuest>> ___pages, int ___currentPage, IQuest ____shownQuest, List<string> ____objectiveText)
         {
             try
             {
+                bool snapMouseToRewardBox = false;
+
                 if (___questPage == -1)
                 {
                     #region Quest Lists
@@ -26,8 +109,11 @@ namespace stardew_access.Patches
                             string name = ___pages[___currentPage][i].GetName();
                             int daysLeft = ___pages[___currentPage][i].GetDaysLeft();
                             string toSpeak = $"Quest: {name}";
-                            if (daysLeft > 0)
+
+                            if (daysLeft > 0 && ___pages[___currentPage][i].ShouldDisplayAsComplete())
                                 toSpeak += $"\t\n {daysLeft} days left";
+
+                            toSpeak += ___pages[___currentPage][i].ShouldDisplayAsComplete() ? " completed!" : "";
                             if (__instance.questLogButtons[i].containsPoint(Game1.getOldMouseX(), Game1.getOldMouseY()))
                             {
                                 ScreenReader.sayWithChecker(toSpeak, true);
@@ -45,12 +131,20 @@ namespace stardew_access.Patches
                     if (____shownQuest.ShouldDisplayAsComplete())
                     {
                         #region Quest completed menu
-                        //   SpriteText.drawString(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:QuestLog.cs.11376"), xPositionOnScreen + 32 + 4, rewardBox.bounds.Y + 21 + 4);
-                        if (__instance.HasMoneyReward())
+
+                        toSpeak = $"Quest: {title} Completed!";
+
+                        if (__instance.HasReward())
                         {
-                            /*b.Draw(Game1.mouseCursors, new Vector2(rewardBox.bounds.X + 16, (float)(rewardBox.bounds.Y + 16) - Game1.dialogueButtonScale / 2f), new Rectangle(280, 410, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);*/
-                            /*SpriteText.drawString(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:LoadGameMenu.cs.11020", _shownQuest.GetMoneyReward()), xPositionOnScreen + 448, rewardBox.bounds.Y + 21 + 4);*/
+                            snapMouseToRewardBox = true;
+                            if (__instance.HasMoneyReward())
+                            {
+                                toSpeak += $"you recieved {____shownQuest.GetMoneyReward()}g";
+                            }
+
+                            toSpeak += "... left click to collect reward";
                         }
+
                         #endregion
                     }
                     else
@@ -76,7 +170,11 @@ namespace stardew_access.Patches
                         #endregion
                     }
 
-                    ScreenReader.sayWithChecker(toSpeak, true); 
+                    // Move mouse to reward button
+                    if (snapMouseToRewardBox)
+                        __instance.rewardBox.snapMouseCursorToCenter();
+
+                    ScreenReader.sayWithChecker(toSpeak, true);
                     #endregion
                 }
             }
@@ -137,7 +235,7 @@ namespace stardew_access.Patches
                         if (c.containsPoint(Game1.getMousePosition().X, Game1.getMousePosition().Y))
                             ScreenReader.sayWithChecker($"Grab: {name} \t\n {label}", false);
                     }
-                } 
+                }
                 #endregion
             }
             catch (Exception e)
@@ -163,7 +261,7 @@ namespace stardew_access.Patches
                     }
                 });
 
-                if(__instance.muteMusicButton.containsPoint(Game1.getMousePosition(true).X,Game1.getMousePosition(true).Y))
+                if (__instance.muteMusicButton.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
                 {
                     toSpeak = "Mute Music Button";
                 }
@@ -218,8 +316,8 @@ namespace stardew_access.Patches
                     String farmName = __instance.Farmer.farmName;
                     String money = __instance.Farmer.Money.ToString();
                     String hoursPlayed = Utility.getHoursMinutesStringFromMilliseconds(__instance.Farmer.millisecondsPlayed);
-                    string dateStringForSaveGame = ((!__instance.Farmer.dayOfMonthForSaveGame.HasValue || 
-                        !__instance.Farmer.seasonForSaveGame.HasValue || 
+                    string dateStringForSaveGame = ((!__instance.Farmer.dayOfMonthForSaveGame.HasValue ||
+                        !__instance.Farmer.seasonForSaveGame.HasValue ||
                         !__instance.Farmer.yearForSaveGame.HasValue) ? __instance.Farmer.dateStringForSaveGame : Utility.getDateStringFor(__instance.Farmer.dayOfMonthForSaveGame.Value, __instance.Farmer.seasonForSaveGame.Value, __instance.Farmer.yearForSaveGame.Value));
 
                     string toSpeak = $"{farmName} Farm, \t\n Farmer:{farmerName}, \t\nMoney:{money}, \t\nHours Played:{hoursPlayed}, \t\nDate:{dateStringForSaveGame}";
@@ -265,8 +363,9 @@ namespace stardew_access.Patches
             {
                 saveGameIndex++;
                 if (saveGameIndex > 6)
-                    saveGameIndex = 0; 
-            } else
+                    saveGameIndex = 0;
+            }
+            else
             {
                 saveGameIndex--;
                 if (saveGameIndex < 0)
@@ -342,6 +441,12 @@ namespace stardew_access.Patches
 
                 MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
+        }
+
+        internal static void resetGlobalVars()
+        {
+            currentLetterText = " ";
+            currentDailyQuestText = " ";
         }
     }
 }

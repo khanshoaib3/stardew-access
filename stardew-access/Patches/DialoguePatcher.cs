@@ -17,6 +17,7 @@ namespace stardew_access.Patches
                 if (__instance.transitioning)
                     return;
 
+
                 if (__instance.characterDialogue != null)
                 {
                     // For Normal Character dialogues
@@ -29,6 +30,7 @@ namespace stardew_access.Patches
                     if (currentDialogue != toSpeak)
                     {
                         currentDialogue = toSpeak;
+                        MainClass.monitor.Log(toSpeak, LogLevel.Info);
                         ScreenReader.say(toSpeak, false);
                     }
                 }
@@ -150,7 +152,7 @@ namespace stardew_access.Patches
 
                 #region Add money
                 if (moneyAmountToDisplayAtBottom != -1)
-                    toSpeak.Append($"\nValue: {moneyAmountToDisplayAtBottom} coins\n");
+                    toSpeak.Append($"\nValue: {moneyAmountToDisplayAtBottom}g\n");
                 #endregion
 
                 #region Narrate toSpeak
