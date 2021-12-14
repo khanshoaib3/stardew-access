@@ -7,7 +7,6 @@ using StardewValley.Menus;
 using Microsoft.Xna.Framework.Graphics;
 using stardew_access.Patches;
 using AutoHotkey.Interop;
-using Microsoft.Xna.Framework;
 
 namespace stardew_access
 {
