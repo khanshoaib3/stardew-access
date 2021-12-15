@@ -16,7 +16,7 @@ namespace stardew_access
     public class MainClass : Mod
     {
         private Harmony? harmony;
-        private static bool isReadingTile = false, readTile = false;
+        private static bool isReadingTile = false, readTile = false, snapMouse = false;
         private static Vector2 prevTile;
         public static IMonitor? monitor;
         AutoHotkeyEngine ahk;
@@ -106,9 +106,21 @@ namespace stardew_access
 
             #endregion
 
-            helper.ConsoleCommands.Add("read_tile", "Toggle read tile feature", (string arg1, string[] arg2) => {
+            #region Custom Commands
+            helper.ConsoleCommands.Add("read_tile", "Toggle read tile feature", (string arg1, string[] arg2) =>
+            {
                 readTile = !readTile;
+
+                monitor.Log("Read Tile is " + (readTile ? "on" : "off"), LogLevel.Info);
             });
+
+            helper.ConsoleCommands.Add("snap_mouse", "Toggle snap mouse feature", (string arg1, string[] arg2) =>
+            {
+                snapMouse = !snapMouse;
+
+                monitor.Log("Snap Mouse is " + (snapMouse ? "on" : "off"), LogLevel.Info);
+            }); 
+            #endregion
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
@@ -121,7 +133,8 @@ namespace stardew_access
 
             MenuPatch.resetGlobalVars();
 
-            SnapMouseToPlayer();
+            if(snapMouse)
+                SnapMouseToPlayer();
 
             if(!isReadingTile && readTile)
                 ReadTile();
