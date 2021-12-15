@@ -16,7 +16,7 @@ namespace stardew_access
     public class MainClass : Mod
     {
         private Harmony? harmony;
-        private static bool isReadingTile = false;
+        private static bool isReadingTile = false, readTile = false;
         private static Vector2 prevTile;
         public static IMonitor? monitor;
         AutoHotkeyEngine ahk;
@@ -106,6 +106,10 @@ namespace stardew_access
 
             #endregion
 
+            helper.ConsoleCommands.Add("read_tile", "Toggle read tile feature", (string arg1, string[] arg2) => {
+                readTile = !readTile;
+            });
+
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
         }
@@ -117,7 +121,7 @@ namespace stardew_access
 
             MenuPatch.resetGlobalVars();
 
-            if(!isReadingTile)
+            if(!isReadingTile && readTile)
                 ReadTile();
         }
 
