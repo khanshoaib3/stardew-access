@@ -176,49 +176,109 @@ namespace stardew_access
             int x = Game1.player.GetBoundingBox().Center.X - Game1.viewport.X;
             int y = Game1.player.GetBoundingBox().Center.Y - Game1.viewport.Y;
 
+            int offset = 64;
+
+            switch (Game1.player.FacingDirection)
+            {
+                case 0:
+                    y -= offset;
+                    break;
+                case 1:
+                    x += offset;
+                    break;
+                case 2:
+                    y += offset;
+                    break;
+                case 3:
+                    x -= offset;
+                    break;
+            }
+
             Game1.setMousePosition(x, y);
         }
 
         private static async void ReadTile()
         {
             isReadingTile = true;
-            if (Context.IsPlayerFree)
+
+            try
             {
-                Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
-                Vector2 gt = Game1.player.GetGrabTile();
 
-                StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)gt.X, (int)gt.Y);
-                if (!Equals(gt, prevTile))
+                #region Get Correct Grab Tile
+                int x = Game1.player.GetBoundingBox().Center.X;
+                int y = Game1.player.GetBoundingBox().Center.Y;
+
+                int offset = 64;
+
+                switch (Game1.player.FacingDirection)
                 {
-                    prevTile = gt;
-                    if (obj != null)
+                    case 0:
+                        y -= offset;
+                        break;
+                    case 1:
+                        x += offset;
+                        break;
+                    case 2:
+                        y += offset;
+                        break;
+                    case 3:
+                        x -= offset;
+                        break;
+                }
+
+                x /= Game1.tileSize;
+                y /= Game1.tileSize;
+                Vector2 gt = new Vector2(x, y);
+                #endregion
+
+                if (Context.IsPlayerFree)
+                {
+                    Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
+
+                    StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)gt.X, (int)gt.Y);
+                    if (!Equals(gt, prevTile))
                     {
-                        string name = obj.name;
-
-                        string checkQuery = $"x:{gt.X} y:{gt.Y}";
-
-                        ScreenReader.say(name, true);
-
-                    }
-                    else if (terrainFeature.ContainsKey(gt))
-                    {
-                        Netcode.NetRef<TerrainFeature> terrain = terrainFeature[gt];
-
-                        if (terrain.Get() is HoeDirt)
+                        prevTile = gt;
+                        if (obj != null)
                         {
-                            HoeDirt dirt = (HoeDirt)terrain.Get();
-                            if (dirt.crop != null)
-                            {
-                                string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest];
-                                cropName = cropName.Substring(0, cropName.IndexOf("/"));
+                            string name = obj.name;
 
-                                string toSpeak = $"{cropName}";
-                                ScreenReader.say(toSpeak, true);
-                            }
+                            ScreenReader.say(name, true);
+
                         }
+                        else if (terrainFeature.ContainsKey(gt))
+                        {
+                            Netcode.NetRef<TerrainFeature> terrain = terrainFeature[gt];
 
+                            if (terrain.Get() is HoeDirt)
+                            {
+                                HoeDirt dirt = (HoeDirt)terrain.Get();
+                                if (dirt.crop != null)
+                                {
+                                    string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest];
+                                    cropName = cropName.Substring(0, cropName.IndexOf("/"));
+                                    string toSpeak = $"{cropName}";
+
+                                    bool isWatered = dirt.state.Value == HoeDirt.watered;
+                                    bool isHarvestable = dirt.crop.fullyGrown.Get();
+
+                                    if(isWatered)
+                                        toSpeak = "Watered " + toSpeak;
+
+                                    if (isHarvestable)
+                                        toSpeak = "Harvestable " + toSpeak;
+
+                                    ScreenReader.say(toSpeak, true);
+                                }
+                            }
+
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                monitor.Log($"Error in Read Tile:\n{e.Message}\n{e.StackTrace}");
             }
 
             await Task.Delay(100);
