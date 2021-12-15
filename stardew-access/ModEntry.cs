@@ -9,7 +9,6 @@ using stardew_access.Patches;
 using AutoHotkey.Interop;
 using Microsoft.Xna.Framework;
 using StardewValley.TerrainFeatures;
-using System.Linq;
 
 namespace stardew_access
 {
@@ -17,6 +16,8 @@ namespace stardew_access
     public class MainClass : Mod
     {
         private Harmony? harmony;
+        private static bool isReadingTile = false;
+        private static Vector2 prevTile;
         public static IMonitor? monitor;
         AutoHotkeyEngine ahk;
 
@@ -115,6 +116,9 @@ namespace stardew_access
                 return;
 
             MenuPatch.resetGlobalVars();
+
+            if(!isReadingTile)
+                ReadTile();
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -144,34 +148,54 @@ namespace stardew_access
                 {
                     Game1.pressUseToolButton();
                 }
-
-                /*if (Equals(e.Button, SButton.G))
-                {
-                    if (Context.IsPlayerFree)
-                    {
-                        Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
-                        Vector2 gt = Game1.player.GetGrabTile();
-                        
-                        StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)gt.X, (int)gt.Y);
-
-                        if(obj != null)
-                            monitor.Log($"obj:{obj.name}", LogLevel.Debug);
-
-                        if (terrainFeature.ContainsKey(gt))
-                        {
-                            Netcode.NetRef<TerrainFeature> terrain = terrainFeature[gt];
-
-                            if (terrain.Get() is HoeDirt dirt)
-                            {
-                                monitor.Log($"here{(terrain.Get() as HoeDirt).crop.GetType()}", LogLevel.Debug);
-                                monitor.Log("here2", LogLevel.Debug);
-                            }
-
-                        }
-                    }
-                }*/
+                
             }
         }
 
+        private static async void ReadTile()
+        {
+            isReadingTile = true;
+            if (Context.IsPlayerFree)
+            {
+                Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
+                Vector2 gt = Game1.player.GetGrabTile();
+
+                StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)gt.X, (int)gt.Y);
+                if (!Equals(gt, prevTile))
+                {
+                    prevTile = gt;
+                    if (obj != null)
+                    {
+                        string name = obj.name;
+
+                        string checkQuery = $"x:{gt.X} y:{gt.Y}";
+
+                        ScreenReader.say(name, true);
+
+                    }
+                    else if (terrainFeature.ContainsKey(gt))
+                    {
+                        Netcode.NetRef<TerrainFeature> terrain = terrainFeature[gt];
+
+                        if (terrain.Get() is HoeDirt)
+                        {
+                            HoeDirt dirt = (HoeDirt)terrain.Get();
+                            if (dirt.crop != null)
+                            {
+                                string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest];
+                                cropName = cropName.Substring(0, cropName.IndexOf("/"));
+
+                                string toSpeak = $"{cropName}";
+                                ScreenReader.say(toSpeak, true);
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            await Task.Delay(100);
+            isReadingTile = false;
+        }
     }
 }
