@@ -121,6 +121,8 @@ namespace stardew_access
 
             MenuPatch.resetGlobalVars();
 
+            SnapMouseToPlayer();
+
             if(!isReadingTile && readTile)
                 ReadTile();
         }
@@ -154,6 +156,14 @@ namespace stardew_access
                 }
                 
             }
+        }
+
+        private void SnapMouseToPlayer()
+        {
+            int x = Game1.player.GetBoundingBox().Center.X - Game1.viewport.X;
+            int y = Game1.player.GetBoundingBox().Center.Y - Game1.viewport.Y;
+
+            Game1.setMousePosition(x, y);
         }
 
         private static async void ReadTile()
