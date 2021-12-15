@@ -16,7 +16,7 @@ namespace stardew_access
     public class MainClass : Mod
     {
         private Harmony? harmony;
-        private static bool isReadingTile = false, readTile = false, snapMouse = false;
+        private static bool isReadingTile = false, readTile = false, snapMouse = true;
         private static Vector2 prevTile;
         public static IMonitor? monitor;
         AutoHotkeyEngine ahk;
