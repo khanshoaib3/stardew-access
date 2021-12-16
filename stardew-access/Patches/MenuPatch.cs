@@ -346,13 +346,11 @@ namespace stardew_access.Patches
                 bool isNextArrowPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right);
                 bool isPrevArrowPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left);
 
-                bool isLPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.L);
-                bool isJPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.J);
-                if ((isNextArrowPressed || isLPressed ) && !isRunning)
+                if (isNextArrowPressed && !isRunning)
                 {
                     _ = CycleThroughItems(true, ___nameBox, ___farmnameBox, ___favThingBox, ___skipIntroButton, ___okButton, ___backButton);
                 }
-                else if ((isPrevArrowPressed || isJPressed) && !isRunning)
+                else if (isPrevArrowPressed && !isRunning)
                 {
                     _ = CycleThroughItems(false, ___nameBox, ___farmnameBox, ___favThingBox, ___skipIntroButton, ___okButton, ___backButton);
                 }

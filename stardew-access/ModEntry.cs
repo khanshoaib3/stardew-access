@@ -255,12 +255,11 @@ namespace stardew_access
                                 HoeDirt dirt = (HoeDirt)terrain.Get();
                                 if (dirt.crop != null)
                                 {
-                                    string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest];
-                                    cropName = cropName.Substring(0, cropName.IndexOf("/"));
+                                    string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest].Split('/')[0];
                                     string toSpeak = $"{cropName}";
 
                                     bool isWatered = dirt.state.Value == HoeDirt.watered;
-                                    bool isHarvestable = dirt.crop.fullyGrown.Get();
+                                    bool isHarvestable = dirt.crop.fullyGrown.Value;
 
                                     if(isWatered)
                                         toSpeak = "Watered " + toSpeak;
@@ -271,7 +270,92 @@ namespace stardew_access
                                     ScreenReader.say(toSpeak, true);
                                 }
                             }
+                            else if(terrain.Get() is Bush)
+                            {
+                                string toSpeak = "Bush";
+                                monitor.Log(toSpeak, LogLevel.Debug);
+                                ScreenReader.say(toSpeak, true);
+                            }
+                            else if(terrain.Get() is CosmeticPlant)
+                            {
+                                CosmeticPlant cosmeticPlant = (CosmeticPlant)terrain.Get();
+                                string toSpeak = cosmeticPlant.textureName().ToLower();
 
+                                if (toSpeak.Contains("terrain"))
+                                    toSpeak.Replace("terrain", "");
+
+                                if (toSpeak.Contains("feature"))
+                                    toSpeak.Replace("feature", "");
+
+                                monitor.Log(toSpeak, LogLevel.Debug);
+                                ScreenReader.say(toSpeak, true);
+                            }
+                            else if (terrain.Get() is Flooring)
+                            {
+                                Flooring flooring = (Flooring)terrain.Get();
+                                bool isPathway = flooring.isPathway.Get();
+                                bool isSteppingStone = flooring.isSteppingStone.Get();
+
+                                string toSpeak = "Flooring";
+
+                                if (isPathway)
+                                    toSpeak = "Pathway";
+
+                                if (isSteppingStone)
+                                    toSpeak = "Stepping Stone";
+
+                                monitor.Log(toSpeak, LogLevel.Debug);
+                                ScreenReader.say(toSpeak, true);
+                            }
+                            else if (terrain.Get() is FruitTree)
+                            {
+                                FruitTree fruitTree = (FruitTree)terrain.Get();
+                                string toSpeak = Game1.objectInformation[fruitTree.treeType].Split('/')[0];
+
+                                monitor.Log(toSpeak, LogLevel.Debug);
+                                ScreenReader.say(toSpeak, true);
+                            }
+                            else if (terrain.Get() is ResourceClump)
+                            {
+                                ResourceClump resourceClump = (ResourceClump)terrain.Get();
+                                string toSpeak = Game1.objectInformation[resourceClump.parentSheetIndex].Split('/')[0];
+
+                                monitor.Log(toSpeak, LogLevel.Debug);
+                                ScreenReader.say(toSpeak, true);
+                            }
+                            else if (terrain.Get() is Grass)
+                            {
+                                Grass grass = (Grass)terrain.Get();
+                                string toSpeak = "Grass";
+
+                                monitor.Log(toSpeak, LogLevel.Debug);
+                                ScreenReader.say(toSpeak, true);
+                            }
+                            else if (terrain.Get() is Tree)
+                            {
+                                Tree tree = (Tree)terrain.Get();
+                                int treeType = tree.treeType;
+                                int stage = tree.growthStage.Value;
+                                string toSpeak = "";
+
+                                if (Game1.player.getEffectiveSkillLevel(2) >= 1)
+                                {
+                                    toSpeak = Game1.objectInformation[308 + (int)treeType].Split('/')[0];
+                                }
+                                else if (Game1.player.getEffectiveSkillLevel(2) >= 1 && (int)treeType <= 3)
+                                {
+                                    toSpeak = Game1.objectInformation[308 + (int)treeType].Split('/')[0];
+                                }
+                                else if (Game1.player.getEffectiveSkillLevel(2) >= 1 && (int)treeType == 8)
+                                {
+                                    toSpeak = Game1.objectInformation[292 + (int)treeType].Split('/')[0];
+                                }
+
+                                toSpeak += $", {stage} stage";
+
+                                monitor.Log(toSpeak, LogLevel.Debug);
+                                ScreenReader.say(toSpeak, true);
+                            }
                         }
                     }
                 }
