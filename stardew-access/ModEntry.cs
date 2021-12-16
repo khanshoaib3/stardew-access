@@ -16,7 +16,7 @@ namespace stardew_access
     public class MainClass : Mod
     {
         private Harmony? harmony;
-        private static bool isReadingTile = false, readTile = false, snapMouse = true;
+        private static bool isReadingTile = false, readTile = true, snapMouse = true;
         private static Vector2 prevTile;
         public static IMonitor? monitor;
         AutoHotkeyEngine ahk;
@@ -260,23 +260,39 @@ namespace stardew_access
 
                                     bool isWatered = dirt.state.Value == HoeDirt.watered;
                                     bool isHarvestable = dirt.crop.fullyGrown.Value;
+                                    bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
 
-                                    if(isWatered)
+                                    if (isWatered)
                                         toSpeak = "Watered " + toSpeak;
+
+                                    if (isFertilized)
+                                        toSpeak = "Fertilized " + toSpeak;
 
                                     if (isHarvestable)
                                         toSpeak = "Harvestable " + toSpeak;
 
                                     ScreenReader.say(toSpeak, true);
+                                } else
+                                {
+                                    string toSpeak = "Soil";
+                                    bool isWatered = dirt.state.Value == HoeDirt.watered;
+                                    bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
+
+                                    if (isWatered)
+                                        toSpeak = "Watered " + toSpeak;
+
+                                    if(isFertilized)
+                                        toSpeak = "Fertilized " + toSpeak;
+
+                                    ScreenReader.say(toSpeak, true);
                                 }
                             }
-                            else if(terrain.Get() is Bush)
+                            else if (terrain.Get() is Bush)
                             {
                                 string toSpeak = "Bush";
-                                monitor.Log(toSpeak, LogLevel.Debug);
                                 ScreenReader.say(toSpeak, true);
                             }
-                            else if(terrain.Get() is CosmeticPlant)
+                            else if (terrain.Get() is CosmeticPlant)
                             {
                                 CosmeticPlant cosmeticPlant = (CosmeticPlant)terrain.Get();
                                 string toSpeak = cosmeticPlant.textureName().ToLower();
@@ -287,7 +303,6 @@ namespace stardew_access
                                 if (toSpeak.Contains("feature"))
                                     toSpeak.Replace("feature", "");
 
-                                monitor.Log(toSpeak, LogLevel.Debug);
                                 ScreenReader.say(toSpeak, true);
                             }
                             else if (terrain.Get() is Flooring)
@@ -304,7 +319,6 @@ namespace stardew_access
                                 if (isSteppingStone)
                                     toSpeak = "Stepping Stone";
 
-                                monitor.Log(toSpeak, LogLevel.Debug);
                                 ScreenReader.say(toSpeak, true);
                             }
                             else if (terrain.Get() is FruitTree)
@@ -312,7 +326,6 @@ namespace stardew_access
                                 FruitTree fruitTree = (FruitTree)terrain.Get();
                                 string toSpeak = Game1.objectInformation[fruitTree.treeType].Split('/')[0];
 
-                                monitor.Log(toSpeak, LogLevel.Debug);
                                 ScreenReader.say(toSpeak, true);
                             }
                             else if (terrain.Get() is ResourceClump)
@@ -320,7 +333,6 @@ namespace stardew_access
                                 ResourceClump resourceClump = (ResourceClump)terrain.Get();
                                 string toSpeak = Game1.objectInformation[resourceClump.parentSheetIndex].Split('/')[0];
 
-                                monitor.Log(toSpeak, LogLevel.Debug);
                                 ScreenReader.say(toSpeak, true);
                             }
                             else if (terrain.Get() is Grass)
@@ -328,7 +340,6 @@ namespace stardew_access
                                 Grass grass = (Grass)terrain.Get();
                                 string toSpeak = "Grass";
 
-                                monitor.Log(toSpeak, LogLevel.Debug);
                                 ScreenReader.say(toSpeak, true);
                             }
                             else if (terrain.Get() is Tree)
@@ -353,7 +364,16 @@ namespace stardew_access
 
                                 toSpeak += $", {stage} stage";
 
-                                monitor.Log(toSpeak, LogLevel.Debug);
+                                ScreenReader.say(toSpeak, true);
+                            }
+                            else if ( terrain.Get() is Quartz)
+                            {
+                                string toSpeak = "Quartz";
+                                ScreenReader.say(toSpeak, true);
+                            }
+                            else if (terrain.Get() is Leaf)
+                            {
+                                string toSpeak = "Leaf";
                                 ScreenReader.say(toSpeak, true);
                             }
                         }
