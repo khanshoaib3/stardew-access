@@ -244,7 +244,6 @@ namespace stardew_access
                             string name = obj.name;
 
                             ScreenReader.say(name, true);
-
                         }
                         else if (terrainFeature.ContainsKey(gt))
                         {
@@ -259,7 +258,7 @@ namespace stardew_access
                                     string toSpeak = $"{cropName}";
 
                                     bool isWatered = dirt.state.Value == HoeDirt.watered;
-                                    bool isHarvestable = dirt.crop.fullyGrown.Value;
+                                    bool isHarvestable = dirt.readyForHarvest();
                                     bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
 
                                     if (isWatered)
@@ -271,6 +270,7 @@ namespace stardew_access
                                     if (isHarvestable)
                                         toSpeak = "Harvestable " + toSpeak;
 
+                                    monitor.Log(toSpeak, LogLevel.Debug);
                                     ScreenReader.say(toSpeak, true);
                                 } else
                                 {
@@ -331,6 +331,7 @@ namespace stardew_access
                             else if (terrain.Get() is ResourceClump)
                             {
                                 ResourceClump resourceClump = (ResourceClump)terrain.Get();
+                                monitor.Log(Game1.objectInformation[resourceClump.parentSheetIndex], LogLevel.Debug);
                                 string toSpeak = Game1.objectInformation[resourceClump.parentSheetIndex].Split('/')[0];
 
                                 ScreenReader.say(toSpeak, true);
@@ -375,6 +376,10 @@ namespace stardew_access
                             {
                                 string toSpeak = "Leaf";
                                 ScreenReader.say(toSpeak, true);
+                            }
+                            else
+                            {
+                                monitor.Log($"LTF {terrain.Get() is ResourceClump}", LogLevel.Debug);
                             }
                         }
                     }
