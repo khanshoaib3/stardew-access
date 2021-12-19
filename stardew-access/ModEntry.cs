@@ -9,6 +9,8 @@ using stardew_access.Patches;
 using AutoHotkey.Interop;
 using Microsoft.Xna.Framework;
 using StardewValley.TerrainFeatures;
+using StardewValley.Locations;
+using StardewValley.Objects;
 
 namespace stardew_access
 {
@@ -119,11 +121,25 @@ namespace stardew_access
                 snapMouse = !snapMouse;
 
                 monitor.Log("Snap Mouse is " + (snapMouse ? "on" : "off"), LogLevel.Info);
-            }); 
+            });
+
+            helper.ConsoleCommands.Add("ref_sr", "Refresh screen reader", (string arg1, string[] arg2) =>
+            {
+                ScreenReader.initializeScreenReader();
+
+                monitor.Log("Screen Reader refreshed!", LogLevel.Info);
+            });
             #endregion
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
+            helper.Events.GameLoop.OneSecondUpdateTicked += this.onOneSecondUpdateTicked;
+        }
+
+        private void onOneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
+        {
+            if (!Context.IsPlayerFree)
+                return;
         }
 
         private void onUpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -133,7 +149,11 @@ namespace stardew_access
 
             MenuPatch.resetGlobalVars();
 
-            if(snapMouse)
+            SlotAndLocation.narrateCurrentSlot();
+
+            SlotAndLocation.narrateCurrentLocation();
+
+            if (snapMouse)
                 SnapMouseToPlayer();
 
             if(!isReadingTile && readTile)
@@ -203,7 +223,6 @@ namespace stardew_access
 
             try
             {
-
                 #region Get Correct Grab Tile
                 int x = Game1.player.GetBoundingBox().Center.X;
                 int y = Game1.player.GetBoundingBox().Center.Y;
@@ -236,12 +255,28 @@ namespace stardew_access
                     Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
 
                     StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)gt.X, (int)gt.Y);
+                    // Mine loc x49 y14
+                    // x41 y7 allyway
+                    // x40 y7
+                    // x41 y0 entrance
+                    // x40 y0
                     if (!Equals(gt, prevTile))
                     {
                         prevTile = gt;
                         if (obj != null)
                         {
                             string name = obj.name;
+
+                            monitor.Log(obj.parentSheetIndex.ToString(), LogLevel.Debug);
+                            if (Game1.objectInformation.ContainsKey(obj.ParentSheetIndex) && name.ToLower().Equals("stone"))
+                            {
+                                string info = Game1.objectInformation[obj.parentSheetIndex];
+                                if (info.ToLower().Contains("copper"))
+                                    name = "Copper " + name;
+                                else if (info.ToLower().Contains("iron"))
+                                    name = "Iron " + name;
+                                monitor.Log(info, LogLevel.Debug);
+                            }
 
                             ScreenReader.say(name, true);
                         }
@@ -270,7 +305,6 @@ namespace stardew_access
                                     if (isHarvestable)
                                         toSpeak = "Harvestable " + toSpeak;
 
-                                    monitor.Log(toSpeak, LogLevel.Debug);
                                     ScreenReader.say(toSpeak, true);
                                 } else
                                 {
@@ -377,10 +411,28 @@ namespace stardew_access
                                 string toSpeak = "Leaf";
                                 ScreenReader.say(toSpeak, true);
                             }
-                            else
+                        }
+                        else
+                        {
+                            Game1.currentLocation.resourceClumps.ToList().ForEach(x =>
                             {
-                                monitor.Log($"LTF {terrain.Get() is ResourceClump}", LogLevel.Debug);
-                            }
+                                if(x.occupiesTile((int)gt.X, (int)gt.Y))
+                                {
+                                    monitor.Log("here", LogLevel.Debug);
+                                    string toSpeak = " ";
+
+                                    if (Game1.objectInformation.ContainsKey(obj.ParentSheetIndex))
+                                    {
+                                        toSpeak = Game1.objectInformation[x.parentSheetIndex];
+                                    } else
+                                    {
+                                        toSpeak = x.parentSheetIndex.ToString();
+                                    }
+                                    monitor.Log(toSpeak, LogLevel.Debug);
+                                    ScreenReader.say(toSpeak, true);
+                                    return;
+                                }
+                            });
                         }
                     }
                 }

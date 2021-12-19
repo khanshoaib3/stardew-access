@@ -5,24 +5,14 @@ namespace stardew_access.Game
 {
     internal class CurrentPlayer
     {
-        private static Farmer? player = null;
-
-        CurrentPlayer()
-        {
-        }
-
-        private static void initPlayer()
-        {
-            player = Game1.player;
-        }
 
         internal static int getHealth()
         {
-            if(player == null)
-                initPlayer();
+            if(Game1.player == null)
+                return 0;
 
-            int maxHealth = player.maxHealth;
-            int currentHealth = player.health;
+            int maxHealth = Game1.player.maxHealth;
+            int currentHealth = Game1.player.health;
 
             int healthPercentage = (int) (currentHealth * 100)/maxHealth;
             return healthPercentage;
@@ -30,11 +20,11 @@ namespace stardew_access.Game
 
         internal static int getStamina()
         {
-            if (player == null)
-                initPlayer();
+            if (Game1.player == null)
+                return 0;
 
-            int maxStamina = player.maxStamina;
-            int currentStamine = (int)player.stamina;
+            int maxStamina = Game1.player.maxStamina;
+            int currentStamine = (int)Game1.player.stamina;
 
             int staminaPercentage = (int)(currentStamine * 100) / maxStamina;
 
@@ -43,37 +33,19 @@ namespace stardew_access.Game
 
         internal static int getPositionX()
         {
-            if (player == null)
-                initPlayer();
+            if (Game1.player == null)
+                return 0;
 
-            int x = (int)player.getTileLocation().X;
+            int x = (int)Game1.player.getTileLocation().X;
             return x;
         }
 
         internal static int getPositionY()
         {
-            if (player == null)
-                initPlayer();
+            if (Game1.player == null)
+                return 0;
 
-            int y = (int)player.getTileLocation().Y;
-            return y;
-        }
-
-        internal static int getToolHItPositionX()
-        {
-            if (player == null)
-                initPlayer();
-
-            int x = (int)player.GetGrabTile().X;
-            return x;
-        }
-
-        internal static int getToolHItPositionY()
-        {
-            if (player == null)
-                initPlayer();
-
-            int y = (int)player.GetGrabTile().Y;
+            int y = (int)Game1.player.getTileLocation().Y;
             return y;
         }
     }
