@@ -24,8 +24,8 @@ namespace stardew_access.Game
                 return;
 
             previousSlotItem = currentSlotItem;
-            ScreenReader.say(currentSlotItem.Name, true);
-        }
+            ScreenReader.say($"{currentSlotItem.Name} Selected", true);
+        } 
 
         // Narrates current location's name
         public static void narrateCurrentLocation()
@@ -39,7 +39,7 @@ namespace stardew_access.Game
                 return;
 
             previousLocation = currentLocation;
-            ScreenReader.say(currentLocation.Name,true);
+            ScreenReader.say($"{currentLocation.Name} Entered",true);
         }
     }
 }
