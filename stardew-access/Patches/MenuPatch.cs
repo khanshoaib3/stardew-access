@@ -14,6 +14,19 @@ namespace stardew_access.Patches
         private static string currentLetterText = " ";
         private static string currentDailyQuestText = " ";
 
+        public static void InventoryMenuPatch(InventoryMenu __instance, Item __result)
+        {
+            if (__result == null)
+                return;
+
+            if (__result.Stack > 1)
+            {
+                __instance.hoverTitle = $"{__result.Stack} {__result.DisplayName}";
+                __instance.descriptionTitle = __result.Stack + __result.DisplayName;
+            }
+
+        }
+
         internal static void BillboardPatch(Billboard __instance, bool ___dailyQuestBoard)
         {
             if (!___dailyQuestBoard)
