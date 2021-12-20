@@ -329,7 +329,7 @@ namespace stardew_access.Patches
                         return;
                     }
 
-                    String farmerName = __instance.Farmer.Name;
+                    String farmerName = __instance.Farmer.displayName;
                     String farmName = __instance.Farmer.farmName;
                     String money = __instance.Farmer.Money.ToString();
                     String hoursPlayed = Utility.getHoursMinutesStringFromMilliseconds(__instance.Farmer.millisecondsPlayed);

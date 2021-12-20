@@ -138,13 +138,6 @@ namespace stardew_access
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
-            helper.Events.GameLoop.OneSecondUpdateTicked += this.onOneSecondUpdateTicked;
-        }
-
-        private void onOneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
-        {
-            if (!Context.IsPlayerFree)
-                return;
         }
 
         private void onUpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -259,34 +252,31 @@ namespace stardew_access
                 {
                     Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
 
-                    StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)gt.X, (int)gt.Y);
-                    // Mine loc x49 y14
-                    // x41 y7 allyway
-                    // x40 y7
-                    // x41 y0 entrance
-                    // x40 y0
                     if (!Equals(gt, prevTile))
                     {
                         prevTile = gt;
-                        if (obj != null)
-                        {
-                            string name = obj.name;
 
-                            monitor.Log(obj.parentSheetIndex.ToString(), LogLevel.Debug);
+                        if (Game1.currentLocation.getObjectAtTile((int)gt.X, (int)gt.Y) != null)
+                        {
+                            #region Objects at tile (TODO)
+                            StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)gt.X, (int)gt.Y);
+                            string name = obj.DisplayName;
+
+                            // TODO add individual stone narration using parentSheetIndex
+                            // monitor.Log(obj.parentSheetIndex.ToString(), LogLevel.Debug);
                             if (Game1.objectInformation.ContainsKey(obj.ParentSheetIndex) && name.ToLower().Equals("stone"))
                             {
                                 string info = Game1.objectInformation[obj.parentSheetIndex];
                                 if (info.ToLower().Contains("copper"))
                                     name = "Copper " + name;
-                                else if (info.ToLower().Contains("iron"))
-                                    name = "Iron " + name;
-                                monitor.Log(info, LogLevel.Debug);
                             }
 
-                            ScreenReader.say(name, true);
+                            ScreenReader.say(name, true); 
+                            #endregion
                         }
                         else if (terrainFeature.ContainsKey(gt))
                         {
+                            #region Terrain Feature
                             Netcode.NetRef<TerrainFeature> terrain = terrainFeature[gt];
 
                             if (terrain.Get() is HoeDirt)
@@ -311,7 +301,8 @@ namespace stardew_access
                                         toSpeak = "Harvestable " + toSpeak;
 
                                     ScreenReader.say(toSpeak, true);
-                                } else
+                                }
+                                else
                                 {
                                     string toSpeak = "Soil";
                                     bool isWatered = dirt.state.Value == HoeDirt.watered;
@@ -320,11 +311,11 @@ namespace stardew_access
                                     if (isWatered)
                                         toSpeak = "Watered " + toSpeak;
 
-                                    if(isFertilized)
+                                    if (isFertilized)
                                         toSpeak = "Fertilized " + toSpeak;
 
                                     ScreenReader.say(toSpeak, true);
-                                }
+                                } 
                             }
                             else if (terrain.Get() is Bush)
                             {
@@ -406,7 +397,7 @@ namespace stardew_access
 
                                 ScreenReader.say(toSpeak, true);
                             }
-                            else if ( terrain.Get() is Quartz)
+                            else if (terrain.Get() is Quartz)
                             {
                                 string toSpeak = "Quartz";
                                 ScreenReader.say(toSpeak, true);
@@ -416,28 +407,61 @@ namespace stardew_access
                                 string toSpeak = "Leaf";
                                 ScreenReader.say(toSpeak, true);
                             }
+                            #endregion
                         }
                         else
                         {
+                            #region Resource CLumps
                             Game1.currentLocation.resourceClumps.ToList().ForEach(x =>
-                            {
-                                if(x.occupiesTile((int)gt.X, (int)gt.Y))
-                                {
-                                    monitor.Log("here", LogLevel.Debug);
-                                    string toSpeak = " ";
+                                                {
+                                                    if (x.occupiesTile((int)gt.X, (int)gt.Y))
+                                                    {
+                                                        string toSpeak;
+                                                        int index = x.parentSheetIndex;
 
-                                    if (Game1.objectInformation.ContainsKey(obj.ParentSheetIndex))
-                                    {
-                                        toSpeak = Game1.objectInformation[x.parentSheetIndex];
-                                    } else
-                                    {
-                                        toSpeak = x.parentSheetIndex.ToString();
-                                    }
-                                    monitor.Log(toSpeak, LogLevel.Debug);
-                                    ScreenReader.say(toSpeak, true);
-                                    return;
-                                }
-                            });
+                                                        switch (index)
+                                                        {
+                                                            case 600:
+                                                                toSpeak = "Large Stump";
+                                                                break;
+                                                            case 602:
+                                                                toSpeak = "Hollow Log";
+                                                                break;
+                                                            case 622:
+                                                                toSpeak = "Meteorite";
+                                                                break;
+                                                            case 752:
+                                                            case 754:
+                                                            case 756:
+                                                            case 758:
+                                                                toSpeak = "Mine Rock";
+                                                                break;
+                                                            case 672:
+                                                                toSpeak = "Boulder";
+                                                                break;
+                                                            default:
+                                                                toSpeak = "Unknown";
+                                                                break;
+                                                        }
+
+                                                        ScreenReader.say(toSpeak, true);
+                                                        return;
+                                                    }
+                                                });
+                            #endregion
+
+                            #region Doors
+                            Game1.currentLocation.doors.ToList().ForEach(x =>
+                                                {
+                                                    x.Keys.ToList().ForEach(y =>
+                                                    {
+                                                        if (Equals((int)gt.X, y.X) && Equals((int)gt.Y, y.Y))
+                                                        {
+                                                            ScreenReader.say("Door", true);
+                                                        }
+                                                    });
+                                                });
+                            #endregion
                         }
                     }
                 }
