@@ -98,6 +98,11 @@ namespace stardew_access.Patches
                 toSpeak.Append(text);
                 #endregion
 
+                #region Add money
+                if (moneyAmountToDisplayAtBottom != -1)
+                    toSpeak.Append($"\nValue: {moneyAmountToDisplayAtBottom}g\n");
+                #endregion
+
                 #region Add crafting ingredients
                 if (craftingIngredients != null)
                 {
@@ -147,11 +152,6 @@ namespace stardew_access.Patches
                         catch (Exception) { }
                     }
                 }
-                #endregion
-
-                #region Add money
-                if (moneyAmountToDisplayAtBottom != -1)
-                    toSpeak.Append($"\nValue: {moneyAmountToDisplayAtBottom}g\n");
                 #endregion
 
                 #region Narrate toSpeak
