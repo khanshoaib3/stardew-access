@@ -10,7 +10,6 @@ using AutoHotkey.Interop;
 using Microsoft.Xna.Framework;
 using StardewValley.TerrainFeatures;
 using StardewValley.Locations;
-using StardewValley.Objects;
 
 namespace stardew_access
 {
@@ -255,7 +254,8 @@ namespace stardew_access
                     if (!Equals(gt, prevTile))
                     {
                         prevTile = gt;
-                        if(Game1.currentLocation.isWaterTile(x, y)){
+
+                        if (Game1.currentLocation.isWaterTile(x, y)){
                             ScreenReader.say("Water", true);
                         }
                         else if (Game1.currentLocation.getObjectAtTile(x, y) != null)
@@ -464,6 +464,14 @@ namespace stardew_access
                                 });
                             });
                             #endregion
+
+                            if (Game1.inMine || Game1.currentLocation is Mine)
+                            {
+                                int index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
+
+                                if (index == 173 || index == 174)
+                                    ScreenReader.say("Ladder", true);
+                            }
                         }
                     }
                 }

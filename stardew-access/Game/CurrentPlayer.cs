@@ -6,7 +6,7 @@ namespace stardew_access.Game
     internal class CurrentPlayer
     {
 
-        internal static int getHealth()
+        public static int getHealth()
         {
             if(Game1.player == null)
                 return 0;
@@ -18,7 +18,7 @@ namespace stardew_access.Game
             return healthPercentage;
         }
 
-        internal static int getStamina()
+        public static int getStamina()
         {
             if (Game1.player == null)
                 return 0;
@@ -31,7 +31,7 @@ namespace stardew_access.Game
             return staminaPercentage;
         }
 
-        internal static int getPositionX()
+        public static int getPositionX()
         {
             if (Game1.player == null)
                 return 0;
@@ -40,13 +40,27 @@ namespace stardew_access.Game
             return x;
         }
 
-        internal static int getPositionY()
+        public static int getPositionY()
         {
             if (Game1.player == null)
                 return 0;
 
             int y = (int)Game1.player.getTileLocation().Y;
             return y;
+        }
+
+        public static string getTimeOfDay()
+        {
+            int timeOfDay = Game1.timeOfDay;
+            return timeOfDay.ToString();
+        }
+
+        public static int getMoney()
+        {
+            if(Game1.player == null)
+                return -1;
+
+            return Game1.player.Money;
         }
     }
 }

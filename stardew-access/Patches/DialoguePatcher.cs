@@ -91,16 +91,16 @@ namespace stardew_access.Patches
 
                 #region Add title if any
                 if (boldTitleText != null)
-                    toSpeak.Append($"{boldTitleText}.\n");
-                #endregion
-
-                #region Add the base text
-                toSpeak.Append(text);
+                    toSpeak.Append($"{boldTitleText}\n");
                 #endregion
 
                 #region Add money
                 if (moneyAmountToDisplayAtBottom != -1)
-                    toSpeak.Append($"\nValue: {moneyAmountToDisplayAtBottom}g\n");
+                    toSpeak.Append($"\nCost: {moneyAmountToDisplayAtBottom}g\n");
+                #endregion
+
+                #region Add the base text
+                toSpeak.Append(text);
                 #endregion
 
                 #region Add crafting ingredients
