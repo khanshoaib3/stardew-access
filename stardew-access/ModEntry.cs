@@ -255,11 +255,13 @@ namespace stardew_access
                     if (!Equals(gt, prevTile))
                     {
                         prevTile = gt;
-
-                        if (Game1.currentLocation.getObjectAtTile((int)gt.X, (int)gt.Y) != null)
+                        if(Game1.currentLocation.isWaterTile(x, y)){
+                            ScreenReader.say("Water", true);
+                        }
+                        else if (Game1.currentLocation.getObjectAtTile(x, y) != null)
                         {
                             #region Objects at tile (TODO)
-                            StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)gt.X, (int)gt.Y);
+                            StardewValley.Object obj = Game1.currentLocation.getObjectAtTile(x, y);
                             string name = obj.DisplayName;
 
                             // TODO add individual stone narration using parentSheetIndex
@@ -412,55 +414,55 @@ namespace stardew_access
                         else
                         {
                             #region Resource CLumps
-                            Game1.currentLocation.resourceClumps.ToList().ForEach(x =>
-                                                {
-                                                    if (x.occupiesTile((int)gt.X, (int)gt.Y))
-                                                    {
-                                                        string toSpeak;
-                                                        int index = x.parentSheetIndex;
+                            Game1.currentLocation.resourceClumps.ToList().ForEach(clump =>
+                                {
+                                    if (clump.occupiesTile(x, y))
+                                    {
+                                        string toSpeak;
+                                        int index = clump.parentSheetIndex;
 
-                                                        switch (index)
-                                                        {
-                                                            case 600:
-                                                                toSpeak = "Large Stump";
-                                                                break;
-                                                            case 602:
-                                                                toSpeak = "Hollow Log";
-                                                                break;
-                                                            case 622:
-                                                                toSpeak = "Meteorite";
-                                                                break;
-                                                            case 752:
-                                                            case 754:
-                                                            case 756:
-                                                            case 758:
-                                                                toSpeak = "Mine Rock";
-                                                                break;
-                                                            case 672:
-                                                                toSpeak = "Boulder";
-                                                                break;
-                                                            default:
-                                                                toSpeak = "Unknown";
-                                                                break;
-                                                        }
+                                        switch (index)
+                                        {
+                                            case 600:
+                                                toSpeak = "Large Stump";
+                                                break;
+                                            case 602:
+                                                toSpeak = "Hollow Log";
+                                                break;
+                                            case 622:
+                                                toSpeak = "Meteorite";
+                                                break;
+                                            case 752:
+                                            case 754:
+                                            case 756:
+                                            case 758:
+                                                toSpeak = "Mine Rock";
+                                                break;
+                                            case 672:
+                                                toSpeak = "Boulder";
+                                                break;
+                                            default:
+                                                toSpeak = "Unknown";
+                                                break;
+                                        }
 
-                                                        ScreenReader.say(toSpeak, true);
-                                                        return;
-                                                    }
-                                                });
+                                        ScreenReader.say(toSpeak, true);
+                                        return;
+                                    }
+                                });
                             #endregion
 
                             #region Doors
-                            Game1.currentLocation.doors.ToList().ForEach(x =>
-                                                {
-                                                    x.Keys.ToList().ForEach(y =>
-                                                    {
-                                                        if (Equals((int)gt.X, y.X) && Equals((int)gt.Y, y.Y))
-                                                        {
-                                                            ScreenReader.say("Door", true);
-                                                        }
-                                                    });
-                                                });
+                            Game1.currentLocation.doors.ToList().ForEach(item =>
+                            {
+                                item.Keys.ToList().ForEach(ydoor =>
+                                {
+                                    if (Equals(x, ydoor.X) && Equals(y, ydoor.Y))
+                                    {
+                                        ScreenReader.say("Door", true);
+                                    }
+                                });
+                            });
                             #endregion
                         }
                     }
