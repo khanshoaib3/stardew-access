@@ -73,5 +73,19 @@ namespace stardew_access
                 screenReader.Speak(text, interrupt);
             }
         }
+
+        public static void sayWithTileQuery(string text, int x, int y, bool interrupt)
+        {
+            if (screenReader == null)
+                return;
+
+            string query = $"{text} x:{x} y:{y}";
+
+            if (prevText != query)
+            {
+                prevText = query;
+                screenReader.Speak(text, interrupt);
+            }
+        }
     }
 }

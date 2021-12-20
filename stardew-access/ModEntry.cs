@@ -251,229 +251,220 @@ namespace stardew_access
                 {
                     Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
 
-                    if (!Equals(gt, prevTile))
+                    if (Game1.currentLocation.isWaterTile(x, y))
                     {
-                        prevTile = gt;
-
-                        if (Game1.currentLocation.isWaterTile(x, y)){
-                            ScreenReader.say("Water", true);
-                        }
-                        else if (Game1.currentLocation.getObjectAtTile(x, y) != null)
-                        {
-                            #region Objects at tile (TODO)
-                            StardewValley.Object obj = Game1.currentLocation.getObjectAtTile(x, y);
-                            string name = obj.DisplayName;
-
-                            // TODO add individual stone narration using parentSheetIndex
-                            // monitor.Log(obj.parentSheetIndex.ToString(), LogLevel.Debug);
-                            if (Game1.objectInformation.ContainsKey(obj.ParentSheetIndex) && name.ToLower().Equals("stone"))
-                            {
-                                string info = Game1.objectInformation[obj.parentSheetIndex];
-                                if (info.ToLower().Contains("copper"))
-                                    name = "Copper " + name;
-                            }
-
-                            ScreenReader.say(name, true); 
-                            #endregion
-                        }
-                        else if (terrainFeature.ContainsKey(gt))
-                        {
-                            #region Terrain Feature
-                            Netcode.NetRef<TerrainFeature> terrain = terrainFeature[gt];
-
-                            if (terrain.Get() is HoeDirt)
-                            {
-                                HoeDirt dirt = (HoeDirt)terrain.Get();
-                                if (dirt.crop != null)
-                                {
-                                    string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest].Split('/')[0];
-                                    string toSpeak = $"{cropName}";
-
-                                    bool isWatered = dirt.state.Value == HoeDirt.watered;
-                                    bool isHarvestable = dirt.readyForHarvest();
-                                    bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
-
-                                    if (isWatered)
-                                        toSpeak = "Watered " + toSpeak;
-
-                                    if (isFertilized)
-                                        toSpeak = "Fertilized " + toSpeak;
-
-                                    if (isHarvestable)
-                                        toSpeak = "Harvestable " + toSpeak;
-
-                                    ScreenReader.say(toSpeak, true);
-                                }
-                                else
-                                {
-                                    string toSpeak = "Soil";
-                                    bool isWatered = dirt.state.Value == HoeDirt.watered;
-                                    bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
-
-                                    if (isWatered)
-                                        toSpeak = "Watered " + toSpeak;
-
-                                    if (isFertilized)
-                                        toSpeak = "Fertilized " + toSpeak;
-
-                                    ScreenReader.say(toSpeak, true);
-                                } 
-                            }
-                            else if (terrain.Get() is Bush)
-                            {
-                                string toSpeak = "Bush";
-                                ScreenReader.say(toSpeak, true);
-                            }
-                            else if (terrain.Get() is CosmeticPlant)
-                            {
-                                CosmeticPlant cosmeticPlant = (CosmeticPlant)terrain.Get();
-                                string toSpeak = cosmeticPlant.textureName().ToLower();
-
-                                if (toSpeak.Contains("terrain"))
-                                    toSpeak.Replace("terrain", "");
-
-                                if (toSpeak.Contains("feature"))
-                                    toSpeak.Replace("feature", "");
-
-                                ScreenReader.say(toSpeak, true);
-                            }
-                            else if (terrain.Get() is Flooring)
-                            {
-                                Flooring flooring = (Flooring)terrain.Get();
-                                bool isPathway = flooring.isPathway.Get();
-                                bool isSteppingStone = flooring.isSteppingStone.Get();
-
-                                string toSpeak = "Flooring";
-
-                                if (isPathway)
-                                    toSpeak = "Pathway";
-
-                                if (isSteppingStone)
-                                    toSpeak = "Stepping Stone";
-
-                                ScreenReader.say(toSpeak, true);
-                            }
-                            else if (terrain.Get() is FruitTree)
-                            {
-                                FruitTree fruitTree = (FruitTree)terrain.Get();
-                                string toSpeak = Game1.objectInformation[fruitTree.treeType].Split('/')[0];
-
-                                ScreenReader.say(toSpeak, true);
-                            }
-                            else if (terrain.Get() is ResourceClump)
-                            {
-                                ResourceClump resourceClump = (ResourceClump)terrain.Get();
-                                monitor.Log(Game1.objectInformation[resourceClump.parentSheetIndex], LogLevel.Debug);
-                                string toSpeak = Game1.objectInformation[resourceClump.parentSheetIndex].Split('/')[0];
-
-                                ScreenReader.say(toSpeak, true);
-                            }
-                            else if (terrain.Get() is Grass)
-                            {
-                                Grass grass = (Grass)terrain.Get();
-                                string toSpeak = "Grass";
-
-                                ScreenReader.say(toSpeak, true);
-                            }
-                            else if (terrain.Get() is Tree)
-                            {
-                                Tree tree = (Tree)terrain.Get();
-                                int treeType = tree.treeType;
-                                int stage = tree.growthStage.Value;
-                                string toSpeak = "";
-
-                                if (Game1.player.getEffectiveSkillLevel(2) >= 1)
-                                {
-                                    toSpeak = Game1.objectInformation[308 + (int)treeType].Split('/')[0];
-                                }
-                                else if (Game1.player.getEffectiveSkillLevel(2) >= 1 && (int)treeType <= 3)
-                                {
-                                    toSpeak = Game1.objectInformation[308 + (int)treeType].Split('/')[0];
-                                }
-                                else if (Game1.player.getEffectiveSkillLevel(2) >= 1 && (int)treeType == 8)
-                                {
-                                    toSpeak = Game1.objectInformation[292 + (int)treeType].Split('/')[0];
-                                }
-
-                                toSpeak += $", {stage} stage";
-
-                                ScreenReader.say(toSpeak, true);
-                            }
-                            else if (terrain.Get() is Quartz)
-                            {
-                                string toSpeak = "Quartz";
-                                ScreenReader.say(toSpeak, true);
-                            }
-                            else if (terrain.Get() is Leaf)
-                            {
-                                string toSpeak = "Leaf";
-                                ScreenReader.say(toSpeak, true);
-                            }
-                            #endregion
-                        }
-                        else
-                        {
-                            #region Resource CLumps
-                            Game1.currentLocation.resourceClumps.ToList().ForEach(clump =>
-                                {
-                                    if (clump.occupiesTile(x, y))
-                                    {
-                                        string toSpeak;
-                                        int index = clump.parentSheetIndex;
-
-                                        switch (index)
-                                        {
-                                            case 600:
-                                                toSpeak = "Large Stump";
-                                                break;
-                                            case 602:
-                                                toSpeak = "Hollow Log";
-                                                break;
-                                            case 622:
-                                                toSpeak = "Meteorite";
-                                                break;
-                                            case 752:
-                                            case 754:
-                                            case 756:
-                                            case 758:
-                                                toSpeak = "Mine Rock";
-                                                break;
-                                            case 672:
-                                                toSpeak = "Boulder";
-                                                break;
-                                            default:
-                                                toSpeak = "Unknown";
-                                                break;
-                                        }
-
-                                        ScreenReader.say(toSpeak, true);
-                                        return;
-                                    }
-                                });
-                            #endregion
-
-                            #region Doors
-                            Game1.currentLocation.doors.ToList().ForEach(item =>
-                            {
-                                item.Keys.ToList().ForEach(ydoor =>
-                                {
-                                    if (Equals(x, ydoor.X) && Equals(y, ydoor.Y))
-                                    {
-                                        ScreenReader.say("Door", true);
-                                    }
-                                });
-                            });
-                            #endregion
-
-                            if (Game1.inMine || Game1.currentLocation is Mine)
-                            {
-                                int index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
-
-                                if (index == 173 || index == 174)
-                                    ScreenReader.say("Ladder", true);
-                            }
-                        }
+                        ScreenReader.sayWithTileQuery("Water", x, y, true);
                     }
+                    else if (Game1.currentLocation.getObjectAtTile(x, y) != null)
+                    {
+                        #region Objects at tile (TODO)
+                        StardewValley.Object obj = Game1.currentLocation.getObjectAtTile(x, y);
+                        string name = obj.DisplayName;
+
+                        // TODO add individual stone narration using parentSheetIndex
+                        // monitor.Log(obj.parentSheetIndex.ToString(), LogLevel.Debug);
+                        if (Game1.objectInformation.ContainsKey(obj.ParentSheetIndex) && name.ToLower().Equals("stone"))
+                        {
+                            string info = Game1.objectInformation[obj.parentSheetIndex];
+                            if (info.ToLower().Contains("copper"))
+                                name = "Copper " + name;
+                        }
+
+                        ScreenReader.sayWithTileQuery(name, x, y, true);
+                        #endregion
+                    }
+                    else if (terrainFeature.ContainsKey(gt))
+                    {
+                        #region Terrain Feature
+                        Netcode.NetRef<TerrainFeature> terrain = terrainFeature[gt];
+
+                        if (terrain.Get() is HoeDirt)
+                        {
+                            HoeDirt dirt = (HoeDirt)terrain.Get();
+                            if (dirt.crop != null)
+                            {
+                                string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest].Split('/')[0];
+                                string toSpeak = $"{cropName}";
+
+                                bool isWatered = dirt.state.Value == HoeDirt.watered;
+                                bool isHarvestable = dirt.readyForHarvest();
+                                bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
+
+                                if (isWatered)
+                                    toSpeak = "Watered " + toSpeak;
+
+                                if (isFertilized)
+                                    toSpeak = "Fertilized " + toSpeak;
+
+                                if (isHarvestable)
+                                    toSpeak = "Harvestable " + toSpeak;
+
+                                ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                            }
+                            else
+                            {
+                                string toSpeak = "Soil";
+                                bool isWatered = dirt.state.Value == HoeDirt.watered;
+                                bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
+
+                                if (isWatered)
+                                    toSpeak = "Watered " + toSpeak;
+
+                                if (isFertilized)
+                                    toSpeak = "Fertilized " + toSpeak;
+
+                                ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                            }
+                        }
+                        else if (terrain.Get() is Bush)
+                        {
+                            string toSpeak = "Bush";
+                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                        }
+                        else if (terrain.Get() is CosmeticPlant)
+                        {
+                            CosmeticPlant cosmeticPlant = (CosmeticPlant)terrain.Get();
+                            string toSpeak = cosmeticPlant.textureName().ToLower();
+
+                            if (toSpeak.Contains("terrain"))
+                                toSpeak.Replace("terrain", "");
+
+                            if (toSpeak.Contains("feature"))
+                                toSpeak.Replace("feature", "");
+
+                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                        }
+                        else if (terrain.Get() is Flooring)
+                        {
+                            Flooring flooring = (Flooring)terrain.Get();
+                            bool isPathway = flooring.isPathway.Get();
+                            bool isSteppingStone = flooring.isSteppingStone.Get();
+
+                            string toSpeak = "Flooring";
+
+                            if (isPathway)
+                                toSpeak = "Pathway";
+
+                            if (isSteppingStone)
+                                toSpeak = "Stepping Stone";
+
+                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                        }
+                        else if (terrain.Get() is FruitTree)
+                        {
+                            FruitTree fruitTree = (FruitTree)terrain.Get();
+                            string toSpeak = Game1.objectInformation[fruitTree.treeType].Split('/')[0];
+
+                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                        }
+                        else if (terrain.Get() is Grass)
+                        {
+                            Grass grass = (Grass)terrain.Get();
+                            string toSpeak = "Grass";
+
+                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                        }
+                        else if (terrain.Get() is Tree)
+                        {
+                            Tree tree = (Tree)terrain.Get();
+                            int treeType = tree.treeType;
+                            int stage = tree.growthStage.Value;
+                            string toSpeak = "";
+
+                            if (Game1.player.getEffectiveSkillLevel(2) >= 1)
+                            {
+                                toSpeak = Game1.objectInformation[308 + (int)treeType].Split('/')[0];
+                            }
+                            else if (Game1.player.getEffectiveSkillLevel(2) >= 1 && (int)treeType <= 3)
+                            {
+                                toSpeak = Game1.objectInformation[308 + (int)treeType].Split('/')[0];
+                            }
+                            else if (Game1.player.getEffectiveSkillLevel(2) >= 1 && (int)treeType == 8)
+                            {
+                                toSpeak = Game1.objectInformation[292 + (int)treeType].Split('/')[0];
+                            }
+
+                            toSpeak += $", {stage} stage";
+
+                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                        }
+                        else if (terrain.Get() is Quartz)
+                        {
+                            string toSpeak = "Quartz";
+                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                        }
+                        else if (terrain.Get() is Leaf)
+                        {
+                            string toSpeak = "Leaf";
+                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                        }
+                        #endregion
+                    }
+                    else
+                    {
+                        #region Resource CLumps
+                        Game1.currentLocation.resourceClumps.ToList().ForEach(clump =>
+                            {
+                                if (clump.occupiesTile(x, y))
+                                {
+                                    string toSpeak;
+                                    int index = clump.parentSheetIndex;
+
+                                    switch (index)
+                                    {
+                                        case 600:
+                                            toSpeak = "Large Stump";
+                                            break;
+                                        case 602:
+                                            toSpeak = "Hollow Log";
+                                            break;
+                                        case 622:
+                                            toSpeak = "Meteorite";
+                                            break;
+                                        case 752:
+                                        case 754:
+                                        case 756:
+                                        case 758:
+                                            toSpeak = "Mine Rock";
+                                            break;
+                                        case 672:
+                                            toSpeak = "Boulder";
+                                            break;
+                                        default:
+                                            toSpeak = "Unknown";
+                                            break;
+                                    }
+
+                                    ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                                    return;
+                                }
+                            });
+                        #endregion
+
+                        #region Doors
+                        Game1.currentLocation.doors.ToList().ForEach(item =>
+                        {
+                            item.Keys.ToList().ForEach(ydoor =>
+                            {
+                                if (Equals(x, ydoor.X) && Equals(y, ydoor.Y))
+                                {
+                                    ScreenReader.sayWithTileQuery("Door", x, y, true);
+                                }
+                            });
+                        });
+                        #endregion
+
+                        #region Ladder
+                        if (Game1.inMine || Game1.currentLocation is Mine)
+                        {
+                            int index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
+
+                            if (index == 173 || index == 174)
+                                ScreenReader.sayWithTileQuery("Ladder", x, y, true);
+                        }
+                        #endregion
+                    }
+
                 }
             }
             catch (Exception e)
