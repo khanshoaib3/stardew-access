@@ -159,32 +159,45 @@ namespace stardew_access
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (Game1.activeClickableMenu == null)
+            if (!Context.IsPlayerFree)
+                return;
+
+            // Narrate health and stamina
+            if (Equals(e.Button, SButton.H))
             {
-                // Narrate health and stamina
-                if (Equals(e.Button, SButton.H))
-                {
-                    string toSpeak = $"Health is {CurrentPlayer.getHealth()} and Stamina is {CurrentPlayer.getStamina()}";
-                    ScreenReader.say(toSpeak, true);
-                }
+                string toSpeak = $"Health is {CurrentPlayer.getHealth()} and Stamina is {CurrentPlayer.getStamina()}";
+                ScreenReader.say(toSpeak, true);
+            }
 
-                // Narrate Position
-                if (Equals(e.Button, SButton.K))
-                {
-                    string toSpeak = $"X: {CurrentPlayer.getPositionX()} , Y: {CurrentPlayer.getPositionY()}";
-                    ScreenReader.say(toSpeak, true);
-                }
+            // Narrate Position
+            if (Equals(e.Button, SButton.K))
+            {
+                string toSpeak = $"X: {CurrentPlayer.getPositionX()} , Y: {CurrentPlayer.getPositionY()}";
+                ScreenReader.say(toSpeak, true);
+            }
 
-                if (Equals(e.Button, SButton.J))
-                {
-                    Game1.pressActionButton(Game1.input.GetKeyboardState(), Game1.input.GetMouseState(), Game1.input.GetGamePadState());
-                }
+            // Narrate money at hand
+            if (Equals(e.Button, SButton.R))
+            {
+                string toSpeak = $"You have {CurrentPlayer.getMoney()}g";
+                ScreenReader.say(toSpeak, true);
+            }
 
-                if (Equals(e.Button, SButton.L))
-                {
-                    Game1.pressUseToolButton();
-                }
-                
+            // Narrate time and season
+            if (Equals(e.Button, SButton.Q))
+            {
+                string toSpeak = $"Time is {CurrentPlayer.getTimeOfDay()} and season is {CurrentPlayer.getSeason()}";
+                ScreenReader.say(toSpeak, true);
+            }
+
+            if (Equals(e.Button, SButton.J))
+            {
+                Game1.pressActionButton(Game1.input.GetKeyboardState(), Game1.input.GetMouseState(), Game1.input.GetGamePadState());
+            }
+
+            if (Equals(e.Button, SButton.L))
+            {
+                Game1.pressUseToolButton();
             }
         }
 

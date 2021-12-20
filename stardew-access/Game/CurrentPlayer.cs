@@ -52,7 +52,28 @@ namespace stardew_access.Game
         public static string getTimeOfDay()
         {
             int timeOfDay = Game1.timeOfDay;
-            return timeOfDay.ToString();
+
+            int minutes = timeOfDay % 100;
+            int hours = timeOfDay / 100;
+            string amOrpm = "A M";
+            if(hours>=12)
+            {
+                amOrpm = "P M";
+                if (hours > 12)
+                    hours -= 12;
+            }
+
+            return $"{hours}:{minutes} {amOrpm}";
+        }
+
+        public static string getSeason()
+        {
+            return Game1.CurrentSeasonDisplayName;
+        }
+
+        public static int getDay()
+        {
+            return Game1.dayOfMonth;
         }
 
         public static int getMoney()
