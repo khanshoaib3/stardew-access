@@ -22,7 +22,7 @@ namespace stardew_access.Patches
                 {
                     // For Normal Character dialogues
                     Dialogue dialogue = __instance.characterDialogue;
-                    string speakerName = dialogue.speaker.Name;
+                    string speakerName = dialogue.speaker.displayName;
                     List<string> dialogues = dialogue.dialogues;
                     int dialogueIndex = dialogue.currentDialogueIndex;
                     string toSpeak = $"{speakerName} said, {dialogues[dialogueIndex]}";
@@ -30,7 +30,6 @@ namespace stardew_access.Patches
                     if (currentDialogue != toSpeak)
                     {
                         currentDialogue = toSpeak;
-                        MainClass.monitor.Log(toSpeak, LogLevel.Info);
                         ScreenReader.say(toSpeak, false);
                     }
                 }
