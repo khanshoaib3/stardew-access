@@ -33,7 +33,7 @@ namespace stardew_access.Patches
                         ScreenReader.say(toSpeak, false);
                     }
                 }
-                else if (__instance.isQuestion)
+                else if (__instance.isQuestion || __instance.responses.Count > 0)
                 {
                     // For Dialogues with responses/answers like the dialogue when we click on tv
                     string toSpeak = " ";
@@ -88,6 +88,15 @@ namespace stardew_access.Patches
                     return;
 
                 StringBuilder toSpeak = new StringBuilder();
+
+                #region Add item count before title
+                if(hoveredItem != null)
+                {
+                    int count = hoveredItem.Stack;
+                    if(count > 1)
+                        toSpeak.Append($"{count} ");
+                }
+                #endregion
 
                 #region Add title if any
                 if (boldTitleText != null)
