@@ -186,18 +186,8 @@ namespace stardew_access
             // Narrate time and season
             if (Equals(e.Button, SButton.Q))
             {
-                string toSpeak = $"Time is {CurrentPlayer.getTimeOfDay()} and season is {CurrentPlayer.getSeason()}";
+                string toSpeak = $"Time is {CurrentPlayer.getTimeOfDay()} and it is {CurrentPlayer.getDay()} of {CurrentPlayer.getSeason()}";
                 ScreenReader.say(toSpeak, true);
-            }
-
-            if (Equals(e.Button, SButton.J))
-            {
-                Game1.pressActionButton(Game1.input.GetKeyboardState(), Game1.input.GetMouseState(), Game1.input.GetGamePadState());
-            }
-
-            if (Equals(e.Button, SButton.L))
-            {
-                Game1.pressUseToolButton();
             }
         }
 
@@ -397,7 +387,7 @@ namespace stardew_access
                                 toSpeak = Game1.objectInformation[292 + (int)treeType].Split('/')[0];
                             }
 
-                            toSpeak += $", {stage} stage";
+                            toSpeak = $"{toSpeak}, {stage} stage";
 
                             ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
                         }
