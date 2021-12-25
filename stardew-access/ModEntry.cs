@@ -39,7 +39,9 @@ namespace stardew_access
             {
                 ahk = AutoHotkeyEngine.Instance;
                 ahk.ExecRaw("[::\nSend {LButton}");
+                ahk.ExecRaw("^Enter::\nSend {LButton}");
                 ahk.ExecRaw("]::\nSend {RButton}");
+                ahk.ExecRaw("+Enter::\nSend {RButton}");
             }
             catch (Exception e)
             {
