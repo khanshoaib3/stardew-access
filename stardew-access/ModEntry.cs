@@ -239,11 +239,16 @@ namespace stardew_access
                         x -= offset;
                         break;
                 }
-
+                
                 x /= Game1.tileSize;
                 y /= Game1.tileSize;
                 Vector2 gt = new Vector2(x, y);
                 #endregion
+
+                if (!Game1.currentLocation.isTilePassable(Game1.player.nextPosition(Game1.player.getDirection()), Game1.viewport))
+                {
+                    ScreenReader.sayWithTileQuery("Colliding", x, y, true);
+                }
 
                 if (Context.IsPlayerFree)
                 {
