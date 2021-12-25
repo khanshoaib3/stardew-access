@@ -264,7 +264,12 @@ namespace stardew_access
                     string toSpeak = " ";
 
                     #region Get objects, crops, resource clumps, etc.
-                    if (!Game1.currentLocation.isTilePassable(Game1.player.nextPosition(Game1.player.getDirection()), Game1.viewport))
+                    if (Game1.currentLocation.isCharacterAtTile(gt) != null)
+                    {
+                        NPC npc = Game1.currentLocation.isCharacterAtTile(gt);
+                        toSpeak = npc.displayName;
+                    }
+                    else if (!Game1.currentLocation.isTilePassable(Game1.player.nextPosition(Game1.player.getDirection()), Game1.viewport))
                     {
                         toSpeak = "Colliding";
                     }
