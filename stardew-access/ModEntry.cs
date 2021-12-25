@@ -186,7 +186,7 @@ namespace stardew_access
             }
 
             // Manual read tile
-            if(Equals(e.Button, SButton.P))
+            if(Equals(e.Button, SButton.J))
             {
                 ReadTile(manuallyTriggered: true);
             }
@@ -251,9 +251,13 @@ namespace stardew_access
                 Vector2 gt = new Vector2(x, y);
                 #endregion
 
-
                 if (Context.IsPlayerFree)
                 {
+                    if (!manuallyTriggered && prevTile != gt)
+                    {
+                        ScreenReader.prevText = " ";
+                    }
+
                     Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
                     string toSpeak = " ";
 
@@ -459,9 +463,12 @@ namespace stardew_access
                         if (manuallyTriggered)
                             ScreenReader.say(toSpeak, true);
                         else
-                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true); 
+                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
                     #endregion
+
+                    prevTile = gt;
                 }
+
             }
             catch (Exception e)
             {

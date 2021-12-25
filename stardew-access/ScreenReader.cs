@@ -6,7 +6,7 @@ namespace stardew_access
     internal class ScreenReader
     {
         public static IAccessibleOutput? screenReader = null;
-        private static string prevText = "";
+        internal static string prevText = "";
 
         public static void initializeScreenReader()
         {
