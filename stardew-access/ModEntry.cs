@@ -181,7 +181,7 @@ namespace stardew_access
             // Narrate time and season
             if (Equals(e.Button, SButton.Q))
             {
-                string toSpeak = $"Time is {CurrentPlayer.getTimeOfDay()} and it is {CurrentPlayer.getDay()} of {CurrentPlayer.getSeason()}";
+                string toSpeak = $"Time is {CurrentPlayer.getTimeOfDay()} and it is {CurrentPlayer.getDay()} {CurrentPlayer.getDate()} of {CurrentPlayer.getSeason()}";
                 ScreenReader.say(toSpeak, true);
             }
         }

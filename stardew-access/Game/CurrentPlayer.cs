@@ -71,9 +71,14 @@ namespace stardew_access.Game
             return Game1.CurrentSeasonDisplayName;
         }
 
-        public static int getDay()
+        public static int getDate()
         {
             return Game1.dayOfMonth;
+        }
+
+        public static string getDay()
+        {
+            return Game1.Date.DayOfWeek.ToString();
         }
 
         public static int getMoney()

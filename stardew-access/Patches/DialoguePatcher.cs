@@ -17,7 +17,6 @@ namespace stardew_access.Patches
                 if (__instance.transitioning)
                     return;
 
-
                 if (__instance.characterDialogue != null)
                 {
                     // For Normal Character dialogues
