@@ -184,6 +184,12 @@ namespace stardew_access
                 string toSpeak = $"Time is {CurrentPlayer.getTimeOfDay()} and it is {CurrentPlayer.getDay()} {CurrentPlayer.getDate()} of {CurrentPlayer.getSeason()}";
                 ScreenReader.say(toSpeak, true);
             }
+
+            // Manual read tile
+            if(Equals(e.Button, SButton.P))
+            {
+                ReadTile(manuallyTriggered: true);
+            }
         }
 
         private void SnapMouseToPlayer()
@@ -212,7 +218,7 @@ namespace stardew_access
             Game1.setMousePosition(x, y);
         }
 
-        private static async void ReadTile()
+        private static async void ReadTile(bool manuallyTriggered = false)
         {
             isReadingTile = true;
 
@@ -245,35 +251,35 @@ namespace stardew_access
                 Vector2 gt = new Vector2(x, y);
                 #endregion
 
-                if (!Game1.currentLocation.isTilePassable(Game1.player.nextPosition(Game1.player.getDirection()), Game1.viewport))
-                {
-                    ScreenReader.sayWithTileQuery("Colliding", x, y, true);
-                }
 
                 if (Context.IsPlayerFree)
                 {
                     Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
+                    string toSpeak = " ";
 
-                    if (Game1.currentLocation.isWaterTile(x, y))
+                    #region Get objects, crops, resource clumps, etc.
+                    if (!Game1.currentLocation.isTilePassable(Game1.player.nextPosition(Game1.player.getDirection()), Game1.viewport))
                     {
-                        ScreenReader.sayWithTileQuery("Water", x, y, true);
+                        toSpeak = "Colliding";
+                    }
+                    else if (Game1.currentLocation.isWaterTile(x, y))
+                    {
+                        toSpeak = "Water";
                     }
                     else if (Game1.currentLocation.getObjectAtTile(x, y) != null)
                     {
                         #region Objects at tile (TODO)
                         StardewValley.Object obj = Game1.currentLocation.getObjectAtTile(x, y);
-                        string name = obj.DisplayName;
+                        toSpeak = obj.DisplayName;
 
                         // TODO add individual stone narration using parentSheetIndex
                         // monitor.Log(obj.parentSheetIndex.ToString(), LogLevel.Debug);
-                        if (Game1.objectInformation.ContainsKey(obj.ParentSheetIndex) && name.ToLower().Equals("stone"))
+                        if (Game1.objectInformation.ContainsKey(obj.ParentSheetIndex) && toSpeak.ToLower().Equals("stone"))
                         {
                             string info = Game1.objectInformation[obj.parentSheetIndex];
                             if (info.ToLower().Contains("copper"))
-                                name = "Copper " + name;
+                                toSpeak = "Copper " + toSpeak;
                         }
-
-                        ScreenReader.sayWithTileQuery(name, x, y, true);
                         #endregion
                     }
                     else if (terrainFeature.ContainsKey(gt))
@@ -287,7 +293,7 @@ namespace stardew_access
                             if (dirt.crop != null)
                             {
                                 string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest].Split('/')[0];
-                                string toSpeak = $"{cropName}";
+                                toSpeak = $"{cropName}";
 
                                 bool isWatered = dirt.state.Value == HoeDirt.watered;
                                 bool isHarvestable = dirt.readyForHarvest();
@@ -301,12 +307,10 @@ namespace stardew_access
 
                                 if (isHarvestable)
                                     toSpeak = "Harvestable " + toSpeak;
-
-                                ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
                             }
                             else
                             {
-                                string toSpeak = "Soil";
+                                toSpeak = "Soil";
                                 bool isWatered = dirt.state.Value == HoeDirt.watered;
                                 bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
 
@@ -315,27 +319,22 @@ namespace stardew_access
 
                                 if (isFertilized)
                                     toSpeak = "Fertilized " + toSpeak;
-
-                                ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
                             }
                         }
                         else if (terrain.Get() is Bush)
                         {
-                            string toSpeak = "Bush";
-                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                            toSpeak = "Bush";
                         }
                         else if (terrain.Get() is CosmeticPlant)
                         {
                             CosmeticPlant cosmeticPlant = (CosmeticPlant)terrain.Get();
-                            string toSpeak = cosmeticPlant.textureName().ToLower();
+                            toSpeak = cosmeticPlant.textureName().ToLower();
 
                             if (toSpeak.Contains("terrain"))
                                 toSpeak.Replace("terrain", "");
 
                             if (toSpeak.Contains("feature"))
                                 toSpeak.Replace("feature", "");
-
-                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
                         }
                         else if (terrain.Get() is Flooring)
                         {
@@ -343,36 +342,29 @@ namespace stardew_access
                             bool isPathway = flooring.isPathway.Get();
                             bool isSteppingStone = flooring.isSteppingStone.Get();
 
-                            string toSpeak = "Flooring";
+                            toSpeak = "Flooring";
 
                             if (isPathway)
                                 toSpeak = "Pathway";
 
                             if (isSteppingStone)
                                 toSpeak = "Stepping Stone";
-
-                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
                         }
                         else if (terrain.Get() is FruitTree)
                         {
                             FruitTree fruitTree = (FruitTree)terrain.Get();
-                            string toSpeak = Game1.objectInformation[fruitTree.treeType].Split('/')[0];
-
-                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                            toSpeak = Game1.objectInformation[fruitTree.treeType].Split('/')[0];
                         }
                         else if (terrain.Get() is Grass)
                         {
                             Grass grass = (Grass)terrain.Get();
-                            string toSpeak = "Grass";
-
-                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                            toSpeak = "Grass";
                         }
                         else if (terrain.Get() is Tree)
                         {
                             Tree tree = (Tree)terrain.Get();
                             int treeType = tree.treeType;
                             int stage = tree.growthStage.Value;
-                            string toSpeak = "";
 
                             if (Game1.player.getEffectiveSkillLevel(2) >= 1)
                             {
@@ -388,18 +380,14 @@ namespace stardew_access
                             }
 
                             toSpeak = $"{toSpeak}, {stage} stage";
-
-                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
                         }
                         else if (terrain.Get() is Quartz)
                         {
-                            string toSpeak = "Quartz";
-                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                            toSpeak = "Quartz";
                         }
                         else if (terrain.Get() is Leaf)
                         {
-                            string toSpeak = "Leaf";
-                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                            toSpeak = "Leaf";
                         }
                         #endregion
                     }
@@ -410,7 +398,6 @@ namespace stardew_access
                             {
                                 if (clump.occupiesTile(x, y))
                                 {
-                                    string toSpeak;
                                     int index = clump.parentSheetIndex;
 
                                     switch (index)
@@ -437,8 +424,6 @@ namespace stardew_access
                                             toSpeak = "Unknown";
                                             break;
                                     }
-
-                                    ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
                                     return;
                                 }
                             });
@@ -451,7 +436,7 @@ namespace stardew_access
                             {
                                 if (Equals(x, ydoor.X) && Equals(y, ydoor.Y))
                                 {
-                                    ScreenReader.sayWithTileQuery("Door", x, y, true);
+                                    toSpeak = "Door";
                                 }
                             });
                         });
@@ -463,11 +448,19 @@ namespace stardew_access
                             int index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
 
                             if (index == 173 || index == 174)
-                                ScreenReader.sayWithTileQuery("Ladder", x, y, true);
+                                toSpeak = "Door";
                         }
                         #endregion
-                    }
+                    } 
+                    #endregion
 
+                    #region Narrate toSpeak
+                    if (toSpeak != " ")
+                        if (manuallyTriggered)
+                            ScreenReader.say(toSpeak, true);
+                        else
+                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true); 
+                    #endregion
                 }
             }
             catch (Exception e)
