@@ -30,7 +30,7 @@ namespace stardew_access.Patches
                     if (currentDialogue != toSpeak)
                     {
                         currentDialogue = toSpeak;
-                        ScreenReader.say(toSpeak, false);
+                        ScreenReader.say(toSpeak, true);
                     }
                 }
                 else if (__instance.isQuestion || __instance.responses.Count > 0)
@@ -41,13 +41,14 @@ namespace stardew_access.Patches
                     if (currentDialogue != __instance.getCurrentString()) {
                         toSpeak = __instance.getCurrentString();
                         currentDialogue = toSpeak;
+                        ScreenReader.sayWithChecker(toSpeak, true);
                     }
 
                     for (int i = 0; i < __instance.responses.Count; i++)
                     {
                         if (i == __instance.selectedResponse)
                         {
-                            toSpeak += $" \t\n Selected response: {__instance.responses[i].responseText}";
+                            toSpeak = $" \t\n Selected response: {__instance.responses[i].responseText}";
                         }
                     }
 
@@ -59,7 +60,7 @@ namespace stardew_access.Patches
                     if (currentDialogue != __instance.getCurrentString())
                     {
                         currentDialogue = __instance.getCurrentString();
-                        ScreenReader.say(__instance.getCurrentString(), false);
+                        ScreenReader.say(__instance.getCurrentString(), true);
                     }
                 }
             }
