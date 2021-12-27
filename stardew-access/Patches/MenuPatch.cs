@@ -14,6 +14,28 @@ namespace stardew_access.Patches
         private static string currentLetterText = " ";
         private static string currentDailyQuestText = " ";
 
+        internal static void ShippingMenuPatch(ShippingMenu __instance, List<int> ___categoryTotals)
+        {
+            if(__instance.currentPage == -1)
+            {
+                int total = ___categoryTotals[5];
+                string toSpeak;
+                if(__instance.okButton.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                {
+                    toSpeak = $"{total}g in total. Press left mouse button to save.";
+                    ScreenReader.sayWithChecker(toSpeak, true);
+                }
+                for (int i =0; i < __instance.categories.Count; i++)
+                {
+                    if (__instance.categories[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                    {
+                        toSpeak = $"Money recieved from {__instance.getCategoryName(i)}: {___categoryTotals[i]}g.";
+                        ScreenReader.sayWithChecker(toSpeak, true);
+                    }
+                }
+            }
+        }
+
         internal static void BillboardPatch(Billboard __instance, bool ___dailyQuestBoard)
         {
             if (!___dailyQuestBoard)

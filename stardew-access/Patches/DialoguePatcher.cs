@@ -63,7 +63,8 @@ namespace stardew_access.Patches
                     if (__instance.responses.Count > 0)
                         hasResponses = true;
 
-                    if (currentDialogue != __instance.getCurrentString()) {
+                    if (currentDialogue != __instance.getCurrentString())
+                    {
                         toSpeak = __instance.getCurrentString();
                         currentDialogue = toSpeak;
                     }
@@ -84,9 +85,8 @@ namespace stardew_access.Patches
                             ScreenReader.sayWithChecker(toSpeak, true);
                     }
                 }
-                else if(Game1.activeClickableMenu is DialogueBox)
+                else if (Game1.activeClickableMenu is DialogueBox)
                 {
-                    MainClass.monitor.Log("hereasad ", LogLevel.Debug);
                     // Basic dialogues like `No mails in the mail box`
                     if (currentDialogue != __instance.getCurrentString())
                     {
