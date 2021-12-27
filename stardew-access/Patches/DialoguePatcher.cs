@@ -84,8 +84,9 @@ namespace stardew_access.Patches
                             ScreenReader.sayWithChecker(toSpeak, true);
                     }
                 }
-                else
+                else if(Game1.activeClickableMenu is DialogueBox)
                 {
+                    MainClass.monitor.Log("hereasad ", LogLevel.Debug);
                     // Basic dialogues like `No mails in the mail box`
                     if (currentDialogue != __instance.getCurrentString())
                     {

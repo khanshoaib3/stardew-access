@@ -257,7 +257,7 @@ namespace stardew_access
                 {
                     if (!manuallyTriggered && prevTile != gt)
                     {
-                        ScreenReader.prevText = " ";
+                        ScreenReader.prevTextTile = " ";
                     }
 
                     Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
