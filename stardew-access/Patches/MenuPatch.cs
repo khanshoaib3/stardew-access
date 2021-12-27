@@ -19,43 +19,27 @@ namespace stardew_access.Patches
             if (!___dailyQuestBoard)
             {
                 #region Callender
-                /*b.DrawString(Game1.dialogueFont, Utility.getSeasonNameFromNumber(Utility.getSeasonNumber(Game1.currentSeason)), new Vector2(xPositionOnScreen + 160, yPositionOnScreen + 80), Game1.textColor);
-                        b.DrawString(Game1.dialogueFont, Game1.content.LoadString("Strings\\UI:Billboard_Year", Game1.year), new Vector2(xPositionOnScreen + 448, yPositionOnScreen + 80), Game1.textColor);
-                        for (int i = 0; i < calendarDays.Count; i++)
+                for (int i = 0; i < __instance.calendarDays.Count; i++)
+                {
+                    if (__instance.calendarDays[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                    {
+                        string toSpeak = $"Day {i + 1}";
+
+                        if (__instance.calendarDays[i].name.Length > 0)
                         {
-                            if (calendarDays[i].name.Length > 0)
-                            {
-                                if (calendarDays[i].name.Equals(nightMarketLocalized))
-                                {
-                                    Utility.drawWithShadow(b, Game1.mouseCursors, new Vector2(calendarDays[i].bounds.X + 12, (float)(calendarDays[i].bounds.Y + 60) - Game1.dialogueButtonScale / 2f), new Rectangle(346, 392, 8, 8), Color.White, 0f, Vector2.Zero, 4f, flipped: false, 1f);
-                                }
-                                else
-                                {
-                                    Utility.drawWithShadow(b, billboardTexture, new Vector2(calendarDays[i].bounds.X + 40, (float)(calendarDays[i].bounds.Y + 56) - Game1.dialogueButtonScale / 2f), new Rectangle(1 + (int)(Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 600.0 / 100.0) * 14, 398, 14, 12), Color.White, 0f, Vector2.Zero, 4f, flipped: false, 1f);
-                                }
-                            }
-                            if (calendarDays[i].hoverText.Length > 0)
-                            {
-                                b.Draw(calendarDays[i].texture, new Vector2(calendarDays[i].bounds.X + 48, calendarDays[i].bounds.Y + 28), calendarDays[i].sourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
-                            }
-                            if (_upcomingWeddings.ContainsKey(calendarDays[i]))
-                            {
-                                foreach (string item in _upcomingWeddings[calendarDays[i]])
-                                {
-                                    _ = item;
-                                    b.Draw(Game1.mouseCursors2, new Vector2(calendarDays[i].bounds.Right - 56, calendarDays[i].bounds.Top - 12), new Rectangle(112, 32, 16, 14), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
-                                }
-                            }
-                            if (Game1.dayOfMonth > i + 1)
-                            {
-                                b.Draw(Game1.staminaRect, calendarDays[i].bounds, Color.Gray * 0.25f);
-                            }
-                            else if (Game1.dayOfMonth == i + 1)
-                            {
-                                int offset = (int)(4f * Game1.dialogueButtonScale / 8f);
-                                IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(379, 357, 3, 3), calendarDays[i].bounds.X - offset, calendarDays[i].bounds.Y - offset, calendarDays[i].bounds.Width + offset * 2, calendarDays[i].bounds.Height + offset * 2, Color.Blue, 4f, drawShadow: false);
-                            }
-                        }*/ 
+                            toSpeak += $", {__instance.calendarDays[i].name}";
+                        }
+                        if (__instance.calendarDays[i].hoverText.Length > 0)
+                        {
+                            toSpeak += $", {__instance.calendarDays[i].hoverText}";
+                        }
+
+                        if (Game1.dayOfMonth == i + 1)
+                            toSpeak += $", Current";
+
+                        ScreenReader.sayWithChecker(toSpeak, true);
+                    }
+                }
                 #endregion
             }
             else

@@ -119,6 +119,9 @@ namespace stardew_access.Patches
                 if (Game1.activeClickableMenu is LetterViewerMenu || Game1.activeClickableMenu is QuestLog)
                     return;
 
+                if (Game1.activeClickableMenu is Billboard)
+                    return;
+
                 StringBuilder toSpeak = new StringBuilder();
 
                 #region Add item count before title
