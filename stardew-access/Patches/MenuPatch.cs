@@ -4,6 +4,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Quests;
+using static StardewValley.Menus.LoadGameMenu;
 
 namespace stardew_access.Patches
 {
@@ -13,67 +14,129 @@ namespace stardew_access.Patches
         private static bool isRunning = false;
         private static string currentLetterText = " ";
         private static string currentDailyQuestText = " ";
+        public static bool isJoinTabSelected = false;
+        public static bool isHostTabSelected = false;
+
+        internal static void CoopMenuPatch(CoopMenu __instance, CoopMenu.Tab ___currentTab)
+        {
+
+            try
+            {
+                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
+                string toSpeak = " ";
+
+                #region Join/Host Button (Important! This should be checked before checking other buttons)
+                if (__instance.slotButtons[0].containsPoint(x, y))
+                {
+                    MainClass.monitor.Log($"here", LogLevel.Debug);
+                    if (___currentTab == CoopMenu.Tab.JOIN_TAB)
+                        toSpeak = "Join lan game";
+                    if (___currentTab == CoopMenu.Tab.HOST_TAB)
+                        toSpeak = "Host new farm";
+                }
+                #endregion
+
+                #region Other Buttons
+                if (__instance.joinTab.containsPoint(x, y))
+                {
+                    toSpeak = "Join Tab Button";
+                }
+                else if (__instance.hostTab.containsPoint(x, y))
+                {
+                    toSpeak = "Host Tab Button";
+                }
+                else if (__instance.refreshButton.containsPoint(x, y))
+                {
+                    toSpeak = "Refresh Button";
+                }
+                #endregion
+
+                if (toSpeak != " ")
+                    ScreenReader.sayWithChecker(toSpeak, true);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+        }
 
         internal static void OptionsPagePatch(OptionsPage __instance)
         {
-            int currentItemIndex = Math.Max(0, Math.Min(__instance.options.Count - 7, __instance.currentItemIndex));
-            int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
-            for (int i = 0; i < __instance.optionSlots.Count; i++)
+            try
             {
-                if (__instance.optionSlots[i].bounds.Contains(x, y) && currentItemIndex + i < __instance.options.Count && __instance.options[currentItemIndex + i].bounds.Contains(x - __instance.optionSlots[i].bounds.X, y - __instance.optionSlots[i].bounds.Y))
+                int currentItemIndex = Math.Max(0, Math.Min(__instance.options.Count - 7, __instance.currentItemIndex));
+                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
+                for (int i = 0; i < __instance.optionSlots.Count; i++)
                 {
-                    OptionsElement optionsElement = __instance.options[currentItemIndex + i];
-                    string toSpeak = optionsElement.label;
-
-                    if (optionsElement is OptionsButton)
-                        toSpeak = $" {toSpeak} Button";
-                    else if (optionsElement is OptionsCheckbox)
-                        toSpeak = ((optionsElement as OptionsCheckbox).isChecked ? "Enabled" : "Disabled") + $" {toSpeak} Checkbox";
-                    else if (optionsElement is OptionsDropDown)
-                        toSpeak = $"{toSpeak} Dropdown, option {(optionsElement as OptionsDropDown).dropDownDisplayOptions[(optionsElement as OptionsDropDown).selectedOption]} selected";
-                    else if (optionsElement is OptionsSlider)
-                        toSpeak = $"{(optionsElement as OptionsSlider).value}% {toSpeak} Slider";
-                    else if (optionsElement is OptionsPlusMinus)
-                        toSpeak = $"{(optionsElement as OptionsPlusMinus).displayOptions[(optionsElement as OptionsPlusMinus).selected]} selected of {toSpeak}";
-                    else if (optionsElement is OptionsInputListener)
+                    if (__instance.optionSlots[i].bounds.Contains(x, y) && currentItemIndex + i < __instance.options.Count && __instance.options[currentItemIndex + i].bounds.Contains(x - __instance.optionSlots[i].bounds.X, y - __instance.optionSlots[i].bounds.Y))
                     {
-                        string buttons = "";
-                        (optionsElement as OptionsInputListener).buttonNames.ForEach(name => { buttons += $", {name}"; });
-                        toSpeak = $"{toSpeak} is bound to {buttons}. Left click to change.";
-                    }
-                    else
-                    {
-                        if(toSpeak.Contains(':'))
-                            toSpeak = toSpeak.Remove(':');
+                        OptionsElement optionsElement = __instance.options[currentItemIndex + i];
+                        string toSpeak = optionsElement.label;
 
-                        toSpeak = $"{toSpeak} Options:";
-                    }
+                        if (optionsElement is OptionsButton)
+                            toSpeak = $" {toSpeak} Button";
+                        else if (optionsElement is OptionsCheckbox)
+                            toSpeak = ((optionsElement as OptionsCheckbox).isChecked ? "Enabled" : "Disabled") + $" {toSpeak} Checkbox";
+                        else if (optionsElement is OptionsDropDown)
+                            toSpeak = $"{toSpeak} Dropdown, option {(optionsElement as OptionsDropDown).dropDownDisplayOptions[(optionsElement as OptionsDropDown).selectedOption]} selected";
+                        else if (optionsElement is OptionsSlider)
+                            toSpeak = $"{(optionsElement as OptionsSlider).value}% {toSpeak} Slider";
+                        else if (optionsElement is OptionsPlusMinus)
+                            toSpeak = $"{(optionsElement as OptionsPlusMinus).displayOptions[(optionsElement as OptionsPlusMinus).selected]} selected of {toSpeak}";
+                        else if (optionsElement is OptionsInputListener)
+                        {
+                            string buttons = "";
+                            (optionsElement as OptionsInputListener).buttonNames.ForEach(name => { buttons += $", {name}"; });
+                            toSpeak = $"{toSpeak} is bound to {buttons}. Left click to change.";
+                        }
+                        else
+                        {
+                            if (toSpeak.Contains(":"))
+                                toSpeak = toSpeak.Replace(":", "");
 
-                    ScreenReader.sayWithChecker(toSpeak, true);
-                    break;
+                            toSpeak = $"{toSpeak} Options:";
+                        }
+
+                        ScreenReader.sayWithChecker(toSpeak, true);
+                        break;
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+
+                throw;
             }
         }
 
         internal static void ShippingMenuPatch(ShippingMenu __instance, List<int> ___categoryTotals)
         {
-            if(__instance.currentPage == -1)
+            try
             {
-                int total = ___categoryTotals[5];
-                string toSpeak;
-                if(__instance.okButton.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                if (__instance.currentPage == -1)
                 {
-                    toSpeak = $"{total}g in total. Press left mouse button to save.";
-                    ScreenReader.sayWithChecker(toSpeak, true);
-                }
-                for (int i =0; i < __instance.categories.Count; i++)
-                {
-                    if (__instance.categories[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                    int total = ___categoryTotals[5];
+                    string toSpeak;
+                    if (__instance.okButton.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
                     {
-                        toSpeak = $"Money recieved from {__instance.getCategoryName(i)}: {___categoryTotals[i]}g.";
+                        toSpeak = $"{total}g in total. Press left mouse button to save.";
                         ScreenReader.sayWithChecker(toSpeak, true);
                     }
+                    for (int i = 0; i < __instance.categories.Count; i++)
+                    {
+                        if (__instance.categories[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                        {
+                            toSpeak = $"Money recieved from {__instance.getCategoryName(i)}: {___categoryTotals[i]}g.";
+                            ScreenReader.sayWithChecker(toSpeak, true);
+                        }
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+
+                throw;
             }
         }
 
@@ -296,10 +359,13 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void TitleMenuPatch(TitleMenu __instance)
+        internal static void TitleMenuPatch(TitleMenu __instance, bool ___isTransitioningButtons)
         {
             try
             {
+                if (___isTransitioningButtons)
+                    return;
+
                 string toSpeak = "";
 
                 __instance.buttons.ForEach(component =>
@@ -347,33 +413,34 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void LoadGameMenuPatch(LoadGameMenu.SaveFileSlot __instance, LoadGameMenu ___menu, int i)
+        internal static void LoadGameMenuPatch(SaveFileSlot __instance, LoadGameMenu ___menu, int i)
         {
             try
             {
                 if (___menu.slotButtons[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
                 {
-                    if (__instance.Farmer == null)
-                        return;
-
-                    if (___menu.deleteButtons[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                    if (__instance.Farmer != null)
                     {
-                        // Fix for delete button hover text not narrating
-                        ScreenReader.sayWithChecker($"Delete {__instance.Farmer.farmName} Farm", true);
-                        return;
+                        #region Farms
+                        if (Game1.activeClickableMenu is LoadGameMenu && ___menu.deleteButtons[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                        {
+                            ScreenReader.sayWithChecker($"Delete {__instance.Farmer.farmName} Farm", true);
+                            return;
+                        }
+
+                        String farmerName = __instance.Farmer.displayName;
+                        String farmName = __instance.Farmer.farmName;
+                        String money = __instance.Farmer.Money.ToString();
+                        String hoursPlayed = Utility.getHoursMinutesStringFromMilliseconds(__instance.Farmer.millisecondsPlayed);
+                        string dateStringForSaveGame = ((!__instance.Farmer.dayOfMonthForSaveGame.HasValue ||
+                            !__instance.Farmer.seasonForSaveGame.HasValue ||
+                            !__instance.Farmer.yearForSaveGame.HasValue) ? __instance.Farmer.dateStringForSaveGame : Utility.getDateStringFor(__instance.Farmer.dayOfMonthForSaveGame.Value, __instance.Farmer.seasonForSaveGame.Value, __instance.Farmer.yearForSaveGame.Value));
+
+                        string toSpeak = $"{farmName} Farm Selected, \t\n Farmer:{farmerName}, \t\nMoney:{money}, \t\nHours Played:{hoursPlayed}, \t\nDate:{dateStringForSaveGame}";
+
+                        ScreenReader.sayWithChecker(toSpeak, true); 
+                        #endregion
                     }
-
-                    String farmerName = __instance.Farmer.displayName;
-                    String farmName = __instance.Farmer.farmName;
-                    String money = __instance.Farmer.Money.ToString();
-                    String hoursPlayed = Utility.getHoursMinutesStringFromMilliseconds(__instance.Farmer.millisecondsPlayed);
-                    string dateStringForSaveGame = ((!__instance.Farmer.dayOfMonthForSaveGame.HasValue ||
-                        !__instance.Farmer.seasonForSaveGame.HasValue ||
-                        !__instance.Farmer.yearForSaveGame.HasValue) ? __instance.Farmer.dateStringForSaveGame : Utility.getDateStringFor(__instance.Farmer.dayOfMonthForSaveGame.Value, __instance.Farmer.seasonForSaveGame.Value, __instance.Farmer.yearForSaveGame.Value));
-
-                    string toSpeak = $"{farmName} Farm Selected, \t\n Farmer:{farmerName}, \t\nMoney:{money}, \t\nHours Played:{hoursPlayed}, \t\nDate:{dateStringForSaveGame}";
-
-                    ScreenReader.sayWithChecker(toSpeak, true);
                 }
             }
             catch (Exception e)

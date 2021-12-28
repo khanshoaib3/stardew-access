@@ -117,6 +117,12 @@ namespace stardew_access
                 postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.OptionsPagePatch))
             );
 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(CoopMenu), nameof(CoopMenu.update), new Type[] { typeof(GameTime) }),
+                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.CoopMenuPatch))
+            );
+
+
             #endregion
 
             #region Custom Commands
