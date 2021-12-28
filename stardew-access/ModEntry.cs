@@ -112,6 +112,11 @@ namespace stardew_access
                 postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.ShippingMenuPatch))
             );
 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(OptionsPage), nameof(OptionsPage.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.OptionsPagePatch))
+            );
+
             #endregion
 
             #region Custom Commands

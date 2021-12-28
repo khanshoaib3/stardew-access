@@ -14,6 +14,59 @@ namespace stardew_access.Patches
         private static string currentLetterText = " ";
         private static string currentDailyQuestText = " ";
 
+        private static int? prev = null;
+
+        internal static void OptionsPagePatch(OptionsPage __instance)
+        {
+            int currentItemIndex = Math.Max(0, Math.Min(__instance.options.Count - 7, __instance.currentItemIndex));
+            int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
+            for (int i = 0; i < __instance.optionSlots.Count; i++)
+            {
+                if (__instance.optionSlots[i].bounds.Contains(x, y) && currentItemIndex + i < __instance.options.Count && __instance.options[currentItemIndex + i].bounds.Contains(x - __instance.optionSlots[i].bounds.X, y - __instance.optionSlots[i].bounds.Y))
+                {
+                    OptionsElement optionsElement = __instance.options[currentItemIndex + i];
+                    string toSpeak = optionsElement.label;
+
+                    if (optionsElement is OptionsButton)
+                        toSpeak = $" {toSpeak} Button";
+                    else if (optionsElement is OptionsCheckbox)
+                        toSpeak = (optionsElement as OptionsCheckbox).isChecked ? "Enabled":"Disabled" + $" {toSpeak} Checkbox";
+                    else if (optionsElement is OptionsDropDown)
+                        toSpeak = $"{toSpeak} Dropdown, option {(optionsElement as OptionsDropDown).dropDownDisplayOptions[(optionsElement as OptionsDropDown).selectedOption]} selected";
+                    else if (optionsElement is OptionsSlider)
+                        toSpeak = $"{(optionsElement as OptionsSlider).value}% {toSpeak} Slider";
+
+                    MainClass.monitor.Log(toSpeak, LogLevel.Debug);
+                    break;
+                }
+            }
+            /*__instance.optionSlots.ForEach(slot =>
+            {
+                int index;
+                try
+                {
+                    index = int.Parse(slot.name);
+                }
+                catch
+                {
+                    index = 0;
+                }
+                if (prev != index && slot.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                {
+                    prev = index;
+                    MainClass.monitor.Log($"{__instance.options[index].label}", LogLevel.Debug);
+                    if (__instance.options[index] is OptionsButton)
+                        MainClass.monitor.Log($"Button", LogLevel.Debug);
+                    else if (__instance.options[index] is OptionsCheckbox)
+                        MainClass.monitor.Log($"Checkbox {(__instance.options[index] as OptionsCheckbox).isChecked}", LogLevel.Debug);
+                    else if (__instance.options[index] is OptionsDropDown)
+                        MainClass.monitor.Log($"Dropdown {(__instance.options[index] as OptionsDropDown).dropDownDisplayOptions[(__instance.options[index] as OptionsDropDown).selectedOption]}", LogLevel.Debug);
+                    else if (__instance.options[index] is OptionsSlider)
+                        MainClass.monitor.Log($"Slider {(__instance.options[index] as OptionsSlider).value}", LogLevel.Debug);
+                }
+            });*/
+        }
+
         internal static void ShippingMenuPatch(ShippingMenu __instance, List<int> ___categoryTotals)
         {
             if(__instance.currentPage == -1)
