@@ -14,8 +14,6 @@ namespace stardew_access.Patches
         private static bool isRunning = false;
         private static string currentLetterText = " ";
         private static string currentDailyQuestText = " ";
-        public static bool isJoinTabSelected = false;
-        public static bool isHostTabSelected = false;
 
         internal static void CoopMenuPatch(CoopMenu __instance, CoopMenu.Tab ___currentTab)
         {
@@ -56,8 +54,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-
-                throw;
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -105,8 +102,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-
-                throw;
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -135,73 +131,79 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-
-                throw;
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
         internal static void BillboardPatch(Billboard __instance, bool ___dailyQuestBoard)
         {
-            if (!___dailyQuestBoard)
+            try
             {
-                #region Callender
-                for (int i = 0; i < __instance.calendarDays.Count; i++)
+                if (!___dailyQuestBoard)
                 {
-                    if (__instance.calendarDays[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                    #region Callender
+                    for (int i = 0; i < __instance.calendarDays.Count; i++)
                     {
-                        string toSpeak = $"Day {i + 1}";
-
-                        if (__instance.calendarDays[i].name.Length > 0)
+                        if (__instance.calendarDays[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
                         {
-                            toSpeak += $", {__instance.calendarDays[i].name}";
-                        }
-                        if (__instance.calendarDays[i].hoverText.Length > 0)
-                        {
-                            toSpeak += $", {__instance.calendarDays[i].hoverText}";
-                        }
+                            string toSpeak = $"Day {i + 1}";
 
-                        if (Game1.dayOfMonth == i + 1)
-                            toSpeak += $", Current";
+                            if (__instance.calendarDays[i].name.Length > 0)
+                            {
+                                toSpeak += $", {__instance.calendarDays[i].name}";
+                            }
+                            if (__instance.calendarDays[i].hoverText.Length > 0)
+                            {
+                                toSpeak += $", {__instance.calendarDays[i].hoverText}";
+                            }
 
-                        ScreenReader.sayWithChecker(toSpeak, true);
+                            if (Game1.dayOfMonth == i + 1)
+                                toSpeak += $", Current";
+
+                            ScreenReader.sayWithChecker(toSpeak, true);
+                        }
                     }
-                }
-                #endregion
-            }
-            else
-            {
-                #region Daily Quest Board
-                if (Game1.questOfTheDay == null || Game1.questOfTheDay.currentObjective == null || Game1.questOfTheDay.currentObjective.Length == 0)
-                {
-                    // No quests
-                    string toSpeak = "No quests for today!";
-                    if(currentDailyQuestText != toSpeak)
-                    {
-                        currentDailyQuestText = toSpeak;
-                        ScreenReader.say(toSpeak, true);
-                    }
+                    #endregion
                 }
                 else
                 {
-                    SpriteFont font = ((LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.ko) ? Game1.smallFont : Game1.dialogueFont);
-                    string description = Game1.parseText(Game1.questOfTheDay.questDescription, font, 640);
-                    string toSpeak = description;
-
-                    if (currentDailyQuestText != toSpeak)
+                    #region Daily Quest Board
+                    if (Game1.questOfTheDay == null || Game1.questOfTheDay.currentObjective == null || Game1.questOfTheDay.currentObjective.Length == 0)
                     {
-                        currentDailyQuestText = toSpeak;
-
-                        // Snap to accept quest button
-                        if (__instance.acceptQuestButton.visible)
+                        // No quests
+                        string toSpeak = "No quests for today!";
+                        if (currentDailyQuestText != toSpeak)
                         {
-                            toSpeak += "\t\n Left click to accept quest.";
-                            __instance.acceptQuestButton.snapMouseCursorToCenter();
+                            currentDailyQuestText = toSpeak;
+                            ScreenReader.say(toSpeak, true);
                         }
-
-                        ScreenReader.say(toSpeak, true);
                     }
-                } 
-                #endregion
+                    else
+                    {
+                        SpriteFont font = ((LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.ko) ? Game1.smallFont : Game1.dialogueFont);
+                        string description = Game1.parseText(Game1.questOfTheDay.questDescription, font, 640);
+                        string toSpeak = description;
+
+                        if (currentDailyQuestText != toSpeak)
+                        {
+                            currentDailyQuestText = toSpeak;
+
+                            // Snap to accept quest button
+                            if (__instance.acceptQuestButton.visible)
+                            {
+                                toSpeak += "\t\n Left click to accept quest.";
+                                __instance.acceptQuestButton.snapMouseCursorToCenter();
+                            }
+
+                            ScreenReader.say(toSpeak, true);
+                        }
+                    }
+                    #endregion
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -292,7 +294,6 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-
                 MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
