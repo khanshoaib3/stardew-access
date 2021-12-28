@@ -125,7 +125,7 @@ namespace stardew_access.Patches
                 StringBuilder toSpeak = new StringBuilder();
 
                 #region Add item count before title
-                if(hoveredItem != null)
+                if(hoveredItem != null && hoveredItem.HasBeenInInventory)
                 {
                     int count = hoveredItem.Stack;
                     if(count > 1)
