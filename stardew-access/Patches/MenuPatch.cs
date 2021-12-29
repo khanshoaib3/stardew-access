@@ -15,6 +15,26 @@ namespace stardew_access.Patches
         private static string currentLetterText = " ";
         private static string currentDailyQuestText = " ";
 
+        internal static void ChatBoxPatch(ChatBox __instance, List<ChatMessage> ___messages)
+        {
+            try
+            {
+                if (___messages.Count - 1 < 0)
+                    return;
+
+                string toSpeak = "";
+                ___messages[___messages.Count - 1].message.ForEach(message =>
+                {
+                    toSpeak += $"{message.message}, ";
+                });
+                ScreenReader.sayWithChatChecker(toSpeak, false);
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
+
         internal static void CoopMenuPatch(CoopMenu __instance, CoopMenu.Tab ___currentTab)
         {
 
