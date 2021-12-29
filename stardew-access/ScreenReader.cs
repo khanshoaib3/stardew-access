@@ -19,39 +19,30 @@ namespace stardew_access
             {
                 nvdaOutput = new NvdaOutput();
             }
-            catch (Exception ex)
-            {
-                MainClass.monitor.Log($"Error initializing NVDA:\n{ex.StackTrace}", LogLevel.Info);
-            }
+            catch (Exception) { }
 
             // Initialize JAWS
             try
             {
                 jawsOutput = new JawsOutput();
             }
-            catch (Exception ex)
-            {
-                MainClass.monitor.Log($"Error initializing JAWS:\n{ex.StackTrace}", LogLevel.Info);
-            }
+            catch (Exception) { }
 
             // Initialize SAPI
             try
             {
                 sapiOutput = new SapiOutput();
             }
-            catch (Exception ex)
-            {
-                MainClass.monitor.Log($"Error initializing SAPI:\n{ex.StackTrace}", LogLevel.Info);
-            }
+            catch (Exception){ }
 
             if (nvdaOutput != null && nvdaOutput.IsAvailable())
                 screenReader = nvdaOutput;
-
-            if (jawsOutput != null && jawsOutput.IsAvailable())
+            else if (jawsOutput != null && jawsOutput.IsAvailable())
                 screenReader = jawsOutput;
-
-            if (sapiOutput != null && sapiOutput.IsAvailable())
+            else if (sapiOutput != null && sapiOutput.IsAvailable())
                 screenReader = sapiOutput;
+            else
+                MainClass.monitor.Log($"Unable to load any screen reader!", LogLevel.Error);
         }
 
         public static void say(string text, bool interrupt)
