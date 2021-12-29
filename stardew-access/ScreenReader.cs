@@ -6,7 +6,7 @@ namespace stardew_access
     internal class ScreenReader
     {
         public static IAccessibleOutput? screenReader = null;
-        internal static string prevText = "", prevTextTile = " ", prevChatText = "";
+        internal static string prevText = "", prevTextTile = " ", prevChatText = "", prevMenuText = "";
 
         public static void initializeScreenReader()
         {
@@ -61,6 +61,18 @@ namespace stardew_access
             if (prevText != text)
             {
                 prevText = text;
+                screenReader.Speak(text, interrupt);
+            }
+        }
+
+        public static void sayWithMenuChecker(string text, bool interrupt)
+        {
+            if (screenReader == null)
+                return;
+
+            if (prevMenuText != text)
+            {
+                prevMenuText = text;
                 screenReader.Speak(text, interrupt);
             }
         }

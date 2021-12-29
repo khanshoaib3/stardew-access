@@ -199,7 +199,13 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate toSpeak
-                ScreenReader.sayWithChecker(toSpeak.ToString(), true);
+
+                // To prevent it from getting conflicted by two hover texts at the same time, two seperate methods are used.
+                // For example, sometimes `Welcome to Pierre's` and the items in seeds shop get conflicted causing it to speak infinitely.
+                if(Context.IsPlayerFree)
+                    ScreenReader.sayWithChecker(toSpeak.ToString(), true); // Normal Checker
+                else
+                    ScreenReader.sayWithMenuChecker(toSpeak.ToString(), true); // Normal Checker
                 #endregion
             }
             catch (Exception e)
