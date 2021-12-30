@@ -123,7 +123,6 @@ namespace stardew_access.Patches
                 #region Join/Host Button (Important! This should be checked before checking other buttons)
                 if (__instance.slotButtons[0].containsPoint(x, y))
                 {
-                    MainClass.monitor.Log($"here", LogLevel.Debug);
                     if (___currentTab == CoopMenu.Tab.JOIN_TAB)
                         toSpeak = "Join lan game";
                     if (___currentTab == CoopMenu.Tab.HOST_TAB)
@@ -581,14 +580,32 @@ namespace stardew_access.Patches
         {
             try
             {
-                if (___menu.slotButtons[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
+                if (___menu.slotButtons[i].containsPoint(x, y))
                 {
                     if (__instance.Farmer != null)
                     {
                         #region Farms
-                        if (Game1.activeClickableMenu is LoadGameMenu && ___menu.deleteButtons[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                        if (___menu.deleteButtons.Count > 0 && ___menu.deleteButtons[i].containsPoint(x, y))
                         {
                             ScreenReader.sayWithChecker($"Delete {__instance.Farmer.farmName} Farm", true);
+                            return;
+                        }
+
+                        if (___menu.deleteConfirmationScreen)
+                        {
+                            // Used diff. functions to narrate to prevent it from speaking the message again on selecting another button.
+                            string message = "Really delete farm?";
+
+                            ScreenReader.sayWithChecker(message, true);
+                            if (___menu.okDeleteButton.containsPoint(x, y))
+                            {
+                                ScreenReader.sayWithMenuChecker("Ok Button", false);
+                            }
+                            else if (___menu.cancelDeleteButton.containsPoint(x, y))
+                            {
+                                ScreenReader.sayWithMenuChecker("Cancel Button", false);
+                            }
                             return;
                         }
 
