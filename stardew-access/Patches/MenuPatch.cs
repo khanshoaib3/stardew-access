@@ -22,15 +22,13 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
 
+                ScreenReader.sayWithMenuChecker(___message, true);
                 if(__instance.okButton.containsPoint(x, y))
                 {
                     ScreenReader.sayWithMenuChecker("Ok Button", false);
                 } else if (__instance.cancelButton.containsPoint(x, y))
                 {
                     ScreenReader.sayWithMenuChecker("Cancel Button", false);
-                } else
-                {
-                    ScreenReader.sayWithMenuChecker(___message, true);
                 }
             }
             catch (Exception e)
