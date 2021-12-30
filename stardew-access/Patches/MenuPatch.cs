@@ -16,6 +16,29 @@ namespace stardew_access.Patches
         private static string currentDailyQuestText = " ";
         private static string currentLevelUpTitle = " ";
 
+        internal static void ConfirmationDialogPatch(ConfirmationDialog __instance, string ___message)
+        {
+            try
+            {
+                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
+
+                if(__instance.okButton.containsPoint(x, y))
+                {
+                    ScreenReader.sayWithMenuChecker("Ok Button", false);
+                } else if (__instance.cancelButton.containsPoint(x, y))
+                {
+                    ScreenReader.sayWithMenuChecker("Cancel Button", false);
+                } else
+                {
+                    ScreenReader.sayWithMenuChecker(___message, true);
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
+
         internal static void ChatBoxPatch(ChatBox __instance, List<ChatMessage> ___messages)
         {
             try
