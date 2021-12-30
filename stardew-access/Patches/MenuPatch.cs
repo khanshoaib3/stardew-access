@@ -14,6 +14,7 @@ namespace stardew_access.Patches
         private static bool isRunning = false, isChatRunning = false;
         private static string currentLetterText = " ";
         private static string currentDailyQuestText = " ";
+        private static string currentLevelUpTitle = " ";
 
         internal static void ChatBoxPatch(ChatBox __instance, List<ChatMessage> ___messages)
         {
@@ -171,6 +172,72 @@ namespace stardew_access.Patches
                         ScreenReader.sayWithChecker(toSpeak, true);
                         break;
                     }
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
+
+        internal static void LevelUpMenuPatch(LevelUpMenu __instance, List<int> ___professionsToChoose, List<string> ___leftProfessionDescription, List<string> ___rightProfessionDescription, List<string> ___extraInfoForLevel, List<CraftingRecipe> ___newCraftingRecipes, string ___title)
+        {
+            try
+            {
+                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
+                string leftProfession = " ", rightProfession = " ", extraInfo = " ", newCraftingRecipe = " ", toSpeak = " ";
+
+                if (!__instance.informationUp)
+                {
+                    return;
+                }
+                if (__instance.isProfessionChooser)
+                {
+                    if (___professionsToChoose.Count() == 0)
+                    {
+                        return;
+                    }
+                    for (int j = 0; j < ___leftProfessionDescription.Count; j++)
+                    {
+                        leftProfession += ___leftProfessionDescription[j] + ", ";
+                    }
+                    for (int i = 0; i < ___rightProfessionDescription.Count; i++)
+                    {
+                        rightProfession += ___rightProfessionDescription[i] + ", ";
+                    }
+
+                    if (__instance.leftProfession.containsPoint(x, y))
+                        toSpeak = $"Selected: {leftProfession} Left click to choose.";
+
+                    if (__instance.rightProfession.containsPoint(x, y))
+                        toSpeak = $"Selected: {rightProfession} Left click to choose.";
+                }
+                else
+                {
+                    foreach (string s2 in ___extraInfoForLevel)
+                    {
+                        extraInfo += s2 + ", ";
+                    }
+                    foreach (CraftingRecipe s in ___newCraftingRecipes)
+                    {
+                        string cookingOrCrafting = Game1.content.LoadString("Strings\\UI:LearnedRecipe_" + (s.isCookingRecipe ? "cooking" : "crafting"));
+                        string message = Game1.content.LoadString("Strings\\UI:LevelUp_NewRecipe", cookingOrCrafting, s.DisplayName);
+
+                        newCraftingRecipe += $"{message}, ";
+                    }
+
+                    if (__instance.okButton.containsPoint(x, y))
+                    {
+                        toSpeak = $"{___title} {extraInfo} {newCraftingRecipe}. Left click to close.";
+                    }
+                }
+
+                if (toSpeak != " ")
+                    ScreenReader.sayWithMenuChecker(toSpeak, true);
+                else if (__instance.isProfessionChooser && currentLevelUpTitle != $"{___title}. Select a new profession.")
+                {
+                    ScreenReader.sayWithMenuChecker($"{___title}. Select a new profession.", true);
+                    currentLevelUpTitle = $"{___title}. Select a new profession.";
                 }
             }
             catch (Exception e)
@@ -640,6 +707,7 @@ namespace stardew_access.Patches
         {
             currentLetterText = " ";
             currentDailyQuestText = " ";
+            currentLevelUpTitle = " ";
         }
     }
 }
