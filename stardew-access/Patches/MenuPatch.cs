@@ -15,7 +15,7 @@ namespace stardew_access.Patches
         private static string currentLetterText = " ";
         private static string currentDailyQuestText = " ";
         private static string currentLevelUpTitle = " ";
-        private const int MAX_COMPONENTS = 18;
+        private const int MAX_COMPONENTS = 20;
 
         internal static void ConfirmationDialogPatch(ConfirmationDialog __instance, string ___message)
         {
@@ -634,7 +634,8 @@ namespace stardew_access.Patches
         internal static void NewGameMenuPatch(CharacterCustomization __instance, TextBox ___nameBox, TextBox ___farmnameBox,
             TextBox ___favThingBox, ClickableTextureComponent ___skipIntroButton, ClickableTextureComponent ___okButton,
             ClickableComponent ___backButton, ClickableTextureComponent ___randomButton, List<ClickableComponent> ___genderButtons,
-            List<ClickableTextureComponent> ___farmTypeButtons, ClickableTextureComponent ___farmTypeNextPageButton, ClickableTextureComponent ___farmTypePreviousPageButton)
+            List<ClickableTextureComponent> ___farmTypeButtons, ClickableTextureComponent ___farmTypeNextPageButton, ClickableTextureComponent ___farmTypePreviousPageButton,
+            List<ClickableTextureComponent> ___cabinLayoutButtons)
         {
             try
             {
@@ -650,14 +651,14 @@ namespace stardew_access.Patches
                     _ = CycleThroughItems(true, ___nameBox, ___farmnameBox, ___favThingBox,
                         ___skipIntroButton, ___okButton, ___backButton,
                         ___randomButton, ___genderButtons, ___farmTypeButtons,
-                        ___farmTypeNextPageButton, ___farmTypePreviousPageButton);
+                        ___farmTypeNextPageButton, ___farmTypePreviousPageButton, ___cabinLayoutButtons);
                 }
                 else if (isPrevArrowPressed && !isRunning)
                 {
                     _ = CycleThroughItems(false, ___nameBox, ___farmnameBox, ___favThingBox,
                         ___skipIntroButton, ___okButton, ___backButton, ___randomButton, 
                         ___genderButtons, ___farmTypeButtons,
-                        ___farmTypeNextPageButton, ___farmTypePreviousPageButton);
+                        ___farmTypeNextPageButton, ___farmTypePreviousPageButton, ___cabinLayoutButtons);
                 }
             }
             catch (Exception e)
@@ -669,7 +670,8 @@ namespace stardew_access.Patches
         private static async Task CycleThroughItems(bool increase, TextBox ___nameBox, TextBox ___farmnameBox,
             TextBox ___favThingBox, ClickableTextureComponent ___skipIntroButton, ClickableTextureComponent ___okButton,
             ClickableComponent ___backButton, ClickableTextureComponent ___randomButton, List<ClickableComponent> ___genderButtons,
-            List<ClickableTextureComponent> ___farmTypeButtons, ClickableTextureComponent ___farmTypeNextPageButton, ClickableTextureComponent ___farmTypePreviousPageButton)
+            List<ClickableTextureComponent> ___farmTypeButtons, ClickableTextureComponent ___farmTypeNextPageButton, ClickableTextureComponent ___farmTypePreviousPageButton,
+            List<ClickableTextureComponent> ___cabinLayoutButtons)
         {
             isRunning = true;
             if (increase)
@@ -819,11 +821,51 @@ namespace stardew_access.Patches
                     }
                 case 17:
                     {
+                        if(___cabinLayoutButtons.Count <= 0)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 18;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 16;
+                            }
+                        }
+
+                        ___cabinLayoutButtons[0].snapMouseCursor();
+                        ScreenReader.say("Cabin layout nearby", false);
+                        break;
+                    }
+                case 18:
+                    {
+                        if (___cabinLayoutButtons.Count <= 0)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 19;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 17;
+                            }
+                        }
+
+                        ___cabinLayoutButtons[1].snapMouseCursor();
+                        ScreenReader.say("Cabin layout separate", false);
+                        break;
+                    }
+                case 19:
+                    {
                         ___okButton.snapMouseCursor();
                         ScreenReader.say("Ok Button", false);
                     }
                     break;
-                case 18:
+                case 20:
                     {
                         ___backButton.snapMouseCursor();
                         ScreenReader.say("Back Button", false);
