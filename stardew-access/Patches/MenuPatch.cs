@@ -17,6 +17,22 @@ namespace stardew_access.Patches
         private static string currentLevelUpTitle = " ";
         private const int MAX_COMPONENTS = 20;
 
+        internal static void NamingMenuPatch(NamingMenu __instance, string title, TextBox ___textBox)
+        {
+            try
+            {
+                __instance.textBoxCC.snapMouseCursor();
+                ___textBox.SelectMe();
+                string toSpeak = $"{title}";
+
+                ScreenReader.sayWithChecker(toSpeak, true);
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
+
         internal static void ConfirmationDialogPatch(ConfirmationDialog __instance, string ___message)
         {
             try
