@@ -489,7 +489,7 @@ namespace stardew_access
                             int index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
 
                             if (index == 173 || index == 174)
-                                toSpeak = "Door";
+                                toSpeak = "Ladder";
                         }
                         #endregion
                     } 

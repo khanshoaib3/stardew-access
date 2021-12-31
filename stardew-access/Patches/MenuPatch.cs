@@ -15,6 +15,7 @@ namespace stardew_access.Patches
         private static string currentLetterText = " ";
         private static string currentDailyQuestText = " ";
         private static string currentLevelUpTitle = " ";
+        private const int MAX_COMPONENTS = 18;
 
         internal static void ConfirmationDialogPatch(ConfirmationDialog __instance, string ___message)
         {
@@ -630,11 +631,14 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void NewGameMenuPatch(CharacterCustomization __instance, TextBox ___nameBox, TextBox ___farmnameBox, TextBox ___favThingBox, ClickableTextureComponent ___skipIntroButton, ClickableTextureComponent ___okButton, ClickableComponent ___backButton)
+        internal static void NewGameMenuPatch(CharacterCustomization __instance, TextBox ___nameBox, TextBox ___farmnameBox,
+            TextBox ___favThingBox, ClickableTextureComponent ___skipIntroButton, ClickableTextureComponent ___okButton,
+            ClickableComponent ___backButton, ClickableTextureComponent ___randomButton, List<ClickableComponent> ___genderButtons,
+            List<ClickableTextureComponent> ___farmTypeButtons, ClickableTextureComponent ___farmTypeNextPageButton, ClickableTextureComponent ___farmTypePreviousPageButton)
         {
             try
             {
-                if (__instance.source != CharacterCustomization.Source.NewGame)
+                if (__instance.source != CharacterCustomization.Source.NewGame && __instance.source != CharacterCustomization.Source.HostNewFarm)
                     return;
 
 
@@ -643,11 +647,17 @@ namespace stardew_access.Patches
 
                 if (isNextArrowPressed && !isRunning)
                 {
-                    _ = CycleThroughItems(true, ___nameBox, ___farmnameBox, ___favThingBox, ___skipIntroButton, ___okButton, ___backButton);
+                    _ = CycleThroughItems(true, ___nameBox, ___farmnameBox, ___favThingBox,
+                        ___skipIntroButton, ___okButton, ___backButton,
+                        ___randomButton, ___genderButtons, ___farmTypeButtons,
+                        ___farmTypeNextPageButton, ___farmTypePreviousPageButton);
                 }
                 else if (isPrevArrowPressed && !isRunning)
                 {
-                    _ = CycleThroughItems(false, ___nameBox, ___farmnameBox, ___favThingBox, ___skipIntroButton, ___okButton, ___backButton);
+                    _ = CycleThroughItems(false, ___nameBox, ___farmnameBox, ___favThingBox,
+                        ___skipIntroButton, ___okButton, ___backButton, ___randomButton, 
+                        ___genderButtons, ___farmTypeButtons,
+                        ___farmTypeNextPageButton, ___farmTypePreviousPageButton);
                 }
             }
             catch (Exception e)
@@ -656,20 +666,23 @@ namespace stardew_access.Patches
             }
         }
 
-        private static async Task CycleThroughItems(bool increase, TextBox ___nameBox, TextBox ___farmnameBox, TextBox ___favThingBox, ClickableTextureComponent ___skipIntroButton, ClickableTextureComponent ___okButton, ClickableComponent ___backButton)
+        private static async Task CycleThroughItems(bool increase, TextBox ___nameBox, TextBox ___farmnameBox,
+            TextBox ___favThingBox, ClickableTextureComponent ___skipIntroButton, ClickableTextureComponent ___okButton,
+            ClickableComponent ___backButton, ClickableTextureComponent ___randomButton, List<ClickableComponent> ___genderButtons,
+            List<ClickableTextureComponent> ___farmTypeButtons, ClickableTextureComponent ___farmTypeNextPageButton, ClickableTextureComponent ___farmTypePreviousPageButton)
         {
             isRunning = true;
             if (increase)
             {
                 saveGameIndex++;
-                if (saveGameIndex > 6)
+                if (saveGameIndex > MAX_COMPONENTS)
                     saveGameIndex = 0;
             }
             else
             {
                 saveGameIndex--;
                 if (saveGameIndex < 0)
-                    saveGameIndex = 6;
+                    saveGameIndex = MAX_COMPONENTS;
             }
 
             await Task.Delay(200);
@@ -680,7 +693,7 @@ namespace stardew_access.Patches
                     {
                         Rectangle bounds = new Rectangle(___nameBox.X, ___nameBox.Y, ___nameBox.Width, ___nameBox.Height);
                         Game1.input.SetMousePosition(bounds.Center.X, bounds.Center.Y);
-                        ScreenReader.say("Enter Farmer's Name", true);
+                        ScreenReader.say("Enter Farmer's Name", false);
                     }
                     break;
 
@@ -688,37 +701,164 @@ namespace stardew_access.Patches
                     {
                         Rectangle bounds = new Rectangle(___farmnameBox.X, ___farmnameBox.Y, ___farmnameBox.Width, ___farmnameBox.Height);
                         Game1.input.SetMousePosition(bounds.Center.X, bounds.Center.Y);
-                        ScreenReader.say("Enter Farm's Name", true);
+                        ScreenReader.say("Enter Farm's Name", false);
                     }
                     break;
                 case 3:
                     {
                         Rectangle bounds = new Rectangle(___favThingBox.X, ___favThingBox.Y, ___favThingBox.Width, ___favThingBox.Height);
                         Game1.input.SetMousePosition(bounds.Center.X, bounds.Center.Y);
-                        ScreenReader.say("Enter Favourite Thing", true);
+                        ScreenReader.say("Enter Favourite Thing", false);
                     }
                     break;
                 case 4:
                     {
                         ___skipIntroButton.snapMouseCursor();
-                        ScreenReader.say("Skip Intro Button", true);
+                        ScreenReader.say("Skip Intro Button", false);
                     }
                     break;
                 case 5:
                     {
-                        ___okButton.snapMouseCursor();
-                        ScreenReader.say("Ok Button", true);
+                        ___randomButton.snapMouseCursor();
+                        ScreenReader.say("Random Skin Button", false);
+                        break;
                     }
-                    break;
                 case 6:
                     {
+                        ___genderButtons[0].snapMouseCursor();
+                        ScreenReader.say("Gender Male Button", false);
+                        break;
+                    }
+                case 7:
+                    {
+                        ___genderButtons[1].snapMouseCursor();
+                        ScreenReader.say("Gender Female Button", false);
+                        break;
+                    }
+                case 8:
+                    {
+                        ___farmTypeButtons[0].snapMouseCursor();
+                        ScreenReader.say(getFarmHoverText(___farmTypeButtons[0]), false);
+                        break;
+                    }
+                case 9:
+                    {
+                        ___farmTypeButtons[1].snapMouseCursor();
+                        ScreenReader.say(getFarmHoverText(___farmTypeButtons[1]), false);
+                        break;
+                    }
+                case 10:
+                    {
+                        ___farmTypeButtons[2].snapMouseCursor();
+                        ScreenReader.say(getFarmHoverText(___farmTypeButtons[2]), false);
+                        break;
+                    }
+                case 11:
+                    {
+                        ___farmTypeButtons[3].snapMouseCursor();
+                        ScreenReader.say(getFarmHoverText(___farmTypeButtons[3]), false);
+                        break;
+                    }
+                case 12:
+                    {
+                        ___farmTypeButtons[4].snapMouseCursor();
+                        ScreenReader.say(getFarmHoverText(___farmTypeButtons[4]), false);
+                        break;
+                    }
+                case 13:
+                    {
+                        ___farmTypeButtons[5].snapMouseCursor();
+                        ScreenReader.say(getFarmHoverText(___farmTypeButtons[5]), false);
+                        break;
+                    }
+                case 14:
+                    {
+                        ___farmTypeButtons[6].snapMouseCursor();
+                        ScreenReader.say(getFarmHoverText(___farmTypeButtons[6]), false);
+                        break;
+                    }
+                case 15:
+                    {
+                        if (___farmTypeNextPageButton == null)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 16;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 14;
+                            }
+                        }
+
+                        ___farmTypeNextPageButton.snapMouseCursor();
+                        ScreenReader.say("Next Farm Type Page Button", false);
+                        break;
+                    }
+                case 16:
+                    {
+                        if (___farmTypePreviousPageButton == null)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 17;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 15;
+                            }
+                        }
+
+                        ___farmTypePreviousPageButton.snapMouseCursor();
+                        ScreenReader.say("Previous Farm Type Page Button", false);
+                        break;
+                    }
+                case 17:
+                    {
+                        ___okButton.snapMouseCursor();
+                        ScreenReader.say("Ok Button", false);
+                    }
+                    break;
+                case 18:
+                    {
                         ___backButton.snapMouseCursor();
-                        ScreenReader.say("Back Button", true);
+                        ScreenReader.say("Back Button", false);
                     }
                     break;
             }
 
             isRunning = false;
+        }
+
+        private static string getFarmHoverText(ClickableTextureComponent farm)
+        {
+            string hoverTitle = " ", hoverText = " ";
+            if (!farm.name.Contains("Gray"))
+            {
+                if (farm.hoverText.Contains('_'))
+                {
+                    hoverTitle = farm.hoverText.Split('_')[0];
+                    hoverText = farm.hoverText.Split('_')[1];
+                }
+                else
+                {
+                    hoverTitle = null;
+                    hoverText = farm.hoverText;
+                }
+            }
+            else
+            {
+                if (farm.name.Contains("Gray"))
+                {
+                    hoverText = "Reach level 10 " + Game1.content.LoadString("Strings\\UI:Character_" + farm.name.Split('_')[1]) + " to unlock.";
+                }
+            }
+
+            return $"{hoverTitle}: {hoverText}";
         }
 
         internal static void ExitPagePatch(ExitPage __instance)
