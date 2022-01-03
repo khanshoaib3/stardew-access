@@ -14,7 +14,6 @@ namespace stardew_access.Patches
 
         internal static void CoopMenuPatch(CoopMenu __instance, CoopMenu.Tab ___currentTab)
         {
-
             try
             {
                 int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
@@ -162,34 +161,20 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void NewGameMenuPatch(CharacterCustomization __instance, TextBox ___nameBox, TextBox ___farmnameBox,
-            TextBox ___favThingBox, ClickableTextureComponent ___skipIntroButton, ClickableTextureComponent ___okButton,
-            ClickableComponent ___backButton, ClickableTextureComponent ___randomButton, List<ClickableComponent> ___genderButtons,
-            List<ClickableTextureComponent> ___farmTypeButtons, ClickableTextureComponent ___farmTypeNextPageButton, ClickableTextureComponent ___farmTypePreviousPageButton,
-            List<ClickableTextureComponent> ___cabinLayoutButtons)
+        internal static void NewGameMenuPatch(CharacterCustomization __instance, bool ___skipIntro)
         {
             try
             {
-                if (__instance.source != CharacterCustomization.Source.NewGame && __instance.source != CharacterCustomization.Source.HostNewFarm)
-                    return;
-
-
                 bool isNextArrowPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right);
                 bool isPrevArrowPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left);
 
                 if (isNextArrowPressed && !isRunning)
                 {
-                    _ = CycleThroughItems(true, ___nameBox, ___farmnameBox, ___favThingBox,
-                        ___skipIntroButton, ___okButton, ___backButton,
-                        ___randomButton, ___genderButtons, ___farmTypeButtons,
-                        ___farmTypeNextPageButton, ___farmTypePreviousPageButton, ___cabinLayoutButtons);
+                    _ = CycleThroughItems(true, __instance, ___skipIntro);
                 }
                 else if (isPrevArrowPressed && !isRunning)
                 {
-                    _ = CycleThroughItems(false, ___nameBox, ___farmnameBox, ___favThingBox,
-                        ___skipIntroButton, ___okButton, ___backButton, ___randomButton,
-                        ___genderButtons, ___farmTypeButtons,
-                        ___farmTypeNextPageButton, ___farmTypePreviousPageButton, ___cabinLayoutButtons);
+                    _ = CycleThroughItems(false, __instance, ___skipIntro);
                 }
             }
             catch (Exception e)
@@ -198,121 +183,340 @@ namespace stardew_access.Patches
             }
         }
 
-        private static async Task CycleThroughItems(bool increase, TextBox ___nameBox, TextBox ___farmnameBox,
-            TextBox ___favThingBox, ClickableTextureComponent ___skipIntroButton, ClickableTextureComponent ___okButton,
-            ClickableComponent ___backButton, ClickableTextureComponent ___randomButton, List<ClickableComponent> ___genderButtons,
-            List<ClickableTextureComponent> ___farmTypeButtons, ClickableTextureComponent ___farmTypeNextPageButton, ClickableTextureComponent ___farmTypePreviousPageButton,
-            List<ClickableTextureComponent> ___cabinLayoutButtons)
+        private static async Task CycleThroughItems(bool increase, CharacterCustomization __instance, bool ___skipIntro)
         {
             isRunning = true;
+            string toSpeak = " ";
+
             if (increase)
             {
                 saveGameIndex++;
                 if (saveGameIndex > MAX_COMPONENTS)
-                    saveGameIndex = 0;
+                    saveGameIndex = 1;
             }
             else
             {
                 saveGameIndex--;
-                if (saveGameIndex < 0)
+                if (saveGameIndex < 1)
                     saveGameIndex = MAX_COMPONENTS;
             }
 
-            await Task.Delay(200);
 
             switch (saveGameIndex)
             {
-                case 0:
+                case 1:
                     {
-                        Rectangle bounds = new Rectangle(___nameBox.X, ___nameBox.Y, ___nameBox.Width, ___nameBox.Height);
-                        Game1.input.SetMousePosition(bounds.Center.X, bounds.Center.Y);
-                        ScreenReader.say("Enter Farmer's Name", false);
+                        #region Skip if button is not available
+                        if (!__instance.nameBoxCC.visible)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 2;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case MAX_COMPONENTS;
+                            }
+                        }
+                        #endregion
+
+                        __instance.nameBoxCC.snapMouseCursorToCenter();
+                        toSpeak = "Enter Farmer's Name";
                     }
                     break;
 
-                case 1:
+                case 2:
                     {
-                        Rectangle bounds = new Rectangle(___farmnameBox.X, ___farmnameBox.Y, ___farmnameBox.Width, ___farmnameBox.Height);
-                        Game1.input.SetMousePosition(bounds.Center.X, bounds.Center.Y);
-                        ScreenReader.say("Enter Farm's Name", false);
+                        #region Skip if button is not available
+                        if (!__instance.farmnameBoxCC.visible)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 3;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 1;
+                            }
+                        }
+                        #endregion
+
+                        __instance.farmnameBoxCC.snapMouseCursorToCenter();
+                        toSpeak = "Enter Farm's Name";
                     }
                     break;
                 case 3:
                     {
-                        Rectangle bounds = new Rectangle(___favThingBox.X, ___favThingBox.Y, ___favThingBox.Width, ___favThingBox.Height);
-                        Game1.input.SetMousePosition(bounds.Center.X, bounds.Center.Y);
-                        ScreenReader.say("Enter Favourite Thing", false);
+                        #region Skip if button is not available
+                        if (!__instance.favThingBoxCC.visible)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 4;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 2;
+                            }
+                        }
+                        #endregion
+
+                        __instance.favThingBoxCC.snapMouseCursorToCenter();
+                        toSpeak = "Enter Favourite Thing";
                     }
                     break;
                 case 4:
                     {
-                        ___skipIntroButton.snapMouseCursor();
-                        ScreenReader.say("Skip Intro Button", false);
+                        #region Skip if button is not available
+                        if (!__instance.skipIntroButton.visible)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 5;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 3;
+                            }
+                        }
+                        #endregion
+
+                        __instance.skipIntroButton.snapMouseCursor();
+                        toSpeak =  (___skipIntro?"Enabled":"Disabled") + " Skip Intro Button";
                     }
                     break;
                 case 5:
                     {
-                        ___randomButton.snapMouseCursor();
-                        ScreenReader.say("Random Skin Button", false);
+                        #region Skip if button is not available
+                        if (!__instance.randomButton.visible)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 6;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 5;
+                            }
+                        }
+                        #endregion
+
+                        __instance.randomButton.snapMouseCursor();
+                        toSpeak = "Random Skin Button";
                         break;
                     }
                 case 6:
                     {
-                        ___genderButtons[0].snapMouseCursor();
-                        ScreenReader.say("Gender Male Button", false);
+                        #region Skip if button is not available
+                        if (__instance.genderButtons.Count <= 0)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 8;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 6;
+                            }
+                        }
+                        #endregion
+
+                        __instance.genderButtons[0].snapMouseCursor();
+                        toSpeak = "Gender Male Button";
                         break;
                     }
                 case 7:
                     {
-                        ___genderButtons[1].snapMouseCursor();
-                        ScreenReader.say("Gender Female Button", false);
+                        #region Skip if button is not available
+                        if (__instance.genderButtons.Count <= 0)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 8;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 6;
+                            }
+                        }
+                        #endregion
+
+                        __instance.genderButtons[1].snapMouseCursor();
+                        toSpeak = "Gender Female Button";
                         break;
                     }
                 case 8:
                     {
-                        ___farmTypeButtons[0].snapMouseCursor();
-                        ScreenReader.say(getFarmHoverText(___farmTypeButtons[0]), false);
+                        #region Skip if button is not available
+                        if (__instance.farmTypeButtons.Count <= 0)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 9;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 7;
+                            }
+                        }
+                        #endregion
+
+                        __instance.farmTypeButtons[0].snapMouseCursor();
+                        toSpeak = getFarmHoverText(__instance.farmTypeButtons[0]);
                         break;
                     }
                 case 9:
                     {
-                        ___farmTypeButtons[1].snapMouseCursor();
-                        ScreenReader.say(getFarmHoverText(___farmTypeButtons[1]), false);
+                        #region Skip if button is not available
+                        if (__instance.farmTypeButtons.Count <= 0)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 10;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 8;
+                            }
+                        }
+                        #endregion
+
+                        __instance.farmTypeButtons[1].snapMouseCursor();
+                        toSpeak = getFarmHoverText(__instance.farmTypeButtons[1]);
                         break;
                     }
                 case 10:
                     {
-                        ___farmTypeButtons[2].snapMouseCursor();
-                        ScreenReader.say(getFarmHoverText(___farmTypeButtons[2]), false);
+                        #region Skip if button is not available
+                        if (__instance.farmTypeButtons.Count <= 0)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 11;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 9;
+                            }
+                        }
+                        #endregion
+
+                        __instance.farmTypeButtons[2].snapMouseCursor();
+                        toSpeak = getFarmHoverText(__instance.farmTypeButtons[2]);
                         break;
                     }
                 case 11:
                     {
-                        ___farmTypeButtons[3].snapMouseCursor();
-                        ScreenReader.say(getFarmHoverText(___farmTypeButtons[3]), false);
+                        #region Skip if button is not available
+                        if (__instance.farmTypeButtons.Count <= 0)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 12;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 10;
+                            }
+                        }
+                        #endregion
+
+                        __instance.farmTypeButtons[3].snapMouseCursor();
+                        toSpeak = getFarmHoverText(__instance.farmTypeButtons[3]);
                         break;
                     }
                 case 12:
                     {
-                        ___farmTypeButtons[4].snapMouseCursor();
-                        ScreenReader.say(getFarmHoverText(___farmTypeButtons[4]), false);
+                        #region Skip if button is not available
+                        if (__instance.farmTypeButtons.Count <= 0)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 13;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 11;
+                            }
+                        }
+                        #endregion
+
+                        __instance.farmTypeButtons[4].snapMouseCursor();
+                        toSpeak = getFarmHoverText(__instance.farmTypeButtons[4]);
                         break;
                     }
                 case 13:
                     {
-                        ___farmTypeButtons[5].snapMouseCursor();
-                        ScreenReader.say(getFarmHoverText(___farmTypeButtons[5]), false);
+                        #region Skip if button is not available
+                        if (__instance.farmTypeButtons.Count <= 0)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 14;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 12;
+                            }
+                        }
+                        #endregion
+
+                        __instance.farmTypeButtons[5].snapMouseCursor();
+                        toSpeak = getFarmHoverText(__instance.farmTypeButtons[5]);
                         break;
                     }
                 case 14:
                     {
-                        ___farmTypeButtons[6].snapMouseCursor();
-                        ScreenReader.say(getFarmHoverText(___farmTypeButtons[6]), false);
+                        #region Skip if button is not available
+                        if (__instance.farmTypeButtons.Count <= 0)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 15;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 13;
+                            }
+                        }
+                        #endregion
+
+                        __instance.farmTypeButtons[6].snapMouseCursor();
+                        toSpeak = getFarmHoverText(__instance.farmTypeButtons[6]);
                         break;
                     }
                 case 15:
                     {
-                        if (___farmTypeNextPageButton == null)
+                        #region Skip if button is not available
+                        if (__instance.farmTypeNextPageButton == null)
                         {
                             if (increase)
                             {
@@ -325,14 +529,16 @@ namespace stardew_access.Patches
                                 goto case 14;
                             }
                         }
+                        #endregion
 
-                        ___farmTypeNextPageButton.snapMouseCursor();
-                        ScreenReader.say("Next Farm Type Page Button", false);
+                        __instance.farmTypeNextPageButton.snapMouseCursor();
+                        toSpeak = "Next Farm Type Page Button";
                         break;
                     }
                 case 16:
                     {
-                        if (___farmTypePreviousPageButton == null)
+                        #region Skip if button is not available
+                        if (__instance.farmTypePreviousPageButton == null)
                         {
                             if (increase)
                             {
@@ -345,14 +551,16 @@ namespace stardew_access.Patches
                                 goto case 15;
                             }
                         }
+                        #endregion
 
-                        ___farmTypePreviousPageButton.snapMouseCursor();
-                        ScreenReader.say("Previous Farm Type Page Button", false);
+                        __instance.farmTypePreviousPageButton.snapMouseCursor();
+                        toSpeak = "Previous Farm Type Page Button";
                         break;
                     }
                 case 17:
                     {
-                        if (___cabinLayoutButtons.Count <= 0)
+                        #region Skip if button is not available
+                        if (__instance.cabinLayoutButtons.Count <= 0)
                         {
                             if (increase)
                             {
@@ -365,14 +573,16 @@ namespace stardew_access.Patches
                                 goto case 16;
                             }
                         }
+                        #endregion
 
-                        ___cabinLayoutButtons[0].snapMouseCursor();
-                        ScreenReader.say("Cabin layout nearby", false);
+                        __instance.cabinLayoutButtons[0].snapMouseCursor();
+                        toSpeak = "Cabin layout nearby";
                         break;
                     }
                 case 18:
                     {
-                        if (___cabinLayoutButtons.Count <= 0)
+                        #region Skip if button is not available
+                        if (__instance.cabinLayoutButtons.Count <= 0)
                         {
                             if (increase)
                             {
@@ -385,25 +595,55 @@ namespace stardew_access.Patches
                                 goto case 17;
                             }
                         }
+                        #endregion
 
-                        ___cabinLayoutButtons[1].snapMouseCursor();
-                        ScreenReader.say("Cabin layout separate", false);
+                        __instance.cabinLayoutButtons[1].snapMouseCursor();
+                        toSpeak = "Cabin layout separate";
                         break;
                     }
                 case 19:
                     {
-                        ___okButton.snapMouseCursor();
-                        ScreenReader.say("Ok Button", false);
+                        #region Skip if button is not available
+                        if (!__instance.okButton.visible)
+                        {
+                            if (increase)
+                            {
+                                ++saveGameIndex;
+                                goto case 18;
+                            }
+                            else
+                            {
+                                --saveGameIndex;
+                                goto case 20;
+                            }
+                        }
+                        #endregion
+
+                        __instance.okButton.snapMouseCursor();
+                        toSpeak = "Ok Button";
                     }
                     break;
                 case 20:
                     {
-                        ___backButton.snapMouseCursor();
-                        ScreenReader.say("Back Button", false);
+                        #region Exit if button is not available
+                        if (!__instance.backButton.visible)
+                        {
+                            break;
+                        }
+                        #endregion
+
+                        __instance.backButton.snapMouseCursor();
+                        toSpeak = "Back Button";
                     }
                     break;
             }
 
+            if(toSpeak!=" ")
+            {
+                ScreenReader.say(toSpeak, true);
+            }
+
+            await Task.Delay(200);
             isRunning = false;
         }
 
