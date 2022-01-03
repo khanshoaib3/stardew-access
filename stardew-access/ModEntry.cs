@@ -124,7 +124,7 @@ namespace stardew_access
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(ChatBox), nameof(ChatBox.update), new Type[] { typeof(GameTime) }),
-                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.ChatBoxPatch))
+                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(ChatManuPatches.ChatBoxPatch))
             );
 
             harmony.Patch(
