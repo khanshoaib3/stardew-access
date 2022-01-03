@@ -84,7 +84,7 @@ namespace stardew_access
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(ExitPage), nameof(ExitPage.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.ExitPagePatch))
+                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.ExitPagePatch))
             );
 
             harmony.Patch(
@@ -114,7 +114,7 @@ namespace stardew_access
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(OptionsPage), nameof(OptionsPage.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.OptionsPagePatch))
+                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.OptionsPagePatch))
             );
 
             harmony.Patch(
@@ -150,6 +150,11 @@ namespace stardew_access
             harmony.Patch(
                 original: AccessTools.Method(typeof(LanguageSelectionMenu), nameof(LanguageSelectionMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.LanguageSelectionMenuPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(CraftingPage), nameof(CraftingPage.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.CraftingPagePatch))
             );
 
             #endregion

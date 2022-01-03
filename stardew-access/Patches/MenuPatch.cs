@@ -102,54 +102,6 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void OptionsPagePatch(OptionsPage __instance)
-        {
-            try
-            {
-                int currentItemIndex = Math.Max(0, Math.Min(__instance.options.Count - 7, __instance.currentItemIndex));
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
-                for (int i = 0; i < __instance.optionSlots.Count; i++)
-                {
-                    if (__instance.optionSlots[i].bounds.Contains(x, y) && currentItemIndex + i < __instance.options.Count && __instance.options[currentItemIndex + i].bounds.Contains(x - __instance.optionSlots[i].bounds.X, y - __instance.optionSlots[i].bounds.Y))
-                    {
-                        OptionsElement optionsElement = __instance.options[currentItemIndex + i];
-                        string toSpeak = optionsElement.label;
-
-                        if (optionsElement is OptionsButton)
-                            toSpeak = $" {toSpeak} Button";
-                        else if (optionsElement is OptionsCheckbox)
-                            toSpeak = ((optionsElement as OptionsCheckbox).isChecked ? "Enabled" : "Disabled") + $" {toSpeak} Checkbox";
-                        else if (optionsElement is OptionsDropDown)
-                            toSpeak = $"{toSpeak} Dropdown, option {(optionsElement as OptionsDropDown).dropDownDisplayOptions[(optionsElement as OptionsDropDown).selectedOption]} selected";
-                        else if (optionsElement is OptionsSlider)
-                            toSpeak = $"{(optionsElement as OptionsSlider).value}% {toSpeak} Slider";
-                        else if (optionsElement is OptionsPlusMinus)
-                            toSpeak = $"{(optionsElement as OptionsPlusMinus).displayOptions[(optionsElement as OptionsPlusMinus).selected]} selected of {toSpeak}";
-                        else if (optionsElement is OptionsInputListener)
-                        {
-                            string buttons = "";
-                            (optionsElement as OptionsInputListener).buttonNames.ForEach(name => { buttons += $", {name}"; });
-                            toSpeak = $"{toSpeak} is bound to {buttons}. Left click to change.";
-                        }
-                        else
-                        {
-                            if (toSpeak.Contains(":"))
-                                toSpeak = toSpeak.Replace(":", "");
-
-                            toSpeak = $"{toSpeak} Options:";
-                        }
-
-                        ScreenReader.sayWithChecker(toSpeak, true);
-                        break;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
-            }
-        }
-
         internal static void LevelUpMenuPatch(LevelUpMenu __instance, List<int> ___professionsToChoose, List<string> ___leftProfessionDescription, List<string> ___rightProfessionDescription, List<string> ___extraInfoForLevel, List<CraftingRecipe> ___newCraftingRecipes, string ___title)
         {
             try
@@ -462,28 +414,6 @@ namespace stardew_access.Patches
                     }
                 }
                 #endregion
-            }
-            catch (Exception e)
-            {
-
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
-            }
-        }
-
-        internal static void ExitPagePatch(ExitPage __instance)
-        {
-            try
-            {
-                if (__instance.exitToTitle.visible &&
-                        __instance.exitToTitle.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
-                {
-                    ScreenReader.sayWithChecker("Exit to Title Button", true);
-                }
-                if (__instance.exitToDesktop.visible &&
-                    __instance.exitToDesktop.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
-                {
-                    ScreenReader.sayWithChecker("Exit to Desktop Button", true);
-                }
             }
             catch (Exception e)
             {
