@@ -74,12 +74,12 @@ namespace stardew_access
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(TitleMenu), nameof(TitleMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(TitleMenuPatches.TitleMenuPatch))
+                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.TitleMenuPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(LoadGameMenu.SaveFileSlot), nameof(LoadGameMenu.SaveFileSlot.Draw), new Type[] { typeof(SpriteBatch), typeof(int) }),
-                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(TitleMenuPatches.LoadGameMenuPatch))
+                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.LoadGameMenuPatch))
             );
 
             harmony.Patch(
@@ -89,7 +89,7 @@ namespace stardew_access
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CharacterCustomization), nameof(CharacterCustomization.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(TitleMenuPatches.NewGameMenuPatch))
+                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.NewGameMenuPatch))
             );
 
             harmony.Patch(
@@ -119,12 +119,12 @@ namespace stardew_access
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CoopMenu), nameof(CoopMenu.update), new Type[] { typeof(GameTime) }),
-                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(TitleMenuPatches.CoopMenuPatch))
+                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.CoopMenuPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(ChatBox), nameof(ChatBox.update), new Type[] { typeof(GameTime) }),
-                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(ChatManuPatches.ChatBoxPatch))
+                postfix: new HarmonyMethod(typeof(ChatManuPatches), nameof(ChatManuPatches.ChatBoxPatch))
             );
 
             harmony.Patch(
@@ -140,6 +140,11 @@ namespace stardew_access
             harmony.Patch(
                 original: AccessTools.Constructor(typeof(NamingMenu), new Type[] { typeof(NamingMenu.doneNamingBehavior), typeof(string), typeof(string) }),
                 postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.NamingMenuPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(MineElevatorMenu), nameof(MineElevatorMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.MineElevatorMenuPatch))
             );
 
             #endregion

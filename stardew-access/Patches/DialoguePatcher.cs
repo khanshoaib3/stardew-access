@@ -113,7 +113,7 @@ namespace stardew_access.Patches
             try
             {
                 // Fix for delete button hover text not narrating
-                if (Game1.activeClickableMenu is TitleMenuPatches && !((Game1.activeClickableMenu as TitleMenuPatches).GetChildMenu() is CharacterCustomization))
+                if (Game1.activeClickableMenu is TitleMenuPatches && !((Game1.activeClickableMenu as TitleMenu).GetChildMenu() is CharacterCustomization))
                     return;
 
                 if (Game1.activeClickableMenu is LetterViewerMenu || Game1.activeClickableMenu is QuestLog)
@@ -122,7 +122,7 @@ namespace stardew_access.Patches
                 if (Game1.activeClickableMenu is Billboard)
                     return;
 
-                StringBuilder toSpeak = new StringBuilder();
+                StringBuilder toSpeak = new StringBuilder(" ");
 
                 #region Add item count before title
                 if(hoveredItem != null && hoveredItem.HasBeenInInventory)
@@ -201,10 +201,14 @@ namespace stardew_access.Patches
                 #region Narrate toSpeak
                 // To prevent it from getting conflicted by two hover texts at the same time, two seperate methods are used.
                 // For example, sometimes `Welcome to Pierre's` and the items in seeds shop get conflicted causing it to speak infinitely.
-                if(Context.IsPlayerFree)
-                    ScreenReader.sayWithChecker(toSpeak.ToString(), true); // Normal Checker
-                else
-                    ScreenReader.sayWithMenuChecker(toSpeak.ToString(), true); // Normal Checker
+
+                if (toSpeak.ToString() != " ")
+                {
+                    if (Context.IsPlayerFree)
+                        ScreenReader.sayWithChecker(toSpeak.ToString(), true); // Normal Checker
+                    else
+                        ScreenReader.sayWithMenuChecker(toSpeak.ToString(), true); // Normal Checker
+                }
                 #endregion
             }
             catch (Exception e)

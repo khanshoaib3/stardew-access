@@ -1,10 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Quests;
-using static StardewValley.Menus.LoadGameMenu;
 
 namespace stardew_access.Patches
 {
@@ -13,6 +11,26 @@ namespace stardew_access.Patches
         private static string currentLetterText = " ";
         private static string currentDailyQuestText = " ";
         private static string currentLevelUpTitle = " ";
+
+        internal static void MineElevatorMenuPatch(List<ClickableComponent> ___elevators)
+        {
+            try
+            {
+                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+                for (int i=0; i<___elevators.Count; i++)
+                {
+                    if(___elevators[i].containsPoint(x, y))
+                    {
+                        ScreenReader.sayWithMenuChecker($"{___elevators[i].name} level", true);
+                        break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
 
         internal static void NamingMenuPatch(NamingMenu __instance, string title, TextBox ___textBox)
         {
@@ -50,8 +68,6 @@ namespace stardew_access.Patches
                 MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
-
-        
 
         internal static void OptionsPagePatch(OptionsPage __instance)
         {
