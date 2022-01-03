@@ -113,7 +113,7 @@ namespace stardew_access.Patches
             try
             {
                 // Fix for delete button hover text not narrating
-                if (Game1.activeClickableMenu is TitleMenu && !((Game1.activeClickableMenu as TitleMenu).GetChildMenu() is CharacterCustomization))
+                if (Game1.activeClickableMenu is TitleMenuPatches && !((Game1.activeClickableMenu as TitleMenuPatches).GetChildMenu() is CharacterCustomization))
                     return;
 
                 if (Game1.activeClickableMenu is LetterViewerMenu || Game1.activeClickableMenu is QuestLog)
