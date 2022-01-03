@@ -147,6 +147,11 @@ namespace stardew_access
                 postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.MineElevatorMenuPatch))
             );
 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(LanguageSelectionMenu), nameof(LanguageSelectionMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatch), nameof(MenuPatch.LanguageSelectionMenuPatch))
+            );
+
             #endregion
 
             #region Custom Commands

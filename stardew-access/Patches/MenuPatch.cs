@@ -12,6 +12,39 @@ namespace stardew_access.Patches
         private static string currentDailyQuestText = " ";
         private static string currentLevelUpTitle = " ";
 
+        internal static void LanguageSelectionMenuPatch(LanguageSelectionMenu __instance)
+        {
+            try
+            {
+                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+
+                if(__instance.nextPageButton != null && __instance.nextPageButton.containsPoint(x, y))
+                {
+                    ScreenReader.sayWithMenuChecker($"Next Page Button", true);
+                    return;
+                }
+
+                if (__instance.previousPageButton != null && __instance.previousPageButton.containsPoint(x, y))
+                {
+                    ScreenReader.sayWithMenuChecker($"Previous Page Button", true);
+                    return;
+                }
+
+                for(int i=0; i<__instance.languages.Count; i++)
+                {
+                    if(__instance.languages[i].containsPoint(x, y))
+                    {
+                        ScreenReader.sayWithMenuChecker($"{__instance.languageList[i]} Button", true);
+                        break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
+
         internal static void MineElevatorMenuPatch(List<ClickableComponent> ___elevators)
         {
             try
