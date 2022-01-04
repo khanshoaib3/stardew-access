@@ -12,6 +12,67 @@ namespace stardew_access.Patches
         private static string currentDailyQuestText = " ";
         private static string currentLevelUpTitle = " ";
 
+        internal static void SpecialOrdersBoardPatch(SpecialOrdersBoard __instance)
+        {
+            try
+            {
+                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+
+                if (__instance.acceptLeftQuestButton.visible && __instance.acceptLeftQuestButton.containsPoint(x, y))
+                {
+                    string toSpeak = getSpecialOrderDetails(__instance.leftOrder);
+
+                    toSpeak = $"Left Quest:\n\t{toSpeak}\n\tPress left click to accept this quest.";
+
+                    ScreenReader.sayWithMenuChecker(toSpeak, true);
+                    return;
+                }
+
+                if (__instance.acceptRightQuestButton.visible && __instance.acceptRightQuestButton.containsPoint(x, y))
+                {
+                    string toSpeak = getSpecialOrderDetails(__instance.rightOrder);
+
+                    toSpeak = $"Right Quest:\n\t{toSpeak}\n\tPress left click to accept this quest.";
+
+                    ScreenReader.sayWithMenuChecker(toSpeak, true);
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
+
+        private static string getSpecialOrderDetails(SpecialOrder order)
+        {
+            int daysLeft = order.GetDaysLeft();
+            string description = order.GetDescription();
+            string objectiveDescription = "";
+            string name = order.GetName();
+            int moneyReward = order.GetMoneyReward();
+
+            // Get each objectives
+            for (int i = 0; i < order.GetObjectiveDescriptions().Count; i++)
+            {
+                objectiveDescription += order.GetObjectiveDescriptions()[i] + ", \n";
+            }
+
+            string toReturn = $"{name}\n\tDescription:{description}\n\tObjectives: {objectiveDescription}";
+
+            if (order.IsTimedQuest())
+            {
+                toReturn = $"{toReturn}\n\tTime: {daysLeft} days";
+            }
+
+            if (order.HasMoneyReward())
+            {
+                toReturn = $"{toReturn}\n\tReward: {moneyReward}g";
+            }
+
+            return toReturn;
+        }
+
         internal static void LanguageSelectionMenuPatch(LanguageSelectionMenu __instance)
         {
             try
