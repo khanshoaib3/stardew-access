@@ -6,7 +6,7 @@ using System.Text;
 
 namespace stardew_access.Patches
 {
-    internal class DialoguePatcher
+    internal class DialoguePatches
     {
         private static string currentDialogue = " ";
 
