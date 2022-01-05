@@ -97,7 +97,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate dialog:\n{e.StackTrace}", LogLevel.Error);
+                MainClass.monitor.Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
             }
 
         }
@@ -136,6 +136,25 @@ namespace stardew_access.Patches
                 #region Add title if any
                 if (boldTitleText != null)
                     toSpeak.Append($"{boldTitleText}\n");
+                #endregion
+
+                #region Add quality of item
+                if (hoveredItem is StardewValley.Object && (hoveredItem as StardewValley.Object).quality>0)
+                {
+                    int quality = (hoveredItem as StardewValley.Object).quality;
+                    if (quality == 1)
+                    {
+                        toSpeak.Append("Silver quality");
+                    }
+                    else if (quality == 2 || quality == 3)
+                    {
+                        toSpeak.Append("Gold quality");
+                    }
+                    else if (quality >= 4)
+                    {
+                        toSpeak.Append("Iridium quality");
+                    }
+                }
                 #endregion
 
                 #region Add money
@@ -213,7 +232,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate dialog:\n{e.StackTrace}", LogLevel.Error);
+                MainClass.monitor.Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
             }
         }
     }
