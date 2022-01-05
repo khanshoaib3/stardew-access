@@ -1,8 +1,6 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using StardewValley.Quests;
 
 namespace stardew_access.Patches
 {

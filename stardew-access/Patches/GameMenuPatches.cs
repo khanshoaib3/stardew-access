@@ -7,6 +7,47 @@ namespace stardew_access.Patches
 {
     internal class GameMenuPatches
     {
+        internal static void ItemGrabMenuPatch(ItemGrabMenu __instance)
+        {
+            try
+            {
+                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+
+                if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                {
+                    ScreenReader.sayWithMenuChecker("Ok Button", true);
+                    return;
+                }
+                if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
+                {
+                    ScreenReader.sayWithMenuChecker("Trash Can", true);
+                    return;
+                }
+
+                if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+                {
+                    ScreenReader.sayWithMenuChecker("Drop Item", true);
+                    return;
+                }
+                
+                if (__instance.shippingBin && Game1.getFarm().lastItemShipped != null && __instance.lastShippedHolder.containsPoint(x, y))
+                {
+                    Item lastShippedItem = Game1.getFarm().lastItemShipped;
+                    string name = lastShippedItem.DisplayName;
+                    int count = lastShippedItem.Stack;
+
+                    string toSpeak = $"Last Shipped: {count} {name}";
+
+                    ScreenReader.sayWithMenuChecker(toSpeak, true);
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
+
         internal static void CraftingPagePatch(CraftingPage __instance)
         {
             try
@@ -32,6 +73,24 @@ namespace stardew_access.Patches
                 }
 
                 if(__instance.dropItemInvisibleButton.containsPoint(x, y))
+                {
+                    ScreenReader.sayWithMenuChecker("Drop Item", true);
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
+
+        internal static void InventoryMenuPatch(InventoryMenu __instance)
+        {
+            try
+            {
+                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+
+                if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
                 {
                     ScreenReader.sayWithMenuChecker("Drop Item", true);
                     return;

@@ -110,7 +110,22 @@ namespace stardew_access
             harmony.Patch(
                 original: AccessTools.Method(typeof(CraftingPage), nameof(CraftingPage.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.CraftingPagePatch))
-            ); 
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(InventoryMenu), nameof(InventoryMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.InventoryMenuPatch))
+            );
+
+            /*harmony.Patch(
+                original: AccessTools.Method(typeof(MenuWithInventory), nameof(MenuWithInventory.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.MenuWithInventoryPatch))
+            );*/
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.ItemGrabMenuPatch))
+            );
             #endregion
 
             #region Menu Patches
