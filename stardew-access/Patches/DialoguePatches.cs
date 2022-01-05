@@ -226,7 +226,7 @@ namespace stardew_access.Patches
                     if (Context.IsPlayerFree)
                         ScreenReader.sayWithChecker(toSpeak.ToString(), true); // Normal Checker
                     else
-                        ScreenReader.sayWithMenuChecker(toSpeak.ToString(), true); // Normal Checker
+                        ScreenReader.sayWithMenuChecker(toSpeak.ToString(), true); // Menu Checker
                 }
                 #endregion
             }

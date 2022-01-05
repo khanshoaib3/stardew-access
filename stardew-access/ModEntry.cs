@@ -10,6 +10,7 @@ using AutoHotkey.Interop;
 using Microsoft.Xna.Framework;
 using StardewValley.TerrainFeatures;
 using StardewValley.Locations;
+using Microsoft.Xna.Framework.Audio;
 
 namespace stardew_access
 {
@@ -212,6 +213,25 @@ namespace stardew_access
 
                 monitor.Log("Screen Reader refreshed!", LogLevel.Info);
             });
+            #endregion
+
+            #region Custom Sounds
+            /*CueDefinition myCueDefinition = new CueDefinition();
+
+            // Adding the name for the cue, which will be
+            // the name of the audio to play when using sound functions.
+            myCueDefinition.name = "myNewSound";
+            // If this sound is played multiple times in quick succession,
+            // only one sound instance will play at a time.
+            myCueDefinition.instanceLimit = 1;
+            myCueDefinition.limitBehavior = CueDefinition.LimitBehavior.ReplaceOldest;
+            // Get the audio file and add it to a SoundEffect.
+            SoundEffect sound_effect;
+            string filePathCombined = Path.Combine(this.Helper.DirectoryPath, "mySound.wav");
+            using (var stream = new System.IO.FileStream(filePathCombined, System.IO.FileMode.Open))
+            {
+                sound_effect = SoundEffect.FromStream(stream);
+            }*/
             #endregion
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
