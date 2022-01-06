@@ -118,14 +118,14 @@ namespace stardew_access
                 postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.InventoryMenuPatch))
             );
 
-            /*harmony.Patch(
-                original: AccessTools.Method(typeof(MenuWithInventory), nameof(MenuWithInventory.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.MenuWithInventoryPatch))
-            );*/
-
             harmony.Patch(
                 original: AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.ItemGrabMenuPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GeodeMenu), nameof(GeodeMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.GeodeMenuPatch))
             );
             #endregion
 
@@ -187,7 +187,14 @@ namespace stardew_access
             harmony.Patch(
                     original: AccessTools.Method(typeof(ChatBox), nameof(ChatBox.update), new Type[] { typeof(GameTime) }),
                     postfix: new HarmonyMethod(typeof(ChatManuPatches), nameof(ChatManuPatches.ChatBoxPatch))
-                ); 
+                );
+            #endregion
+
+            #region On Menu CLose Patch
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.exitThisMenu)),
+                    postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.IClickableMenuOnExitPatch))
+                );
             #endregion
 
             #endregion
@@ -228,10 +235,8 @@ namespace stardew_access
             // Get the audio file and add it to a SoundEffect.
             SoundEffect sound_effect;
             string filePathCombined = Path.Combine(this.Helper.DirectoryPath, "mySound.wav");
-            using (var stream = new System.IO.FileStream(filePathCombined, System.IO.FileMode.Open))
-            {
-                sound_effect = SoundEffect.FromStream(stream);
-            }*/
+            System.IO.FileStream stream = new System.IO.FileStream(filePathCombined, System.IO.FileMode.Open)
+                sound_effect = SoundEffect.FromStream(stream);*/
             #endregion
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;

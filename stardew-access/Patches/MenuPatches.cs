@@ -256,6 +256,21 @@ namespace stardew_access.Patches
             }
         }
 
+        internal static void IClickableMenuOnExitPatch(IClickableMenu __instance)
+        {
+            try
+            {
+                if(__instance is GeodeMenu)
+                {
+                    GameMenuPatches.geodeMenuQueryKey = "";
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
+
         internal static void resetGlobalVars()
         {
             currentLetterText = " ";

@@ -7,6 +7,106 @@ namespace stardew_access.Patches
 {
     internal class GameMenuPatches
     {
+        internal static string geodeMenuQueryKey = "";
+
+        internal static void GeodeMenuPatch(GeodeMenu __instance)
+        {
+            try
+            {
+                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+
+                if (__instance.geodeSpot != null && __instance.geodeSpot.containsPoint(x, y))
+                {
+                    string toSpeak = "Place geode here";
+                    if (geodeMenuQueryKey != toSpeak)
+                    {
+                        geodeMenuQueryKey = toSpeak;
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+
+                if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+                {
+                    string toSpeak = "Drop item here";
+
+                    if (geodeMenuQueryKey != toSpeak)
+                    {
+                        geodeMenuQueryKey = toSpeak;
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+
+                if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
+                {
+                    string toSpeak = "Trash can";
+
+                    if (geodeMenuQueryKey != toSpeak)
+                    {
+                        geodeMenuQueryKey = toSpeak;
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+
+                if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                {
+                    string toSpeak = "Ok button";
+
+                    if (geodeMenuQueryKey != toSpeak)
+                    {
+                        geodeMenuQueryKey = toSpeak;
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+
+                for (int i = 0; i < __instance.inventory.inventory.Count; i++)
+                {
+                    if(__instance.inventory.inventory[i].containsPoint(x, y))
+                    {
+                        string toSpeak = "";
+                        if ((i + 1) <= __instance.inventory.actualInventory.Count)
+                        {
+                            if (__instance.inventory.actualInventory[i] != null)
+                            {
+                                string name = __instance.inventory.actualInventory[i].DisplayName;
+                                int stack = __instance.inventory.actualInventory[i].Stack;
+
+                                if(stack>1)
+                                    toSpeak = $"{stack} {name}";
+                                else
+                                    toSpeak = $"{name}";
+
+                            }
+                            else
+                            {
+                                // For empty slot
+                                toSpeak = "Empty Slot";
+                            }
+                        }
+                        else
+                        {
+                            // For empty slot
+                            toSpeak = "Empty Slot";
+                        }
+
+                        if (geodeMenuQueryKey != $"{toSpeak}:{i}")
+                        {
+                            geodeMenuQueryKey = $"{toSpeak}:{i}";
+                            ScreenReader.say(toSpeak, true);
+                        }
+                        return;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
+
         internal static void ItemGrabMenuPatch(ItemGrabMenu __instance)
         {
             try

@@ -122,6 +122,9 @@ namespace stardew_access.Patches
                 if (Game1.activeClickableMenu is Billboard)
                     return;
 
+                if (Game1.activeClickableMenu is GeodeMenu)
+                    return;
+
                 StringBuilder toSpeak = new StringBuilder(" ");
 
                 #region Add item count before title
