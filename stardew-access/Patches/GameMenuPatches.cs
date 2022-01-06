@@ -78,48 +78,11 @@ namespace stardew_access.Patches
                         ScreenReader.say(toSpeak, true);
                     }
                     return;
-                } 
+                }
                 #endregion
 
                 #region Narrate hovered item
-                for (int i = 0; i < __instance.inventory.inventory.Count; i++)
-                {
-                    if (__instance.inventory.inventory[i].containsPoint(x, y))
-                    {
-                        string toSpeak = "";
-                        if ((i + 1) <= __instance.inventory.actualInventory.Count)
-                        {
-                            if (__instance.inventory.actualInventory[i] != null)
-                            {
-                                string name = __instance.inventory.actualInventory[i].DisplayName;
-                                int stack = __instance.inventory.actualInventory[i].Stack;
-
-                                if (stack > 1)
-                                    toSpeak = $"{stack} {name}";
-                                else
-                                    toSpeak = $"{name}";
-
-                            }
-                            else
-                            {
-                                // For empty slot
-                                toSpeak = "Empty Slot";
-                            }
-                        }
-                        else
-                        {
-                            // For empty slot
-                            toSpeak = "Empty Slot";
-                        }
-
-                        if (geodeMenuQueryKey != $"{toSpeak}:{i}")
-                        {
-                            geodeMenuQueryKey = $"{toSpeak}:{i}";
-                            ScreenReader.say(toSpeak, true);
-                        }
-                        return;
-                    }
-                } 
+                narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y);
                 #endregion
             }
             catch (Exception e)
@@ -133,7 +96,18 @@ namespace stardew_access.Patches
             try
             {
                 int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+                bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
+                bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
+                if(isLeftShiftPressed && isIPressed && __instance.inventory != null)
+                {
+                    __instance.inventory.inventory[0].snapMouseCursorToCenter();
+                }else if(!isLeftShiftPressed && isIPressed && __instance.ItemsToGrabMenu != null)
+                {
+                    __instance.ItemsToGrabMenu.inventory[0].snapMouseCursorToCenter();
+                }
+
+                #region Narrate buttons in the menu
                 if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
                 {
                     ScreenReader.sayWithMenuChecker("Ok Button", true);
@@ -150,7 +124,9 @@ namespace stardew_access.Patches
                     ScreenReader.sayWithMenuChecker("Drop Item", true);
                     return;
                 }
-                
+                #endregion
+
+                #region Narrate the last shipped item if in the shipping bin
                 if (__instance.shippingBin && Game1.getFarm().lastItemShipped != null && __instance.lastShippedHolder.containsPoint(x, y))
                 {
                     Item lastShippedItem = Game1.getFarm().lastItemShipped;
@@ -161,7 +137,17 @@ namespace stardew_access.Patches
 
                     ScreenReader.sayWithMenuChecker(toSpeak, true);
                     return;
-                }
+                } 
+                #endregion
+
+                #region Narrate hovered item
+                if(narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                    return;
+
+                if(narrateHoveredItemInInventory(__instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
+                    return;
+
+                #endregion
             }
             catch (Exception e)
             {
@@ -205,17 +191,21 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void InventoryMenuPatch(InventoryMenu __instance)
+        internal static void InventoryPagePatch(InventoryPage __instance)
         {
             try
             {
                 int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
 
-                if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+                if (__instance.inventory.dropItemInvisibleButton != null && __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
                 {
                     ScreenReader.sayWithMenuChecker("Drop Item", true);
                     return;
                 }
+
+                #region Narrate hovered item
+                narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true);
+                #endregion
             }
             catch (Exception e)
             {
@@ -291,6 +281,72 @@ namespace stardew_access.Patches
 
                 MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
+        }
+
+        internal static bool narrateHoveredItemInInventory(List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y, bool isInInventoryPage = false)
+        {
+            #region Narrate hovered item
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                if (inventory[i].containsPoint(x, y))
+                {
+                    string toSpeak = "";
+                    if ((i + 1) <= actualInventory.Count)
+                    {
+                        if (actualInventory[i] != null)
+                        {
+                            string name = actualInventory[i].DisplayName;
+                            int stack = actualInventory[i].Stack;
+                            string quality = "";
+
+                            #region Add quality of item
+                            if (actualInventory[i] is StardewValley.Object && (actualInventory[i] as StardewValley.Object).quality > 0)
+                            {
+                                int qualityIndex = (actualInventory[i] as StardewValley.Object).quality;
+                                if (qualityIndex == 1)
+                                {
+                                    quality = "Silver quality";
+                                }
+                                else if (qualityIndex == 2 || qualityIndex == 3)
+                                {
+                                    quality = "Gold quality";
+                                }
+                                else if (qualityIndex >= 4)
+                                {
+                                    quality = "Iridium quality";
+                                }
+                            }
+                            #endregion
+
+                            if (stack > 1)
+                                toSpeak = $"{stack} {name} {quality}";
+                            else
+                                toSpeak = $"{name} {quality}";
+
+                            MainClass.monitor.Log(actualInventory[i].getHoverBoxText(actualInventory[i]), LogLevel.Debug);
+                        }
+                        else
+                        {
+                            // For empty slot
+                            toSpeak = "Empty Slot";
+                        }
+                    }
+                    else
+                    {
+                        // For empty slot
+                        toSpeak = "Empty Slot";
+                    }
+
+                    if (geodeMenuQueryKey != $"{toSpeak}:{i}")
+                    {
+                        geodeMenuQueryKey = $"{toSpeak}:{i}";
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return true;
+                }
+            }
+            #endregion
+            return false;
         }
     }
 }

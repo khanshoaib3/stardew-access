@@ -112,7 +112,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                // Fix for delete button hover text not narrating
+                #region Skip narrating hover text for certain menus
                 if (Game1.activeClickableMenu is TitleMenuPatches && !((Game1.activeClickableMenu as TitleMenu).GetChildMenu() is CharacterCustomization))
                     return;
 
@@ -124,6 +124,16 @@ namespace stardew_access.Patches
 
                 if (Game1.activeClickableMenu is GeodeMenu)
                     return;
+
+                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is InventoryPage)
+                    return;
+
+                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is CraftingPage)
+                    return;
+
+                if (Game1.activeClickableMenu is ItemGrabMenu)
+                    return; 
+                #endregion
 
                 StringBuilder toSpeak = new StringBuilder(" ");
 
