@@ -264,6 +264,8 @@ namespace stardew_access.Patches
                 {
                     GameMenuPatches.geodeMenuQueryKey = "";
                 }
+
+                
             }
             catch (Exception e)
             {

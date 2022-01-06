@@ -7,7 +7,11 @@ namespace stardew_access.Patches
 {
     internal class GameMenuPatches
     {
+        internal static string hoveredItemQueryKey = "";
         internal static string geodeMenuQueryKey = "";
+        internal static string itemGrabMenuQueryKey = "";
+        internal static string craftingPageQueryKey = "";
+        internal static string inventoryPageQueryKey = "";
 
         internal static void GeodeMenuPatch(GeodeMenu __instance)
         {
@@ -52,6 +56,7 @@ namespace stardew_access.Patches
                     {
                         geodeMenuQueryKey = toSpeak;
                         ScreenReader.say(toSpeak, true);
+                        Game1.playSound("sa_drop_item");
                     }
                     return;
                 }
@@ -82,7 +87,8 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y);
+                if(narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                    geodeMenuQueryKey = "";
                 #endregion
             }
             catch (Exception e)
@@ -110,18 +116,34 @@ namespace stardew_access.Patches
                 #region Narrate buttons in the menu
                 if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
                 {
-                    ScreenReader.sayWithMenuChecker("Ok Button", true);
+                    string toSpeak = "Ok Button";
+                    if(itemGrabMenuQueryKey != toSpeak)
+                    {
+                        itemGrabMenuQueryKey = toSpeak;
+                        ScreenReader.say(toSpeak, true);
+                    }
                     return;
                 }
                 if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
                 {
-                    ScreenReader.sayWithMenuChecker("Trash Can", true);
+                    string toSpeak = "Trash Can";
+                    if (itemGrabMenuQueryKey != toSpeak)
+                    {
+                        itemGrabMenuQueryKey = toSpeak;
+                        ScreenReader.say(toSpeak, true);
+                    }
                     return;
                 }
 
                 if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
                 {
-                    ScreenReader.sayWithMenuChecker("Drop Item", true);
+                    string toSpeak = "Drop Item";
+                    if (itemGrabMenuQueryKey != toSpeak)
+                    {
+                        itemGrabMenuQueryKey = toSpeak;
+                        ScreenReader.say(toSpeak, true);
+                        Game1.playSound("sa_drop_item");
+                    }
                     return;
                 }
                 #endregion
@@ -204,7 +226,8 @@ namespace stardew_access.Patches
                 }
 
                 #region Narrate hovered item
-                narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true);
+                if(narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                    inventoryPageQueryKey = "";
                 #endregion
             }
             catch (Exception e)
@@ -389,9 +412,9 @@ namespace stardew_access.Patches
                         toSpeak = "Empty Slot";
                     }
 
-                    if (geodeMenuQueryKey != $"{toSpeak}:{i}")
+                    if (hoveredItemQueryKey != $"{toSpeak}:{i}")
                     {
-                        geodeMenuQueryKey = $"{toSpeak}:{i}";
+                        hoveredItemQueryKey = $"{toSpeak}:{i}";
                         ScreenReader.say(toSpeak, true);
                     }
                     return true;

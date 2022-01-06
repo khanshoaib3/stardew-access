@@ -222,21 +222,19 @@ namespace stardew_access
             });
             #endregion
 
-            #region Custom Sounds
-            /*CueDefinition myCueDefinition = new CueDefinition();
-
-            // Adding the name for the cue, which will be
-            // the name of the audio to play when using sound functions.
-            myCueDefinition.name = "myNewSound";
-            // If this sound is played multiple times in quick succession,
-            // only one sound instance will play at a time.
-            myCueDefinition.instanceLimit = 1;
-            myCueDefinition.limitBehavior = CueDefinition.LimitBehavior.ReplaceOldest;
-            // Get the audio file and add it to a SoundEffect.
-            SoundEffect sound_effect;
-            string filePathCombined = Path.Combine(this.Helper.DirectoryPath, "mySound.wav");
-            System.IO.FileStream stream = new System.IO.FileStream(filePathCombined, System.IO.FileMode.Open)
-                sound_effect = SoundEffect.FromStream(stream);*/
+            #region Custom Drop Item Sound
+            CueDefinition sa_drop_item = new CueDefinition();
+            sa_drop_item.name = "sa_drop_item";
+            sa_drop_item.instanceLimit = 1;
+            sa_drop_item.limitBehavior = CueDefinition.LimitBehavior.ReplaceOldest;
+            SoundEffect audio;
+            string filePathCombined = Path.Combine(this.Helper.DirectoryPath, "drop_item.wav");
+            using (FileStream stream = new(filePathCombined, FileMode.Open))
+            {
+                audio = SoundEffect.FromStream(stream);
+            }
+            sa_drop_item.SetSound(audio, Game1.audioEngine.GetCategoryIndex("Sound"), false);
+            Game1.soundBank.AddCue(sa_drop_item);
             #endregion
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
