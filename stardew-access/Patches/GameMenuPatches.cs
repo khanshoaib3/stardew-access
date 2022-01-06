@@ -283,7 +283,7 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static bool narrateHoveredItemInInventory(List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y, bool isInInventoryPage = false)
+        internal static bool narrateHoveredItemInInventory(List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y, bool giveExtraDetails = false)
         {
             #region Narrate hovered item
             for (int i = 0; i < inventory.Count; i++)
@@ -298,6 +298,9 @@ namespace stardew_access.Patches
                             string name = actualInventory[i].DisplayName;
                             int stack = actualInventory[i].Stack;
                             string quality = "";
+                            string healthNStamine = "";
+                            string buffs = "";
+                            string description = "";
 
                             #region Add quality of item
                             if (actualInventory[i] is StardewValley.Object && (actualInventory[i] as StardewValley.Object).quality > 0)
@@ -318,12 +321,61 @@ namespace stardew_access.Patches
                             }
                             #endregion
 
-                            if (stack > 1)
-                                toSpeak = $"{stack} {name} {quality}";
-                            else
-                                toSpeak = $"{name} {quality}";
+                            if (giveExtraDetails)
+                            {
+                                description = actualInventory[i].getDescription();
+                                #region Add health & stamina provided by the item
+                                if (actualInventory[i] is StardewValley.Object && (actualInventory[i] as StardewValley.Object).Edibility != -300)
+                                {
+                                    int stamina_recovery = (actualInventory[i] as StardewValley.Object).staminaRecoveredOnConsumption();
+                                    healthNStamine += $"{stamina_recovery} Energy";
+                                    if (stamina_recovery >= 0)
+                                    {
+                                        int health_recovery = (actualInventory[i] as StardewValley.Object).healthRecoveredOnConsumption();
+                                        healthNStamine += $"\n\t{health_recovery} Health";
+                                    }
+                                }
+                                #endregion
 
-                            MainClass.monitor.Log(actualInventory[i].getHoverBoxText(actualInventory[i]), LogLevel.Debug);
+                                #region Add buff items (effects like +1 walking speed)
+                                // These variables are taken from the game's code itself (IClickableMenu.cs -> 1016 line)
+                                bool edibleItem = actualInventory[i] != null && actualInventory[i] is StardewValley.Object && (int)(actualInventory[i] as StardewValley.Object).edibility != -300;
+                                string[] buffIconsToDisplay = (edibleItem && Game1.objectInformation[(actualInventory[i] as StardewValley.Object).parentSheetIndex].Split('/').Length > 7) ? actualInventory[i].ModifyItemBuffs(Game1.objectInformation[(actualInventory[i] as StardewValley.Object).parentSheetIndex].Split('/')[7].Split(' ')) : null;
+                                if (buffIconsToDisplay != null)
+                                {
+                                    for (int j = 0; j < buffIconsToDisplay.Length; j++)
+                                    {
+                                        string buffName = ((Convert.ToInt32(buffIconsToDisplay[j]) > 0) ? "+" : "") + buffIconsToDisplay[j] + " ";
+                                        if (j <= 11)
+                                        {
+                                            buffName = Game1.content.LoadString("Strings\\UI:ItemHover_Buff" + j, buffName);
+                                        }
+                                        try
+                                        {
+                                            int count = int.Parse(buffName.Substring(0, buffName.IndexOf(' ')));
+                                            if (count != 0)
+                                                buffs += $"{buffName}\n";
+                                        }
+                                        catch (Exception) { }
+                                    }
+                                }
+                                #endregion 
+                            }
+
+                            if (giveExtraDetails)
+                            {
+                                if (stack > 1)
+                                    toSpeak = $"{stack} {name} {quality}, \n{description}, \n{healthNStamine}, \n{buffs}";
+                                else
+                                    toSpeak = $"{name} {quality}, \n{description}, \n{healthNStamine}, \n{buffs}"; 
+                            }
+                            else
+                            {
+                                if (stack > 1)
+                                    toSpeak = $"{stack} {name} {quality}";
+                                else
+                                    toSpeak = $"{name} {quality}";
+                            }
                         }
                         else
                         {
