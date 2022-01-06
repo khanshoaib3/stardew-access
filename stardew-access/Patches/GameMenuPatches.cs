@@ -15,6 +15,24 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
 
+                #region Narrate the treasure recieved on breaking the geode
+                if (__instance.geodeTreasure != null)
+                {
+                    string name = __instance.geodeTreasure.DisplayName;
+                    int stack = __instance.geodeTreasure.Stack;
+
+                    string toSpeak = $"Recieved {stack} {name}";
+
+                    if (geodeMenuQueryKey != toSpeak)
+                    {
+                        geodeMenuQueryKey = toSpeak;
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                } 
+                #endregion
+
+                #region Narrate hovered buttons in the menu
                 if (__instance.geodeSpot != null && __instance.geodeSpot.containsPoint(x, y))
                 {
                     string toSpeak = "Place geode here";
@@ -60,11 +78,13 @@ namespace stardew_access.Patches
                         ScreenReader.say(toSpeak, true);
                     }
                     return;
-                }
+                } 
+                #endregion
 
+                #region Narrate hovered item
                 for (int i = 0; i < __instance.inventory.inventory.Count; i++)
                 {
-                    if(__instance.inventory.inventory[i].containsPoint(x, y))
+                    if (__instance.inventory.inventory[i].containsPoint(x, y))
                     {
                         string toSpeak = "";
                         if ((i + 1) <= __instance.inventory.actualInventory.Count)
@@ -74,7 +94,7 @@ namespace stardew_access.Patches
                                 string name = __instance.inventory.actualInventory[i].DisplayName;
                                 int stack = __instance.inventory.actualInventory[i].Stack;
 
-                                if(stack>1)
+                                if (stack > 1)
                                     toSpeak = $"{stack} {name}";
                                 else
                                     toSpeak = $"{name}";
@@ -99,7 +119,8 @@ namespace stardew_access.Patches
                         }
                         return;
                     }
-                }
+                } 
+                #endregion
             }
             catch (Exception e)
             {
