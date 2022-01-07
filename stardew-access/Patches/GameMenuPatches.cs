@@ -10,9 +10,42 @@ namespace stardew_access.Patches
     {
         internal static string hoveredItemQueryKey = "";
         internal static string geodeMenuQueryKey = "";
+        internal static string gameMenuQueryKey = "";
         internal static string itemGrabMenuQueryKey = "";
         internal static string craftingPageQueryKey = "";
         internal static string inventoryPageQueryKey = "";
+        internal static string exitPageQueryKey = "";
+        internal static string optionsPageQueryKey = "";
+
+        internal static void GameMenuPatch(GameMenu __instance)
+        {
+            try
+            {
+                // Continue if only in the Inventory Page or Crafting Page
+                if (__instance.currentTab != 0 && __instance.currentTab != 4 && __instance.currentTab != 6 && __instance.currentTab != 7)
+                    return;
+
+                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+
+                for(int i=0; i<__instance.tabs.Count; i++)
+                {
+                    if(__instance.tabs[i].containsPoint(x, y))
+                    {
+                        string toSpeak = $"{GameMenu.getLabelOfTabFromIndex(i)} Tab";
+                        if (gameMenuQueryKey != toSpeak)
+                        {
+                            gameMenuQueryKey = toSpeak;
+                            ScreenReader.say(toSpeak, true);
+                        }
+                        return;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
 
         internal static void GeodeMenuPatch(GeodeMenu __instance)
         {
@@ -122,6 +155,7 @@ namespace stardew_access.Patches
                     {
                         itemGrabMenuQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
+                        gameMenuQueryKey = "";
                         ScreenReader.say(toSpeak, true);
                     }
                     return;
@@ -132,6 +166,7 @@ namespace stardew_access.Patches
                     if (itemGrabMenuQueryKey != toSpeak)
                     {
                         itemGrabMenuQueryKey = toSpeak;
+                        gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
                         ScreenReader.say(toSpeak, true);
                     }
@@ -144,6 +179,7 @@ namespace stardew_access.Patches
                     if (itemGrabMenuQueryKey != toSpeak)
                     {
                         itemGrabMenuQueryKey = toSpeak;
+                        gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
                         ScreenReader.say(toSpeak, true);
                         Game1.playSound("sa_drop_item");
@@ -164,6 +200,7 @@ namespace stardew_access.Patches
                     if (itemGrabMenuQueryKey != toSpeak)
                     {
                         itemGrabMenuQueryKey = toSpeak;
+                        gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
                         ScreenReader.say(toSpeak, true);
                     }
@@ -174,12 +211,14 @@ namespace stardew_access.Patches
                 #region Narrate hovered item
                 if(narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
+                    gameMenuQueryKey = "";
                     itemGrabMenuQueryKey = "";
                     return;
                 }
 
                 if (narrateHoveredItemInInventory(__instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
                 {
+                    gameMenuQueryKey = "";
                     itemGrabMenuQueryKey = "";
                     return;
                 }
@@ -317,6 +356,7 @@ namespace stardew_access.Patches
                     if (craftingPageQueryKey != toSpeak)
                     {
                         craftingPageQueryKey = toSpeak;
+                        gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
                         ScreenReader.say(toSpeak, true);
                     }
@@ -327,6 +367,7 @@ namespace stardew_access.Patches
                 #region Narrate hovered item
                 if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                 {
+                    gameMenuQueryKey = "";
                     craftingPageQueryKey = "";
                     return;
                 }
@@ -366,6 +407,7 @@ namespace stardew_access.Patches
                     if (inventoryPageQueryKey != toSpeak)
                     {
                         inventoryPageQueryKey = toSpeak;
+                        gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
                         ScreenReader.say(toSpeak, true);
                         Game1.playSound("sa_drop_item");
@@ -461,6 +503,7 @@ namespace stardew_access.Patches
                         if (inventoryPageQueryKey != toSpeak)
                         {
                             inventoryPageQueryKey = toSpeak;
+                            gameMenuQueryKey = "";
                             hoveredItemQueryKey = "";
                             ScreenReader.say(toSpeak, true);
                         }
@@ -472,6 +515,7 @@ namespace stardew_access.Patches
                 #region Narrate hovered item
                 if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
+                    gameMenuQueryKey = "";
                     inventoryPageQueryKey = "";
                     return;
                 }
@@ -520,8 +564,13 @@ namespace stardew_access.Patches
                             toSpeak = $"{toSpeak} Options:";
                         }
 
-                        ScreenReader.sayWithChecker(toSpeak, true);
-                        break;
+                        if (optionsPageQueryKey != toSpeak)
+                        {
+                            gameMenuQueryKey = "";
+                            optionsPageQueryKey = toSpeak;
+                            ScreenReader.say(toSpeak, true);
+                        }
+                        return;
                     }
                 }
             }
@@ -538,12 +587,26 @@ namespace stardew_access.Patches
                 if (__instance.exitToTitle.visible &&
                         __instance.exitToTitle.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
                 {
-                    ScreenReader.sayWithChecker("Exit to Title Button", true);
+                    string toSpeak = "Exit to Title Button";
+                    if (exitPageQueryKey != toSpeak)
+                    {
+                        gameMenuQueryKey = "";
+                        exitPageQueryKey = toSpeak;
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
                 }
                 if (__instance.exitToDesktop.visible &&
                     __instance.exitToDesktop.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
                 {
-                    ScreenReader.sayWithChecker("Exit to Desktop Button", true);
+                    string toSpeak = "Exit to Desktop Button";
+                    if (exitPageQueryKey != toSpeak)
+                    {
+                        gameMenuQueryKey = "";
+                        exitPageQueryKey = toSpeak;
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
                 }
             }
             catch (Exception e)
@@ -668,11 +731,6 @@ namespace stardew_access.Patches
                 }
             }
             #endregion
-            return false;
-        }
-
-        internal static bool narrateHoveredCraftingRecipe()
-        {
             return false;
         }
     }

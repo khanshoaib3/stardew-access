@@ -131,6 +131,12 @@ namespace stardew_access.Patches
                 if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is CraftingPage)
                     return;
 
+                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is OptionsPage)
+                    return;
+
+                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is ExitPage)
+                    return;
+
                 if (Game1.activeClickableMenu is ItemGrabMenu)
                     return; 
                 #endregion

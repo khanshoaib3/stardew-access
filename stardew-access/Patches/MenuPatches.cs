@@ -272,7 +272,23 @@ namespace stardew_access.Patches
 
                 if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is CraftingPage)
                 {
-                    GameMenuPatches.craftingPageQueryKey = ""; 
+                    GameMenuPatches.craftingPageQueryKey = "";
+                }
+
+                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is ExitPage)
+                {
+                    GameMenuPatches.exitPageQueryKey = "";
+                }
+
+                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is CraftingPage)
+                {
+                    GameMenuPatches.craftingPageQueryKey = "";
+                }
+
+                // This should be after checking all pages/tabs in the GameMenu
+                if (Game1.activeClickableMenu is GameMenu)
+                {
+                    GameMenuPatches.gameMenuQueryKey = "";
                 }
 
                 if(__instance is ItemGrabMenu)
