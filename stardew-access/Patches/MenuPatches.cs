@@ -256,6 +256,27 @@ namespace stardew_access.Patches
             }
         }
 
+        internal static void Game1ExitActiveMenuPatch()
+        {
+            try
+            {
+                if (Game1.activeClickableMenu is GameMenu)
+                {
+                    GameMenuPatches.gameMenuQueryKey = "";
+                    GameMenuPatches.craftingPageQueryKey = "";
+                    GameMenuPatches.inventoryPageQueryKey = "";
+                    GameMenuPatches.exitPageQueryKey = "";
+                    GameMenuPatches.optionsPageQueryKey = "";
+                    GameMenuPatches.currentSelectedCraftingRecipe = -1;
+                    GameMenuPatches.isSelectingRecipe = false;
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
+
         internal static void IClickableMenuOnExitPatch(IClickableMenu __instance)
         {
             try
@@ -263,32 +284,6 @@ namespace stardew_access.Patches
                 if(__instance is GeodeMenu)
                 {
                     GameMenuPatches.geodeMenuQueryKey = "";
-                }
-
-                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is InventoryPage)
-                {
-                    GameMenuPatches.inventoryPageQueryKey = "";
-                }
-
-                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is CraftingPage)
-                {
-                    GameMenuPatches.craftingPageQueryKey = "";
-                }
-
-                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is ExitPage)
-                {
-                    GameMenuPatches.exitPageQueryKey = "";
-                }
-
-                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is CraftingPage)
-                {
-                    GameMenuPatches.craftingPageQueryKey = "";
-                }
-
-                // This should be after checking all pages/tabs in the GameMenu
-                if (Game1.activeClickableMenu is GameMenu)
-                {
-                    GameMenuPatches.gameMenuQueryKey = "";
                 }
 
                 if(__instance is ItemGrabMenu)

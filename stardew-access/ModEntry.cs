@@ -200,6 +200,10 @@ namespace stardew_access
                     original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.exitThisMenu)),
                     postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.IClickableMenuOnExitPatch))
                 );
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(Game1), nameof(Game1.exitActiveMenu)),
+                    prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.Game1ExitActiveMenuPatch))
+                );
             #endregion
 
             #endregion

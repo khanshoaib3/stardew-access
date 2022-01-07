@@ -16,6 +16,8 @@ namespace stardew_access.Patches
         internal static string inventoryPageQueryKey = "";
         internal static string exitPageQueryKey = "";
         internal static string optionsPageQueryKey = "";
+        internal static int currentSelectedCraftingRecipe = -1;
+        internal static bool isSelectingRecipe = false;
 
         internal static void GameMenuPatch(GameMenu __instance)
         {
@@ -231,11 +233,30 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void CraftingPagePatch(CraftingPage __instance, CraftingRecipe ___hoverRecipe)
+        internal static void CraftingPagePatch(CraftingPage __instance, CraftingRecipe ___hoverRecipe, int ___currentCraftingPage)
         {
             try
             {
                 int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+                bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
+                bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
+                bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
+
+                if (isLeftShiftPressed && isIPressed && __instance.inventory != null)
+                {
+                    // snap to first inventory slot
+                    __instance.inventory.inventory[0].snapMouseCursorToCenter();
+                    currentSelectedCraftingRecipe = -1;
+                }
+                else if (!isLeftShiftPressed && isIPressed && __instance.inventory != null)
+                {
+                    // snap to first crafting recipe
+                    __instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(0).Key.snapMouseCursorToCenter();
+                    currentSelectedCraftingRecipe = 0;
+                } else if (isCPressed && !isSelectingRecipe)
+                {
+                    _ = CycleThroughRecipies(__instance.pagesOfCraftingRecipes, ___currentCraftingPage);
+                }
 
                 #region Narrate buttons in the menu
                 if (__instance.upButton != null && __instance.upButton.containsPoint(x, y))
@@ -379,6 +400,20 @@ namespace stardew_access.Patches
             }
         }
 
+        private static async Task CycleThroughRecipies(List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes, int ___currentCraftingPage)
+        {
+            isSelectingRecipe = true;
+
+            currentSelectedCraftingRecipe++;
+            if (currentSelectedCraftingRecipe < 0 || currentSelectedCraftingRecipe >= pagesOfCraftingRecipes[0].Count)
+                currentSelectedCraftingRecipe = 0;
+
+            pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(currentSelectedCraftingRecipe).Key.snapMouseCursorToCenter();
+
+            await Task.Delay(200);
+            isSelectingRecipe = false;
+        }
+
         // This method is used to get the inventory items to check if the player has enough ingredients for a recipe
         // Taken from CraftingPage.cs -> 169 line
         internal static IList<Item> getContainerContents(List<Chest> materialContainers)
@@ -415,8 +450,34 @@ namespace stardew_access.Patches
                     return;
                 }
 
+                if (__instance.organizeButton != null && __instance.organizeButton.containsPoint(x, y))
+                {
+                    string toSpeak = "Organize Inventory Button";
+                    if (inventoryPageQueryKey != toSpeak)
+                    {
+                        inventoryPageQueryKey = toSpeak;
+                        gameMenuQueryKey = "";
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+
+                if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
+                {
+                    string toSpeak = "Trash Can";
+                    if (inventoryPageQueryKey != toSpeak)
+                    {
+                        inventoryPageQueryKey = toSpeak;
+                        gameMenuQueryKey = "";
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+
                 #region Narrate equipment slots
-                for(int i=0; i<__instance.equipmentIcons.Count; i++)
+                for (int i=0; i<__instance.equipmentIcons.Count; i++)
                 {
                     if (__instance.equipmentIcons[i].containsPoint(x, y))
                     {
