@@ -2,6 +2,7 @@
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Objects;
 
 namespace stardew_access.Patches
 {
@@ -256,8 +257,10 @@ namespace stardew_access.Patches
                     string description = "";
                     string ingredients = "";
                     string buffs = "";
+                    string craftable = "";
 
                     description = $"Description:\n{___hoverRecipe.description}";
+                    craftable = ___hoverRecipe.doesFarmerHaveIngredientsInInventory(getContainerContents(__instance._materialContainers)) ? "Craftable" : "Not Craftable";
 
                     #region Crafting ingredients
                     ingredients = "Ingredients:\n";
@@ -309,7 +312,7 @@ namespace stardew_access.Patches
                     #endregion
 
 
-                    string toSpeak = $"{numberOfProduce} {name}, \n\t{ingredients}, \n\t{description}, \n\t{buffs}";
+                    string toSpeak = $"{numberOfProduce} {name}, {craftable}, \n\t{ingredients}, \n\t{description} \n\t{buffs}";
 
                     if (craftingPageQueryKey != toSpeak)
                     {
@@ -333,6 +336,22 @@ namespace stardew_access.Patches
             {
                 MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
+        }
+
+        // This method is used to get the inventory items to check if the player has enough ingredients for a recipe
+        // Taken from CraftingPage.cs -> 169 line
+        internal static IList<Item> getContainerContents(List<Chest> materialContainers)
+        {
+            if (materialContainers == null)
+            {
+                return null;
+            }
+            List<Item> items = new List<Item>();
+            for (int i = 0; i < materialContainers.Count; i++)
+            {
+                items.AddRange(materialContainers[i].items);
+            }
+            return items;
         }
 
         internal static void InventoryPagePatch(InventoryPage __instance)
