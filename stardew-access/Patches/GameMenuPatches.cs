@@ -231,9 +231,12 @@ namespace stardew_access.Patches
 
                 if(isLeftShiftPressed && isIPressed && __instance.inventory.inventory.Count > 0)
                 {
+                    __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
                     __instance.inventory.inventory[0].snapMouseCursorToCenter();
-                }else if(!isLeftShiftPressed && isIPressed && __instance.ItemsToGrabMenu.inventory.Count > 0)
+                }
+                else if(!isLeftShiftPressed && isIPressed && __instance.ItemsToGrabMenu.inventory.Count > 0 && !__instance.shippingBin)
                 {
+                    __instance.setCurrentlySnappedComponentTo(__instance.ItemsToGrabMenu.inventory[0].myID);
                     __instance.ItemsToGrabMenu.inventory[0].snapMouseCursorToCenter();
                 }
 
@@ -333,18 +336,20 @@ namespace stardew_access.Patches
                 if (isLeftShiftPressed && isIPressed && __instance.inventory.inventory.Count > 0)
                 {
                     // snap to first inventory slot
+                    __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
                     __instance.inventory.inventory[0].snapMouseCursorToCenter();
                     currentSelectedCraftingRecipe = -1;
                 }
                 else if (!isLeftShiftPressed && isIPressed && __instance.pagesOfCraftingRecipes[___currentCraftingPage].Count>0)
                 {
                     // snap to first crafting recipe
+                    __instance.setCurrentlySnappedComponentTo(__instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(0).Key.myID);
                     __instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(0).Key.snapMouseCursorToCenter();
                     currentSelectedCraftingRecipe = 0;
                 } 
                 else if (isCPressed && !isSelectingRecipe)
                 {
-                    _ = CycleThroughRecipies(__instance.pagesOfCraftingRecipes, ___currentCraftingPage);
+                    _ = CycleThroughRecipies(__instance.pagesOfCraftingRecipes, ___currentCraftingPage, __instance);
                 }
 
                 #region Narrate buttons in the menu
@@ -489,7 +494,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static async Task CycleThroughRecipies(List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes, int ___currentCraftingPage)
+        private static async Task CycleThroughRecipies(List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes, int ___currentCraftingPage, CraftingPage __instance)
         {
             isSelectingRecipe = true;
 
@@ -497,6 +502,7 @@ namespace stardew_access.Patches
             if (currentSelectedCraftingRecipe < 0 || currentSelectedCraftingRecipe >= pagesOfCraftingRecipes[0].Count)
                 currentSelectedCraftingRecipe = 0;
 
+            __instance.setCurrentlySnappedComponentTo(pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(currentSelectedCraftingRecipe).Key.myID);
             pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(currentSelectedCraftingRecipe).Key.snapMouseCursorToCenter();
 
             await Task.Delay(200);
