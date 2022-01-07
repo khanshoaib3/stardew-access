@@ -138,7 +138,10 @@ namespace stardew_access.Patches
                     return;
 
                 if (Game1.activeClickableMenu is ItemGrabMenu)
-                    return; 
+                    return;
+
+                if (Game1.activeClickableMenu is ShopMenu)
+                    return;
                 #endregion
 
                 StringBuilder toSpeak = new StringBuilder(" ");

@@ -286,9 +286,14 @@ namespace stardew_access.Patches
                     GameMenuPatches.geodeMenuQueryKey = "";
                 }
 
-                if(__instance is ItemGrabMenu)
+                if (__instance is ItemGrabMenu)
                 {
                     GameMenuPatches.itemGrabMenuQueryKey = "";
+                }
+
+                if (__instance is ShopMenu)
+                {
+                    GameMenuPatches.shopMenuQueryKey = "";
                 }
 
                 GameMenuPatches.hoveredItemQueryKey = "";

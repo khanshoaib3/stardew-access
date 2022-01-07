@@ -16,8 +16,96 @@ namespace stardew_access.Patches
         internal static string inventoryPageQueryKey = "";
         internal static string exitPageQueryKey = "";
         internal static string optionsPageQueryKey = "";
+        internal static string shopMenuQueryKey = "";
         internal static int currentSelectedCraftingRecipe = -1;
         internal static bool isSelectingRecipe = false;
+
+        internal static void ShopMenuPatch(ShopMenu __instance)
+        {
+            try
+            {
+                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+                bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
+                bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
+
+                if (isLeftShiftPressed && isIPressed && __instance.inventory.inventory.Count>0)
+                {
+                    __instance.inventory.inventory[0].snapMouseCursorToCenter();
+                    __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
+                }
+                else if (!isLeftShiftPressed && isIPressed && __instance.forSaleButtons.Count>0)
+                {
+                    __instance.forSaleButtons[0].snapMouseCursorToCenter();
+                    __instance.setCurrentlySnappedComponentTo(__instance.forSaleButtons[0].myID);
+                }
+
+                #region Narrate buttons in the menu
+                if (__instance.inventory.dropItemInvisibleButton != null && __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
+                {
+                    string toSpeak = "Drop Item";
+                    if (shopMenuQueryKey != toSpeak)
+                    {
+                        shopMenuQueryKey = toSpeak;
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                        Game1.playSound("sa_drop_item");
+                    }
+                    return;
+                }
+                if (__instance.upArrow != null && __instance.upArrow.containsPoint(x, y))
+                {
+                    string toSpeak = "Up Arrow Button";
+                    if (shopMenuQueryKey != toSpeak)
+                    {
+                        shopMenuQueryKey = toSpeak;
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+                if (__instance.downArrow != null && __instance.downArrow.containsPoint(x, y))
+                {
+                    string toSpeak = "Down Arrow Button";
+                    if (shopMenuQueryKey != toSpeak)
+                    {
+                        shopMenuQueryKey = toSpeak;
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+                #endregion
+
+                #region Narrate hovered item
+                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, hoverPrice:__instance.hoverPrice))
+                {
+                    shopMenuQueryKey = "";
+                    return;
+                }
+                #endregion
+
+                #region Narrate hovered selling item
+                if (__instance.hoveredItem != null)
+                {
+                    string name = __instance.hoveredItem.DisplayName;
+                    string price = $"Buy Price: {__instance.hoverPrice} g";
+                    string description = __instance.hoveredItem.getDescription();
+
+                    string toSpeak = $"{name}, {price}, \n\t{description}";
+                    if (shopMenuQueryKey != toSpeak)
+                    {
+                        shopMenuQueryKey = toSpeak;
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
+                }
+                #endregion
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
 
         internal static void GameMenuPatch(GameMenu __instance)
         {
@@ -141,10 +229,10 @@ namespace stardew_access.Patches
                 bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
                 bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
-                if(isLeftShiftPressed && isIPressed && __instance.inventory != null)
+                if(isLeftShiftPressed && isIPressed && __instance.inventory.inventory.Count > 0)
                 {
                     __instance.inventory.inventory[0].snapMouseCursorToCenter();
-                }else if(!isLeftShiftPressed && isIPressed && __instance.ItemsToGrabMenu != null)
+                }else if(!isLeftShiftPressed && isIPressed && __instance.ItemsToGrabMenu.inventory.Count > 0)
                 {
                     __instance.ItemsToGrabMenu.inventory[0].snapMouseCursorToCenter();
                 }
@@ -242,18 +330,19 @@ namespace stardew_access.Patches
                 bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
                 bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
-                if (isLeftShiftPressed && isIPressed && __instance.inventory != null)
+                if (isLeftShiftPressed && isIPressed && __instance.inventory.inventory.Count > 0)
                 {
                     // snap to first inventory slot
                     __instance.inventory.inventory[0].snapMouseCursorToCenter();
                     currentSelectedCraftingRecipe = -1;
                 }
-                else if (!isLeftShiftPressed && isIPressed && __instance.inventory != null)
+                else if (!isLeftShiftPressed && isIPressed && __instance.pagesOfCraftingRecipes[___currentCraftingPage].Count>0)
                 {
                     // snap to first crafting recipe
                     __instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(0).Key.snapMouseCursorToCenter();
                     currentSelectedCraftingRecipe = 0;
-                } else if (isCPressed && !isSelectingRecipe)
+                } 
+                else if (isCPressed && !isSelectingRecipe)
                 {
                     _ = CycleThroughRecipies(__instance.pagesOfCraftingRecipes, ___currentCraftingPage);
                 }
@@ -436,6 +525,7 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
 
+                #region Narrate buttons in the menu
                 if (__instance.inventory.dropItemInvisibleButton != null && __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
                 {
                     string toSpeak = "Drop Item";
@@ -474,7 +564,8 @@ namespace stardew_access.Patches
                         ScreenReader.say(toSpeak, true);
                     }
                     return;
-                }
+                } 
+                #endregion
 
                 #region Narrate equipment slots
                 for (int i=0; i<__instance.equipmentIcons.Count; i++)
@@ -672,12 +763,11 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-
                 MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
-        internal static bool narrateHoveredItemInInventory(List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y, bool giveExtraDetails = false)
+        internal static bool narrateHoveredItemInInventory(List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y, bool giveExtraDetails = false, int hoverPrice = -1)
         {
             #region Narrate hovered item
             for (int i = 0; i < inventory.Count; i++)
@@ -695,6 +785,7 @@ namespace stardew_access.Patches
                             string healthNStamine = "";
                             string buffs = "";
                             string description = "";
+                            string price = "";
 
                             #region Add quality of item
                             if (actualInventory[i] is StardewValley.Object && (actualInventory[i] as StardewValley.Object).quality > 0)
@@ -756,19 +847,24 @@ namespace stardew_access.Patches
                                 #endregion 
                             }
 
+                            if (hoverPrice != -1)
+                            {
+                                price = $"Sell Price: {hoverPrice} g";
+                            }
+
                             if (giveExtraDetails)
                             {
                                 if (stack > 1)
-                                    toSpeak = $"{stack} {name} {quality}, \n{description}, \n{healthNStamine}, \n{buffs}";
+                                    toSpeak = $"{stack} {name} {quality}, \n{price}, \n{description}, \n{healthNStamine}, \n{buffs}";
                                 else
-                                    toSpeak = $"{name} {quality}, \n{description}, \n{healthNStamine}, \n{buffs}"; 
+                                    toSpeak = $"{name} {quality}, \n{price}, \n{description}, \n{healthNStamine}, \n{buffs}"; 
                             }
                             else
                             {
                                 if (stack > 1)
-                                    toSpeak = $"{stack} {name} {quality}";
+                                    toSpeak = $"{stack} {name} {quality}, \n{price}";
                                 else
-                                    toSpeak = $"{name} {quality}";
+                                    toSpeak = $"{name} {quality}, \n{price}";
                             }
                         }
                         else
