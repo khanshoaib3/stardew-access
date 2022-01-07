@@ -373,6 +373,102 @@ namespace stardew_access.Patches
                     return;
                 }
 
+                #region Narrate equipment slots
+                for(int i=0; i<__instance.equipmentIcons.Count; i++)
+                {
+                    if (__instance.equipmentIcons[i].containsPoint(x, y))
+                    {
+                        string toSpeak = "";
+
+                        #region Get name and description of the item
+                        switch (__instance.equipmentIcons[i].name)
+                        {
+                            case "Hat":
+                                {
+                                    if (Game1.player.hat.Value != null)
+                                    {
+                                        toSpeak = $"{Game1.player.hat.Value.DisplayName}, {Game1.player.hat.Value.getDescription()}";
+                                    }
+                                    else
+                                    {
+                                        toSpeak = "Hat slot";
+                                    }
+                                }
+                                break;
+                            case "Left Ring":
+                                {
+                                    if (Game1.player.leftRing.Value != null)
+                                    {
+                                        toSpeak = $"{Game1.player.leftRing.Value.DisplayName}, {Game1.player.leftRing.Value.getDescription()}";
+                                    }
+                                    else
+                                    {
+                                        toSpeak = "Left Ring slot";
+                                    }
+                                }
+                                break;
+                            case "Right Ring":
+                                {
+                                    if (Game1.player.rightRing.Value != null)
+                                    {
+                                        toSpeak = $"{Game1.player.rightRing.Value.DisplayName}, {Game1.player.rightRing.Value.getDescription()}";
+                                    }
+                                    else
+                                    {
+                                        toSpeak = "Right ring slot";
+                                    }
+                                }
+                                break;
+                            case "Boots":
+                                {
+                                    if (Game1.player.boots.Value != null)
+                                    {
+                                        toSpeak = $"{Game1.player.boots.Value.DisplayName}, {Game1.player.boots.Value.getDescription()}";
+                                    }
+                                    else
+                                    {
+                                        toSpeak = "Boots slot";
+                                    }
+                                }
+                                break;
+                            case "Shirt":
+                                {
+                                    if (Game1.player.shirtItem.Value != null)
+                                    {
+                                        toSpeak = $"{Game1.player.shirtItem.Value.DisplayName}, {Game1.player.shirtItem.Value.getDescription()}";
+                                    }
+                                    else
+                                    {
+                                        toSpeak = "Shirt slot";
+                                    }
+                                }
+                                break;
+                            case "Pants":
+                                {
+                                    if (Game1.player.pantsItem.Value != null)
+                                    {
+                                        toSpeak = $"{Game1.player.pantsItem.Value.DisplayName}, {Game1.player.pantsItem.Value.getDescription()}";
+                                    }
+                                    else
+                                    {
+                                        toSpeak = "Pants slot";
+                                    }
+                                }
+                                break;
+                        } 
+                        #endregion
+
+                        if (inventoryPageQueryKey != toSpeak)
+                        {
+                            inventoryPageQueryKey = toSpeak;
+                            hoveredItemQueryKey = "";
+                            ScreenReader.say(toSpeak, true);
+                        }
+                        return;
+                    }
+                }
+                #endregion
+
                 #region Narrate hovered item
                 if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
