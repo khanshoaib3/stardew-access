@@ -120,6 +120,7 @@ namespace stardew_access.Patches
                     if(itemGrabMenuQueryKey != toSpeak)
                     {
                         itemGrabMenuQueryKey = toSpeak;
+                        hoveredItemQueryKey = "";
                         ScreenReader.say(toSpeak, true);
                     }
                     return;
@@ -130,6 +131,7 @@ namespace stardew_access.Patches
                     if (itemGrabMenuQueryKey != toSpeak)
                     {
                         itemGrabMenuQueryKey = toSpeak;
+                        hoveredItemQueryKey = "";
                         ScreenReader.say(toSpeak, true);
                     }
                     return;
@@ -141,6 +143,7 @@ namespace stardew_access.Patches
                     if (itemGrabMenuQueryKey != toSpeak)
                     {
                         itemGrabMenuQueryKey = toSpeak;
+                        hoveredItemQueryKey = "";
                         ScreenReader.say(toSpeak, true);
                         Game1.playSound("sa_drop_item");
                     }
@@ -157,17 +160,28 @@ namespace stardew_access.Patches
 
                     string toSpeak = $"Last Shipped: {count} {name}";
 
-                    ScreenReader.sayWithMenuChecker(toSpeak, true);
+                    if (itemGrabMenuQueryKey != toSpeak)
+                    {
+                        itemGrabMenuQueryKey = toSpeak;
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
                     return;
                 } 
                 #endregion
 
                 #region Narrate hovered item
                 if(narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                {
+                    itemGrabMenuQueryKey = "";
                     return;
+                }
 
-                if(narrateHoveredItemInInventory(__instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
+                if (narrateHoveredItemInInventory(__instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
+                {
+                    itemGrabMenuQueryKey = "";
                     return;
+                }
 
                 #endregion
             }
@@ -177,35 +191,143 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void CraftingPagePatch(CraftingPage __instance)
+        internal static void CraftingPagePatch(CraftingPage __instance, CraftingRecipe ___hoverRecipe)
         {
             try
             {
                 int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
 
-                if(__instance.upButton != null && __instance.upButton.containsPoint(x, y))
+                #region Narrate buttons in the menu
+                if (__instance.upButton != null && __instance.upButton.containsPoint(x, y))
                 {
-                    ScreenReader.sayWithMenuChecker("Previous Recipe List", true);
+                    string toSpeak = "Previous Recipe List";
+                    if (craftingPageQueryKey != toSpeak)
+                    {
+                        craftingPageQueryKey = toSpeak;
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
                     return;
                 }
-                
+
                 if (__instance.downButton != null && __instance.downButton.containsPoint(x, y))
                 {
-                    ScreenReader.sayWithMenuChecker("Next Recipe List", true);
+                    string toSpeak = "Next Recipe List";
+                    if (craftingPageQueryKey != toSpeak)
+                    {
+                        craftingPageQueryKey = toSpeak;
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
                     return;
                 }
 
-                if(__instance.trashCan.containsPoint(x, y))
+                if (__instance.trashCan.containsPoint(x, y))
                 {
-                    ScreenReader.sayWithMenuChecker("Trash Can", true);
+                    string toSpeak = "Trash Can";
+                    if (craftingPageQueryKey != toSpeak)
+                    {
+                        craftingPageQueryKey = toSpeak;
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
                     return;
                 }
 
-                if(__instance.dropItemInvisibleButton.containsPoint(x, y))
+                if (__instance.dropItemInvisibleButton.containsPoint(x, y))
                 {
-                    ScreenReader.sayWithMenuChecker("Drop Item", true);
+                    string toSpeak = "Drop Item";
+                    if (craftingPageQueryKey != toSpeak)
+                    {
+                        craftingPageQueryKey = toSpeak;
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                        Game1.playSound("sa_drop_item");
+                    }
                     return;
                 }
+                #endregion
+
+                #region Narrate hovered recipe
+                if (___hoverRecipe != null)
+                {
+                    string name = ___hoverRecipe.DisplayName;
+                    int numberOfProduce = ___hoverRecipe.numberProducedPerCraft;
+                    string description = "";
+                    string ingredients = "";
+                    string buffs = "";
+
+                    description = $"Description:\n{___hoverRecipe.description}";
+
+                    #region Crafting ingredients
+                    ingredients = "Ingredients:\n";
+                    for (int i = 0; i < ___hoverRecipe.recipeList.Count; i++)
+                    {
+                        int recipeCount = ___hoverRecipe.recipeList.ElementAt(i).Value;
+                        int recipeItem = ___hoverRecipe.recipeList.ElementAt(i).Key;
+                        string recipeName = ___hoverRecipe.getNameFromIndex(recipeItem);
+
+                        ingredients += $" ,{recipeCount} {recipeName}";
+                    }
+                    #endregion
+
+                    #region Health & stamina and buff items (effects like +1 walking speed)
+                    Item producesItem = ___hoverRecipe.createItem();
+                    if (producesItem is StardewValley.Object && (producesItem as StardewValley.Object).Edibility != -300)
+                    {
+                        int stamina_recovery = (producesItem as StardewValley.Object).staminaRecoveredOnConsumption();
+                        buffs += $"{stamina_recovery} Energy";
+                        if (stamina_recovery >= 0)
+                        {
+                            int health_recovery = (producesItem as StardewValley.Object).healthRecoveredOnConsumption();
+                            buffs += $"\n{health_recovery} Health";
+                        }
+                    }
+                    // These variables are taken from the game's code itself (IClickableMenu.cs -> 1016 line)
+                    bool edibleItem = producesItem != null && producesItem is StardewValley.Object && (int)(producesItem as StardewValley.Object).edibility != -300;
+                    string[] buffIconsToDisplay = (edibleItem && Game1.objectInformation[(producesItem as StardewValley.Object).parentSheetIndex].Split('/').Length > 7) ? producesItem.ModifyItemBuffs(Game1.objectInformation[(producesItem as StardewValley.Object).parentSheetIndex].Split('/')[7].Split(' ')) : null;
+                    if (buffIconsToDisplay != null)
+                    {
+                        for (int j = 0; j < buffIconsToDisplay.Length; j++)
+                        {
+                            string buffName = ((Convert.ToInt32(buffIconsToDisplay[j]) > 0) ? "+" : "") + buffIconsToDisplay[j] + " ";
+                            if (j <= 11)
+                            {
+                                buffName = Game1.content.LoadString("Strings\\UI:ItemHover_Buff" + j, buffName);
+                            }
+                            try
+                            {
+                                int count = int.Parse(buffName.Substring(0, buffName.IndexOf(' ')));
+                                if (count != 0)
+                                    buffs += $"{buffName}\n";
+                            }
+                            catch (Exception) { }
+                        }
+
+                        buffs = $"Buffs and boosts:\n {buffs}";
+                    }
+                    #endregion
+
+
+                    string toSpeak = $"{numberOfProduce} {name}, \n\t{ingredients}, \n\t{description}, \n\t{buffs}";
+
+                    if (craftingPageQueryKey != toSpeak)
+                    {
+                        craftingPageQueryKey = toSpeak;
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+                #endregion
+
+                #region Narrate hovered item
+                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                {
+                    craftingPageQueryKey = "";
+                    return;
+                }
+                #endregion
             }
             catch (Exception e)
             {
@@ -221,13 +343,23 @@ namespace stardew_access.Patches
 
                 if (__instance.inventory.dropItemInvisibleButton != null && __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
                 {
-                    ScreenReader.sayWithMenuChecker("Drop Item", true);
+                    string toSpeak = "Drop Item";
+                    if (inventoryPageQueryKey != toSpeak)
+                    {
+                        inventoryPageQueryKey = toSpeak;
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                        Game1.playSound("sa_drop_item");
+                    }
                     return;
                 }
 
                 #region Narrate hovered item
-                if(narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                {
                     inventoryPageQueryKey = "";
+                    return;
+                }
                 #endregion
             }
             catch (Exception e)
@@ -421,6 +553,11 @@ namespace stardew_access.Patches
                 }
             }
             #endregion
+            return false;
+        }
+
+        internal static bool narrateHoveredCraftingRecipe()
+        {
             return false;
         }
     }

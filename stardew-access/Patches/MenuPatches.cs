@@ -265,7 +265,22 @@ namespace stardew_access.Patches
                     GameMenuPatches.geodeMenuQueryKey = "";
                 }
 
-                
+                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is InventoryPage)
+                {
+                    GameMenuPatches.inventoryPageQueryKey = "";
+                }
+
+                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is CraftingPage)
+                {
+                    GameMenuPatches.craftingPageQueryKey = ""; 
+                }
+
+                if(__instance is ItemGrabMenu)
+                {
+                    GameMenuPatches.itemGrabMenuQueryKey = "";
+                }
+
+                GameMenuPatches.hoveredItemQueryKey = "";
             }
             catch (Exception e)
             {
