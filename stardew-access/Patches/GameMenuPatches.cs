@@ -77,7 +77,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, hoverPrice:__instance.hoverPrice))
+                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, hoverPrice: __instance.hoverPrice))
                 {
                     shopMenuQueryKey = "";
                     return;
@@ -90,8 +90,29 @@ namespace stardew_access.Patches
                     string name = __instance.hoveredItem.DisplayName;
                     string price = $"Buy Price: {__instance.hoverPrice} g";
                     string description = __instance.hoveredItem.getDescription();
+                    string requirements = "";
 
-                    string toSpeak = $"{name}, {price}, \n\t{description}";
+                    #region Narrate required items for item
+                    int itemIndex = -1, itemAmount = 5;
+
+                    if (__instance.itemPriceAndStock[__instance.hoveredItem].Length > 2)
+                        itemIndex = __instance.itemPriceAndStock[__instance.hoveredItem][2];
+
+                    if (__instance.itemPriceAndStock[__instance.hoveredItem].Length > 3)
+                        itemAmount = __instance.itemPriceAndStock[__instance.hoveredItem][3];
+
+                    if (itemIndex != -1)
+                    {
+                        string itemName = Game1.objectInformation[itemIndex].Split('/')[0];
+
+                        if (itemAmount != -1)
+                            requirements = $"Required: {itemAmount} {itemName}";
+                        else
+                            requirements = $"Required: {itemName}";
+                    } 
+                    #endregion
+
+                    string toSpeak = $"{name}, {requirements}, {price}, \n\t{description}";
                     if (shopMenuQueryKey != toSpeak)
                     {
                         shopMenuQueryKey = toSpeak;
@@ -773,7 +794,7 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static bool narrateHoveredItemInInventory(List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y, bool giveExtraDetails = false, int hoverPrice = -1)
+        internal static bool narrateHoveredItemInInventory(List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y, bool giveExtraDetails = false, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1)
         {
             #region Narrate hovered item
             for (int i = 0; i < inventory.Count; i++)
@@ -792,6 +813,7 @@ namespace stardew_access.Patches
                             string buffs = "";
                             string description = "";
                             string price = "";
+                            string requirements = "";
 
                             #region Add quality of item
                             if (actualInventory[i] is StardewValley.Object && (actualInventory[i] as StardewValley.Object).quality > 0)
@@ -853,6 +875,18 @@ namespace stardew_access.Patches
                                 #endregion 
                             }
 
+                            #region Narrate hovered required ingredients
+                            if (extraItemToShowIndex != -1)
+                            {
+                                string itemName = Game1.objectInformation[extraItemToShowIndex].Split('/')[0];
+
+                                if(extraItemToShowAmount != -1)
+                                    requirements = $"Required: {extraItemToShowAmount} {itemName}";
+                                else
+                                    requirements = $"Required: {itemName}";
+                            }
+                            #endregion
+
                             if (hoverPrice != -1)
                             {
                                 price = $"Sell Price: {hoverPrice} g";
@@ -861,16 +895,16 @@ namespace stardew_access.Patches
                             if (giveExtraDetails)
                             {
                                 if (stack > 1)
-                                    toSpeak = $"{stack} {name} {quality}, \n{price}, \n{description}, \n{healthNStamine}, \n{buffs}";
+                                    toSpeak = $"{stack} {name} {quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamine}, \n{buffs}";
                                 else
-                                    toSpeak = $"{name} {quality}, \n{price}, \n{description}, \n{healthNStamine}, \n{buffs}"; 
+                                    toSpeak = $"{name} {quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamine}, \n{buffs}"; 
                             }
                             else
                             {
                                 if (stack > 1)
-                                    toSpeak = $"{stack} {name} {quality}, \n{price}";
+                                    toSpeak = $"{stack} {name} {quality}, \n{requirements}, \n{price}";
                                 else
-                                    toSpeak = $"{name} {quality}, \n{price}";
+                                    toSpeak = $"{name} {quality}, \n{requirements}, \n{price}";
                             }
                         }
                         else
