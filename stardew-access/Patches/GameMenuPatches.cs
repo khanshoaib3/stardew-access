@@ -287,6 +287,73 @@ namespace stardew_access.Patches
                     return;
                 }
 
+                if (__instance.organizeButton != null && __instance.organizeButton.containsPoint(x, y))
+                {
+                    string toSpeak = "Organize Button";
+                    if (itemGrabMenuQueryKey != toSpeak)
+                    {
+                        itemGrabMenuQueryKey = toSpeak;
+                        gameMenuQueryKey = "";
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+
+                if (__instance.fillStacksButton != null && __instance.fillStacksButton.containsPoint(x, y))
+                {
+                    string toSpeak = "Add to existing stacks button";
+                    if (itemGrabMenuQueryKey != toSpeak)
+                    {
+                        itemGrabMenuQueryKey = toSpeak;
+                        gameMenuQueryKey = "";
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+
+                if (__instance.specialButton != null && __instance.specialButton.containsPoint(x, y))
+                {
+                    string toSpeak = "Special Button";
+                    if (itemGrabMenuQueryKey != toSpeak)
+                    {
+                        itemGrabMenuQueryKey = toSpeak;
+                        gameMenuQueryKey = "";
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+
+                if (__instance.colorPickerToggleButton != null && __instance.colorPickerToggleButton.containsPoint(x, y))
+                {
+
+                    string toSpeak = "Color Picker: " + (__instance.chestColorPicker.visible?"Enabled":"Disabled");
+                    if (itemGrabMenuQueryKey != toSpeak)
+                    {
+                        itemGrabMenuQueryKey = toSpeak;
+                        gameMenuQueryKey = "";
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+
+                if (__instance.junimoNoteIcon != null && __instance.junimoNoteIcon.containsPoint(x, y))
+                {
+
+                    string toSpeak = "Community Center Button";
+                    if (itemGrabMenuQueryKey != toSpeak)
+                    {
+                        itemGrabMenuQueryKey = toSpeak;
+                        gameMenuQueryKey = "";
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+
                 if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
                 {
                     string toSpeak = "Drop Item";
@@ -300,6 +367,27 @@ namespace stardew_access.Patches
                     }
                     return;
                 }
+
+                // FIXME
+                /*if (__instance.discreteColorPickerCC.Count > 0) {
+                    for (int i = 0; i < __instance.discreteColorPickerCC.Count; i++)
+                    {
+                        if (__instance.discreteColorPickerCC[i].containsPoint(x, y))
+                        {
+                            MainClass.monitor.Log(i.ToString(), LogLevel.Debug);
+                            string toSpeak = getChestColorName(i);
+                            if (itemGrabMenuQueryKey != toSpeak)
+                            {
+                                itemGrabMenuQueryKey = toSpeak;
+                                gameMenuQueryKey = "";
+                                hoveredItemQueryKey = "";
+                                ScreenReader.say(toSpeak, true);
+                                Game1.playSound("sa_drop_item");
+                            }
+                            return;
+                        }
+                    }
+                }*/
                 #endregion
 
                 #region Narrate the last shipped item if in the shipping bin
@@ -343,6 +431,79 @@ namespace stardew_access.Patches
             {
                 MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
+        }
+
+        // TODO Add color names
+        private static string getChestColorName(int i)
+        {
+            string toReturn = "";
+            switch (i)
+            {
+                case 0:
+                    toReturn = "Default chest color";
+                    break;
+                case 1:
+                    toReturn = "Default chest color";
+                    break;
+                case 2:
+                    toReturn = "Default chest color";
+                    break;
+                case 3:
+                    toReturn = "Default chest color";
+                    break;
+                case 4:
+                    toReturn = "Default chest color";
+                    break;
+                case 5:
+                    toReturn = "Default chest color";
+                    break;
+                case 6:
+                    toReturn = "Default chest color";
+                    break;
+                case 7:
+                    toReturn = "Default chest color";
+                    break;
+                case 8:
+                    toReturn = "Default chest color";
+                    break;
+                case 9:
+                    toReturn = "Default chest color";
+                    break;
+                case 10:
+                    toReturn = "Default chest color";
+                    break;
+                case 11:
+                    toReturn = "Default chest color";
+                    break;
+                case 12:
+                    toReturn = "Default chest color";
+                    break;
+                case 13:
+                    toReturn = "Default chest color";
+                    break;
+                case 14:
+                    toReturn = "Default chest color";
+                    break;
+                case 15:
+                    toReturn = "Default chest color";
+                    break;
+                case 16:
+                    toReturn = "Default chest color";
+                    break;
+                case 17:
+                    toReturn = "Default chest color";
+                    break;
+                case 18:
+                    toReturn = "Default chest color";
+                    break;
+                case 19:
+                    toReturn = "Default chest color";
+                    break;
+                case 20:
+                    toReturn = "Default chest color";
+                    break;
+            }
+            return toReturn;
         }
 
         internal static void CraftingPagePatch(CraftingPage __instance, CraftingRecipe ___hoverRecipe, int ___currentCraftingPage)
@@ -591,7 +752,34 @@ namespace stardew_access.Patches
                         ScreenReader.say(toSpeak, true);
                     }
                     return;
-                } 
+                }
+
+                if (__instance.organizeButton != null && __instance.organizeButton.containsPoint(x, y))
+                {
+                    string toSpeak = "Organize Button";
+                    if (itemGrabMenuQueryKey != toSpeak)
+                    {
+                        itemGrabMenuQueryKey = toSpeak;
+                        gameMenuQueryKey = "";
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
+
+                if (__instance.junimoNoteIcon != null && __instance.junimoNoteIcon.containsPoint(x, y))
+                {
+
+                    string toSpeak = "Community Center Button";
+                    if (itemGrabMenuQueryKey != toSpeak)
+                    {
+                        itemGrabMenuQueryKey = toSpeak;
+                        gameMenuQueryKey = "";
+                        hoveredItemQueryKey = "";
+                        ScreenReader.say(toSpeak, true);
+                    }
+                    return;
+                }
                 #endregion
 
                 #region Narrate equipment slots

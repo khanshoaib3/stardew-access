@@ -1,5 +1,6 @@
 ﻿using StardewValley;
 using StardewModdingAPI;
+using Microsoft.Xna.Framework;
 
 namespace stardew_access.Game
 {
@@ -87,6 +88,34 @@ namespace stardew_access.Game
                 return -1;
 
             return Game1.player.Money;
+        }
+
+        public static Vector2 getNextTile()
+        {
+            int x = Game1.player.GetBoundingBox().Center.X;
+            int y = Game1.player.GetBoundingBox().Center.Y;
+
+            int offset = 64;
+
+            switch (Game1.player.FacingDirection)
+            {
+                case 0:
+                    y -= offset;
+                    break;
+                case 1:
+                    x += offset;
+                    break;
+                case 2:
+                    y += offset;
+                    break;
+                case 3:
+                    x -= offset;
+                    break;
+            }
+
+            x /= Game1.tileSize;
+            y /= Game1.tileSize;
+            return new Vector2(x, y);
         }
     }
 }
