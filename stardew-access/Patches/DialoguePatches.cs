@@ -108,7 +108,7 @@ namespace stardew_access.Patches
             currentDialogue = " ";
         }
 
-        internal static void HoverTextPatch(string? text, int moneyAmountToDisplayAtBottom = -1, string? boldTitleText = null, string[]? buffIconsToDisplay = null, Item? hoveredItem = null, CraftingRecipe? craftingIngredients = null)
+        internal static void HoverTextPatch(string? text, int moneyAmountToDisplayAtBottom = -1, string? boldTitleText = null, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1, string[]? buffIconsToDisplay = null, Item? hoveredItem = null, CraftingRecipe? craftingIngredients = null)
         {
             try
             {
@@ -176,6 +176,18 @@ namespace stardew_access.Patches
                     {
                         toSpeak.Append("Iridium quality");
                     }
+                }
+                #endregion
+
+                #region Narrate hovered required ingredients
+                if (extraItemToShowIndex != -1)
+                {
+                    string itemName = Game1.objectInformation[extraItemToShowIndex].Split('/')[0];
+
+                    if (extraItemToShowAmount != -1)
+                        toSpeak.Append($"Required: {extraItemToShowAmount} {itemName}");
+                    else
+                        toSpeak.Append($"Required: {itemName}");
                 }
                 #endregion
 
