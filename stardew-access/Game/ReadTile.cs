@@ -46,138 +46,37 @@ namespace stardew_access.Game
                         NPC npc = Game1.currentLocation.isCharacterAtTile(gt);
                         toSpeak = npc.displayName;
                     }
-                    else if (!Game1.currentLocation.isTilePassable(Game1.player.nextPosition(Game1.player.getDirection()), Game1.viewport))
-                    {
-                        toSpeak = "Colliding";
-                    }
                     else if (Game1.currentLocation.isWaterTile(x, y))
                     {
                         toSpeak = "Water";
                     }
                     else if (Game1.currentLocation.getObjectAtTile(x, y) != null)
                     {
-                        #region Objects at tile (TODO)
-                        
-                        #endregion
+                        string? @object = getObjectNameAtTile(x, y);
+                        if (@object != null)
+                            toSpeak = @object;
                     }
                     else if (terrainFeature.ContainsKey(gt))
                     {
-                        #region Terrain Feature
-                        Netcode.NetRef<TerrainFeature> terrain = terrainFeature[gt];
-
-                        if (terrain.Get() is HoeDirt)
-                        {
-                            HoeDirt dirt = (HoeDirt)terrain.Get();
-                            if (dirt.crop != null)
-                            {
-                                string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest].Split('/')[0];
-                                toSpeak = $"{cropName}";
-
-                                bool isWatered = dirt.state.Value == HoeDirt.watered;
-                                bool isHarvestable = dirt.readyForHarvest();
-                                bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
-
-                                if (isWatered)
-                                    toSpeak = "Watered " + toSpeak;
-
-                                if (isFertilized)
-                                    toSpeak = "Fertilized " + toSpeak;
-
-                                if (isHarvestable)
-                                    toSpeak = "Harvestable " + toSpeak;
-                            }
-                            else
-                            {
-                                toSpeak = "Soil";
-                                bool isWatered = dirt.state.Value == HoeDirt.watered;
-                                bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
-
-                                if (isWatered)
-                                    toSpeak = "Watered " + toSpeak;
-
-                                if (isFertilized)
-                                    toSpeak = "Fertilized " + toSpeak;
-                            }
-                        }
-                        else if (terrain.Get() is Bush)
-                        {
-                            toSpeak = "Bush";
-                        }
-                        else if (terrain.Get() is CosmeticPlant)
-                        {
-                            CosmeticPlant cosmeticPlant = (CosmeticPlant)terrain.Get();
-                            toSpeak = cosmeticPlant.textureName().ToLower();
-
-                            if (toSpeak.Contains("terrain"))
-                                toSpeak.Replace("terrain", "");
-
-                            if (toSpeak.Contains("feature"))
-                                toSpeak.Replace("feature", "");
-                        }
-                        else if (terrain.Get() is Flooring)
-                        {
-                            Flooring flooring = (Flooring)terrain.Get();
-                            bool isPathway = flooring.isPathway.Get();
-                            bool isSteppingStone = flooring.isSteppingStone.Get();
-
-                            toSpeak = "Flooring";
-
-                            if (isPathway)
-                                toSpeak = "Pathway";
-
-                            if (isSteppingStone)
-                                toSpeak = "Stepping Stone";
-                        }
-                        else if (terrain.Get() is FruitTree)
-                        {
-                            FruitTree fruitTree = (FruitTree)terrain.Get();
-                            toSpeak = Game1.objectInformation[fruitTree.treeType].Split('/')[0];
-                        }
-                        else if (terrain.Get() is Grass)
-                        {
-                            Grass grass = (Grass)terrain.Get();
-                            toSpeak = "Grass";
-                        }
-                        else if (terrain.Get() is Tree)
-                        {
-                            Tree tree = (Tree)terrain.Get();
-                            int treeType = tree.treeType;
-                            int stage = tree.growthStage.Value;
-
-                            if (Game1.player.getEffectiveSkillLevel(2) >= 1)
-                            {
-                                toSpeak = Game1.objectInformation[308 + (int)treeType].Split('/')[0];
-                            }
-                            else if (Game1.player.getEffectiveSkillLevel(2) >= 1 && (int)treeType <= 3)
-                            {
-                                toSpeak = Game1.objectInformation[308 + (int)treeType].Split('/')[0];
-                            }
-                            else if (Game1.player.getEffectiveSkillLevel(2) >= 1 && (int)treeType == 8)
-                            {
-                                toSpeak = Game1.objectInformation[292 + (int)treeType].Split('/')[0];
-                            }
-
-                            toSpeak = $"{toSpeak}, {stage} stage";
-                        }
-                        else if (terrain.Get() is Quartz)
-                        {
-                            toSpeak = "Quartz";
-                        }
-                        else if (terrain.Get() is Leaf)
-                        {
-                            toSpeak = "Leaf";
-                        }
-                        #endregion
+                        string? terrain = getTerrainFeatureAtTile(terrainFeature[gt]);
+                        if (terrain != null)
+                            toSpeak = terrain;
                     }
                     else if (isDoorAtTile(x, y))
-                        toSpeak = "Door";
-                    else if (isMineLadderAtTile(x, y))
-                        toSpeak = "Ladder";
-                    else
                     {
-                        string? resourceClump = getResourceClumpAtTile(x, y);
-                        if (resourceClump!=null)
-                            toSpeak = resourceClump;
+                        toSpeak = "Door";
+                    }
+                    else if (isMineLadderAtTile(x, y))
+                    {
+                        toSpeak = "Ladder";
+                    }
+                    else if (getResourceClumpAtTile(x, y) != null)
+                    {
+                        toSpeak = getResourceClumpAtTile(x, y);
+                    }
+                    else if (!Game1.currentLocation.isTilePassable(Game1.player.nextPosition(Game1.player.getDirection()), Game1.viewport))
+                    {
+                        toSpeak = "Colliding";
                     }
                     #endregion
 
@@ -201,7 +100,139 @@ namespace stardew_access.Game
             await Task.Delay(100);
             isReadingTile = false;
         }
-    
+
+        public static string getTerrainFeatureAtTile(Netcode.NetRef<TerrainFeature> terrain)
+        {
+            string? toReturn = null;
+            if (terrain.Get() is HoeDirt)
+            {
+                HoeDirt dirt = (HoeDirt)terrain.Get();
+                if (dirt.crop != null)
+                {
+                    string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest].Split('/')[0];
+                    toReturn = $"{cropName}";
+
+                    bool isWatered = dirt.state.Value == HoeDirt.watered;
+                    bool isHarvestable = dirt.readyForHarvest();
+                    bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
+
+                    if (isWatered)
+                        toReturn = "Watered " + toReturn;
+
+                    if (isFertilized)
+                        toReturn = "Fertilized " + toReturn;
+
+                    if (isHarvestable)
+                        toReturn = "Harvestable " + toReturn;
+                }
+                else
+                {
+                    toReturn = "Soil";
+                    bool isWatered = dirt.state.Value == HoeDirt.watered;
+                    bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
+
+                    if (isWatered)
+                        toReturn = "Watered " + toReturn;
+
+                    if (isFertilized)
+                        toReturn = "Fertilized " + toReturn;
+                }
+            }
+            else if (terrain.Get() is Bush)
+            {
+                toReturn = "Bush";
+            }
+            else if (terrain.Get() is CosmeticPlant)
+            {
+                CosmeticPlant cosmeticPlant = (CosmeticPlant)terrain.Get();
+                toReturn = cosmeticPlant.textureName().ToLower();
+
+                if (toReturn.Contains("terrain"))
+                    toReturn.Replace("terrain", "");
+
+                if (toReturn.Contains("feature"))
+                    toReturn.Replace("feature", "");
+            }
+            else if (terrain.Get() is Flooring)
+            {
+                Flooring flooring = (Flooring)terrain.Get();
+                bool isPathway = flooring.isPathway.Get();
+                bool isSteppingStone = flooring.isSteppingStone.Get();
+
+                toReturn = "Flooring";
+
+                if (isPathway)
+                    toReturn = "Pathway";
+
+                if (isSteppingStone)
+                    toReturn = "Stepping Stone";
+            }
+            else if (terrain.Get() is FruitTree)
+            {
+                FruitTree fruitTree = (FruitTree)terrain.Get();
+                toReturn = Game1.objectInformation[fruitTree.treeType].Split('/')[0];
+            }
+            else if (terrain.Get() is Grass)
+            {
+                toReturn = "Grass";
+            }
+            else if (terrain.Get() is Tree)
+            {
+                Tree tree = (Tree)terrain.Get();
+                int treeType = tree.treeType;
+                int treeStage = tree.growthStage.Value;
+                string treeName = "tree";
+                string seedName = "";
+                
+                if(treeType <= 3)
+                    seedName = Game1.objectInformation[308 + treeType].Split('/')[0];
+                else if(treeType == 8)
+                    seedName = Game1.objectInformation[292].Split('/')[0];
+
+                switch (seedName.ToLower())
+                {
+                    case "mahogany seed":
+                        treeName = "Mahogany Tree";
+                        break;
+                    case "acorn":
+                        treeName = "Oak Tree";
+                        break;
+                    case "maple seed":
+                        treeName = "Maple Tree";
+                        break;
+                    case "pine cone":
+                        treeName = "Pine Tree";
+                        break;
+                }
+
+                switch (treeType)
+                {
+                    case 4:
+                    case 5:
+                        treeName = "Winter Tree";
+                        break;
+                    case 6:
+                        treeName = "Palm Tree";
+                        break;
+                    case 7:
+                        treeName = "Mushroom Tree";
+                        break;
+                }
+
+                toReturn = $"{treeName}, {treeStage} stage";
+            }
+            else if (terrain.Get() is Quartz)
+            {
+                toReturn = "Quartz";
+            }
+            else if (terrain.Get() is Leaf)
+            {
+                toReturn = "Leaf";
+            }
+
+            return toReturn;
+        }
+
         public static string getObjectNameAtTile(int x, int y)
         {
             string? toReturn = null;

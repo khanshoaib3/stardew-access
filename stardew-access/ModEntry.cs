@@ -310,7 +310,7 @@ namespace stardew_access
             // Manual read tile
             if(Equals(e.Button, SButton.J))
             {
-                ReadTile(manuallyTriggered: true);
+                ReadTile.run(manuallyTriggered: true);
             }
         }
 
