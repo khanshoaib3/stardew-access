@@ -50,7 +50,7 @@ namespace stardew_access.Game
                     {
                         toSpeak = "Water";
                     }
-                    else if (Game1.currentLocation.getObjectAtTile(x, y) != null)
+                    else if (Game1.currentLocation.isObjectAtTile(x, y))
                     {
                         string? objectName = getObjectNameAtTile(x, y);
                         if (objectName != null)
@@ -62,6 +62,10 @@ namespace stardew_access.Game
                         if (terrain != null)
                             toSpeak = terrain;
                     }
+                    else if (getResourceClumpAtTile(x, y) != null)
+                    {
+                        toSpeak = getResourceClumpAtTile(x, y);
+                    }
                     else if (isDoorAtTile(x, y))
                     {
                         toSpeak = "Door";
@@ -69,10 +73,6 @@ namespace stardew_access.Game
                     else if (isMineLadderAtTile(x, y))
                     {
                         toSpeak = "Ladder";
-                    }
-                    else if (getResourceClumpAtTile(x, y) != null)
-                    {
-                        toSpeak = getResourceClumpAtTile(x, y);
                     }
                     else if (!Game1.currentLocation.isTilePassable(Game1.player.nextPosition(Game1.player.getDirection()), Game1.viewport))
                     {
@@ -275,28 +275,140 @@ namespace stardew_access.Game
             string? toReturn = null;
 
             StardewValley.Object obj = Game1.currentLocation.getObjectAtTile(x, y);
+            int index = obj.ParentSheetIndex;
             toReturn = obj.DisplayName;
 
-            // TODO add individual stone narration using parentSheetIndex
-            // monitor.Log(obj.parentSheetIndex.ToString(), LogLevel.Debug);
-            if (Game1.objectInformation.ContainsKey(obj.ParentSheetIndex) && toReturn.ToLower().Equals("stone"))
+            // Get object names based on index
+            switch (index)
             {
-                string info = Game1.objectInformation[obj.parentSheetIndex];
-                if (info.ToLower().Contains("copper"))
-                    toReturn = "Copper " + toReturn;
+                case 313:
+                case 314:
+                case 315:
+                case 316:
+                case 317:
+                case 318:
+                case 452:
+                case 674:
+                case 675:
+                case 676:
+                case 677:
+                case 678:
+                case 679:
+                case 750:
+                case 784:
+                case 785:
+                case 786:
+                    return "Weed";
+                case 792:
+                case 793:
+                case 794:
+                    return "Fertile weed";
+                case 319:
+                case 320:
+                case 321:
+                    return "Ice crystal";
+                case 75:
+                    return "Geode";
+                case 76:
+                    return "Frozen geode";
+                case 77:
+                    return "Magma geode";
+                case 8:
+                case 66:
+                    return "Amethyst node";
+                case 14:
+                case 62:
+                    return "Aquamarine node";
+                case 843:
+                case 844:
+                    return "Cinder shard node";
+                case 2:
+                case 72:
+                    return "Diamond node";
+                case 12:
+                case 60:
+                    return "Emerald node";
+                case 44:
+                    return "Gem node";
+                case 6:
+                case 70:
+                    return "Jade node";
+                case 46:
+                    return "Mystic stone";
+                case 74:
+                    return "Prismatic node";
+                case 4:
+                case 64:
+                    return "Ruby node";
+                case 10:
+                case 68:
+                    return "Topaz node";
+                case 819:
+                    return "Omni geode node";
+                case 751:
+                case 849:
+                    return "Copper node";
+                case 764:
+                    return "Gold node";
+                case 765:
+                    return "Iridium node";
+                case 290:
+                case 850:
+                    return "Iron node";
+                case 32:
+                case 34:
+                case 36:
+                case 38:
+                case 40:
+                case 42:
+                case 48:
+                case 50:
+                case 52:
+                case 54:
+                case 56:
+                case 58:
+                    return "Coloured stone";
+                case 668:
+                case 670:
+                case 845:
+                case 846:
+                case 847:
+                    return "Mine stone";
+                case 818:
+                    return "Clay stone";
+                case 816:
+                case 817:
+                    return "Fossil stone";
+                case 25:
+                    return "Stone";
+                case 118:
+                case 120:
+                case 122:
+                case 124:
+                    return "Barrel";
+                case 119:
+                case 121:
+                case 123:
+                case 125:
+                    return "Item box";
             }
+
             return toReturn;
         }
 
         public static bool isMineLadderAtTile(int x, int y)
         {
-            if (Game1.inMine || Game1.currentLocation is Mine)
+            try
             {
-                int index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
+                if (Game1.inMine || Game1.currentLocation is Mine)
+                {
+                    int index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
 
-                if (index == 173 || index == 174)
-                    return true;
+                    if (index == 173 || index == 174)
+                        return true;
+                }
             }
+            catch (Exception) {}
 
             return false;
         }
