@@ -169,10 +169,7 @@ namespace stardew_access.Game
             }
             else if (terrain.Get() is FruitTree)
             {
-                FruitTree fruitTree = (FruitTree)terrain.Get();
-                int stage = fruitTree.growthStage.Value;
-                int fruitType = fruitTree.indexOfFruit.Get();
-                toReturn = $"{Game1.objectInformation[fruitType].Split('/')[0]} tree";
+                toReturn = getFruitTree((FruitTree)terrain.Get());
             }
             else if (terrain.Get() is Grass)
             {
@@ -190,6 +187,27 @@ namespace stardew_access.Game
             {
                 toReturn = "Leaf";
             }
+
+            return toReturn;
+        }
+
+        public static string getFruitTree(FruitTree fruitTree)
+        {
+            int stage = fruitTree.growthStage.Value;
+            int fruitIndex = fruitTree.indexOfFruit.Get();
+
+            string toReturn = Game1.objectInformation[fruitIndex].Split('/')[0];
+
+            if (stage == 0)
+                toReturn = $"{toReturn} seed";
+            else if(stage == 1)
+                toReturn = $"{toReturn} sprout";
+            else if(stage == 2)
+                toReturn = $"{toReturn} sapling";
+            else if(stage == 3)
+                toReturn = $"{toReturn} bush";
+            else if(stage >= 4)
+                toReturn = $"{toReturn} tree";
 
             return toReturn;
         }
@@ -213,6 +231,7 @@ namespace stardew_access.Game
                     return "Mushroom Tree";
             }
 
+            
             if (treeType <= 3)
                 seedName = Game1.objectInformation[308 + treeType].Split('/')[0];
             else if (treeType == 8)
