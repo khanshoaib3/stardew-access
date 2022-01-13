@@ -52,9 +52,9 @@ namespace stardew_access.Game
                     }
                     else if (Game1.currentLocation.getObjectAtTile(x, y) != null)
                     {
-                        string? @object = getObjectNameAtTile(x, y);
-                        if (@object != null)
-                            toSpeak = @object;
+                        string? objectName = getObjectNameAtTile(x, y);
+                        if (objectName != null)
+                            toSpeak = objectName;
                     }
                     else if (terrainFeature.ContainsKey(gt))
                     {
@@ -94,7 +94,7 @@ namespace stardew_access.Game
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Error in Read Tile:\n{e.Message}\n{e.StackTrace}");
+                MainClass.monitor.Log($"Error in Read Tile:\n{e.Message}\n{e.StackTrace}", LogLevel.Debug);
             }
 
             await Task.Delay(100);
@@ -170,7 +170,9 @@ namespace stardew_access.Game
             else if (terrain.Get() is FruitTree)
             {
                 FruitTree fruitTree = (FruitTree)terrain.Get();
-                toReturn = Game1.objectInformation[fruitTree.treeType].Split('/')[0];
+                int stage = fruitTree.growthStage.Value;
+                int fruitType = fruitTree.indexOfFruit.Get();
+                toReturn = $"{Game1.objectInformation[fruitType].Split('/')[0]} tree";
             }
             else if (terrain.Get() is Grass)
             {
@@ -178,48 +180,7 @@ namespace stardew_access.Game
             }
             else if (terrain.Get() is Tree)
             {
-                Tree tree = (Tree)terrain.Get();
-                int treeType = tree.treeType;
-                int treeStage = tree.growthStage.Value;
-                string treeName = "tree";
-                string seedName = "";
-                
-                if(treeType <= 3)
-                    seedName = Game1.objectInformation[308 + treeType].Split('/')[0];
-                else if(treeType == 8)
-                    seedName = Game1.objectInformation[292].Split('/')[0];
-
-                switch (seedName.ToLower())
-                {
-                    case "mahogany seed":
-                        treeName = "Mahogany Tree";
-                        break;
-                    case "acorn":
-                        treeName = "Oak Tree";
-                        break;
-                    case "maple seed":
-                        treeName = "Maple Tree";
-                        break;
-                    case "pine cone":
-                        treeName = "Pine Tree";
-                        break;
-                }
-
-                switch (treeType)
-                {
-                    case 4:
-                    case 5:
-                        treeName = "Winter Tree";
-                        break;
-                    case 6:
-                        treeName = "Palm Tree";
-                        break;
-                    case 7:
-                        treeName = "Mushroom Tree";
-                        break;
-                }
-
-                toReturn = $"{treeName}, {treeStage} stage";
+                toReturn = getTree((Tree)terrain.Get());
             }
             else if (terrain.Get() is Quartz)
             {
@@ -231,6 +192,63 @@ namespace stardew_access.Game
             }
 
             return toReturn;
+        }
+
+        public static string getTree(Tree tree)
+        {
+            int treeType = tree.treeType.Value;
+            int treeStage = tree.growthStage.Value;
+            string treeName = "tree";
+            string seedName = "";
+
+            // Return with the name if it's one of the 3 special trees
+            switch (treeType)
+            {
+                case 4:
+                case 5:
+                    return "Winter Tree";
+                case 6:
+                    return "Palm Tree";
+                case 7:
+                    return "Mushroom Tree";
+            }
+
+            if (treeType <= 3)
+                seedName = Game1.objectInformation[308 + treeType].Split('/')[0];
+            else if (treeType == 8)
+                seedName = Game1.objectInformation[292].Split('/')[0];
+
+            if (treeStage >= 1)
+            {
+                switch (seedName.ToLower())
+                {
+                    case "mahogany seed":
+                        treeName = "Mahogany";
+                        break;
+                    case "acorn":
+                        treeName = "Oak";
+                        break;
+                    case "maple seed":
+                        treeName = "Maple";
+                        break;
+                    case "pine cone":
+                        treeName = "Pine";
+                        break;
+                }
+
+                if (treeStage == 1)
+                    treeName = $"{treeName} sprout";
+                else if(treeStage == 2)
+                    treeName = $"{treeName} sapling";
+                else if(treeStage == 3 || treeStage == 4)
+                    treeName = $"{treeName} bush";
+                else if(treeStage >= 5)
+                    treeName = $"{treeName} tree";
+
+                return treeName;
+            }
+
+            return seedName;
         }
 
         public static string getObjectNameAtTile(int x, int y)
