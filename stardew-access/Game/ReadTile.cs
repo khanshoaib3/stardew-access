@@ -77,6 +77,44 @@ namespace stardew_access.Game
                     else if (!Game1.currentLocation.isTilePassable(Game1.player.nextPosition(Game1.player.getDirection()), Game1.viewport))
                     {
                         toSpeak = "Colliding";
+                    } else
+                    {
+                        try
+                        {
+                            int index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
+                            /* Add More
+                            MainClass.monitor.Log(index.ToString(), LogLevel.Debug);
+                            */
+                            switch (index)
+                            {
+                                case 1955:
+                                case 41:
+                                    toSpeak = "Mail Box";
+                                    break;
+                                case 173:
+                                    toSpeak = "Fridge";
+                                    break;
+                                case 169:
+                                case 170:
+                                case 171:
+                                case 172:
+                                    toSpeak = "Kitchen";
+                                    break;
+                                case 1003:
+                                    toSpeak = "Street lamp";
+                                    break;
+                                case 78:
+                                    toSpeak = "Trash bin";
+                                    break;
+                                case 617:
+                                    toSpeak = "Daily quest";
+                                    break;
+                                case 616:
+                                    toSpeak = "Calender";
+                                    break;
+                            }
+                        }
+                        catch (Exception) {}
                     }
                     #endregion
 
