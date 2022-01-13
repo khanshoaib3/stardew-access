@@ -202,10 +202,9 @@ namespace stardew_access.Patches
                     return;
 
                 #region Texts in the letter
-                string title = __instance.mailTitle;
                 string message = __instance.mailMessage[__instance.page];
 
-                string toSpeak = $"{title} \t\n\t {message}.";
+                string toSpeak = $"{message}";
 
                 if (__instance.ShouldShowInteractable())
                 {
