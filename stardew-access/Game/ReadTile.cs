@@ -308,7 +308,7 @@ namespace stardew_access.Game
             return seedName;
         }
 
-        public static string getObjectNameAtTile(int x, int y)
+        public static string? getObjectNameAtTile(int x, int y)
         {
             string? toReturn = null;
 
@@ -475,9 +475,8 @@ namespace stardew_access.Game
             return false;
         }
 
-        public static string getResourceClumpAtTile(int x, int y)
+        public static string? getResourceClumpAtTile(int x, int y)
         {
-            string? toReturn = null;
 
             for(int i = 0; i < Game1.currentLocation.resourceClumps.Count; i++)
             {
@@ -488,33 +487,25 @@ namespace stardew_access.Game
                     switch (index)
                     {
                         case 600:
-                            toReturn = "Large Stump";
-                            break;
+                            return "Large Stump";
                         case 602:
-                            toReturn = "Hollow Log";
-                            break;
+                            return "Hollow Log";
                         case 622:
-                            toReturn = "Meteorite";
-                            break;
+                            return "Meteorite";
                         case 752:
                         case 754:
                         case 756:
                         case 758:
-                            toReturn = "Mine Rock";
-                            break;
+                            return "Mine Rock";
                         case 672:
-                            toReturn = "Boulder";
-                            break;
+                            return "Boulder";
                         default:
-                            toReturn = "Unknown";
-                            break;
+                            return "Unknown";
                     }
-
-                    return toReturn;
                 }
             }
 
-            return toReturn;
+            return null;
         }
     }
 }

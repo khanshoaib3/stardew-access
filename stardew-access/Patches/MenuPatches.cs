@@ -47,6 +47,11 @@ namespace stardew_access.Patches
                             return false;
                     }
                     #endregion
+
+                    #region Check for resource clumps
+                    if(ReadTile.getResourceClumpAtTile((int)gt.X, (int) gt.Y)!=null)
+                        return false;
+                    #endregion
                 }
             }
             catch (Exception e)
