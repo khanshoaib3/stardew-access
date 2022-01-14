@@ -1,6 +1,9 @@
-﻿using StardewModdingAPI;
+﻿using Microsoft.Xna.Framework;
+using stardew_access.Game;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.TerrainFeatures;
 
 namespace stardew_access.Patches
 {
@@ -8,6 +11,51 @@ namespace stardew_access.Patches
     {
         private static string currentLetterText = " ";
         private static string currentLevelUpTitle = " ";
+
+        internal static bool PlaySoundPatch(string cueName)
+        {
+            try
+            {
+                if (!Context.IsPlayerFree)
+                    return true;
+
+                if(!Game1.player.isMoving())
+                    return true;
+
+                if(cueName == "grassyStep" || cueName == "sandyStep" || cueName == "snowyStep" || cueName == "stoneStep" || cueName == "thudStep" || cueName == "woodyStep")
+                {
+                    if(!Game1.currentLocation.isTilePassable(Game1.player.nextPosition(Game1.player.getDirection()), Game1.viewport))
+                    {
+                        return false;
+                    }
+
+                    #region Check for objects
+                    Vector2 gt = CurrentPlayer.getNextTile();
+
+                    if (Game1.currentLocation.isObjectAtTile((int)gt.X, (int)gt.Y))
+                    {
+                        if (!Game1.currentLocation.getObjectAtTile((int)gt.X, (int)gt.Y).isPassable())
+                            return false;
+                    }
+                    #endregion
+
+                    #region Check for terrain features
+                    Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
+                    if (terrainFeature.ContainsKey(gt))
+                    {
+                        if (!terrainFeature[gt].Get().isPassable())
+                            return false;
+                    }
+                    #endregion
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+
+            return true;
+        }
 
         internal static void LanguageSelectionMenuPatch(LanguageSelectionMenu __instance)
         {

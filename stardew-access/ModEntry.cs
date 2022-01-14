@@ -172,11 +172,6 @@ namespace stardew_access
                 original: AccessTools.Method(typeof(LanguageSelectionMenu), nameof(LanguageSelectionMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.LanguageSelectionMenuPatch))
             );
-
-            /*harmony.Patch(
-                original: AccessTools.Method(typeof(HUDMessage), nameof(HUDMessage.draw), new Type[] { typeof(SpriteBatch), typeof(int) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.HUDMessagePatch))
-            );*/
             #endregion
 
             #region Quest Patches
@@ -213,6 +208,11 @@ namespace stardew_access
                     prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.Game1ExitActiveMenuPatch))
                 );
             #endregion
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(Game1), nameof(Game1.playSound)),
+                    prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.PlaySoundPatch))
+                );
 
             #endregion
 
@@ -388,7 +388,7 @@ namespace stardew_access
                 MainClass.monitor.Log($"Unable to narrate hud messages:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
 
-            await Task.Delay(1000);
+            await Task.Delay(300);
             isNarratingHudMessage = false;
         }
     }

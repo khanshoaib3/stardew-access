@@ -74,10 +74,7 @@ namespace stardew_access.Game
                     {
                         toSpeak = "Ladder";
                     }
-                    else if (!Game1.currentLocation.isTilePassable(Game1.player.nextPosition(Game1.player.getDirection()), Game1.viewport))
-                    {
-                        toSpeak = "Colliding";
-                    } else
+                    else
                     {
                         try
                         {
@@ -247,6 +244,9 @@ namespace stardew_access.Game
             else if(stage >= 4)
                 toReturn = $"{toReturn} tree";
 
+            if (fruitTree.fruitsOnTree.Value > 0)
+                toReturn = $"Harvestable {toReturn}";
+
             return toReturn;
         }
 
@@ -347,52 +347,6 @@ namespace stardew_access.Game
                     return "Ice crystal";
                 case 75:
                     return "Geode";
-                case 76:
-                    return "Frozen geode";
-                case 77:
-                    return "Magma geode";
-                case 8:
-                case 66:
-                    return "Amethyst node";
-                case 14:
-                case 62:
-                    return "Aquamarine node";
-                case 843:
-                case 844:
-                    return "Cinder shard node";
-                case 2:
-                case 72:
-                    return "Diamond node";
-                case 12:
-                case 60:
-                    return "Emerald node";
-                case 44:
-                    return "Gem node";
-                case 6:
-                case 70:
-                    return "Jade node";
-                case 46:
-                    return "Mystic stone";
-                case 74:
-                    return "Prismatic node";
-                case 4:
-                case 64:
-                    return "Ruby node";
-                case 10:
-                case 68:
-                    return "Topaz node";
-                case 819:
-                    return "Omni geode node";
-                case 751:
-                case 849:
-                    return "Copper node";
-                case 764:
-                    return "Gold node";
-                case 765:
-                    return "Iridium node";
-                case 290:
-                case 850:
-                    return "Iron node";
                 case 32:
                 case 34:
                 case 36:
@@ -429,6 +383,59 @@ namespace stardew_access.Game
                 case 123:
                 case 125:
                     return "Item box";
+            }
+
+            if (Game1.inMine || Game1.currentLocation is Mine)
+            {
+                switch (index)
+                {
+                    case 76:
+                        return "Frozen geode";
+                    case 77:
+                        return "Magma geode";
+                    case 8:
+                    case 66:
+                        return "Amethyst node";
+                    case 14:
+                    case 62:
+                        return "Aquamarine node";
+                    case 843:
+                    case 844:
+                        return "Cinder shard node";
+                    case 2:
+                    case 72:
+                        return "Diamond node";
+                    case 12:
+                    case 60:
+                        return "Emerald node";
+                    case 44:
+                        return "Gem node";
+                    case 6:
+                    case 70:
+                        return "Jade node";
+                    case 46:
+                        return "Mystic stone";
+                    case 74:
+                        return "Prismatic node";
+                    case 4:
+                    case 64:
+                        return "Ruby node";
+                    case 10:
+                    case 68:
+                        return "Topaz node";
+                    case 819:
+                        return "Omni geode node";
+                    case 751:
+                    case 849:
+                        return "Copper node";
+                    case 764:
+                        return "Gold node";
+                    case 765:
+                        return "Iridium node";
+                    case 290:
+                    case 850:
+                        return "Iron node";
+                }
             }
 
             return toReturn;
