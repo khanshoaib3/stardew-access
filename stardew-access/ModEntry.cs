@@ -8,9 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 using stardew_access.Patches;
 using AutoHotkey.Interop;
 using Microsoft.Xna.Framework;
-using StardewValley.TerrainFeatures;
-using StardewValley.Locations;
 using Microsoft.Xna.Framework.Audio;
+using System.Text.RegularExpressions;
 
 namespace stardew_access
 {
@@ -18,9 +17,10 @@ namespace stardew_access
     public class MainClass : Mod
     {
         private Harmony? harmony;
-        private static bool readTile = true, snapMouse = true;
+        private static bool readTile = true, snapMouse = true, isNarratingHudMessage = false;
         public static IMonitor? monitor;
         AutoHotkeyEngine ahk;
+        public static string hudMessageQueryKey = "";
 
         /*********
         ** Public methods
@@ -45,7 +45,6 @@ namespace stardew_access
             }
             catch (Exception e)
             {
-
                 monitor.Log($"Unable to initialize AutoHotKey:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
 
@@ -172,7 +171,12 @@ namespace stardew_access
             harmony.Patch(
                 original: AccessTools.Method(typeof(LanguageSelectionMenu), nameof(LanguageSelectionMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.LanguageSelectionMenuPatch))
-            ); 
+            );
+
+            /*harmony.Patch(
+                original: AccessTools.Method(typeof(HUDMessage), nameof(HUDMessage.draw), new Type[] { typeof(SpriteBatch), typeof(int) }),
+                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.HUDMessagePatch))
+            );*/
             #endregion
 
             #region Quest Patches
@@ -236,18 +240,25 @@ namespace stardew_access
             #endregion
 
             #region Custom Drop Item Sound
-            CueDefinition sa_drop_item = new CueDefinition();
-            sa_drop_item.name = "sa_drop_item";
-            sa_drop_item.instanceLimit = 1;
-            sa_drop_item.limitBehavior = CueDefinition.LimitBehavior.ReplaceOldest;
-            SoundEffect audio;
-            string filePathCombined = Path.Combine(this.Helper.DirectoryPath, "drop_item.wav");
-            using (FileStream stream = new(filePathCombined, FileMode.Open))
+            try
             {
-                audio = SoundEffect.FromStream(stream);
+                CueDefinition sa_drop_item = new CueDefinition();
+                sa_drop_item.name = "sa_drop_item";
+                sa_drop_item.instanceLimit = 1;
+                sa_drop_item.limitBehavior = CueDefinition.LimitBehavior.ReplaceOldest;
+                SoundEffect audio;
+                string filePathCombined = Path.Combine(this.Helper.DirectoryPath, "drop_item.wav");
+                using (FileStream stream = new(filePathCombined, FileMode.Open))
+                {
+                    audio = SoundEffect.FromStream(stream);
+                }
+                sa_drop_item.SetSound(audio, Game1.audioEngine.GetCategoryIndex("Sound"), false);
+                Game1.soundBank.AddCue(sa_drop_item);
             }
-            sa_drop_item.SetSound(audio, Game1.audioEngine.GetCategoryIndex("Sound"), false);
-            Game1.soundBank.AddCue(sa_drop_item);
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to initialize custom sounds:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
             #endregion
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
@@ -272,6 +283,11 @@ namespace stardew_access
 
             if(!ReadTile.isReadingTile && readTile)
                 ReadTile.run();
+
+            if (!isNarratingHudMessage)
+            {
+                narrateHudMessages();
+            }
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -338,6 +354,42 @@ namespace stardew_access
             }
 
             Game1.setMousePosition(x, y);
+        }
+
+        public static async void narrateHudMessages()
+        {
+            isNarratingHudMessage = true;
+            try
+            {
+                if(Game1.hudMessages.Count > 0)
+                {
+                    int lastIndex = Game1.hudMessages.Count - 1;
+                    HUDMessage lastMessage = Game1.hudMessages[lastIndex];
+                    if (!lastMessage.noIcon)
+                    {
+                        string toSpeak = lastMessage.Message;
+                        string searchQuery = toSpeak;
+
+                        searchQuery = Regex.Replace(toSpeak, @"[\d+]", string.Empty);
+                        searchQuery.Trim();
+
+
+                        if (hudMessageQueryKey != searchQuery)
+                        {
+                            hudMessageQueryKey = searchQuery;
+
+                            ScreenReader.say(toSpeak, true);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate hud messages:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+
+            await Task.Delay(1000);
+            isNarratingHudMessage = false;
         }
     }
 }
