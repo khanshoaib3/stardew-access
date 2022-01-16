@@ -11,6 +11,7 @@ namespace stardew_access.Patches
     {
         private static string currentLetterText = " ";
         private static string currentLevelUpTitle = " ";
+        public static Vector2? prevTile = null;
 
         internal static bool PlaySoundPatch(string cueName)
         {
@@ -24,34 +25,17 @@ namespace stardew_access.Patches
 
                 if(cueName == "grassyStep" || cueName == "sandyStep" || cueName == "snowyStep" || cueName == "stoneStep" || cueName == "thudStep" || cueName == "woodyStep")
                 {
-                    if(!Game1.currentLocation.isTilePassable(Game1.player.nextPosition(Game1.player.getDirection()), Game1.viewport))
+                    Vector2 nextTile = CurrentPlayer.getNextTile();
+                    Rectangle rect = new Rectangle((int)nextTile.X * 64 + 1,(int) nextTile.Y * 64 + 1, 62, 62);
+                    if (Game1.currentLocation.isCollidingPosition(rect, Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: false))
                     {
+                        if (prevTile != nextTile)
+                        {
+                            prevTile = nextTile;
+                            Game1.playSound("sa_colliding");
+                        }
                         return false;
                     }
-
-                    #region Check for objects
-                    Vector2 gt = CurrentPlayer.getNextTile();
-
-                    if (Game1.currentLocation.isObjectAtTile((int)gt.X, (int)gt.Y))
-                    {
-                        if (!Game1.currentLocation.getObjectAtTile((int)gt.X, (int)gt.Y).isPassable())
-                            return false;
-                    }
-                    #endregion
-
-                    #region Check for terrain features
-                    Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
-                    if (terrainFeature.ContainsKey(gt))
-                    {
-                        if (!terrainFeature[gt].Get().isPassable())
-                            return false;
-                    }
-                    #endregion
-
-                    #region Check for resource clumps
-                    if(ReadTile.getResourceClumpAtTile((int)gt.X, (int) gt.Y)!=null)
-                        return false;
-                    #endregion
                 }
             }
             catch (Exception e)

@@ -50,6 +50,8 @@ namespace stardew_access
 
             ScreenReader.initializeScreenReader(); // Initialize the screen reader
 
+            this.initializeSounds();
+
             harmony = new Harmony(ModManifest.UniqueID); // Init harmony
 
             #endregion
@@ -239,30 +241,49 @@ namespace stardew_access
             });
             #endregion
 
-            #region Custom Drop Item Sound
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
+        }
+
+        private void initializeSounds()
+        {
             try
             {
-                CueDefinition sa_drop_item = new CueDefinition();
-                sa_drop_item.name = "sa_drop_item";
-                sa_drop_item.instanceLimit = 1;
-                sa_drop_item.limitBehavior = CueDefinition.LimitBehavior.ReplaceOldest;
-                SoundEffect audio;
-                string filePathCombined = Path.Combine(this.Helper.DirectoryPath, "drop_item.wav");
-                using (FileStream stream = new(filePathCombined, FileMode.Open))
+                #region Drop Item Sound
+                CueDefinition dropItemCueDef = new CueDefinition();
+                dropItemCueDef.name = "sa_drop_item";
+                dropItemCueDef.instanceLimit = 1;
+                dropItemCueDef.limitBehavior = CueDefinition.LimitBehavior.ReplaceOldest;
+                SoundEffect dropItemAudio;
+                string dropItemFilePath = Path.Combine(this.Helper.DirectoryPath, "sounds/drop_item.wav");
+                using (FileStream stream = new(dropItemFilePath, FileMode.Open))
                 {
-                    audio = SoundEffect.FromStream(stream);
+                    dropItemAudio = SoundEffect.FromStream(stream);
                 }
-                sa_drop_item.SetSound(audio, Game1.audioEngine.GetCategoryIndex("Sound"), false);
-                Game1.soundBank.AddCue(sa_drop_item);
+                dropItemCueDef.SetSound(dropItemAudio, Game1.audioEngine.GetCategoryIndex("Sound"), false);
+                #endregion
+
+                #region Colliding sound
+                CueDefinition collidingCueDef = new CueDefinition();
+                collidingCueDef.name = "sa_colliding";
+                collidingCueDef.instanceLimit = 1;
+                collidingCueDef.limitBehavior = CueDefinition.LimitBehavior.ReplaceOldest;
+                SoundEffect collidingAudio;
+                string collidingFilePath = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/NPC.wav");
+                using (FileStream stream = new(collidingFilePath, FileMode.Open))
+                {
+                    collidingAudio = SoundEffect.FromStream(stream);
+                }
+                collidingCueDef.SetSound(collidingAudio, Game1.audioEngine.GetCategoryIndex("Sound"), false); 
+                #endregion
+
+                Game1.soundBank.AddCue(dropItemCueDef);
+                Game1.soundBank.AddCue(collidingCueDef);
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to initialize custom sounds:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                monitor.Log($"Unable to initialize custom sounds:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
-            #endregion
-
-            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
-            helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
         }
 
         private void onUpdateTicked(object sender, UpdateTickedEventArgs e)
