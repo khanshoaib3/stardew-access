@@ -17,11 +17,11 @@ namespace stardew_access
     public class MainClass : Mod
     {
         private Harmony? harmony;
-        private static bool readTile = true, snapMouse = true, isNarratingHudMessage = false;
+        private static bool readTile = true, snapMouse = true, isNarratingHudMessage = false, radar = false;
         public static IMonitor? monitor;
         AutoHotkeyEngine ahk;
         public static string hudMessageQueryKey = "";
-        public static Radar radar;
+        public static Radar radarFeature;
 
         /*********
         ** Public methods
@@ -55,7 +55,7 @@ namespace stardew_access
 
             harmony = new Harmony(ModManifest.UniqueID); // Init harmony
 
-            radar = new Radar();
+            radarFeature = new Radar();
 
             #endregion
 
@@ -236,6 +236,20 @@ namespace stardew_access
                 monitor.Log("Snap Mouse is " + (snapMouse ? "on" : "off"), LogLevel.Info);
             });
 
+            helper.ConsoleCommands.Add("radar", "Toggle radar feature", (string arg1, string[] arg2) =>
+            {
+                radar = !radar;
+
+                monitor.Log("Radar " + (snapMouse ? "on" : "off"), LogLevel.Info);
+            });
+
+            helper.ConsoleCommands.Add("r_in", "Include an object to radar", (string arg1, string[] arg2) =>
+            {
+                radar = !radar;
+
+                monitor.Log("Radar " + (snapMouse ? "on" : "off"), LogLevel.Info);
+            });
+
             helper.ConsoleCommands.Add("ref_sr", "Refresh screen reader", (string arg1, string[] arg2) =>
             {
                 ScreenReader.initializeScreenReader();
@@ -272,7 +286,7 @@ namespace stardew_access
                 collidingCueDef.instanceLimit = 1;
                 collidingCueDef.limitBehavior = CueDefinition.LimitBehavior.ReplaceOldest;
                 SoundEffect collidingAudio;
-                string collidingFilePath = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/colliding.ogg");
+                string collidingFilePath = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/colliding.wav");
                 using (FileStream stream = new(collidingFilePath, FileMode.Open))
                 {
                     collidingAudio = SoundEffect.FromStream(stream);
@@ -284,7 +298,7 @@ namespace stardew_access
                 CueDefinition poiCueDef = new CueDefinition();
                 poiCueDef.name = "sa_poi";
                 SoundEffect poiAudio;
-                string poiFilePath = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/sound1.ogg");
+                string poiFilePath = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/sound1.wav");
                 using (FileStream stream = new(poiFilePath, FileMode.Open))
                 {
                     poiAudio = SoundEffect.FromStream(stream);
@@ -320,6 +334,9 @@ namespace stardew_access
 
             if(!ReadTile.isReadingTile && readTile)
                 ReadTile.run();
+
+            if(!radarFeature.isRunning && radar)
+                radarFeature.run();
 
             if (!isNarratingHudMessage)
             {
@@ -369,7 +386,8 @@ namespace stardew_access
             // Manual read tile
             if (Equals(e.Button, SButton.B))
             {
-                radar.run();
+                Game1.player.controller = new PathFindController(Game1.player, Game1.currentLocation, new Point(49,13), 2);
+                monitor.Log($"{Game1.player.controller.pathToEndPoint==null}", LogLevel.Debug); // true if path not found
             }
         }
 

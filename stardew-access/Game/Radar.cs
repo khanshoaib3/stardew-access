@@ -11,9 +11,11 @@ namespace stardew_access.Game
         private List<Vector2> closed;
         private List<Furniture> furnitures;
         public List<string> exclusions;
+        public bool isRunning;
 
         public Radar()
         {
+            isRunning = false;
             closed = new List<Vector2>();
             furnitures = new List<Furniture>();
             exclusions = new List<string>();
@@ -32,18 +34,18 @@ namespace stardew_access.Game
             exclusions.Add("flooring");
         }
 
-        public void run()
+        public async void run()
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
+            isRunning = true;
             Vector2 currPosition = Game1.player.getTileLocation();
             int limit = 5;
 
             closed.Clear();
             furnitures.Clear();
             findTile(currPosition, currPosition, limit);
-            sw.Stop();
-            MainClass.monitor.Log($"Time taken:{sw.ElapsedMilliseconds}ms", StardewModdingAPI.LogLevel.Debug);
+
+            await Task.Delay(3000);
+            isRunning = false;
         }
 
         public void findTile(Vector2 position, Vector2 center, int limit)
@@ -78,7 +80,7 @@ namespace stardew_access.Game
                 string? obj = ReadTile.getObjectNameAtTile((int)position.X, (int)position.Y);
                 StardewValley.Object @object = Game1.currentLocation.getObjectAtTile((int)position.X, (int)position.Y);
 
-                if (@object is Furniture)
+                if (@object is Furniture && !exclusions.Contains("furniture"))
                 {
                     if (!furnitures.Contains(@object as Furniture))
                     {
@@ -148,11 +150,6 @@ namespace stardew_access.Game
                     {
                         Game1.currentLocation.localSoundAt("sa_poi", position);
                         MainClass.monitor.Log($"LEAF:{terrain}\tX:{position.X}\tY:{position.Y}", StardewModdingAPI.LogLevel.Debug);
-                    }
-                    else if(!exclusions.Contains(terrain.ToLower()))
-                    {
-                        Game1.currentLocation.localSoundAt("sa_poi", position);
-                        MainClass.monitor.Log($"TERRAIN:{tr}\tX:{position.X}\tY:{position.Y}", StardewModdingAPI.LogLevel.Debug);
                     }
                 }
             }
