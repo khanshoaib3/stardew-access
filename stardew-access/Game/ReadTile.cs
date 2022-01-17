@@ -173,6 +173,22 @@ namespace stardew_access.Game
                         toReturn = "Fertilized " + toReturn;
                 }
             }
+            else if(terrain.Get() is GiantCrop)
+            {
+                int whichCrop = (terrain.Get() as GiantCrop).which.Value;
+                switch (whichCrop)
+                {
+                    case 0:
+                        toReturn = "Cauliflower";
+                        break;
+                    case 1:
+                        toReturn = "Melon";
+                        break;
+                    case 2:
+                        toReturn = "Pumpkin";
+                        break;
+                }
+            }
             else if (terrain.Get() is Bush)
             {
                 toReturn = "Bush";

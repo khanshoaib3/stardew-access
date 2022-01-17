@@ -21,6 +21,7 @@ namespace stardew_access
         public static IMonitor? monitor;
         AutoHotkeyEngine ahk;
         public static string hudMessageQueryKey = "";
+        public static Radar radar;
 
         /*********
         ** Public methods
@@ -53,6 +54,8 @@ namespace stardew_access
             this.initializeSounds();
 
             harmony = new Harmony(ModManifest.UniqueID); // Init harmony
+
+            radar = new Radar();
 
             #endregion
 
@@ -269,16 +272,29 @@ namespace stardew_access
                 collidingCueDef.instanceLimit = 1;
                 collidingCueDef.limitBehavior = CueDefinition.LimitBehavior.ReplaceOldest;
                 SoundEffect collidingAudio;
-                string collidingFilePath = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/NPC.wav");
+                string collidingFilePath = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/colliding.ogg");
                 using (FileStream stream = new(collidingFilePath, FileMode.Open))
                 {
                     collidingAudio = SoundEffect.FromStream(stream);
                 }
-                collidingCueDef.SetSound(collidingAudio, Game1.audioEngine.GetCategoryIndex("Sound"), false); 
+                collidingCueDef.SetSound(collidingAudio, Game1.audioEngine.GetCategoryIndex("Sound"), false);
+                #endregion
+
+                #region POI sound
+                CueDefinition poiCueDef = new CueDefinition();
+                poiCueDef.name = "sa_poi";
+                SoundEffect poiAudio;
+                string poiFilePath = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/sound1.ogg");
+                using (FileStream stream = new(poiFilePath, FileMode.Open))
+                {
+                    poiAudio = SoundEffect.FromStream(stream);
+                }
+                poiCueDef.SetSound(poiAudio, Game1.audioEngine.GetCategoryIndex("Footsteps"), false);
                 #endregion
 
                 Game1.soundBank.AddCue(dropItemCueDef);
                 Game1.soundBank.AddCue(collidingCueDef);
+                Game1.soundBank.AddCue(poiCueDef);
             }
             catch (Exception e)
             {
@@ -345,9 +361,15 @@ namespace stardew_access
             }
 
             // Manual read tile
-            if(Equals(e.Button, SButton.J))
+            if (Equals(e.Button, SButton.J))
             {
                 ReadTile.run(manuallyTriggered: true);
+            }
+
+            // Manual read tile
+            if (Equals(e.Button, SButton.B))
+            {
+                radar.run();
             }
         }
 
