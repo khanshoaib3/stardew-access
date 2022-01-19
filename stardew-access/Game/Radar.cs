@@ -195,6 +195,10 @@ namespace stardew_access.Game
 
         public void playSoundAt(Vector2 position, String? searchQuery)
         {
+            // Skip if player is directly looking at the tile
+            if (CurrentPlayer.getNextTile().Equals(position))
+                return;
+
             if (searchQuery == null || !exclusions.Contains(searchQuery.ToLower().Trim()))
             {
                 if(MainClass.radarDebug)
