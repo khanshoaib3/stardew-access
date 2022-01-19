@@ -74,44 +74,9 @@ namespace stardew_access.Game
                     {
                         toSpeak = "Ladder";
                     }
-                    else
+                    else if(getBuildingAtTile(x, y) != null)
                     {
-                        try
-                        {
-                            int index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
-                            /* Add More
-                            MainClass.monitor.Log(index.ToString(), LogLevel.Debug);
-                            */
-                            switch (index)
-                            {
-                                case 1955:
-                                case 41:
-                                    toSpeak = "Mail Box";
-                                    break;
-                                case 173:
-                                    toSpeak = "Fridge";
-                                    break;
-                                case 169:
-                                case 170:
-                                case 171:
-                                case 172:
-                                    toSpeak = "Kitchen";
-                                    break;
-                                case 1003:
-                                    toSpeak = "Street lamp";
-                                    break;
-                                case 78:
-                                    toSpeak = "Trash bin";
-                                    break;
-                                case 617:
-                                    toSpeak = "Daily quest";
-                                    break;
-                                case 616:
-                                    toSpeak = "Calender";
-                                    break;
-                            }
-                        }
-                        catch (Exception) {}
+                        toSpeak = getBuildingAtTile(x, y);
                     }
                     #endregion
 
@@ -134,6 +99,48 @@ namespace stardew_access.Game
 
             await Task.Delay(100);
             isReadingTile = false;
+        }
+
+        public static string? getBuildingAtTile(int x, int y)
+        {
+            string? toReturn = null;
+            int? index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
+            /* Add More
+            MainClass.monitor.Log(index.ToString(), LogLevel.Debug);
+            */
+            if (index != null)
+            {
+                switch (index)
+                {
+                    case 1955:
+                    case 41:
+                        toReturn = "Mail Box";
+                        break;
+                    case 173:
+                        toReturn = "Fridge";
+                        break;
+                    case 169:
+                    case 170:
+                    case 171:
+                    case 172:
+                        toReturn = "Kitchen";
+                        break;
+                    case 1003:
+                        toReturn = "Street lamp";
+                        break;
+                    case 78:
+                        toReturn = "Trash bin";
+                        break;
+                    case 617:
+                        toReturn = "Daily quest";
+                        break;
+                    case 616:
+                        toReturn = "Calender";
+                        break;
+                }
+            }
+
+            return toReturn;
         }
 
         public static string getTerrainFeatureAtTile(Netcode.NetRef<TerrainFeature> terrain)

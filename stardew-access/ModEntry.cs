@@ -383,12 +383,11 @@ namespace stardew_access
                 ReadTile.run(manuallyTriggered: true);
             }
 
-            // Manual read tile
-            if (Equals(e.Button, SButton.B))
+            /*if (Equals(e.Button, SButton.B))
             {
                 Game1.player.controller = new PathFindController(Game1.player, Game1.currentLocation, new Point(49,13), 2);
                 monitor.Log($"{Game1.player.controller.pathToEndPoint==null}", LogLevel.Debug); // true if path not found
-            }
+            }*/
         }
 
         private void SnapMouseToPlayer()

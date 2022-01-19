@@ -10,6 +10,7 @@ namespace stardew_access.Game
     {
         private List<Vector2> closed;
         private List<Furniture> furnitures;
+        private List<NPC> npcs;
         public List<string> exclusions;
         public bool isRunning;
 
@@ -18,6 +19,7 @@ namespace stardew_access.Game
             isRunning = false;
             closed = new List<Vector2>();
             furnitures = new List<Furniture>();
+            npcs = new List<NPC>();
             exclusions = new List<string>();
 
             exclusions.Add("stone");
@@ -32,6 +34,8 @@ namespace stardew_access.Game
             exclusions.Add("grass");
             exclusions.Add("tree");
             exclusions.Add("flooring");
+            exclusions.Add("water");
+            exclusions.Add("door");
         }
 
         public async void run()
@@ -42,6 +46,7 @@ namespace stardew_access.Game
 
             closed.Clear();
             furnitures.Clear();
+            npcs.Clear();
             findTile(currPosition, currPosition, limit);
 
             await Task.Delay(3000);
@@ -60,10 +65,10 @@ namespace stardew_access.Game
             closed.Add(position);
             checkTile(position);
 
-            Vector2 northPosition = new Vector2(position.X, position.Y-1);
-            Vector2 eastPosition = new Vector2(position.X+1, position.Y);
-            Vector2 westPosition = new Vector2(position.X-1, position.Y);
-            Vector2 southPosition = new Vector2(position.X, position.Y+1);
+            Vector2 northPosition = new(position.X, position.Y-1);
+            Vector2 eastPosition = new(position.X+1, position.Y);
+            Vector2 westPosition = new(position.X-1, position.Y);
+            Vector2 southPosition = new(position.X, position.Y+1);
 
             findTile(northPosition, center, limit);
             findTile(eastPosition, center, limit);
@@ -75,83 +80,119 @@ namespace stardew_access.Game
         {
             Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
 
-            if (Game1.currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
+            // Check for npcs
+            if (Game1.currentLocation.isCharacterAtTile(position) != null && !exclusions.Contains("npc"))
             {
-                string? obj = ReadTile.getObjectNameAtTile((int)position.X, (int)position.Y);
-                StardewValley.Object @object = Game1.currentLocation.getObjectAtTile((int)position.X, (int)position.Y);
-
-                if (@object is Furniture && !exclusions.Contains("furniture"))
+                NPC npc = Game1.currentLocation.isCharacterAtTile(position);
+                if (!npcs.Contains(npc))
                 {
-                    if (!furnitures.Contains(@object as Furniture))
-                    {
-                        furnitures.Add(@object as Furniture);
-                        Game1.currentLocation.localSoundAt("sa_poi", position);
-                        MainClass.monitor.Log($"FUR:{@object.DisplayName}\tX:{position.X}\tY:{position.Y}", StardewModdingAPI.LogLevel.Debug);
-                    }
-                }
-                else if (!exclusions.Contains(obj.ToLower()))
-                {
-                    Game1.currentLocation.localSoundAt("sa_poi", position);
-                    MainClass.monitor.Log($"OBJ:{obj}\tX:{position.X}\tY:{position.Y}", StardewModdingAPI.LogLevel.Debug);
+                    playSoundAt(position, npc.displayName);
                 }
             }
+            // Check for water
+            else if (Game1.currentLocation.isWaterTile((int)position.X, (int)position.Y) && !exclusions.Contains("water"))
+            {
+                playSoundAt(position, null);
+            }
+            // Check for objects
+            else if (Game1.currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
+            {
+                string? objectName = ReadTile.getObjectNameAtTile((int)position.X, (int)position.Y);
+                StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)position.X, (int)position.Y);
+
+                if (objectName != null)
+                {
+                    if (obj is Furniture && !exclusions.Contains("furniture"))
+                    {
+                        if (!furnitures.Contains(obj as Furniture))
+                        {
+                            furnitures.Add(obj as Furniture);
+                            playSoundAt(position, objectName);
+                        }
+                    }
+                    else
+                    {
+                        playSoundAt(position, objectName);
+                    }
+                }
+            }
+            // Check for terrain features
             else if (terrainFeature.ContainsKey(position))
             {
                 Netcode.NetRef<TerrainFeature> tr = terrainFeature[position];
-                string? terrain = ReadTile.getTerrainFeatureAtTile(tr);
-                if (tr != null)
+                string? terrain = ReadTile.getTerrainFeatureAtTile(tr).ToLower();
+                if (terrain != null)
                 {
                     if(tr.Get() is HoeDirt && !exclusions.Contains("crop"))
                     {
-                        Game1.currentLocation.localSoundAt("sa_poi", position);
-                        MainClass.monitor.Log($"CROP:{terrain}\tX:{position.X}\tY:{position.Y}", StardewModdingAPI.LogLevel.Debug);
+                        playSoundAt(position, terrain);
                     }
                     else if(tr.Get() is GiantCrop && !exclusions.Contains("giant crop"))
                     {
-                        Game1.currentLocation.localSoundAt("sa_poi", position);
-                        MainClass.monitor.Log($"BUSH:{terrain}\tX:{position.X}\tY:{position.Y}", StardewModdingAPI.LogLevel.Debug);
+                        playSoundAt(position, terrain);
                     }
                     else if (tr.Get() is Bush && !exclusions.Contains("bush"))
                     {
-                        Game1.currentLocation.localSoundAt("sa_poi", position);
-                        MainClass.monitor.Log($"BUSH:{terrain}\tX:{position.X}\tY:{position.Y}", StardewModdingAPI.LogLevel.Debug);
+                        playSoundAt(position, terrain);
                     }
                     else if (tr.Get() is CosmeticPlant && !exclusions.Contains("cosmetic plant"))
                     {
-                        Game1.currentLocation.localSoundAt("sa_poi", position);
-                        MainClass.monitor.Log($"COSMETIC_PLANT:{terrain}\tX:{position.X}\tY:{position.Y}", StardewModdingAPI.LogLevel.Debug);
+                        playSoundAt(position, terrain);
                     }
                     else if (tr.Get() is Flooring && !exclusions.Contains("flooring"))
                     {
-                        Game1.currentLocation.localSoundAt("sa_poi", position);
-                        MainClass.monitor.Log($"FLOORING:{terrain}\tX:{position.X}\tY:{position.Y}", StardewModdingAPI.LogLevel.Debug);
+                        playSoundAt(position, terrain);
                     }
                     else if (tr.Get() is FruitTree && !exclusions.Contains("fruit tree"))
                     {
-                        Game1.currentLocation.localSoundAt("sa_poi", position);
-                        MainClass.monitor.Log($"FRUTI_TREE:{terrain}\tX:{position.X}\tY:{position.Y}", StardewModdingAPI.LogLevel.Debug);
+                        playSoundAt(position, terrain);
                     }
                     else if (tr.Get() is Grass && !exclusions.Contains("grass"))
                     {
-                        Game1.currentLocation.localSoundAt("sa_poi", position);
-                        MainClass.monitor.Log($"GRASS:{terrain}\tX:{position.X}\tY:{position.Y}", StardewModdingAPI.LogLevel.Debug);
+                        playSoundAt(position, terrain);
                     }
                     else if (tr.Get() is Tree && !exclusions.Contains("tree"))
                     {
-                        Game1.currentLocation.localSoundAt("sa_poi", position);
-                        MainClass.monitor.Log($"TREE:{terrain}\tX:{position.X}\tY:{position.Y}", StardewModdingAPI.LogLevel.Debug);
+                        playSoundAt(position, terrain);
                     }
                     else if (tr.Get() is Quartz && !exclusions.Contains("quartz"))
                     {
-                        Game1.currentLocation.localSoundAt("sa_poi", position);
-                        MainClass.monitor.Log($"QUARTZ:{terrain}\tX:{position.X}\tY:{position.Y}", StardewModdingAPI.LogLevel.Debug);
+                        playSoundAt(position, terrain);
                     }
                     else if (tr.Get() is Leaf && !exclusions.Contains("leaf"))
                     {
-                        Game1.currentLocation.localSoundAt("sa_poi", position);
-                        MainClass.monitor.Log($"LEAF:{terrain}\tX:{position.X}\tY:{position.Y}", StardewModdingAPI.LogLevel.Debug);
+                        playSoundAt(position, terrain);
                     }
                 }
+            }
+            // Check for Mine ladders
+            else if (ReadTile.isMineLadderAtTile((int)position.X, (int)position.Y) && !exclusions.Contains("ladder"))
+            {
+                playSoundAt(position, null);
+            }
+            // Check for doors
+            else if (ReadTile.isDoorAtTile((int)position.X, (int)position.Y) && !exclusions.Contains("door"))
+            {
+                playSoundAt(position, null);
+            }
+            // Check for buildings on maps
+            else if (ReadTile.getBuildingAtTile((int)position.X, (int)position.Y) != null)
+            {
+                playSoundAt(position, ReadTile.getBuildingAtTile((int)position.X, (int)position.Y));
+            }
+            // Check for resource clumps
+            else if (ReadTile.getResourceClumpAtTile((int)position.X, (int)position.Y) != null)
+            {
+                playSoundAt(position, ReadTile.getResourceClumpAtTile((int)position.X, (int)position.Y));
+            }
+        }
+
+        public void playSoundAt(Vector2 position, String? searchQuery)
+        {
+            if (searchQuery == null || !exclusions.Contains(searchQuery))
+            {
+                MainClass.monitor.Log($"{searchQuery}:X={position.X} Y={position.Y}", StardewModdingAPI.LogLevel.Debug);
+                Game1.currentLocation.localSoundAt("sa_poi", position);
             }
         }
     }
