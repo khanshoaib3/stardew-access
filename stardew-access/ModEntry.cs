@@ -17,7 +17,7 @@ namespace stardew_access
     public class MainClass : Mod
     {
         private Harmony? harmony;
-        private static bool readTile = true, snapMouse = true, isNarratingHudMessage = false, radar = false;
+        public static bool readTile = true, snapMouse = true, isNarratingHudMessage = false, radar = false, radarDebug = true;
         public static IMonitor? monitor;
         AutoHotkeyEngine ahk;
         public static string hudMessageQueryKey = "";
@@ -240,7 +240,14 @@ namespace stardew_access
             {
                 radar = !radar;
 
-                monitor.Log("Radar " + (snapMouse ? "on" : "off"), LogLevel.Info);
+                monitor.Log("Radar " + (radar ? "on" : "off"), LogLevel.Info);
+            });
+
+            helper.ConsoleCommands.Add("r_debug", "Toggle debugging in radar feature", (string commmand, string[] args) =>
+            {
+                radarDebug = !radarDebug;
+
+                monitor.Log("Radar debugging " + (radarDebug ? "on" : "off"), LogLevel.Info);
             });
 
             helper.ConsoleCommands.Add("r_ex", "Exclude an object key to radar", (string commmand, string[] args) =>
@@ -284,6 +291,26 @@ namespace stardew_access
                 {
                     monitor.Log("Unable to remove the key from exclusions.", LogLevel.Info);
                 }
+            });
+
+            helper.ConsoleCommands.Add("r_list", "List all the exclusions in the radar feature.", (string commmand, string[] args) =>
+            {
+                if (radarFeature.exclusions.Count>0)
+                {
+                    for(int i = 0;i < radarFeature.exclusions.Count; i++)
+                    {
+                        monitor.Log($"{i+1}) {radarFeature.exclusions[i]}", LogLevel.Info);
+                    }
+                }
+                else
+                {
+                    monitor.Log("No exclusions found.", LogLevel.Info);
+                }
+            });
+
+            helper.ConsoleCommands.Add("r_count", "Number of exclusions in the radar feature.", (string commmand, string[] args) =>
+            {
+                monitor.Log($"There are {radarFeature.exclusions.Count} exclusiond in the radar feature.", LogLevel.Info);
             });
 
             helper.ConsoleCommands.Add("ref_sr", "Refresh screen reader", (string commmand, string[] args) =>

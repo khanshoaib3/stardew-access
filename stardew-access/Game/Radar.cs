@@ -2,7 +2,6 @@
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using System.Diagnostics;
 
 namespace stardew_access.Game
 {
@@ -112,7 +111,7 @@ namespace stardew_access.Game
                                 playSoundAt(position, objectName);
                             }
                         }
-                        else
+                        else if(obj is not Furniture)
                         {
                             playSoundAt(position, objectName);
                         }
@@ -196,9 +195,11 @@ namespace stardew_access.Game
 
         public void playSoundAt(Vector2 position, String? searchQuery)
         {
-            if (searchQuery == null || !exclusions.Contains(searchQuery))
+            if (searchQuery == null || !exclusions.Contains(searchQuery.ToLower().Trim()))
             {
-                MainClass.monitor.Log($"Object:{searchQuery}\tPosition: X={position.X} Y={position.Y}", StardewModdingAPI.LogLevel.Debug);
+                if(MainClass.radarDebug)
+                    MainClass.monitor.Log($"Object:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}", StardewModdingAPI.LogLevel.Debug);
+
                 Game1.currentLocation.localSoundAt("sa_poi", position);
             }
         }
