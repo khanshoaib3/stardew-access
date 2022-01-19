@@ -39,6 +39,7 @@ namespace stardew_access.Game
 
         public async void run()
         {
+            MainClass.monitor.Log($"\n\nRead Tile started", StardewModdingAPI.LogLevel.Debug);
             isRunning = true;
             Vector2 currPosition = Game1.player.getTileLocation();
             int limit = 5;
@@ -48,6 +49,7 @@ namespace stardew_access.Game
             npcs.Clear();
             findTile(currPosition, currPosition, limit);
 
+            MainClass.monitor.Log($"\nRead Tile stopped\n\n", StardewModdingAPI.LogLevel.Debug);
             await Task.Delay(3000);
             isRunning = false;
         }
@@ -193,7 +195,7 @@ namespace stardew_access.Game
             }
         }
 
-        public void playSoundAt(Vector2 position, String? searchQuery)
+        public void playSoundAt(Vector2 position, String? searchQuery, bool isNPC = false)
         {
             // Skip if player is directly looking at the tile
             if (CurrentPlayer.getNextTile().Equals(position))
@@ -204,7 +206,47 @@ namespace stardew_access.Game
                 if(MainClass.radarDebug)
                     MainClass.monitor.Log($"Object:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}", StardewModdingAPI.LogLevel.Debug);
 
-                Game1.currentLocation.localSoundAt("sa_poi", position);
+                int px = (int)Game1.player.getTileX(); // Player's X postion
+                int py = (int)Game1.player.getTileY(); // Player's Y postion
+
+                int ox = (int)position.X; // Object's X postion
+                int oy = (int)position.Y; // Object's Y postion
+
+                int dx = ox - px; // Distance of object's X position
+                int dy = oy - py; // Distance of object's Y position
+
+                if(dy < 0 && (Math.Abs(dy) >= Math.Abs(dx))) // Object is at top
+                {
+                    if (isNPC)
+                        Game1.currentLocation.localSoundAt("npc_top", position);
+                    else
+                        Game1.currentLocation.localSoundAt("obj_top", position);
+                    MainClass.monitor.Log($"Top", StardewModdingAPI.LogLevel.Debug);
+                }
+                else if (dx > 0 && (Math.Abs(dx) >= Math.Abs(dy))) // Object is at right
+                {
+                    if (isNPC)
+                        Game1.currentLocation.localSoundAt("npc_right", position);
+                    else
+                        Game1.currentLocation.localSoundAt("obj_right", position);
+                    MainClass.monitor.Log($"Right", StardewModdingAPI.LogLevel.Debug);
+                }
+                else if (dx < 0 && (Math.Abs(dx) > Math.Abs(dy))) // Object is at left
+                {
+                    if (isNPC)
+                        Game1.currentLocation.localSoundAt("npc_left", position);
+                    else
+                        Game1.currentLocation.localSoundAt("obj_left", position);
+                    MainClass.monitor.Log($"Left", StardewModdingAPI.LogLevel.Debug);
+                }
+                else if (dy > 0 && (Math.Abs(dy) > Math.Abs(dx))) // Object is at bottom
+                {
+                    if (isNPC)
+                        Game1.currentLocation.localSoundAt("npc_bottom", position);
+                    else
+                        Game1.currentLocation.localSoundAt("obj_bottom", position);
+                    MainClass.monitor.Log($"Bottom", StardewModdingAPI.LogLevel.Debug);
+                }
             }
         }
     }

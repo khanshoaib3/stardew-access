@@ -357,21 +357,108 @@ namespace stardew_access
                 collidingCueDef.SetSound(collidingAudio, Game1.audioEngine.GetCategoryIndex("Sound"), false);
                 #endregion
 
-                #region POI sound
-                CueDefinition poiCueDef = new CueDefinition();
-                poiCueDef.name = "sa_poi";
-                SoundEffect poiAudio;
-                string poiFilePath = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/sound1.wav");
-                using (FileStream stream = new(poiFilePath, FileMode.Open))
+                #region Nearby NPCs sound
+                // Npc top
+                CueDefinition npcTopCD = new CueDefinition();
+                npcTopCD.name = "npc_top";
+                SoundEffect npcTopSE;
+                string npcTopFP = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/npc_top.wav");
+                using (FileStream stream = new(npcTopFP, FileMode.Open))
                 {
-                    poiAudio = SoundEffect.FromStream(stream);
+                    npcTopSE = SoundEffect.FromStream(stream);
                 }
-                poiCueDef.SetSound(poiAudio, Game1.audioEngine.GetCategoryIndex("Footsteps"), false);
+                npcTopCD.SetSound(npcTopSE, Game1.audioEngine.GetCategoryIndex("Footsteps"), false);
+
+                // Npc left
+                CueDefinition npcLeftCD = new CueDefinition();
+                npcLeftCD.name = "npc_left";
+                SoundEffect npcLeftSE;
+                string npcLeftFP = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/npc_left.wav");
+                using (FileStream stream = new(npcLeftFP, FileMode.Open))
+                {
+                    npcLeftSE = SoundEffect.FromStream(stream);
+                }
+                npcLeftCD.SetSound(npcLeftSE, Game1.audioEngine.GetCategoryIndex("Footsteps"), false);
+
+                // Npc right
+                CueDefinition npcRightCD = new CueDefinition();
+                npcRightCD.name = "npc_right";
+                SoundEffect npcRightSE;
+                string npcRightFP = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/npc_right.wav");
+                using (FileStream stream = new(npcRightFP, FileMode.Open))
+                {
+                    npcRightSE = SoundEffect.FromStream(stream);
+                }
+                npcRightCD.SetSound(npcRightSE, Game1.audioEngine.GetCategoryIndex("Footsteps"), false);
+
+                // Npc bottom
+                CueDefinition npcBottomCD = new CueDefinition();
+                npcBottomCD.name = "npc_bottom";
+                SoundEffect npcBottomSE;
+                string npcBottomFP = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/npc_bottom.wav");
+                using (FileStream stream = new(npcBottomFP, FileMode.Open))
+                {
+                    npcBottomSE = SoundEffect.FromStream(stream);
+                }
+                npcBottomCD.SetSound(npcBottomSE, Game1.audioEngine.GetCategoryIndex("Footsteps"), false);
+                #endregion
+
+                #region Nearby objects sound
+                // Object top
+                CueDefinition objTopCD = new CueDefinition();
+                objTopCD.name = "obj_top";
+                SoundEffect objTopSE;
+                string objTopFP = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/obj_top.wav");
+                using (FileStream stream = new(objTopFP, FileMode.Open))
+                {
+                    objTopSE = SoundEffect.FromStream(stream);
+                }
+                objTopCD.SetSound(objTopSE, Game1.audioEngine.GetCategoryIndex("Footsteps"), false);
+
+                // Object left
+                CueDefinition objLeftCD = new CueDefinition();
+                objLeftCD.name = "obj_left";
+                SoundEffect objLeftSE;
+                string objLeftFP = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/obj_left.wav");
+                using (FileStream stream = new(objLeftFP, FileMode.Open))
+                {
+                    objLeftSE = SoundEffect.FromStream(stream);
+                }
+                objLeftCD.SetSound(objLeftSE, Game1.audioEngine.GetCategoryIndex("Footsteps"), false);
+
+                // Object right
+                CueDefinition objRightCD = new CueDefinition();
+                objRightCD.name = "obj_right";
+                SoundEffect objRightSE;
+                string objRightFP = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/obj_right.wav");
+                using (FileStream stream = new(objRightFP, FileMode.Open))
+                {
+                    objRightSE = SoundEffect.FromStream(stream);
+                }
+                objRightCD.SetSound(objRightSE, Game1.audioEngine.GetCategoryIndex("Footsteps"), false);
+
+                // Object bottom
+                CueDefinition objBottomCD = new CueDefinition();
+                objBottomCD.name = "obj_bottom";
+                SoundEffect objBottomSE;
+                string objBottomFP = Path.Combine(Path.Combine(this.Helper.DirectoryPath), "sounds/obj_bottom.wav");
+                using (FileStream stream = new(objBottomFP, FileMode.Open))
+                {
+                    objBottomSE = SoundEffect.FromStream(stream);
+                }
+                objBottomCD.SetSound(objBottomSE, Game1.audioEngine.GetCategoryIndex("Footsteps"), false);
                 #endregion
 
                 Game1.soundBank.AddCue(dropItemCueDef);
                 Game1.soundBank.AddCue(collidingCueDef);
-                Game1.soundBank.AddCue(poiCueDef);
+                Game1.soundBank.AddCue(objTopCD);
+                Game1.soundBank.AddCue(objLeftCD);
+                Game1.soundBank.AddCue(objRightCD);
+                Game1.soundBank.AddCue(objBottomCD);
+                Game1.soundBank.AddCue(npcTopCD);
+                Game1.soundBank.AddCue(npcLeftCD);
+                Game1.soundBank.AddCue(npcRightCD);
+                Game1.soundBank.AddCue(npcBottomCD);
             }
             catch (Exception e)
             {

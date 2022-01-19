@@ -3,7 +3,6 @@ using stardew_access.Game;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using StardewValley.TerrainFeatures;
 
 namespace stardew_access.Patches
 {
