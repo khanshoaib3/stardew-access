@@ -222,35 +222,46 @@ namespace stardew_access
             #endregion
 
             #region Custom Commands
-            helper.ConsoleCommands.Add("read_tile", "Toggle read tile feature", (string arg1, string[] arg2) =>
+            helper.ConsoleCommands.Add("read_tile", "Toggle read tile feature", (string commmand, string[] args) =>
             {
                 readTile = !readTile;
 
                 monitor.Log("Read Tile is " + (readTile ? "on" : "off"), LogLevel.Info);
             });
 
-            helper.ConsoleCommands.Add("snap_mouse", "Toggle snap mouse feature", (string arg1, string[] arg2) =>
+            helper.ConsoleCommands.Add("snap_mouse", "Toggle snap mouse feature", (string commmand, string[] args) =>
             {
                 snapMouse = !snapMouse;
 
                 monitor.Log("Snap Mouse is " + (snapMouse ? "on" : "off"), LogLevel.Info);
             });
 
-            helper.ConsoleCommands.Add("radar", "Toggle radar feature", (string arg1, string[] arg2) =>
+            helper.ConsoleCommands.Add("radar", "Toggle radar feature", (string commmand, string[] args) =>
             {
                 radar = !radar;
 
                 monitor.Log("Radar " + (snapMouse ? "on" : "off"), LogLevel.Info);
             });
 
-            helper.ConsoleCommands.Add("r_in", "Include an object to radar", (string arg1, string[] arg2) =>
+            helper.ConsoleCommands.Add("r_in", "Include an object to radar", (string commmand, string[] args) =>
             {
-                radar = !radar;
+                string? keyToAdd = null;
 
-                monitor.Log("Radar " + (snapMouse ? "on" : "off"), LogLevel.Info);
+                for (int i = 0; i < args.Count(); i++) { keyToAdd += " " + args[i]; }
+
+                if (keyToAdd != null)
+                {
+                    keyToAdd = keyToAdd.Trim().ToLower();
+                    radarFeature.exclusions.Add(keyToAdd);
+                    monitor.Log($"Added {keyToAdd} key to exclusions.", LogLevel.Info);
+                }
+                else
+                {
+                    monitor.Log("Unable to add the key to exclusions.", LogLevel.Info);
+                }
             });
 
-            helper.ConsoleCommands.Add("ref_sr", "Refresh screen reader", (string arg1, string[] arg2) =>
+            helper.ConsoleCommands.Add("ref_sr", "Refresh screen reader", (string commmand, string[] args) =>
             {
                 ScreenReader.initializeScreenReader();
 

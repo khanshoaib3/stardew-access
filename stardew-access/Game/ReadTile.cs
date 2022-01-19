@@ -104,41 +104,47 @@ namespace stardew_access.Game
         public static string? getBuildingAtTile(int x, int y)
         {
             string? toReturn = null;
-            int? index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
-            /* Add More
-            MainClass.monitor.Log(index.ToString(), LogLevel.Debug);
-            */
-            if (index != null)
+
+            // It throws error if it can't find the index, do something else to fix this
+            try
             {
-                switch (index)
+                int? index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
+                /* Add More
+                MainClass.monitor.Log(index.ToString(), LogLevel.Debug);
+                */
+                if (index != null)
                 {
-                    case 1955:
-                    case 41:
-                        toReturn = "Mail Box";
-                        break;
-                    case 173:
-                        toReturn = "Fridge";
-                        break;
-                    case 169:
-                    case 170:
-                    case 171:
-                    case 172:
-                        toReturn = "Kitchen";
-                        break;
-                    case 1003:
-                        toReturn = "Street lamp";
-                        break;
-                    case 78:
-                        toReturn = "Trash bin";
-                        break;
-                    case 617:
-                        toReturn = "Daily quest";
-                        break;
-                    case 616:
-                        toReturn = "Calender";
-                        break;
+                    switch (index)
+                    {
+                        case 1955:
+                        case 41:
+                            toReturn = "Mail Box";
+                            break;
+                        case 173:
+                            toReturn = "Fridge";
+                            break;
+                        case 169:
+                        case 170:
+                        case 171:
+                        case 172:
+                            toReturn = "Kitchen";
+                            break;
+                        case 1003:
+                            toReturn = "Street lamp";
+                            break;
+                        case 78:
+                            toReturn = "Trash bin";
+                            break;
+                        case 617:
+                            toReturn = "Daily quest";
+                            break;
+                        case 616:
+                            toReturn = "Calender";
+                            break;
+                    }
                 }
             }
+            catch (Exception) {}
 
             return toReturn;
         }
