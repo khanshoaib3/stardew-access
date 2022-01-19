@@ -243,7 +243,7 @@ namespace stardew_access
                 monitor.Log("Radar " + (snapMouse ? "on" : "off"), LogLevel.Info);
             });
 
-            helper.ConsoleCommands.Add("r_in", "Include an object to radar", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("r_ex", "Exclude an object key to radar", (string commmand, string[] args) =>
             {
                 string? keyToAdd = null;
 
@@ -258,6 +258,31 @@ namespace stardew_access
                 else
                 {
                     monitor.Log("Unable to add the key to exclusions.", LogLevel.Info);
+                }
+            });
+
+            helper.ConsoleCommands.Add("r_in", "Inlcude an object key to radar", (string commmand, string[] args) =>
+            {
+                string? keyToAdd = null;
+
+                for (int i = 0; i < args.Count(); i++) { keyToAdd += " " + args[i]; }
+
+                if (keyToAdd != null)
+                {
+                    keyToAdd = keyToAdd.Trim().ToLower();
+                    if (radarFeature.exclusions.Contains(keyToAdd))
+                    {
+                        radarFeature.exclusions.Remove(keyToAdd);
+                        monitor.Log($"Removed {keyToAdd} key from exclusions.", LogLevel.Info);
+                    }
+                    else
+                    {
+                        monitor.Log($"Cannot find{keyToAdd} key in exclusions.", LogLevel.Info);
+                    }
+                }
+                else
+                {
+                    monitor.Log("Unable to remove the key from exclusions.", LogLevel.Info);
                 }
             });
 
