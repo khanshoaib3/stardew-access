@@ -2,6 +2,7 @@
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
 namespace stardew_access.Game
@@ -43,6 +44,10 @@ namespace stardew_access.Game
                     {
                         NPC npc = Game1.currentLocation.isCharacterAtTile(gt);
                         toSpeak = npc.displayName;
+                    }
+                    else if(getFarmAnimalAt(Game1.currentLocation, x, y) != null)
+                    {
+                        toSpeak = getFarmAnimalAt(Game1.currentLocation, x, y);
                     }
                     else if (Game1.currentLocation.isWaterTile(x, y))
                     {
@@ -99,6 +104,45 @@ namespace stardew_access.Game
             isReadingTile = false;
         }
 
+        public static string? getFarmAnimalAt(GameLocation? location, int x, int y, bool onlyName = false)
+        {
+            if (location == null)
+                return null;
+
+            if (location is not Farm && location is not AnimalHouse)
+                return null;
+
+            List<FarmAnimal>? farmAnimals = null;
+
+            if(location is Farm)
+                farmAnimals = (location as Farm).getAllFarmAnimals();
+            else if(location is AnimalHouse)
+                farmAnimals = (location as AnimalHouse).animals.Values.ToList();
+
+            if (farmAnimals == null || farmAnimals.Count <= 0)
+                return null;
+
+            for(int i = 0; i < farmAnimals.Count; i++)
+            {
+                int fx = farmAnimals[i].getTileX();
+                int fy = farmAnimals[i].getTileY();
+
+                if (fx.Equals(x) && fy.Equals(y))
+                {
+                    string name = farmAnimals[i].displayName;
+                    int age = farmAnimals[i].age.Value;
+                    string type = farmAnimals[i].displayType;
+
+                    if (onlyName)
+                        return name;
+
+                    return $"{name}, {type}, age {age}";
+                }
+            }
+
+            return null;
+        }
+
         public static string? getBuildingAtTile(int x, int y)
         {
             string? toReturn = null;
@@ -106,7 +150,10 @@ namespace stardew_access.Game
             // It throws error if it can't find the index, do something else to fix this
             try
             {
-                int? index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
+                int? index = null;
+                
+                if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y]!=null)
+                    index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
                 /* Add More
                 MainClass.monitor.Log(index.ToString(), LogLevel.Debug);
                 */
@@ -463,6 +510,13 @@ namespace stardew_access.Game
                     case 850:
                         return "Iron node";
                 }
+            }
+
+            if(obj is Chest)
+            {
+                Chest chest = (Chest)obj;
+                toReturn = chest.Type;
+                toReturn = chest.DisplayName;
             }
 
             return toReturn;

@@ -99,6 +99,12 @@ namespace stardew_access.Game
                             playSoundAt(position, npc.displayName, typeof(NPC));
                     }
                 }
+                // Check for animals
+                else if (ReadTile.getFarmAnimalAt(Game1.currentLocation, (int)position.X, (int)position.Y) != null && !exclusions.Contains("animals"))
+                {
+                    string name = ReadTile.getFarmAnimalAt(Game1.currentLocation, (int)position.X, (int)position.Y, onlyName: true);
+                    playSoundAt(position, name, typeof(FarmAnimal));
+                }
                 // Check for water
                 else if (Game1.currentLocation.isWaterTile((int)position.X, (int)position.Y) && !exclusions.Contains("water"))
                 {
@@ -246,6 +252,8 @@ namespace stardew_access.Game
             string soundName = $"_{post}";
 
             if(soundType == typeof(Farmer)) // Villagers and farmers
+                soundName = $"npc{soundName}";
+            if (soundType == typeof(FarmAnimal)) // Farm Animals
                 soundName = $"npc{soundName}";
             else if(soundType == typeof(NPC)) // Other npcs, also includes enemies
                 soundName = $"obj{soundName}";

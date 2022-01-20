@@ -39,7 +39,7 @@ namespace stardew_access.Game
                 return;
 
             previousLocation = currentLocation;
-            ScreenReader.say($"{currentLocation.NameOrUniqueName} Entered",true);
+            ScreenReader.say($"{currentLocation.Name} Entered",true);
         }
     }
 }
