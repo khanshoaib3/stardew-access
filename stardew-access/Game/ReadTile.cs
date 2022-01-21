@@ -81,14 +81,25 @@ namespace stardew_access.Game
                     {
                         toSpeak = getBuildingAtTile(x, y);
                     }
+                    else if(getJunimoBundleAt(x, y) != null)
+                    {
+                        toSpeak = getJunimoBundleAt(x, y);
+                    }
                     #endregion
 
                     #region Narrate toSpeak
                     if (toSpeak != " ")
-                        if (manuallyTriggered)
-                            ScreenReader.say(toSpeak, true);
-                        else
-                            ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                    if (manuallyTriggered)
+                        ScreenReader.say(toSpeak, true);
+                    else
+                        ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                    #endregion
+
+                    #region Play colliding sound effect
+                    if (isCollidingAtTile(x, y) && prevTile != gt)
+                    {
+                        Game1.playSound("colliding");
+                    } 
                     #endregion
 
                     prevTile = gt;
@@ -102,6 +113,42 @@ namespace stardew_access.Game
 
             await Task.Delay(100);
             isReadingTile = false;
+        }
+
+        private static string? getJunimoBundleAt(int x, int y)
+        {
+            if (Game1.currentLocation is not CommunityCenter)
+                return null;
+
+            CommunityCenter communityCenter = (Game1.currentLocation as CommunityCenter);
+
+            string? name = (x, y) switch
+            {
+                (14, 5) => "Pantry",
+                (14, 23) => "Crafts Room",
+                (40, 10) => "Fish Tank",
+                (63, 14) => "Boiler Room",
+                (55, 6) => "Vault",
+                (46, 11) => "Bulletin Board",
+                _ => null,
+            };
+
+            if (communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
+                return $"{name} bundle";
+            else
+                return null;
+        }
+
+        public static bool isCollidingAtTile(int x, int y)
+        {
+            Rectangle rect = new Rectangle(x * 64 + 1,y * 64 + 1, 62, 62);
+
+            if (Game1.currentLocation.isCollidingPosition(rect, Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: true))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public static string? getFarmAnimalAt(GameLocation? location, int x, int y, bool onlyName = false)
@@ -147,56 +194,51 @@ namespace stardew_access.Game
         {
             string? toReturn = null;
 
-            // It throws error if it can't find the index, do something else to fix this
-            try
+            int? index = null;
+
+            if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] != null)
+                index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
+            /* Add More
+            MainClass.monitor.Log(index.ToString(), LogLevel.Debug);
+            */
+            if (index != null)
             {
-                int? index = null;
-                
-                if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y]!=null)
-                    index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
-                /* Add More
-                MainClass.monitor.Log(index.ToString(), LogLevel.Debug);
-                */
-                if (index != null)
+                switch (index)
+                {
+                    case 1955:
+                    case 41:
+                        toReturn = "Mail Box";
+                        break;
+                    case 1003:
+                        toReturn = "Street lamp";
+                        break;
+                    case 78:
+                        toReturn = "Trash bin";
+                        break;
+                    case 617:
+                        toReturn = "Daily quest";
+                        break;
+                    case 616:
+                        toReturn = "Calender";
+                        break;
+                }
+
+                if (Game1.currentLocation is FarmHouse || Game1.currentLocation is IslandFarmHouse)
                 {
                     switch (index)
                     {
-                        case 1955:
-                        case 41:
-                            toReturn = "Mail Box";
+                        case 173:
+                            toReturn = "Fridge";
                             break;
-                        case 1003:
-                            toReturn = "Street lamp";
+                        case 169:
+                        case 170:
+                        case 171:
+                        case 172:
+                            toReturn = "Kitchen";
                             break;
-                        case 78:
-                            toReturn = "Trash bin";
-                            break;
-                        case 617:
-                            toReturn = "Daily quest";
-                            break;
-                        case 616:
-                            toReturn = "Calender";
-                            break;
-                    }
-
-                    if(Game1.currentLocation is FarmHouse || Game1.currentLocation is IslandFarmHouse)
-                    {
-                        switch (index)
-                        {
-                            case 173:
-                                toReturn = "Fridge";
-                                break;
-                            case 169:
-                            case 170:
-                            case 171:
-                            case 172:
-                                toReturn = "Kitchen";
-                                break;
-                        }
                     }
                 }
             }
-            catch (Exception) {}
 
             return toReturn;
         }

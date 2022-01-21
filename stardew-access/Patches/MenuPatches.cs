@@ -25,13 +25,12 @@ namespace stardew_access.Patches
                 if(cueName == "grassyStep" || cueName == "sandyStep" || cueName == "snowyStep" || cueName == "stoneStep" || cueName == "thudStep" || cueName == "woodyStep")
                 {
                     Vector2 nextTile = CurrentPlayer.getNextTile();
-                    Rectangle rect = new Rectangle((int)nextTile.X * 64 + 1,(int) nextTile.Y * 64 + 1, 62, 62);
-                    if (Game1.currentLocation.isCollidingPosition(rect, Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: false))
+                    if (ReadTile.isCollidingAtTile((int)nextTile.X, (int)nextTile.Y))
                     {
                         if (prevTile != nextTile)
                         {
                             prevTile = nextTile;
-                            Game1.playSound("colliding");
+                            //Game1.playSound("colliding");
                         }
                         return false;
                     }
