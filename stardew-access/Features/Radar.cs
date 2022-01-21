@@ -257,6 +257,9 @@ namespace stardew_access.Game
         {
             string soundName = $"_{post}";
 
+            if(MainClass.radarStereoSound)
+                soundName = $"_mono{soundName}";
+
             if(soundType == typeof(Farmer)) // Villagers and farmers
                 soundName = $"npc{soundName}";
             if (soundType == typeof(FarmAnimal)) // Farm Animals

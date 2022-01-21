@@ -12,8 +12,12 @@ namespace stardew_access
     public class MainClass : Mod
     {
         private Harmony? harmony;
-        public static bool readTile = true, snapMouse = true, isNarratingHudMessage = false, radar = false, radarDebug = true;
-        public static bool monoSound = false;
+        public static bool readTile = true;
+        public static bool snapMouse = true;
+        public static bool isNarratingHudMessage = false;
+        public static bool radar = false;
+        public static bool radarDebug = true;
+        public static bool radarStereoSound = true;
         public static IMonitor? monitor;
         AutoHotkeyEngine ahk;
         public static string hudMessageQueryKey = "";

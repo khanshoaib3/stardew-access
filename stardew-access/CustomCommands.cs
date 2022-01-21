@@ -100,9 +100,9 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("rstereo", "Toggle stereo sound in radar feature", (string commmand, string[] args) =>
             {
-                MainClass.monoSound = !MainClass.monoSound;
+                MainClass.radarStereoSound = !MainClass.radarStereoSound;
 
-                MainClass.monitor.Log("Stereo sound is " + (MainClass.radarDebug ? "on" : "off"), LogLevel.Info);
+                MainClass.monitor.Log("Stereo sound is " + (MainClass.radarStereoSound ? "on" : "off"), LogLevel.Info);
             });
 
             helper.ConsoleCommands.Add("refsr", "Refresh screen reader", (string commmand, string[] args) =>

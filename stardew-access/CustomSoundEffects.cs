@@ -19,16 +19,28 @@ namespace stardew_access
 
                 soundEffects.Add("drop_item", TYPE.Sound);
                 soundEffects.Add("colliding", TYPE.Sound);
+
                 soundEffects.Add("npc_top", TYPE.Footstep);
                 soundEffects.Add("npc_right", TYPE.Footstep);
                 soundEffects.Add("npc_left", TYPE.Footstep);
                 soundEffects.Add("npc_bottom", TYPE.Footstep);
+
                 soundEffects.Add("obj_top", TYPE.Footstep);
                 soundEffects.Add("obj_right", TYPE.Footstep);
                 soundEffects.Add("obj_left", TYPE.Footstep);
                 soundEffects.Add("obj_bottom", TYPE.Footstep);
 
-                for(int i = 0; i < soundEffects.Count; i++)
+                soundEffects.Add("npc_mono_top", TYPE.Footstep);
+                soundEffects.Add("npc_mono_right", TYPE.Footstep);
+                soundEffects.Add("npc_mono_left", TYPE.Footstep);
+                soundEffects.Add("npc_mono_bottom", TYPE.Footstep);
+
+                soundEffects.Add("obj_mono_top", TYPE.Footstep);
+                soundEffects.Add("obj_mono_right", TYPE.Footstep);
+                soundEffects.Add("obj_mono_left", TYPE.Footstep);
+                soundEffects.Add("obj_mono_bottom", TYPE.Footstep);
+
+                for (int i = 0; i < soundEffects.Count; i++)
                 {
                     KeyValuePair<String, TYPE> soundEffect = soundEffects.ElementAt(i);
 
