@@ -45,7 +45,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 if (toSpeak != " ")
-                    ScreenReader.sayWithChecker(toSpeak, true);
+                    MainClass.screenReader.SayWithChecker(toSpeak, true);
             }
             catch (Exception e)
             {
@@ -95,11 +95,11 @@ namespace stardew_access.Patches
                 if (TitleMenu.subMenu != null && __instance.backButton.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
                 {
                     string text = "Back Button";
-                    ScreenReader.sayWithChecker(text, true);
+                    MainClass.screenReader.SayWithChecker(text, true);
                 }
 
                 if (TitleMenu.subMenu == null && toSpeak != "")
-                    ScreenReader.sayWithChecker(toSpeak, true);
+                    MainClass.screenReader.SayWithChecker(toSpeak, true);
             }
             catch (Exception e)
             {
@@ -119,7 +119,7 @@ namespace stardew_access.Patches
                         #region Farms
                         if (___menu.deleteButtons.Count > 0 && ___menu.deleteButtons[i].containsPoint(x, y))
                         {
-                            ScreenReader.sayWithChecker($"Delete {__instance.Farmer.farmName} Farm", true);
+                            MainClass.screenReader.SayWithChecker($"Delete {__instance.Farmer.farmName} Farm", true);
                             return;
                         }
 
@@ -128,14 +128,14 @@ namespace stardew_access.Patches
                             // Used diff. functions to narrate to prevent it from speaking the message again on selecting another button.
                             string message = "Really delete farm?";
 
-                            ScreenReader.sayWithChecker(message, true);
+                            MainClass.screenReader.SayWithChecker(message, true);
                             if (___menu.okDeleteButton.containsPoint(x, y))
                             {
-                                ScreenReader.sayWithMenuChecker("Ok Button", false);
+                                MainClass.screenReader.SayWithMenuChecker("Ok Button", false);
                             }
                             else if (___menu.cancelDeleteButton.containsPoint(x, y))
                             {
-                                ScreenReader.sayWithMenuChecker("Cancel Button", false);
+                                MainClass.screenReader.SayWithMenuChecker("Cancel Button", false);
                             }
                             return;
                         }
@@ -150,7 +150,7 @@ namespace stardew_access.Patches
 
                         string toSpeak = $"{farmName} Farm Selected, \t\n Farmer:{farmerName}, \t\nMoney:{money}, \t\nHours Played:{hoursPlayed}, \t\nDate:{dateStringForSaveGame}";
 
-                        ScreenReader.sayWithChecker(toSpeak, true);
+                        MainClass.screenReader.SayWithChecker(toSpeak, true);
                         #endregion
                     }
                 }
@@ -640,7 +640,7 @@ namespace stardew_access.Patches
 
             if(toSpeak!=" ")
             {
-                ScreenReader.say(toSpeak, true);
+                MainClass.screenReader.Say(toSpeak, true);
             }
 
             await Task.Delay(200);

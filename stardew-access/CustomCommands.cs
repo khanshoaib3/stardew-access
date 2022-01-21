@@ -107,7 +107,7 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("refsr", "Refresh screen reader", (string commmand, string[] args) =>
             {
-                ScreenReader.initializeScreenReader();
+                MainClass.screenReader.InitializeScreenReader();
 
                 MainClass.monitor.Log("Screen Reader refreshed!", LogLevel.Info);
             });

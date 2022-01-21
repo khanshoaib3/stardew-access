@@ -49,9 +49,9 @@ namespace stardew_access.Patches
                     if (toSpeak != " ")
                     {
                         if (hasResponses)
-                            ScreenReader.sayWithChecker(toSpeak, false);
+                            MainClass.screenReader.SayWithChecker(toSpeak, false);
                         else
-                            ScreenReader.sayWithChecker(toSpeak, true);
+                            MainClass.screenReader.SayWithChecker(toSpeak, true);
                     }
                 }
                 else if (__instance.isQuestion)
@@ -80,9 +80,9 @@ namespace stardew_access.Patches
                     if (toSpeak != " ")
                     {
                         if (hasResponses)
-                            ScreenReader.sayWithChecker(toSpeak, false);
+                            MainClass.screenReader.SayWithChecker(toSpeak, false);
                         else
-                            ScreenReader.sayWithChecker(toSpeak, true);
+                            MainClass.screenReader.SayWithChecker(toSpeak, true);
                     }
                 }
                 else if (Game1.activeClickableMenu is DialogueBox)
@@ -91,7 +91,7 @@ namespace stardew_access.Patches
                     if (currentDialogue != __instance.getCurrentString())
                     {
                         currentDialogue = __instance.getCurrentString();
-                        ScreenReader.say(__instance.getCurrentString(), true);
+                        MainClass.screenReader.Say(__instance.getCurrentString(), true);
                     }
                 }
             }
@@ -261,9 +261,9 @@ namespace stardew_access.Patches
                 if (toSpeak.ToString() != " ")
                 {
                     if (Context.IsPlayerFree)
-                        ScreenReader.sayWithChecker(toSpeak.ToString(), true); // Normal Checker
+                        MainClass.screenReader.SayWithChecker(toSpeak.ToString(), true); // Normal Checker
                     else
-                        ScreenReader.sayWithMenuChecker(toSpeak.ToString(), true); // Menu Checker
+                        MainClass.screenReader.SayWithMenuChecker(toSpeak.ToString(), true); // Menu Checker
                 }
                 #endregion
             }

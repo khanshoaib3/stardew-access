@@ -22,6 +22,7 @@ namespace stardew_access
         AutoHotkeyEngine ahk;
         public static string hudMessageQueryKey = "";
         public static Radar radarFeature;
+        public static ScreenReader screenReader;
 
         /*********
         ** Public methods
@@ -50,7 +51,8 @@ namespace stardew_access
                 monitor.Log($"Unable to initialize AutoHotKey:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
 
-            ScreenReader.initializeScreenReader();
+            screenReader = new ScreenReader();
+            screenReader.InitializeScreenReader();
 
             CustomSoundEffects.Initialize(helper);
 
@@ -65,6 +67,12 @@ namespace stardew_access
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
+        }
+
+        /// <summary>Returns the Screen Reader class for other mods to use.</summary>
+        public override object GetApi()
+        {
+            return new ScreenReader();
         }
 
         private void onUpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -104,28 +112,28 @@ namespace stardew_access
             if (Equals(e.Button, SButton.H))
             {
                 string toSpeak = $"Health is {CurrentPlayer.getHealth()} and Stamina is {CurrentPlayer.getStamina()}";
-                ScreenReader.say(toSpeak, true);
+                MainClass.screenReader.Say(toSpeak, true);
             }
 
             // Narrate Position
             if (Equals(e.Button, SButton.K))
             {
                 string toSpeak = $"X: {CurrentPlayer.getPositionX()} , Y: {CurrentPlayer.getPositionY()}";
-                ScreenReader.say(toSpeak, true);
+                MainClass.screenReader.Say(toSpeak, true);
             }
 
             // Narrate money at hand
             if (Equals(e.Button, SButton.R))
             {
                 string toSpeak = $"You have {CurrentPlayer.getMoney()}g";
-                ScreenReader.say(toSpeak, true);
+                MainClass.screenReader.Say(toSpeak, true);
             }
 
             // Narrate time and season
             if (Equals(e.Button, SButton.Q))
             {
                 string toSpeak = $"Time is {CurrentPlayer.getTimeOfDay()} and it is {CurrentPlayer.getDay()} {CurrentPlayer.getDate()} of {CurrentPlayer.getSeason()}";
-                ScreenReader.say(toSpeak, true);
+                MainClass.screenReader.Say(toSpeak, true);
             }
 
             // Manual read tile

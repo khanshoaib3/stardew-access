@@ -33,7 +33,7 @@ namespace stardew_access.Game
                 {
                     if (!manuallyTriggered && prevTile != gt)
                     {
-                        ScreenReader.prevTextTile = " ";
+                        MainClass.screenReader.prevTextTile = " ";
                     }
 
                     Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
@@ -45,7 +45,7 @@ namespace stardew_access.Game
                         NPC npc = Game1.currentLocation.isCharacterAtTile(gt);
                         toSpeak = npc.displayName;
                     }
-                    else if(getFarmAnimalAt(Game1.currentLocation, x, y) != null)
+                    else if (getFarmAnimalAt(Game1.currentLocation, x, y) != null)
                     {
                         toSpeak = getFarmAnimalAt(Game1.currentLocation, x, y);
                     }
@@ -77,11 +77,11 @@ namespace stardew_access.Game
                     {
                         toSpeak = "Ladder";
                     }
-                    else if(getBuildingAtTile(x, y) != null)
+                    else if (getBuildingAtTile(x, y) != null)
                     {
                         toSpeak = getBuildingAtTile(x, y);
                     }
-                    else if(getJunimoBundleAt(x, y) != null)
+                    else if (getJunimoBundleAt(x, y) != null)
                     {
                         toSpeak = getJunimoBundleAt(x, y);
                     }
@@ -89,17 +89,17 @@ namespace stardew_access.Game
 
                     #region Narrate toSpeak
                     if (toSpeak != " ")
-                    if (manuallyTriggered)
-                        ScreenReader.say(toSpeak, true);
-                    else
-                        ScreenReader.sayWithTileQuery(toSpeak, x, y, true);
+                        if (manuallyTriggered)
+                            MainClass.screenReader.Say(toSpeak, true);
+                        else
+                            MainClass.screenReader.SayWithTileQuery(toSpeak, x, y, true);
                     #endregion
 
                     #region Play colliding sound effect
                     if (isCollidingAtTile(x, y) && prevTile != gt)
                     {
                         Game1.playSound("colliding");
-                    } 
+                    }
                     #endregion
 
                     prevTile = gt;

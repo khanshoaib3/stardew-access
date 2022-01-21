@@ -52,13 +52,13 @@ namespace stardew_access.Patches
 
                 if(__instance.nextPageButton != null && __instance.nextPageButton.containsPoint(x, y))
                 {
-                    ScreenReader.sayWithMenuChecker($"Next Page Button", true);
+                    MainClass.screenReader.SayWithMenuChecker($"Next Page Button", true);
                     return;
                 }
 
                 if (__instance.previousPageButton != null && __instance.previousPageButton.containsPoint(x, y))
                 {
-                    ScreenReader.sayWithMenuChecker($"Previous Page Button", true);
+                    MainClass.screenReader.SayWithMenuChecker($"Previous Page Button", true);
                     return;
                 }
 
@@ -66,7 +66,7 @@ namespace stardew_access.Patches
                 {
                     if(__instance.languages[i].containsPoint(x, y))
                     {
-                        ScreenReader.sayWithMenuChecker($"{__instance.languageList[i]} Button", true);
+                        MainClass.screenReader.SayWithMenuChecker($"{__instance.languageList[i]} Button", true);
                         break;
                     }
                 }
@@ -86,7 +86,7 @@ namespace stardew_access.Patches
                 {
                     if(___elevators[i].containsPoint(x, y))
                     {
-                        ScreenReader.sayWithMenuChecker($"{___elevators[i].name} level", true);
+                        MainClass.screenReader.SayWithMenuChecker($"{___elevators[i].name} level", true);
                         break;
                     }
                 }
@@ -105,7 +105,7 @@ namespace stardew_access.Patches
                 ___textBox.SelectMe();
                 string toSpeak = $"{title}";
 
-                ScreenReader.sayWithChecker(toSpeak, true);
+                MainClass.screenReader.SayWithChecker(toSpeak, true);
             }
             catch (Exception e)
             {
@@ -119,13 +119,13 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
 
-                ScreenReader.sayWithMenuChecker(___message, true);
+                MainClass.screenReader.SayWithMenuChecker(___message, true);
                 if(__instance.okButton.containsPoint(x, y))
                 {
-                    ScreenReader.sayWithMenuChecker("Ok Button", false);
+                    MainClass.screenReader.SayWithMenuChecker("Ok Button", false);
                 } else if (__instance.cancelButton.containsPoint(x, y))
                 {
-                    ScreenReader.sayWithMenuChecker("Cancel Button", false);
+                    MainClass.screenReader.SayWithMenuChecker("Cancel Button", false);
                 }
             }
             catch (Exception e)
@@ -187,10 +187,10 @@ namespace stardew_access.Patches
                 }
 
                 if (toSpeak != " ")
-                    ScreenReader.sayWithMenuChecker(toSpeak, true);
+                    MainClass.screenReader.SayWithMenuChecker(toSpeak, true);
                 else if (__instance.isProfessionChooser && currentLevelUpTitle != $"{___title}. Select a new profession.")
                 {
-                    ScreenReader.sayWithMenuChecker($"{___title}. Select a new profession.", true);
+                    MainClass.screenReader.SayWithMenuChecker($"{___title}. Select a new profession.", true);
                     currentLevelUpTitle = $"{___title}. Select a new profession.";
                 }
             }
@@ -211,14 +211,14 @@ namespace stardew_access.Patches
                     if (__instance.okButton.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
                     {
                         toSpeak = $"{total}g in total. Press left mouse button to save.";
-                        ScreenReader.sayWithChecker(toSpeak, true);
+                        MainClass.screenReader.SayWithChecker(toSpeak, true);
                     }
                     for (int i = 0; i < __instance.categories.Count; i++)
                     {
                         if (__instance.categories[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
                         {
                             toSpeak = $"Money recieved from {__instance.getCategoryName(i)}: {___categoryTotals[i]}g.";
-                            ScreenReader.sayWithChecker(toSpeak, true);
+                            MainClass.screenReader.SayWithChecker(toSpeak, true);
                         }
                     }
                 }
@@ -265,7 +265,7 @@ namespace stardew_access.Patches
                         toSpeak += "\t\n Left click to accept quest.";
                         __instance.acceptQuestButton.snapMouseCursorToCenter();
                     }
-                    ScreenReader.say(toSpeak, false);
+                    MainClass.screenReader.Say(toSpeak, false);
                 }
                 #endregion
 
@@ -278,7 +278,7 @@ namespace stardew_access.Patches
                         string label = c.label;
 
                         if (c.containsPoint(Game1.getMousePosition().X, Game1.getMousePosition().Y))
-                            ScreenReader.sayWithChecker($"Grab: {name} \t\n {label}", false);
+                            MainClass.screenReader.SayWithChecker($"Grab: {name} \t\n {label}", false);
                     }
                 }
                 #endregion

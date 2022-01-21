@@ -23,7 +23,7 @@ namespace stardew_access.Patches
 
                     toSpeak = $"Left Quest:\n\t{toSpeak}\n\tPress left click to accept this quest.";
 
-                    ScreenReader.sayWithMenuChecker(toSpeak, true);
+                    MainClass.screenReader.SayWithMenuChecker(toSpeak, true);
                     return;
                 }
 
@@ -33,7 +33,7 @@ namespace stardew_access.Patches
 
                     toSpeak = $"Right Quest:\n\t{toSpeak}\n\tPress left click to accept this quest.";
 
-                    ScreenReader.sayWithMenuChecker(toSpeak, true);
+                    MainClass.screenReader.SayWithMenuChecker(toSpeak, true);
                     return;
                 }
             }
@@ -99,7 +99,7 @@ namespace stardew_access.Patches
                             if (Game1.dayOfMonth == i + 1)
                                 toSpeak += $", Current";
 
-                            ScreenReader.sayWithChecker(toSpeak, true);
+                            MainClass.screenReader.SayWithChecker(toSpeak, true);
                         }
                     }
                     #endregion
@@ -114,7 +114,7 @@ namespace stardew_access.Patches
                         if (currentDailyQuestText != toSpeak)
                         {
                             currentDailyQuestText = toSpeak;
-                            ScreenReader.say(toSpeak, true);
+                            MainClass.screenReader.Say(toSpeak, true);
                         }
                     }
                     else
@@ -134,7 +134,7 @@ namespace stardew_access.Patches
                                 __instance.acceptQuestButton.snapMouseCursorToCenter();
                             }
 
-                            ScreenReader.say(toSpeak, true);
+                            MainClass.screenReader.Say(toSpeak, true);
                         }
                     }
                     #endregion
@@ -171,7 +171,7 @@ namespace stardew_access.Patches
                             toSpeak += ___pages[___currentPage][i].ShouldDisplayAsComplete() ? " completed!" : "";
                             if (__instance.questLogButtons[i].containsPoint(Game1.getOldMouseX(), Game1.getOldMouseY()))
                             {
-                                ScreenReader.sayWithChecker(toSpeak, true);
+                                MainClass.screenReader.SayWithChecker(toSpeak, true);
                             }
                         }
                     }
@@ -229,7 +229,7 @@ namespace stardew_access.Patches
                     if (snapMouseToRewardBox)
                         __instance.rewardBox.snapMouseCursorToCenter();
 
-                    ScreenReader.sayWithChecker(toSpeak, true);
+                    MainClass.screenReader.SayWithChecker(toSpeak, true);
                     #endregion
                 }
             }

@@ -42,7 +42,7 @@ namespace stardew_access.Patches
                         toSpeak += $"{message.message}, ";
                     });
                     if (toSpeak != " ")
-                        ScreenReader.sayWithChatChecker(toSpeak, false);
+                        MainClass.screenReader.SayWithChatChecker(toSpeak, false);
                     #endregion
                 }
             }
@@ -78,7 +78,7 @@ namespace stardew_access.Patches
                 toSpeak += $"{message.message}, ";
             });
 
-            ScreenReader.say(toSpeak, true);
+            MainClass.screenReader.Say(toSpeak, true);
             isChatRunning = false;
         }
     }
