@@ -115,7 +115,7 @@ namespace stardew_access.Game
             isReadingTile = false;
         }
 
-        private static string? getJunimoBundleAt(int x, int y)
+        public static string? getJunimoBundleAt(int x, int y)
         {
             if (Game1.currentLocation is not CommunityCenter)
                 return null;

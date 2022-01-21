@@ -8,6 +8,7 @@ namespace stardew_access.Game
     internal class door {}
     internal class building{}
     internal class otherObjects{}
+    internal class junimoBundle{}
 
     public class Radar
     {
@@ -126,7 +127,7 @@ namespace stardew_access.Game
                                 playSoundAt(position, objectName, typeof(Furniture));
                             }
                         }
-                        else if(obj is not Furniture)
+                        else if (obj is not Furniture)
                         {
                             playSoundAt(position, objectName, typeof(otherObjects));
                         }
@@ -184,22 +185,27 @@ namespace stardew_access.Game
                 // Check for Mine ladders
                 else if (ReadTile.isMineLadderAtTile((int)position.X, (int)position.Y) && !exclusions.Contains("ladder"))
                 {
-                    playSoundAt(position, null, typeof(door));
+                    playSoundAt(position, "ladder", typeof(door));
                 }
                 // Check for doors
                 else if (ReadTile.isDoorAtTile((int)position.X, (int)position.Y) && !exclusions.Contains("door"))
                 {
-                    playSoundAt(position, null, typeof(door));
+                    playSoundAt(position, "door", typeof(door));
                 }
                 // Check for buildings on maps
-                else if (ReadTile.getBuildingAtTile((int)position.X, (int)position.Y) != null)
+                else if (ReadTile.getBuildingAtTile((int)position.X, (int)position.Y) != null && !exclusions.Contains("building"))
                 {
                     playSoundAt(position, ReadTile.getBuildingAtTile((int)position.X, (int)position.Y), typeof(building));
                 }
                 // Check for resource clumps
-                else if (ReadTile.getResourceClumpAtTile((int)position.X, (int)position.Y) != null)
+                else if (ReadTile.getResourceClumpAtTile((int)position.X, (int)position.Y) != null && !exclusions.Contains("resource clump"))
                 {
-                    playSoundAt(position, ReadTile.getResourceClumpAtTile((int)position.X, (int)position.Y), typeof(ResourceClump));
+                    playSoundAt(position, "resource clump", typeof(ResourceClump));
+                }
+                // Check for junimo bundle
+                else if (ReadTile.getJunimoBundleAt((int)position.X, (int)position.Y) != null && !exclusions.Contains("junimo bundle"))
+                {
+                    playSoundAt(position, "junimo bundle", typeof(junimoBundle));
                 }
             }
             catch (Exception e)
