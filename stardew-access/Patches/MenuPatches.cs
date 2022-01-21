@@ -31,7 +31,7 @@ namespace stardew_access.Patches
                         if (prevTile != nextTile)
                         {
                             prevTile = nextTile;
-                            Game1.playSound("sa_colliding");
+                            Game1.playSound("colliding");
                         }
                         return false;
                     }

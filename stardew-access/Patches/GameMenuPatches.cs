@@ -48,7 +48,7 @@ namespace stardew_access.Patches
                         shopMenuQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
                         ScreenReader.say(toSpeak, true);
-                        Game1.playSound("sa_drop_item");
+                        Game1.playSound("drop_item");
                     }
                     return;
                 }
@@ -201,7 +201,7 @@ namespace stardew_access.Patches
                     {
                         geodeMenuQueryKey = toSpeak;
                         ScreenReader.say(toSpeak, true);
-                        Game1.playSound("sa_drop_item");
+                        Game1.playSound("drop_item");
                     }
                     return;
                 }
@@ -363,7 +363,7 @@ namespace stardew_access.Patches
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
                         ScreenReader.say(toSpeak, true);
-                        Game1.playSound("sa_drop_item");
+                        Game1.playSound("drop_item");
                     }
                     return;
                 }
@@ -579,7 +579,7 @@ namespace stardew_access.Patches
                         craftingPageQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
                         ScreenReader.say(toSpeak, true);
-                        Game1.playSound("sa_drop_item");
+                        Game1.playSound("drop_item");
                     }
                     return;
                 }
@@ -723,7 +723,7 @@ namespace stardew_access.Patches
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
                         ScreenReader.say(toSpeak, true);
-                        Game1.playSound("sa_drop_item");
+                        Game1.playSound("drop_item");
                     }
                     return;
                 }

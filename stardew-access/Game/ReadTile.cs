@@ -165,15 +165,6 @@ namespace stardew_access.Game
                         case 41:
                             toReturn = "Mail Box";
                             break;
-                        case 173:
-                            toReturn = "Fridge";
-                            break;
-                        case 169:
-                        case 170:
-                        case 171:
-                        case 172:
-                            toReturn = "Kitchen";
-                            break;
                         case 1003:
                             toReturn = "Street lamp";
                             break;
@@ -186,6 +177,22 @@ namespace stardew_access.Game
                         case 616:
                             toReturn = "Calender";
                             break;
+                    }
+
+                    if(Game1.currentLocation is FarmHouse || Game1.currentLocation is IslandFarmHouse)
+                    {
+                        switch (index)
+                        {
+                            case 173:
+                                toReturn = "Fridge";
+                                break;
+                            case 169:
+                            case 170:
+                            case 171:
+                            case 172:
+                                toReturn = "Kitchen";
+                                break;
+                        }
                     }
                 }
             }
