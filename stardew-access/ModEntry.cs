@@ -3,13 +3,8 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using HarmonyLib;
-using StardewValley.Menus;
-using Microsoft.Xna.Framework.Graphics;
 using stardew_access.Patches;
 using AutoHotkey.Interop;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using System.Text.RegularExpressions;
 
 namespace stardew_access
 {
@@ -18,6 +13,7 @@ namespace stardew_access
     {
         private Harmony? harmony;
         public static bool readTile = true, snapMouse = true, isNarratingHudMessage = false, radar = false, radarDebug = true;
+        public static bool monoSound = false;
         public static IMonitor? monitor;
         AutoHotkeyEngine ahk;
         public static string hudMessageQueryKey = "";
@@ -33,6 +29,7 @@ namespace stardew_access
             #region Initializations
 
             monitor = Monitor; // Inititalize monitor
+
             Game1.options.setGamepadMode("force_on");
 
             // Initialize AutoHotKey
@@ -49,276 +46,17 @@ namespace stardew_access
                 monitor.Log($"Unable to initialize AutoHotKey:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
 
-            ScreenReader.initializeScreenReader(); // Initialize the screen reader
+            ScreenReader.initializeScreenReader();
 
             CustomSoundEffects.Initialize(helper);
 
-            harmony = new Harmony(ModManifest.UniqueID); // Init harmony
+            CustomCommands.Initialize(helper);
 
             radarFeature = new Radar();
 
-            #endregion
+            harmony = new Harmony(ModManifest.UniqueID);
+            HarmonyPatches.Initialize(harmony);
 
-            #region Harmony Patches
-
-            #region Dialogue Patches
-            harmony.Patch(
-                   original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.draw), new Type[] { typeof(SpriteBatch) }),
-                   postfix: new HarmonyMethod(typeof(DialoguePatches), nameof(DialoguePatches.DialoguePatch))
-                );
-
-            harmony.Patch(
-               original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.receiveLeftClick)),
-               postfix: new HarmonyMethod(typeof(DialoguePatches), nameof(DialoguePatches.ClearDialogueString))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.drawHoverText), new Type[] { typeof(SpriteBatch), typeof(string), typeof(SpriteFont), typeof(int), typeof(int), typeof(int), typeof(string), typeof(int), typeof(string[]), typeof(Item), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(float), typeof(CraftingRecipe), typeof(IList<Item>) }),
-                postfix: new HarmonyMethod(typeof(DialoguePatches), nameof(DialoguePatches.HoverTextPatch))
-            ); 
-            #endregion
-
-            #region Title Menu Patches
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(TitleMenu), nameof(TitleMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.TitleMenuPatch))
-                );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(LoadGameMenu.SaveFileSlot), nameof(LoadGameMenu.SaveFileSlot.Draw), new Type[] { typeof(SpriteBatch), typeof(int) }),
-                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.LoadGameMenuPatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(CharacterCustomization), nameof(CharacterCustomization.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.NewGameMenuPatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(CoopMenu), nameof(CoopMenu.update), new Type[] { typeof(GameTime) }),
-                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.CoopMenuPatch))
-            );
-            #endregion
-
-            #region Game Menu Patches
-            harmony.Patch(
-                original: AccessTools.Method(typeof(GameMenu), nameof(GameMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.GameMenuPatch))
-            );
-
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(OptionsPage), nameof(OptionsPage.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.OptionsPagePatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(ExitPage), nameof(ExitPage.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.ExitPagePatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(CraftingPage), nameof(CraftingPage.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.CraftingPagePatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(InventoryPage), nameof(InventoryPage.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.InventoryPagePatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.ItemGrabMenuPatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(GeodeMenu), nameof(GeodeMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.GeodeMenuPatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.ShopMenuPatch))
-            );
-            #endregion
-
-            #region Menu Patches
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(LetterViewerMenu), nameof(LetterViewerMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.LetterViewerMenuPatch))
-                );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(ShippingMenu), nameof(ShippingMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ShippingMenuPatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(LevelUpMenu), nameof(LevelUpMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.LevelUpMenuPatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(ConfirmationDialog), nameof(ConfirmationDialog.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ConfirmationDialogPatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Constructor(typeof(NamingMenu), new Type[] { typeof(NamingMenu.doneNamingBehavior), typeof(string), typeof(string) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.NamingMenuPatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(MineElevatorMenu), nameof(MineElevatorMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.MineElevatorMenuPatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(LanguageSelectionMenu), nameof(LanguageSelectionMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.LanguageSelectionMenuPatch))
-            );
-            #endregion
-
-            #region Quest Patches
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(SpecialOrdersBoard), nameof(SpecialOrdersBoard.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(QuestPatches), nameof(QuestPatches.SpecialOrdersBoardPatch))
-                );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(QuestLog), nameof(QuestLog.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(QuestPatches), nameof(QuestPatches.QuestLogPatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Billboard), nameof(Billboard.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(QuestPatches), nameof(QuestPatches.BillboardPatch))
-            );
-            #endregion
-
-            #region Chat Menu Patches
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(ChatBox), nameof(ChatBox.update), new Type[] { typeof(GameTime) }),
-                    postfix: new HarmonyMethod(typeof(ChatManuPatches), nameof(ChatManuPatches.ChatBoxPatch))
-                );
-            #endregion
-
-            #region On Menu CLose Patch
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.exitThisMenu)),
-                    postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.IClickableMenuOnExitPatch))
-                );
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(Game1), nameof(Game1.exitActiveMenu)),
-                    prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.Game1ExitActiveMenuPatch))
-                );
-            #endregion
-
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(Game1), nameof(Game1.playSound)),
-                    prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.PlaySoundPatch))
-                );
-
-            #endregion
-
-            #region Custom Commands
-            helper.ConsoleCommands.Add("read_tile", "Toggle read tile feature", (string commmand, string[] args) =>
-            {
-                readTile = !readTile;
-
-                monitor.Log("Read Tile is " + (readTile ? "on" : "off"), LogLevel.Info);
-            });
-
-            helper.ConsoleCommands.Add("snap_mouse", "Toggle snap mouse feature", (string commmand, string[] args) =>
-            {
-                snapMouse = !snapMouse;
-
-                monitor.Log("Snap Mouse is " + (snapMouse ? "on" : "off"), LogLevel.Info);
-            });
-
-            helper.ConsoleCommands.Add("radar", "Toggle radar feature", (string commmand, string[] args) =>
-            {
-                radar = !radar;
-
-                monitor.Log("Radar " + (radar ? "on" : "off"), LogLevel.Info);
-            });
-
-            helper.ConsoleCommands.Add("r_debug", "Toggle debugging in radar feature", (string commmand, string[] args) =>
-            {
-                radarDebug = !radarDebug;
-
-                monitor.Log("Radar debugging " + (radarDebug ? "on" : "off"), LogLevel.Info);
-            });
-
-            helper.ConsoleCommands.Add("r_ex", "Exclude an object key to radar", (string commmand, string[] args) =>
-            {
-                string? keyToAdd = null;
-
-                for (int i = 0; i < args.Count(); i++) { keyToAdd += " " + args[i]; }
-
-                if (keyToAdd != null)
-                {
-                    keyToAdd = keyToAdd.Trim().ToLower();
-                    radarFeature.exclusions.Add(keyToAdd);
-                    monitor.Log($"Added {keyToAdd} key to exclusions.", LogLevel.Info);
-                }
-                else
-                {
-                    monitor.Log("Unable to add the key to exclusions.", LogLevel.Info);
-                }
-            });
-
-            helper.ConsoleCommands.Add("r_in", "Inlcude an object key to radar", (string commmand, string[] args) =>
-            {
-                string? keyToAdd = null;
-
-                for (int i = 0; i < args.Count(); i++) { keyToAdd += " " + args[i]; }
-
-                if (keyToAdd != null)
-                {
-                    keyToAdd = keyToAdd.Trim().ToLower();
-                    if (radarFeature.exclusions.Contains(keyToAdd))
-                    {
-                        radarFeature.exclusions.Remove(keyToAdd);
-                        monitor.Log($"Removed {keyToAdd} key from exclusions.", LogLevel.Info);
-                    }
-                    else
-                    {
-                        monitor.Log($"Cannot find{keyToAdd} key in exclusions.", LogLevel.Info);
-                    }
-                }
-                else
-                {
-                    monitor.Log("Unable to remove the key from exclusions.", LogLevel.Info);
-                }
-            });
-
-            helper.ConsoleCommands.Add("r_list", "List all the exclusions in the radar feature.", (string commmand, string[] args) =>
-            {
-                if (radarFeature.exclusions.Count>0)
-                {
-                    for(int i = 0;i < radarFeature.exclusions.Count; i++)
-                    {
-                        monitor.Log($"{i+1}) {radarFeature.exclusions[i]}", LogLevel.Info);
-                    }
-                }
-                else
-                {
-                    monitor.Log("No exclusions found.", LogLevel.Info);
-                }
-            });
-
-            helper.ConsoleCommands.Add("r_count", "Number of exclusions in the radar feature.", (string commmand, string[] args) =>
-            {
-                monitor.Log($"There are {radarFeature.exclusions.Count} exclusiond in the radar feature.", LogLevel.Info);
-            });
-
-            helper.ConsoleCommands.Add("ref_sr", "Refresh screen reader", (string commmand, string[] args) =>
-            {
-                ScreenReader.initializeScreenReader();
-
-                monitor.Log("Screen Reader refreshed!", LogLevel.Info);
-            });
             #endregion
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
@@ -334,12 +72,12 @@ namespace stardew_access
             MenuPatches.resetGlobalVars();
             QuestPatches.resetGlobalVars();
 
-            SlotAndLocation.narrateCurrentSlot();
+            Other.narrateCurrentSlot();
 
-            SlotAndLocation.narrateCurrentLocation();
+            Other.narrateCurrentLocation();
 
             if (snapMouse)
-                SnapMouseToPlayer();
+                Other.SnapMouseToPlayer();
 
             if(!ReadTile.isReadingTile && readTile)
                 ReadTile.run();
@@ -349,7 +87,7 @@ namespace stardew_access
 
             if (!isNarratingHudMessage)
             {
-                narrateHudMessages();
+                Other.narrateHudMessages();
             }
         }
 
@@ -397,68 +135,6 @@ namespace stardew_access
                 Game1.player.controller = new PathFindController(Game1.player, Game1.currentLocation, new Point(49,13), 2);
                 monitor.Log($"{Game1.player.controller.pathToEndPoint==null}", LogLevel.Debug); // true if path not found
             }*/
-        }
-
-        private void SnapMouseToPlayer()
-        {
-            int x = Game1.player.GetBoundingBox().Center.X - Game1.viewport.X;
-            int y = Game1.player.GetBoundingBox().Center.Y - Game1.viewport.Y;
-
-            int offset = 64;
-
-            switch (Game1.player.FacingDirection)
-            {
-                case 0:
-                    y -= offset;
-                    break;
-                case 1:
-                    x += offset;
-                    break;
-                case 2:
-                    y += offset;
-                    break;
-                case 3:
-                    x -= offset;
-                    break;
-            }
-
-            Game1.setMousePosition(x, y);
-        }
-
-        public static async void narrateHudMessages()
-        {
-            isNarratingHudMessage = true;
-            try
-            {
-                if(Game1.hudMessages.Count > 0)
-                {
-                    int lastIndex = Game1.hudMessages.Count - 1;
-                    HUDMessage lastMessage = Game1.hudMessages[lastIndex];
-                    if (!lastMessage.noIcon)
-                    {
-                        string toSpeak = lastMessage.Message;
-                        string searchQuery = toSpeak;
-
-                        searchQuery = Regex.Replace(toSpeak, @"[\d+]", string.Empty);
-                        searchQuery.Trim();
-
-
-                        if (hudMessageQueryKey != searchQuery)
-                        {
-                            hudMessageQueryKey = searchQuery;
-
-                            ScreenReader.say(toSpeak, true);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MainClass.monitor.Log($"Unable to narrate hud messages:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
-            }
-
-            await Task.Delay(300);
-            isNarratingHudMessage = false;
         }
     }
 }
