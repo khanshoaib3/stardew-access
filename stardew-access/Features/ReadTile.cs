@@ -564,7 +564,6 @@ namespace stardew_access.Game
             if(obj is Chest)
             {
                 Chest chest = (Chest)obj;
-                toReturn = chest.Type;
                 toReturn = chest.DisplayName;
             }
 
