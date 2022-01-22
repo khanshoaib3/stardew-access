@@ -5,10 +5,37 @@ using StardewValley.TerrainFeatures;
 
 namespace stardew_access.Game
 {
-    internal class door {}
-    internal class building{}
-    internal class otherObjects{}
-    internal class junimoBundle{}
+
+    // Custom enum for category
+    public class CATEGORY
+    {
+        private string _typeKeyWord;
+
+        private CATEGORY(string typeKeyWord)
+        {
+            _typeKeyWord = typeKeyWord;
+        }
+
+        public override string ToString()
+        {
+            return _typeKeyWord;
+        }
+
+        public static CATEGORY Farmers = new CATEGORY("farmer");
+        public static CATEGORY FarmAnimals = new CATEGORY("animal");
+        public static CATEGORY NPCs = new CATEGORY("npc");
+        public static CATEGORY Furnitures = new CATEGORY("furniture");
+        public static CATEGORY Flooring = new CATEGORY("flooring");
+        public static CATEGORY Grass = new CATEGORY("grass");
+        public static CATEGORY Crops = new CATEGORY("crop");
+        public static CATEGORY Trees = new CATEGORY("tree") ;
+        public static CATEGORY Buildings = new CATEGORY("building");
+        public static CATEGORY MineItems = new CATEGORY("mine item");
+        public static CATEGORY Chests = new CATEGORY("chest");
+        public static CATEGORY WaterTiles = new CATEGORY("water");
+        public static CATEGORY Others = new CATEGORY("other");
+
+    }
 
     public class Radar
     {
@@ -35,19 +62,29 @@ namespace stardew_access.Game
             exclusions.Add("weed");
             exclusions.Add("twig");
             exclusions.Add("coloured stone");
-            exclusions.Add("mine stone");
             exclusions.Add("clay stone");
             exclusions.Add("fossil stone");
             exclusions.Add("crop");
-            exclusions.Add("giant crop");
-            exclusions.Add("grass");
             exclusions.Add("tree");
             exclusions.Add("flooring");
             exclusions.Add("water");
-            exclusions.Add("door");
+            exclusions.Add("grass");
+
+            /* Not excluded
+             * 
+             * 
+             * exclusions.Add("farmer");
+             * exclusions.Add("animal");
+             * exclusions.Add("npc");
+             * exclusions.Add("furniture")
+             * exclusions.Add("other");
+             * exclusions.Add("building");
+             * exclusions.Add("mine item");
+             * exclusions.Add("chest"); 
+             */
         }
 
-        public async void run()
+        public async void Run()
         {
             if(MainClass.radarDebug)
                 MainClass.monitor.Log($"\n\nRead Tile started", StardewModdingAPI.LogLevel.Debug);
@@ -59,7 +96,7 @@ namespace stardew_access.Game
             closed.Clear();
             furnitures.Clear();
             npcs.Clear();
-            findTile(currPosition, currPosition, limit);
+            FindTile(currPosition, currPosition, limit);
 
             if(MainClass.radarDebug)
                 MainClass.monitor.Log($"\nRead Tile stopped\n\n", StardewModdingAPI.LogLevel.Debug);
@@ -68,7 +105,7 @@ namespace stardew_access.Game
             isRunning = false;
         }
 
-        public void findTile(Vector2 position, Vector2 center, int limit)
+        public void FindTile(Vector2 position, Vector2 center, int limit)
         {
             if (Math.Abs(position.X - center.X) > limit)
                 return;
@@ -78,47 +115,47 @@ namespace stardew_access.Game
                 return;
 
             closed.Add(position);
-            checkTile(position);
+            CheckTile(position);
 
             Vector2 northPosition = new(position.X, position.Y-1);
             Vector2 eastPosition = new(position.X+1, position.Y);
             Vector2 westPosition = new(position.X-1, position.Y);
             Vector2 southPosition = new(position.X, position.Y+1);
 
-            findTile(northPosition, center, limit);
-            findTile(eastPosition, center, limit);
-            findTile(westPosition, center, limit);
-            findTile(southPosition, center, limit);
+            FindTile(northPosition, center, limit);
+            FindTile(eastPosition, center, limit);
+            FindTile(westPosition, center, limit);
+            FindTile(southPosition, center, limit);
         }
 
-        public void checkTile(Vector2 position)
+        public void CheckTile(Vector2 position)
         {
             try
             {
                 Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
 
                 // Check for npcs
-                if (Game1.currentLocation.isCharacterAtTile(position) != null && !exclusions.Contains("npc"))
+                if (Game1.currentLocation.isCharacterAtTile(position) != null)
                 {
                     NPC npc = Game1.currentLocation.isCharacterAtTile(position);
                     if (!npcs.Contains(npc))
                     {
                         if (npc.isVillager() || npc.CanSocialize)
-                            playSoundAt(position, npc.displayName, typeof(Farmer)); // Villager
+                            PlaySoundAt(position, npc.displayName, CATEGORY.Farmers); // Villager
                         else
-                            playSoundAt(position, npc.displayName, typeof(NPC));
+                            PlaySoundAt(position, npc.displayName, CATEGORY.NPCs);
                     }
                 }
                 // Check for animals
-                else if (ReadTile.getFarmAnimalAt(Game1.currentLocation, (int)position.X, (int)position.Y) != null && !exclusions.Contains("animals"))
+                else if (ReadTile.getFarmAnimalAt(Game1.currentLocation, (int)position.X, (int)position.Y) != null)
                 {
                     string name = ReadTile.getFarmAnimalAt(Game1.currentLocation, (int)position.X, (int)position.Y, onlyName: true);
-                    playSoundAt(position, name, typeof(FarmAnimal));
+                    PlaySoundAt(position, name, CATEGORY.FarmAnimals);
                 }
                 // Check for water
-                else if (Game1.currentLocation.isWaterTile((int)position.X, (int)position.Y) && !exclusions.Contains("water"))
+                else if (Game1.currentLocation.isWaterTile((int)position.X, (int)position.Y))
                 {
-                    playSoundAt(position, null, typeof(WaterTiles));
+                    PlaySoundAt(position, null, CATEGORY.WaterTiles);
                 }
                 // Check for objects
                 else if (Game1.currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
@@ -128,17 +165,33 @@ namespace stardew_access.Game
 
                     if (objectName != null)
                     {
-                        if (obj is Furniture && !exclusions.Contains("furniture"))
+                        objectName = objectName.ToLower().Trim();
+
+                        if (obj is Furniture)
                         {
                             if (!furnitures.Contains(obj as Furniture))
                             {
                                 furnitures.Add(obj as Furniture);
-                                playSoundAt(position, objectName, typeof(Furniture));
+                                PlaySoundAt(position, objectName, CATEGORY.Furnitures);
                             }
                         }
-                        else if (obj is not Furniture)
+                        else if(obj is Chest)
                         {
-                            playSoundAt(position, objectName, typeof(otherObjects));
+                            PlaySoundAt(position, objectName, CATEGORY.Chests);
+                        }
+                        else if (obj is not Furniture && obj is not Chest)
+                        {
+                            bool isMineItem = false;
+
+                            if(objectName.Contains("node") || objectName.Contains("mystic stone") || objectName.Contains("jade stone"))
+                                isMineItem = true;
+                            else if (objectName.Contains("geode") || objectName.Contains("mine stone") || objectName.Contains("barrel") || objectName.Contains("item box"))
+                                isMineItem = true;
+
+                            if (isMineItem)
+                                PlaySoundAt(position, objectName, CATEGORY.MineItems);
+                            else
+                                PlaySoundAt(position, objectName, CATEGORY.Others);
                         }
                     }
                 }
@@ -149,72 +202,72 @@ namespace stardew_access.Game
                     string? terrain = ReadTile.getTerrainFeatureAtTile(tr).ToLower();
                     if (terrain != null)
                     {
-                        if (tr.Get() is HoeDirt && !exclusions.Contains("crop"))
+                        if (tr.Get() is HoeDirt)
                         {
-                            playSoundAt(position, terrain, typeof(Crop));
+                            PlaySoundAt(position, terrain, CATEGORY.Crops);
                         }
-                        else if (tr.Get() is GiantCrop && !exclusions.Contains("giant crop"))
+                        else if (tr.Get() is GiantCrop)
                         {
-                            playSoundAt(position, terrain, typeof(GiantCrop));
+                            PlaySoundAt(position, terrain, CATEGORY.Crops);
                         }
-                        else if (tr.Get() is Bush && !exclusions.Contains("bush"))
+                        else if (tr.Get() is Bush)
                         {
-                            playSoundAt(position, terrain, typeof(Bush));
+                            PlaySoundAt(position, terrain, CATEGORY.Others);
                         }
-                        else if (tr.Get() is CosmeticPlant && !exclusions.Contains("cosmetic plant"))
+                        else if (tr.Get() is CosmeticPlant)
                         {
-                            playSoundAt(position, terrain, typeof(CosmeticPlant));
+                            PlaySoundAt(position, terrain, CATEGORY.Furnitures);
                         }
-                        else if (tr.Get() is Flooring && !exclusions.Contains("flooring"))
+                        else if (tr.Get() is Flooring)
                         {
-                            playSoundAt(position, terrain, typeof(Flooring));
+                            PlaySoundAt(position, terrain, CATEGORY.Flooring);
                         }
-                        else if (tr.Get() is FruitTree && !exclusions.Contains("fruit tree"))
+                        else if (tr.Get() is FruitTree)
                         {
-                            playSoundAt(position, terrain, typeof(FruitTree));
+                            PlaySoundAt(position, terrain, CATEGORY.Trees);
                         }
-                        else if (tr.Get() is Grass && !exclusions.Contains("grass"))
+                        else if (tr.Get() is Grass)
                         {
-                            playSoundAt(position, terrain, typeof(Grass));
+                            PlaySoundAt(position, terrain, CATEGORY.Grass);
                         }
-                        else if (tr.Get() is Tree && !exclusions.Contains("tree"))
+                        else if (tr.Get() is Tree)
                         {
-                            playSoundAt(position, terrain, typeof(Tree));
+                            PlaySoundAt(position, terrain, CATEGORY.Trees);
                         }
-                        else if (tr.Get() is Quartz && !exclusions.Contains("quartz"))
+                        else if (tr.Get() is Quartz)
                         {
-                            playSoundAt(position, terrain, typeof(Quartz));
+                            PlaySoundAt(position, terrain, CATEGORY.Others);
                         }
-                        else if (tr.Get() is Leaf && !exclusions.Contains("leaf"))
+                        else if (tr.Get() is Leaf)
                         {
-                            playSoundAt(position, terrain, typeof(Leaf));
+                            PlaySoundAt(position, terrain, CATEGORY.Others);
                         }
                     }
                 }
                 // Check for Mine ladders
-                else if (ReadTile.isMineLadderAtTile((int)position.X, (int)position.Y) && !exclusions.Contains("ladder"))
+                else if (ReadTile.isMineLadderAtTile((int)position.X, (int)position.Y))
                 {
-                    playSoundAt(position, "ladder", typeof(door));
+                    PlaySoundAt(position, "ladder", CATEGORY.Buildings);
                 }
                 // Check for doors
-                else if (ReadTile.isDoorAtTile((int)position.X, (int)position.Y) && !exclusions.Contains("door"))
+                else if (ReadTile.isDoorAtTile((int)position.X, (int)position.Y))
                 {
-                    playSoundAt(position, "door", typeof(door));
+                    PlaySoundAt(position, "door", CATEGORY.Buildings);
                 }
                 // Check for buildings on maps
-                else if (ReadTile.getBuildingAtTile((int)position.X, (int)position.Y) != null && !exclusions.Contains("building"))
+                else if (ReadTile.getBuildingAtTile((int)position.X, (int)position.Y) != null)
                 {
-                    playSoundAt(position, ReadTile.getBuildingAtTile((int)position.X, (int)position.Y), typeof(building));
+                    PlaySoundAt(position, ReadTile.getBuildingAtTile((int)position.X, (int)position.Y), CATEGORY.Buildings);
                 }
                 // Check for resource clumps
-                else if (ReadTile.getResourceClumpAtTile((int)position.X, (int)position.Y) != null && !exclusions.Contains("resource clump"))
+                else if (ReadTile.getResourceClumpAtTile((int)position.X, (int)position.Y) != null)
                 {
-                    playSoundAt(position, "resource clump", typeof(ResourceClump));
+                    PlaySoundAt(position, "resource clump", CATEGORY.MineItems);
                 }
                 // Check for junimo bundle
-                else if (ReadTile.getJunimoBundleAt((int)position.X, (int)position.Y) != null && !exclusions.Contains("junimo bundle"))
+                else if (ReadTile.getJunimoBundleAt((int)position.X, (int)position.Y) != null)
                 {
-                    playSoundAt(position, "junimo bundle", typeof(junimoBundle));
+                    PlaySoundAt(position, "junimo bundle", CATEGORY.Chests);
                 }
             }
             catch (Exception e)
@@ -223,16 +276,16 @@ namespace stardew_access.Game
             }
         }
 
-        public void playSoundAt(Vector2 position, String searchQuery, Type soundType)
+        public void PlaySoundAt(Vector2 position, String searchQuery, CATEGORY category)
         {
             // Skip if player is directly looking at the tile
             if (CurrentPlayer.getNextTile().Equals(position))
                 return;
 
-            if (!radarFocus && exclusions.Contains(searchQuery.ToLower().Trim()))
+            if (!radarFocus && (exclusions.Contains(category.ToString()) || exclusions.Contains(searchQuery.ToLower().Trim())))
                 return;
 
-            if (radarFocus && !focus.Contains(searchQuery.ToLower().Trim()))
+            if (radarFocus && (!focus.Contains(category.ToString())) && !focus.Contains(searchQuery.ToLower().Trim()))
                 return;
 
             if (MainClass.radarDebug)
@@ -249,69 +302,55 @@ namespace stardew_access.Game
 
             if (dy < 0 && (Math.Abs(dy) >= Math.Abs(dx))) // Object is at top
             {
-                Game1.currentLocation.localSoundAt(getSoundName(soundType, "top"), position);
+                Game1.currentLocation.localSoundAt(GetSoundName(category, "top"), position);
             }
             else if (dx > 0 && (Math.Abs(dx) >= Math.Abs(dy))) // Object is at right
             {
-                Game1.currentLocation.localSoundAt(getSoundName(soundType, "right"), position);
+                Game1.currentLocation.localSoundAt(GetSoundName(category, "right"), position);
             }
             else if (dx < 0 && (Math.Abs(dx) > Math.Abs(dy))) // Object is at left
             {
-                Game1.currentLocation.localSoundAt(getSoundName(soundType, "left"), position);
+                Game1.currentLocation.localSoundAt(GetSoundName(category, "left"), position);
             }
             else if (dy > 0 && (Math.Abs(dy) > Math.Abs(dx))) // Object is at bottom
             {
-                Game1.currentLocation.localSoundAt(getSoundName(soundType, "bottom"), position);
+                Game1.currentLocation.localSoundAt(GetSoundName(category, "bottom"), position);
             }
 
         }
 
-        public string getSoundName(Type soundType, string post)
+        public static string GetSoundName(CATEGORY category, string post)
         {
             string soundName = $"_{post}";
 
             if(MainClass.radarStereoSound)
                 soundName = $"_mono{soundName}";
 
-            if(soundType == typeof(Farmer)) // Villagers and farmers
+            if(category == CATEGORY.Farmers) // Villagers and farmers
                 soundName = $"npc{soundName}";
-            if (soundType == typeof(FarmAnimal)) // Farm Animals
+            if (category == CATEGORY.FarmAnimals) // Farm Animals
                 soundName = $"npc{soundName}";
-            else if(soundType == typeof(NPC)) // Other npcs, also includes enemies
+            else if(category == CATEGORY.NPCs) // Other npcs, also includes enemies
                 soundName = $"obj{soundName}";
-            else if(soundType == typeof(WaterTiles)) // Water tiles
+            else if(category == CATEGORY.WaterTiles) // Water tiles
                 soundName = $"obj{soundName}";
-            else if(soundType == typeof(Furniture)) // Furnitures
+            else if(category == CATEGORY.Furnitures) // Furnitures
                 soundName = $"obj{soundName}";
-            else if (soundType == typeof(otherObjects)) // Other Objects
+            else if (category == CATEGORY.Others) // Other Objects
                 soundName = $"obj{soundName}";
-            else if (soundType == typeof(Crop)) // Crops
+            else if (category == CATEGORY.Crops) // Crops
                 soundName = $"obj{soundName}";
-            else if (soundType == typeof(GiantCrop)) // Giant Crops
+            else if (category == CATEGORY.Trees) // Trees
                 soundName = $"obj{soundName}";
-            else if (soundType == typeof(Bush)) // Bush
+            else if (category == CATEGORY.Buildings) // Buildings
                 soundName = $"obj{soundName}";
-            else if (soundType == typeof(CosmeticPlant)) // CosmeticPlant
+            else if (category == CATEGORY.MineItems) // Mine items
                 soundName = $"obj{soundName}";
-            else if (soundType == typeof(Flooring)) // Flooring
+            else if (category == CATEGORY.Chests) // Chests
                 soundName = $"obj{soundName}";
-            else if (soundType == typeof(FruitTree)) // Fruit Tree
+            else if (category == CATEGORY.Grass) // Grass
                 soundName = $"obj{soundName}";
-            else if (soundType == typeof(Grass)) // Grass
-                soundName = $"obj{soundName}";
-            else if (soundType == typeof(Tree)) // Trees
-                soundName = $"obj{soundName}";
-            else if (soundType == typeof(Quartz)) // Quartz
-                soundName = $"obj{soundName}";
-            else if (soundType == typeof(Leaf)) // Leaf
-                soundName = $"obj{soundName}";
-            else if (soundType == typeof(door)) // Doors and Ladders
-                soundName = $"obj{soundName}";
-            else if (soundType == typeof(building)) // Buildings
-                soundName = $"obj{soundName}";
-            else if (soundType == typeof(ResourceClump)) // Resource CLumps
-                soundName = $"obj{soundName}";
-            else if (soundType == typeof(junimoBundle)) // Junimo bundles
+            else if (category == CATEGORY.Flooring) // Flooring
                 soundName = $"obj{soundName}";
             else // Default
                 soundName = $"obj{soundName}";
@@ -319,25 +358,25 @@ namespace stardew_access.Game
             return soundName;
         }
 
-        public bool toggleFocus()
+        public bool ToggleFocus()
         {
             radarFocus = !radarFocus;
 
             if (radarFocus)
-                enableFocus();
+                EnableFocus();
             else
-                disableFocus();
+                DisableFocus();
 
             return radarFocus;
         }
 
-        public void enableFocus()
+        public void EnableFocus()
         {
             temp_exclusions = exclusions.ToList();
             exclusions.Clear();
         }
 
-        public void disableFocus()
+        public void DisableFocus()
         {
             exclusions = temp_exclusions.ToList();
             temp_exclusions.Clear();

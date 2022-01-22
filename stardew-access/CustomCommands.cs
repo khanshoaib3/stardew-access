@@ -45,7 +45,7 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("rfocus", "Toggle focus mode in radar feature.", (string commmand, string[] args) =>
             {
-                bool focus = MainClass.radarFeature.toggleFocus();
+                bool focus = MainClass.radarFeature.ToggleFocus();
 
                 MainClass.monitor.Log("Focus mode is " + (focus? "on" : "off"), LogLevel.Info);
             });
@@ -85,7 +85,7 @@ namespace stardew_access
                     }
                     else
                     {
-                        MainClass.monitor.Log($"Cannot find{keyToAdd} key in exclusions.", LogLevel.Info);
+                        MainClass.monitor.Log($"Cannot find {keyToAdd} key in exclusions.", LogLevel.Info);
                     }
                 }
                 else
@@ -150,7 +150,7 @@ namespace stardew_access
                     }
                     else
                     {
-                        MainClass.monitor.Log($"Cannot find{keyToAdd} key in focus.", LogLevel.Info);
+                        MainClass.monitor.Log($"Cannot find {keyToAdd} key in focus.", LogLevel.Info);
                     }
                 }
                 else

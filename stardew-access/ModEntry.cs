@@ -95,7 +95,7 @@ namespace stardew_access
                 ReadTile.run();
 
             if(!radarFeature.isRunning && radar)
-                radarFeature.run();
+                radarFeature.Run();
 
             if (!isNarratingHudMessage)
             {
