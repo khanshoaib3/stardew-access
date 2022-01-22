@@ -223,43 +223,47 @@ namespace stardew_access.Game
             }
         }
 
-        public void playSoundAt(Vector2 position, String? searchQuery, Type soundType)
+        public void playSoundAt(Vector2 position, String searchQuery, Type soundType)
         {
             // Skip if player is directly looking at the tile
             if (CurrentPlayer.getNextTile().Equals(position))
                 return;
 
-            if (searchQuery == null || !exclusions.Contains(searchQuery.ToLower().Trim()))
+            if (!radarFocus && exclusions.Contains(searchQuery.ToLower().Trim()))
+                return;
+
+            if (radarFocus && !focus.Contains(searchQuery.ToLower().Trim()))
+                return;
+
+            if (MainClass.radarDebug)
+                MainClass.monitor.Log($"Object:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}", StardewModdingAPI.LogLevel.Debug);
+
+            int px = (int)Game1.player.getTileX(); // Player's X postion
+            int py = (int)Game1.player.getTileY(); // Player's Y postion
+
+            int ox = (int)position.X; // Object's X postion
+            int oy = (int)position.Y; // Object's Y postion
+
+            int dx = ox - px; // Distance of object's X position
+            int dy = oy - py; // Distance of object's Y position
+
+            if (dy < 0 && (Math.Abs(dy) >= Math.Abs(dx))) // Object is at top
             {
-                if(MainClass.radarDebug)
-                    MainClass.monitor.Log($"Object:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}", StardewModdingAPI.LogLevel.Debug);
-
-                int px = (int)Game1.player.getTileX(); // Player's X postion
-                int py = (int)Game1.player.getTileY(); // Player's Y postion
-
-                int ox = (int)position.X; // Object's X postion
-                int oy = (int)position.Y; // Object's Y postion
-
-                int dx = ox - px; // Distance of object's X position
-                int dy = oy - py; // Distance of object's Y position
-
-                if(dy < 0 && (Math.Abs(dy) >= Math.Abs(dx))) // Object is at top
-                {
-                    Game1.currentLocation.localSoundAt(getSoundName(soundType, "top"), position);
-                }
-                else if (dx > 0 && (Math.Abs(dx) >= Math.Abs(dy))) // Object is at right
-                {
-                    Game1.currentLocation.localSoundAt(getSoundName(soundType, "right"), position);
-                }
-                else if (dx < 0 && (Math.Abs(dx) > Math.Abs(dy))) // Object is at left
-                {
-                    Game1.currentLocation.localSoundAt(getSoundName(soundType, "left"), position);
-                }
-                else if (dy > 0 && (Math.Abs(dy) > Math.Abs(dx))) // Object is at bottom
-                {
-                    Game1.currentLocation.localSoundAt(getSoundName(soundType, "bottom"), position);
-                }
+                Game1.currentLocation.localSoundAt(getSoundName(soundType, "top"), position);
             }
+            else if (dx > 0 && (Math.Abs(dx) >= Math.Abs(dy))) // Object is at right
+            {
+                Game1.currentLocation.localSoundAt(getSoundName(soundType, "right"), position);
+            }
+            else if (dx < 0 && (Math.Abs(dx) > Math.Abs(dy))) // Object is at left
+            {
+                Game1.currentLocation.localSoundAt(getSoundName(soundType, "left"), position);
+            }
+            else if (dy > 0 && (Math.Abs(dy) > Math.Abs(dx))) // Object is at bottom
+            {
+                Game1.currentLocation.localSoundAt(getSoundName(soundType, "bottom"), position);
+            }
+
         }
 
         public string getSoundName(Type soundType, string post)
@@ -329,13 +333,13 @@ namespace stardew_access.Game
 
         public void enableFocus()
         {
-            temp_exclusions = exclusions;
+            temp_exclusions = exclusions.ToList();
             exclusions.Clear();
         }
 
         public void disableFocus()
         {
-            exclusions = temp_exclusions;
+            exclusions = temp_exclusions.ToList();
             temp_exclusions.Clear();
         }
     }
