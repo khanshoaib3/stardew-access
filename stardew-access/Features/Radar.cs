@@ -47,9 +47,13 @@ namespace stardew_access.Game
         public List<string> focus;
         public bool isRunning;
         public bool radarFocus = false;
+        public int delay, range;
 
         public Radar()
         {
+            delay = 3000;
+            range = 5;
+
             isRunning = false;
             closed = new List<Vector2>();
             furnitures = new List<Furniture>();
@@ -91,17 +95,16 @@ namespace stardew_access.Game
 
             isRunning = true;
             Vector2 currPosition = Game1.player.getTileLocation();
-            int limit = 5;
 
             closed.Clear();
             furnitures.Clear();
             npcs.Clear();
-            FindTile(currPosition, currPosition, limit);
+            FindTile(currPosition, currPosition, range);
 
             if(MainClass.radarDebug)
                 MainClass.monitor.Log($"\nRead Tile stopped\n\n", StardewModdingAPI.LogLevel.Debug);
 
-            await Task.Delay(3000);
+            await Task.Delay(delay);
             isRunning = false;
         }
 
@@ -155,7 +158,7 @@ namespace stardew_access.Game
                 // Check for water
                 else if (Game1.currentLocation.isWaterTile((int)position.X, (int)position.Y))
                 {
-                    PlaySoundAt(position, null, CATEGORY.WaterTiles);
+                    PlaySoundAt(position, "water", CATEGORY.WaterTiles);
                 }
                 // Check for objects
                 else if (Game1.currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
@@ -285,7 +288,7 @@ namespace stardew_access.Game
             if (!radarFocus && (exclusions.Contains(category.ToString()) || exclusions.Contains(searchQuery.ToLower().Trim())))
                 return;
 
-            if (radarFocus && (!focus.Contains(category.ToString())) && !focus.Contains(searchQuery.ToLower().Trim()))
+            if (radarFocus && !(focus.Contains(category.ToString())) || focus.Contains(searchQuery.ToLower().Trim()))
                 return;
 
             if (MainClass.radarDebug)
@@ -323,15 +326,15 @@ namespace stardew_access.Game
         {
             string soundName = $"_{post}";
 
-            if(MainClass.radarStereoSound)
+            if(!MainClass.radarStereoSound)
                 soundName = $"_mono{soundName}";
 
             if(category == CATEGORY.Farmers) // Villagers and farmers
                 soundName = $"npc{soundName}";
-            if (category == CATEGORY.FarmAnimals) // Farm Animals
+            else if (category == CATEGORY.FarmAnimals) // Farm Animals
                 soundName = $"npc{soundName}";
             else if(category == CATEGORY.NPCs) // Other npcs, also includes enemies
-                soundName = $"obj{soundName}";
+                soundName = $"npc{soundName}";
             else if(category == CATEGORY.WaterTiles) // Water tiles
                 soundName = $"obj{soundName}";
             else if(category == CATEGORY.Furnitures) // Furnitures

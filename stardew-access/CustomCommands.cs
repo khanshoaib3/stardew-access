@@ -50,6 +50,73 @@ namespace stardew_access
                 MainClass.monitor.Log("Focus mode is " + (focus? "on" : "off"), LogLevel.Info);
             });
 
+            helper.ConsoleCommands.Add("rdelay", "Set the delay of radar feature in milliseconds.", (string commmand, string[] args) =>
+            {
+                string? delayInString = null;
+
+                if(args.Length > 0)
+                {
+                    delayInString = args[0];
+
+                    int delay;
+
+                    bool isParsable = int.TryParse(delayInString, out delay);
+
+                    if (isParsable)
+                    {
+                        MainClass.radarFeature.delay = delay;
+                        if(delay>=1000)
+                            MainClass.monitor.Log($"Delay set to {MainClass.radarFeature.delay} milliseconds.", LogLevel.Info);
+                        else
+                            MainClass.monitor.Log($"Delay should be atleast 1 second or 1000 millisecond long.", LogLevel.Info);
+                    }
+                    else
+                    {
+                        MainClass.monitor.Log("Invalid delay amount, it can only be in numeric form.", LogLevel.Info);
+                    }
+
+                }
+                else
+                {
+                    MainClass.monitor.Log("Enter the delay amount (in milliseconds)!", LogLevel.Info);
+                }
+
+            });
+
+            helper.ConsoleCommands.Add("rrange", "Set the delay of radar feature in milliseconds.", (string commmand, string[] args) =>
+            {
+                string? rangeInString = null;
+
+                if (args.Length > 0)
+                {
+                    rangeInString = args[0];
+
+                    int range;
+
+                    bool isParsable = int.TryParse(rangeInString, out range);
+
+                    if (isParsable)
+                    {
+                        MainClass.radarFeature.range = range;
+                        if (range >= 2 && range<=10)
+                            MainClass.monitor.Log($"Range set to {MainClass.radarFeature.range}.", LogLevel.Info);
+                        else
+                            MainClass.monitor.Log($"Range should be atleast 2 and maximum 10.", LogLevel.Info);
+                    }
+                    else
+                    {
+                        MainClass.monitor.Log("Invalid range amount, it can only be in numeric form.", LogLevel.Info);
+                    }
+
+                }
+                else
+                {
+                    MainClass.monitor.Log("Enter the range amount!", LogLevel.Info);
+                }
+
+            });
+
+
             #region Exclusions
             helper.ConsoleCommands.Add("readd", "Add an object key to the exclusions list of radar feature.", (string commmand, string[] args) =>
                 {
@@ -191,3 +258,4 @@ namespace stardew_access
         }
     }
 }
+
