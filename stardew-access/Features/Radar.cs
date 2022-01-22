@@ -16,7 +16,10 @@ namespace stardew_access.Game
         private List<Furniture> furnitures;
         private List<NPC> npcs;
         public List<string> exclusions;
+        private List<string> temp_exclusions;
+        public List<string> focus;
         public bool isRunning;
+        public bool radarFocus = false;
 
         public Radar()
         {
@@ -25,6 +28,8 @@ namespace stardew_access.Game
             furnitures = new List<Furniture>();
             npcs = new List<NPC>();
             exclusions = new List<string>();
+            temp_exclusions = new List<string>();
+            focus = new List<string>();
 
             exclusions.Add("stone");
             exclusions.Add("weed");
@@ -44,7 +49,9 @@ namespace stardew_access.Game
 
         public async void run()
         {
-            MainClass.monitor.Log($"\n\nRead Tile started", StardewModdingAPI.LogLevel.Debug);
+            if(MainClass.radarDebug)
+                MainClass.monitor.Log($"\n\nRead Tile started", StardewModdingAPI.LogLevel.Debug);
+
             isRunning = true;
             Vector2 currPosition = Game1.player.getTileLocation();
             int limit = 5;
@@ -54,7 +61,9 @@ namespace stardew_access.Game
             npcs.Clear();
             findTile(currPosition, currPosition, limit);
 
-            MainClass.monitor.Log($"\nRead Tile stopped\n\n", StardewModdingAPI.LogLevel.Debug);
+            if(MainClass.radarDebug)
+                MainClass.monitor.Log($"\nRead Tile stopped\n\n", StardewModdingAPI.LogLevel.Debug);
+
             await Task.Delay(3000);
             isRunning = false;
         }
@@ -298,10 +307,36 @@ namespace stardew_access.Game
                 soundName = $"obj{soundName}";
             else if (soundType == typeof(ResourceClump)) // Resource CLumps
                 soundName = $"obj{soundName}";
+            else if (soundType == typeof(junimoBundle)) // Junimo bundles
+                soundName = $"obj{soundName}";
             else // Default
                 soundName = $"obj{soundName}";
 
             return soundName;
+        }
+
+        public bool toggleFocus()
+        {
+            radarFocus = !radarFocus;
+
+            if (radarFocus)
+                enableFocus();
+            else
+                disableFocus();
+
+            return radarFocus;
+        }
+
+        public void enableFocus()
+        {
+            temp_exclusions = exclusions;
+            exclusions.Clear();
+        }
+
+        public void disableFocus()
+        {
+            exclusions = temp_exclusions;
+            temp_exclusions.Clear();
         }
     }
 }
