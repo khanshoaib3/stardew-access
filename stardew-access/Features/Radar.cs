@@ -2,11 +2,14 @@
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using System.Diagnostics;
 
 namespace stardew_access.Game
 {
 
-    // Custom enum for category
+    /// <summary>
+    /// This is a custom enum class and contains the name of groups the objects are divided into for the feature
+    /// </summary>
     public class CATEGORY
     {
         private string _typeKeyWord;
@@ -32,8 +35,8 @@ namespace stardew_access.Game
         public static CATEGORY Buildings = new CATEGORY("building");
         public static CATEGORY MineItems = new CATEGORY("mine item");
         public static CATEGORY Chests = new CATEGORY("chest");
-        public static CATEGORY WaterTiles = new CATEGORY("water");
         public static CATEGORY Others = new CATEGORY("other");
+        public static CATEGORY WaterTiles = new CATEGORY("water");
 
     }
 
@@ -90,6 +93,9 @@ namespace stardew_access.Game
 
         public async void Run()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             if(MainClass.radarDebug)
                 MainClass.monitor.Log($"\n\nRead Tile started", StardewModdingAPI.LogLevel.Debug);
 
@@ -99,36 +105,73 @@ namespace stardew_access.Game
             closed.Clear();
             furnitures.Clear();
             npcs.Clear();
-            FindTile(currPosition, currPosition, range);
+
+            BFS(currPosition, range);
 
             if(MainClass.radarDebug)
                 MainClass.monitor.Log($"\nRead Tile stopped\n\n", StardewModdingAPI.LogLevel.Debug);
 
+            sw.Stop();
+            MainClass.monitor.Log($"Time:{sw.ElapsedMilliseconds}ms", StardewModdingAPI.LogLevel.Debug);
             await Task.Delay(delay);
             isRunning = false;
         }
 
-        public void FindTile(Vector2 position, Vector2 center, int limit)
+        /// <summary>
+        /// Search the area using Breadth First Search algorithm(BFS).
+        /// </summary>
+        /// <param name="center">The starting point.</param>
+        /// <param name="limit">The limiting factor or simply radius of the search area.</param>
+        public void BFS(Vector2 center, int limit)
         {
-            if (Math.Abs(position.X - center.X) > limit)
-                return;
-            if (Math.Abs(position.Y - center.Y) > limit)
-                return;
-            if (closed.Contains(position))
-                return;
+            Queue<Vector2> toSearch = new Queue<Vector2>();
+            List<Vector2> searched = new List<Vector2>();
+            int []dirX = { -1, 0, 1, 0 };
+            int []dirY = { 0, 1, 0, -1 };
+            int count = 0;
 
-            closed.Add(position);
-            CheckTile(position);
+            toSearch.Enqueue(center);
+            searched.Add(center);
 
-            Vector2 northPosition = new(position.X, position.Y-1);
-            Vector2 eastPosition = new(position.X+1, position.Y);
-            Vector2 westPosition = new(position.X-1, position.Y);
-            Vector2 southPosition = new(position.X, position.Y+1);
+            while (toSearch.Count > 0)
+            {
+                Vector2 item = toSearch.Dequeue();
+                CheckTile(item);
+                count++;
 
-            FindTile(northPosition, center, limit);
-            FindTile(eastPosition, center, limit);
-            FindTile(westPosition, center, limit);
-            FindTile(southPosition, center, limit);
+                for(int i = 0; i < 4; i++)
+                {
+                    Vector2 dir = new Vector2(item.X+dirX[i], item.Y+dirY[i]);
+
+                    if (isValid(dir, center, searched, limit))
+                    {
+                        toSearch.Enqueue(dir);
+                        searched.Add(dir);
+                    }
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Checks if the provided tile position is within the range/radius and whether the tile has already been checked or not.
+        /// </summary>
+        /// <param name="item">The position of the tile to be searched.</param>
+        /// <param name="center">The starting point of the search.</param>
+        /// <param name="searched">The list of searched items.</param>
+        /// <param name="limit">The radius of search</param>
+        /// <returns></returns>
+        public bool isValid(Vector2 item, Vector2 center, List<Vector2> searched, int limit)
+        {
+            if (Math.Abs(item.X - center.X) > limit)
+                return false;
+            if (Math.Abs(item.Y - center.Y) > limit)
+                return false;
+
+            if(searched.Contains(item))
+                return false;
+
+            return true;
         }
 
         public void CheckTile(Vector2 position)
@@ -285,10 +328,10 @@ namespace stardew_access.Game
             if (CurrentPlayer.getNextTile().Equals(position))
                 return;
 
-            if (!radarFocus && (exclusions.Contains(category.ToString()) || exclusions.Contains(searchQuery.ToLower().Trim())))
+            if (!radarFocus && (exclusions.Contains(category.ToString().ToLower().Trim()) || exclusions.Contains(searchQuery.ToLower().Trim())))
                 return;
 
-            if (radarFocus && !(focus.Contains(category.ToString())) || focus.Contains(searchQuery.ToLower().Trim()))
+            if (radarFocus && !(focus.Contains(category.ToString().ToLower().Trim()) || focus.Contains(searchQuery.ToLower().Trim())) )
                 return;
 
             if (MainClass.radarDebug)
