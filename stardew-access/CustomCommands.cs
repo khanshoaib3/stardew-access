@@ -83,7 +83,7 @@ namespace stardew_access
 
             });
 
-            helper.ConsoleCommands.Add("rrange", "Set the delay of radar feature in milliseconds.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("rrange", "Set the range of radar feature.", (string commmand, string[] args) =>
             {
                 string? rangeInString = null;
 
@@ -127,12 +127,19 @@ namespace stardew_access
                     if (keyToAdd != null)
                     {
                         keyToAdd = keyToAdd.Trim().ToLower();
-                        MainClass.radarFeature.exclusions.Add(keyToAdd);
-                        MainClass.monitor.Log($"Added {keyToAdd} key to exclusions.", LogLevel.Info);
+                        if (!MainClass.radarFeature.exclusions.Contains(keyToAdd))
+                        {
+                            MainClass.radarFeature.exclusions.Add(keyToAdd);
+                            MainClass.monitor.Log($"Added {keyToAdd} key to exclusions list.", LogLevel.Info);
+                        }
+                        else
+                        {
+                            MainClass.monitor.Log($"{keyToAdd} key already present in the list.", LogLevel.Info);
+                        }
                     }
                     else
                     {
-                        MainClass.monitor.Log("Unable to add the key to exclusions.", LogLevel.Info);
+                        MainClass.monitor.Log("Unable to add the key to exclusions list.", LogLevel.Info);
                     }
                 });
 
@@ -148,16 +155,16 @@ namespace stardew_access
                     if (MainClass.radarFeature.exclusions.Contains(keyToAdd))
                     {
                         MainClass.radarFeature.exclusions.Remove(keyToAdd);
-                        MainClass.monitor.Log($"Removed {keyToAdd} key from exclusions.", LogLevel.Info);
+                        MainClass.monitor.Log($"Removed {keyToAdd} key from exclusions list.", LogLevel.Info);
                     }
                     else
                     {
-                        MainClass.monitor.Log($"Cannot find {keyToAdd} key in exclusions.", LogLevel.Info);
+                        MainClass.monitor.Log($"Cannot find {keyToAdd} key in exclusions list.", LogLevel.Info);
                     }
                 }
                 else
                 {
-                    MainClass.monitor.Log("Unable to remove the key from exclusions.", LogLevel.Info);
+                    MainClass.monitor.Log("Unable to remove the key from exclusions list.", LogLevel.Info);
                 }
             });
 
@@ -176,6 +183,12 @@ namespace stardew_access
                 }
             });
 
+            helper.ConsoleCommands.Add("rfclear", "Clear the focus exclusions in the radar featrure.", (string commmand, string[] args) =>
+            {
+                MainClass.radarFeature.exclusions.Clear();
+                MainClass.monitor.Log($"Cleared the focus list in the exclusions feature.", LogLevel.Info);
+            });
+
             helper.ConsoleCommands.Add("recount", "Number of exclusions in the radar feature.", (string commmand, string[] args) =>
             {
                 MainClass.monitor.Log($"There are {MainClass.radarFeature.exclusions.Count} exclusiond in the radar feature.", LogLevel.Info);
@@ -192,12 +205,19 @@ namespace stardew_access
                     if (keyToAdd != null)
                     {
                         keyToAdd = keyToAdd.Trim().ToLower();
-                        MainClass.radarFeature.focus.Add(keyToAdd);
-                        MainClass.monitor.Log($"Added {keyToAdd} key to focus.", LogLevel.Info);
+                        if (!MainClass.radarFeature.focus.Contains(keyToAdd))
+                        {
+                            MainClass.radarFeature.focus.Add(keyToAdd);
+                            MainClass.monitor.Log($"Added {keyToAdd} key to focus list.", LogLevel.Info);
+                        }
+                        else
+                        {
+                            MainClass.monitor.Log($"{keyToAdd} key already present in the list.", LogLevel.Info);
+                        }
                     }
                     else
                     {
-                        MainClass.monitor.Log("Unable to add the key to focus.", LogLevel.Info);
+                        MainClass.monitor.Log("Unable to add the key to focus list.", LogLevel.Info);
                     }
                 });
 
@@ -213,16 +233,16 @@ namespace stardew_access
                     if (MainClass.radarFeature.focus.Contains(keyToAdd))
                     {
                         MainClass.radarFeature.focus.Remove(keyToAdd);
-                        MainClass.monitor.Log($"Removed {keyToAdd} key from focus.", LogLevel.Info);
+                        MainClass.monitor.Log($"Removed {keyToAdd} key from focus list.", LogLevel.Info);
                     }
                     else
                     {
-                        MainClass.monitor.Log($"Cannot find {keyToAdd} key in focus.", LogLevel.Info);
+                        MainClass.monitor.Log($"Cannot find {keyToAdd} key in focus list.", LogLevel.Info);
                     }
                 }
                 else
                 {
-                    MainClass.monitor.Log("Unable to remove the key from exclusions.", LogLevel.Info);
+                    MainClass.monitor.Log("Unable to remove the key from focus list.", LogLevel.Info);
                 }
             });
 
@@ -241,7 +261,13 @@ namespace stardew_access
                 }
             });
 
-            helper.ConsoleCommands.Add("rfcount", "Number of exclusions in the radar feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("rfclear", "Clear the focus list in the radar featrure.", (string commmand, string[] args) =>
+            {
+                MainClass.radarFeature.focus.Clear();
+                MainClass.monitor.Log($"Cleared the focus list in the radar feature.", LogLevel.Info);
+            });
+
+            helper.ConsoleCommands.Add("rfcount", "Number of list in the radar feature.", (string commmand, string[] args) =>
             {
                 MainClass.monitor.Log($"There are {MainClass.radarFeature.focus.Count} objects in the focus list in the radar feature.", LogLevel.Info);
             }); 
