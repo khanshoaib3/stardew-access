@@ -183,7 +183,7 @@ namespace stardew_access
                 }
             });
 
-            helper.ConsoleCommands.Add("rfclear", "Clear the focus exclusions in the radar featrure.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("reclear", "Clear the focus exclusions in the radar featrure.", (string commmand, string[] args) =>
             {
                 MainClass.radarFeature.exclusions.Clear();
                 MainClass.monitor.Log($"Cleared the focus list in the exclusions feature.", LogLevel.Info);

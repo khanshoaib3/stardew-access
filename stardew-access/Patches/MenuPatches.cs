@@ -260,7 +260,7 @@ namespace stardew_access.Patches
                     currentLetterText = toSpeak;
 
                     // snap mouse to accept quest button
-                    if (__instance.acceptQuestButton.visible)
+                    if (__instance.acceptQuestButton!=null && __instance.acceptQuestButton.visible)
                     {
                         toSpeak += "\t\n Left click to accept quest.";
                         __instance.acceptQuestButton.snapMouseCursorToCenter();

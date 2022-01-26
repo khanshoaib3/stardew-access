@@ -36,6 +36,8 @@ namespace stardew_access.Game
                         MainClass.screenReader.prevTextTile = " ";
                     }
 
+                    bool isColliding = isCollidingAtTile(x, y);
+
                     Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
                     string toSpeak = " ";
 
@@ -49,7 +51,7 @@ namespace stardew_access.Game
                     {
                         toSpeak = getFarmAnimalAt(Game1.currentLocation, x, y);
                     }
-                    else if (Game1.currentLocation.isWaterTile(x, y))
+                    else if (Game1.currentLocation.isWaterTile(x, y) && isColliding)
                     {
                         toSpeak = "Water";
                     }
@@ -96,7 +98,7 @@ namespace stardew_access.Game
                     #endregion
 
                     #region Play colliding sound effect
-                    if (isCollidingAtTile(x, y) && prevTile != gt)
+                    if (isColliding && prevTile != gt)
                     {
                         Game1.playSound("colliding");
                     }
@@ -508,7 +510,7 @@ namespace stardew_access.Game
                     return "Item box";
             }
 
-            if (Game1.inMine || Game1.currentLocation is Mine)
+            if (Game1.currentLocation is Mine or MineShaft)
             {
                 switch (index)
                 {
@@ -576,7 +578,10 @@ namespace stardew_access.Game
             {
                 if (Game1.inMine || Game1.currentLocation is Mine)
                 {
-                    int index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
+                    int? index = null;
+                    
+                    if(Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y]!=null)
+                        index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
 
                     if (index == 173 || index == 174)
                         return true;
