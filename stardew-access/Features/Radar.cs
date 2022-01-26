@@ -69,6 +69,7 @@ namespace stardew_access.Game
             exclusions.Add("weed");
             exclusions.Add("twig");
             exclusions.Add("coloured stone");
+            exclusions.Add("ice crystal");
             exclusions.Add("clay stone");
             exclusions.Add("fossil stone");
             exclusions.Add("crop");
@@ -77,7 +78,7 @@ namespace stardew_access.Game
             exclusions.Add("water");
             exclusions.Add("grass");
 
-            /* Not excluded
+            /* Not excluded Categories
              * 
              * 
              * exclusions.Add("farmer");
@@ -291,7 +292,15 @@ namespace stardew_access.Game
                     }
                 }
                 // Check for Mine ladders
-                else if (ReadTile.isMineLadderAtTile((int)position.X, (int)position.Y))
+                else if (ReadTile.isMineDownLadderAtTile((int)position.X, (int)position.Y))
+                {
+                    PlaySoundAt(position, "ladder", CATEGORY.Buildings);
+                }
+                else if (ReadTile.isMineUpLadderAtTile((int)position.X, (int)position.Y))
+                {
+                    PlaySoundAt(position, "ladder", CATEGORY.Buildings);
+                }
+                else if (ReadTile.isElevatorAtTile((int)position.X, (int)position.Y))
                 {
                     PlaySoundAt(position, "ladder", CATEGORY.Buildings);
                 }

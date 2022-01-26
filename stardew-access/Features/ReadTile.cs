@@ -75,9 +75,17 @@ namespace stardew_access.Game
                     {
                         toSpeak = "Door";
                     }
-                    else if (isMineLadderAtTile(x, y))
+                    else if (isMineDownLadderAtTile(x, y))
                     {
                         toSpeak = "Ladder";
+                    }
+                    else if (isMineUpLadderAtTile(x, y))
+                    {
+                        toSpeak = "Up Ladder";
+                    }
+                    else if (isElevatorAtTile(x, y))
+                    {
+                        toSpeak = "Elevator";
                     }
                     else if (getBuildingAtTile(x, y) != null)
                     {
@@ -203,6 +211,7 @@ namespace stardew_access.Game
             /* Add More
             MainClass.monitor.Log(index.ToString(), LogLevel.Debug);
             */
+
             if (index != null)
             {
                 switch (index)
@@ -240,6 +249,7 @@ namespace stardew_access.Game
                             break;
                     }
                 }
+
             }
 
             return toReturn;
@@ -572,11 +582,11 @@ namespace stardew_access.Game
             return toReturn;
         }
 
-        public static bool isMineLadderAtTile(int x, int y)
+        public static bool isMineDownLadderAtTile(int x, int y)
         {
             try
             {
-                if (Game1.inMine || Game1.currentLocation is Mine)
+                if (Game1.currentLocation is Mine or MineShaft)
                 {
                     int? index = null;
                     
@@ -588,6 +598,46 @@ namespace stardew_access.Game
                 }
             }
             catch (Exception) {}
+
+            return false;
+        }
+
+        public static bool isMineUpLadderAtTile(int x, int y)
+        {
+            try
+            {
+                if (Game1.currentLocation is Mine or MineShaft)
+                {
+                    int? index = null;
+
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] != null)
+                        index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
+
+                    if (index == 115)
+                        return true;
+                }
+            }
+            catch (Exception) { }
+
+            return false;
+        }
+
+        public static bool isElevatorAtTile(int x, int y)
+        {
+            try
+            {
+                if (Game1.currentLocation is Mine or MineShaft)
+                {
+                    int? index = null;
+
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] != null)
+                        index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
+
+                    if (index == 112)
+                        return true;
+                }
+            }
+            catch (Exception) { }
 
             return false;
         }
