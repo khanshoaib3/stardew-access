@@ -5,6 +5,7 @@ using StardewValley;
 using HarmonyLib;
 using stardew_access.Patches;
 using AutoHotkey.Interop;
+using System.Runtime.InteropServices;
 
 namespace stardew_access
 {
@@ -38,18 +39,8 @@ namespace stardew_access
             Game1.options.setGamepadMode("force_on");
 
             // Initialize AutoHotKey
-            try
-            {
-                ahk = AutoHotkeyEngine.Instance;
-                ahk.ExecRaw("[::\nSend {LButton}");
-                ahk.ExecRaw("^Enter::\nSend {LButton}");
-                ahk.ExecRaw("]::\nSend {RButton}");
-                ahk.ExecRaw("+Enter::\nSend {RButton}");
-            }
-            catch (Exception e)
-            {
-                monitor.Log($"Unable to initialize AutoHotKey:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
-            }
+            if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                InitializeAutoHotKey();
 
             screenReader = new ScreenReader();
             screenReader.InitializeScreenReader();
@@ -147,6 +138,22 @@ namespace stardew_access
                 Game1.player.controller = new PathFindController(Game1.player, Game1.currentLocation, new Point(49,13), 2);
                 monitor.Log($"{Game1.player.controller.pathToEndPoint==null}", LogLevel.Debug); // true if path not found
             }*/
+        }
+
+        private void InitializeAutoHotKey()
+        {
+            try
+            {
+                ahk = AutoHotkeyEngine.Instance;
+                ahk.ExecRaw("[::\nSend {LButton}");
+                ahk.ExecRaw("^Enter::\nSend {LButton}");
+                ahk.ExecRaw("]::\nSend {RButton}");
+                ahk.ExecRaw("+Enter::\nSend {RButton}");
+            }
+            catch (Exception e)
+            {
+                monitor.Log($"Unable to initialize AutoHotKey:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
         }
     }
 }
