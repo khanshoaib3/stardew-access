@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
@@ -87,9 +88,9 @@ namespace stardew_access.Game
                     {
                         toSpeak = "Elevator";
                     }
-                    else if (getBuildingAtTile(x, y) != null)
+                    else if (getTileInfo(x, y).Item2 != null)
                     {
-                        toSpeak = getBuildingAtTile(x, y);
+                        toSpeak = getTileInfo(x, y).Item2;
                     }
                     else if (getJunimoBundleAt(x, y) != null)
                     {
@@ -200,9 +201,15 @@ namespace stardew_access.Game
             return null;
         }
 
-        public static string? getBuildingAtTile(int x, int y)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns>Item1: This is the category of the tile. Default to Furnitures.
+        /// <br/>Item2: This is the name of the tile. Default to null if the tile tile has nothing on it.</returns>
+        public static (CATEGORY?,string?) getTileInfo(int x, int y)
         {
-            string? toReturn = null;
 
             int? index = null;
 
@@ -212,26 +219,30 @@ namespace stardew_access.Game
             MainClass.monitor.Log(index.ToString(), LogLevel.Debug);
             */
 
+            if(Game1.currentLocation is Farm)
+            {
+                Building building = (Game1.currentLocation as Farm).getBuildingAt(new Vector2(x, y));
+                if (building != null)
+                {
+                    return (CATEGORY.Buildings, building.buildingType.Value);
+                }
+            }
+
             if (index != null)
             {
                 switch (index)
                 {
                     case 1955:
                     case 41:
-                        toReturn = "Mail Box";
-                        break;
+                        return (CATEGORY.Furnitures, "Mail Box");
                     case 1003:
-                        toReturn = "Street lamp";
-                        break;
+                        return (CATEGORY.Furnitures, "Street lamp");
                     case 78:
-                        toReturn = "Trash bin";
-                        break;
+                        return (CATEGORY.Furnitures, "Trash bin");
                     case 617:
-                        toReturn = "Daily quest";
-                        break;
+                        return (CATEGORY.Furnitures, "Daily quest");
                     case 616:
-                        toReturn = "Calender";
-                        break;
+                        return (CATEGORY.Furnitures, "Calender");
                 }
 
                 if (Game1.currentLocation is FarmHouse || Game1.currentLocation is IslandFarmHouse)
@@ -239,20 +250,18 @@ namespace stardew_access.Game
                     switch (index)
                     {
                         case 173:
-                            toReturn = "Fridge";
-                            break;
+                            return (CATEGORY.Furnitures, "Fridge");
                         case 169:
                         case 170:
                         case 171:
                         case 172:
-                            toReturn = "Kitchen";
-                            break;
+                            return (CATEGORY.Furnitures, "Kitchen");
                     }
                 }
 
             }
 
-            return toReturn;
+            return (null, null);
         }
 
         public static string getTerrainFeatureAtTile(Netcode.NetRef<TerrainFeature> terrain)

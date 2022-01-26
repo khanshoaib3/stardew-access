@@ -72,6 +72,7 @@ namespace stardew_access.Game
             exclusions.Add("ice crystal");
             exclusions.Add("clay stone");
             exclusions.Add("fossil stone");
+            exclusions.Add("street lamp");
             exclusions.Add("crop");
             exclusions.Add("tree");
             exclusions.Add("flooring");
@@ -310,9 +311,10 @@ namespace stardew_access.Game
                     PlaySoundAt(position, "door", CATEGORY.Buildings);
                 }
                 // Check for buildings on maps
-                else if (ReadTile.getBuildingAtTile((int)position.X, (int)position.Y) != null)
+                else if (ReadTile.getTileInfo((int)position.X, (int)position.Y).Item2 != null)
                 {
-                    PlaySoundAt(position, ReadTile.getBuildingAtTile((int)position.X, (int)position.Y), CATEGORY.Buildings);
+                    (CATEGORY, string?) item = ReadTile.getTileInfo((int)position.X, (int)position.Y);
+                    PlaySoundAt(position, item.Item2, item.Item1);
                 }
                 // Check for resource clumps
                 else if (ReadTile.getResourceClumpAtTile((int)position.X, (int)position.Y) != null)
