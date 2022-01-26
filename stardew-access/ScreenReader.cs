@@ -1,5 +1,6 @@
 ﻿using AccessibleOutput;
 using StardewModdingAPI;
+using System.Runtime.InteropServices;
 
 namespace stardew_access
 {
@@ -11,6 +12,9 @@ namespace stardew_access
         /// <summary>Initializes the screen reader.</summary>
         public void InitializeScreenReader()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                return;
+            
             NvdaOutput? nvdaOutput = null;
             JawsOutput? jawsOutput = null;
             SapiOutput? sapiOutput = null;
