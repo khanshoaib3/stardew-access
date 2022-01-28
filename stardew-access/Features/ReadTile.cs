@@ -68,7 +68,7 @@ namespace stardew_access.Game
                         if (terrain != null)
                             toSpeak = terrain;
                     }
-                    else if ( Game1.currentLocation.getLargeTerrainFeatureAt(x, y) != null)
+                    else if ( Game1.currentLocation.getLargeTerrainFeatureAt(x, y) != null )
                     {
                         toSpeak = "Bush";
                     }
