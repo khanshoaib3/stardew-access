@@ -1,12 +1,18 @@
-from multiprocessing.connection import wait
-from threading import Thread
-from time import time
 import speechd
-import time
 
-client = speechd.SSIPClient('test')
-client.speak("Hello World! this is yusuf")
-time.sleep(1)
-client.stop()
-client.speak("No this is shoaib")
-client.close()
+class Speech:
+    client = None
+
+    def Initialize(self):
+        self.client = speechd.SSIPClient('stardew-access')
+
+    def Say(self, text, interrupt):
+        if(self.client is not None):
+            if(interrupt):
+                self.client.stop()
+            
+            self.client.speak(text)
+    
+    def Close(self):
+        if(self.client is not None):
+            self.client.close()
