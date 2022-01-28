@@ -68,6 +68,10 @@ namespace stardew_access.Game
                         if (terrain != null)
                             toSpeak = terrain;
                     }
+                    else if ( Game1.currentLocation.getLargeTerrainFeatureAt(x, y) != null)
+                    {
+                        toSpeak = "Bush";
+                    }
                     else if (getResourceClumpAtTile(x, y) != null)
                     {
                         toSpeak = getResourceClumpAtTile(x, y);
@@ -366,7 +370,7 @@ namespace stardew_access.Game
             {
                 toReturn = "Leaf";
             }
-
+            
             return toReturn;
         }
 
