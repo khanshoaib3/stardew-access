@@ -4,8 +4,9 @@ namespace stardew_access
 {
     internal class CustomCommands
     {
-        internal static void Initialize(IModHelper helper)
+        internal static void Initialize()
         {
+            IModHelper helper = MainClass.ModHelper;
 
             helper.ConsoleCommands.Add("readtile", "Toggle read tile feature.", (string commmand, string[] args) =>
             {

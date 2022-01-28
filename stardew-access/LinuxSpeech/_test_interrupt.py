@@ -1,7 +1,7 @@
-import libspeechd
+import wrapper
 import time
 
-speech = libspeechd.Speech
+speech = wrapper.Speech
 
 speech.Initialize(self=speech)
 

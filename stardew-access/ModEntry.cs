@@ -25,6 +25,12 @@ namespace stardew_access
         public static Radar radarFeature;
         public static ScreenReader screenReader;
 
+        private static IModHelper _modHelper;
+        public static IModHelper ModHelper
+        {
+            get{return _modHelper;}
+        }
+
         /*********
         ** Public methods
         *********/
@@ -35,6 +41,7 @@ namespace stardew_access
             #region Initializations
 
             monitor = Monitor; // Inititalize monitor
+            _modHelper = helper;
 
             Game1.options.setGamepadMode("force_on");
 
@@ -45,9 +52,9 @@ namespace stardew_access
             screenReader = new ScreenReader();
             screenReader.InitializeScreenReader();
 
-            CustomSoundEffects.Initialize(helper);
+            CustomSoundEffects.Initialize();
 
-            CustomCommands.Initialize(helper);
+            CustomCommands.Initialize();
 
             radarFeature = new Radar();
 

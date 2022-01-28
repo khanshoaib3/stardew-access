@@ -1,6 +1,6 @@
-import libspeechd
+import wrapper
 
-speech = libspeechd.Speech
+speech = wrapper.Speech
 
 speech.Initialize(self=speech)
 

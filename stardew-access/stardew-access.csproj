@@ -5,9 +5,10 @@
     <RootNamespace>stardew_access</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	<LangVersion>preview</LangVersion>
-	<PlatformTarget>AnyCPU</PlatformTarget>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <LangVersion>preview</LangVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
 
   <ItemGroup>

@@ -11,7 +11,7 @@ namespace stardew_access
             Footstep
         }
 
-        internal static void Initialize(IModHelper helper)
+        internal static void Initialize()
         {
             try
             {
@@ -54,7 +54,7 @@ namespace stardew_access
                     }
 
                     SoundEffect effect;
-                    string filePath = Path.Combine(helper.DirectoryPath, $"sounds/{soundEffect.Key}.wav");
+                    string filePath = Path.Combine(MainClass.ModHelper.DirectoryPath,"sounds" , $"{soundEffect.Key}.wav");
                     using (FileStream stream = new(filePath, FileMode.Open))
                     {
                         effect = SoundEffect.FromStream(stream);
