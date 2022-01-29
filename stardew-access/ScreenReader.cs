@@ -8,32 +8,11 @@ namespace stardew_access
     public class ScreenReader
     {
         public IAccessibleOutput? screenReader = null;
-        public dynamic wrapperInstance = null;
         public string prevText = "", prevTextTile = " ", prevChatText = "", prevMenuText = "";
 
         /// <summary>Initializes the screen reader.</summary>
         public void InitializeScreenReader()
         {
-            MainClass.monitor.Log($"here! {RuntimeInformation.OSDescription}", LogLevel.Debug);
-            if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                MainClass.monitor.Log($"here!", LogLevel.Debug);
-                //instance of python engine
-                var engine = Python.CreateEngine();
-                //reading code from file
-                var source = engine.CreateScriptSourceFromFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LinuxSpeech", "wrapper.py"));
-                var scope = engine.CreateScope();
-                //executing script in scope
-                source.Execute(scope);
-                var wrapper = scope.GetVariable("Speech");
-                //initializing class
-                wrapperInstance = engine.Operations.CreateInstance(wrapper);
-                wrapperInstance.Initialize();
-
-                MainClass.monitor.Log($"here!", LogLevel.Debug);
-
-                return;
-            }
 
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return;
@@ -78,12 +57,6 @@ namespace stardew_access
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
         public void Say(string text, bool interrupt)
         {
-            if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                wrapperInstance.Say(text, interrupt);
-                return;
-            }
-
             if (screenReader == null)
                 return;
 

@@ -7,8 +7,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
