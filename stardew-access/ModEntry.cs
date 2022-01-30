@@ -6,20 +6,10 @@ using HarmonyLib;
 using stardew_access.Patches;
 using AutoHotkey.Interop;
 using System.Runtime.InteropServices;
+using stardew_access.ScreenReader;
 
 namespace stardew_access
 {
-    public struct GoString
-    {
-        public string msg;
-        public long len;
-        public GoString(string msg, long len)
-        {
-            this.msg = msg;
-            this.len = len;
-        }
-    }
-
     public class MainClass : Mod
     {
         private Harmony? harmony;
@@ -33,24 +23,13 @@ namespace stardew_access
         AutoHotkeyEngine ahk;
         public static string hudMessageQueryKey = "";
         public static Radar radarFeature;
-        public static ScreenReader screenReader;
+        public static ScreenReaderInterface? screenReader;
 
         private static IModHelper _modHelper;
         public static IModHelper ModHelper
         {
             get{return _modHelper;}
         }
-
-        [DllImport("libspeechdwrapper.so")]
-        private static extern void Initialize();
-
-
-        [DllImport("libspeechdwrapper.so")]
-        private static extern void Speak(GoString text, bool interrupt);
-
-
-        [DllImport("libspeechdwrapper.so")]
-        private static extern void Close();
 
         /*********
         ** Public methods
@@ -70,8 +49,7 @@ namespace stardew_access
             if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 InitializeAutoHotKey();
 
-            screenReader = new ScreenReader();
-            screenReader.InitializeScreenReader();
+            screenReader = new ScreenReaderController().Initialize();
 
             CustomSoundEffects.Initialize();
 
@@ -82,26 +60,28 @@ namespace stardew_access
             harmony = new Harmony(ModManifest.UniqueID);
             HarmonyPatches.Initialize(harmony);
 
-            #endregion
-
-            Initialize();
-            string text = "Testing";
-            Speak(new GoString(text,text.Length), false);
-            Close();
-
-            
+            #endregion            
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
+            AppDomain.CurrentDomain.DomainUnload += OnExit;
+            AppDomain.CurrentDomain.ProcessExit += OnExit;
+        }
+
+        public void OnExit (object? sender, EventArgs? e)
+        {
+            // Don't if this ever gets called or not but, just in case if it does.
+            if(screenReader!=null)
+                screenReader.CloseScreenReader();
         }
 
         /// <summary>Returns the Screen Reader class for other mods to use.</summary>
         public override object GetApi()
         {
-            return new ScreenReader();
+            return new ScreenReaderController().Initialize();
         }
 
-        private void onUpdateTicked(object sender, UpdateTickedEventArgs e)
+        private void onUpdateTicked(object? sender, UpdateTickedEventArgs? e)
         {
             if (!Context.IsPlayerFree)
                 return;
@@ -129,7 +109,7 @@ namespace stardew_access
             }
         }
 
-        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void OnButtonPressed(object? sender, ButtonPressedEventArgs? e)
         {
             if (!Context.IsPlayerFree)
                 return;

@@ -1,19 +1,19 @@
 ﻿using AccessibleOutput;
-using StardewModdingAPI;
-using System.Runtime.InteropServices;
 
-namespace stardew_access
+namespace stardew_access.ScreenReader
 {
-    public class ScreenReader
+    public class ScreenReaderWindows : ScreenReaderInterface
     {
         public IAccessibleOutput? screenReader = null;
         public string prevText = "", prevTextTile = " ", prevChatText = "", prevMenuText = "";
 
-        /// <summary>Initializes the screen reader.</summary>
+        public string PrevTextTile{
+            get{ return prevTextTile; }
+            set{ prevTextTile=value; }
+        }
+
         public void InitializeScreenReader()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                return;
             
             NvdaOutput? nvdaOutput = null;
             JawsOutput? jawsOutput = null;
@@ -46,13 +46,12 @@ namespace stardew_access
                 screenReader = jawsOutput;
             else if (sapiOutput != null && sapiOutput.IsAvailable())
                 screenReader = sapiOutput;
-            else
-                MainClass.monitor.Log($"Unable to load any screen reader!", LogLevel.Error);
         }
 
-        /// <summary>Speaks the text via the loaded screen reader (if any).</summary>
-        /// <param name="text">The text to be narrated.</param>
-        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
+        public void CloseScreenReader(){
+            
+        }
+
         public void Say(string text, bool interrupt)
         {
             if (screenReader == null)
@@ -61,10 +60,6 @@ namespace stardew_access
             screenReader.Speak(text, interrupt);
         }
 
-        /// <summary>Speaks the text via the loaded screen reader (if any).
-        /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.</summary>
-        /// <param name="text">The text to be narrated.</param>
-        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
         public void SayWithChecker(string text, bool interrupt)
         {
             if (screenReader == null)
@@ -77,11 +72,6 @@ namespace stardew_access
             }
         }
 
-        /// <summary>Speaks the text via the loaded screen reader (if any).
-        /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
-        /// <br/><br/>Use this when narrating hovered component in menus to avoid interference.</summary>
-        /// <param name="text">The text to be narrated.</param>
-        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
         public void SayWithMenuChecker(string text, bool interrupt)
         {
             if (screenReader == null)
@@ -94,11 +84,6 @@ namespace stardew_access
             }
         }
 
-        /// <summary>Speaks the text via the loaded screen reader (if any).
-        /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
-        /// <br/><br/>Use this when narrating chat messages to avoid interference.</summary>
-        /// <param name="text">The text to be narrated.</param>
-        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
         public void SayWithChatChecker(string text, bool interrupt)
         {
             if (screenReader == null)
@@ -110,14 +95,7 @@ namespace stardew_access
                 Say(text, interrupt);
             }
         }
-
-        /// <summary>Speaks the text via the loaded screen reader (if any).
-        /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
-        /// <br/><br/>Use this when narrating texts based on tile position to avoid interference.</summary>
-        /// <param name="text">The text to be narrated.</param>
-        /// <param name="x">The X location of tile.</param>
-        /// <param name="y">The Y location of tile.</param>
-        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
+        
         public void SayWithTileQuery(string text, int x, int y, bool interrupt)
         {
             if (screenReader == null)

@@ -168,6 +168,11 @@ namespace stardew_access
                     original: AccessTools.Method(typeof(Game1), nameof(Game1.playSound)),
                     prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.PlaySoundPatch))
                 );
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(InstanceGame), nameof(InstanceGame.Exit)),
+                    prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ExitEventPatch))
+                );
         }
     }
 }

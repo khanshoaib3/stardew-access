@@ -338,6 +338,11 @@ namespace stardew_access.Patches
             }
         }
 
+        internal static void ExitEventPatch()
+        {
+            if(MainClass.screenReader!=null)
+                MainClass.screenReader.CloseScreenReader();
+        }
         internal static void resetGlobalVars()
         {
             currentLetterText = " ";

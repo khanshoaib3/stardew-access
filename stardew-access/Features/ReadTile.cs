@@ -34,7 +34,8 @@ namespace stardew_access.Game
                 {
                     if (!manuallyTriggered && prevTile != gt)
                     {
-                        MainClass.screenReader.prevTextTile = " ";
+                        if(MainClass.screenReader!=null)
+                            MainClass.screenReader.PrevTextTile = " ";
                     }
 
                     bool isColliding = isCollidingAtTile(x, y);
