@@ -1,7 +1,6 @@
 ﻿using AccessibleOutput;
 using StardewModdingAPI;
 using System.Runtime.InteropServices;
-using IronPython.Hosting;
 
 namespace stardew_access
 {
@@ -13,7 +12,6 @@ namespace stardew_access
         /// <summary>Initializes the screen reader.</summary>
         public void InitializeScreenReader()
         {
-
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return;
             

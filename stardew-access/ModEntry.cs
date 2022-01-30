@@ -9,6 +9,16 @@ using System.Runtime.InteropServices;
 
 namespace stardew_access
 {
+    public struct GoString
+    {
+        public string msg;
+        public long len;
+        public GoString(string msg, long len)
+        {
+            this.msg = msg;
+            this.len = len;
+        }
+    }
 
     public class MainClass : Mod
     {
@@ -30,6 +40,17 @@ namespace stardew_access
         {
             get{return _modHelper;}
         }
+
+        [DllImport("libspeechdwrapper.so")]
+        private static extern void Initialize();
+
+
+        [DllImport("libspeechdwrapper.so")]
+        private static extern void Speak(GoString text, bool interrupt);
+
+
+        [DllImport("libspeechdwrapper.so")]
+        private static extern void Close();
 
         /*********
         ** Public methods
@@ -62,6 +83,13 @@ namespace stardew_access
             HarmonyPatches.Initialize(harmony);
 
             #endregion
+
+            Initialize();
+            string text = "Testing";
+            Speak(new GoString(text,text.Length), false);
+            Close();
+
+            
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
