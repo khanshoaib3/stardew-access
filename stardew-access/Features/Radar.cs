@@ -197,7 +197,7 @@ namespace stardew_access.Game
                 // Check for animals
                 else if (ReadTile.getFarmAnimalAt(Game1.currentLocation, (int)position.X, (int)position.Y) != null)
                 {
-                    string name = ReadTile.getFarmAnimalAt(Game1.currentLocation, (int)position.X, (int)position.Y, onlyName: true);
+                    string? name = ReadTile.getFarmAnimalAt(Game1.currentLocation, (int)position.X, (int)position.Y, onlyName: true);
                     PlaySoundAt(position, name, CATEGORY.FarmAnimals);
                 }
                 // Check for water
@@ -286,10 +286,6 @@ namespace stardew_access.Game
                         {
                             PlaySoundAt(position, terrain, CATEGORY.Others);
                         }
-                        else if (tr.Get() is Leaf)
-                        {
-                            PlaySoundAt(position, terrain, CATEGORY.Others);
-                        }
                     }
                 }
                 // Check for Mine ladders
@@ -313,7 +309,7 @@ namespace stardew_access.Game
                 // Check for buildings on maps
                 else if (ReadTile.getTileInfo((int)position.X, (int)position.Y).Item2 != null)
                 {
-                    (CATEGORY, string?) item = ReadTile.getTileInfo((int)position.X, (int)position.Y);
+                    (CATEGORY?, string?) item = ReadTile.getTileInfo((int)position.X, (int)position.Y);
                     PlaySoundAt(position, item.Item2, item.Item1);
                 }
                 // Check for resource clumps

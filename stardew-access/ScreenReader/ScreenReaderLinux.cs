@@ -17,15 +17,16 @@ namespace stardew_access.ScreenReader
     public class ScreenReaderLinux : ScreenReaderInterface
     {
         [DllImport("libspeechdwrapper.so")]
-        private static extern void Initialize();
+        private static extern int Initialize();
 
         [DllImport("libspeechdwrapper.so")]
-        private static extern void Speak(GoString text, bool interrupt);
+        private static extern int Speak(GoString text, bool interrupt);
 
         [DllImport("libspeechdwrapper.so")]
-        private static extern void Close();
+        private static extern int Close();
 
         public string prevText = "", prevTextTile = " ", prevChatText = "", prevMenuText = "";
+        private bool initialized = false;
 
         public string PrevTextTile{
             get{ return prevTextTile; }
@@ -34,17 +35,25 @@ namespace stardew_access.ScreenReader
 
         public void InitializeScreenReader()
         {
-            Initialize();
+            int res = Initialize();
+            if(res==1){
+                initialized = true;
+            }
         }
 
         public void CloseScreenReader(){
-            Close();
+            if(initialized){
+                Close();
+                initialized = false;
+            }
         }
 
         public void Say(string text, bool interrupt)
         {
-            GoString str = new GoString(text, text.Length);
-            Speak(str, interrupt);
+            if(initialized){
+                GoString str = new GoString(text, text.Length);
+                Speak(str, interrupt);
+            }
         }
 
         public void SayWithChecker(string text, bool interrupt)

@@ -659,7 +659,7 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    hoverTitle = null;
+                    hoverTitle = " ";
                     hoverText = farm.hoverText;
                 }
             }

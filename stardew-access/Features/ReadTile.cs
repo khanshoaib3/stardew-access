@@ -71,7 +71,49 @@ namespace stardew_access.Game
                     }
                     else if ( Game1.currentLocation.getLargeTerrainFeatureAt(x, y) != null )
                     {
-                        toSpeak = "Bush";
+                        Bush bush = (Bush) Game1.currentLocation.getLargeTerrainFeatureAt(x, y);
+                        int size = bush.size;
+
+                        #region Check if bush is harvestable or not
+                        if (!bush.townBush && (int)bush.tileSheetOffset == 1 && bush.inBloom(Game1.GetSeasonForLocation(Game1.currentLocation), Game1.dayOfMonth))
+                        {
+                            // Taken from the game's code
+                            string season = ((int)bush.overrideSeason == -1) ? Game1.GetSeasonForLocation(Game1.currentLocation) : Utility.getSeasonNameFromNumber(bush.overrideSeason);
+                            int shakeOff = -1;
+                            if (!(season == "spring"))
+                            {
+                                if (season == "fall")
+                                {
+                                    shakeOff = 410;
+                                }
+                            }
+                            else
+                            {
+                                shakeOff = 296;
+                            }
+                            if ((int)size == 3)
+                            {
+                                shakeOff = 815;
+                            }
+                            if ((int)size == 4)
+                            {
+                                shakeOff = 73;
+                            }
+                            if (shakeOff == -1)
+                            {
+                                return;
+                            }
+
+                            toSpeak = "Harvestable";
+                        }
+                        #endregion
+
+                        if(bush.townBush)
+                            toSpeak = $"{toSpeak} Town Bush";
+                        else if(bush.greenhouseBush)
+                            toSpeak = $"{toSpeak} Greenhouse Bush";
+                        else
+                            toSpeak = $"{toSpeak} Bush";
                     }
                     else if (getResourceClumpAtTile(x, y) != null)
                     {
