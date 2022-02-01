@@ -19,10 +19,10 @@ namespace stardew_access.Patches
                 if (!Context.IsPlayerFree)
                     return true;
 
-                if(!Game1.player.isMoving())
+                if (!Game1.player.isMoving())
                     return true;
 
-                if(cueName == "grassyStep" || cueName == "sandyStep" || cueName == "snowyStep" || cueName == "stoneStep" || cueName == "thudStep" || cueName == "woodyStep")
+                if (cueName == "grassyStep" || cueName == "sandyStep" || cueName == "snowyStep" || cueName == "stoneStep" || cueName == "thudStep" || cueName == "woodyStep")
                 {
                     Vector2 nextTile = CurrentPlayer.getNextTile();
                     if (ReadTile.isCollidingAtTile((int)nextTile.X, (int)nextTile.Y))
@@ -48,9 +48,9 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
 
-                if(__instance.nextPageButton != null && __instance.nextPageButton.containsPoint(x, y))
+                if (__instance.nextPageButton != null && __instance.nextPageButton.containsPoint(x, y))
                 {
                     MainClass.screenReader.SayWithMenuChecker($"Next Page Button", true);
                     return;
@@ -62,9 +62,9 @@ namespace stardew_access.Patches
                     return;
                 }
 
-                for(int i=0; i<__instance.languages.Count; i++)
+                for (int i = 0; i < __instance.languages.Count; i++)
                 {
-                    if(__instance.languages[i].containsPoint(x, y))
+                    if (__instance.languages[i].containsPoint(x, y))
                     {
                         MainClass.screenReader.SayWithMenuChecker($"{__instance.languageList[i]} Button", true);
                         break;
@@ -81,10 +81,10 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
-                for (int i=0; i<___elevators.Count; i++)
+                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                for (int i = 0; i < ___elevators.Count; i++)
                 {
-                    if(___elevators[i].containsPoint(x, y))
+                    if (___elevators[i].containsPoint(x, y))
                     {
                         MainClass.screenReader.SayWithMenuChecker($"{___elevators[i].name} level", true);
                         break;
@@ -117,13 +117,14 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
+                int x = Game1.getMouseX(), y = Game1.getMouseY();
 
                 MainClass.screenReader.SayWithMenuChecker(___message, true);
-                if(__instance.okButton.containsPoint(x, y))
+                if (__instance.okButton.containsPoint(x, y))
                 {
                     MainClass.screenReader.SayWithMenuChecker("Ok Button", false);
-                } else if (__instance.cancelButton.containsPoint(x, y))
+                }
+                else if (__instance.cancelButton.containsPoint(x, y))
                 {
                     MainClass.screenReader.SayWithMenuChecker("Cancel Button", false);
                 }
@@ -138,7 +139,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
+                int x = Game1.getMouseX(), y = Game1.getMouseY();
                 string leftProfession = " ", rightProfession = " ", extraInfo = " ", newCraftingRecipe = " ", toSpeak = " ";
 
                 if (!__instance.informationUp)
@@ -208,14 +209,14 @@ namespace stardew_access.Patches
                 {
                     int total = ___categoryTotals[5];
                     string toSpeak;
-                    if (__instance.okButton.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                    if (__instance.okButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                     {
                         toSpeak = $"{total}g in total. Press left mouse button to save.";
                         MainClass.screenReader.SayWithChecker(toSpeak, true);
                     }
                     for (int i = 0; i < __instance.categories.Count; i++)
                     {
-                        if (__instance.categories[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                        if (__instance.categories[i].containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                         {
                             toSpeak = $"Money recieved from {__instance.getCategoryName(i)}: {___categoryTotals[i]}g.";
                             MainClass.screenReader.SayWithChecker(toSpeak, true);
@@ -260,7 +261,7 @@ namespace stardew_access.Patches
                     currentLetterText = toSpeak;
 
                     // snap mouse to accept quest button
-                    if (__instance.acceptQuestButton!=null && __instance.acceptQuestButton.visible)
+                    if (__instance.acceptQuestButton != null && __instance.acceptQuestButton.visible)
                     {
                         toSpeak += "\t\n Left click to accept quest.";
                         __instance.acceptQuestButton.snapMouseCursorToCenter();
@@ -315,7 +316,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                if(__instance is GeodeMenu)
+                if (__instance is GeodeMenu)
                 {
                     GameMenuPatches.geodeMenuQueryKey = "";
                 }
@@ -340,7 +341,7 @@ namespace stardew_access.Patches
 
         internal static void ExitEventPatch()
         {
-            if(MainClass.screenReader!=null)
+            if (MainClass.screenReader != null)
                 MainClass.screenReader.CloseScreenReader();
         }
         internal static void resetGlobalVars()

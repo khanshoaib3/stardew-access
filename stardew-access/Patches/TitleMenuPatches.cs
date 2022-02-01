@@ -16,7 +16,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
+                int x = Game1.getMouseX(), y = Game1.getMouseY();
                 string toSpeak = " ";
 
                 #region Join/Host Button (Important! This should be checked before checking other buttons)
@@ -64,7 +64,7 @@ namespace stardew_access.Patches
 
                 __instance.buttons.ForEach(component =>
                 {
-                    if (component.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                    if (component.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                     {
                         string name = component.name;
                         string label = component.label;
@@ -72,27 +72,27 @@ namespace stardew_access.Patches
                     }
                 });
 
-                if (__instance.muteMusicButton.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                if (__instance.muteMusicButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                 {
                     toSpeak = "Mute Music Button";
                 }
 
-                if (__instance.aboutButton.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                if (__instance.aboutButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                 {
                     toSpeak = "About Button";
                 }
 
-                if (__instance.languageButton.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                if (__instance.languageButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                 {
                     toSpeak = "Language Button";
                 }
 
-                if (__instance.windowedButton.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                if (__instance.windowedButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                 {
                     toSpeak = "Fullscreen toggle Button";
                 }
 
-                if (TitleMenu.subMenu != null && __instance.backButton.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                if (TitleMenu.subMenu != null && __instance.backButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                 {
                     string text = "Back Button";
                     MainClass.screenReader.SayWithChecker(text, true);
@@ -111,7 +111,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
+                int x = Game1.getMouseX(), y = Game1.getMouseY();
                 if (___menu.slotButtons[i].containsPoint(x, y))
                 {
                     if (__instance.Farmer != null)
@@ -290,7 +290,7 @@ namespace stardew_access.Patches
                         #endregion
 
                         __instance.skipIntroButton.snapMouseCursor();
-                        toSpeak =  (___skipIntro?"Enabled":"Disabled") + " Skip Intro Button";
+                        toSpeak = (___skipIntro ? "Enabled" : "Disabled") + " Skip Intro Button";
                     }
                     break;
                 case 5:
@@ -638,7 +638,7 @@ namespace stardew_access.Patches
                     break;
             }
 
-            if(toSpeak!=" ")
+            if (toSpeak != " ")
             {
                 MainClass.screenReader.Say(toSpeak, true);
             }

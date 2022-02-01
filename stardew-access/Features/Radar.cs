@@ -2,7 +2,6 @@
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using System.Diagnostics;
 
 namespace stardew_access.Game
 {
@@ -31,7 +30,7 @@ namespace stardew_access.Game
         public static CATEGORY Flooring = new CATEGORY("flooring");
         public static CATEGORY Grass = new CATEGORY("grass");
         public static CATEGORY Crops = new CATEGORY("crop");
-        public static CATEGORY Trees = new CATEGORY("tree") ;
+        public static CATEGORY Trees = new CATEGORY("tree");
         public static CATEGORY Buildings = new CATEGORY("building");
         public static CATEGORY MineItems = new CATEGORY("mine item");
         public static CATEGORY Chests = new CATEGORY("chest");
@@ -95,10 +94,7 @@ namespace stardew_access.Game
 
         public async void Run()
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
-            if(MainClass.radarDebug)
+            if (MainClass.radarDebug)
                 MainClass.monitor.Log($"\n\nRead Tile started", StardewModdingAPI.LogLevel.Debug);
 
             isRunning = true;
@@ -110,11 +106,9 @@ namespace stardew_access.Game
 
             BFS(currPosition, range);
 
-            if(MainClass.radarDebug)
+            if (MainClass.radarDebug)
                 MainClass.monitor.Log($"\nRead Tile stopped\n\n", StardewModdingAPI.LogLevel.Debug);
 
-            sw.Stop();
-            MainClass.monitor.Log($"Time:{sw.ElapsedMilliseconds}ms", StardewModdingAPI.LogLevel.Debug);
             await Task.Delay(delay);
             isRunning = false;
         }
@@ -128,8 +122,8 @@ namespace stardew_access.Game
         {
             Queue<Vector2> toSearch = new Queue<Vector2>();
             List<Vector2> searched = new List<Vector2>();
-            int []dirX = { -1, 0, 1, 0 };
-            int []dirY = { 0, 1, 0, -1 };
+            int[] dirX = { -1, 0, 1, 0 };
+            int[] dirY = { 0, 1, 0, -1 };
             int count = 0;
 
             toSearch.Enqueue(center);
@@ -141,9 +135,9 @@ namespace stardew_access.Game
                 CheckTile(item);
                 count++;
 
-                for(int i = 0; i < 4; i++)
+                for (int i = 0; i < 4; i++)
                 {
-                    Vector2 dir = new Vector2(item.X+dirX[i], item.Y+dirY[i]);
+                    Vector2 dir = new Vector2(item.X + dirX[i], item.Y + dirY[i]);
 
                     if (isValid(dir, center, searched, limit))
                     {
@@ -170,7 +164,7 @@ namespace stardew_access.Game
             if (Math.Abs(item.Y - center.Y) > limit)
                 return false;
 
-            if(searched.Contains(item))
+            if (searched.Contains(item))
                 return false;
 
             return true;
@@ -223,7 +217,7 @@ namespace stardew_access.Game
                                 PlaySoundAt(position, objectName, CATEGORY.Furnitures);
                             }
                         }
-                        else if(obj is Chest)
+                        else if (obj is Chest)
                         {
                             PlaySoundAt(position, objectName, CATEGORY.Chests);
                         }
@@ -231,7 +225,7 @@ namespace stardew_access.Game
                         {
                             bool isMineItem = false;
 
-                            if(objectName.Contains("node") || objectName.Contains("mystic stone") || objectName.Contains("jade stone"))
+                            if (objectName.Contains("node") || objectName.Contains("mystic stone") || objectName.Contains("jade stone"))
                                 isMineItem = true;
                             else if (objectName.Contains("geode") || objectName.Contains("mine stone") || objectName.Contains("barrel") || objectName.Contains("item box"))
                                 isMineItem = true;
@@ -338,7 +332,7 @@ namespace stardew_access.Game
             if (!radarFocus && (exclusions.Contains(category.ToString().ToLower().Trim()) || exclusions.Contains(searchQuery.ToLower().Trim())))
                 return;
 
-            if (radarFocus && !(focus.Contains(category.ToString().ToLower().Trim()) || focus.Contains(searchQuery.ToLower().Trim())) )
+            if (radarFocus && !(focus.Contains(category.ToString().ToLower().Trim()) || focus.Contains(searchQuery.ToLower().Trim())))
                 return;
 
             if (MainClass.radarDebug)
@@ -376,18 +370,18 @@ namespace stardew_access.Game
         {
             string soundName = $"_{post}";
 
-            if(!MainClass.radarStereoSound)
+            if (!MainClass.radarStereoSound)
                 soundName = $"_mono{soundName}";
 
-            if(category == CATEGORY.Farmers) // Villagers and farmers
+            if (category == CATEGORY.Farmers) // Villagers and farmers
                 soundName = $"npc{soundName}";
             else if (category == CATEGORY.FarmAnimals) // Farm Animals
                 soundName = $"npc{soundName}";
-            else if(category == CATEGORY.NPCs) // Other npcs, also includes enemies
+            else if (category == CATEGORY.NPCs) // Other npcs, also includes enemies
                 soundName = $"npc{soundName}";
-            else if(category == CATEGORY.WaterTiles) // Water tiles
+            else if (category == CATEGORY.WaterTiles) // Water tiles
                 soundName = $"obj{soundName}";
-            else if(category == CATEGORY.Furnitures) // Furnitures
+            else if (category == CATEGORY.Furnitures) // Furnitures
                 soundName = $"obj{soundName}";
             else if (category == CATEGORY.Others) // Other Objects
                 soundName = $"obj{soundName}";

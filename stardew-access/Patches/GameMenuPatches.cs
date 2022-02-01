@@ -17,23 +17,160 @@ namespace stardew_access.Patches
         internal static string exitPageQueryKey = "";
         internal static string optionsPageQueryKey = "";
         internal static string shopMenuQueryKey = "";
+        internal static string socialPageQuery = "";
         internal static int currentSelectedCraftingRecipe = -1;
         internal static bool isSelectingRecipe = false;
+
+        internal static void SocialPagePatch(SocialPage __instance, List<ClickableTextureComponent> ___sprites, int ___slotPosition, List<string> ___kidsNames)
+        {
+            try
+            {
+                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                for (int i = ___slotPosition; i < ___slotPosition + 5; i++)
+                {
+                    if (i < ___sprites.Count)
+                    {
+                        if (__instance.names[i] is string)
+                        {
+                            #region  For NPCs
+                            if (__instance.characterSlots[i].bounds.Contains(Game1.getMouseX(), Game1.getMouseY()))
+                            {
+                                string name = $"{__instance.names[i] as string}";
+                                int heartLevel = Game1.player.getFriendshipHeartLevelForNPC(name);
+                                bool datable = SocialPage.isDatable(name);
+                                Friendship friendship = __instance.getFriendship(name);
+                                int giftsThisWeek = friendship.GiftsThisWeek;
+                                bool hasTalked = Game1.player.hasPlayerTalkedToNPC(name);
+                                bool spouse = friendship.IsMarried();
+                                bool housemate = spouse && SocialPage.isRoommateOfAnyone(name);
+
+                                string toSpeak = $"{name}";
+
+                                if (!hasTalked)
+                                {
+                                    toSpeak = $"{toSpeak}, not talked yet";
+                                }
+                                else
+                                {
+                                    if (datable | housemate)
+                                    {
+                                        string text2 = (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.pt) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635") : ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635").Split('/').First() : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635").Split('/').Last());
+                                        if (housemate)
+                                        {
+                                            text2 = Game1.content.LoadString("Strings\\StringsFromCSFiles:Housemate");
+                                        }
+                                        else if (spouse)
+                                        {
+                                            text2 = ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11636") : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11637"));
+                                        }
+                                        else if (__instance.isMarriedToAnyone(name))
+                                        {
+                                            text2 = ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\UI:SocialPage_MarriedToOtherPlayer_MaleNPC") : Game1.content.LoadString("Strings\\UI:SocialPage_MarriedToOtherPlayer_FemaleNPC"));
+                                        }
+                                        else if (!Game1.player.isMarried() && friendship.IsDating())
+                                        {
+                                            text2 = ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11639") : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11640"));
+                                        }
+                                        else if (__instance.getFriendship(name).IsDivorced())
+                                        {
+                                            text2 = ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11642") : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11643"));
+                                        }
+
+                                        toSpeak = $"{toSpeak}, {text2}";
+                                    }
+                                    if (!__instance.getFriendship(name).IsMarried() && !___kidsNames.Contains(name))
+                                    {
+                                        toSpeak = $"{toSpeak}, married";
+                                    }
+                                    if (spouse)
+                                    {
+                                        toSpeak = $"{toSpeak}, spouse";
+                                    }
+                                    else if (friendship.IsDating())
+                                    {
+                                        toSpeak = $"{toSpeak}, dating";
+                                    }
+
+                                    toSpeak = $"{toSpeak}, {heartLevel} hearts, {giftsThisWeek} gifts given this week.";
+                                }
+
+                                if (socialPageQuery != toSpeak)
+                                {
+                                    socialPageQuery = toSpeak;
+                                    MainClass.screenReader.Say(toSpeak, true);
+                                }
+                            }
+                            #endregion
+                        }
+                        else if (__instance.names[i] is long)
+                        {
+                            #region  For Farmers
+
+                            long farmerID = (long)__instance.names[i];
+                            Farmer farmer = Game1.getFarmerMaybeOffline(farmerID);
+                            if (farmer != null)
+                            {
+                                int gender = (!farmer.IsMale) ? 1 : 0;
+                                ClickableTextureComponent clickableTextureComponent = ___sprites[i];
+                                if (clickableTextureComponent.containsPoint(x, y))
+                                {
+                                    Friendship friendship = Game1.player.team.GetFriendship(Game1.player.UniqueMultiplayerID, farmerID);
+                                    bool spouse = friendship.IsMarried();
+                                    string toSpeak = "";
+
+                                    string text2 = (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.pt) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635") : ((gender == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635").Split('/').First() : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635").Split('/').Last());
+                                    if (spouse)
+                                    {
+                                        text2 = ((gender == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11636") : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11637"));
+                                    }
+                                    else if (farmer.isMarried() && !farmer.hasRoommate())
+                                    {
+                                        text2 = ((gender == 0) ? Game1.content.LoadString("Strings\\UI:SocialPage_MarriedToOtherPlayer_MaleNPC") : Game1.content.LoadString("Strings\\UI:SocialPage_MarriedToOtherPlayer_FemaleNPC"));
+                                    }
+                                    else if (!Game1.player.isMarried() && friendship.IsDating())
+                                    {
+                                        text2 = ((gender == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11639") : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11640"));
+                                    }
+                                    else if (friendship.IsDivorced())
+                                    {
+                                        text2 = ((gender == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11642") : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11643"));
+                                    }
+
+                                    toSpeak = $"{farmer.displayName}, {text2}";
+
+                                    if (socialPageQuery != toSpeak)
+                                    {
+                                        socialPageQuery = toSpeak;
+                                        MainClass.screenReader.Say(toSpeak, true);
+                                    }
+                                }
+                            }
+
+                            #endregion
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
 
         internal static void ShopMenuPatch(ShopMenu __instance)
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
                 bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
                 bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
-                if (isLeftShiftPressed && isIPressed && __instance.inventory.inventory.Count>0)
+                if (isLeftShiftPressed && isIPressed && __instance.inventory.inventory.Count > 0)
                 {
                     __instance.inventory.inventory[0].snapMouseCursorToCenter();
                     __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
                 }
-                else if (!isLeftShiftPressed && isIPressed && __instance.forSaleButtons.Count>0)
+                else if (!isLeftShiftPressed && isIPressed && __instance.forSaleButtons.Count > 0)
                 {
                     __instance.forSaleButtons[0].snapMouseCursorToCenter();
                     __instance.setCurrentlySnappedComponentTo(__instance.forSaleButtons[0].myID);
@@ -109,7 +246,7 @@ namespace stardew_access.Patches
                             requirements = $"Required: {itemAmount} {itemName}";
                         else
                             requirements = $"Required: {itemName}";
-                    } 
+                    }
                     #endregion
 
                     string toSpeak = $"{name}, {requirements}, {price}, \n\t{description}";
@@ -136,11 +273,11 @@ namespace stardew_access.Patches
                 if (__instance.currentTab != 0 && __instance.currentTab != 4 && __instance.currentTab != 6 && __instance.currentTab != 7)
                     return;
 
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
 
-                for(int i=0; i<__instance.tabs.Count; i++)
+                for (int i = 0; i < __instance.tabs.Count; i++)
                 {
-                    if(__instance.tabs[i].containsPoint(x, y))
+                    if (__instance.tabs[i].containsPoint(x, y))
                     {
                         string toSpeak = $"{GameMenu.getLabelOfTabFromIndex(i)} Tab";
                         if (gameMenuQueryKey != toSpeak)
@@ -162,7 +299,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
 
                 #region Narrate the treasure recieved on breaking the geode
                 if (__instance.geodeTreasure != null)
@@ -178,7 +315,7 @@ namespace stardew_access.Patches
                         MainClass.screenReader.Say(toSpeak, true);
                     }
                     return;
-                } 
+                }
                 #endregion
 
                 #region Narrate hovered buttons in the menu
@@ -232,7 +369,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if(narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                     geodeMenuQueryKey = "";
                 #endregion
             }
@@ -246,16 +383,16 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
                 bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
                 bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
-                if(isLeftShiftPressed && isIPressed && __instance.inventory.inventory.Count > 0)
+                if (isLeftShiftPressed && isIPressed && __instance.inventory.inventory.Count > 0)
                 {
                     __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
                     __instance.inventory.inventory[0].snapMouseCursorToCenter();
                 }
-                else if(!isLeftShiftPressed && isIPressed && __instance.ItemsToGrabMenu.inventory.Count > 0 && !__instance.shippingBin)
+                else if (!isLeftShiftPressed && isIPressed && __instance.ItemsToGrabMenu.inventory.Count > 0 && !__instance.shippingBin)
                 {
                     __instance.setCurrentlySnappedComponentTo(__instance.ItemsToGrabMenu.inventory[0].myID);
                     __instance.ItemsToGrabMenu.inventory[0].snapMouseCursorToCenter();
@@ -265,7 +402,7 @@ namespace stardew_access.Patches
                 if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
                 {
                     string toSpeak = "Ok Button";
-                    if(itemGrabMenuQueryKey != toSpeak)
+                    if (itemGrabMenuQueryKey != toSpeak)
                     {
                         itemGrabMenuQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
@@ -329,7 +466,7 @@ namespace stardew_access.Patches
                 if (__instance.colorPickerToggleButton != null && __instance.colorPickerToggleButton.containsPoint(x, y))
                 {
 
-                    string toSpeak = "Color Picker: " + (__instance.chestColorPicker.visible?"Enabled":"Disabled");
+                    string toSpeak = "Color Picker: " + (__instance.chestColorPicker.visible ? "Enabled" : "Disabled");
                     if (itemGrabMenuQueryKey != toSpeak)
                     {
                         itemGrabMenuQueryKey = toSpeak;
@@ -407,11 +544,11 @@ namespace stardew_access.Patches
                         MainClass.screenReader.Say(toSpeak, true);
                     }
                     return;
-                } 
+                }
                 #endregion
 
                 #region Narrate hovered item
-                if(narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
                     gameMenuQueryKey = "";
                     itemGrabMenuQueryKey = "";
@@ -510,7 +647,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
                 bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
                 bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
                 bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
@@ -522,13 +659,13 @@ namespace stardew_access.Patches
                     __instance.inventory.inventory[0].snapMouseCursorToCenter();
                     currentSelectedCraftingRecipe = -1;
                 }
-                else if (!isLeftShiftPressed && isIPressed && __instance.pagesOfCraftingRecipes[___currentCraftingPage].Count>0)
+                else if (!isLeftShiftPressed && isIPressed && __instance.pagesOfCraftingRecipes[___currentCraftingPage].Count > 0)
                 {
                     // snap to first crafting recipe
                     __instance.setCurrentlySnappedComponentTo(__instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(0).Key.myID);
                     __instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(0).Key.snapMouseCursorToCenter();
                     currentSelectedCraftingRecipe = 0;
-                } 
+                }
                 else if (isCPressed && !isSelectingRecipe)
                 {
                     _ = CycleThroughRecipies(__instance.pagesOfCraftingRecipes, ___currentCraftingPage, __instance);
@@ -711,7 +848,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
 
                 #region Narrate buttons in the menu
                 if (__instance.inventory.dropItemInvisibleButton != null && __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
@@ -783,7 +920,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate equipment slots
-                for (int i=0; i<__instance.equipmentIcons.Count; i++)
+                for (int i = 0; i < __instance.equipmentIcons.Count; i++)
                 {
                     if (__instance.equipmentIcons[i].containsPoint(x, y))
                     {
@@ -864,7 +1001,7 @@ namespace stardew_access.Patches
                                     }
                                 }
                                 break;
-                        } 
+                        }
                         #endregion
 
                         if (inventoryPageQueryKey != toSpeak)
@@ -899,7 +1036,7 @@ namespace stardew_access.Patches
             try
             {
                 int currentItemIndex = Math.Max(0, Math.Min(__instance.options.Count - 7, __instance.currentItemIndex));
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
+                int x = Game1.getMouseX(), y = Game1.getMouseY();
                 for (int i = 0; i < __instance.optionSlots.Count; i++)
                 {
                     if (__instance.optionSlots[i].bounds.Contains(x, y) && currentItemIndex + i < __instance.options.Count && __instance.options[currentItemIndex + i].bounds.Contains(x - __instance.optionSlots[i].bounds.X, y - __instance.optionSlots[i].bounds.Y))
@@ -952,7 +1089,7 @@ namespace stardew_access.Patches
             try
             {
                 if (__instance.exitToTitle.visible &&
-                        __instance.exitToTitle.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                        __instance.exitToTitle.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                 {
                     string toSpeak = "Exit to Title Button";
                     if (exitPageQueryKey != toSpeak)
@@ -964,7 +1101,7 @@ namespace stardew_access.Patches
                     return;
                 }
                 if (__instance.exitToDesktop.visible &&
-                    __instance.exitToDesktop.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                    __instance.exitToDesktop.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                 {
                     string toSpeak = "Exit to Desktop Button";
                     if (exitPageQueryKey != toSpeak)
@@ -1068,7 +1205,7 @@ namespace stardew_access.Patches
                             {
                                 string itemName = Game1.objectInformation[extraItemToShowIndex].Split('/')[0];
 
-                                if(extraItemToShowAmount != -1)
+                                if (extraItemToShowAmount != -1)
                                     requirements = $"Required: {extraItemToShowAmount} {itemName}";
                                 else
                                     requirements = $"Required: {itemName}";
@@ -1085,7 +1222,7 @@ namespace stardew_access.Patches
                                 if (stack > 1)
                                     toSpeak = $"{stack} {name} {quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamine}, \n{buffs}";
                                 else
-                                    toSpeak = $"{name} {quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamine}, \n{buffs}"; 
+                                    toSpeak = $"{name} {quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamine}, \n{buffs}";
                             }
                             else
                             {

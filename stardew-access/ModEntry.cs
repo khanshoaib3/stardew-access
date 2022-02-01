@@ -20,7 +20,7 @@ namespace stardew_access
         public static bool radarDebug = false;
         public static bool radarStereoSound = true;
         public static IMonitor monitor;
-        private AutoHotkeyEngine? ahk;
+        private AutoHotkeyEngine ahk;
         public static string hudMessageQueryKey = "";
         public static Radar radarFeature;
         public static ScreenReaderInterface screenReader;

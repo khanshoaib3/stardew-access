@@ -15,7 +15,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
 
                 if (__instance.acceptLeftQuestButton.visible && __instance.acceptLeftQuestButton.containsPoint(x, y))
                 {
@@ -83,7 +83,7 @@ namespace stardew_access.Patches
                     #region Callender
                     for (int i = 0; i < __instance.calendarDays.Count; i++)
                     {
-                        if (__instance.calendarDays[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                        if (__instance.calendarDays[i].containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                         {
                             string toSpeak = $"Day {i + 1}";
 
