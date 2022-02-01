@@ -137,23 +137,29 @@ namespace stardew_access.Patches
                 if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is ExitPage)
                     return;
 
+                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is SocialPage)
+                    return;
+
                 if (Game1.activeClickableMenu is ItemGrabMenu)
                     return;
 
                 if (Game1.activeClickableMenu is ShopMenu)
                     return;
-                
+
                 if (Game1.activeClickableMenu is ConfirmationDialog)
+                    return;
+
+                if (Game1.activeClickableMenu is JunimoNoteMenu)
                     return;
                 #endregion
 
                 StringBuilder toSpeak = new StringBuilder(" ");
 
                 #region Add item count before title
-                if(hoveredItem != null && hoveredItem.HasBeenInInventory)
+                if (hoveredItem != null && hoveredItem.HasBeenInInventory)
                 {
                     int count = hoveredItem.Stack;
-                    if(count > 1)
+                    if (count > 1)
                         toSpeak.Append($"{count} ");
                 }
                 #endregion
@@ -164,7 +170,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Add quality of item
-                if (hoveredItem is StardewValley.Object && (hoveredItem as StardewValley.Object).quality>0)
+                if (hoveredItem is StardewValley.Object && (hoveredItem as StardewValley.Object).quality > 0)
                 {
                     int quality = (hoveredItem as StardewValley.Object).quality;
                     if (quality == 1)

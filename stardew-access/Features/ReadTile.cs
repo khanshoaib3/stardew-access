@@ -34,7 +34,7 @@ namespace stardew_access.Game
                 {
                     if (!manuallyTriggered && prevTile != gt)
                     {
-                        if(MainClass.screenReader!=null)
+                        if (MainClass.screenReader != null)
                             MainClass.screenReader.PrevTextTile = " ";
                     }
 
@@ -69,9 +69,9 @@ namespace stardew_access.Game
                         if (terrain != null)
                             toSpeak = terrain;
                     }
-                    else if ( Game1.currentLocation.getLargeTerrainFeatureAt(x, y) != null )
+                    else if (Game1.currentLocation.getLargeTerrainFeatureAt(x, y) != null)
                     {
-                        Bush bush = (Bush) Game1.currentLocation.getLargeTerrainFeatureAt(x, y);
+                        Bush bush = (Bush)Game1.currentLocation.getLargeTerrainFeatureAt(x, y);
                         int size = bush.size;
 
                         #region Check if bush is harvestable or not
@@ -108,9 +108,9 @@ namespace stardew_access.Game
                         }
                         #endregion
 
-                        if(bush.townBush)
+                        if (bush.townBush)
                             toSpeak = $"{toSpeak} Town Bush";
-                        else if(bush.greenhouseBush)
+                        else if (bush.greenhouseBush)
                             toSpeak = $"{toSpeak} Greenhouse Bush";
                         else
                             toSpeak = $"{toSpeak} Bush";
@@ -191,7 +191,7 @@ namespace stardew_access.Game
                 _ => null,
             };
 
-            if (communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
+            if (name != null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
                 return $"{name} bundle";
             else
                 return null;
@@ -199,7 +199,7 @@ namespace stardew_access.Game
 
         public static bool isCollidingAtTile(int x, int y)
         {
-            Rectangle rect = new Rectangle(x * 64 + 1,y * 64 + 1, 62, 62);
+            Rectangle rect = new Rectangle(x * 64 + 1, y * 64 + 1, 62, 62);
 
             if (Game1.currentLocation.isCollidingPosition(rect, Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: true))
             {
@@ -219,15 +219,15 @@ namespace stardew_access.Game
 
             List<FarmAnimal>? farmAnimals = null;
 
-            if(location is Farm)
+            if (location is Farm)
                 farmAnimals = (location as Farm).getAllFarmAnimals();
-            else if(location is AnimalHouse)
+            else if (location is AnimalHouse)
                 farmAnimals = (location as AnimalHouse).animals.Values.ToList();
 
             if (farmAnimals == null || farmAnimals.Count <= 0)
                 return null;
 
-            for(int i = 0; i < farmAnimals.Count; i++)
+            for (int i = 0; i < farmAnimals.Count; i++)
             {
                 int fx = farmAnimals[i].getTileX();
                 int fy = farmAnimals[i].getTileY();
@@ -255,7 +255,7 @@ namespace stardew_access.Game
         /// <param name="y"></param>
         /// <returns>Item1: This is the category of the tile. Default to Furnitures.
         /// <br/>Item2: This is the name of the tile. Default to null if the tile tile has nothing on it.</returns>
-        public static (CATEGORY?,string?) getTileInfo(int x, int y)
+        public static (CATEGORY?, string?) getTileInfo(int x, int y)
         {
 
             int? index = null;
@@ -266,7 +266,7 @@ namespace stardew_access.Game
             MainClass.monitor.Log(index.ToString(), LogLevel.Debug);
             */
 
-            if(Game1.currentLocation is Farm)
+            if (Game1.currentLocation is Farm)
             {
                 Building building = (Game1.currentLocation as Farm).getBuildingAt(new Vector2(x, y));
                 if (building != null)
@@ -348,7 +348,7 @@ namespace stardew_access.Game
                         toReturn = "Fertilized " + toReturn;
                 }
             }
-            else if(terrain.Get() is GiantCrop)
+            else if (terrain.Get() is GiantCrop)
             {
                 int whichCrop = (terrain.Get() as GiantCrop).which.Value;
                 switch (whichCrop)
@@ -413,7 +413,7 @@ namespace stardew_access.Game
             {
                 toReturn = "Leaf";
             }
-            
+
             return toReturn;
         }
 
@@ -426,13 +426,13 @@ namespace stardew_access.Game
 
             if (stage == 0)
                 toReturn = $"{toReturn} seed";
-            else if(stage == 1)
+            else if (stage == 1)
                 toReturn = $"{toReturn} sprout";
-            else if(stage == 2)
+            else if (stage == 2)
                 toReturn = $"{toReturn} sapling";
-            else if(stage == 3)
+            else if (stage == 3)
                 toReturn = $"{toReturn} bush";
-            else if(stage >= 4)
+            else if (stage >= 4)
                 toReturn = $"{toReturn} tree";
 
             if (fruitTree.fruitsOnTree.Value > 0)
@@ -460,7 +460,7 @@ namespace stardew_access.Game
                     return "Mushroom Tree";
             }
 
-            
+
             if (treeType <= 3)
                 seedName = Game1.objectInformation[308 + treeType].Split('/')[0];
             else if (treeType == 8)
@@ -486,11 +486,11 @@ namespace stardew_access.Game
 
                 if (treeStage == 1)
                     treeName = $"{treeName} sprout";
-                else if(treeStage == 2)
+                else if (treeStage == 2)
                     treeName = $"{treeName} sapling";
-                else if(treeStage == 3 || treeStage == 4)
+                else if (treeStage == 3 || treeStage == 4)
                     treeName = $"{treeName} bush";
-                else if(treeStage >= 5)
+                else if (treeStage >= 5)
                     treeName = $"{treeName} tree";
 
                 return treeName;
@@ -629,7 +629,7 @@ namespace stardew_access.Game
                 }
             }
 
-            if(obj is Chest)
+            if (obj is Chest)
             {
                 Chest chest = (Chest)obj;
                 toReturn = chest.DisplayName;
@@ -645,15 +645,15 @@ namespace stardew_access.Game
                 if (Game1.currentLocation is Mine or MineShaft)
                 {
                     int? index = null;
-                    
-                    if(Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y]!=null)
+
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] != null)
                         index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
 
                     if (index == 173 || index == 174)
                         return true;
                 }
             }
-            catch (Exception) {}
+            catch (Exception) { }
 
             return false;
         }
@@ -703,9 +703,9 @@ namespace stardew_access.Game
             Point tilePoint = new Point(x, y);
             List<SerializableDictionary<Point, string>> doorList = Game1.currentLocation.doors.ToList();
 
-            for (int i=0; i < doorList.Count; i++)
-            { 
-                for(int j = 0; j< doorList[i].Keys.Count; j++)
+            for (int i = 0; i < doorList.Count; i++)
+            {
+                for (int j = 0; j < doorList[i].Keys.Count; j++)
                 {
                     if (doorList[i].Keys.Contains(tilePoint))
                         return true;
@@ -718,7 +718,7 @@ namespace stardew_access.Game
         public static string? getResourceClumpAtTile(int x, int y)
         {
 
-            for(int i = 0; i < Game1.currentLocation.resourceClumps.Count; i++)
+            for (int i = 0; i < Game1.currentLocation.resourceClumps.Count; i++)
             {
                 if (Game1.currentLocation.resourceClumps[i].occupiesTile(x, y))
                 {

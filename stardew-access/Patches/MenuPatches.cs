@@ -302,9 +302,30 @@ namespace stardew_access.Patches
                     GameMenuPatches.inventoryPageQueryKey = "";
                     GameMenuPatches.exitPageQueryKey = "";
                     GameMenuPatches.optionsPageQueryKey = "";
+                    GameMenuPatches.socialPageQuery = "";
                     GameMenuPatches.currentSelectedCraftingRecipe = -1;
                     GameMenuPatches.isSelectingRecipe = false;
                 }
+
+                if (Game1.activeClickableMenu is JunimoNoteMenu)
+                {
+                    GameMenuPatches.currentIngredientListItem = -1;
+                    GameMenuPatches.currentIngredientInputSlot = -1;
+                    GameMenuPatches.currentInventorySlot = -1;
+                    GameMenuPatches.junimoNoteMenuQuery = "";
+                }
+
+                if (Game1.activeClickableMenu is ShopMenu)
+                {
+                    GameMenuPatches.shopMenuQueryKey = "";
+                }
+
+                if (Game1.activeClickableMenu is ItemGrabMenu)
+                {
+                    GameMenuPatches.itemGrabMenuQueryKey = "";
+                }
+
+                GameMenuPatches.hoveredItemQueryKey = "";
             }
             catch (Exception e)
             {
