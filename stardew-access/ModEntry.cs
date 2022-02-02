@@ -7,6 +7,7 @@ using stardew_access.Patches;
 using AutoHotkey.Interop;
 using System.Runtime.InteropServices;
 using stardew_access.ScreenReader;
+using Microsoft.Xna.Framework;
 
 namespace stardew_access
 {
@@ -28,7 +29,7 @@ namespace stardew_access
         private static IModHelper _modHelper;
         public static IModHelper ModHelper
         {
-            get{return _modHelper;}
+            get { return _modHelper; }
         }
 
         /*********
@@ -46,7 +47,7 @@ namespace stardew_access
             Game1.options.setGamepadMode("force_on");
 
             // Initialize AutoHotKey
-            if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 InitializeAutoHotKey();
 
             screenReader = new ScreenReaderController().Initialize();
@@ -60,6 +61,11 @@ namespace stardew_access
             harmony = new Harmony(ModManifest.UniqueID);
             HarmonyPatches.Initialize(harmony);
 
+            //Initialize marked locations
+            for (int i = 0; i < BuildingNAnimalMenuPatches.marked.Length; i++)
+            {
+                BuildingNAnimalMenuPatches.marked[i] = Vector2.Zero;
+            }
             #endregion            
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
@@ -68,10 +74,10 @@ namespace stardew_access
             AppDomain.CurrentDomain.ProcessExit += OnExit;
         }
 
-        public void OnExit (object? sender, EventArgs? e)
+        public void OnExit(object? sender, EventArgs? e)
         {
             // Don't if this ever gets called or not but, just in case if it does.
-            if(screenReader!=null)
+            if (screenReader != null)
                 screenReader.CloseScreenReader();
         }
 
@@ -97,10 +103,10 @@ namespace stardew_access
             if (snapMouse)
                 Other.SnapMouseToPlayer();
 
-            if(!ReadTile.isReadingTile && readTile)
+            if (!ReadTile.isReadingTile && readTile)
                 ReadTile.run();
 
-            if(!radarFeature.isRunning && radar)
+            if (!radarFeature.isRunning && radar)
                 radarFeature.Run();
 
             if (!isNarratingHudMessage)

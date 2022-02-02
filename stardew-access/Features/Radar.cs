@@ -325,18 +325,53 @@ namespace stardew_access.Game
 
         public void PlaySoundAt(Vector2 position, String searchQuery, CATEGORY category)
         {
+            #region Check whether to skip the object or not
+
             // Skip if player is directly looking at the tile
             if (CurrentPlayer.getNextTile().Equals(position))
                 return;
 
-            if (!radarFocus && (exclusions.Contains(category.ToString().ToLower().Trim()) || exclusions.Contains(searchQuery.ToLower().Trim())))
-                return;
+            if (!radarFocus)
+            {
+                if ((exclusions.Contains(category.ToString().ToLower().Trim()) || exclusions.Contains(searchQuery.ToLower().Trim())))
+                    return;
 
-            if (radarFocus && !(focus.Contains(category.ToString().ToLower().Trim()) || focus.Contains(searchQuery.ToLower().Trim())))
-                return;
+                // Check if a word in searchQuery matches the one in exclusions list
+                string[] sqArr = searchQuery.ToLower().Trim().Split(" ");
+                for (int j = 0; j < sqArr.Length; j++)
+                {
+                    if (exclusions.Contains(sqArr[j]))
+                        return;
+                }
+            }
+            else
+            {
+                if (focus.Count >= 0)
+                {
+                    bool found = false;
+
+                    // Check if a word in searchQuery matches the one in focus list
+                    string[] sqArr = searchQuery.ToLower().Trim().Split(" ");
+                    for (int j = 0; j < sqArr.Length; j++)
+                    {
+                        if (focus.Contains(sqArr[j]))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    // This condition has to be after the for loop
+                    if (!found && !(focus.Contains(category.ToString().ToLower().Trim()) || focus.Contains(searchQuery.ToLower().Trim())))
+                        return;
+                }
+                else
+                    return;
+            }
+            #endregion
 
             if (MainClass.radarDebug)
-                MainClass.monitor.Log($"Object:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}", StardewModdingAPI.LogLevel.Debug);
+                MainClass.monitor.Log($"{radarFocus}\tObject:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}", StardewModdingAPI.LogLevel.Debug);
 
             int px = (int)Game1.player.getTileX(); // Player's X postion
             int py = (int)Game1.player.getTileY(); // Player's Y postion

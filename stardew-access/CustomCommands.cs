@@ -1,4 +1,7 @@
-﻿using StardewModdingAPI;
+﻿using Microsoft.Xna.Framework;
+using stardew_access.Patches;
+using StardewModdingAPI;
+using StardewValley;
 
 namespace stardew_access
 {
@@ -48,14 +51,14 @@ namespace stardew_access
             {
                 bool focus = MainClass.radarFeature.ToggleFocus();
 
-                MainClass.monitor.Log("Focus mode is " + (focus? "on" : "off"), LogLevel.Info);
+                MainClass.monitor.Log("Focus mode is " + (focus ? "on" : "off"), LogLevel.Info);
             });
 
             helper.ConsoleCommands.Add("rdelay", "Set the delay of radar feature in milliseconds.", (string commmand, string[] args) =>
             {
                 string? delayInString = null;
 
-                if(args.Length > 0)
+                if (args.Length > 0)
                 {
                     delayInString = args[0];
 
@@ -66,7 +69,7 @@ namespace stardew_access
                     if (isParsable)
                     {
                         MainClass.radarFeature.delay = delay;
-                        if(delay>=1000)
+                        if (delay >= 1000)
                             MainClass.monitor.Log($"Delay set to {MainClass.radarFeature.delay} milliseconds.", LogLevel.Info);
                         else
                             MainClass.monitor.Log($"Delay should be atleast 1 second or 1000 millisecond long.", LogLevel.Info);
@@ -99,7 +102,7 @@ namespace stardew_access
                     if (isParsable)
                     {
                         MainClass.radarFeature.range = range;
-                        if (range >= 2 && range<=10)
+                        if (range >= 2 && range <= 10)
                             MainClass.monitor.Log($"Range set to {MainClass.radarFeature.range}.", LogLevel.Info);
                         else
                             MainClass.monitor.Log($"Range should be atleast 2 and maximum 10.", LogLevel.Info);
@@ -173,10 +176,12 @@ namespace stardew_access
             {
                 if (MainClass.radarFeature.exclusions.Count > 0)
                 {
+                    string toPrint = "";
                     for (int i = 0; i < MainClass.radarFeature.exclusions.Count; i++)
                     {
-                        MainClass.monitor.Log($"{i + 1}) {MainClass.radarFeature.exclusions[i]}", LogLevel.Info);
+                        toPrint = $"{toPrint}\t{i + 1}: {MainClass.radarFeature.exclusions[i]}";
                     }
+                    MainClass.monitor.Log(toPrint, LogLevel.Info);
                 }
                 else
                 {
@@ -251,10 +256,12 @@ namespace stardew_access
             {
                 if (MainClass.radarFeature.focus.Count > 0)
                 {
+                    string toPrint = "";
                     for (int i = 0; i < MainClass.radarFeature.focus.Count; i++)
                     {
-                        MainClass.monitor.Log($"{i + 1}) {MainClass.radarFeature.focus[i]}", LogLevel.Info);
+                        toPrint = $"{toPrint}\t{i + 1}): {MainClass.radarFeature.focus[i]}";
                     }
+                    MainClass.monitor.Log(toPrint, LogLevel.Info);
                 }
                 else
                 {
@@ -271,9 +278,56 @@ namespace stardew_access
             helper.ConsoleCommands.Add("rfcount", "Number of list in the radar feature.", (string commmand, string[] args) =>
             {
                 MainClass.monitor.Log($"There are {MainClass.radarFeature.focus.Count} objects in the focus list in the radar feature.", LogLevel.Info);
-            }); 
+            });
             #endregion
 
+            #endregion
+
+            #region Tile marking
+            helper.ConsoleCommands.Add("mark", "Marks the player's position for use in building cunstruction in Carpenter Menu.", (string commmand, string[] args) =>
+            {
+                if (Game1.currentLocation is not Farm)
+                {
+                    MainClass.monitor.Log("Can only use this command in the farm", LogLevel.Info);
+                    return;
+                }
+
+                string? indexInString = args.ElementAtOrDefault(0);
+                if (indexInString == null)
+                {
+                    MainClass.monitor.Log("Enter the index too! Example syntax: mark 0, here 0 is the index and it can be from 0 to 9 only", LogLevel.Info);
+                    return;
+                }
+
+                int index;
+                bool isParsable = int.TryParse(indexInString, out index);
+
+                if (!isParsable || !(index >= 0 && index <= 9))
+                {
+                    MainClass.monitor.Log("Index can only be a number and from 0 to 9 only", LogLevel.Info);
+                    return;
+                }
+
+                BuildingNAnimalMenuPatches.marked[index] = new Vector2((int)Game1.player.getTileX(), (int)Game1.player.getTileY());
+                MainClass.monitor.Log($"Location {(int)Game1.player.getTileX()}x {(int)Game1.player.getTileY()}y add at {index} index.", LogLevel.Info);
+            });
+
+            helper.ConsoleCommands.Add("marklist", "List all marked positions.", (string commmand, string[] args) =>
+            {
+                string toPrint = "";
+                for (int i = 0; i < BuildingNAnimalMenuPatches.marked.Length; i++)
+                {
+                    if (BuildingNAnimalMenuPatches.marked[i] != Vector2.Zero)
+                    {
+                        toPrint = $"{toPrint}\t Index {i}: {BuildingNAnimalMenuPatches.marked[i].X}x {BuildingNAnimalMenuPatches.marked[i].Y}y";
+                    }
+                }
+
+                if (toPrint == "")
+                    MainClass.monitor.Log("No positions marked!", LogLevel.Info);
+                else
+                    MainClass.monitor.Log($"Marked positions:\t{toPrint}", LogLevel.Info);
+            });
             #endregion
 
             helper.ConsoleCommands.Add("refsr", "Refresh screen reader", (string commmand, string[] args) =>
