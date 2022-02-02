@@ -151,6 +151,9 @@ namespace stardew_access.Patches
 
                 if (Game1.activeClickableMenu is JunimoNoteMenu)
                     return;
+
+                if (Game1.activeClickableMenu is CarpenterMenu)
+                    return;
                 #endregion
 
                 StringBuilder toSpeak = new StringBuilder(" ");

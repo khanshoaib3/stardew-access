@@ -174,6 +174,15 @@ namespace stardew_access
                 );
             #endregion
 
+            #region Animal and Building Menu
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(CarpenterMenu), nameof(CarpenterMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                    prefix: new HarmonyMethod(typeof(BuildingNAnimalMenuPatches), nameof(BuildingNAnimalMenuPatches.CarpenterMenuPatch))
+                );
+
+            #endregion
+
             harmony.Patch(
                     original: AccessTools.Method(typeof(Game1), nameof(Game1.playSound)),
                     prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.PlaySoundPatch))
