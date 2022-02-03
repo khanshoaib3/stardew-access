@@ -322,9 +322,23 @@ namespace stardew_access.Patches
 
         }
 
-        public static void Upgrade(Building toUpgrade)
+        public static void Upgrade(Building? toUpgrade)
         {
-
+            // This code is taken from the game's code (CarpenterMenu.cs::775)
+            if (toUpgrade != null && carpenterMenu.CurrentBlueprint.name != null && toUpgrade.buildingType.Equals(carpenterMenu.CurrentBlueprint.nameOfBuildingToUpgrade))
+            {
+                carpenterMenu.CurrentBlueprint.consumeResources();
+                toUpgrade.daysUntilUpgrade.Value = 2;
+                toUpgrade.showUpgradeAnimation(Game1.getFarm());
+                Game1.playSound("axe");
+                DelayedAction.functionAfterDelay(carpenterMenu.returnToCarpentryMenuAfterSuccessfulBuild, 1500);
+                // freeze = true;
+                // Game1.multiplayer.globalChatInfoMessage("BuildingBuild", Game1.player.Name, Utility.AOrAn(carpenterMenu.CurrentBlueprint.displayName), carpenterMenu.CurrentBlueprint.displayName, Game1.player.farmName);
+            }
+            else if (toUpgrade != null)
+            {
+                Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantUpgrade_BuildingType"), Color.Red, 3500f));
+            }
         }
 
         public static void Paint(Building toPaint)

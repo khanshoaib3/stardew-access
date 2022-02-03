@@ -397,7 +397,7 @@ namespace stardew_access
 
                 if (BuildingNAnimalMenuPatches.isConstructing) { }
                 else if (BuildingNAnimalMenuPatches.isDemolishing) { BuildingNAnimalMenuPatches.Demolish(BuildingNAnimalMenuPatches.availableBuildings[index]); }
-                else if (BuildingNAnimalMenuPatches.isUpgrading) { }
+                else if (BuildingNAnimalMenuPatches.isUpgrading) { BuildingNAnimalMenuPatches.Upgrade(BuildingNAnimalMenuPatches.availableBuildings[index]); }
                 else if (BuildingNAnimalMenuPatches.isMoving) { }
                 else if (BuildingNAnimalMenuPatches.isPainting) { }
             });
