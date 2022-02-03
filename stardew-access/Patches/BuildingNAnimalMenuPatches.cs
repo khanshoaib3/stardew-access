@@ -322,7 +322,7 @@ namespace stardew_access.Patches
             return response;
         }
 
-        public static string? Contstruct(Building? toCunstruct, Vector2 position)
+        public static string? Contstruct(Vector2 position)
         {
             string? response = null;
             Game1.player.team.buildLock.RequestLock(delegate
@@ -410,9 +410,51 @@ namespace stardew_access.Patches
             return response;
         }
 
-        public static string? Move(Building? toMove, Vector2 position)
+        public static string? Move(Building? buildingToMove, Vector2 position)
         {
             string? response = null;
+            if (buildingToMove != null)
+            {
+                string? name = buildingToMove.nameOfIndoorsWithoutUnique;
+                name = (name == "null") ? buildingToMove.buildingType.Value : name;
+
+                if ((int)buildingToMove.daysOfConstructionLeft > 0)
+                {
+                    buildingToMove = null;
+                    return "Building under cunstruction, cannot move";
+                }
+                if (!carpenterMenu.hasPermissionsToMove(buildingToMove))
+                {
+                    buildingToMove = null;
+                    return "You don't have permission to move this building";
+                }
+                Game1.playSound("axchop");
+
+                if (((Farm)Game1.getLocationFromName("Farm")).buildStructure(buildingToMove, position, Game1.player))
+                {
+                    if (buildingToMove is ShippingBin)
+                    {
+                        (buildingToMove as ShippingBin).initLid();
+                    }
+                    if (buildingToMove is GreenhouseBuilding)
+                    {
+                        Game1.getFarm().greenhouseMoved.Value = true;
+                    }
+                    buildingToMove.performActionOnBuildingPlacement();
+                    buildingToMove = null;
+                    Game1.playSound("axchop");
+                    DelayedAction.playSoundAfterDelay("dirtyHit", 50);
+                    DelayedAction.playSoundAfterDelay("dirtyHit", 150);
+
+                    response = $"{buildingToMove} moved to {position.X}x {position.Y}y";
+                }
+                else
+                {
+                    Game1.playSound("cancel");
+                    response = $"Cannot move building to {position.X}x {position.Y}y";
+                }
+
+            }
 
             return response;
         }

@@ -311,7 +311,7 @@ namespace stardew_access
                 }
 
                 BuildingNAnimalMenuPatches.marked[index] = new Vector2((int)Game1.player.getTileX(), (int)Game1.player.getTileY());
-                MainClass.monitor.Log($"Location {(int)Game1.player.getTileX()}x {(int)Game1.player.getTileY()}y add at {index} index.", LogLevel.Info);
+                MainClass.monitor.Log($"Location {(int)Game1.player.getTileX()}x {(int)Game1.player.getTileY()}y added at {index} index.", LogLevel.Info);
             });
 
             helper.ConsoleCommands.Add("marklist", "List all marked positions.", (string commmand, string[] args) =>
@@ -321,14 +321,14 @@ namespace stardew_access
                 {
                     if (BuildingNAnimalMenuPatches.marked[i] != Vector2.Zero)
                     {
-                        toPrint = $"{toPrint}\t Index {i}: {BuildingNAnimalMenuPatches.marked[i].X}x {BuildingNAnimalMenuPatches.marked[i].Y}y";
+                        toPrint = $"{toPrint}\n Index {i}: {BuildingNAnimalMenuPatches.marked[i].X}x {BuildingNAnimalMenuPatches.marked[i].Y}y";
                     }
                 }
 
                 if (toPrint == "")
                     MainClass.monitor.Log("No positions marked!", LogLevel.Info);
                 else
-                    MainClass.monitor.Log($"Marked positions:\t{toPrint}", LogLevel.Info);
+                    MainClass.monitor.Log($"Marked positions:\n{toPrint}\nOpen command menu and use pageup and pagedown to check the list", LogLevel.Info);
             });
 
             helper.ConsoleCommands.Add("buildlist", "List all buildings for selection for upgrading/demolishing/painting", (string commmand, string[] args) =>
@@ -389,8 +389,36 @@ namespace stardew_access
                     return;
                 }
 
+                string positionIndexInString = args.ElementAtOrDefault(1);
+                int positionIndex = 0;
 
-                if (BuildingNAnimalMenuPatches.isConstructing || BuildingNAnimalMenuPatches.isMoving)
+                if (BuildingNAnimalMenuPatches.isMoving)
+                {
+
+                    if (BuildingNAnimalMenuPatches.isConstructing || BuildingNAnimalMenuPatches.isMoving)
+                    {
+                        if (BuildingNAnimalMenuPatches.availableBuildings[index] == null)
+                        {
+                            MainClass.monitor.Log($"No building found with index {index}. Use buildlist.", LogLevel.Info);
+                            return;
+                        }
+
+                        if (positionIndexInString == null)
+                        {
+                            MainClass.monitor.Log("Enter the index of marked place too! Use marklist.", LogLevel.Info);
+                            return;
+                        }
+
+                        isParsable = int.TryParse(positionIndexInString, out positionIndex);
+
+                        if (!isParsable)
+                        {
+                            MainClass.monitor.Log("Index can only be a number.", LogLevel.Info);
+                            return;
+                        }
+                    }
+                }
+                else if (BuildingNAnimalMenuPatches.isConstructing)
                 {
                     if (BuildingNAnimalMenuPatches.marked[index] == Vector2.Zero)
                     {
@@ -408,8 +436,8 @@ namespace stardew_access
                 }
 
                 string? response = null;
-                if (BuildingNAnimalMenuPatches.isConstructing) { response = BuildingNAnimalMenuPatches.Contstruct(BuildingNAnimalMenuPatches.availableBuildings[index], BuildingNAnimalMenuPatches.marked[index]); }
-                else if (BuildingNAnimalMenuPatches.isMoving) { response = BuildingNAnimalMenuPatches.Move(BuildingNAnimalMenuPatches.availableBuildings[index], BuildingNAnimalMenuPatches.marked[index]); }
+                if (BuildingNAnimalMenuPatches.isConstructing) { response = BuildingNAnimalMenuPatches.Contstruct(BuildingNAnimalMenuPatches.marked[index]); }
+                else if (BuildingNAnimalMenuPatches.isMoving) { response = BuildingNAnimalMenuPatches.Move(BuildingNAnimalMenuPatches.availableBuildings[index], BuildingNAnimalMenuPatches.marked[positionIndex]); }
                 if (BuildingNAnimalMenuPatches.isDemolishing) { response = BuildingNAnimalMenuPatches.Demolish(BuildingNAnimalMenuPatches.availableBuildings[index]); }
                 else if (BuildingNAnimalMenuPatches.isUpgrading) { response = BuildingNAnimalMenuPatches.Upgrade(BuildingNAnimalMenuPatches.availableBuildings[index]); }
                 else if (BuildingNAnimalMenuPatches.isPainting) { response = BuildingNAnimalMenuPatches.Paint(BuildingNAnimalMenuPatches.availableBuildings[index]); }
