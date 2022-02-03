@@ -16,17 +16,18 @@ namespace stardew_access.Patches
         internal static string carpenterMenuQuery = "";
         internal static bool isSayingBlueprintInfo = false;
         internal static string prevBlueprintInfo = "";
-        internal static bool isOnFarm = false, isUpgrading = false, isDemolishing = false, isPainting = false, isConstructing = false, isMoving = false;
+        internal static bool isOnFarm = false, isUpgrading = false, isDemolishing = false, isPainting = false, isConstructing = false, isMoving = false, isMagicalConstruction = false;
 
         internal static void CarpenterMenuPatch(
             CarpenterMenu __instance, bool ___onFarm, List<Item> ___ingredients, int ___price,
             List<BluePrint> ___blueprints, int ___currentBlueprintIndex, bool ___upgrading, bool ___demolishing, bool ___moving,
-            bool ___painting)
+            bool ___painting, bool ___magicalConstruction)
         {
             try
             {
                 isOnFarm = ___onFarm;
                 carpenterMenu = __instance;
+                isMagicalConstruction = ___magicalConstruction;
                 if (!___onFarm)
                 {
                     isUpgrading = false;
@@ -193,17 +194,19 @@ namespace stardew_access.Patches
             isSayingBlueprintInfo = false;
         }
 
-        public static void Demolish(Building? toDemolish)
+        public static string? Demolish(Building? toDemolish)
         {
             if (toDemolish == null)
-                return;
+                return null;
+
+            string? response = null;
             // This code is taken from the game's code (CarpenterMenu.cs::654)
             Farm farm = Game1.getLocationFromName("Farm") as Farm;
             Action buildingLockFailed = delegate
             {
                 if (isDemolishing)
                 {
-                    Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_LockFailed"), Color.Red, 3500f));
+                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_LockFailed");
                 }
             };
             Action continueDemolish = delegate
@@ -212,15 +215,15 @@ namespace stardew_access.Patches
                 {
                     if ((int)toDemolish.daysOfConstructionLeft > 0 || (int)toDemolish.daysUntilUpgrade > 0)
                     {
-                        Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_DuringConstruction"), Color.Red, 3500f));
+                        response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_DuringConstruction");
                     }
                     else if (toDemolish.indoors.Value != null && toDemolish.indoors.Value is AnimalHouse && (toDemolish.indoors.Value as AnimalHouse).animalsThatLiveHere.Count > 0)
                     {
-                        Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_AnimalsHere"), Color.Red, 3500f));
+                        response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_AnimalsHere");
                     }
                     else if (toDemolish.indoors.Value != null && toDemolish.indoors.Value.farmers.Any())
                     {
-                        Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere"), Color.Red, 3500f));
+                        response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere");
                     }
                     else
                     {
@@ -230,14 +233,14 @@ namespace stardew_access.Patches
                             {
                                 if (current.currentLocation != null && current.currentLocation.Name == (toDemolish.indoors.Value as Cabin).GetCellarName())
                                 {
-                                    Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere"), Color.Red, 3500f));
+                                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere");
                                     return;
                                 }
                             }
                         }
                         if (toDemolish.indoors.Value is Cabin && (toDemolish.indoors.Value as Cabin).farmhand.Value.isActive())
                         {
-                            Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_FarmhandOnline"), Color.Red, 3500f));
+                            response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_FarmhandOnline");
                         }
                         else
                         {
@@ -276,19 +279,19 @@ namespace stardew_access.Patches
             {
                 if (toDemolish.indoors.Value != null && toDemolish.indoors.Value is Cabin && !Game1.IsMasterGame)
                 {
-                    Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_LockFailed"), Color.Red, 3500f));
+                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_LockFailed");
                     toDemolish = null;
-                    return;
+                    return response;
                 }
                 if (!carpenterMenu.CanDemolishThis(toDemolish))
                 {
                     toDemolish = null;
-                    return;
+                    return response;
                 }
                 if (!Game1.IsMasterGame && !carpenterMenu.hasPermissionsToDemolish(toDemolish))
                 {
                     toDemolish = null;
-                    return;
+                    return response;
                 }
             }
             if (toDemolish != null && toDemolish.indoors.Value is Cabin)
@@ -308,22 +311,49 @@ namespace stardew_access.Patches
                             DelayedAction.functionAfterDelay(carpenterMenu.returnToCarpentryMenu, 1000);
                         }
                     });
-                    return;
+                    return response;
                 }
             }
             if (toDemolish != null)
             {
                 Game1.player.team.demolishLock.RequestLock(continueDemolish, buildingLockFailed);
             }
+
+            return response;
         }
 
-        public static void Contstruct(Building toCunstruct, Vector2 position)
+        public static string? Contstruct(Building? toCunstruct, Vector2 position)
         {
+            string? response = null;
+            Game1.player.team.buildLock.RequestLock(delegate
+            {
+                if (isOnFarm && Game1.locationRequest == null)
+                {
+                    if (tryToBuild(position))
+                    {
+                        carpenterMenu.CurrentBlueprint.consumeResources();
+                        DelayedAction.functionAfterDelay(carpenterMenu.returnToCarpentryMenuAfterSuccessfulBuild, 2000);
+                        // freeze = true;
+                    }
+                    else
+                    {
+                        response = Game1.content.LoadString("Strings\\UI:Carpenter_CantBuild");
+                    }
+                }
+                Game1.player.team.buildLock.ReleaseLock();
+            });
 
+            return response;
         }
 
-        public static void Upgrade(Building? toUpgrade)
+        public static bool tryToBuild(Vector2 position)
         {
+            return ((Farm)Game1.getLocationFromName("Farm")).buildStructure(carpenterMenu.CurrentBlueprint, position, Game1.player, isMagicalConstruction);
+        }
+
+        public static string? Upgrade(Building? toUpgrade)
+        {
+            string? response = null;
             // This code is taken from the game's code (CarpenterMenu.cs::775)
             if (toUpgrade != null && carpenterMenu.CurrentBlueprint.name != null && toUpgrade.buildingType.Equals(carpenterMenu.CurrentBlueprint.nameOfBuildingToUpgrade))
             {
@@ -337,24 +367,26 @@ namespace stardew_access.Patches
             }
             else if (toUpgrade != null)
             {
-                Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantUpgrade_BuildingType"), Color.Red, 3500f));
+                response = Game1.content.LoadString("Strings\\UI:Carpenter_CantUpgrade_BuildingType");
             }
+            return response;
         }
 
-        public static void Paint(Building? toPaint)
+        public static string? Paint(Building? toPaint)
         {
+            string? response = null;
             Farm farm_location = Game1.getFarm();
             if (toPaint != null)
             {
                 if (!toPaint.CanBePainted())
                 {
-                    Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint"), Color.Red, 3500f));
-                    return;
+                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint");
+                    return response;
                 }
                 if (!carpenterMenu.HasPermissionsToPaint(toPaint))
                 {
-                    Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint_Permission"), Color.Red, 3500f));
-                    return;
+                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint_Permission");
+                    return response;
                 }
                 toPaint.color.Value = Color.White;
                 carpenterMenu.SetChildMenu(new BuildingPaintMenu(toPaint));
@@ -364,22 +396,25 @@ namespace stardew_access.Patches
             {
                 if (!carpenterMenu.CanPaintHouse())
                 {
-                    Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint"), Color.Red, 3500f));
+                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint");
                 }
                 else if (!carpenterMenu.HasPermissionsToPaint(null))
                 {
-                    Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint_Permission"), Color.Red, 3500f));
+                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint_Permission");
                 }
                 else
                 {
                     carpenterMenu.SetChildMenu(new BuildingPaintMenu("House", () => (farm_location.paintedHouseTexture != null) ? farm_location.paintedHouseTexture : Farm.houseTextures, farm_location.houseSource.Value, farm_location.housePaintColor.Value));
                 }
             }*/
+            return response;
         }
 
-        public static void Move(Building toMove, Vector2 position)
+        public static string? Move(Building? toMove, Vector2 position)
         {
+            string? response = null;
 
+            return response;
         }
     }
 

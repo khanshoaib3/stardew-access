@@ -376,7 +376,7 @@ namespace stardew_access
                 string? indexInString = args.ElementAtOrDefault(0);
                 if (indexInString == null)
                 {
-                    MainClass.monitor.Log("Enter the index of the building too!! Use buildlist command to get the index.", LogLevel.Info);
+                    MainClass.monitor.Log("Enter the index of the building too! Use buildlist", LogLevel.Info);
                     return;
                 }
 
@@ -389,17 +389,35 @@ namespace stardew_access
                     return;
                 }
 
-                if (BuildingNAnimalMenuPatches.availableBuildings[index] == null)
+
+                if (BuildingNAnimalMenuPatches.isConstructing || BuildingNAnimalMenuPatches.isMoving)
                 {
-                    MainClass.monitor.Log($"No building found with index {index}. Use buildlist command to get the index.", LogLevel.Info);
-                    return;
+                    if (BuildingNAnimalMenuPatches.marked[index] == Vector2.Zero)
+                    {
+                        MainClass.monitor.Log($"No marked position found at {index} index.", LogLevel.Info);
+                        return;
+                    }
+                }
+                else
+                {
+                    if (BuildingNAnimalMenuPatches.availableBuildings[index] == null)
+                    {
+                        MainClass.monitor.Log($"No building found with index {index}. Use buildlist.", LogLevel.Info);
+                        return;
+                    }
                 }
 
-                if (BuildingNAnimalMenuPatches.isConstructing) { }
-                else if (BuildingNAnimalMenuPatches.isDemolishing) { BuildingNAnimalMenuPatches.Demolish(BuildingNAnimalMenuPatches.availableBuildings[index]); }
-                else if (BuildingNAnimalMenuPatches.isUpgrading) { BuildingNAnimalMenuPatches.Upgrade(BuildingNAnimalMenuPatches.availableBuildings[index]); }
-                else if (BuildingNAnimalMenuPatches.isMoving) { }
-                else if (BuildingNAnimalMenuPatches.isPainting) { BuildingNAnimalMenuPatches.Paint(BuildingNAnimalMenuPatches.availableBuildings[index]); }
+                string? response = null;
+                if (BuildingNAnimalMenuPatches.isConstructing) { response = BuildingNAnimalMenuPatches.Contstruct(BuildingNAnimalMenuPatches.availableBuildings[index], BuildingNAnimalMenuPatches.marked[index]); }
+                else if (BuildingNAnimalMenuPatches.isMoving) { response = BuildingNAnimalMenuPatches.Move(BuildingNAnimalMenuPatches.availableBuildings[index], BuildingNAnimalMenuPatches.marked[index]); }
+                if (BuildingNAnimalMenuPatches.isDemolishing) { response = BuildingNAnimalMenuPatches.Demolish(BuildingNAnimalMenuPatches.availableBuildings[index]); }
+                else if (BuildingNAnimalMenuPatches.isUpgrading) { response = BuildingNAnimalMenuPatches.Upgrade(BuildingNAnimalMenuPatches.availableBuildings[index]); }
+                else if (BuildingNAnimalMenuPatches.isPainting) { response = BuildingNAnimalMenuPatches.Paint(BuildingNAnimalMenuPatches.availableBuildings[index]); }
+
+                if (response != null)
+                {
+                    MainClass.monitor.Log(response, LogLevel.Info);
+                }
             });
             #endregion
 

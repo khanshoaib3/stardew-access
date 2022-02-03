@@ -354,7 +354,6 @@ namespace stardew_access.Patches
 
                 if (__instance is CarpenterMenu)
                 {
-                    MainClass.monitor.Log($"Here", LogLevel.Info);
                     BuildingNAnimalMenuPatches.isOnFarm = false;
                     BuildingNAnimalMenuPatches.isUpgrading = false;
                     BuildingNAnimalMenuPatches.isDemolishing = false;
