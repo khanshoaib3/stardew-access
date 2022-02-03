@@ -41,7 +41,7 @@ namespace stardew_access.Game
                     bool isColliding = isCollidingAtTile(x, y);
 
                     Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
-                    string toSpeak = " ";
+                    string? toSpeak = " ";
 
                     #region Get objects, crops, resource clumps, etc.
                     if (Game1.currentLocation.isCharacterAtTile(gt) != null)

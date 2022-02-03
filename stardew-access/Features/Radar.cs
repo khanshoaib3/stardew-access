@@ -191,7 +191,7 @@ namespace stardew_access.Game
                 // Check for animals
                 else if (ReadTile.getFarmAnimalAt(Game1.currentLocation, (int)position.X, (int)position.Y) != null)
                 {
-                    string? name = ReadTile.getFarmAnimalAt(Game1.currentLocation, (int)position.X, (int)position.Y, onlyName: true);
+                    string name = $"{ReadTile.getFarmAnimalAt(Game1.currentLocation, (int)position.X, (int)position.Y, onlyName: true)}";
                     PlaySoundAt(position, name, CATEGORY.FarmAnimals);
                 }
                 // Check for water
@@ -211,9 +211,9 @@ namespace stardew_access.Game
 
                         if (obj is Furniture)
                         {
-                            if (!furnitures.Contains(obj as Furniture))
+                            if (!furnitures.Contains((Furniture)obj))
                             {
-                                furnitures.Add(obj as Furniture);
+                                furnitures.Add((Furniture)obj);
                                 PlaySoundAt(position, objectName, CATEGORY.Furnitures);
                             }
                         }
@@ -323,7 +323,7 @@ namespace stardew_access.Game
             }
         }
 
-        public void PlaySoundAt(Vector2 position, String searchQuery, CATEGORY category)
+        public void PlaySoundAt(Vector2 position, string searchQuery, CATEGORY category)
         {
             #region Check whether to skip the object or not
 

@@ -113,7 +113,7 @@ namespace stardew_access.Patches
             try
             {
                 #region Skip narrating hover text for certain menus
-                if (Game1.activeClickableMenu is TitleMenu && !((Game1.activeClickableMenu as TitleMenu).GetChildMenu() is CharacterCustomization))
+                if (Game1.activeClickableMenu is TitleMenu && !(((TitleMenu)Game1.activeClickableMenu).GetChildMenu() is CharacterCustomization))
                     return;
 
                 if (Game1.activeClickableMenu is LetterViewerMenu || Game1.activeClickableMenu is QuestLog)
@@ -125,19 +125,19 @@ namespace stardew_access.Patches
                 if (Game1.activeClickableMenu is GeodeMenu)
                     return;
 
-                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is InventoryPage)
+                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is InventoryPage)
                     return;
 
-                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is CraftingPage)
+                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is CraftingPage)
                     return;
 
-                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is OptionsPage)
+                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is OptionsPage)
                     return;
 
-                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is ExitPage)
+                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is ExitPage)
                     return;
 
-                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is SocialPage)
+                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is SocialPage)
                     return;
 
                 if (Game1.activeClickableMenu is ItemGrabMenu)
@@ -173,9 +173,9 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Add quality of item
-                if (hoveredItem is StardewValley.Object && (hoveredItem as StardewValley.Object).quality > 0)
+                if (hoveredItem is StardewValley.Object && ((StardewValley.Object)hoveredItem).quality > 0)
                 {
-                    int quality = (hoveredItem as StardewValley.Object).quality;
+                    int quality = ((StardewValley.Object)hoveredItem).quality;
                     if (quality == 1)
                     {
                         toSpeak.Append("Silver quality");
@@ -230,13 +230,13 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Add health & stamina
-                if (hoveredItem is StardewValley.Object && (hoveredItem as StardewValley.Object).Edibility != -300)
+                if (hoveredItem is StardewValley.Object && ((StardewValley.Object)hoveredItem).Edibility != -300)
                 {
-                    int stamina_recovery = (hoveredItem as StardewValley.Object).staminaRecoveredOnConsumption();
+                    int stamina_recovery = ((StardewValley.Object)hoveredItem).staminaRecoveredOnConsumption();
                     toSpeak.Append($"{stamina_recovery} Energy\n");
                     if (stamina_recovery >= 0)
                     {
-                        int health_recovery = (hoveredItem as StardewValley.Object).healthRecoveredOnConsumption();
+                        int health_recovery = ((StardewValley.Object)hoveredItem).healthRecoveredOnConsumption();
                         toSpeak.Append($"{health_recovery} Health");
                     }
                 }

@@ -259,7 +259,7 @@ namespace stardew_access.Patches
 
                                     if ((item as StardewValley.Object) != null)
                                     {
-                                        int quality = (item as StardewValley.Object).quality;
+                                        int quality = ((StardewValley.Object)item).quality;
                                         if (quality == 1)
                                         {
                                             toSpeak = $"Silver quality {toSpeak}";
@@ -1026,19 +1026,22 @@ namespace stardew_access.Patches
 
                     #region Health & stamina and buff items (effects like +1 walking speed)
                     Item producesItem = ___hoverRecipe.createItem();
-                    if (producesItem is StardewValley.Object && (producesItem as StardewValley.Object).Edibility != -300)
+                    if (producesItem is StardewValley.Object && ((StardewValley.Object)producesItem).Edibility != -300)
                     {
-                        int stamina_recovery = (producesItem as StardewValley.Object).staminaRecoveredOnConsumption();
+                        int stamina_recovery = ((StardewValley.Object)producesItem).staminaRecoveredOnConsumption();
                         buffs += $"{stamina_recovery} Energy";
                         if (stamina_recovery >= 0)
                         {
-                            int health_recovery = (producesItem as StardewValley.Object).healthRecoveredOnConsumption();
+                            int health_recovery = ((StardewValley.Object)producesItem).healthRecoveredOnConsumption();
                             buffs += $"\n{health_recovery} Health";
                         }
                     }
                     // These variables are taken from the game's code itself (IClickableMenu.cs -> 1016 line)
-                    bool edibleItem = producesItem != null && producesItem is StardewValley.Object && (int)(producesItem as StardewValley.Object).edibility != -300;
-                    string[] buffIconsToDisplay = (edibleItem && Game1.objectInformation[(producesItem as StardewValley.Object).parentSheetIndex].Split('/').Length > 7) ? producesItem.ModifyItemBuffs(Game1.objectInformation[(producesItem as StardewValley.Object).parentSheetIndex].Split('/')[7].Split(' ')) : null;
+                    bool edibleItem = producesItem != null && producesItem is StardewValley.Object && (int)((StardewValley.Object)producesItem).edibility != -300;
+                    string[]? buffIconsToDisplay = (edibleItem && Game1.objectInformation[((StardewValley.Object)producesItem).parentSheetIndex].Split('/').Length > 7)
+                        ? producesItem.ModifyItemBuffs(Game1.objectInformation[((StardewValley.Object)producesItem).parentSheetIndex].Split('/')[7].Split(' '))
+                        : null;
+
                     if (buffIconsToDisplay != null)
                     {
                         for (int j = 0; j < buffIconsToDisplay.Length; j++)

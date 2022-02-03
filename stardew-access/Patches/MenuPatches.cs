@@ -352,6 +352,17 @@ namespace stardew_access.Patches
                     GameMenuPatches.shopMenuQueryKey = "";
                 }
 
+                if (__instance is CarpenterMenu)
+                {
+                    MainClass.monitor.Log($"Here", LogLevel.Info);
+                    BuildingNAnimalMenuPatches.isOnFarm = false;
+                    BuildingNAnimalMenuPatches.isUpgrading = false;
+                    BuildingNAnimalMenuPatches.isDemolishing = false;
+                    BuildingNAnimalMenuPatches.isPainting = false;
+                    BuildingNAnimalMenuPatches.isMoving = false;
+                    BuildingNAnimalMenuPatches.isConstructing = false;
+                }
+
                 GameMenuPatches.hoveredItemQueryKey = "";
             }
             catch (Exception e)

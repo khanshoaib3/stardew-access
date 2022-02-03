@@ -2,6 +2,8 @@
 using stardew_access.Patches;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
+using StardewValley.Menus;
 
 namespace stardew_access
 {
@@ -327,6 +329,32 @@ namespace stardew_access
                     MainClass.monitor.Log("No positions marked!", LogLevel.Info);
                 else
                     MainClass.monitor.Log($"Marked positions:\t{toPrint}", LogLevel.Info);
+            });
+
+            helper.ConsoleCommands.Add("buildlist", "List all buildings for selection for upgrading/demolishing/painting", (string commmand, string[] args) =>
+            {
+                if (Game1.activeClickableMenu is not CarpenterMenu || !BuildingNAnimalMenuPatches.isOnFarm)
+                {
+                    MainClass.monitor.Log($"Cannot list buildings.", LogLevel.Info);
+                    return;
+                }
+
+                string toPrint = "";
+                Farm farm = (Farm)Game1.getLocationFromName("Farm");
+                Netcode.NetCollection<Building> buildings = farm.buildings;
+                for (int i = 0; i < buildings.Count; i++)
+                {
+                    toPrint = $"{toPrint},\t{buildings[i].nameOfIndoorsWithoutUnique}: At {buildings[i].tileX}x and {buildings[i].tileY}y";
+                }
+
+                if (toPrint == "")
+                {
+                    MainClass.monitor.Log("No appropriate buildings to list", LogLevel.Info);
+                }
+                else
+                {
+                    MainClass.monitor.Log($"Available buildings: {toPrint}", LogLevel.Info);
+                }
             });
             #endregion
 
