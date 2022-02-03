@@ -360,8 +360,46 @@ namespace stardew_access
                 }
                 else
                 {
-                    MainClass.monitor.Log($"Available buildings:{toPrint}\nOpen the command menu and use pageup and pagedown to check the list", LogLevel.Info);
+                    MainClass.monitor.Log($"Available buildings:{toPrint}\nOpen command menu and use pageup and pagedown to check the list", LogLevel.Info);
                 }
+            });
+
+            helper.ConsoleCommands.Add("buildsel", "Select the building index which you want to upgrade/demolish/paint", (string commmand, string[] args) =>
+            {
+
+                if (Game1.activeClickableMenu is not CarpenterMenu || !BuildingNAnimalMenuPatches.isOnFarm)
+                {
+                    MainClass.monitor.Log($"Cannot list buildings.", LogLevel.Info);
+                    return;
+                }
+
+                string? indexInString = args.ElementAtOrDefault(0);
+                if (indexInString == null)
+                {
+                    MainClass.monitor.Log("Enter the index of the building too!! Use buildlist command to get the index.", LogLevel.Info);
+                    return;
+                }
+
+                int index;
+                bool isParsable = int.TryParse(indexInString, out index);
+
+                if (!isParsable)
+                {
+                    MainClass.monitor.Log("Index can only be a number.", LogLevel.Info);
+                    return;
+                }
+
+                if (BuildingNAnimalMenuPatches.availableBuildings[index] == null)
+                {
+                    MainClass.monitor.Log($"No building found with index {index}. Use buildlist command to get the index.", LogLevel.Info);
+                    return;
+                }
+
+                if (BuildingNAnimalMenuPatches.isConstructing) { }
+                else if (BuildingNAnimalMenuPatches.isDemolishing) { BuildingNAnimalMenuPatches.Demolish(BuildingNAnimalMenuPatches.availableBuildings[index]); }
+                else if (BuildingNAnimalMenuPatches.isUpgrading) { }
+                else if (BuildingNAnimalMenuPatches.isMoving) { }
+                else if (BuildingNAnimalMenuPatches.isPainting) { }
             });
             #endregion
 

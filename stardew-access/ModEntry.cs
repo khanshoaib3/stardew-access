@@ -8,6 +8,7 @@ using AutoHotkey.Interop;
 using System.Runtime.InteropServices;
 using stardew_access.ScreenReader;
 using Microsoft.Xna.Framework;
+using StardewValley.Buildings;
 
 namespace stardew_access
 {
@@ -65,6 +66,11 @@ namespace stardew_access
             for (int i = 0; i < BuildingNAnimalMenuPatches.marked.Length; i++)
             {
                 BuildingNAnimalMenuPatches.marked[i] = Vector2.Zero;
+            }
+
+            for (int i = 0; i < BuildingNAnimalMenuPatches.availableBuildings.Length; i++)
+            {
+                BuildingNAnimalMenuPatches.availableBuildings[i] = null;
             }
             #endregion            
 
