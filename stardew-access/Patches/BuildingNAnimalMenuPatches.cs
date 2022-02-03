@@ -317,7 +317,7 @@ namespace stardew_access.Patches
             }
         }
 
-        public static void Contstruct(Building toCunstruct)
+        public static void Contstruct(Building toCunstruct, Vector2 position)
         {
 
         }
@@ -341,9 +341,40 @@ namespace stardew_access.Patches
             }
         }
 
-        public static void Paint(Building toPaint)
+        public static void Paint(Building? toPaint)
         {
-
+            Farm farm_location = Game1.getFarm();
+            if (toPaint != null)
+            {
+                if (!toPaint.CanBePainted())
+                {
+                    Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint"), Color.Red, 3500f));
+                    return;
+                }
+                if (!carpenterMenu.HasPermissionsToPaint(toPaint))
+                {
+                    Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint_Permission"), Color.Red, 3500f));
+                    return;
+                }
+                toPaint.color.Value = Color.White;
+                carpenterMenu.SetChildMenu(new BuildingPaintMenu(toPaint));
+            }
+            /* TODO Add painting of farm house
+            else if (farm_location.GetHouseRect().Contains(Utility.Vector2ToPoint(new Vector2(toPaint.tileX, toPaint.tileY))))
+            {
+                if (!carpenterMenu.CanPaintHouse())
+                {
+                    Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint"), Color.Red, 3500f));
+                }
+                else if (!carpenterMenu.HasPermissionsToPaint(null))
+                {
+                    Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint_Permission"), Color.Red, 3500f));
+                }
+                else
+                {
+                    carpenterMenu.SetChildMenu(new BuildingPaintMenu("House", () => (farm_location.paintedHouseTexture != null) ? farm_location.paintedHouseTexture : Farm.houseTextures, farm_location.houseSource.Value, farm_location.housePaintColor.Value));
+                }
+            }*/
         }
 
         public static void Move(Building toMove, Vector2 position)

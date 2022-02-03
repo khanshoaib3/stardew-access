@@ -399,7 +399,7 @@ namespace stardew_access
                 else if (BuildingNAnimalMenuPatches.isDemolishing) { BuildingNAnimalMenuPatches.Demolish(BuildingNAnimalMenuPatches.availableBuildings[index]); }
                 else if (BuildingNAnimalMenuPatches.isUpgrading) { BuildingNAnimalMenuPatches.Upgrade(BuildingNAnimalMenuPatches.availableBuildings[index]); }
                 else if (BuildingNAnimalMenuPatches.isMoving) { }
-                else if (BuildingNAnimalMenuPatches.isPainting) { }
+                else if (BuildingNAnimalMenuPatches.isPainting) { BuildingNAnimalMenuPatches.Paint(BuildingNAnimalMenuPatches.availableBuildings[index]); }
             });
             #endregion
 
