@@ -342,9 +342,16 @@ namespace stardew_access
                 string toPrint = "";
                 Farm farm = (Farm)Game1.getLocationFromName("Farm");
                 Netcode.NetCollection<Building> buildings = farm.buildings;
+                int buildingIndex = 0;
+
                 for (int i = 0; i < buildings.Count; i++)
                 {
-                    toPrint = $"{toPrint},\t{buildings[i].nameOfIndoorsWithoutUnique}: At {buildings[i].tileX}x and {buildings[i].tileY}y";
+                    string? name = buildings[i].nameOfIndoorsWithoutUnique;
+                    name = (name == "null") ? buildings[i].buildingType.Value : name;
+
+                    BuildingNAnimalMenuPatches.availableBuildings[buildingIndex] = buildings[i];
+                    toPrint = $"{toPrint}\nIndex {buildingIndex}: {name}: At {buildings[i].tileX}x and {buildings[i].tileY}y";
+                    ++buildingIndex;
                 }
 
                 if (toPrint == "")
@@ -353,7 +360,7 @@ namespace stardew_access
                 }
                 else
                 {
-                    MainClass.monitor.Log($"Available buildings: {toPrint}", LogLevel.Info);
+                    MainClass.monitor.Log($"Available buildings:{toPrint}\nOpen the command menu and use pageup and pagedown to check the list", LogLevel.Info);
                 }
             });
             #endregion

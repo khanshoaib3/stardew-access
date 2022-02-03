@@ -268,7 +268,7 @@ namespace stardew_access.Game
 
             if (Game1.currentLocation is Farm)
             {
-                Building building = (Game1.currentLocation as Farm).getBuildingAt(new Vector2(x, y));
+                Building building = ((Farm)Game1.currentLocation).getBuildingAt(new Vector2(x, y));
                 if (building != null)
                 {
                     return (CATEGORY.Buildings, building.buildingType.Value);

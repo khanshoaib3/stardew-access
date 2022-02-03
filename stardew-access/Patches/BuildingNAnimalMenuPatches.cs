@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
@@ -8,6 +9,7 @@ namespace stardew_access.Patches
     internal class BuildingNAnimalMenuPatches
     {
         internal static Vector2[] marked = new Vector2[10];
+        internal static Building[] availableBuildings = new Building[100];
         internal static string carpenterMenuQuery = "";
         internal static bool isSayingBlueprintInfo = false;
         internal static string prevBlueprintInfo = "";

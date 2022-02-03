@@ -25,11 +25,11 @@ namespace stardew_access.Patches
                         #region To narrate previous and next chat messages
                         if (isNextArrowPressed && !isChatRunning)
                         {
-                            _ = CycleThroughChatMessages(true, ___messages);
+                            CycleThroughChatMessages(true, ___messages);
                         }
                         else if (isPrevArrowPressed && !isChatRunning)
                         {
-                            _ = CycleThroughChatMessages(false, ___messages);
+                            CycleThroughChatMessages(false, ___messages);
                         }
                         #endregion
                     }
@@ -52,10 +52,9 @@ namespace stardew_access.Patches
             }
         }
 
-        private static async Task CycleThroughChatMessages(bool increase, List<ChatMessage> ___messages)
+        private static async void CycleThroughChatMessages(bool increase, List<ChatMessage> ___messages)
         {
             isChatRunning = true;
-            await Task.Delay(200);
             string toSpeak = " ";
             if (increase)
             {
@@ -79,6 +78,7 @@ namespace stardew_access.Patches
             });
 
             MainClass.screenReader.Say(toSpeak, true);
+            await Task.Delay(200);
             isChatRunning = false;
         }
     }
