@@ -360,11 +360,14 @@ namespace stardew_access.Patches
                     BuildingNAnimalMenuPatches.isPainting = false;
                     BuildingNAnimalMenuPatches.isMoving = false;
                     BuildingNAnimalMenuPatches.isConstructing = false;
+                    BuildingNAnimalMenuPatches.carpenterMenu = null;
                 }
 
                 if (__instance is PurchaseAnimalsMenu)
                 {
                     BuildingNAnimalMenuPatches.purchaseAnimalMenuQuery = "";
+                    BuildingNAnimalMenuPatches.firstTimeInNamingMenu = true;
+                    BuildingNAnimalMenuPatches.purchaseAnimalsMenu = null;
                 }
 
                 GameMenuPatches.hoveredItemQueryKey = "";

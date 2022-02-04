@@ -4,11 +4,8 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using HarmonyLib;
 using stardew_access.Patches;
-using AutoHotkey.Interop;
-using System.Runtime.InteropServices;
 using stardew_access.ScreenReader;
 using Microsoft.Xna.Framework;
-using StardewValley.Buildings;
 
 namespace stardew_access
 {

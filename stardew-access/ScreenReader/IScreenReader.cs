@@ -2,7 +2,6 @@ namespace stardew_access.ScreenReader
 {
     public interface IScreenReader
     {
-
         public string PrevTextTile
         {
             get;
@@ -12,7 +11,7 @@ namespace stardew_access.ScreenReader
         /// <summary>Initializes the screen reader.</summary>
         public void InitializeScreenReader();
 
-        // <summary>Closes the screen reader, this is important, call this function when closing the game.</summary>
+        /// <summary>Closes the screen reader, this is important, call this function when closing the game.</summary>
         public void CloseScreenReader();
 
         /// <summary>Speaks the text via the loaded screen reader (if any).</summary>

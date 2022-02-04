@@ -17,27 +17,60 @@ namespace stardew_access.Patches
         internal static bool isSayingBlueprintInfo = false;
         internal static string prevBlueprintInfo = "";
         internal static bool isOnFarm = false, isUpgrading = false, isDemolishing = false, isPainting = false, isConstructing = false, isMoving = false, isMagicalConstruction = false;
+        internal static bool firstTimeInNamingMenu = true;
         internal static PurchaseAnimalsMenu? purchaseAnimalsMenu;
-        internal static void PurchaseAnimalsMenuPatch(PurchaseAnimalsMenu __instance,
-            bool ___onFarm,
-            bool ___namingAnimal,
-            FarmAnimal ___animalBeingPurchased,
-            Building ___newAnimalHome,
-            TextBox ___textBox,
-            TextBoxEvent ___e,
-            int ___priceOfAnimal)
+
+        internal static void PurchaseAnimalsMenuPatch(PurchaseAnimalsMenu __instance, bool ___onFarm, bool ___namingAnimal, TextBox ___textBox)
         {
             try
             {
+                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
                 purchaseAnimalsMenu = __instance;
                 isOnFarm = ___onFarm;
 
                 if (___onFarm && ___namingAnimal)
                 {
+                    string toSpeak = "";
+                    if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                    {
+                        toSpeak = "Cancel Button";
+                    }
+                    else if (__instance.doneNamingButton != null && __instance.doneNamingButton.containsPoint(x, y))
+                    {
+                        toSpeak = "OK Button";
+                    }
+                    else if (__instance.randomButton != null && __instance.randomButton.containsPoint(x, y))
+                    {
+                        toSpeak = "Random Name Button";
+                    }
+                    else if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
+                    {
+                        toSpeak = "Name Text Box";
+                        string? value = ___textBox.Text;
+                        if (value != "" && value != null && value != "null")
+                            toSpeak = $"{toSpeak}, Value: {value}";
+                    }
+
+                    if (purchaseAnimalMenuQuery != toSpeak)
+                    {
+                        purchaseAnimalMenuQuery = toSpeak;
+
+                        if (firstTimeInNamingMenu)
+                        {
+                            toSpeak = $"Enter the name of animal in the name text box. {toSpeak}";
+                            firstTimeInNamingMenu = false;
+                        }
+
+                        MainClass.ScreenReader.Say(toSpeak, true);
+                    }
                 }
-                else if (___onFarm && !___namingAnimal) { }
+                else if (___onFarm && !___namingAnimal)
+                {
+                    firstTimeInNamingMenu = true;
+                }
                 else if (!___onFarm && !___namingAnimal)
                 {
+                    firstTimeInNamingMenu = true;
                     if (__instance.hovered != null)
                     {
                         string toSpeak = "";
@@ -377,6 +410,7 @@ namespace stardew_access.Patches
         public static string? Contstruct(Vector2 position)
         {
             string? response = null;
+            // This code is taken from the game's code (CarpenterMenu.cs::874)
             Game1.player.team.buildLock.RequestLock(delegate
             {
                 if (isOnFarm && Game1.locationRequest == null)
@@ -427,6 +461,7 @@ namespace stardew_access.Patches
         public static string? Paint(Building? toPaint)
         {
             string? response = null;
+            // This code is taken from the game's code (CarpenterMenu.cs::793)
             Farm farm_location = Game1.getFarm();
             if (toPaint != null)
             {
@@ -465,6 +500,7 @@ namespace stardew_access.Patches
         public static string? Move(Building? buildingToMove, Vector2 position)
         {
             string? response = null;
+            // This code is taken from the game's code (CarpenterMenu.cs::829)
             if (buildingToMove != null)
             {
                 string? name = buildingToMove.nameOfIndoorsWithoutUnique;
