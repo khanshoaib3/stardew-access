@@ -354,12 +354,17 @@ namespace stardew_access.Patches
 
                 if (__instance is CarpenterMenu)
                 {
-                    BuildingNAnimalMenuPatches.isOnFarm = false;
+                    BuildingNAnimalMenuPatches.carpenterMenuQuery = "";
                     BuildingNAnimalMenuPatches.isUpgrading = false;
                     BuildingNAnimalMenuPatches.isDemolishing = false;
                     BuildingNAnimalMenuPatches.isPainting = false;
                     BuildingNAnimalMenuPatches.isMoving = false;
                     BuildingNAnimalMenuPatches.isConstructing = false;
+                }
+
+                if (__instance is PurchaseAnimalsMenu)
+                {
+                    BuildingNAnimalMenuPatches.purchaseAnimalMenuQuery = "";
                 }
 
                 GameMenuPatches.hoveredItemQueryKey = "";

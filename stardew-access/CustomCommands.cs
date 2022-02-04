@@ -333,7 +333,8 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("buildlist", "List all buildings for selection for upgrading/demolishing/painting", (string commmand, string[] args) =>
             {
-                if (Game1.activeClickableMenu is not CarpenterMenu || !BuildingNAnimalMenuPatches.isOnFarm)
+                MainClass.monitor.Log($"{Game1.activeClickableMenu is PurchaseAnimalsMenu}\t{BuildingNAnimalMenuPatches.isOnFarm}", LogLevel.Debug);
+                if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu) || !BuildingNAnimalMenuPatches.isOnFarm)
                 {
                     MainClass.monitor.Log($"Cannot list buildings.", LogLevel.Info);
                     return;
@@ -367,9 +368,9 @@ namespace stardew_access
             helper.ConsoleCommands.Add("buildsel", "Select the building index which you want to upgrade/demolish/paint", (string commmand, string[] args) =>
             {
 
-                if (Game1.activeClickableMenu is not CarpenterMenu || !BuildingNAnimalMenuPatches.isOnFarm)
+                if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu) || !BuildingNAnimalMenuPatches.isOnFarm)
                 {
-                    MainClass.monitor.Log($"Cannot list buildings.", LogLevel.Info);
+                    MainClass.monitor.Log($"Cannot select building.", LogLevel.Info);
                     return;
                 }
 
@@ -436,11 +437,16 @@ namespace stardew_access
                 }
 
                 string? response = null;
-                if (BuildingNAnimalMenuPatches.isConstructing) { response = BuildingNAnimalMenuPatches.Contstruct(BuildingNAnimalMenuPatches.marked[index]); }
-                else if (BuildingNAnimalMenuPatches.isMoving) { response = BuildingNAnimalMenuPatches.Move(BuildingNAnimalMenuPatches.availableBuildings[index], BuildingNAnimalMenuPatches.marked[positionIndex]); }
-                if (BuildingNAnimalMenuPatches.isDemolishing) { response = BuildingNAnimalMenuPatches.Demolish(BuildingNAnimalMenuPatches.availableBuildings[index]); }
-                else if (BuildingNAnimalMenuPatches.isUpgrading) { response = BuildingNAnimalMenuPatches.Upgrade(BuildingNAnimalMenuPatches.availableBuildings[index]); }
-                else if (BuildingNAnimalMenuPatches.isPainting) { response = BuildingNAnimalMenuPatches.Paint(BuildingNAnimalMenuPatches.availableBuildings[index]); }
+
+                if (Game1.activeClickableMenu is PurchaseAnimalsMenu) { BuildingNAnimalMenuPatches.PurchaseAnimal(BuildingNAnimalMenuPatches.availableBuildings[index]); }
+                else
+                {
+                    if (BuildingNAnimalMenuPatches.isConstructing) { response = BuildingNAnimalMenuPatches.Contstruct(BuildingNAnimalMenuPatches.marked[index]); }
+                    else if (BuildingNAnimalMenuPatches.isMoving) { response = BuildingNAnimalMenuPatches.Move(BuildingNAnimalMenuPatches.availableBuildings[index], BuildingNAnimalMenuPatches.marked[positionIndex]); }
+                    else if (BuildingNAnimalMenuPatches.isDemolishing) { response = BuildingNAnimalMenuPatches.Demolish(BuildingNAnimalMenuPatches.availableBuildings[index]); }
+                    else if (BuildingNAnimalMenuPatches.isUpgrading) { response = BuildingNAnimalMenuPatches.Upgrade(BuildingNAnimalMenuPatches.availableBuildings[index]); }
+                    else if (BuildingNAnimalMenuPatches.isPainting) { response = BuildingNAnimalMenuPatches.Paint(BuildingNAnimalMenuPatches.availableBuildings[index]); }
+                }
 
                 if (response != null)
                 {

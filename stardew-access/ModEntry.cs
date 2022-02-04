@@ -72,7 +72,7 @@ namespace stardew_access
             {
                 BuildingNAnimalMenuPatches.availableBuildings[i] = null;
             }
-            #endregion            
+            #endregion
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
@@ -123,6 +123,17 @@ namespace stardew_access
 
         private void OnButtonPressed(object? sender, ButtonPressedEventArgs? e)
         {
+            if (e == null)
+                return;
+
+            if (Game1.activeClickableMenu != null)
+            {
+                if (Equals(e.Button, SButton.OemOpenBrackets))
+                {
+                    Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                }
+            }
+
             if (!Context.IsPlayerFree)
                 return;
 

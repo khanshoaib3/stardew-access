@@ -13,10 +13,61 @@ namespace stardew_access.Patches
         internal static Vector2[] marked = new Vector2[10];
         internal static Building?[] availableBuildings = new Building[100];
         internal static CarpenterMenu? carpenterMenu = null;
-        internal static string carpenterMenuQuery = "";
+        internal static string carpenterMenuQuery = "", purchaseAnimalMenuQuery = "";
         internal static bool isSayingBlueprintInfo = false;
         internal static string prevBlueprintInfo = "";
         internal static bool isOnFarm = false, isUpgrading = false, isDemolishing = false, isPainting = false, isConstructing = false, isMoving = false, isMagicalConstruction = false;
+        internal static PurchaseAnimalsMenu? purchaseAnimalsMenu;
+        internal static void PurchaseAnimalsMenuPatch(PurchaseAnimalsMenu __instance,
+            bool ___onFarm,
+            bool ___namingAnimal,
+            FarmAnimal ___animalBeingPurchased,
+            Building ___newAnimalHome,
+            TextBox ___textBox,
+            TextBoxEvent ___e,
+            int ___priceOfAnimal)
+        {
+            try
+            {
+                purchaseAnimalsMenu = __instance;
+                isOnFarm = ___onFarm;
+
+                if (___onFarm && ___namingAnimal)
+                {
+                }
+                else if (___onFarm && !___namingAnimal) { }
+                else if (!___onFarm && !___namingAnimal)
+                {
+                    if (__instance.hovered != null)
+                    {
+                        string toSpeak = "";
+                        if (((StardewValley.Object)__instance.hovered.item).Type != null)
+                        {
+                            toSpeak = ((StardewValley.Object)__instance.hovered.item).Type;
+                        }
+                        else
+                        {
+                            string displayName = PurchaseAnimalsMenu.getAnimalTitle(__instance.hovered.hoverText);
+                            int price = __instance.hovered.item.salePrice();
+                            string description = PurchaseAnimalsMenu.getAnimalDescription(__instance.hovered.hoverText);
+
+                            toSpeak = $"{displayName}, Price: {price}g, Description: {description}";
+                        }
+
+                        if (purchaseAnimalMenuQuery != toSpeak)
+                        {
+                            purchaseAnimalMenuQuery = toSpeak;
+                            MainClass.screenReader.Say(toSpeak, true);
+                        }
+                        return;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+            }
+        }
 
         internal static void CarpenterMenuPatch(
             CarpenterMenu __instance, bool ___onFarm, List<Item> ___ingredients, int ___price,
@@ -186,6 +237,7 @@ namespace stardew_access.Patches
                 MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
+
         private static async void SayBlueprintInfo(string info)
         {
             isSayingBlueprintInfo = true;
@@ -458,6 +510,18 @@ namespace stardew_access.Patches
 
             return response;
         }
-    }
 
+        public static void PurchaseAnimal(Building? selection)
+        {
+            if (selection == null)
+                return;
+
+            if (purchaseAnimalsMenu == null)
+                return;
+
+            int x = (selection.tileX * Game1.tileSize) - Game1.viewport.X;
+            int y = (selection.tileY * Game1.tileSize) - Game1.viewport.Y;
+            purchaseAnimalsMenu.receiveLeftClick(x, y);
+        }
+    }
 }
