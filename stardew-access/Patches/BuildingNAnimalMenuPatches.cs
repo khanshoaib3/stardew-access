@@ -133,6 +133,8 @@ namespace stardew_access.Patches
                     string description = currentBluprint.description;
                     string price = $"{___price}g";
                     string blueprintInfo;
+                    int width = currentBluprint.tilesWidth;
+                    int height = currentBluprint.tilesHeight;
 
                     #region Get ingredients
                     for (int i = 0; i < ___ingredients.Count; i++)
@@ -159,7 +161,7 @@ namespace stardew_access.Patches
                     }
                     #endregion
 
-                    blueprintInfo = $"{name}, Price: {price}, Ingredients: {ingredients}, Description: {description}";
+                    blueprintInfo = $"{name}, Price: {price}, Ingredients: {ingredients}, Dimensions: {width} width and {height} height, Description: {description}";
 
                     if (isBPressed && !isSayingBlueprintInfo)
                     {
