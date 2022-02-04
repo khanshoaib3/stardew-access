@@ -23,7 +23,7 @@ namespace stardew_access.Patches
 
                     toSpeak = $"Left Quest:\n\t{toSpeak}\n\tPress left click to accept this quest.";
 
-                    MainClass.screenReader.SayWithMenuChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
                     return;
                 }
 
@@ -33,13 +33,13 @@ namespace stardew_access.Patches
 
                     toSpeak = $"Right Quest:\n\t{toSpeak}\n\tPress left click to accept this quest.";
 
-                    MainClass.screenReader.SayWithMenuChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
                     return;
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -99,7 +99,7 @@ namespace stardew_access.Patches
                             if (Game1.dayOfMonth == i + 1)
                                 toSpeak += $", Current";
 
-                            MainClass.screenReader.SayWithChecker(toSpeak, true);
+                            MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                         }
                     }
                     #endregion
@@ -114,7 +114,7 @@ namespace stardew_access.Patches
                         if (currentDailyQuestText != toSpeak)
                         {
                             currentDailyQuestText = toSpeak;
-                            MainClass.screenReader.Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                     }
                     else
@@ -134,7 +134,7 @@ namespace stardew_access.Patches
                                 __instance.acceptQuestButton.snapMouseCursorToCenter();
                             }
 
-                            MainClass.screenReader.Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                     }
                     #endregion
@@ -142,7 +142,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
         #endregion
@@ -171,7 +171,7 @@ namespace stardew_access.Patches
                             toSpeak += ___pages[___currentPage][i].ShouldDisplayAsComplete() ? " completed!" : "";
                             if (__instance.questLogButtons[i].containsPoint(Game1.getOldMouseX(), Game1.getOldMouseY()))
                             {
-                                MainClass.screenReader.SayWithChecker(toSpeak, true);
+                                MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                             }
                         }
                     }
@@ -218,10 +218,13 @@ namespace stardew_access.Patches
                             toSpeak += $"\t\nOrder {j + 1}: {parsed_text} \t\n";
                         }
 
-                        int daysLeft = ____shownQuest.GetDaysLeft();
+                        if (____shownQuest != null)
+                        {
+                            int daysLeft = ____shownQuest.GetDaysLeft();
 
-                        if (daysLeft > 0)
-                            toSpeak += $"\t\n{daysLeft} days left.";
+                            if (daysLeft > 0)
+                                toSpeak += $"\t\n{daysLeft} days left.";
+                        }
                         #endregion
                     }
 
@@ -229,13 +232,13 @@ namespace stardew_access.Patches
                     if (snapMouseToRewardBox)
                         __instance.rewardBox.snapMouseCursorToCenter();
 
-                    MainClass.screenReader.SayWithChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                     #endregion
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
         #endregion

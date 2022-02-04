@@ -1,12 +1,14 @@
 namespace stardew_access.ScreenReader
 {
-    public interface ScreenReaderInterface{
+    public interface IScreenReader
+    {
 
-        public string PrevTextTile{
+        public string PrevTextTile
+        {
             get;
             set;
         }
-        
+
         /// <summary>Initializes the screen reader.</summary>
         public void InitializeScreenReader();
 
@@ -45,6 +47,6 @@ namespace stardew_access.ScreenReader
         /// <param name="x">The X location of tile.</param>
         /// <param name="y">The Y location of tile.</param>
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        public void SayWithTileQuery(string text, int x, int y, bool interrupt);    
+        public void SayWithTileQuery(string text, int x, int y, bool interrupt);
     }
 }

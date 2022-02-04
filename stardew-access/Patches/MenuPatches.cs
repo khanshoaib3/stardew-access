@@ -38,7 +38,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
 
             return true;
@@ -52,13 +52,13 @@ namespace stardew_access.Patches
 
                 if (__instance.nextPageButton != null && __instance.nextPageButton.containsPoint(x, y))
                 {
-                    MainClass.screenReader.SayWithMenuChecker($"Next Page Button", true);
+                    MainClass.ScreenReader.SayWithMenuChecker($"Next Page Button", true);
                     return;
                 }
 
                 if (__instance.previousPageButton != null && __instance.previousPageButton.containsPoint(x, y))
                 {
-                    MainClass.screenReader.SayWithMenuChecker($"Previous Page Button", true);
+                    MainClass.ScreenReader.SayWithMenuChecker($"Previous Page Button", true);
                     return;
                 }
 
@@ -66,14 +66,14 @@ namespace stardew_access.Patches
                 {
                     if (__instance.languages[i].containsPoint(x, y))
                     {
-                        MainClass.screenReader.SayWithMenuChecker($"{__instance.languageList[i]} Button", true);
+                        MainClass.ScreenReader.SayWithMenuChecker($"{__instance.languageList[i]} Button", true);
                         break;
                     }
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -86,14 +86,14 @@ namespace stardew_access.Patches
                 {
                     if (___elevators[i].containsPoint(x, y))
                     {
-                        MainClass.screenReader.SayWithMenuChecker($"{___elevators[i].name} level", true);
+                        MainClass.ScreenReader.SayWithMenuChecker($"{___elevators[i].name} level", true);
                         break;
                     }
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -105,11 +105,11 @@ namespace stardew_access.Patches
                 ___textBox.SelectMe();
                 string toSpeak = $"{title}";
 
-                MainClass.screenReader.SayWithChecker(toSpeak, true);
+                MainClass.ScreenReader.SayWithChecker(toSpeak, true);
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -119,19 +119,19 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(), y = Game1.getMouseY();
 
-                MainClass.screenReader.SayWithMenuChecker(___message, true);
+                MainClass.ScreenReader.SayWithMenuChecker(___message, true);
                 if (__instance.okButton.containsPoint(x, y))
                 {
-                    MainClass.screenReader.SayWithMenuChecker("Ok Button", false);
+                    MainClass.ScreenReader.SayWithMenuChecker("Ok Button", false);
                 }
                 else if (__instance.cancelButton.containsPoint(x, y))
                 {
-                    MainClass.screenReader.SayWithMenuChecker("Cancel Button", false);
+                    MainClass.ScreenReader.SayWithMenuChecker("Cancel Button", false);
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -188,16 +188,16 @@ namespace stardew_access.Patches
                 }
 
                 if (toSpeak != " ")
-                    MainClass.screenReader.SayWithMenuChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
                 else if (__instance.isProfessionChooser && currentLevelUpTitle != $"{___title}. Select a new profession.")
                 {
-                    MainClass.screenReader.SayWithMenuChecker($"{___title}. Select a new profession.", true);
+                    MainClass.ScreenReader.SayWithMenuChecker($"{___title}. Select a new profession.", true);
                     currentLevelUpTitle = $"{___title}. Select a new profession.";
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -212,21 +212,21 @@ namespace stardew_access.Patches
                     if (__instance.okButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                     {
                         toSpeak = $"{total}g in total. Press left mouse button to save.";
-                        MainClass.screenReader.SayWithChecker(toSpeak, true);
+                        MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                     }
                     for (int i = 0; i < __instance.categories.Count; i++)
                     {
                         if (__instance.categories[i].containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                         {
                             toSpeak = $"Money recieved from {__instance.getCategoryName(i)}: {___categoryTotals[i]}g.";
-                            MainClass.screenReader.SayWithChecker(toSpeak, true);
+                            MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -266,7 +266,7 @@ namespace stardew_access.Patches
                         toSpeak += "\t\n Left click to accept quest.";
                         __instance.acceptQuestButton.snapMouseCursorToCenter();
                     }
-                    MainClass.screenReader.Say(toSpeak, false);
+                    MainClass.ScreenReader.Say(toSpeak, false);
                 }
                 #endregion
 
@@ -279,7 +279,7 @@ namespace stardew_access.Patches
                         string label = c.label;
 
                         if (c.containsPoint(Game1.getMousePosition().X, Game1.getMousePosition().Y))
-                            MainClass.screenReader.SayWithChecker($"Grab: {name} \t\n {label}", false);
+                            MainClass.ScreenReader.SayWithChecker($"Grab: {name} \t\n {label}", false);
                     }
                 }
                 #endregion
@@ -287,7 +287,7 @@ namespace stardew_access.Patches
             catch (Exception e)
             {
 
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -329,7 +329,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -371,14 +371,14 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
         internal static void ExitEventPatch()
         {
-            if (MainClass.screenReader != null)
-                MainClass.screenReader.CloseScreenReader();
+            if (MainClass.ScreenReader != null)
+                MainClass.ScreenReader.CloseScreenReader();
         }
         internal static void resetGlobalVars()
         {

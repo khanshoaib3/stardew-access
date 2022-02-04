@@ -57,7 +57,7 @@ namespace stardew_access.Patches
                         if (purchaseAnimalMenuQuery != toSpeak)
                         {
                             purchaseAnimalMenuQuery = toSpeak;
-                            MainClass.screenReader.Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                         return;
                     }
@@ -65,7 +65,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -145,7 +145,7 @@ namespace stardew_access.Patches
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
-                                MainClass.screenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                             return;
                         }
@@ -156,7 +156,7 @@ namespace stardew_access.Patches
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
-                                MainClass.screenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                             return;
                         }
@@ -167,7 +167,7 @@ namespace stardew_access.Patches
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
-                                MainClass.screenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                             return;
                         }
@@ -178,7 +178,7 @@ namespace stardew_access.Patches
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
-                                MainClass.screenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                             return;
                         }
@@ -189,7 +189,7 @@ namespace stardew_access.Patches
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
-                                MainClass.screenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                             return;
                         }
@@ -200,7 +200,7 @@ namespace stardew_access.Patches
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
-                                MainClass.screenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                             return;
                         }
@@ -211,7 +211,7 @@ namespace stardew_access.Patches
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
-                                MainClass.screenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                             return;
                         }
@@ -234,14 +234,14 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
         private static async void SayBlueprintInfo(string info)
         {
             isSayingBlueprintInfo = true;
-            MainClass.screenReader.Say(info, true);
+            MainClass.ScreenReader.Say(info, true);
             await Task.Delay(300);
             isSayingBlueprintInfo = false;
         }

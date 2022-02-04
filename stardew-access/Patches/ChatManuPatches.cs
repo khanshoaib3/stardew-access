@@ -42,13 +42,13 @@ namespace stardew_access.Patches
                         toSpeak += $"{message.message}, ";
                     });
                     if (toSpeak != " ")
-                        MainClass.screenReader.SayWithChatChecker(toSpeak, false);
+                        MainClass.ScreenReader.SayWithChatChecker(toSpeak, false);
                     #endregion
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -77,7 +77,7 @@ namespace stardew_access.Patches
                 toSpeak += $"{message.message}, ";
             });
 
-            MainClass.screenReader.Say(toSpeak, true);
+            MainClass.ScreenReader.Say(toSpeak, true);
             await Task.Delay(200);
             isChatRunning = false;
         }

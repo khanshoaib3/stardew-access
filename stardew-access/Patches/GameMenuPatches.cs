@@ -42,7 +42,7 @@ namespace stardew_access.Patches
                         if (junimoNoteMenuQuery != toSpeak)
                         {
                             junimoNoteMenuQuery = toSpeak;
-                            MainClass.screenReader.Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                         return;
                     }
@@ -54,7 +54,7 @@ namespace stardew_access.Patches
                             if (junimoNoteMenuQuery != toSpeak)
                             {
                                 junimoNoteMenuQuery = toSpeak;
-                                MainClass.screenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                             return;
                         }
@@ -65,7 +65,7 @@ namespace stardew_access.Patches
                         if (junimoNoteMenuQuery != toSpeak)
                         {
                             junimoNoteMenuQuery = toSpeak;
-                            MainClass.screenReader.Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                         return;
                     }
@@ -77,7 +77,7 @@ namespace stardew_access.Patches
                             if (junimoNoteMenuQuery != toSpeak)
                             {
                                 junimoNoteMenuQuery = toSpeak;
-                                MainClass.screenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                             return;
                         }
@@ -87,7 +87,7 @@ namespace stardew_access.Patches
                             if (junimoNoteMenuQuery != toSpeak)
                             {
                                 junimoNoteMenuQuery = toSpeak;
-                                MainClass.screenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                             return;
                         }
@@ -117,19 +117,19 @@ namespace stardew_access.Patches
                     else if (isBackPressed && __instance.backButton != null && !__instance.backButton.containsPoint(x, y))
                     {
                         __instance.backButton.snapMouseCursorToCenter();
-                        MainClass.screenReader.Say("Back Button", true);
+                        MainClass.ScreenReader.Say("Back Button", true);
                     }
                     else if (isPPressed && __instance.purchaseButton != null && !__instance.purchaseButton.containsPoint(x, y))
                     {
                         __instance.purchaseButton.snapMouseCursorToCenter();
-                        MainClass.screenReader.Say("Purchase Button", true);
+                        MainClass.ScreenReader.Say("Purchase Button", true);
                     }
                 }
                 string reward = __instance.getRewardNameForArea(___whichArea);
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -193,7 +193,7 @@ namespace stardew_access.Patches
                                     toSpeak = $"Completed {toSpeak}";
 
                                 c.snapMouseCursorToCenter();
-                                MainClass.screenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                         }
                         break;
@@ -228,7 +228,7 @@ namespace stardew_access.Patches
                                 }
 
                                 c.snapMouseCursorToCenter();
-                                MainClass.screenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                         }
                         break;
@@ -281,7 +281,7 @@ namespace stardew_access.Patches
                                     toSpeak = "Empty Slot";
                                 }
                                 c.snapMouseCursorToCenter();
-                                MainClass.screenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                         }
                         break;
@@ -289,7 +289,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
 
             await Task.Delay(200);
@@ -372,7 +372,7 @@ namespace stardew_access.Patches
                                 if (socialPageQuery != toSpeak)
                                 {
                                     socialPageQuery = toSpeak;
-                                    MainClass.screenReader.Say(toSpeak, true);
+                                    MainClass.ScreenReader.Say(toSpeak, true);
                                 }
                                 return;
                             }
@@ -417,7 +417,7 @@ namespace stardew_access.Patches
                                     if (socialPageQuery != toSpeak)
                                     {
                                         socialPageQuery = toSpeak;
-                                        MainClass.screenReader.Say(toSpeak, true);
+                                        MainClass.ScreenReader.Say(toSpeak, true);
                                     }
                                     return;
                                 }
@@ -430,7 +430,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -461,7 +461,7 @@ namespace stardew_access.Patches
                     {
                         shopMenuQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                         Game1.playSound("drop_item");
                     }
                     return;
@@ -473,7 +473,7 @@ namespace stardew_access.Patches
                     {
                         shopMenuQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -484,7 +484,7 @@ namespace stardew_access.Patches
                     {
                         shopMenuQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -531,14 +531,14 @@ namespace stardew_access.Patches
                     {
                         shopMenuQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                 }
                 #endregion
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -560,7 +560,7 @@ namespace stardew_access.Patches
                         if (gameMenuQueryKey != toSpeak)
                         {
                             gameMenuQueryKey = toSpeak;
-                            MainClass.screenReader.Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                         return;
                     }
@@ -568,7 +568,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -589,7 +589,7 @@ namespace stardew_access.Patches
                     if (geodeMenuQueryKey != toSpeak)
                     {
                         geodeMenuQueryKey = toSpeak;
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -602,7 +602,7 @@ namespace stardew_access.Patches
                     if (geodeMenuQueryKey != toSpeak)
                     {
                         geodeMenuQueryKey = toSpeak;
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -614,7 +614,7 @@ namespace stardew_access.Patches
                     if (geodeMenuQueryKey != toSpeak)
                     {
                         geodeMenuQueryKey = toSpeak;
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                         Game1.playSound("drop_item");
                     }
                     return;
@@ -627,7 +627,7 @@ namespace stardew_access.Patches
                     if (geodeMenuQueryKey != toSpeak)
                     {
                         geodeMenuQueryKey = toSpeak;
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -639,7 +639,7 @@ namespace stardew_access.Patches
                     if (geodeMenuQueryKey != toSpeak)
                     {
                         geodeMenuQueryKey = toSpeak;
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -652,7 +652,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -684,7 +684,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
                         gameMenuQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -696,7 +696,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -709,7 +709,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -722,7 +722,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -735,7 +735,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -749,7 +749,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -763,7 +763,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -776,7 +776,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                         Game1.playSound("drop_item");
                     }
                     return;
@@ -818,7 +818,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -843,7 +843,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -956,7 +956,7 @@ namespace stardew_access.Patches
                     {
                         craftingPageQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -968,7 +968,7 @@ namespace stardew_access.Patches
                     {
                         craftingPageQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -980,7 +980,7 @@ namespace stardew_access.Patches
                     {
                         craftingPageQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -992,7 +992,7 @@ namespace stardew_access.Patches
                     {
                         craftingPageQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                         Game1.playSound("drop_item");
                     }
                     return;
@@ -1072,7 +1072,7 @@ namespace stardew_access.Patches
                         craftingPageQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1089,7 +1089,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -1139,7 +1139,7 @@ namespace stardew_access.Patches
                         inventoryPageQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                         Game1.playSound("drop_item");
                     }
                     return;
@@ -1153,7 +1153,7 @@ namespace stardew_access.Patches
                         inventoryPageQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1166,7 +1166,7 @@ namespace stardew_access.Patches
                         inventoryPageQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1179,7 +1179,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1193,7 +1193,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1289,7 +1289,7 @@ namespace stardew_access.Patches
                             inventoryPageQueryKey = toSpeak;
                             gameMenuQueryKey = "";
                             hoveredItemQueryKey = "";
-                            MainClass.screenReader.Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                         return;
                     }
@@ -1307,7 +1307,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -1352,7 +1352,7 @@ namespace stardew_access.Patches
                         {
                             gameMenuQueryKey = "";
                             optionsPageQueryKey = toSpeak;
-                            MainClass.screenReader.Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                         return;
                     }
@@ -1360,7 +1360,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -1376,7 +1376,7 @@ namespace stardew_access.Patches
                     {
                         gameMenuQueryKey = "";
                         exitPageQueryKey = toSpeak;
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1388,14 +1388,14 @@ namespace stardew_access.Patches
                     {
                         gameMenuQueryKey = "";
                         exitPageQueryKey = toSpeak;
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -1527,7 +1527,7 @@ namespace stardew_access.Patches
                     if (hoveredItemQueryKey != $"{toSpeak}:{i}")
                     {
                         hoveredItemQueryKey = $"{toSpeak}:{i}";
-                        MainClass.screenReader.Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return true;
                 }

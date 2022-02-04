@@ -34,8 +34,8 @@ namespace stardew_access.Game
                 {
                     if (!manuallyTriggered && prevTile != gt)
                     {
-                        if (MainClass.screenReader != null)
-                            MainClass.screenReader.PrevTextTile = " ";
+                        if (MainClass.ScreenReader != null)
+                            MainClass.ScreenReader.PrevTextTile = " ";
                     }
 
                     bool isColliding = isCollidingAtTile(x, y);
@@ -148,9 +148,9 @@ namespace stardew_access.Game
                     #region Narrate toSpeak
                     if (toSpeak != " ")
                         if (manuallyTriggered)
-                            MainClass.screenReader.Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         else
-                            MainClass.screenReader.SayWithTileQuery(toSpeak, x, y, true);
+                            MainClass.ScreenReader.SayWithTileQuery(toSpeak, x, y, true);
                     #endregion
 
                     #region Play colliding sound effect
@@ -166,7 +166,7 @@ namespace stardew_access.Game
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Error in Read Tile:\n{e.Message}\n{e.StackTrace}", LogLevel.Debug);
+                MainClass.Monitor.Log($"Error in Read Tile:\n{e.Message}\n{e.StackTrace}", LogLevel.Debug);
             }
 
             await Task.Delay(100);

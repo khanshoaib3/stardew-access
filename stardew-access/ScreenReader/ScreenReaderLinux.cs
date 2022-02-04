@@ -14,7 +14,7 @@ namespace stardew_access.ScreenReader
         }
     }
 
-    public class ScreenReaderLinux : ScreenReaderInterface
+    public class ScreenReaderLinux : IScreenReader
     {
         [DllImport("libspeechdwrapper.so")]
         private static extern int Initialize();
@@ -28,21 +28,25 @@ namespace stardew_access.ScreenReader
         public string prevText = "", prevTextTile = " ", prevChatText = "", prevMenuText = "";
         private bool initialized = false;
 
-        public string PrevTextTile{
-            get{ return prevTextTile; }
-            set{ prevTextTile=value; }
+        public string PrevTextTile
+        {
+            get { return prevTextTile; }
+            set { prevTextTile = value; }
         }
 
         public void InitializeScreenReader()
         {
             int res = Initialize();
-            if(res==1){
+            if (res == 1)
+            {
                 initialized = true;
             }
         }
 
-        public void CloseScreenReader(){
-            if(initialized){
+        public void CloseScreenReader()
+        {
+            if (initialized)
+            {
                 Close();
                 initialized = false;
             }
@@ -50,7 +54,8 @@ namespace stardew_access.ScreenReader
 
         public void Say(string text, bool interrupt)
         {
-            if(initialized){
+            if (initialized)
+            {
                 GoString str = new GoString(text, text.Length);
                 Speak(str, interrupt);
             }
@@ -82,7 +87,7 @@ namespace stardew_access.ScreenReader
                 Say(text, interrupt);
             }
         }
-        
+
         public void SayWithTileQuery(string text, int x, int y, bool interrupt)
         {
             string query = $"{text} x:{x} y:{y}";

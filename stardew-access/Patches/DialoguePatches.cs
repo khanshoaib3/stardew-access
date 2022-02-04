@@ -49,9 +49,9 @@ namespace stardew_access.Patches
                     if (toSpeak != " ")
                     {
                         if (hasResponses)
-                            MainClass.screenReader.SayWithChecker(toSpeak, false);
+                            MainClass.ScreenReader.SayWithChecker(toSpeak, false);
                         else
-                            MainClass.screenReader.SayWithChecker(toSpeak, true);
+                            MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                     }
                 }
                 else if (__instance.isQuestion)
@@ -80,9 +80,9 @@ namespace stardew_access.Patches
                     if (toSpeak != " ")
                     {
                         if (hasResponses)
-                            MainClass.screenReader.SayWithChecker(toSpeak, false);
+                            MainClass.ScreenReader.SayWithChecker(toSpeak, false);
                         else
-                            MainClass.screenReader.SayWithChecker(toSpeak, true);
+                            MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                     }
                 }
                 else if (Game1.activeClickableMenu is DialogueBox)
@@ -91,13 +91,13 @@ namespace stardew_access.Patches
                     if (currentDialogue != __instance.getCurrentString())
                     {
                         currentDialogue = __instance.getCurrentString();
-                        MainClass.screenReader.Say(__instance.getCurrentString(), true);
+                        MainClass.ScreenReader.Say(__instance.getCurrentString(), true);
                     }
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
             }
 
         }
@@ -273,15 +273,15 @@ namespace stardew_access.Patches
                 if (toSpeak.ToString() != " ")
                 {
                     if (Context.IsPlayerFree)
-                        MainClass.screenReader.SayWithChecker(toSpeak.ToString(), true); // Normal Checker
+                        MainClass.ScreenReader.SayWithChecker(toSpeak.ToString(), true); // Normal Checker
                     else
-                        MainClass.screenReader.SayWithMenuChecker(toSpeak.ToString(), true); // Menu Checker
+                        MainClass.ScreenReader.SayWithMenuChecker(toSpeak.ToString(), true); // Menu Checker
                 }
                 #endregion
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
             }
         }
     }

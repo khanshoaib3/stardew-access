@@ -45,11 +45,11 @@ namespace stardew_access.Patches
                 #endregion
 
                 if (toSpeak != " ")
-                    MainClass.screenReader.SayWithChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithChecker(toSpeak, true);
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -95,15 +95,15 @@ namespace stardew_access.Patches
                 if (TitleMenu.subMenu != null && __instance.backButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                 {
                     string text = "Back Button";
-                    MainClass.screenReader.SayWithChecker(text, true);
+                    MainClass.ScreenReader.SayWithChecker(text, true);
                 }
 
                 if (TitleMenu.subMenu == null && toSpeak != "")
-                    MainClass.screenReader.SayWithChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithChecker(toSpeak, true);
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -119,7 +119,7 @@ namespace stardew_access.Patches
                         #region Farms
                         if (___menu.deleteButtons.Count > 0 && ___menu.deleteButtons[i].containsPoint(x, y))
                         {
-                            MainClass.screenReader.SayWithChecker($"Delete {__instance.Farmer.farmName} Farm", true);
+                            MainClass.ScreenReader.SayWithChecker($"Delete {__instance.Farmer.farmName} Farm", true);
                             return;
                         }
 
@@ -128,14 +128,14 @@ namespace stardew_access.Patches
                             // Used diff. functions to narrate to prevent it from speaking the message again on selecting another button.
                             string message = "Really delete farm?";
 
-                            MainClass.screenReader.SayWithChecker(message, true);
+                            MainClass.ScreenReader.SayWithChecker(message, true);
                             if (___menu.okDeleteButton.containsPoint(x, y))
                             {
-                                MainClass.screenReader.SayWithMenuChecker("Ok Button", false);
+                                MainClass.ScreenReader.SayWithMenuChecker("Ok Button", false);
                             }
                             else if (___menu.cancelDeleteButton.containsPoint(x, y))
                             {
-                                MainClass.screenReader.SayWithMenuChecker("Cancel Button", false);
+                                MainClass.ScreenReader.SayWithMenuChecker("Cancel Button", false);
                             }
                             return;
                         }
@@ -150,14 +150,14 @@ namespace stardew_access.Patches
 
                         string toSpeak = $"{farmName} Farm Selected, \t\n Farmer:{farmerName}, \t\nMoney:{money}, \t\nHours Played:{hoursPlayed}, \t\nDate:{dateStringForSaveGame}";
 
-                        MainClass.screenReader.SayWithChecker(toSpeak, true);
+                        MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                         #endregion
                     }
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -179,7 +179,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -640,7 +640,7 @@ namespace stardew_access.Patches
 
             if (toSpeak != " ")
             {
-                MainClass.screenReader.Say(toSpeak, true);
+                MainClass.ScreenReader.Say(toSpeak, true);
             }
 
             await Task.Delay(200);

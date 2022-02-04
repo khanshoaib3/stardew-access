@@ -2,19 +2,20 @@
 
 namespace stardew_access.ScreenReader
 {
-    public class ScreenReaderWindows : ScreenReaderInterface
+    public class ScreenReaderWindows : IScreenReader
     {
         public IAccessibleOutput? screenReader = null;
         public string prevText = "", prevTextTile = " ", prevChatText = "", prevMenuText = "";
 
-        public string PrevTextTile{
-            get{ return prevTextTile; }
-            set{ prevTextTile=value; }
+        public string PrevTextTile
+        {
+            get { return prevTextTile; }
+            set { prevTextTile = value; }
         }
 
         public void InitializeScreenReader()
         {
-            
+
             NvdaOutput? nvdaOutput = null;
             JawsOutput? jawsOutput = null;
             SapiOutput? sapiOutput = null;
@@ -38,7 +39,7 @@ namespace stardew_access.ScreenReader
             {
                 sapiOutput = new SapiOutput();
             }
-            catch (Exception){ }
+            catch (Exception) { }
 
             if (nvdaOutput != null && nvdaOutput.IsAvailable())
                 screenReader = nvdaOutput;
@@ -48,8 +49,9 @@ namespace stardew_access.ScreenReader
                 screenReader = sapiOutput;
         }
 
-        public void CloseScreenReader(){
-            
+        public void CloseScreenReader()
+        {
+
         }
 
         public void Say(string text, bool interrupt)
@@ -95,7 +97,7 @@ namespace stardew_access.ScreenReader
                 Say(text, interrupt);
             }
         }
-        
+
         public void SayWithTileQuery(string text, int x, int y, bool interrupt)
         {
             if (screenReader == null)

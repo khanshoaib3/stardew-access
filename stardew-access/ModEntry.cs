@@ -21,17 +21,16 @@ namespace stardew_access
         public static bool radar = true;
         public static bool radarDebug = false;
         public static bool radarStereoSound = true;
-        public static IMonitor monitor;
-        private AutoHotkeyEngine ahk;
+        private static IMonitor monitor;
         public static string hudMessageQueryKey = "";
-        public static Radar radarFeature;
-        public static ScreenReaderInterface screenReader;
+        private static Radar radarFeature;
+        private static IScreenReader screenReader;
+        private static IModHelper modHelper;
 
-        private static IModHelper _modHelper;
-        public static IModHelper ModHelper
-        {
-            get { return _modHelper; }
-        }
+        public static IModHelper ModHelper { get => modHelper; }
+        public static Radar RadarFeature { get => radarFeature; set => radarFeature = value; }
+        public static IScreenReader ScreenReader { get => screenReader; set => screenReader = value; }
+        public static IMonitor Monitor { get => monitor; set => monitor = value; }
 
         /*********
         ** Public methods
@@ -42,22 +41,18 @@ namespace stardew_access
         {
             #region Initializations
 
-            monitor = Monitor; // Inititalize monitor
-            _modHelper = helper;
+            Monitor = base.Monitor; // Inititalize monitor
+            modHelper = helper;
 
             Game1.options.setGamepadMode("force_on");
 
-            // Initialize AutoHotKey
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                InitializeAutoHotKey();
-
-            screenReader = new ScreenReaderController().Initialize();
+            ScreenReader = new ScreenReaderController().Initialize();
 
             CustomSoundEffects.Initialize();
 
             CustomCommands.Initialize();
 
-            radarFeature = new Radar();
+            RadarFeature = new Radar();
 
             harmony = new Harmony(ModManifest.UniqueID);
             HarmonyPatches.Initialize(harmony);
@@ -83,8 +78,8 @@ namespace stardew_access
         public void OnExit(object? sender, EventArgs? e)
         {
             // Don't if this ever gets called or not but, just in case if it does.
-            if (screenReader != null)
-                screenReader.CloseScreenReader();
+            if (ScreenReader != null)
+                ScreenReader.CloseScreenReader();
         }
 
         /// <summary>Returns the Screen Reader class for other mods to use.</summary>
@@ -112,8 +107,8 @@ namespace stardew_access
             if (!ReadTile.isReadingTile && readTile)
                 ReadTile.run();
 
-            if (!radarFeature.isRunning && radar)
-                radarFeature.Run();
+            if (!RadarFeature.isRunning && radar)
+                RadarFeature.Run();
 
             if (!isNarratingHudMessage)
             {
@@ -128,9 +123,27 @@ namespace stardew_access
 
             if (Game1.activeClickableMenu != null)
             {
+                bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
+                bool isLeftControlPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl);
+
+                // Perform Left Click
                 if (Equals(e.Button, SButton.OemOpenBrackets))
                 {
                     Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                }
+                if (isLeftControlPressed && Equals(e.Button, SButton.Enter))
+                {
+                    Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                }
+
+                // Perform Right CLick
+                if (Equals(e.Button, SButton.OemCloseBrackets))
+                {
+                    Game1.activeClickableMenu.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                }
+                if (isLeftShiftPressed && Equals(e.Button, SButton.Enter))
+                {
+                    Game1.activeClickableMenu.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
             }
 
@@ -141,28 +154,28 @@ namespace stardew_access
             if (Equals(e.Button, SButton.H))
             {
                 string toSpeak = $"Health is {CurrentPlayer.getHealth()} and Stamina is {CurrentPlayer.getStamina()}";
-                MainClass.screenReader.Say(toSpeak, true);
+                MainClass.ScreenReader.Say(toSpeak, true);
             }
 
             // Narrate Position
             if (Equals(e.Button, SButton.K))
             {
                 string toSpeak = $"X: {CurrentPlayer.getPositionX()} , Y: {CurrentPlayer.getPositionY()}";
-                MainClass.screenReader.Say(toSpeak, true);
+                MainClass.ScreenReader.Say(toSpeak, true);
             }
 
             // Narrate money at hand
             if (Equals(e.Button, SButton.R))
             {
                 string toSpeak = $"You have {CurrentPlayer.getMoney()}g";
-                MainClass.screenReader.Say(toSpeak, true);
+                MainClass.ScreenReader.Say(toSpeak, true);
             }
 
             // Narrate time and season
             if (Equals(e.Button, SButton.Q))
             {
                 string toSpeak = $"Time is {CurrentPlayer.getTimeOfDay()} and it is {CurrentPlayer.getDay()} {CurrentPlayer.getDate()} of {CurrentPlayer.getSeason()}";
-                MainClass.screenReader.Say(toSpeak, true);
+                MainClass.ScreenReader.Say(toSpeak, true);
             }
 
             // Manual read tile
@@ -176,22 +189,6 @@ namespace stardew_access
                 Game1.player.controller = new PathFindController(Game1.player, Game1.currentLocation, new Point(49,13), 2);
                 monitor.Log($"{Game1.player.controller.pathToEndPoint==null}", LogLevel.Debug); // true if path not found
             }*/
-        }
-
-        private void InitializeAutoHotKey()
-        {
-            try
-            {
-                ahk = AutoHotkeyEngine.Instance;
-                ahk.ExecRaw("[::\nSend {LButton}");
-                ahk.ExecRaw("^Enter::\nSend {LButton}");
-                ahk.ExecRaw("]::\nSend {RButton}");
-                ahk.ExecRaw("+Enter::\nSend {RButton}");
-            }
-            catch (Exception e)
-            {
-                monitor.Log($"Unable to initialize AutoHotKey:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
-            }
         }
     }
 }
