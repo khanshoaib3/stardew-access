@@ -15,7 +15,7 @@ namespace stardew_access
         public static bool readTile = true;
         public static bool snapMouse = true;
         public static bool isNarratingHudMessage = false;
-        public static bool radar = true;
+        public static bool radar = false;
         public static bool radarDebug = false;
         public static bool radarStereoSound = true;
         private static IMonitor monitor;
