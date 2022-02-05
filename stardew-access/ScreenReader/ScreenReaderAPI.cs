@@ -7,14 +7,6 @@ namespace stardew_access.ScreenReader
         {
         }
 
-        public void CloseScreenReader()
-        {
-            if (MainClass.ScreenReader == null)
-                return;
-
-            MainClass.ScreenReader.CloseScreenReader();
-        }
-
         public void Say(String text, Boolean interrupt)
         {
             if (MainClass.ScreenReader == null)
