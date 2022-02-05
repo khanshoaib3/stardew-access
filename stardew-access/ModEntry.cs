@@ -82,7 +82,7 @@ namespace stardew_access
         /// <summary>Returns the Screen Reader class for other mods to use.</summary>
         public override object GetApi()
         {
-            return new ScreenReaderController().Initialize();
+            return new ScreenReaderAPI();
         }
 
         private void onUpdateTicked(object? sender, UpdateTickedEventArgs? e)

@@ -209,7 +209,7 @@ namespace stardew_access.Patches
 
                         if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
                         {
-                            string toSpeak = "Cunstruct Building" + (___blueprints[___currentBlueprintIndex].doesFarmerHaveEnoughResourcesToBuild() ? "" : ", cannot cunstrut building, not enough resources to build.");
+                            string toSpeak = "Construct Building" + (___blueprints[___currentBlueprintIndex].doesFarmerHaveEnoughResourcesToBuild() ? "" : ", cannot cunstrut building, not enough resources to build.");
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
@@ -511,7 +511,7 @@ namespace stardew_access.Patches
                 if ((int)buildingToMove.daysOfConstructionLeft > 0)
                 {
                     buildingToMove = null;
-                    return "Building under cunstruction, cannot move";
+                    return "Building under construction, cannot move";
                 }
                 if (!carpenterMenu.hasPermissionsToMove(buildingToMove))
                 {

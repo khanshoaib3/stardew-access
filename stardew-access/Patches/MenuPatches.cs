@@ -135,12 +135,16 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void LevelUpMenuPatch(LevelUpMenu __instance, List<int> ___professionsToChoose, List<string> ___leftProfessionDescription, List<string> ___rightProfessionDescription, List<string> ___extraInfoForLevel, List<CraftingRecipe> ___newCraftingRecipes, string ___title)
+        internal static void LevelUpMenuPatch(LevelUpMenu __instance, List<int> ___professionsToChoose, List<string> ___leftProfessionDescription, List<string> ___rightProfessionDescription, List<string> ___extraInfoForLevel, List<CraftingRecipe> ___newCraftingRecipes, string ___title, bool ___isActive, bool ___isProfessionChooser)
         {
             try
             {
                 int x = Game1.getMouseX(), y = Game1.getMouseY();
                 string leftProfession = " ", rightProfession = " ", extraInfo = " ", newCraftingRecipe = " ", toSpeak = " ";
+
+                bool isOpenBracketPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.OemOpenBrackets); // for left click
+                bool isLeftCtrlPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl);
+                bool isEnterPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter);
 
                 if (!__instance.informationUp)
                 {
@@ -162,10 +166,38 @@ namespace stardew_access.Patches
                     }
 
                     if (__instance.leftProfession.containsPoint(x, y))
+                    {
+                        if (isOpenBracketPressed || (isLeftCtrlPressed && isEnterPressed && __instance.readyToClose()))
+                        {
+                            Game1.player.professions.Add(___professionsToChoose[0]);
+                            __instance.getImmediateProfessionPerk(___professionsToChoose[0]);
+                            ___isActive = false;
+                            __instance.informationUp = false;
+                            ___isProfessionChooser = false;
+                            __instance.RemoveLevelFromLevelList();
+                            __instance.exitThisMenu();
+                            return;
+                        }
+
                         toSpeak = $"Selected: {leftProfession} Left click to choose.";
+                    }
 
                     if (__instance.rightProfession.containsPoint(x, y))
+                    {
+                        if (isOpenBracketPressed || (isLeftCtrlPressed && isEnterPressed && __instance.readyToClose()))
+                        {
+                            Game1.player.professions.Add(___professionsToChoose[1]);
+                            __instance.getImmediateProfessionPerk(___professionsToChoose[1]);
+                            ___isActive = false;
+                            __instance.informationUp = false;
+                            ___isProfessionChooser = false;
+                            __instance.RemoveLevelFromLevelList();
+                            __instance.exitThisMenu();
+                            return;
+                        }
+
                         toSpeak = $"Selected: {rightProfession} Left click to choose.";
+                    }
                 }
                 else
                 {
@@ -180,11 +212,14 @@ namespace stardew_access.Patches
 
                         newCraftingRecipe += $"{message}, ";
                     }
+                }
 
-                    if (__instance.okButton.containsPoint(x, y))
-                    {
-                        toSpeak = $"{___title} {extraInfo} {newCraftingRecipe}. Left click to close.";
-                    }
+                if (__instance.okButton.containsPoint(x, y))
+                {
+                    if (isOpenBracketPressed || (isLeftCtrlPressed && isEnterPressed))
+                        __instance.okButtonClicked();
+
+                    toSpeak = $"{___title} {extraInfo} {newCraftingRecipe}. Left click to close.";
                 }
 
                 if (toSpeak != " ")
@@ -205,12 +240,21 @@ namespace stardew_access.Patches
         {
             try
             {
+                bool isLeftControlPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl);
+                bool isOpenBracketPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.OemOpenBrackets); // for left click
+                bool isEnterPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter);
+
                 if (__instance.currentPage == -1)
                 {
                     int total = ___categoryTotals[5];
                     string toSpeak;
                     if (__instance.okButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                     {
+                        // Perform Left Click
+                        if (isOpenBracketPressed || (isLeftControlPressed && isEnterPressed))
+                        {
+                            Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                        }
                         toSpeak = $"{total}g in total. Press left mouse button to save.";
                         MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                     }

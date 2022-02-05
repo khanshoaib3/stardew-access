@@ -286,7 +286,7 @@ namespace stardew_access
             #endregion
 
             #region Tile marking
-            helper.ConsoleCommands.Add("mark", "Marks the player's position for use in building cunstruction in Carpenter Menu.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("mark", "Marks the player's position for use in building construction in Carpenter Menu.", (string commmand, string[] args) =>
             {
                 if (Game1.currentLocation is not Farm)
                 {
