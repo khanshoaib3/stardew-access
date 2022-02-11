@@ -295,9 +295,9 @@ namespace stardew_access.Patches
             await Task.Delay(200);
             isUsingCustomButtons = false;
         }
-
+            
         internal static void SocialPagePatch(SocialPage __instance, List<ClickableTextureComponent> ___sprites, int ___slotPosition, List<string> ___kidsNames)
-        {
+            {
             try
             {
                 int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
@@ -318,6 +318,16 @@ namespace stardew_access.Patches
                                 bool hasTalked = Game1.player.hasPlayerTalkedToNPC(name);
                                 bool spouse = friendship.IsMarried();
                                 bool housemate = spouse && SocialPage.isRoommateOfAnyone(name);
+                                ___kidsNames.Add("Robin");
+                                ___kidsNames.Add("Pierre");
+                                ___kidsNames.Add("Caroline");
+                                ___kidsNames.Add("Jodi");
+                                ___kidsNames.Add("Kent");
+                                ___kidsNames.Add("George");
+                                ___kidsNames.Add("Evelyn");
+                                ___kidsNames.Add("Demetrius");
+
+
 
                                 string toSpeak = $"{name}";
 
@@ -325,8 +335,8 @@ namespace stardew_access.Patches
                                 {
                                     toSpeak = $"{toSpeak}, not talked yet";
                                 }
-                                else
-                                {
+                               
+           
                                     if (datable | housemate)
                                     {
                                         string text2 = (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.pt) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635") : ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635").Split('/').First() : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635").Split('/').Last());
@@ -353,10 +363,10 @@ namespace stardew_access.Patches
 
                                         toSpeak = $"{toSpeak}, {text2}";
                                     }
-                                    if (!__instance.getFriendship(name).IsMarried() && !___kidsNames.Contains(name))
+                                    if (!__instance.getFriendship(name).IsMarried() && ___kidsNames.Contains(name))
                                     {
                                         toSpeak = $"{toSpeak}, married";
-                                    }
+                                     }
                                     if (spouse)
                                     {
                                         toSpeak = $"{toSpeak}, spouse";
@@ -367,7 +377,7 @@ namespace stardew_access.Patches
                                     }
 
                                     toSpeak = $"{toSpeak}, {heartLevel} hearts, {giftsThisWeek} gifts given this week.";
-                                }
+                                
 
                                 if (socialPageQuery != toSpeak)
                                 {
