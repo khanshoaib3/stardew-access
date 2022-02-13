@@ -7,7 +7,6 @@
   "EntryDll": "stardew-access.dll",
   "MinimumApiVersion": "3.0.0",
   "UpdateKeys": [
-    "Github:stardew-access/stardew-access",
-    "Nexus:10319"
+    "Github:stardew-access/stardew-access"
   ]
 }
