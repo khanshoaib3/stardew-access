@@ -49,9 +49,9 @@ namespace stardew_access.Patches
                     if (toSpeak != " ")
                     {
                         if (hasResponses)
-                            MainClass.ScreenReader.SayWithChecker(toSpeak, false);
+                            MainClass.GetScreenReader().SayWithChecker(toSpeak, false);
                         else
-                            MainClass.ScreenReader.SayWithChecker(toSpeak, true);
+                            MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
                     }
                 }
                 else if (__instance.isQuestion)
@@ -80,9 +80,9 @@ namespace stardew_access.Patches
                     if (toSpeak != " ")
                     {
                         if (hasResponses)
-                            MainClass.ScreenReader.SayWithChecker(toSpeak, false);
+                            MainClass.GetScreenReader().SayWithChecker(toSpeak, false);
                         else
-                            MainClass.ScreenReader.SayWithChecker(toSpeak, true);
+                            MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
                     }
                 }
                 else if (Game1.activeClickableMenu is DialogueBox)
@@ -91,13 +91,13 @@ namespace stardew_access.Patches
                     if (currentDialogue != __instance.getCurrentString())
                     {
                         currentDialogue = __instance.getCurrentString();
-                        MainClass.ScreenReader.Say(__instance.getCurrentString(), true);
+                        MainClass.GetScreenReader().Say(__instance.getCurrentString(), true);
                     }
                 }
             }
             catch (Exception e)
             {
-                MainClass.Monitor.Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
             }
 
         }
@@ -273,15 +273,15 @@ namespace stardew_access.Patches
                 if (toSpeak.ToString() != " ")
                 {
                     if (Context.IsPlayerFree)
-                        MainClass.ScreenReader.SayWithChecker(toSpeak.ToString(), true); // Normal Checker
+                        MainClass.GetScreenReader().SayWithChecker(toSpeak.ToString(), true); // Normal Checker
                     else
-                        MainClass.ScreenReader.SayWithMenuChecker(toSpeak.ToString(), true); // Menu Checker
+                        MainClass.GetScreenReader().SayWithMenuChecker(toSpeak.ToString(), true); // Menu Checker
                 }
                 #endregion
             }
             catch (Exception e)
             {
-                MainClass.Monitor.Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
             }
         }
     }

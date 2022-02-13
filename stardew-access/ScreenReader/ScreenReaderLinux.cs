@@ -54,6 +54,9 @@ namespace stardew_access.ScreenReader
 
         public void Say(string text, bool interrupt)
         {
+            if (text == null)
+                return;
+
             if (initialized)
             {
                 GoString str = new GoString(text, text.Length);

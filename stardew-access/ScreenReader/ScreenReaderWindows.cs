@@ -56,6 +56,9 @@ namespace stardew_access.ScreenReader
 
         public void Say(string text, bool interrupt)
         {
+            if (text == null)
+                return;
+
             if (screenReader == null)
                 return;
 
@@ -64,9 +67,6 @@ namespace stardew_access.ScreenReader
 
         public void SayWithChecker(string text, bool interrupt)
         {
-            if (screenReader == null)
-                return;
-
             if (prevText != text)
             {
                 prevText = text;
@@ -76,9 +76,6 @@ namespace stardew_access.ScreenReader
 
         public void SayWithMenuChecker(string text, bool interrupt)
         {
-            if (screenReader == null)
-                return;
-
             if (prevMenuText != text)
             {
                 prevMenuText = text;
@@ -88,9 +85,6 @@ namespace stardew_access.ScreenReader
 
         public void SayWithChatChecker(string text, bool interrupt)
         {
-            if (screenReader == null)
-                return;
-
             if (prevChatText != text)
             {
                 prevChatText = text;
@@ -100,9 +94,6 @@ namespace stardew_access.ScreenReader
 
         public void SayWithTileQuery(string text, int x, int y, bool interrupt)
         {
-            if (screenReader == null)
-                return;
-
             string query = $"{text} x:{x} y:{y}";
 
             if (prevTextTile != query)

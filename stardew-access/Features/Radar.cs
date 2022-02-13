@@ -95,7 +95,7 @@ namespace stardew_access.Game
         public async void Run()
         {
             if (MainClass.radarDebug)
-                MainClass.Monitor.Log($"\n\nRead Tile started", StardewModdingAPI.LogLevel.Debug);
+                MainClass.GetMonitor().Log($"\n\nRead Tile started", StardewModdingAPI.LogLevel.Debug);
 
             isRunning = true;
             Vector2 currPosition = Game1.player.getTileLocation();
@@ -107,7 +107,7 @@ namespace stardew_access.Game
             BFS(currPosition, range);
 
             if (MainClass.radarDebug)
-                MainClass.Monitor.Log($"\nRead Tile stopped\n\n", StardewModdingAPI.LogLevel.Debug);
+                MainClass.GetMonitor().Log($"\nRead Tile stopped\n\n", StardewModdingAPI.LogLevel.Debug);
 
             await Task.Delay(delay);
             isRunning = false;
@@ -241,7 +241,7 @@ namespace stardew_access.Game
                 else if (terrainFeature.ContainsKey(position))
                 {
                     Netcode.NetRef<TerrainFeature> tr = terrainFeature[position];
-                    string? terrain = ReadTile.getTerrainFeatureAtTile(tr).ToLower();
+                    string? terrain = ReadTile.getTerrainFeatureAtTile(tr);
                     if (terrain != null)
                     {
                         if (tr.Get() is HoeDirt)
@@ -296,7 +296,7 @@ namespace stardew_access.Game
                     PlaySoundAt(position, "ladder", CATEGORY.Buildings);
                 }
                 // Check for doors
-                else if (ReadTile.isDoorAtTile((int)position.X, (int)position.Y))
+                else if (ReadTile.isDoorAtTile((int)position.X, (int)position.Y).Item1)
                 {
                     PlaySoundAt(position, "door", CATEGORY.Buildings);
                 }
@@ -304,7 +304,8 @@ namespace stardew_access.Game
                 else if (ReadTile.getTileInfo((int)position.X, (int)position.Y).Item2 != null)
                 {
                     (CATEGORY?, string?) item = ReadTile.getTileInfo((int)position.X, (int)position.Y);
-                    PlaySoundAt(position, item.Item2, item.Item1);
+                    if (item.Item2 != null && item.Item1 != null)
+                        PlaySoundAt(position, item.Item2, item.Item1);
                 }
                 // Check for resource clumps
                 else if (ReadTile.getResourceClumpAtTile((int)position.X, (int)position.Y) != null)
@@ -319,7 +320,7 @@ namespace stardew_access.Game
             }
             catch (Exception e)
             {
-                MainClass.Monitor.Log($"{e.Message}\n{e.StackTrace}\n{e.Source}", StardewModdingAPI.LogLevel.Error);
+                MainClass.GetMonitor().Log($"{e.Message}\n{e.StackTrace}\n{e.Source}", StardewModdingAPI.LogLevel.Error);
             }
         }
 
@@ -371,7 +372,7 @@ namespace stardew_access.Game
             #endregion
 
             if (MainClass.radarDebug)
-                MainClass.Monitor.Log($"{radarFocus}\tObject:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}", StardewModdingAPI.LogLevel.Debug);
+                MainClass.GetMonitor().Log($"{radarFocus}\tObject:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}", StardewModdingAPI.LogLevel.Debug);
 
             int px = (int)Game1.player.getTileX(); // Player's X postion
             int py = (int)Game1.player.getTileY(); // Player's Y postion

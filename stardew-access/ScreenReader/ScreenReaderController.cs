@@ -4,9 +4,9 @@ namespace stardew_access.ScreenReader
 {
     public class ScreenReaderController
     {
-        public IScreenReader? Initialize()
+        public IScreenReader Initialize()
         {
-            IScreenReader? ScreenReader = null;
+            IScreenReader ScreenReader = new ScreenReaderWindows(); // Default is windows
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -21,6 +21,10 @@ namespace stardew_access.ScreenReader
                 screenReaderLinux.InitializeScreenReader();
 
                 ScreenReader = screenReaderLinux;
+            }
+            else
+            {
+                ScreenReader.InitializeScreenReader();
             }
 
             return ScreenReader;

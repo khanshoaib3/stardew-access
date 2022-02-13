@@ -23,7 +23,7 @@ namespace stardew_access.Game
                 return;
 
             previousSlotItem = currentSlotItem;
-            MainClass.ScreenReader.Say($"{currentSlotItem.DisplayName} Selected", true);
+            MainClass.GetScreenReader().Say($"{currentSlotItem.DisplayName} Selected", true);
         }
 
         // Narrates current location's name
@@ -38,7 +38,7 @@ namespace stardew_access.Game
                 return;
 
             previousLocation = currentLocation;
-            MainClass.ScreenReader.Say($"{currentLocation.Name} Entered", true);
+            MainClass.GetScreenReader().Say($"{currentLocation.Name} Entered", true);
         }
 
         public static void SnapMouseToPlayer()
@@ -89,14 +89,14 @@ namespace stardew_access.Game
                         {
                             MainClass.hudMessageQueryKey = searchQuery;
 
-                            MainClass.ScreenReader.Say(toSpeak, true);
+                            MainClass.GetScreenReader().Say(toSpeak, true);
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                MainClass.Monitor.Log($"Unable to narrate hud messages:\n{e.Message}\n{e.StackTrace}", StardewModdingAPI.LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate hud messages:\n{e.Message}\n{e.StackTrace}", StardewModdingAPI.LogLevel.Error);
             }
 
             await Task.Delay(300);

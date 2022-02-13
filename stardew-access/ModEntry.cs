@@ -21,13 +21,32 @@ namespace stardew_access
         private static IMonitor monitor;
         public static string hudMessageQueryKey = "";
         private static Radar radarFeature;
-        private static IScreenReader screenReader;
+        private static IScreenReader? screenReader;
         private static IModHelper modHelper;
 
         public static IModHelper ModHelper { get => modHelper; }
         public static Radar RadarFeature { get => radarFeature; set => radarFeature = value; }
-        public static IScreenReader ScreenReader { get => screenReader; set => screenReader = value; }
-        public static IMonitor Monitor { get => monitor; set => monitor = value; }
+
+        public static IScreenReader GetScreenReader()
+        {
+            screenReader = new ScreenReaderController().Initialize();
+            return screenReader;
+        }
+
+        public static void SetScreenReader(IScreenReader value)
+        {
+            screenReader = value;
+        }
+
+        public static IMonitor GetMonitor()
+        {
+            return monitor;
+        }
+
+        public static void SetMonitor(IMonitor value)
+        {
+            monitor = value;
+        }
 
         /*********
         ** Public methods
@@ -38,12 +57,12 @@ namespace stardew_access
         {
             #region Initializations
 
-            Monitor = base.Monitor; // Inititalize monitor
+            SetMonitor(base.Monitor); // Inititalize monitor
             modHelper = helper;
 
             Game1.options.setGamepadMode("force_on");
 
-            ScreenReader = new ScreenReaderController().Initialize();
+            SetScreenReader(new ScreenReaderController().Initialize());
 
             CustomSoundEffects.Initialize();
 
@@ -75,14 +94,14 @@ namespace stardew_access
         public void OnExit(object? sender, EventArgs? e)
         {
             // Don't if this ever gets called or not but, just in case if it does.
-            if (ScreenReader != null)
-                ScreenReader.CloseScreenReader();
+            if (GetScreenReader() != null)
+                GetScreenReader().CloseScreenReader();
         }
 
         /// <summary>Returns the Screen Reader class for other mods to use.</summary>
         public override object GetApi()
         {
-            return new ScreenReaderAPI();
+            return new API();
         }
 
         private void onUpdateTicked(object? sender, UpdateTickedEventArgs? e)
@@ -151,28 +170,28 @@ namespace stardew_access
             if (Equals(e.Button, SButton.H))
             {
                 string toSpeak = $"Health is {CurrentPlayer.getHealth()} and Stamina is {CurrentPlayer.getStamina()}";
-                MainClass.ScreenReader.Say(toSpeak, true);
+                MainClass.GetScreenReader().Say(toSpeak, true);
             }
 
             // Narrate Position
             if (Equals(e.Button, SButton.K))
             {
                 string toSpeak = $"X: {CurrentPlayer.getPositionX()} , Y: {CurrentPlayer.getPositionY()}";
-                MainClass.ScreenReader.Say(toSpeak, true);
+                MainClass.GetScreenReader().Say(toSpeak, true);
             }
 
             // Narrate money at hand
             if (Equals(e.Button, SButton.R))
             {
                 string toSpeak = $"You have {CurrentPlayer.getMoney()}g";
-                MainClass.ScreenReader.Say(toSpeak, true);
+                MainClass.GetScreenReader().Say(toSpeak, true);
             }
 
             // Narrate time and season
             if (Equals(e.Button, SButton.Q))
             {
                 string toSpeak = $"Time is {CurrentPlayer.getTimeOfDay()} and it is {CurrentPlayer.getDay()} {CurrentPlayer.getDate()} of {CurrentPlayer.getSeason()}";
-                MainClass.ScreenReader.Say(toSpeak, true);
+                MainClass.GetScreenReader().Say(toSpeak, true);
             }
 
             // Manual read tile

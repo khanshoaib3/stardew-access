@@ -61,7 +61,7 @@ namespace stardew_access.Patches
                             firstTimeInNamingMenu = false;
                         }
 
-                        MainClass.ScreenReader.Say(toSpeak, true);
+                        MainClass.GetScreenReader().Say(toSpeak, true);
                     }
                 }
                 else if (___onFarm && !___namingAnimal)
@@ -90,7 +90,7 @@ namespace stardew_access.Patches
                         if (purchaseAnimalMenuQuery != toSpeak)
                         {
                             purchaseAnimalMenuQuery = toSpeak;
-                            MainClass.ScreenReader.Say(toSpeak, true);
+                            MainClass.GetScreenReader().Say(toSpeak, true);
                         }
                         return;
                     }
@@ -98,7 +98,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -180,7 +180,7 @@ namespace stardew_access.Patches
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
-                                MainClass.ScreenReader.Say(toSpeak, true);
+                                MainClass.GetScreenReader().Say(toSpeak, true);
                             }
                             return;
                         }
@@ -191,7 +191,7 @@ namespace stardew_access.Patches
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
-                                MainClass.ScreenReader.Say(toSpeak, true);
+                                MainClass.GetScreenReader().Say(toSpeak, true);
                             }
                             return;
                         }
@@ -202,7 +202,7 @@ namespace stardew_access.Patches
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
-                                MainClass.ScreenReader.Say(toSpeak, true);
+                                MainClass.GetScreenReader().Say(toSpeak, true);
                             }
                             return;
                         }
@@ -213,7 +213,7 @@ namespace stardew_access.Patches
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
-                                MainClass.ScreenReader.Say(toSpeak, true);
+                                MainClass.GetScreenReader().Say(toSpeak, true);
                             }
                             return;
                         }
@@ -224,7 +224,7 @@ namespace stardew_access.Patches
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
-                                MainClass.ScreenReader.Say(toSpeak, true);
+                                MainClass.GetScreenReader().Say(toSpeak, true);
                             }
                             return;
                         }
@@ -235,7 +235,7 @@ namespace stardew_access.Patches
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
-                                MainClass.ScreenReader.Say(toSpeak, true);
+                                MainClass.GetScreenReader().Say(toSpeak, true);
                             }
                             return;
                         }
@@ -246,7 +246,7 @@ namespace stardew_access.Patches
                             if (carpenterMenuQuery != toSpeak)
                             {
                                 carpenterMenuQuery = toSpeak;
-                                MainClass.ScreenReader.Say(toSpeak, true);
+                                MainClass.GetScreenReader().Say(toSpeak, true);
                             }
                             return;
                         }
@@ -269,14 +269,14 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.Monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
         private static async void SayBlueprintInfo(string info)
         {
             isSayingBlueprintInfo = true;
-            MainClass.ScreenReader.Say(info, true);
+            MainClass.GetScreenReader().Say(info, true);
             await Task.Delay(300);
             isSayingBlueprintInfo = false;
         }
@@ -288,7 +288,7 @@ namespace stardew_access.Patches
 
             string? response = null;
             // This code is taken from the game's code (CarpenterMenu.cs::654)
-            Farm farm = Game1.getLocationFromName("Farm") as Farm;
+            Farm farm = (Farm)Game1.getLocationFromName("Farm");
             Action buildingLockFailed = delegate
             {
                 if (isDemolishing)
@@ -304,7 +304,7 @@ namespace stardew_access.Patches
                     {
                         response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_DuringConstruction");
                     }
-                    else if (toDemolish.indoors.Value != null && toDemolish.indoors.Value is AnimalHouse && (toDemolish.indoors.Value as AnimalHouse).animalsThatLiveHere.Count > 0)
+                    else if (toDemolish.indoors.Value != null && toDemolish.indoors.Value is AnimalHouse && ((AnimalHouse)toDemolish.indoors.Value).animalsThatLiveHere.Count > 0)
                     {
                         response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_AnimalsHere");
                     }
@@ -318,24 +318,24 @@ namespace stardew_access.Patches
                         {
                             foreach (Farmer current in Game1.getAllFarmers())
                             {
-                                if (current.currentLocation != null && current.currentLocation.Name == (toDemolish.indoors.Value as Cabin).GetCellarName())
+                                if (current.currentLocation != null && current.currentLocation.Name == ((Cabin)toDemolish.indoors.Value).GetCellarName())
                                 {
                                     response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere");
                                     return;
                                 }
                             }
                         }
-                        if (toDemolish.indoors.Value is Cabin && (toDemolish.indoors.Value as Cabin).farmhand.Value.isActive())
+                        if (toDemolish.indoors.Value is Cabin && ((Cabin)toDemolish.indoors.Value).farmhand.Value.isActive())
                         {
                             response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_FarmhandOnline");
                         }
                         else
                         {
                             toDemolish.BeforeDemolish();
-                            Chest chest = null;
+                            Chest? chest = null;
                             if (toDemolish.indoors.Value is Cabin)
                             {
-                                List<Item> list = (toDemolish.indoors.Value as Cabin).demolish();
+                                List<Item> list = ((Cabin)toDemolish.indoors.Value).demolish();
                                 if (list.Count > 0)
                                 {
                                     chest = new Chest(playerChest: true);
@@ -351,7 +351,8 @@ namespace stardew_access.Patches
                                 toDemolish.showDestroyedAnimation(Game1.getFarm());
                                 Game1.playSound("explosion");
                                 Utility.spreadAnimalsAround(toDemolish, farm);
-                                DelayedAction.functionAfterDelay(carpenterMenu.returnToCarpentryMenu, 1500);
+                                if (carpenterMenu != null)
+                                    DelayedAction.functionAfterDelay(carpenterMenu.returnToCarpentryMenu, 1500);
                                 // freeze = true;
                                 if (chest != null)
                                 {
@@ -370,12 +371,12 @@ namespace stardew_access.Patches
                     toDemolish = null;
                     return response;
                 }
-                if (!carpenterMenu.CanDemolishThis(toDemolish))
+                if (carpenterMenu != null && !carpenterMenu.CanDemolishThis(toDemolish))
                 {
                     toDemolish = null;
                     return response;
                 }
-                if (!Game1.IsMasterGame && !carpenterMenu.hasPermissionsToDemolish(toDemolish))
+                if (carpenterMenu != null && !Game1.IsMasterGame && !carpenterMenu.hasPermissionsToDemolish(toDemolish))
                 {
                     toDemolish = null;
                     return response;
@@ -383,7 +384,7 @@ namespace stardew_access.Patches
             }
             if (toDemolish != null && toDemolish.indoors.Value is Cabin)
             {
-                Cabin cabin = toDemolish.indoors.Value as Cabin;
+                Cabin cabin = (Cabin)toDemolish.indoors.Value;
                 if (cabin.farmhand.Value != null && (bool)cabin.farmhand.Value.isCustomized)
                 {
                     Game1.currentLocation.createQuestionDialogue(Game1.content.LoadString("Strings\\UI:Carpenter_DemolishCabinConfirm", cabin.farmhand.Value.Name), Game1.currentLocation.createYesNoResponses(), delegate (Farmer f, string answer)
@@ -395,7 +396,8 @@ namespace stardew_access.Patches
                         }
                         else
                         {
-                            DelayedAction.functionAfterDelay(carpenterMenu.returnToCarpentryMenu, 1000);
+                            if (carpenterMenu != null)
+                                DelayedAction.functionAfterDelay(carpenterMenu.returnToCarpentryMenu, 1000);
                         }
                     });
                     return response;
@@ -419,8 +421,11 @@ namespace stardew_access.Patches
                 {
                     if (tryToBuild(position))
                     {
-                        carpenterMenu.CurrentBlueprint.consumeResources();
-                        DelayedAction.functionAfterDelay(carpenterMenu.returnToCarpentryMenuAfterSuccessfulBuild, 2000);
+                        if (carpenterMenu != null)
+                        {
+                            carpenterMenu.CurrentBlueprint.consumeResources();
+                            DelayedAction.functionAfterDelay(carpenterMenu.returnToCarpentryMenuAfterSuccessfulBuild, 2000);
+                        }
                         // freeze = true;
                     }
                     else
@@ -436,6 +441,8 @@ namespace stardew_access.Patches
 
         public static bool tryToBuild(Vector2 position)
         {
+            if (carpenterMenu == null)
+                return false;
             return ((Farm)Game1.getLocationFromName("Farm")).buildStructure(carpenterMenu.CurrentBlueprint, position, Game1.player, isMagicalConstruction);
         }
 
@@ -443,7 +450,7 @@ namespace stardew_access.Patches
         {
             string? response = null;
             // This code is taken from the game's code (CarpenterMenu.cs::775)
-            if (toUpgrade != null && carpenterMenu.CurrentBlueprint.name != null && toUpgrade.buildingType.Equals(carpenterMenu.CurrentBlueprint.nameOfBuildingToUpgrade))
+            if (carpenterMenu != null && toUpgrade != null && carpenterMenu.CurrentBlueprint.name != null && toUpgrade.buildingType.Equals(carpenterMenu.CurrentBlueprint.nameOfBuildingToUpgrade))
             {
                 carpenterMenu.CurrentBlueprint.consumeResources();
                 toUpgrade.daysUntilUpgrade.Value = 2;
@@ -472,13 +479,15 @@ namespace stardew_access.Patches
                     response = Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint");
                     return response;
                 }
-                if (!carpenterMenu.HasPermissionsToPaint(toPaint))
+                if (carpenterMenu != null && !carpenterMenu.HasPermissionsToPaint(toPaint))
                 {
                     response = Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint_Permission");
                     return response;
                 }
                 toPaint.color.Value = Color.White;
-                carpenterMenu.SetChildMenu(new BuildingPaintMenu(toPaint));
+
+                if (carpenterMenu != null)
+                    carpenterMenu.SetChildMenu(new BuildingPaintMenu(toPaint));
             }
             /* TODO Add painting of farm house
             else if (farm_location.GetHouseRect().Contains(Utility.Vector2ToPoint(new Vector2(toPaint.tileX, toPaint.tileY))))
@@ -513,7 +522,7 @@ namespace stardew_access.Patches
                     buildingToMove = null;
                     return "Building under construction, cannot move";
                 }
-                if (!carpenterMenu.hasPermissionsToMove(buildingToMove))
+                if (carpenterMenu != null && !carpenterMenu.hasPermissionsToMove(buildingToMove))
                 {
                     buildingToMove = null;
                     return "You don't have permission to move this building";
@@ -524,7 +533,7 @@ namespace stardew_access.Patches
                 {
                     if (buildingToMove is ShippingBin)
                     {
-                        (buildingToMove as ShippingBin).initLid();
+                        ((ShippingBin)buildingToMove).initLid();
                     }
                     if (buildingToMove is GreenhouseBuilding)
                     {
