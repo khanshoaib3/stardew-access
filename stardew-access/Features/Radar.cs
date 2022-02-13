@@ -296,7 +296,7 @@ namespace stardew_access.Game
                     PlaySoundAt(position, "ladder", CATEGORY.Buildings);
                 }
                 // Check for doors
-                else if (ReadTile.isDoorAtTile((int)position.X, (int)position.Y).Item1)
+                else if (ReadTile.getDoorAtTile((int)position.X, (int)position.Y) != null)
                 {
                     PlaySoundAt(position, "door", CATEGORY.Buildings);
                 }

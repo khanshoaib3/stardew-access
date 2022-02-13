@@ -79,7 +79,7 @@ namespace stardew_access.Game
 
             bool isColliding = isCollidingAtTile(x, y);
             Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
-            (bool, string?) door = isDoorAtTile(x, y);
+            string? door = getDoorAtTile(x, y);
             (CATEGORY?, string?) tileInfo = getTileInfo(x, y);
             string? junimoBundle = getJunimoBundleAt(x, y);
             string? resourceClump = getResourceClumpAtTile(x, y);
@@ -116,9 +116,9 @@ namespace stardew_access.Game
             {
                 toReturn = resourceClump;
             }
-            else if (door.Item1)
+            else if (door != null)
             {
-                toReturn = (door.Item2 == null) ? "door" : door.Item2;
+                toReturn = door;
             }
             else if (isMineDownLadderAtTile(x, y))
             {
@@ -229,6 +229,8 @@ namespace stardew_access.Game
             {
                 return true;
             }
+
+
 
             return false;
         }
@@ -712,7 +714,7 @@ namespace stardew_access.Game
             return false;
         }
 
-        public static (bool, string?) isDoorAtTile(int x, int y)
+        public static string? getDoorAtTile(int x, int y)
         {
             Point tilePoint = new Point(x, y);
             StardewValley.Network.NetPointDictionary<string, Netcode.NetString> doorList = Game1.currentLocation.doors;
@@ -724,11 +726,14 @@ namespace stardew_access.Game
                     string? doorName;
                     doorList.TryGetValue(tilePoint, out doorName);
 
-                    return (true, doorName);
+                    if (doorName != null)
+                        return $"{doorName} door";
+                    else
+                        return "door";
                 }
             }
 
-            return (false, null);
+            return null;
         }
 
         public static string? getResourceClumpAtTile(int x, int y)
@@ -782,6 +787,5 @@ namespace stardew_access.Game
             }
             return null;
         }
-
     }
 }

@@ -29,7 +29,8 @@ namespace stardew_access
 
         public static IScreenReader GetScreenReader()
         {
-            screenReader = new ScreenReaderController().Initialize();
+            if (screenReader == null)
+                screenReader = new ScreenReaderController().Initialize();
             return screenReader;
         }
 
