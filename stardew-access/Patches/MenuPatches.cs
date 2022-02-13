@@ -414,6 +414,12 @@ namespace stardew_access.Patches
                     BuildingNAnimalMenuPatches.purchaseAnimalsMenu = null;
                 }
 
+                if (__instance is DialogueBox)
+                {
+                    DialoguePatches.isDialogueAppearingFirstTime = true;
+                    DialoguePatches.currentDialogue = " ";
+                }
+
                 GameMenuPatches.hoveredItemQueryKey = "";
             }
             catch (Exception e)

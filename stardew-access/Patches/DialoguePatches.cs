@@ -8,7 +8,8 @@ namespace stardew_access.Patches
 {
     internal class DialoguePatches
     {
-        private static string currentDialogue = " ";
+        internal static string currentDialogue = " ";
+        internal static bool isDialogueAppearingFirstTime = true;
 
         internal static void DialoguePatch(DialogueBox __instance, SpriteBatch b)
         {
@@ -22,67 +23,99 @@ namespace stardew_access.Patches
                     // For Normal Character dialogues
                     Dialogue dialogue = __instance.characterDialogue;
                     string speakerName = dialogue.speaker.displayName;
+                    List<Response> responses = dialogue.getResponseOptions();
                     string toSpeak = " ";
-                    bool hasResponses = false;
+                    string dialogueText = "";
+                    string response = "";
+                    bool hasResponses = dialogue.isCurrentDialogueAQuestion();
 
-                    if (__instance.responses.Count > 0)
-                        hasResponses = true;
+                    dialogueText = $"{speakerName} said {__instance.getCurrentString()}";
 
-                    if (currentDialogue != __instance.getCurrentString())
+                    if (hasResponses)
                     {
-                        toSpeak = __instance.getCurrentString();
-                        currentDialogue = toSpeak;
-                        toSpeak = $"{speakerName} said {toSpeak}";
+                        if (__instance.selectedResponse >= 0 && __instance.selectedResponse < responses.Count)
+                            response = $"{__instance.selectedResponse + 1}: {responses[__instance.selectedResponse].responseText}";
+                        else
+                            // When the dialogue is not finished writing then the selectedResponse is <0 and this results
+                            // in the first response not being detcted, so this sets the first response option to be the default
+                            // if the current dialogue is a question or has responses
+                            response = $"1: {responses[0].responseText}";
                     }
 
-                    if (__instance.responses.Count > 0)
+                    if (hasResponses)
                     {
-                        for (int i = 0; i < __instance.responses.Count; i++)
+                        if (currentDialogue != response)
                         {
-                            if (i == __instance.selectedResponse)
+                            currentDialogue = response;
+
+                            if (isDialogueAppearingFirstTime)
                             {
-                                toSpeak += $" \t\n Selected response: {__instance.responses[i].responseText}";
+                                toSpeak = $"{dialogueText} \n\t {response}";
+                                isDialogueAppearingFirstTime = false;
                             }
+                            else
+                                toSpeak = response;
+
+                            MainClass.GetScreenReader().Say(toSpeak, true);
                         }
                     }
-
-                    if (toSpeak != " ")
+                    else
                     {
-                        if (hasResponses)
-                            MainClass.GetScreenReader().SayWithChecker(toSpeak, false);
-                        else
-                            MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                        if (currentDialogue != dialogueText)
+                        {
+                            currentDialogue = dialogueText;
+                            MainClass.GetScreenReader().Say(dialogueText, true);
+                        }
                     }
                 }
                 else if (__instance.isQuestion)
                 {
                     // For Dialogues with responses/answers like the dialogue when we click on tv
-                    string toSpeak = " ";
+                    string toSpeak = "";
+                    string dialogueText = "";
+                    string response = "";
                     bool hasResponses = false;
 
                     if (__instance.responses.Count > 0)
                         hasResponses = true;
 
-                    if (currentDialogue != __instance.getCurrentString())
-                    {
-                        toSpeak = __instance.getCurrentString();
-                        currentDialogue = toSpeak;
-                    }
+                    dialogueText = __instance.getCurrentString();
 
-                    for (int i = 0; i < __instance.responses.Count; i++)
+                    if (hasResponses)
+                        if (__instance.selectedResponse >= 0 && __instance.selectedResponse < __instance.responses.Count)
+                            response = $"{__instance.selectedResponse + 1}: {__instance.responses[__instance.selectedResponse].responseText}";
+                        else
+                            // When the dialogue is not finished writing then the selectedResponse is <0 and this results
+                            // in the first response not being detcted, so this sets the first response option to be the default
+                            // if the current dialogue is a question or has responses
+                            response = $"1: {__instance.responses[0].responseText}";
+
+
+                    if (hasResponses)
                     {
-                        if (i == __instance.selectedResponse)
+                        if (currentDialogue != response)
                         {
-                            toSpeak += $" \t\n Selected response: {__instance.responses[i].responseText}";
+                            currentDialogue = response;
+
+                            if (isDialogueAppearingFirstTime)
+                            {
+                                toSpeak = $"{dialogueText} \n\t {response}";
+                                isDialogueAppearingFirstTime = false;
+                            }
+                            else
+                                toSpeak = response;
+
+                            MainClass.GetMonitor().Log(toSpeak, LogLevel.Debug);
+                            MainClass.GetScreenReader().Say(toSpeak, true);
                         }
                     }
-
-                    if (toSpeak != " ")
+                    else
                     {
-                        if (hasResponses)
-                            MainClass.GetScreenReader().SayWithChecker(toSpeak, false);
-                        else
-                            MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                        if (currentDialogue != dialogueText)
+                        {
+                            currentDialogue = dialogueText;
+                            MainClass.GetScreenReader().Say(dialogueText, true);
+                        }
                     }
                 }
                 else if (Game1.activeClickableMenu is DialogueBox)
@@ -106,6 +139,7 @@ namespace stardew_access.Patches
         {
             // CLears the currentDialogue string on closing dialog
             currentDialogue = " ";
+            isDialogueAppearingFirstTime = true;
         }
 
         internal static void HoverTextPatch(string? text, int moneyAmountToDisplayAtBottom = -1, string? boldTitleText = null, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1, string[]? buffIconsToDisplay = null, Item? hoveredItem = null, CraftingRecipe? craftingIngredients = null)
