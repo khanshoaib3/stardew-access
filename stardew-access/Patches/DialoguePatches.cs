@@ -23,7 +23,7 @@ namespace stardew_access.Patches
                     // For Normal Character dialogues
                     Dialogue dialogue = __instance.characterDialogue;
                     string speakerName = dialogue.speaker.displayName;
-                    List<Response> responses = dialogue.getResponseOptions();
+                    List<Response> responses = __instance.responses;
                     string toSpeak = " ";
                     string dialogueText = "";
                     string response = "";
