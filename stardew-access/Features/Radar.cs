@@ -108,7 +108,7 @@ namespace stardew_access.Features
             furnitures.Clear();
             npcs.Clear();
 
-            BFS(currPosition, range);
+            SearchNearbyTiles(currPosition, range);
 
             if (MainClass.radarDebug)
                 MainClass.GetMonitor().Log($"\nRead Tile stopped\n\n", StardewModdingAPI.LogLevel.Debug);
@@ -122,8 +122,12 @@ namespace stardew_access.Features
         /// </summary>
         /// <param name="center">The starting point.</param>
         /// <param name="limit">The limiting factor or simply radius of the search area.</param>
-        public void BFS(Vector2 center, int limit)
+        /// <param name="playSound">True by default if False then it will not play sound and only return the list of detected tiles(for api).</param>
+        /// <returns>A dictionary with all the detected tiles along with the name of the object on it and it's category.</returns>
+        public Dictionary<Vector2, (string, string)> SearchNearbyTiles(Vector2 center, int limit, bool playSound = true)
         {
+            Dictionary<Vector2, (string, string)> detectedTiles = new Dictionary<Vector2, (string, string)>();
+
             Queue<Vector2> toSearch = new Queue<Vector2>();
             List<Vector2> searched = new List<Vector2>();
             int[] dirX = { -1, 0, 1, 0 };
@@ -136,7 +140,17 @@ namespace stardew_access.Features
             while (toSearch.Count > 0)
             {
                 Vector2 item = toSearch.Dequeue();
-                CheckTile(item);
+                if (playSound)
+                    CheckTileAndPlaySound(item);
+                else
+                {
+                    (bool, string?, string) tileInfo = CheckTile(item);
+                    if (tileInfo.Item1 && tileInfo.Item2 != null)
+                    {
+                        // Add detected tile to the dictionary
+                        detectedTiles.Add(item, (tileInfo.Item2, tileInfo.Item3));
+                    }
+                }
                 count++;
 
                 for (int i = 0; i < 4; i++)
@@ -151,6 +165,7 @@ namespace stardew_access.Features
                 }
             }
 
+            return detectedTiles;
         }
 
         /// <summary>
@@ -160,7 +175,7 @@ namespace stardew_access.Features
         /// <param name="center">The starting point of the search.</param>
         /// <param name="searched">The list of searched items.</param>
         /// <param name="limit">The radius of search</param>
-        /// <returns></returns>
+        /// <returns>Returns true if the tile is valid for search.</returns>
         public bool isValid(Vector2 item, Vector2 center, List<Vector2> searched, int limit)
         {
             if (Math.Abs(item.X - center.X) > limit)
@@ -174,12 +189,23 @@ namespace stardew_access.Features
             return true;
         }
 
-        public void CheckTile(Vector2 position)
+        public (bool, string?, string) CheckTile(Vector2 position)
+        {
+            (string?, CATEGORY?) tileDetail = ReadTile.getNameWithCategoryAtTile(position);
+            if (tileDetail.Item1 == null)
+                return (false, null, CATEGORY.Others.ToString());
+
+            if (tileDetail.Item2 == null)
+                tileDetail.Item2 = CATEGORY.Others;
+
+            return (true, tileDetail.Item1, tileDetail.Item2.ToString());
+
+        }
+
+        public void CheckTileAndPlaySound(Vector2 position)
         {
             try
             {
-                Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
-
                 if (Game1.currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
                 {
                     (string?, CATEGORY) objDetails = ReadTile.getObjectAtTile((int)position.X, (int)position.Y);
