@@ -6,7 +6,7 @@ using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
-namespace stardew_access.Game
+namespace stardew_access.Features
 {
     public class ReadTile
     {
@@ -71,6 +71,117 @@ namespace stardew_access.Game
             isReadingTile = false;
         }
 
+        ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>
+        public static (string?, string?) getNameWithCategoryNameAtTile(Vector2 tile)
+        {
+            (string?, CATEGORY?) tileDetail = getNameWithCategoryAtTile(tile);
+
+            if (tileDetail.Item2 == null)
+                tileDetail.Item2 = CATEGORY.Others;
+
+            return (tileDetail.Item1, tileDetail.Item2.ToString());
+        }
+
+        ///<summary>Returns the name of the object at tile alongwith it's category</summary>
+        public static (string?, CATEGORY?) getNameWithCategoryAtTile(Vector2 tile)
+        {
+            int x = (int)tile.X;
+            int y = (int)tile.Y;
+            string? toReturn = "";
+            CATEGORY? category = CATEGORY.Others;
+
+            bool isColliding = isCollidingAtTile(x, y);
+            Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
+            string? door = getDoorAtTile(x, y);
+            (CATEGORY?, string?) tileInfo = getTileInfo(x, y);
+            string? junimoBundle = getJunimoBundleAt(x, y);
+            string? resourceClump = getResourceClumpAtTile(x, y);
+            string? farmAnimal = getFarmAnimalAt(Game1.currentLocation, x, y);
+
+            if (Game1.currentLocation.isCharacterAtTile(tile) != null)
+            {
+                NPC npc = Game1.currentLocation.isCharacterAtTile(tile);
+                toReturn = npc.displayName;
+                if (npc.isVillager() || npc.CanSocialize)
+                    category = CATEGORY.Farmers;
+                else
+                    category = CATEGORY.NPCs;
+            }
+            else if (farmAnimal != null)
+            {
+                toReturn = farmAnimal;
+                category = CATEGORY.FarmAnimals;
+            }
+            else if (Game1.currentLocation.isWaterTile(x, y) && isColliding)
+            {
+                toReturn = "Water";
+                category = CATEGORY.WaterTiles;
+            }
+            else if (Game1.currentLocation.isObjectAtTile(x, y))
+            {
+                (string?, CATEGORY?) obj = getObjectAtTile(x, y);
+                toReturn = obj.Item1;
+                category = obj.Item2;
+            }
+            else if (terrainFeature.ContainsKey(tile))
+            {
+                (string?, CATEGORY) tf = getTerrainFeatureAtTile(terrainFeature[tile]);
+                string? terrain = tf.Item1;
+                if (terrain != null)
+                {
+                    toReturn = terrain;
+                    category = tf.Item2;
+                }
+
+            }
+            else if (Game1.currentLocation.getLargeTerrainFeatureAt(x, y) != null)
+            {
+                toReturn = getBushAtTile(x, y);
+                category = CATEGORY.Bush;
+            }
+            else if (resourceClump != null)
+            {
+                toReturn = resourceClump;
+                category = CATEGORY.ResourceClumps;
+            }
+            else if (door != null)
+            {
+                toReturn = door;
+                category = CATEGORY.Doors;
+            }
+            else if (isMineDownLadderAtTile(x, y))
+            {
+                toReturn = "Ladder";
+                category = CATEGORY.Doors;
+            }
+            else if (isMineUpLadderAtTile(x, y))
+            {
+                toReturn = "Up Ladder";
+                category = CATEGORY.Doors;
+            }
+            else if (isElevatorAtTile(x, y))
+            {
+                toReturn = "Elevator";
+                category = CATEGORY.Doors;
+            }
+            else if (tileInfo.Item2 != null)
+            {
+                toReturn = tileInfo.Item2;
+                category = tileInfo.Item1;
+            }
+            else if (junimoBundle != null)
+            {
+                toReturn = junimoBundle;
+                category = CATEGORY.JunimoBundle;
+            }
+
+            if (toReturn == "")
+                return (null, category);
+
+            return (toReturn, category);
+        }
+
+        ///<summary>Returns the name of the object at tile</summary>
         public static string? getNameAtTile(Vector2 tile)
         {
             int x = (int)tile.X;
@@ -100,11 +211,11 @@ namespace stardew_access.Game
             }
             else if (Game1.currentLocation.isObjectAtTile(x, y))
             {
-                toReturn = getObjectNameAtTile(x, y);
+                toReturn = getObjectAtTile(x, y).Item1;
             }
             else if (terrainFeature.ContainsKey(tile))
             {
-                string? terrain = getTerrainFeatureAtTile(terrainFeature[tile]);
+                string? terrain = getTerrainFeatureAtTile(terrainFeature[tile]).Item1;
                 if (terrain != null)
                     toReturn = terrain;
             }
@@ -230,7 +341,8 @@ namespace stardew_access.Game
                 return true;
             }
 
-
+            if (Game1.currentLocation is Woods && getStumpsInWoods(x, y) != null)
+                return true;
 
             return false;
         }
@@ -337,11 +449,14 @@ namespace stardew_access.Game
             return (null, null);
         }
 
-        public static string? getTerrainFeatureAtTile(Netcode.NetRef<TerrainFeature> terrain)
+        public static (string?, CATEGORY) getTerrainFeatureAtTile(Netcode.NetRef<TerrainFeature> terrain)
         {
             string? toReturn = null;
+            CATEGORY category = CATEGORY.Others;
+
             if (terrain.Get() is HoeDirt)
             {
+                category = CATEGORY.Crops;
                 HoeDirt dirt = (HoeDirt)terrain.Get();
                 if (dirt.crop != null)
                 {
@@ -376,6 +491,7 @@ namespace stardew_access.Game
             }
             else if (terrain.Get() is GiantCrop)
             {
+                category = CATEGORY.Crops;
                 int whichCrop = ((GiantCrop)terrain.Get()).which.Value;
                 switch (whichCrop)
                 {
@@ -392,6 +508,7 @@ namespace stardew_access.Game
             }
             else if (terrain.Get() is CosmeticPlant)
             {
+                category = CATEGORY.Furnitures;
                 CosmeticPlant cosmeticPlant = (CosmeticPlant)terrain.Get();
                 toReturn = cosmeticPlant.textureName().ToLower();
 
@@ -403,6 +520,7 @@ namespace stardew_access.Game
             }
             else if (terrain.Get() is Flooring)
             {
+                category = CATEGORY.Flooring;
                 Flooring flooring = (Flooring)terrain.Get();
                 bool isPathway = flooring.isPathway.Get();
                 bool isSteppingStone = flooring.isSteppingStone.Get();
@@ -417,22 +535,26 @@ namespace stardew_access.Game
             }
             else if (terrain.Get() is FruitTree)
             {
+                category = CATEGORY.Trees;
                 toReturn = getFruitTree((FruitTree)terrain.Get());
             }
             else if (terrain.Get() is Grass)
             {
+                category = CATEGORY.Debris;
                 toReturn = "Grass";
             }
             else if (terrain.Get() is Tree)
             {
+                category = CATEGORY.Trees;
                 toReturn = getTree((Tree)terrain.Get());
             }
             else if (terrain.Get() is Quartz)
             {
+                category = CATEGORY.MineItems;
                 toReturn = "Quartz";
             }
 
-            return toReturn;
+            return (toReturn, category);
         }
 
         public static string getFruitTree(FruitTree fruitTree)
@@ -517,7 +639,7 @@ namespace stardew_access.Game
             return seedName;
         }
 
-        public static string? getObjectNameAtTile(int x, int y)
+        public static (string?, CATEGORY) getObjectAtTile(int x, int y)
         {
             string? toReturn = null;
 
@@ -545,17 +667,17 @@ namespace stardew_access.Game
                 case 784:
                 case 785:
                 case 786:
-                    return "Weed";
+                    return ("Weed", CATEGORY.Debris);
                 case 792:
                 case 793:
                 case 794:
-                    return "Fertile weed";
+                    return ("Fertile weed", CATEGORY.Debris);
                 case 319:
                 case 320:
                 case 321:
-                    return "Ice crystal";
+                    return ("Ice crystal", CATEGORY.Debris);
                 case 75:
-                    return "Geode";
+                    return ("Geode", CATEGORY.MineItems);
                 case 32:
                 case 34:
                 case 36:
@@ -568,28 +690,28 @@ namespace stardew_access.Game
                 case 54:
                 case 56:
                 case 58:
-                    return "Coloured stone";
+                    return ("Coloured stone", CATEGORY.Debris);
                 case 668:
                 case 670:
                 case 845:
                 case 846:
                 case 847:
-                    return "Mine stone";
+                    return ("Mine stone", CATEGORY.MineItems);
                 case 818:
-                    return "Clay stone";
+                    return ("Clay stone", CATEGORY.Debris);
                 case 816:
                 case 817:
-                    return "Fossil stone";
+                    return ("Fossil stone", CATEGORY.Debris);
                 case 118:
                 case 120:
                 case 122:
                 case 124:
-                    return "Barrel";
+                    return ("Barrel", CATEGORY.MineItems);
                 case 119:
                 case 121:
                 case 123:
                 case 125:
-                    return "Item box";
+                    return ("Item box", CATEGORY.MineItems);
             }
 
             if (Game1.currentLocation is Mine or MineShaft)
@@ -597,61 +719,67 @@ namespace stardew_access.Game
                 switch (index)
                 {
                     case 76:
-                        return "Frozen geode";
+                        return ("Frozen geode", CATEGORY.MineItems);
                     case 77:
-                        return "Magma geode";
+                        return ("Magma geode", CATEGORY.MineItems);
                     case 8:
                     case 66:
-                        return "Amethyst node";
+                        return ("Amethyst node", CATEGORY.MineItems);
                     case 14:
                     case 62:
-                        return "Aquamarine node";
+                        return ("Aquamarine node", CATEGORY.MineItems);
                     case 843:
                     case 844:
-                        return "Cinder shard node";
+                        return ("Cinder shard node", CATEGORY.MineItems);
                     case 2:
                     case 72:
-                        return "Diamond node";
+                        return ("Diamond node", CATEGORY.MineItems);
                     case 12:
                     case 60:
-                        return "Emerald node";
+                        return ("Emerald node", CATEGORY.MineItems);
                     case 44:
-                        return "Gem node";
+                        return ("Gem node", CATEGORY.MineItems);
                     case 6:
                     case 70:
-                        return "Jade node";
+                        return ("Jade node", CATEGORY.MineItems);
                     case 46:
-                        return "Mystic stone";
+                        return ("Mystic stone", CATEGORY.MineItems);
                     case 74:
-                        return "Prismatic node";
+                        return ("Prismatic node", CATEGORY.MineItems);
                     case 4:
                     case 64:
-                        return "Ruby node";
+                        return ("Ruby node", CATEGORY.MineItems);
                     case 10:
                     case 68:
-                        return "Topaz node";
+                        return ("Topaz node", CATEGORY.MineItems);
                     case 819:
-                        return "Omni geode node";
+                        return ("Omni geode node", CATEGORY.MineItems);
                     case 751:
                     case 849:
-                        return "Copper node";
+                        return ("Copper node", CATEGORY.MineItems);
                     case 764:
-                        return "Gold node";
+                        return ("Gold node", CATEGORY.MineItems);
                     case 765:
-                        return "Iridium node";
+                        return ("Iridium node", CATEGORY.MineItems);
                     case 290:
                     case 850:
-                        return "Iron node";
+                        return ("Iron node", CATEGORY.MineItems);
                 }
             }
 
             if (obj is Chest)
             {
                 Chest chest = (Chest)obj;
-                toReturn = chest.DisplayName;
+                return (chest.DisplayName, CATEGORY.Chests);
             }
 
-            return toReturn;
+            if (obj is Furniture)
+                return (toReturn, CATEGORY.Furnitures);
+
+            if (toReturn != null)
+                return (toReturn, CATEGORY.Others);
+
+            return (null, CATEGORY.Others);
         }
 
         public static bool isMineDownLadderAtTile(int x, int y)

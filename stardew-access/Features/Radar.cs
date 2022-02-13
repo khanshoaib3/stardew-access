@@ -3,7 +3,7 @@ using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
-namespace stardew_access.Game
+namespace stardew_access.Features
 {
 
     /// <summary>
@@ -28,12 +28,16 @@ namespace stardew_access.Game
         public static CATEGORY NPCs = new CATEGORY("npc");
         public static CATEGORY Furnitures = new CATEGORY("furniture");
         public static CATEGORY Flooring = new CATEGORY("flooring");
-        public static CATEGORY Grass = new CATEGORY("grass");
+        public static CATEGORY Debris = new CATEGORY("debris");
         public static CATEGORY Crops = new CATEGORY("crop");
         public static CATEGORY Trees = new CATEGORY("tree");
+        public static CATEGORY Bush = new CATEGORY("bush");
         public static CATEGORY Buildings = new CATEGORY("building");
         public static CATEGORY MineItems = new CATEGORY("mine item");
+        public static CATEGORY ResourceClumps = new CATEGORY("resource clump");
         public static CATEGORY Chests = new CATEGORY("chest");
+        public static CATEGORY JunimoBundle = new CATEGORY("bundle");
+        public static CATEGORY Doors = new CATEGORY("door"); // Also includes ladders and elevators
         public static CATEGORY Others = new CATEGORY("other");
         public static CATEGORY WaterTiles = new CATEGORY("water");
 
@@ -176,33 +180,11 @@ namespace stardew_access.Game
             {
                 Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
 
-                // Check for npcs
-                if (Game1.currentLocation.isCharacterAtTile(position) != null)
+                if (Game1.currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
                 {
-                    NPC npc = Game1.currentLocation.isCharacterAtTile(position);
-                    if (!npcs.Contains(npc))
-                    {
-                        if (npc.isVillager() || npc.CanSocialize)
-                            PlaySoundAt(position, npc.displayName, CATEGORY.Farmers); // Villager
-                        else
-                            PlaySoundAt(position, npc.displayName, CATEGORY.NPCs);
-                    }
-                }
-                // Check for animals
-                else if (ReadTile.getFarmAnimalAt(Game1.currentLocation, (int)position.X, (int)position.Y) != null)
-                {
-                    string name = $"{ReadTile.getFarmAnimalAt(Game1.currentLocation, (int)position.X, (int)position.Y, onlyName: true)}";
-                    PlaySoundAt(position, name, CATEGORY.FarmAnimals);
-                }
-                // Check for water
-                else if (Game1.currentLocation.isWaterTile((int)position.X, (int)position.Y))
-                {
-                    PlaySoundAt(position, "water", CATEGORY.WaterTiles);
-                }
-                // Check for objects
-                else if (Game1.currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
-                {
-                    string? objectName = ReadTile.getObjectNameAtTile((int)position.X, (int)position.Y);
+                    (string?, CATEGORY) objDetails = ReadTile.getObjectAtTile((int)position.X, (int)position.Y);
+                    string? objectName = objDetails.Item1;
+                    CATEGORY category = objDetails.Item2;
                     StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)position.X, (int)position.Y);
 
                     if (objectName != null)
@@ -214,108 +196,24 @@ namespace stardew_access.Game
                             if (!furnitures.Contains((Furniture)obj))
                             {
                                 furnitures.Add((Furniture)obj);
-                                PlaySoundAt(position, objectName, CATEGORY.Furnitures);
+                                PlaySoundAt(position, objectName, category);
                             }
                         }
-                        else if (obj is Chest)
-                        {
-                            PlaySoundAt(position, objectName, CATEGORY.Chests);
-                        }
-                        else if (obj is not Furniture && obj is not Chest)
-                        {
-                            bool isMineItem = false;
+                        else
+                            PlaySoundAt(position, objectName, category);
 
-                            if (objectName.Contains("node") || objectName.Contains("mystic stone") || objectName.Contains("jade stone"))
-                                isMineItem = true;
-                            else if (objectName.Contains("geode") || objectName.Contains("mine stone") || objectName.Contains("barrel") || objectName.Contains("item box"))
-                                isMineItem = true;
-
-                            if (isMineItem)
-                                PlaySoundAt(position, objectName, CATEGORY.MineItems);
-                            else
-                                PlaySoundAt(position, objectName, CATEGORY.Others);
-                        }
                     }
                 }
-                // Check for terrain features
-                else if (terrainFeature.ContainsKey(position))
+                else
                 {
-                    Netcode.NetRef<TerrainFeature> tr = terrainFeature[position];
-                    string? terrain = ReadTile.getTerrainFeatureAtTile(tr);
-                    if (terrain != null)
+                    (string?, CATEGORY?) tileDetail = ReadTile.getNameWithCategoryAtTile(position);
+                    if (tileDetail.Item1 != null)
                     {
-                        if (tr.Get() is HoeDirt)
-                        {
-                            PlaySoundAt(position, terrain, CATEGORY.Crops);
-                        }
-                        else if (tr.Get() is GiantCrop)
-                        {
-                            PlaySoundAt(position, terrain, CATEGORY.Crops);
-                        }
-                        else if (tr.Get() is Bush)
-                        {
-                            PlaySoundAt(position, terrain, CATEGORY.Others);
-                        }
-                        else if (tr.Get() is CosmeticPlant)
-                        {
-                            PlaySoundAt(position, terrain, CATEGORY.Furnitures);
-                        }
-                        else if (tr.Get() is Flooring)
-                        {
-                            PlaySoundAt(position, terrain, CATEGORY.Flooring);
-                        }
-                        else if (tr.Get() is FruitTree)
-                        {
-                            PlaySoundAt(position, terrain, CATEGORY.Trees);
-                        }
-                        else if (tr.Get() is Grass)
-                        {
-                            PlaySoundAt(position, terrain, CATEGORY.Grass);
-                        }
-                        else if (tr.Get() is Tree)
-                        {
-                            PlaySoundAt(position, terrain, CATEGORY.Trees);
-                        }
-                        else if (tr.Get() is Quartz)
-                        {
-                            PlaySoundAt(position, terrain, CATEGORY.Others);
-                        }
+                        if (tileDetail.Item2 == null)
+                            tileDetail.Item2 = CATEGORY.Others;
+
+                        PlaySoundAt(position, tileDetail.Item1, tileDetail.Item2);
                     }
-                }
-                // Check for Mine ladders
-                else if (ReadTile.isMineDownLadderAtTile((int)position.X, (int)position.Y))
-                {
-                    PlaySoundAt(position, "ladder", CATEGORY.Buildings);
-                }
-                else if (ReadTile.isMineUpLadderAtTile((int)position.X, (int)position.Y))
-                {
-                    PlaySoundAt(position, "ladder", CATEGORY.Buildings);
-                }
-                else if (ReadTile.isElevatorAtTile((int)position.X, (int)position.Y))
-                {
-                    PlaySoundAt(position, "ladder", CATEGORY.Buildings);
-                }
-                // Check for doors
-                else if (ReadTile.getDoorAtTile((int)position.X, (int)position.Y) != null)
-                {
-                    PlaySoundAt(position, "door", CATEGORY.Buildings);
-                }
-                // Check for buildings on maps
-                else if (ReadTile.getTileInfo((int)position.X, (int)position.Y).Item2 != null)
-                {
-                    (CATEGORY?, string?) item = ReadTile.getTileInfo((int)position.X, (int)position.Y);
-                    if (item.Item2 != null && item.Item1 != null)
-                        PlaySoundAt(position, item.Item2, item.Item1);
-                }
-                // Check for resource clumps
-                else if (ReadTile.getResourceClumpAtTile((int)position.X, (int)position.Y) != null)
-                {
-                    PlaySoundAt(position, "resource clump", CATEGORY.MineItems);
-                }
-                // Check for junimo bundle
-                else if (ReadTile.getJunimoBundleAt((int)position.X, (int)position.Y) != null)
-                {
-                    PlaySoundAt(position, "junimo bundle", CATEGORY.Chests);
                 }
             }
             catch (Exception e)
@@ -431,7 +329,7 @@ namespace stardew_access.Game
                 soundName = $"obj{soundName}";
             else if (category == CATEGORY.Chests) // Chests
                 soundName = $"obj{soundName}";
-            else if (category == CATEGORY.Grass) // Grass
+            else if (category == CATEGORY.Debris) // Grass and debris
                 soundName = $"obj{soundName}";
             else if (category == CATEGORY.Flooring) // Flooring
                 soundName = $"obj{soundName}";

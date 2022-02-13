@@ -1,7 +1,7 @@
 ﻿using StardewValley;
 using System.Text.RegularExpressions;
 
-namespace stardew_access.Game
+namespace stardew_access.Features
 {
     internal class Other
     {

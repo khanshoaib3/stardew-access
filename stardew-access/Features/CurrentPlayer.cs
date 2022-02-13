@@ -1,21 +1,20 @@
 ﻿using StardewValley;
-using StardewModdingAPI;
 using Microsoft.Xna.Framework;
 
-namespace stardew_access.Game
+namespace stardew_access.Features
 {
     internal class CurrentPlayer
     {
 
         public static int getHealth()
         {
-            if(Game1.player == null)
+            if (Game1.player == null)
                 return 0;
 
             int maxHealth = Game1.player.maxHealth;
             int currentHealth = Game1.player.health;
 
-            int healthPercentage = (int) (currentHealth * 100)/maxHealth;
+            int healthPercentage = (int)(currentHealth * 100) / maxHealth;
             return healthPercentage;
         }
 
@@ -57,7 +56,7 @@ namespace stardew_access.Game
             int minutes = timeOfDay % 100;
             int hours = timeOfDay / 100;
             string amOrpm = "A M";
-            if(hours>=12)
+            if (hours >= 12)
             {
                 amOrpm = "P M";
                 if (hours > 12)
@@ -84,7 +83,7 @@ namespace stardew_access.Game
 
         public static int getMoney()
         {
-            if(Game1.player == null)
+            if (Game1.player == null)
                 return -1;
 
             return Game1.player.Money;

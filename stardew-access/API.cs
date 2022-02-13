@@ -1,3 +1,6 @@
+using Microsoft.Xna.Framework;
+using stardew_access.Features;
+
 namespace stardew_access.ScreenReader
 {
     public class API
@@ -5,6 +8,16 @@ namespace stardew_access.ScreenReader
 
         public API()
         {
+        }
+
+        public (string?, string?) GetNameWithCategoryNameAtTile(Vector2 tile)
+        {
+            return ReadTile.getNameWithCategoryNameAtTile(tile);
+        }
+
+        public string? GetNameAtTile(Vector2 tile)
+        {
+            return ReadTile.getNameAtTile(tile);
         }
 
         public void Say(String text, Boolean interrupt)
