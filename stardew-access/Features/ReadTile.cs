@@ -750,20 +750,22 @@ CommunityCenter communityCenter = (Game1.currentLocation as CommunityCenter);
 
             return null;
         }
-    
-    public static string? getStumpsInWoods(int x, int y)
+
+        public static string? getStumpsInWoods(int x, int y)
         {
-            string strIndex = null;
             if (Game1.currentLocation is not Woods)
-            {
                 return null;
+
+            if ((x == 8 || x == 9) && y == 7)
+            {
+                return "Old Master Cannoli";
             }
             Netcode.NetObjectList<ResourceClump> stumps = ((Woods)Game1.currentLocation).stumps;
             for (int i = 0; i < stumps.Count; i++)
             {
                 if (stumps[i].occupiesTile(x, y))
                 {
-                    return "large stump";
+                    return "Large Stump";
                 }
             }
             return null;
