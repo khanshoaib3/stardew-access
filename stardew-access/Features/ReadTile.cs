@@ -72,18 +72,18 @@ namespace stardew_access.Features
         }
 
         ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>
-        public static (string?, string?) getNameWithCategoryNameAtTile(Vector2 tile)
+        public static (string? name, string? categoryName) getNameWithCategoryNameAtTile(Vector2 tile)
         {
-            (string?, CATEGORY?) tileDetail = getNameWithCategoryAtTile(tile);
+            (string? name, CATEGORY? category) tileDetail = getNameWithCategoryAtTile(tile);
 
-            if (tileDetail.Item2 == null)
-                tileDetail.Item2 = CATEGORY.Others;
+            if (tileDetail.category == null)
+                tileDetail.category = CATEGORY.Others;
 
-            return (tileDetail.Item1, tileDetail.Item2.ToString());
+            return (tileDetail.name, tileDetail.category.ToString());
         }
 
         ///<summary>Returns the name of the object at tile alongwith it's category</summary>
-        public static (string?, CATEGORY?) getNameWithCategoryAtTile(Vector2 tile)
+        public static (string? name, CATEGORY? category) getNameWithCategoryAtTile(Vector2 tile)
         {
             int x = (int)tile.X;
             int y = (int)tile.Y;
@@ -93,7 +93,7 @@ namespace stardew_access.Features
             bool isColliding = isCollidingAtTile(x, y);
             Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
             string? door = getDoorAtTile(x, y);
-            (CATEGORY?, string?) tileInfo = getTileInfo(x, y);
+            (CATEGORY? category, string? name) tileInfo = getTileInfo(x, y);
             string? junimoBundle = getJunimoBundleAt(x, y);
             string? resourceClump = getResourceClumpAtTile(x, y);
             string? farmAnimal = getFarmAnimalAt(Game1.currentLocation, x, y);
@@ -119,18 +119,18 @@ namespace stardew_access.Features
             }
             else if (Game1.currentLocation.isObjectAtTile(x, y))
             {
-                (string?, CATEGORY?) obj = getObjectAtTile(x, y);
-                toReturn = obj.Item1;
-                category = obj.Item2;
+                (string? name, CATEGORY? category) obj = getObjectAtTile(x, y);
+                toReturn = obj.name;
+                category = obj.category;
             }
             else if (terrainFeature.ContainsKey(tile))
             {
-                (string?, CATEGORY) tf = getTerrainFeatureAtTile(terrainFeature[tile]);
-                string? terrain = tf.Item1;
+                (string? name, CATEGORY category) tf = getTerrainFeatureAtTile(terrainFeature[tile]);
+                string? terrain = tf.name;
                 if (terrain != null)
                 {
                     toReturn = terrain;
-                    category = tf.Item2;
+                    category = tf.category;
                 }
 
             }
@@ -164,10 +164,10 @@ namespace stardew_access.Features
                 toReturn = "Elevator";
                 category = CATEGORY.Doors;
             }
-            else if (tileInfo.Item2 != null)
+            else if (tileInfo.name != null)
             {
-                toReturn = tileInfo.Item2;
-                category = tileInfo.Item1;
+                toReturn = tileInfo.name;
+                category = tileInfo.category;
             }
             else if (junimoBundle != null)
             {
@@ -191,7 +191,7 @@ namespace stardew_access.Features
             bool isColliding = isCollidingAtTile(x, y);
             Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
             string? door = getDoorAtTile(x, y);
-            (CATEGORY?, string?) tileInfo = getTileInfo(x, y);
+            (CATEGORY? category, string? name) tileInfo = getTileInfo(x, y);
             string? junimoBundle = getJunimoBundleAt(x, y);
             string? resourceClump = getResourceClumpAtTile(x, y);
             string? farmAnimal = getFarmAnimalAt(Game1.currentLocation, x, y);
@@ -211,7 +211,7 @@ namespace stardew_access.Features
             }
             else if (Game1.currentLocation.isObjectAtTile(x, y))
             {
-                toReturn = getObjectAtTile(x, y).Item1;
+                toReturn = getObjectAtTile(x, y).name;
             }
             else if (terrainFeature.ContainsKey(tile))
             {
@@ -243,9 +243,9 @@ namespace stardew_access.Features
             {
                 toReturn = "Elevator";
             }
-            else if (tileInfo.Item2 != null)
+            else if (tileInfo.name != null)
             {
-                toReturn = tileInfo.Item2;
+                toReturn = tileInfo.name;
             }
             else if (junimoBundle != null)
             {
@@ -391,9 +391,9 @@ namespace stardew_access.Features
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <returns>Item1: This is the category of the tile. Default to Furnitures.
-        /// <br/>Item2: This is the name of the tile. Default to null if the tile tile has nothing on it.</returns>
-        public static (CATEGORY?, string?) getTileInfo(int x, int y)
+        /// <returns>category: This is the category of the tile. Default to Furnitures.
+        /// <br/>name: This is the name of the tile. Default to null if the tile tile has nothing on it.</returns>
+        public static (CATEGORY? category, string? name) getTileInfo(int x, int y)
         {
 
             int? index = null;
@@ -449,7 +449,7 @@ namespace stardew_access.Features
             return (null, null);
         }
 
-        public static (string?, CATEGORY) getTerrainFeatureAtTile(Netcode.NetRef<TerrainFeature> terrain)
+        public static (string? name, CATEGORY category) getTerrainFeatureAtTile(Netcode.NetRef<TerrainFeature> terrain)
         {
             string? toReturn = null;
             CATEGORY category = CATEGORY.Others;
@@ -518,7 +518,7 @@ namespace stardew_access.Features
                 if (toReturn.Contains("feature"))
                     toReturn.Replace("feature", "");
             }
-            else if (terrain.Get() is Flooring)
+            else if (terrain.Get() is Flooring && MainClass.readFlooring)
             {
                 category = CATEGORY.Flooring;
                 Flooring flooring = (Flooring)terrain.Get();
@@ -639,7 +639,7 @@ namespace stardew_access.Features
             return seedName;
         }
 
-        public static (string?, CATEGORY) getObjectAtTile(int x, int y)
+        public static (string? name, CATEGORY category) getObjectAtTile(int x, int y)
         {
             string? toReturn = null;
 

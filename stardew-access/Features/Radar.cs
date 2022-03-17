@@ -191,14 +191,14 @@ namespace stardew_access.Features
 
         public (bool, string?, string) CheckTile(Vector2 position)
         {
-            (string?, CATEGORY?) tileDetail = ReadTile.getNameWithCategoryAtTile(position);
-            if (tileDetail.Item1 == null)
+            (string? name, CATEGORY? category) tileDetail = ReadTile.getNameWithCategoryAtTile(position);
+            if (tileDetail.name == null)
                 return (false, null, CATEGORY.Others.ToString());
 
-            if (tileDetail.Item2 == null)
-                tileDetail.Item2 = CATEGORY.Others;
+            if (tileDetail.category == null)
+                tileDetail.category = CATEGORY.Others;
 
-            return (true, tileDetail.Item1, tileDetail.Item2.ToString());
+            return (true, tileDetail.name, tileDetail.category.ToString());
 
         }
 
@@ -208,9 +208,9 @@ namespace stardew_access.Features
             {
                 if (Game1.currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
                 {
-                    (string?, CATEGORY) objDetails = ReadTile.getObjectAtTile((int)position.X, (int)position.Y);
-                    string? objectName = objDetails.Item1;
-                    CATEGORY category = objDetails.Item2;
+                    (string? name, CATEGORY category) objDetails = ReadTile.getObjectAtTile((int)position.X, (int)position.Y);
+                    string? objectName = objDetails.name;
+                    CATEGORY category = objDetails.category;
                     StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)position.X, (int)position.Y);
 
                     if (objectName != null)
@@ -232,13 +232,13 @@ namespace stardew_access.Features
                 }
                 else
                 {
-                    (string?, CATEGORY?) tileDetail = ReadTile.getNameWithCategoryAtTile(position);
-                    if (tileDetail.Item1 != null)
+                    (string? name, CATEGORY? category) tileDetail = ReadTile.getNameWithCategoryAtTile(position);
+                    if (tileDetail.name != null)
                     {
-                        if (tileDetail.Item2 == null)
-                            tileDetail.Item2 = CATEGORY.Others;
+                        if (tileDetail.category == null)
+                            tileDetail.category = CATEGORY.Others;
 
-                        PlaySoundAt(position, tileDetail.Item1, tileDetail.Item2);
+                        PlaySoundAt(position, tileDetail.name, tileDetail.category);
                     }
                 }
             }

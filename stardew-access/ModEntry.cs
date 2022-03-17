@@ -19,6 +19,7 @@ namespace stardew_access
         public static bool radar = false;
         public static bool radarDebug = false;
         public static bool radarStereoSound = true;
+        public static bool readFlooring = false;
         private static IMonitor monitor;
         public static string hudMessageQueryKey = "";
         private static Radar radarFeature;

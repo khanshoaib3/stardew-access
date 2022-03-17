@@ -27,6 +27,13 @@ namespace stardew_access
                 MainClass.GetMonitor().Log("Snap Mouse is " + (MainClass.snapMouse ? "on" : "off"), LogLevel.Info);
             });
 
+            helper.ConsoleCommands.Add("flooring", "Toggle flooring in read tile.", (string commmand, string[] args) =>
+            {
+                MainClass.readFlooring = !MainClass.readFlooring;
+
+                MainClass.GetMonitor().Log("Flooring is " + (MainClass.readFlooring ? "on" : "off"), LogLevel.Info);
+            });
+
             helper.ConsoleCommands.Add("radar", "Toggle radar feature.", (string commmand, string[] args) =>
             {
                 MainClass.radar = !MainClass.radar;
