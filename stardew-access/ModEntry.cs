@@ -6,6 +6,7 @@ using HarmonyLib;
 using stardew_access.Patches;
 using stardew_access.ScreenReader;
 using Microsoft.Xna.Framework;
+using StardewValley.Menus;
 
 namespace stardew_access
 {
@@ -142,9 +143,10 @@ namespace stardew_access
             {
                 bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
                 bool isLeftControlPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl);
+                bool isCustomizingChrachter = Game1.activeClickableMenu is CharacterCustomization || (TitleMenu.subMenu != null && TitleMenu.subMenu is CharacterCustomization);
 
                 // Perform Left Click
-                if (Equals(e.Button, SButton.OemOpenBrackets))
+                if (!isCustomizingChrachter && Equals(e.Button, SButton.OemOpenBrackets)) // Excluding the character creation menu
                 {
                     Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
@@ -154,7 +156,7 @@ namespace stardew_access
                 }
 
                 // Perform Right CLick
-                if (Equals(e.Button, SButton.OemCloseBrackets))
+                if (!isCustomizingChrachter && Equals(e.Button, SButton.OemCloseBrackets)) // Excluding the character creation menu
                 {
                     Game1.activeClickableMenu.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
