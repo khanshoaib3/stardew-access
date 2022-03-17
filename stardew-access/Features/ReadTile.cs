@@ -8,6 +8,10 @@ using StardewValley.TerrainFeatures;
 
 namespace stardew_access.Features
 {
+    public enum MachineState
+    {
+        Ready, Busy, Waiting
+    }
     public class ReadTile
     {
         public static bool isReadingTile = false;
@@ -641,13 +645,55 @@ namespace stardew_access.Features
 
         public static (string? name, CATEGORY category) getObjectAtTile(int x, int y)
         {
-            string? toReturn = null;
+            (string? name, CATEGORY category) toReturn = (null, CATEGORY.Others);
 
             StardewValley.Object obj = Game1.currentLocation.getObjectAtTile(x, y);
             int index = obj.ParentSheetIndex;
-            toReturn = obj.DisplayName;
+            toReturn.name = obj.DisplayName;
 
             // Get object names based on index
+            (string? name, CATEGORY category) correctNameAndCategory = getCorrectNameAndCategoryFromIndex(index);
+            if (correctNameAndCategory.name != null)
+                toReturn = correctNameAndCategory;
+
+            if (obj is Chest)
+            {
+                Chest chest = (Chest)obj;
+                toReturn = (chest.DisplayName, CATEGORY.Chests);
+            }
+
+            if (obj is Furniture)
+                toReturn.category = CATEGORY.Furnitures;
+
+            MachineState machineState = GetMachineState(obj);
+            if (machineState == MachineState.Ready)
+                toReturn.name = $"Harvestable {toReturn.name}";
+            else if (machineState == MachineState.Busy)
+                toReturn.name = $"Busy {toReturn.name}";
+
+            return toReturn;
+        }
+
+        private static MachineState GetMachineState(StardewValley.Object machine)
+        {
+            if (machine is CrabPot crabPot)
+                if (crabPot.bait.Value is not null && crabPot.heldObject.Value is null)
+                    return MachineState.Busy;
+            return GetMachineState(machine.readyForHarvest.Value, machine.MinutesUntilReady, machine.heldObject);
+        }
+
+        private static MachineState GetMachineState(bool readyForHarvest, int minutesUntilReady, StardewValley.Object? heldObject)
+        {
+            if (readyForHarvest || (heldObject is not null && minutesUntilReady <= 0))
+                return MachineState.Ready;
+            else if (minutesUntilReady > 0)
+                return MachineState.Busy;
+            else
+                return MachineState.Waiting;
+        }
+
+        private static (string? name, CATEGORY category) getCorrectNameAndCategoryFromIndex(int index)
+        {
             switch (index)
             {
                 case 313:
@@ -766,18 +812,6 @@ namespace stardew_access.Features
                         return ("Iron node", CATEGORY.MineItems);
                 }
             }
-
-            if (obj is Chest)
-            {
-                Chest chest = (Chest)obj;
-                return (chest.DisplayName, CATEGORY.Chests);
-            }
-
-            if (obj is Furniture)
-                return (toReturn, CATEGORY.Furnitures);
-
-            if (toReturn != null)
-                return (toReturn, CATEGORY.Others);
 
             return (null, CATEGORY.Others);
         }
