@@ -326,11 +326,9 @@ namespace stardew_access.Features
 
         public static string? getJunimoBundleAt(int x, int y)
         {
-            if (Game1.currentLocation is not CommunityCenter communityCenter || Game1.currentLocation is not AbandonedJojaMart abandonedJojaMart)
-                return null;
-
             string? name = null;
-            if (communityCenter != null)
+            if (Game1.currentLocation is CommunityCenter communityCenter)
+            {
                 name = (x, y) switch
                 {
                     (14, 5) => "Pantry",
@@ -341,19 +339,22 @@ namespace stardew_access.Features
                     (46, 11) => "Bulletin Board",
                     _ => null,
                 };
-            else if (abandonedJojaMart != null)
+                if (name != null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
+                    return $"{name} bundle";
+            }
+            else if (Game1.currentLocation is not AbandonedJojaMart)
+            {
                 name = (x, y) switch
                 {
                     (8, 8) => "Missing",
                     _ => null,
                 };
 
-            if (name != null && communityCenter != null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
-                return $"{name} bundle";
-            else if (name != null && abandonedJojaMart != null)
-                return $"{name} bundle";
-            else
-                return null;
+                if (name != null)
+                    return $"{name} bundle";
+            }
+
+            return null;
         }
 
         public static bool isCollidingAtTile(int x, int y)
