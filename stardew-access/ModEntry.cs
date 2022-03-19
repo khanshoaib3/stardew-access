@@ -205,17 +205,13 @@ namespace stardew_access
             // Manual read tile at looking tile
             if (Equals(e.Button, SButton.J) && !isLeftAltPressed)
             {
-                readTile = false;
                 ReadTile.run(manuallyTriggered: true);
-                Task.Delay(1000).ContinueWith(t => { readTile = true; });
             }
 
             // Manual read tile at player's position
             if (Equals(e.Button, SButton.J) && isLeftAltPressed)
             {
-                readTile = false;
                 ReadTile.run(manuallyTriggered: true, playersPosition: true);
-                Task.Delay(1000).ContinueWith(t => { readTile = true; });
             }
 
             /*if (Equals(e.Button, SButton.B))

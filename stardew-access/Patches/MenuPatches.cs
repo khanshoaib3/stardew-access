@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using stardew_access.Features;
 using StardewModdingAPI;
 using StardewValley;
@@ -9,8 +10,121 @@ namespace stardew_access.Patches
     internal class MenuPatches
     {
         private static string currentLetterText = " ";
+        private static string hoveredItemQueryKey = " ";
         private static string currentLevelUpTitle = " ";
         public static Vector2? prevTile = null;
+        private static bool isMoving = false;
+
+        internal static bool MuseumMenuKeyPressPatch()
+        {
+            try
+            {
+                if (isMoving)
+                    return false;
+
+                if (!isMoving)
+                {
+                    isMoving = true;
+                    Task.Delay(200).ContinueWith(_ => { isMoving = false; });
+                }
+
+            }
+            catch (Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
+
+            return true;
+        }
+
+        internal static void MuseumMenuPatch(MuseumMenu __instance, bool ___holdingMuseumPiece)
+        {
+            try
+            {
+                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+
+                if (___holdingMuseumPiece)
+                {
+                    // Museum Inventory
+                }
+                else
+                {
+                    // Player Inventory
+                    narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y);
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
+        }
+
+        internal static bool narrateHoveredItemInInventory(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y)
+        {
+            #region Narrate hovered item
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                if (inventory[i].containsPoint(x, y))
+                {
+                    string toSpeak = "";
+                    if ((i + 1) <= actualInventory.Count)
+                    {
+                        if (actualInventory[i] != null)
+                        {
+                            string name = actualInventory[i].DisplayName;
+                            int stack = actualInventory[i].Stack;
+                            string quality = "";
+
+                            #region Add quality of item
+                            if (actualInventory[i] is StardewValley.Object && ((StardewValley.Object)actualInventory[i]).quality > 0)
+                            {
+                                int qualityIndex = ((StardewValley.Object)actualInventory[i]).quality;
+                                if (qualityIndex == 1)
+                                {
+                                    quality = "Silver quality";
+                                }
+                                else if (qualityIndex == 2 || qualityIndex == 3)
+                                {
+                                    quality = "Gold quality";
+                                }
+                                else if (qualityIndex >= 4)
+                                {
+                                    quality = "Iridium quality";
+                                }
+                            }
+                            #endregion
+
+                            if (inventoryMenu.highlightMethod(inventoryMenu.actualInventory[i]))
+                                name = $"Donatable {name}";
+
+                            if (stack > 1)
+                                toSpeak = $"{stack} {name} {quality}";
+                            else
+                                toSpeak = $"{name} {quality}";
+                        }
+                        else
+                        {
+                            // For empty slot
+                            toSpeak = "Empty Slot";
+                        }
+                    }
+                    else
+                    {
+                        // For empty slot
+                        toSpeak = "Empty Slot";
+                    }
+
+                    if (hoveredItemQueryKey != $"{toSpeak}:{i}")
+                    {
+                        hoveredItemQueryKey = $"{toSpeak}:{i}";
+                        MainClass.GetScreenReader().Say(toSpeak, true);
+                    }
+                    return true;
+                }
+            }
+            #endregion
+            return false;
+        }
 
         internal static bool PlaySoundPatch(string cueName)
         {
