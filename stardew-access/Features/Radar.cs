@@ -99,7 +99,7 @@ namespace stardew_access.Features
         public async void Run()
         {
             if (MainClass.radarDebug)
-                MainClass.GetMonitor().Log($"\n\nRead Tile started", StardewModdingAPI.LogLevel.Debug);
+                MainClass.DebugLog($"\n\nRead Tile started");
 
             isRunning = true;
             Vector2 currPosition = Game1.player.getTileLocation();
@@ -111,7 +111,7 @@ namespace stardew_access.Features
             SearchNearbyTiles(currPosition, range);
 
             if (MainClass.radarDebug)
-                MainClass.GetMonitor().Log($"\nRead Tile stopped\n\n", StardewModdingAPI.LogLevel.Debug);
+                MainClass.DebugLog($"\nRead Tile stopped\n\n");
 
             await Task.Delay(delay);
             isRunning = false;
@@ -244,7 +244,7 @@ namespace stardew_access.Features
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"{e.Message}\n{e.StackTrace}\n{e.Source}", StardewModdingAPI.LogLevel.Error);
+                MainClass.ErrorLog($"{e.Message}\n{e.StackTrace}\n{e.Source}");
             }
         }
 
@@ -296,7 +296,7 @@ namespace stardew_access.Features
             #endregion
 
             if (MainClass.radarDebug)
-                MainClass.GetMonitor().Log($"{radarFocus}\tObject:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}", StardewModdingAPI.LogLevel.Debug);
+                MainClass.ErrorLog($"{radarFocus}\tObject:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}");
 
             int px = (int)Game1.player.getTileX(); // Player's X postion
             int py = (int)Game1.player.getTileY(); // Player's Y postion

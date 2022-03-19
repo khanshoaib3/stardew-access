@@ -41,11 +41,6 @@ namespace stardew_access
             screenReader = value;
         }
 
-        public static IMonitor GetMonitor()
-        {
-            return monitor;
-        }
-
         public static void SetMonitor(IMonitor value)
         {
             monitor = value;
@@ -140,6 +135,8 @@ namespace stardew_access
             if (e == null)
                 return;
 
+            bool isLeftAltPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt);
+
             if (Game1.activeClickableMenu != null)
             {
                 bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
@@ -198,10 +195,20 @@ namespace stardew_access
                 MainClass.GetScreenReader().Say(toSpeak, true);
             }
 
-            // Manual read tile
-            if (Equals(e.Button, SButton.J))
+            // Manual read tile at looking tile
+            if (Equals(e.Button, SButton.J) && !isLeftAltPressed)
             {
+                readTile = false;
                 ReadTile.run(manuallyTriggered: true);
+                Task.Delay(1000).ContinueWith(t => { readTile = true; });
+            }
+
+            // Manual read tile at player's position
+            if (Equals(e.Button, SButton.J) && isLeftAltPressed)
+            {
+                readTile = false;
+                ReadTile.run(manuallyTriggered: true, playersPosition: true);
+                Task.Delay(1000).ContinueWith(t => { readTile = true; });
             }
 
             /*if (Equals(e.Button, SButton.B))
@@ -209,6 +216,16 @@ namespace stardew_access
                 Game1.player.controller = new PathFindController(Game1.player, Game1.currentLocation, new Point(49,13), 2);
                 monitor.Log($"{Game1.player.controller.pathToEndPoint==null}", LogLevel.Debug); // true if path not found
             }*/
+        }
+
+        public static void ErrorLog(string message)
+        {
+            monitor.Log(message, LogLevel.Error);
+        }
+
+        public static void DebugLog(string message)
+        {
+            monitor.Log(message, LogLevel.Debug);
         }
     }
 }

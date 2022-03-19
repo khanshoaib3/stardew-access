@@ -96,7 +96,7 @@ namespace stardew_access.Features
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate hud messages:\n{e.Message}\n{e.StackTrace}", StardewModdingAPI.LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate hud messages:\n{e.Message}\n{e.StackTrace}");
             }
 
             await Task.Delay(300);

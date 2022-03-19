@@ -22,17 +22,28 @@ namespace stardew_access.Features
             isReadingTile = false;
         }
 
-        public static async void run(bool manuallyTriggered = false)
+        public static async void run(bool manuallyTriggered = false, bool playersPosition = false)
         {
             isReadingTile = true;
 
             try
             {
-                #region Get Next Grab Tile
-                Vector2 tile = CurrentPlayer.getNextTile();
-                int x = (int)tile.X;
-                int y = (int)tile.Y;
+                Vector2 tile;
+                int x, y;
+                #region Get Tile
+                if (!playersPosition)
+                {
+                    // Grab tile
+                    tile = CurrentPlayer.getNextTile();
+                }
+                else
+                {
+                    // Player's standing tile
+                    tile = CurrentPlayer.getPosition();
+                }
                 #endregion
+                x = (int)tile.X;
+                y = (int)tile.Y;
 
                 if (Context.IsPlayerFree)
                 {
@@ -62,13 +73,14 @@ namespace stardew_access.Features
                     }
                     #endregion
 
-                    prevTile = tile;
+                    if (!manuallyTriggered)
+                        prevTile = tile;
                 }
 
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Error in Read Tile:\n{e.Message}\n{e.StackTrace}", LogLevel.Debug);
+                MainClass.ErrorLog($"Error in Read Tile:\n{e.Message}\n{e.StackTrace}");
             }
 
             await Task.Delay(100);

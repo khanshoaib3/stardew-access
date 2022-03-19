@@ -129,7 +129,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -289,7 +289,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
 
             await Task.Delay(200);
@@ -440,7 +440,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -548,7 +548,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -578,7 +578,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -662,7 +662,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -853,7 +853,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -1099,7 +1099,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -1317,7 +1317,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -1370,7 +1370,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -1405,7 +1405,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 

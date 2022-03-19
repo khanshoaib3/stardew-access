@@ -71,7 +71,7 @@ namespace stardew_access
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to initialize custom sounds:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to initialize custom sounds:\n{e.Message}\n{e.StackTrace}");
             }
         }
     }

@@ -31,13 +31,20 @@ namespace stardew_access.Features
             return staminaPercentage;
         }
 
+        public static Vector2 getPosition()
+        {
+            if (Game1.player == null)
+                return Vector2.Zero;
+
+            return Game1.player.getTileLocation();
+        }
+
         public static int getPositionX()
         {
             if (Game1.player == null)
                 return 0;
 
-            int x = (int)Game1.player.getTileLocation().X;
-            return x;
+            return (int)getPosition().X;
         }
 
         public static int getPositionY()
@@ -45,8 +52,7 @@ namespace stardew_access.Features
             if (Game1.player == null)
                 return 0;
 
-            int y = (int)Game1.player.getTileLocation().Y;
-            return y;
+            return (int)getPosition().Y;
         }
 
         public static string getTimeOfDay()

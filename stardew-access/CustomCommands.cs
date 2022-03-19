@@ -17,28 +17,28 @@ namespace stardew_access
             {
                 MainClass.readTile = !MainClass.readTile;
 
-                MainClass.GetMonitor().Log("Read Tile is " + (MainClass.readTile ? "on" : "off"), LogLevel.Info);
+                MainClass.DebugLog("Read Tile is " + (MainClass.readTile ? "on" : "off"));
             });
 
             helper.ConsoleCommands.Add("snapmouse", "Toggle snap mouse feature.", (string commmand, string[] args) =>
             {
                 MainClass.snapMouse = !MainClass.snapMouse;
 
-                MainClass.GetMonitor().Log("Snap Mouse is " + (MainClass.snapMouse ? "on" : "off"), LogLevel.Info);
+                MainClass.DebugLog("Snap Mouse is " + (MainClass.snapMouse ? "on" : "off"));
             });
 
             helper.ConsoleCommands.Add("flooring", "Toggle flooring in read tile.", (string commmand, string[] args) =>
             {
                 MainClass.readFlooring = !MainClass.readFlooring;
 
-                MainClass.GetMonitor().Log("Flooring is " + (MainClass.readFlooring ? "on" : "off"), LogLevel.Info);
+                MainClass.DebugLog("Flooring is " + (MainClass.readFlooring ? "on" : "off"));
             });
 
             helper.ConsoleCommands.Add("radar", "Toggle radar feature.", (string commmand, string[] args) =>
             {
                 MainClass.radar = !MainClass.radar;
 
-                MainClass.GetMonitor().Log("Radar " + (MainClass.radar ? "on" : "off"), LogLevel.Info);
+                MainClass.DebugLog("Radar " + (MainClass.radar ? "on" : "off"));
             });
 
             #region Radar Feature
@@ -46,21 +46,21 @@ namespace stardew_access
             {
                 MainClass.radarDebug = !MainClass.radarDebug;
 
-                MainClass.GetMonitor().Log("Radar debugging " + (MainClass.radarDebug ? "on" : "off"), LogLevel.Info);
+                MainClass.DebugLog("Radar debugging " + (MainClass.radarDebug ? "on" : "off"));
             });
 
             helper.ConsoleCommands.Add("rstereo", "Toggle stereo sound in radar feature.", (string commmand, string[] args) =>
             {
                 MainClass.radarStereoSound = !MainClass.radarStereoSound;
 
-                MainClass.GetMonitor().Log("Stereo sound is " + (MainClass.radarStereoSound ? "on" : "off"), LogLevel.Info);
+                MainClass.DebugLog("Stereo sound is " + (MainClass.radarStereoSound ? "on" : "off"));
             });
 
             helper.ConsoleCommands.Add("rfocus", "Toggle focus mode in radar feature.", (string commmand, string[] args) =>
             {
                 bool focus = MainClass.RadarFeature.ToggleFocus();
 
-                MainClass.GetMonitor().Log("Focus mode is " + (focus ? "on" : "off"), LogLevel.Info);
+                MainClass.DebugLog("Focus mode is " + (focus ? "on" : "off"));
             });
 
             helper.ConsoleCommands.Add("rdelay", "Set the delay of radar feature in milliseconds.", (string commmand, string[] args) =>
@@ -79,19 +79,19 @@ namespace stardew_access
                     {
                         MainClass.RadarFeature.delay = delay;
                         if (delay >= 1000)
-                            MainClass.GetMonitor().Log($"Delay set to {MainClass.RadarFeature.delay} milliseconds.", LogLevel.Info);
+                            MainClass.DebugLog($"Delay set to {MainClass.RadarFeature.delay} milliseconds.");
                         else
-                            MainClass.GetMonitor().Log($"Delay should be atleast 1 second or 1000 millisecond long.", LogLevel.Info);
+                            MainClass.DebugLog($"Delay should be atleast 1 second or 1000 millisecond long.");
                     }
                     else
                     {
-                        MainClass.GetMonitor().Log("Invalid delay amount, it can only be in numeric form.", LogLevel.Info);
+                        MainClass.DebugLog("Invalid delay amount, it can only be in numeric form.");
                     }
 
                 }
                 else
                 {
-                    MainClass.GetMonitor().Log("Enter the delay amount (in milliseconds)!", LogLevel.Info);
+                    MainClass.DebugLog("Enter the delay amount (in milliseconds)!");
                 }
 
             });
@@ -112,19 +112,19 @@ namespace stardew_access
                     {
                         MainClass.RadarFeature.range = range;
                         if (range >= 2 && range <= 10)
-                            MainClass.GetMonitor().Log($"Range set to {MainClass.RadarFeature.range}.", LogLevel.Info);
+                            MainClass.DebugLog($"Range set to {MainClass.RadarFeature.range}.");
                         else
-                            MainClass.GetMonitor().Log($"Range should be atleast 2 and maximum 10.", LogLevel.Info);
+                            MainClass.DebugLog($"Range should be atleast 2 and maximum 10.");
                     }
                     else
                     {
-                        MainClass.GetMonitor().Log("Invalid range amount, it can only be in numeric form.", LogLevel.Info);
+                        MainClass.DebugLog("Invalid range amount, it can only be in numeric form.");
                     }
 
                 }
                 else
                 {
-                    MainClass.GetMonitor().Log("Enter the range amount!", LogLevel.Info);
+                    MainClass.DebugLog("Enter the range amount!");
                 }
 
             });
@@ -143,16 +143,16 @@ namespace stardew_access
                         if (!MainClass.RadarFeature.exclusions.Contains(keyToAdd))
                         {
                             MainClass.RadarFeature.exclusions.Add(keyToAdd);
-                            MainClass.GetMonitor().Log($"Added {keyToAdd} key to exclusions list.", LogLevel.Info);
+                            MainClass.DebugLog($"Added {keyToAdd} key to exclusions list.");
                         }
                         else
                         {
-                            MainClass.GetMonitor().Log($"{keyToAdd} key already present in the list.", LogLevel.Info);
+                            MainClass.DebugLog($"{keyToAdd} key already present in the list.");
                         }
                     }
                     else
                     {
-                        MainClass.GetMonitor().Log("Unable to add the key to exclusions list.", LogLevel.Info);
+                        MainClass.DebugLog("Unable to add the key to exclusions list.");
                     }
                 });
 
@@ -168,16 +168,16 @@ namespace stardew_access
                     if (MainClass.RadarFeature.exclusions.Contains(keyToAdd))
                     {
                         MainClass.RadarFeature.exclusions.Remove(keyToAdd);
-                        MainClass.GetMonitor().Log($"Removed {keyToAdd} key from exclusions list.", LogLevel.Info);
+                        MainClass.DebugLog($"Removed {keyToAdd} key from exclusions list.");
                     }
                     else
                     {
-                        MainClass.GetMonitor().Log($"Cannot find {keyToAdd} key in exclusions list.", LogLevel.Info);
+                        MainClass.DebugLog($"Cannot find {keyToAdd} key in exclusions list.");
                     }
                 }
                 else
                 {
-                    MainClass.GetMonitor().Log("Unable to remove the key from exclusions list.", LogLevel.Info);
+                    MainClass.DebugLog("Unable to remove the key from exclusions list.");
                 }
             });
 
@@ -190,23 +190,23 @@ namespace stardew_access
                     {
                         toPrint = $"{toPrint}\t{i + 1}: {MainClass.RadarFeature.exclusions[i]}";
                     }
-                    MainClass.GetMonitor().Log(toPrint, LogLevel.Info);
+                    MainClass.DebugLog(toPrint);
                 }
                 else
                 {
-                    MainClass.GetMonitor().Log("No exclusions found.", LogLevel.Info);
+                    MainClass.DebugLog("No exclusions found.");
                 }
             });
 
             helper.ConsoleCommands.Add("reclear", "Clear the focus exclusions in the radar featrure.", (string commmand, string[] args) =>
             {
                 MainClass.RadarFeature.exclusions.Clear();
-                MainClass.GetMonitor().Log($"Cleared the focus list in the exclusions feature.", LogLevel.Info);
+                MainClass.DebugLog($"Cleared the focus list in the exclusions feature.");
             });
 
             helper.ConsoleCommands.Add("recount", "Number of exclusions in the radar feature.", (string commmand, string[] args) =>
             {
-                MainClass.GetMonitor().Log($"There are {MainClass.RadarFeature.exclusions.Count} exclusiond in the radar feature.", LogLevel.Info);
+                MainClass.DebugLog($"There are {MainClass.RadarFeature.exclusions.Count} exclusiond in the radar feature.");
             });
             #endregion
 
@@ -223,16 +223,16 @@ namespace stardew_access
                         if (!MainClass.RadarFeature.focus.Contains(keyToAdd))
                         {
                             MainClass.RadarFeature.focus.Add(keyToAdd);
-                            MainClass.GetMonitor().Log($"Added {keyToAdd} key to focus list.", LogLevel.Info);
+                            MainClass.DebugLog($"Added {keyToAdd} key to focus list.");
                         }
                         else
                         {
-                            MainClass.GetMonitor().Log($"{keyToAdd} key already present in the list.", LogLevel.Info);
+                            MainClass.DebugLog($"{keyToAdd} key already present in the list.");
                         }
                     }
                     else
                     {
-                        MainClass.GetMonitor().Log("Unable to add the key to focus list.", LogLevel.Info);
+                        MainClass.DebugLog("Unable to add the key to focus list.");
                     }
                 });
 
@@ -248,16 +248,16 @@ namespace stardew_access
                     if (MainClass.RadarFeature.focus.Contains(keyToAdd))
                     {
                         MainClass.RadarFeature.focus.Remove(keyToAdd);
-                        MainClass.GetMonitor().Log($"Removed {keyToAdd} key from focus list.", LogLevel.Info);
+                        MainClass.DebugLog($"Removed {keyToAdd} key from focus list.");
                     }
                     else
                     {
-                        MainClass.GetMonitor().Log($"Cannot find {keyToAdd} key in focus list.", LogLevel.Info);
+                        MainClass.DebugLog($"Cannot find {keyToAdd} key in focus list.");
                     }
                 }
                 else
                 {
-                    MainClass.GetMonitor().Log("Unable to remove the key from focus list.", LogLevel.Info);
+                    MainClass.DebugLog("Unable to remove the key from focus list.");
                 }
             });
 
@@ -270,23 +270,23 @@ namespace stardew_access
                     {
                         toPrint = $"{toPrint}\t{i + 1}): {MainClass.RadarFeature.focus[i]}";
                     }
-                    MainClass.GetMonitor().Log(toPrint, LogLevel.Info);
+                    MainClass.DebugLog(toPrint);
                 }
                 else
                 {
-                    MainClass.GetMonitor().Log("No objects found in the focus list.", LogLevel.Info);
+                    MainClass.DebugLog("No objects found in the focus list.");
                 }
             });
 
             helper.ConsoleCommands.Add("rfclear", "Clear the focus list in the radar featrure.", (string commmand, string[] args) =>
             {
                 MainClass.RadarFeature.focus.Clear();
-                MainClass.GetMonitor().Log($"Cleared the focus list in the radar feature.", LogLevel.Info);
+                MainClass.DebugLog($"Cleared the focus list in the radar feature.");
             });
 
             helper.ConsoleCommands.Add("rfcount", "Number of list in the radar feature.", (string commmand, string[] args) =>
             {
-                MainClass.GetMonitor().Log($"There are {MainClass.RadarFeature.focus.Count} objects in the focus list in the radar feature.", LogLevel.Info);
+                MainClass.DebugLog($"There are {MainClass.RadarFeature.focus.Count} objects in the focus list in the radar feature.");
             });
             #endregion
 
@@ -297,14 +297,14 @@ namespace stardew_access
             {
                 if (Game1.currentLocation is not Farm)
                 {
-                    MainClass.GetMonitor().Log("Can only use this command in the farm", LogLevel.Info);
+                    MainClass.DebugLog("Can only use this command in the farm");
                     return;
                 }
 
                 string? indexInString = args.ElementAtOrDefault(0);
                 if (indexInString == null)
                 {
-                    MainClass.GetMonitor().Log("Enter the index too!", LogLevel.Info);
+                    MainClass.DebugLog("Enter the index too!");
                     return;
                 }
 
@@ -313,12 +313,12 @@ namespace stardew_access
 
                 if (!isParsable || !(index >= 0 && index <= 9))
                 {
-                    MainClass.GetMonitor().Log("Index can only be a number and from 0 to 9 only", LogLevel.Info);
+                    MainClass.DebugLog("Index can only be a number and from 0 to 9 only");
                     return;
                 }
 
                 BuildingNAnimalMenuPatches.marked[index] = new Vector2((int)Game1.player.getTileX(), (int)Game1.player.getTileY());
-                MainClass.GetMonitor().Log($"Location {(int)Game1.player.getTileX()}x {(int)Game1.player.getTileY()}y added at {index} index.", LogLevel.Info);
+                MainClass.DebugLog($"Location {(int)Game1.player.getTileX()}x {(int)Game1.player.getTileY()}y added at {index} index.");
             });
 
             helper.ConsoleCommands.Add("marklist", "List all marked positions.", (string commmand, string[] args) =>
@@ -333,16 +333,16 @@ namespace stardew_access
                 }
 
                 if (toPrint == "")
-                    MainClass.GetMonitor().Log("No positions marked!", LogLevel.Info);
+                    MainClass.DebugLog("No positions marked!");
                 else
-                    MainClass.GetMonitor().Log($"Marked positions:{toPrint}\nOpen command menu and use pageup and pagedown to check the list", LogLevel.Info);
+                    MainClass.DebugLog($"Marked positions:{toPrint}\nOpen command menu and use pageup and pagedown to check the list");
             });
 
             helper.ConsoleCommands.Add("buildlist", "List all buildings for selection for upgrading/demolishing/painting", (string commmand, string[] args) =>
             {
                 if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu) || !BuildingNAnimalMenuPatches.isOnFarm)
                 {
-                    MainClass.GetMonitor().Log($"Cannot list buildings.", LogLevel.Info);
+                    MainClass.DebugLog($"Cannot list buildings.");
                     return;
                 }
 
@@ -363,11 +363,11 @@ namespace stardew_access
 
                 if (toPrint == "")
                 {
-                    MainClass.GetMonitor().Log("No appropriate buildings to list", LogLevel.Info);
+                    MainClass.DebugLog("No appropriate buildings to list");
                 }
                 else
                 {
-                    MainClass.GetMonitor().Log($"Available buildings:{toPrint}\nOpen command menu and use pageup and pagedown to check the list", LogLevel.Info);
+                    MainClass.DebugLog($"Available buildings:{toPrint}\nOpen command menu and use pageup and pagedown to check the list");
                 }
             });
 
@@ -375,14 +375,14 @@ namespace stardew_access
             {
                 if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu) || !BuildingNAnimalMenuPatches.isOnFarm)
                 {
-                    MainClass.GetMonitor().Log($"Cannot select building.", LogLevel.Info);
+                    MainClass.DebugLog($"Cannot select building.");
                     return;
                 }
 
                 string? indexInString = args.ElementAtOrDefault(0);
                 if (indexInString == null)
                 {
-                    MainClass.GetMonitor().Log("Enter the index of the building too! Use buildlist", LogLevel.Info);
+                    MainClass.DebugLog("Enter the index of the building too! Use buildlist");
                     return;
                 }
 
@@ -391,7 +391,7 @@ namespace stardew_access
 
                 if (!isParsable)
                 {
-                    MainClass.GetMonitor().Log("Index can only be a number.", LogLevel.Info);
+                    MainClass.DebugLog("Index can only be a number.");
                     return;
                 }
 
@@ -405,13 +405,13 @@ namespace stardew_access
                     {
                         if (BuildingNAnimalMenuPatches.availableBuildings[index] == null)
                         {
-                            MainClass.GetMonitor().Log($"No building found with index {index}. Use buildlist.", LogLevel.Info);
+                            MainClass.DebugLog($"No building found with index {index}. Use buildlist.");
                             return;
                         }
 
                         if (positionIndexInString == null)
                         {
-                            MainClass.GetMonitor().Log("Enter the index of marked place too! Use marklist.", LogLevel.Info);
+                            MainClass.DebugLog("Enter the index of marked place too! Use marklist.");
                             return;
                         }
 
@@ -419,7 +419,7 @@ namespace stardew_access
 
                         if (!isParsable)
                         {
-                            MainClass.GetMonitor().Log("Index can only be a number.", LogLevel.Info);
+                            MainClass.DebugLog("Index can only be a number.");
                             return;
                         }
                     }
@@ -428,7 +428,7 @@ namespace stardew_access
                 {
                     if (BuildingNAnimalMenuPatches.marked[index] == Vector2.Zero)
                     {
-                        MainClass.GetMonitor().Log($"No marked position found at {index} index.", LogLevel.Info);
+                        MainClass.DebugLog($"No marked position found at {index} index.");
                         return;
                     }
                 }
@@ -436,7 +436,7 @@ namespace stardew_access
                 {
                     if (BuildingNAnimalMenuPatches.availableBuildings[index] == null)
                     {
-                        MainClass.GetMonitor().Log($"No building found with index {index}. Use buildlist.", LogLevel.Info);
+                        MainClass.DebugLog($"No building found with index {index}. Use buildlist.");
                         return;
                     }
                 }
@@ -455,7 +455,7 @@ namespace stardew_access
 
                 if (response != null)
                 {
-                    MainClass.GetMonitor().Log(response, LogLevel.Info);
+                    MainClass.DebugLog(response);
                 }
             });
             #endregion
@@ -464,7 +464,7 @@ namespace stardew_access
             {
                 MainClass.GetScreenReader().InitializeScreenReader();
 
-                MainClass.GetMonitor().Log("Screen Reader refreshed!", LogLevel.Info);
+                MainClass.DebugLog("Screen Reader refreshed!");
             });
         }
     }
