@@ -687,12 +687,13 @@ namespace stardew_access.Features
             if (obj is Furniture)
                 toReturn.category = CATEGORY.Furnitures;
 
-            MachineState machineState = GetMachineState(obj);
-            if (machineState == MachineState.Ready)
-                toReturn.name = $"Harvestable {toReturn.name}";
-            else if (machineState == MachineState.Busy)
-                toReturn.name = $"Busy {toReturn.name}";
-
+            if(toReturn.category == CATEGORY.Others) { 
+                MachineState machineState = GetMachineState(obj);
+                if (machineState == MachineState.Ready)
+                    toReturn.name = $"Harvestable {toReturn.name}";
+                else if (machineState == MachineState.Busy)
+                    toReturn.name = $"Busy {toReturn.name}";
+            }
             return toReturn;
         }
 
