@@ -175,9 +175,16 @@ namespace stardew_access
             }
 
             // Narrate Position
-            if (Equals(e.Button, SButton.K))
+            if (Equals(e.Button, SButton.K) && !isLeftAltPressed)
             {
                 string toSpeak = $"X: {CurrentPlayer.getPositionX()} , Y: {CurrentPlayer.getPositionY()}";
+                MainClass.GetScreenReader().Say(toSpeak, true);
+            }
+
+            // Narrate Current Location
+            if (Equals(e.Button, SButton.K) && isLeftAltPressed)
+            {
+                string toSpeak = $"{Game1.currentLocation.Name}";
                 MainClass.GetScreenReader().Say(toSpeak, true);
             }
 
