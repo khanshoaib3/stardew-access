@@ -105,7 +105,6 @@ namespace stardew_access.Patches
                             else
                                 toSpeak = response;
 
-                            MainClass.ErrorLog(toSpeak);
                             MainClass.GetScreenReader().Say(toSpeak, true);
                         }
                     }

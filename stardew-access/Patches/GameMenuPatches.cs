@@ -234,19 +234,19 @@ namespace stardew_access.Patches
                         break;
                     case 2: // For inventory slots
                         {
-                            if (__instance.inventory != null && __instance.inventory.inventory.Count >= 0)
+                            if (__instance.inventory != null && __instance.inventory.actualInventory.Count >= 0)
                             {
                                 int prevSlotIndex = currentInventorySlot;
                                 currentInventorySlot = currentInventorySlot + (isLeftShiftPressed ? -1 : 1);
-                                if (currentInventorySlot >= __instance.inventory.inventory.Count)
+                                if (currentInventorySlot >= __instance.inventory.actualInventory.Count)
                                     if (isLeftShiftPressed)
-                                        currentInventorySlot = __instance.inventory.inventory.Count - 1;
+                                        currentInventorySlot = __instance.inventory.actualInventory.Count - 1;
                                     else
                                         currentInventorySlot = 0;
 
                                 if (currentInventorySlot < 0)
                                     if (isLeftShiftPressed)
-                                        currentInventorySlot = __instance.inventory.inventory.Count - 1;
+                                        currentInventorySlot = __instance.inventory.actualInventory.Count - 1;
                                     else
                                         currentInventorySlot = 0;
 
