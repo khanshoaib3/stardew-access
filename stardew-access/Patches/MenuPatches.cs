@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using stardew_access.Features;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
@@ -10,11 +11,12 @@ namespace stardew_access.Patches
     internal class MenuPatches
     {
         private static string currentLetterText = " ";
-        private static string hoveredItemQueryKey = " ";
+        private static string museumQueryKey = " ";
         private static string currentLevelUpTitle = " ";
         public static Vector2? prevTile = null;
         private static bool isMoving = false;
 
+        #region Museum Menu Patch
         internal static bool MuseumMenuKeyPressPatch()
         {
             try
@@ -43,14 +45,37 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
 
-                if (___holdingMuseumPiece)
+                if (__instance.heldItem != null)
                 {
                     // Museum Inventory
+                    string toSpeak = "";
+                    int tileX = (int)(Utility.ModifyCoordinateFromUIScale(x) + (float)Game1.viewport.X) / 64;
+                    int tileY = (int)(Utility.ModifyCoordinateFromUIScale(y) + (float)Game1.viewport.Y) / 64;
+                    LibraryMuseum libraryMuseum = (LibraryMuseum)Game1.currentLocation;
+
+                    if (libraryMuseum.isTileSuitableForMuseumPiece(tileX, tileY))
+                        toSpeak = $"{tileX}x {tileY}y";
+
+                    if (museumQueryKey != toSpeak)
+                    {
+                        museumQueryKey = toSpeak;
+                        MainClass.GetScreenReader().Say(toSpeak, true);
+                    }
                 }
                 else
                 {
                     // Player Inventory
-                    narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y);
+                    if (!narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                    {
+                        if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                        {
+                            if (museumQueryKey != $"ok button")
+                            {
+                                museumQueryKey = $"ok button";
+                                MainClass.GetScreenReader().Say("ok button", true);
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -58,6 +83,7 @@ namespace stardew_access.Patches
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
+        #endregion
 
         internal static bool narrateHoveredItemInInventory(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y)
         {
@@ -114,9 +140,9 @@ namespace stardew_access.Patches
                         toSpeak = "Empty Slot";
                     }
 
-                    if (hoveredItemQueryKey != $"{toSpeak}:{i}")
+                    if (museumQueryKey != $"{toSpeak}:{i}")
                     {
-                        hoveredItemQueryKey = $"{toSpeak}:{i}";
+                        museumQueryKey = $"{toSpeak}:{i}";
                         MainClass.GetScreenReader().Say(toSpeak, true);
                     }
                     return true;
