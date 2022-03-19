@@ -281,6 +281,7 @@ namespace stardew_access.Patches
                 if (!__instance.IsActive())
                     return;
 
+                int x = Game1.getMousePosition().X, y = Game1.getMousePosition().Y;
                 #region Texts in the letter
                 string message = __instance.mailMessage[__instance.page];
 
@@ -305,11 +306,14 @@ namespace stardew_access.Patches
                     currentLetterText = toSpeak;
 
                     // snap mouse to accept quest button
-                    if (__instance.acceptQuestButton != null && __instance.acceptQuestButton.visible)
+                    if (__instance.acceptQuestButton != null && __instance.questID != -1)
                     {
                         toSpeak += "\t\n Left click to accept quest.";
                         __instance.acceptQuestButton.snapMouseCursorToCenter();
                     }
+                    if (__instance.mailMessage.Count > 1)
+                        toSpeak = $"Page {__instance.page + 1} of {__instance.mailMessage.Count}:\n\t{toSpeak}";
+
                     MainClass.GetScreenReader().Say(toSpeak, false);
                 }
                 #endregion
@@ -322,10 +326,19 @@ namespace stardew_access.Patches
                         string name = c.name;
                         string label = c.label;
 
-                        if (c.containsPoint(Game1.getMousePosition().X, Game1.getMousePosition().Y))
+                        if (c.containsPoint(x, y))
                             MainClass.GetScreenReader().SayWithChecker($"Grab: {name} \t\n {label}", false);
                     }
                 }
+                #endregion
+
+                #region Narrate buttons
+                if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
+                    MainClass.GetScreenReader().SayWithChecker($"Previous page button", false);
+
+                if (__instance.forwardButton != null && __instance.forwardButton.visible && __instance.forwardButton.containsPoint(x, y))
+                    MainClass.GetScreenReader().SayWithChecker($"Next page button", false);
+
                 #endregion
             }
             catch (Exception e)
