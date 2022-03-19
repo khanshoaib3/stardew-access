@@ -326,23 +326,31 @@ namespace stardew_access.Features
 
         public static string? getJunimoBundleAt(int x, int y)
         {
-            if (Game1.currentLocation is not CommunityCenter)
+            if (Game1.currentLocation is not CommunityCenter communityCenter || Game1.currentLocation is not AbandonedJojaMart abandonedJojaMart)
                 return null;
 
-            CommunityCenter communityCenter = ((CommunityCenter)Game1.currentLocation);
+            string? name = null;
+            if (communityCenter != null)
+                name = (x, y) switch
+                {
+                    (14, 5) => "Pantry",
+                    (14, 23) => "Crafts Room",
+                    (40, 10) => "Fish Tank",
+                    (63, 14) => "Boiler Room",
+                    (55, 6) => "Vault",
+                    (46, 11) => "Bulletin Board",
+                    _ => null,
+                };
+            else if (abandonedJojaMart != null)
+                name = (x, y) switch
+                {
+                    (8, 8) => "Missing",
+                    _ => null,
+                };
 
-            string? name = (x, y) switch
-            {
-                (14, 5) => "Pantry",
-                (14, 23) => "Crafts Room",
-                (40, 10) => "Fish Tank",
-                (63, 14) => "Boiler Room",
-                (55, 6) => "Vault",
-                (46, 11) => "Bulletin Board",
-                _ => null,
-            };
-
-            if (name != null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
+            if (name != null && communityCenter != null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
+                return $"{name} bundle";
+            else if (name != null && abandonedJojaMart != null)
                 return $"{name} bundle";
             else
                 return null;
@@ -655,6 +663,7 @@ namespace stardew_access.Features
             return seedName;
         }
 
+        #region Objects
         public static (string? name, CATEGORY category) getObjectAtTile(int x, int y)
         {
             (string? name, CATEGORY category) toReturn = (null, CATEGORY.Others);
@@ -827,6 +836,7 @@ namespace stardew_access.Features
 
             return (null, CATEGORY.Others);
         }
+        #endregion
 
         public static bool isMineDownLadderAtTile(int x, int y)
         {
