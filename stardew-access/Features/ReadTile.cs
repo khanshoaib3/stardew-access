@@ -342,7 +342,7 @@ namespace stardew_access.Features
                 if (name != null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
                     return $"{name} bundle";
             }
-            else if (Game1.currentLocation is not AbandonedJojaMart)
+            else if (Game1.currentLocation is  AbandonedJojaMart)
             {
                 name = (x, y) switch
                 {
@@ -687,12 +687,13 @@ namespace stardew_access.Features
             if (obj is Furniture)
                 toReturn.category = CATEGORY.Furnitures;
 
-            MachineState machineState = GetMachineState(obj);
-            if (machineState == MachineState.Ready)
-                toReturn.name = $"Harvestable {toReturn.name}";
-            else if (machineState == MachineState.Busy)
-                toReturn.name = $"Busy {toReturn.name}";
-
+                if(toReturn.category == CATEGORY.Others) { 
+                MachineState machineState = GetMachineState(obj);
+                if (machineState == MachineState.Ready)
+                    toReturn.name = $"Harvestable {toReturn.name}";
+                else if (machineState == MachineState.Busy)
+                    toReturn.name = $"Busy {toReturn.name}";
+            }
             return toReturn;
         }
 
@@ -837,7 +838,7 @@ namespace stardew_access.Features
 
             return (null, CATEGORY.Others);
         }
-        #endregion
+        #endregion  
 
         public static bool isMineDownLadderAtTile(int x, int y)
         {
