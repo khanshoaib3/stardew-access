@@ -342,7 +342,7 @@ namespace stardew_access.Features
                 if (name != null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
                     return $"{name} bundle";
             }
-            else if (Game1.currentLocation is  AbandonedJojaMart)
+            else if (Game1.currentLocation is AbandonedJojaMart)
             {
                 name = (x, y) switch
                 {
@@ -678,6 +678,9 @@ namespace stardew_access.Features
             if (correctNameAndCategory.name != null)
                 toReturn = correctNameAndCategory;
 
+            if (toReturn.name.ToLower().Equals("stone"))
+                toReturn.category = CATEGORY.Debris;
+
             if (obj is Chest)
             {
                 Chest chest = (Chest)obj;
@@ -687,7 +690,8 @@ namespace stardew_access.Features
             if (obj is Furniture)
                 toReturn.category = CATEGORY.Furnitures;
 
-                if(toReturn.category == CATEGORY.Others) { 
+            if (toReturn.category == CATEGORY.Others)
+            {
                 MachineState machineState = GetMachineState(obj);
                 if (machineState == MachineState.Ready)
                     toReturn.name = $"Harvestable {toReturn.name}";
