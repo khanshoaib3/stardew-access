@@ -54,7 +54,7 @@ namespace stardew_access.Patches
                     LibraryMuseum libraryMuseum = (LibraryMuseum)Game1.currentLocation;
 
                     if (libraryMuseum.isTileSuitableForMuseumPiece(tileX, tileY))
-                        toSpeak = $"{tileX}x {tileY}y";
+                        toSpeak = $"slot {tileX}x {tileY}y";
 
                     if (museumQueryKey != toSpeak)
                     {

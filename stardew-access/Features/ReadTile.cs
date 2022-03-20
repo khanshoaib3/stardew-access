@@ -678,7 +678,7 @@ namespace stardew_access.Features
             if (correctNameAndCategory.name != null)
                 toReturn = correctNameAndCategory;
 
-            if (toReturn.name.ToLower().Equals("stone"))
+            if (toReturn.name.ToLower().Equals("stone")) // Fix for `Busy stone`
                 toReturn.category = CATEGORY.Debris;
 
             if (obj is Chest)
@@ -690,7 +690,7 @@ namespace stardew_access.Features
             if (obj is Furniture)
                 toReturn.category = CATEGORY.Furnitures;
 
-            if (toReturn.category == CATEGORY.Others)
+            if (toReturn.category == CATEGORY.Others) // Fix for `Harvestable table` and `Busy nodes`
             {
                 MachineState machineState = GetMachineState(obj);
                 if (machineState == MachineState.Ready)
