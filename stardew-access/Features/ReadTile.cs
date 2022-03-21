@@ -543,7 +543,7 @@ namespace stardew_access.Features
                 if (toReturn.Contains("feature"))
                     toReturn.Replace("feature", "");
             }
-            else if (terrain.Get() is Flooring && MainClass.readFlooring)
+            else if (terrain.Get() is Flooring && MainClass.Config.ReadFlooring)
             {
                 category = CATEGORY.Flooring;
                 Flooring flooring = (Flooring)terrain.Get();

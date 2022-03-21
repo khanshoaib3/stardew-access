@@ -12,23 +12,22 @@ namespace stardew_access
 {
     public class MainClass : Mod
     {
-        private ModConfig config;
+        #region Global Vars
+        private static ModConfig config;
         private Harmony? harmony;
-        public static bool readTile = true;
-        public static bool snapMouse = true;
-        public static bool isNarratingHudMessage = false;
-        public static bool radar = false;
-        public static bool radarDebug = false;
-        public static bool radarStereoSound = true;
-        public static bool readFlooring = false;
         private static IMonitor monitor;
-        public static string hudMessageQueryKey = "";
         private static Radar radarFeature;
         private static IScreenReader? screenReader;
         private static IModHelper modHelper;
 
+        internal static ModConfig Config { get => config; set => config = value; }
         public static IModHelper ModHelper { get => modHelper; }
         public static Radar RadarFeature { get => radarFeature; set => radarFeature = value; }
+
+        public static string hudMessageQueryKey = "";
+        public static bool isNarratingHudMessage = false;
+        public static bool radarDebug = false;
+        #endregion
 
         public static IScreenReader GetScreenReader()
         {
@@ -55,7 +54,8 @@ namespace stardew_access
         public override void Entry(IModHelper helper)
         {
             #region Initializations
-            this.config = helper.ReadConfig<ModConfig>();
+            Config = helper.ReadConfig<ModConfig>();
+
             SetMonitor(base.Monitor); // Inititalize monitor
             modHelper = helper;
 
@@ -116,13 +116,13 @@ namespace stardew_access
 
             Other.narrateCurrentLocation();
 
-            if (snapMouse)
+            if (Config.SnapMouse)
                 Other.SnapMouseToPlayer();
 
-            if (!ReadTile.isReadingTile && readTile)
+            if (!ReadTile.isReadingTile && Config.ReadTile)
                 ReadTile.run();
 
-            if (!RadarFeature.isRunning && radar)
+            if (!RadarFeature.isRunning && Config.Radar)
                 RadarFeature.Run();
 
             if (!isNarratingHudMessage)
@@ -179,7 +179,7 @@ namespace stardew_access
             if (Equals(e.Button, SButton.K) && !isLeftAltPressed)
             {
                 string toSpeak;
-                if (this.config.VerboseCoordinates)
+                if (Config.VerboseCoordinates)
                 {
                     toSpeak = $"X: {CurrentPlayer.getPositionX()}, Y: {CurrentPlayer.getPositionY()}";
                 }
@@ -187,7 +187,7 @@ namespace stardew_access
                 {
                     toSpeak = $"{CurrentPlayer.getPositionX()}, {CurrentPlayer.getPositionY()}";
                 }
-                
+
                 MainClass.GetScreenReader().Say(toSpeak, true);
             }
 

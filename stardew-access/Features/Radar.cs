@@ -330,7 +330,7 @@ namespace stardew_access.Features
         {
             string soundName = $"_{post}";
 
-            if (!MainClass.radarStereoSound)
+            if (!MainClass.Config.RadarStereoSound)
                 soundName = $"_mono{soundName}";
 
             if (category == CATEGORY.Farmers) // Villagers and farmers

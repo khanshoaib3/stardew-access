@@ -15,30 +15,30 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("readtile", "Toggle read tile feature.", (string commmand, string[] args) =>
             {
-                MainClass.readTile = !MainClass.readTile;
+                MainClass.Config.ReadTile = !MainClass.Config.ReadTile;
 
-                MainClass.DebugLog("Read Tile is " + (MainClass.readTile ? "on" : "off"));
+                MainClass.DebugLog("Read Tile is " + (MainClass.Config.ReadTile ? "on" : "off"));
             });
 
             helper.ConsoleCommands.Add("snapmouse", "Toggle snap mouse feature.", (string commmand, string[] args) =>
             {
-                MainClass.snapMouse = !MainClass.snapMouse;
+                MainClass.Config.SnapMouse = !MainClass.Config.SnapMouse;
 
-                MainClass.DebugLog("Snap Mouse is " + (MainClass.snapMouse ? "on" : "off"));
+                MainClass.DebugLog("Snap Mouse is " + (MainClass.Config.SnapMouse ? "on" : "off"));
             });
 
             helper.ConsoleCommands.Add("flooring", "Toggle flooring in read tile.", (string commmand, string[] args) =>
             {
-                MainClass.readFlooring = !MainClass.readFlooring;
+                MainClass.Config.ReadFlooring = !MainClass.Config.ReadFlooring;
 
-                MainClass.DebugLog("Flooring is " + (MainClass.readFlooring ? "on" : "off"));
+                MainClass.DebugLog("Flooring is " + (MainClass.Config.ReadFlooring ? "on" : "off"));
             });
 
             helper.ConsoleCommands.Add("radar", "Toggle radar feature.", (string commmand, string[] args) =>
             {
-                MainClass.radar = !MainClass.radar;
+                MainClass.Config.Radar = !MainClass.Config.Radar;
 
-                MainClass.DebugLog("Radar " + (MainClass.radar ? "on" : "off"));
+                MainClass.DebugLog("Radar " + (MainClass.Config.Radar ? "on" : "off"));
             });
 
             #region Radar Feature
@@ -51,9 +51,9 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("rstereo", "Toggle stereo sound in radar feature.", (string commmand, string[] args) =>
             {
-                MainClass.radarStereoSound = !MainClass.radarStereoSound;
+                MainClass.Config.RadarStereoSound = !MainClass.Config.RadarStereoSound;
 
-                MainClass.DebugLog("Stereo sound is " + (MainClass.radarStereoSound ? "on" : "off"));
+                MainClass.DebugLog("Stereo sound is " + (MainClass.Config.RadarStereoSound ? "on" : "off"));
             });
 
             helper.ConsoleCommands.Add("rfocus", "Toggle focus mode in radar feature.", (string commmand, string[] args) =>
