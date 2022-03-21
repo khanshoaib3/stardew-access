@@ -12,6 +12,7 @@ namespace stardew_access
 {
     public class MainClass : Mod
     {
+        private ModConfig config;
         private Harmony? harmony;
         public static bool readTile = true;
         public static bool snapMouse = true;
@@ -54,7 +55,7 @@ namespace stardew_access
         public override void Entry(IModHelper helper)
         {
             #region Initializations
-
+            this.config = helper.ReadConfig<ModConfig>();
             SetMonitor(base.Monitor); // Inititalize monitor
             modHelper = helper;
 
@@ -177,7 +178,16 @@ namespace stardew_access
             // Narrate Position
             if (Equals(e.Button, SButton.K) && !isLeftAltPressed)
             {
-                string toSpeak = $"X: {CurrentPlayer.getPositionX()} , Y: {CurrentPlayer.getPositionY()}";
+                string toSpeak;
+                if (this.config.VerboseCoordinates)
+                {
+                    toSpeak = $"X: {CurrentPlayer.getPositionX()}, Y: {CurrentPlayer.getPositionY()}";
+                }
+                else
+                {
+                    toSpeak = $"{CurrentPlayer.getPositionX()}, {CurrentPlayer.getPositionY()}";
+                }
+                
                 MainClass.GetScreenReader().Say(toSpeak, true);
             }
 
