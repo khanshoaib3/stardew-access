@@ -98,6 +98,12 @@ namespace stardew_access.Features
             return (tileDetail.name, tileDetail.category.ToString());
         }
 
+        ///<summary>Returns the name of the object at tile</summary>
+        public static string? getNameAtTile(Vector2 tile)
+        {
+            return getNameWithCategoryAtTile(tile).name;
+        }
+
         ///<summary>Returns the name of the object at tile alongwith it's category</summary>
         public static (string? name, CATEGORY? category) getNameWithCategoryAtTile(Vector2 tile)
         {
@@ -195,83 +201,6 @@ namespace stardew_access.Features
                 return (null, category);
 
             return (toReturn, category);
-        }
-
-        ///<summary>Returns the name of the object at tile</summary>
-        public static string? getNameAtTile(Vector2 tile)
-        {
-            int x = (int)tile.X;
-            int y = (int)tile.Y;
-            string? toReturn = "";
-
-            bool isColliding = isCollidingAtTile(x, y);
-            Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
-            string? door = getDoorAtTile(x, y);
-            (CATEGORY? category, string? name) tileInfo = getTileInfo(x, y);
-            string? junimoBundle = getJunimoBundleAt(x, y);
-            string? resourceClump = getResourceClumpAtTile(x, y);
-            string? farmAnimal = getFarmAnimalAt(Game1.currentLocation, x, y);
-
-            if (Game1.currentLocation.isCharacterAtTile(tile) != null)
-            {
-                NPC npc = Game1.currentLocation.isCharacterAtTile(tile);
-                toReturn = npc.displayName;
-            }
-            else if (farmAnimal != null)
-            {
-                toReturn = farmAnimal;
-            }
-            else if (Game1.currentLocation.isWaterTile(x, y) && isColliding)
-            {
-                toReturn = "Water";
-            }
-            else if (Game1.currentLocation.isObjectAtTile(x, y))
-            {
-                toReturn = getObjectAtTile(x, y).name;
-            }
-            else if (terrainFeature.ContainsKey(tile))
-            {
-                string? terrain = getTerrainFeatureAtTile(terrainFeature[tile]).Item1;
-                if (terrain != null)
-                    toReturn = terrain;
-            }
-            else if (Game1.currentLocation.getLargeTerrainFeatureAt(x, y) != null)
-            {
-                toReturn = getBushAtTile(x, y);
-            }
-            else if (resourceClump != null)
-            {
-                toReturn = resourceClump;
-            }
-            else if (door != null)
-            {
-                toReturn = door;
-            }
-            else if (isMineDownLadderAtTile(x, y))
-            {
-                toReturn = "Ladder";
-            }
-            else if (isMineUpLadderAtTile(x, y))
-            {
-                toReturn = "Up Ladder";
-            }
-            else if (isElevatorAtTile(x, y))
-            {
-                toReturn = "Elevator";
-            }
-            else if (tileInfo.name != null)
-            {
-                toReturn = tileInfo.name;
-            }
-            else if (junimoBundle != null)
-            {
-                toReturn = junimoBundle;
-            }
-
-            if (toReturn == "")
-                return null;
-
-            return toReturn;
         }
 
         public static string? getBushAtTile(int x, int y)
