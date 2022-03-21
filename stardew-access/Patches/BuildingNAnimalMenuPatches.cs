@@ -24,7 +24,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 purchaseAnimalsMenu = __instance;
                 isOnFarm = ___onFarm;
 
@@ -125,7 +125,7 @@ namespace stardew_access.Patches
                     if (currentBluprint == null)
                         return;
 
-                    int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                    int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                     bool isBPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.B);
                     string ingredients = "";
                     string name = currentBluprint.displayName;

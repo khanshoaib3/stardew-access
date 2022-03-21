@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewValley;
+﻿using StardewValley;
 using StardewValley.Menus;
 using static StardewValley.Menus.LoadGameMenu;
 
@@ -16,7 +14,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY();
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
                 string toSpeak = " ";
 
                 #region Join/Host Button (Important! This should be checked before checking other buttons)
@@ -64,7 +62,7 @@ namespace stardew_access.Patches
 
                 __instance.buttons.ForEach(component =>
                 {
-                    if (component.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+                    if (component.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                     {
                         string name = component.name;
                         string label = component.label;
@@ -72,27 +70,27 @@ namespace stardew_access.Patches
                     }
                 });
 
-                if (__instance.muteMusicButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+                if (__instance.muteMusicButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
                     toSpeak = "Mute Music Button";
                 }
 
-                if (__instance.aboutButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+                if (__instance.aboutButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
                     toSpeak = "About Button";
                 }
 
-                if (__instance.languageButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+                if (__instance.languageButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
                     toSpeak = "Language Button";
                 }
 
-                if (__instance.windowedButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+                if (__instance.windowedButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
                     toSpeak = "Fullscreen toggle Button";
                 }
 
-                if (TitleMenu.subMenu != null && __instance.backButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+                if (TitleMenu.subMenu != null && __instance.backButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
                     string text = "Back Button";
                     MainClass.GetScreenReader().SayWithChecker(text, true);
@@ -111,7 +109,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY();
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
                 if (___menu.slotButtons[i].containsPoint(x, y))
                 {
                     if (__instance.Farmer != null)
@@ -161,12 +159,21 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void NewGameMenuPatch(CharacterCustomization __instance, bool ___skipIntro)
+        internal static void CharacterCustomizationMenuPatch(CharacterCustomization __instance, bool ___skipIntro)
         {
             try
             {
                 bool isNextArrowPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right);
                 bool isPrevArrowPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left);
+
+                if (__instance.backButton.containsPoint != null && __instance.backButton.visible && __instance.backButton.containsPoint((int)Game1.getMouseX(true), (int)Game1.getMouseY(true)))
+                {
+                    // Perform Left Click
+                    if (MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed())
+                    {
+                        Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                    }
+                }
 
                 if (isNextArrowPressed && !isRunning)
                 {
@@ -289,7 +296,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.skipIntroButton.snapMouseCursor();
+                        __instance.skipIntroButton.snapMouseCursorToCenter();
                         toSpeak = (___skipIntro ? "Enabled" : "Disabled") + " Skip Intro Button";
                     }
                     break;
@@ -311,7 +318,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.randomButton.snapMouseCursor();
+                        __instance.randomButton.snapMouseCursorToCenter();
                         toSpeak = "Random Skin Button";
                         break;
                     }
@@ -333,7 +340,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.genderButtons[0].snapMouseCursor();
+                        __instance.genderButtons[0].snapMouseCursorToCenter();
                         toSpeak = "Gender Male Button";
                         break;
                     }
@@ -355,7 +362,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.genderButtons[1].snapMouseCursor();
+                        __instance.genderButtons[1].snapMouseCursorToCenter();
                         toSpeak = "Gender Female Button";
                         break;
                     }
@@ -377,7 +384,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.farmTypeButtons[0].snapMouseCursor();
+                        __instance.farmTypeButtons[0].snapMouseCursorToCenter();
                         toSpeak = getFarmHoverText(__instance.farmTypeButtons[0]);
                         break;
                     }
@@ -399,7 +406,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.farmTypeButtons[1].snapMouseCursor();
+                        __instance.farmTypeButtons[1].snapMouseCursorToCenter();
                         toSpeak = getFarmHoverText(__instance.farmTypeButtons[1]);
                         break;
                     }
@@ -421,7 +428,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.farmTypeButtons[2].snapMouseCursor();
+                        __instance.farmTypeButtons[2].snapMouseCursorToCenter();
                         toSpeak = getFarmHoverText(__instance.farmTypeButtons[2]);
                         break;
                     }
@@ -443,7 +450,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.farmTypeButtons[3].snapMouseCursor();
+                        __instance.farmTypeButtons[3].snapMouseCursorToCenter();
                         toSpeak = getFarmHoverText(__instance.farmTypeButtons[3]);
                         break;
                     }
@@ -465,7 +472,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.farmTypeButtons[4].snapMouseCursor();
+                        __instance.farmTypeButtons[4].snapMouseCursorToCenter();
                         toSpeak = getFarmHoverText(__instance.farmTypeButtons[4]);
                         break;
                     }
@@ -487,7 +494,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.farmTypeButtons[5].snapMouseCursor();
+                        __instance.farmTypeButtons[5].snapMouseCursorToCenter();
                         toSpeak = getFarmHoverText(__instance.farmTypeButtons[5]);
                         break;
                     }
@@ -509,7 +516,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.farmTypeButtons[6].snapMouseCursor();
+                        __instance.farmTypeButtons[6].snapMouseCursorToCenter();
                         toSpeak = getFarmHoverText(__instance.farmTypeButtons[6]);
                         break;
                     }
@@ -531,7 +538,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.farmTypeNextPageButton.snapMouseCursor();
+                        __instance.farmTypeNextPageButton.snapMouseCursorToCenter();
                         toSpeak = "Next Farm Type Page Button";
                         break;
                     }
@@ -553,7 +560,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.farmTypePreviousPageButton.snapMouseCursor();
+                        __instance.farmTypePreviousPageButton.snapMouseCursorToCenter();
                         toSpeak = "Previous Farm Type Page Button";
                         break;
                     }
@@ -575,7 +582,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.cabinLayoutButtons[0].snapMouseCursor();
+                        __instance.cabinLayoutButtons[0].snapMouseCursorToCenter();
                         toSpeak = "Cabin layout nearby";
                         break;
                     }
@@ -597,7 +604,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.cabinLayoutButtons[1].snapMouseCursor();
+                        __instance.cabinLayoutButtons[1].snapMouseCursorToCenter();
                         toSpeak = "Cabin layout separate";
                         break;
                     }
@@ -619,7 +626,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.okButton.snapMouseCursor();
+                        __instance.okButton.snapMouseCursorToCenter();
                         toSpeak = "Ok Button";
                     }
                     break;
@@ -632,7 +639,7 @@ namespace stardew_access.Patches
                         }
                         #endregion
 
-                        __instance.backButton.snapMouseCursor();
+                        __instance.backButton.snapMouseCursorToCenter();
                         toSpeak = "Back Button";
                     }
                     break;

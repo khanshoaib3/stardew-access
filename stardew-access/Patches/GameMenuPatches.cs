@@ -29,7 +29,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 if (!___specificBundlePage)
                 {
                     currentIngredientListItem = -1;
@@ -300,7 +300,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 for (int i = ___slotPosition; i < ___slotPosition + 5; i++)
                 {
                     if (i < ___sprites.Count)
@@ -308,7 +308,7 @@ namespace stardew_access.Patches
                         if (__instance.names[i] is string)
                         {
                             #region  For NPCs
-                            if (__instance.characterSlots[i].bounds.Contains(Game1.getMouseX(), Game1.getMouseY()))
+                            if (__instance.characterSlots[i].bounds.Contains(Game1.getMouseX(true), Game1.getMouseY(true)))
                             {
                                 string name = $"{__instance.names[i] as string}";
                                 int heartLevel = Game1.player.getFriendshipHeartLevelForNPC(name);
@@ -448,7 +448,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
                 bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
@@ -560,7 +560,7 @@ namespace stardew_access.Patches
                 if (__instance.currentTab != 0 && __instance.currentTab != 4 && __instance.currentTab != 6 && __instance.currentTab != 7)
                     return;
 
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
                 for (int i = 0; i < __instance.tabs.Count; i++)
                 {
@@ -586,7 +586,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
                 #region Narrate the treasure recieved on breaking the geode
                 if (__instance.geodeTreasure != null)
@@ -670,7 +670,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
                 bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
@@ -934,7 +934,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
                 bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
                 bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
@@ -1138,7 +1138,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
                 #region Narrate buttons in the menu
                 if (__instance.inventory.dropItemInvisibleButton != null && __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
@@ -1326,7 +1326,7 @@ namespace stardew_access.Patches
             try
             {
                 int currentItemIndex = Math.Max(0, Math.Min(__instance.options.Count - 7, __instance.currentItemIndex));
-                int x = Game1.getMouseX(), y = Game1.getMouseY();
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
                 for (int i = 0; i < __instance.optionSlots.Count; i++)
                 {
                     if (__instance.optionSlots[i].bounds.Contains(x, y) && currentItemIndex + i < __instance.options.Count && __instance.options[currentItemIndex + i].bounds.Contains(x - __instance.optionSlots[i].bounds.X, y - __instance.optionSlots[i].bounds.Y))
@@ -1379,7 +1379,7 @@ namespace stardew_access.Patches
             try
             {
                 if (__instance.exitToTitle.visible &&
-                        __instance.exitToTitle.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+                        __instance.exitToTitle.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
                     string toSpeak = "Exit to Title Button";
                     if (exitPageQueryKey != toSpeak)
@@ -1391,7 +1391,7 @@ namespace stardew_access.Patches
                     return;
                 }
                 if (__instance.exitToDesktop.visible &&
-                    __instance.exitToDesktop.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+                    __instance.exitToDesktop.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
                     string toSpeak = "Exit to Desktop Button";
                     if (exitPageQueryKey != toSpeak)

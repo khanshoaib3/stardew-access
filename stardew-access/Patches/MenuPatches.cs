@@ -43,7 +43,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
                 if (__instance.heldItem != null)
                 {
@@ -188,7 +188,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
                 if (__instance.nextPageButton != null && __instance.nextPageButton.containsPoint(x, y))
                 {
@@ -221,7 +221,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 for (int i = 0; i < ___elevators.Count; i++)
                 {
                     if (___elevators[i].containsPoint(x, y))
@@ -257,7 +257,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY();
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
 
                 MainClass.GetScreenReader().SayWithMenuChecker(___message, true);
                 if (__instance.okButton.containsPoint(x, y))
@@ -279,12 +279,8 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY();
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
                 string leftProfession = " ", rightProfession = " ", extraInfo = " ", newCraftingRecipe = " ", toSpeak = " ";
-
-                bool isOpenBracketPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.OemOpenBrackets); // for left click
-                bool isLeftCtrlPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl);
-                bool isEnterPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter);
 
                 if (!__instance.informationUp)
                 {
@@ -307,7 +303,7 @@ namespace stardew_access.Patches
 
                     if (__instance.leftProfession.containsPoint(x, y))
                     {
-                        if (isOpenBracketPressed || (isLeftCtrlPressed && isEnterPressed && __instance.readyToClose()))
+                        if ((MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed()) && __instance.readyToClose())
                         {
                             Game1.player.professions.Add(___professionsToChoose[0]);
                             __instance.getImmediateProfessionPerk(___professionsToChoose[0]);
@@ -324,7 +320,7 @@ namespace stardew_access.Patches
 
                     if (__instance.rightProfession.containsPoint(x, y))
                     {
-                        if (isOpenBracketPressed || (isLeftCtrlPressed && isEnterPressed && __instance.readyToClose()))
+                        if ((MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed()) && __instance.readyToClose())
                         {
                             Game1.player.professions.Add(___professionsToChoose[1]);
                             __instance.getImmediateProfessionPerk(___professionsToChoose[1]);
@@ -356,7 +352,7 @@ namespace stardew_access.Patches
 
                 if (__instance.okButton.containsPoint(x, y))
                 {
-                    if (isOpenBracketPressed || (isLeftCtrlPressed && isEnterPressed))
+                    if (MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed())
                         __instance.okButtonClicked();
 
                     toSpeak = $"{___title} {extraInfo} {newCraftingRecipe}. Left click to close.";
@@ -380,18 +376,15 @@ namespace stardew_access.Patches
         {
             try
             {
-                bool isLeftControlPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl);
-                bool isOpenBracketPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.OemOpenBrackets); // for left click
-                bool isEnterPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter);
 
                 if (__instance.currentPage == -1)
                 {
                     int total = ___categoryTotals[5];
                     string toSpeak;
-                    if (__instance.okButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+                    if (__instance.okButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                     {
                         // Perform Left Click
-                        if (isOpenBracketPressed || (isLeftControlPressed && isEnterPressed))
+                        if (MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed())
                         {
                             Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
                         }
@@ -400,7 +393,7 @@ namespace stardew_access.Patches
                     }
                     for (int i = 0; i < __instance.categories.Count; i++)
                     {
-                        if (__instance.categories[i].containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+                        if (__instance.categories[i].containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                         {
                             toSpeak = $"Money recieved from {__instance.getCategoryName(i)}: {___categoryTotals[i]}g.";
                             MainClass.GetScreenReader().SayWithChecker(toSpeak, true);

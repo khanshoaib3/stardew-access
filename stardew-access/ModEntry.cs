@@ -144,39 +144,34 @@ namespace stardew_access
                 bool isLeftControlPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl);
                 bool isCustomizingChrachter = Game1.activeClickableMenu is CharacterCustomization || (TitleMenu.subMenu != null && TitleMenu.subMenu is CharacterCustomization);
 
-                // Perform Left Click
-                if (!isCustomizingChrachter && Equals(e.Button, SButton.OemOpenBrackets)) // Excluding the character creation menu
+                #region Mouse Click Simulation
+                // Main Keybinds
+                if (isLeftControlPressed && Config.LeftClickMainKey.JustPressed())
                 {
                     Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
-                if (isLeftControlPressed && Equals(e.Button, SButton.Enter))
+                if (isLeftShiftPressed && Config.RightClickMainKey.JustPressed())
                 {
-                    Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                    Game1.activeClickableMenu.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
 
-                // Perform Right CLick
-                if (!isCustomizingChrachter && Equals(e.Button, SButton.OemCloseBrackets)) // Excluding the character creation menu
+                // Alternate Keybinds
+                if (!isCustomizingChrachter && Config.LeftClickAlternateKey.JustPressed()) // Excluding the character creation menu
+                {
+                    Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                }
+                if (!isCustomizingChrachter && Config.RightClickAlternateKey.JustPressed()) // Excluding the character creation menu
                 {
                     Game1.activeClickableMenu.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
-                if (isLeftShiftPressed && Equals(e.Button, SButton.Enter))
-                {
-                    Game1.activeClickableMenu.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
-                }
+                #endregion
             }
 
             if (!Context.IsPlayerFree)
                 return;
 
-            // Narrate health and stamina
-            if (Equals(e.Button, SButton.H))
-            {
-                string toSpeak = $"Health is {CurrentPlayer.getHealth()} and Stamina is {CurrentPlayer.getStamina()}";
-                MainClass.GetScreenReader().Say(toSpeak, true);
-            }
-
             // Narrate Position
-            if (Equals(e.Button, SButton.K) && !isLeftAltPressed)
+            if (Config.PositionKey.JustPressed())
             {
                 string toSpeak;
                 if (Config.VerboseCoordinates)
@@ -189,46 +184,54 @@ namespace stardew_access
                 }
 
                 MainClass.GetScreenReader().Say(toSpeak, true);
+                return;
+            }
+
+            // Narrate health and stamina
+            if (Config.HealthNStaminaKey.JustPressed())
+            {
+                string toSpeak = $"Health is {CurrentPlayer.getHealth()} and Stamina is {CurrentPlayer.getStamina()}";
+                MainClass.GetScreenReader().Say(toSpeak, true);
+                return;
             }
 
             // Narrate Current Location
-            if (Equals(e.Button, SButton.K) && isLeftAltPressed)
+            if (Config.LocationKey.JustPressed())
             {
                 string toSpeak = $"{Game1.currentLocation.Name}";
                 MainClass.GetScreenReader().Say(toSpeak, true);
+                return;
             }
 
             // Narrate money at hand
-            if (Equals(e.Button, SButton.R))
+            if (Config.MoneyKey.JustPressed())
             {
                 string toSpeak = $"You have {CurrentPlayer.getMoney()}g";
                 MainClass.GetScreenReader().Say(toSpeak, true);
+                return;
             }
 
             // Narrate time and season
-            if (Equals(e.Button, SButton.Q))
+            if (Config.TimeNSeasonKey.JustPressed())
             {
                 string toSpeak = $"Time is {CurrentPlayer.getTimeOfDay()} and it is {CurrentPlayer.getDay()} {CurrentPlayer.getDate()} of {CurrentPlayer.getSeason()}";
                 MainClass.GetScreenReader().Say(toSpeak, true);
-            }
-
-            // Manual read tile at looking tile
-            if (Equals(e.Button, SButton.J) && !isLeftAltPressed)
-            {
-                ReadTile.run(manuallyTriggered: true);
+                return;
             }
 
             // Manual read tile at player's position
-            if (Equals(e.Button, SButton.J) && isLeftAltPressed)
+            if (Config.ReadStandingTileKey.JustPressed())
             {
                 ReadTile.run(manuallyTriggered: true, playersPosition: true);
+                return;
             }
 
-            /*if (Equals(e.Button, SButton.B))
+            // Manual read tile at looking tile
+            if (Config.ReadTileKey.JustPressed())
             {
-                Game1.player.controller = new PathFindController(Game1.player, Game1.currentLocation, new Point(49,13), 2);
-                monitor.Log($"{Game1.player.controller.pathToEndPoint==null}", LogLevel.Debug); // true if path not found
-            }*/
+                ReadTile.run(manuallyTriggered: true);
+                return;
+            }
         }
 
         public static void ErrorLog(string message)
