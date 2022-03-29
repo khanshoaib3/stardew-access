@@ -96,12 +96,11 @@ namespace stardew_access.Features
              */
         }
 
-        public async void Run()
+        public void Run()
         {
             if (MainClass.radarDebug)
                 MainClass.DebugLog($"\n\nRead Tile started");
 
-            isRunning = true;
             Vector2 currPosition = Game1.player.getTileLocation();
 
             closed.Clear();
@@ -112,9 +111,6 @@ namespace stardew_access.Features
 
             if (MainClass.radarDebug)
                 MainClass.DebugLog($"\nRead Tile stopped\n\n");
-
-            await Task.Delay(delay);
-            isRunning = false;
         }
 
         /// <summary>

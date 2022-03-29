@@ -170,7 +170,7 @@ namespace stardew_access
             #region Chat Menu Patches
             harmony.Patch(
                     original: AccessTools.Method(typeof(ChatBox), nameof(ChatBox.update), new Type[] { typeof(GameTime) }),
-                    postfix: new HarmonyMethod(typeof(ChatManuPatches), nameof(ChatManuPatches.ChatBoxPatch))
+                    postfix: new HarmonyMethod(typeof(ChatMenuPatches), nameof(ChatMenuPatches.ChatBoxPatch))
                 );
             #endregion
 

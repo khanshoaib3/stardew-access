@@ -22,10 +22,8 @@ namespace stardew_access.Features
             isReadingTile = false;
         }
 
-        public static async void run(bool manuallyTriggered = false, bool playersPosition = false)
+        public static void run(bool manuallyTriggered = false, bool playersPosition = false)
         {
-            isReadingTile = true;
-
             try
             {
                 Vector2 tile;
@@ -82,9 +80,6 @@ namespace stardew_access.Features
             {
                 MainClass.ErrorLog($"Error in Read Tile:\n{e.Message}\n{e.StackTrace}");
             }
-
-            await Task.Delay(100);
-            isReadingTile = false;
         }
 
         ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>

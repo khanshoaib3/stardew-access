@@ -481,41 +481,12 @@ namespace stardew_access.Patches
             }
         }
 
+        #region Cleanup on exitting a menu
         internal static void Game1ExitActiveMenuPatch()
         {
             try
             {
-                if (Game1.activeClickableMenu is GameMenu)
-                {
-                    GameMenuPatches.gameMenuQueryKey = "";
-                    GameMenuPatches.craftingPageQueryKey = "";
-                    GameMenuPatches.inventoryPageQueryKey = "";
-                    GameMenuPatches.exitPageQueryKey = "";
-                    GameMenuPatches.optionsPageQueryKey = "";
-                    GameMenuPatches.socialPageQuery = "";
-                    GameMenuPatches.currentSelectedCraftingRecipe = -1;
-                    GameMenuPatches.isSelectingRecipe = false;
-                }
-
-                if (Game1.activeClickableMenu is JunimoNoteMenu)
-                {
-                    GameMenuPatches.currentIngredientListItem = -1;
-                    GameMenuPatches.currentIngredientInputSlot = -1;
-                    GameMenuPatches.currentInventorySlot = -1;
-                    GameMenuPatches.junimoNoteMenuQuery = "";
-                }
-
-                if (Game1.activeClickableMenu is ShopMenu)
-                {
-                    GameMenuPatches.shopMenuQueryKey = "";
-                }
-
-                if (Game1.activeClickableMenu is ItemGrabMenu)
-                {
-                    GameMenuPatches.itemGrabMenuQueryKey = "";
-                }
-
-                GameMenuPatches.hoveredItemQueryKey = "";
+                Cleanup(Game1.activeClickableMenu);
             }
             catch (Exception e)
             {
@@ -527,52 +498,78 @@ namespace stardew_access.Patches
         {
             try
             {
-                if (__instance is GeodeMenu)
-                {
-                    GameMenuPatches.geodeMenuQueryKey = "";
-                }
-
-                if (__instance is ItemGrabMenu)
-                {
-                    GameMenuPatches.itemGrabMenuQueryKey = "";
-                }
-
-                if (__instance is ShopMenu)
-                {
-                    GameMenuPatches.shopMenuQueryKey = "";
-                }
-
-                if (__instance is CarpenterMenu)
-                {
-                    BuildingNAnimalMenuPatches.carpenterMenuQuery = "";
-                    BuildingNAnimalMenuPatches.isUpgrading = false;
-                    BuildingNAnimalMenuPatches.isDemolishing = false;
-                    BuildingNAnimalMenuPatches.isPainting = false;
-                    BuildingNAnimalMenuPatches.isMoving = false;
-                    BuildingNAnimalMenuPatches.isConstructing = false;
-                    BuildingNAnimalMenuPatches.carpenterMenu = null;
-                }
-
-                if (__instance is PurchaseAnimalsMenu)
-                {
-                    BuildingNAnimalMenuPatches.purchaseAnimalMenuQuery = "";
-                    BuildingNAnimalMenuPatches.firstTimeInNamingMenu = true;
-                    BuildingNAnimalMenuPatches.purchaseAnimalsMenu = null;
-                }
-
-                if (__instance is DialogueBox)
-                {
-                    DialoguePatches.isDialogueAppearingFirstTime = true;
-                    DialoguePatches.currentDialogue = " ";
-                }
-
-                GameMenuPatches.hoveredItemQueryKey = "";
+                Cleanup(__instance);
             }
             catch (Exception e)
             {
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
+
+        private static void Cleanup(IClickableMenu menu)
+        {
+            if (menu is GameMenu)
+            {
+                GameMenuPatches.gameMenuQueryKey = "";
+                GameMenuPatches.craftingPageQueryKey = "";
+                GameMenuPatches.inventoryPageQueryKey = "";
+                GameMenuPatches.exitPageQueryKey = "";
+                GameMenuPatches.optionsPageQueryKey = "";
+                GameMenuPatches.socialPageQuery = "";
+                GameMenuPatches.currentSelectedCraftingRecipe = -1;
+                GameMenuPatches.isSelectingRecipe = false;
+            }
+
+            if (menu is JunimoNoteMenu)
+            {
+                GameMenuPatches.currentIngredientListItem = -1;
+                GameMenuPatches.currentIngredientInputSlot = -1;
+                GameMenuPatches.currentInventorySlot = -1;
+                GameMenuPatches.junimoNoteMenuQuery = "";
+            }
+
+            if (menu is ShopMenu)
+            {
+                GameMenuPatches.shopMenuQueryKey = "";
+            }
+
+            if (menu is ItemGrabMenu)
+            {
+                GameMenuPatches.itemGrabMenuQueryKey = "";
+            }
+
+            if (menu is GeodeMenu)
+            {
+                GameMenuPatches.geodeMenuQueryKey = "";
+            }
+
+            if (menu is CarpenterMenu)
+            {
+                BuildingNAnimalMenuPatches.carpenterMenuQuery = "";
+                BuildingNAnimalMenuPatches.isUpgrading = false;
+                BuildingNAnimalMenuPatches.isDemolishing = false;
+                BuildingNAnimalMenuPatches.isPainting = false;
+                BuildingNAnimalMenuPatches.isMoving = false;
+                BuildingNAnimalMenuPatches.isConstructing = false;
+                BuildingNAnimalMenuPatches.carpenterMenu = null;
+            }
+
+            if (menu is PurchaseAnimalsMenu)
+            {
+                BuildingNAnimalMenuPatches.purchaseAnimalMenuQuery = "";
+                BuildingNAnimalMenuPatches.firstTimeInNamingMenu = true;
+                BuildingNAnimalMenuPatches.purchaseAnimalsMenu = null;
+            }
+
+            if (menu is DialogueBox)
+            {
+                DialoguePatches.isDialogueAppearingFirstTime = true;
+                DialoguePatches.currentDialogue = " ";
+            }
+
+            GameMenuPatches.hoveredItemQueryKey = "";
+        }
+        #endregion
 
         internal static void ExitEventPatch()
         {

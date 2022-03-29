@@ -1,5 +1,4 @@
-﻿using StardewModdingAPI;
-using StardewValley;
+﻿using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -104,15 +103,21 @@ namespace stardew_access.Patches
 
                     if (isIPressed && !isUsingCustomButtons)
                     {
+                        isUsingCustomButtons = true;
                         JunimoNoteCustomButtons(__instance, ___currentPageBundle, 0, isLeftShiftPressed);
+                        Task.Delay(200).ContinueWith(_ => { isUsingCustomButtons = false; });
                     }
                     else if (isVPressed && !isUsingCustomButtons)
                     {
+                        isUsingCustomButtons = true;
                         JunimoNoteCustomButtons(__instance, ___currentPageBundle, 1, isLeftShiftPressed);
+                        Task.Delay(200).ContinueWith(_ => { isUsingCustomButtons = false; });
                     }
                     else if (isCPressed && !isUsingCustomButtons)
                     {
+                        isUsingCustomButtons = true;
                         JunimoNoteCustomButtons(__instance, ___currentPageBundle, 2, isLeftShiftPressed);
+                        Task.Delay(200).ContinueWith(_ => { isUsingCustomButtons = false; });
                     }
                     else if (isBackPressed && __instance.backButton != null && !__instance.backButton.containsPoint(x, y))
                     {
@@ -133,9 +138,8 @@ namespace stardew_access.Patches
             }
         }
 
-        private static async void JunimoNoteCustomButtons(JunimoNoteMenu __instance, Bundle ___currentPageBundle, int signal, bool isLeftShiftPressed = false)
+        private static void JunimoNoteCustomButtons(JunimoNoteMenu __instance, Bundle ___currentPageBundle, int signal, bool isLeftShiftPressed = false)
         {
-            isUsingCustomButtons = true;
             try
             {
 
@@ -291,9 +295,6 @@ namespace stardew_access.Patches
             {
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
-
-            await Task.Delay(200);
-            isUsingCustomButtons = false;
         }
 
         internal static void SocialPagePatch(SocialPage __instance, List<ClickableTextureComponent> ___sprites, int ___slotPosition, List<string> ___kidsNames)
@@ -955,7 +956,9 @@ namespace stardew_access.Patches
                 }
                 else if (isCPressed && !isSelectingRecipe)
                 {
-                    _ = CycleThroughRecipies(__instance.pagesOfCraftingRecipes, ___currentCraftingPage, __instance);
+                    isSelectingRecipe = true;
+                    CycleThroughRecipies(__instance.pagesOfCraftingRecipes, ___currentCraftingPage, __instance);
+                    Task.Delay(200).ContinueWith(_ => { isSelectingRecipe = false; });
                 }
 
                 #region Narrate buttons in the menu
@@ -1103,19 +1106,14 @@ namespace stardew_access.Patches
             }
         }
 
-        private static async Task CycleThroughRecipies(List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes, int ___currentCraftingPage, CraftingPage __instance)
+        private static void CycleThroughRecipies(List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes, int ___currentCraftingPage, CraftingPage __instance)
         {
-            isSelectingRecipe = true;
-
             currentSelectedCraftingRecipe++;
             if (currentSelectedCraftingRecipe < 0 || currentSelectedCraftingRecipe >= pagesOfCraftingRecipes[0].Count)
                 currentSelectedCraftingRecipe = 0;
 
             __instance.setCurrentlySnappedComponentTo(pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(currentSelectedCraftingRecipe).Key.myID);
             pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(currentSelectedCraftingRecipe).Key.snapMouseCursorToCenter();
-
-            await Task.Delay(200);
-            isSelectingRecipe = false;
         }
 
         // This method is used to get the inventory items to check if the player has enough ingredients for a recipe

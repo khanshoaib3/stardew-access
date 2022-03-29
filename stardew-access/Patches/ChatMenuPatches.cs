@@ -1,10 +1,9 @@
-﻿using StardewModdingAPI;
-using StardewValley;
+﻿using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class ChatManuPatches
+    internal class ChatMenuPatches
     {
         private static int currentChatMessageIndex = 0;
         private static bool isChatRunning = false;
@@ -25,11 +24,15 @@ namespace stardew_access.Patches
                         #region To narrate previous and next chat messages
                         if (isNextArrowPressed && !isChatRunning)
                         {
+                            isChatRunning = true;
                             CycleThroughChatMessages(true, ___messages);
+                            Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
                         }
                         else if (isPrevArrowPressed && !isChatRunning)
                         {
+                            isChatRunning = true;
                             CycleThroughChatMessages(false, ___messages);
+                            Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
                         }
                         #endregion
                     }
@@ -52,9 +55,8 @@ namespace stardew_access.Patches
             }
         }
 
-        private static async void CycleThroughChatMessages(bool increase, List<ChatMessage> ___messages)
+        private static void CycleThroughChatMessages(bool increase, List<ChatMessage> ___messages)
         {
-            isChatRunning = true;
             string toSpeak = " ";
             if (increase)
             {
@@ -78,8 +80,6 @@ namespace stardew_access.Patches
             });
 
             MainClass.GetScreenReader().Say(toSpeak, true);
-            await Task.Delay(200);
-            isChatRunning = false;
         }
     }
 }

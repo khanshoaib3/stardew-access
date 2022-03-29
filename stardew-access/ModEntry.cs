@@ -120,14 +120,24 @@ namespace stardew_access
                 Other.SnapMouseToPlayer();
 
             if (!ReadTile.isReadingTile && Config.ReadTile)
+            {
+                ReadTile.isReadingTile = true;
                 ReadTile.run();
+                Task.Delay(100).ContinueWith(_ => { ReadTile.isReadingTile = false; });
+            }
 
             if (!RadarFeature.isRunning && Config.Radar)
+            {
+                RadarFeature.isRunning = true;
                 RadarFeature.Run();
+                Task.Delay(RadarFeature.delay).ContinueWith(_ => { RadarFeature.isRunning = false; });
+            }
 
             if (!isNarratingHudMessage)
             {
+                isNarratingHudMessage = true;
                 Other.narrateHudMessages();
+                Task.Delay(300).ContinueWith(_ => { isNarratingHudMessage = false; });
             }
         }
 

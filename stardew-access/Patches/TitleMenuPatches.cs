@@ -178,11 +178,15 @@ namespace stardew_access.Patches
 
                 if (isNextArrowPressed && !isRunning)
                 {
-                    _ = CycleThroughItems(true, __instance, ___skipIntro);
+                    isRunning = true;
+                    CycleThroughItems(true, __instance, ___skipIntro);
+                    Task.Delay(200).ContinueWith(_ => { isRunning = false; });
                 }
                 else if (isPrevArrowPressed && !isRunning)
                 {
-                    _ = CycleThroughItems(false, __instance, ___skipIntro);
+                    isRunning = true;
+                    CycleThroughItems(false, __instance, ___skipIntro);
+                    Task.Delay(200).ContinueWith(_ => { isRunning = false; });
                 }
             }
             catch (Exception e)
@@ -191,9 +195,8 @@ namespace stardew_access.Patches
             }
         }
 
-        private static async Task CycleThroughItems(bool increase, CharacterCustomization __instance, bool ___skipIntro)
+        private static void CycleThroughItems(bool increase, CharacterCustomization __instance, bool ___skipIntro)
         {
-            isRunning = true;
             string toSpeak = " ";
 
             if (increase)
@@ -650,9 +653,6 @@ namespace stardew_access.Patches
             {
                 MainClass.GetScreenReader().Say(toSpeak, true);
             }
-
-            await Task.Delay(200);
-            isRunning = false;
         }
 
         private static string getFarmHoverText(ClickableTextureComponent farm)
