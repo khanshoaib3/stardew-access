@@ -27,5 +27,8 @@ namespace stardew_access
         public KeybindList ReadStandingTileKey { get; set; } = KeybindList.Parse("LeftAlt + J");
 
         #endregion
+
+        // TODO Add the exclusion and focus list too
+        // public String ExclusionList { get; set; } = "test";
     }
 }

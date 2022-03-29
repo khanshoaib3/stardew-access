@@ -87,7 +87,8 @@ namespace stardew_access.Patches
 
                 if (__instance.windowedButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
-                    toSpeak = "Fullscreen toggle Button";
+                    bool isFullscreen = Game1.options.isCurrentlyFullscreen();
+                    toSpeak = "Fullscreen: " + ((isFullscreen) ? "on" : "off");
                 }
 
                 if (TitleMenu.subMenu != null && __instance.backButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
