@@ -8,7 +8,6 @@ namespace stardew_access.Patches
     {
         private static int saveGameIndex = -1;
         private static bool isRunning = false;
-        private const int MAX_COMPONENTS = 20;
 
         internal static void CoopMenuPatch(CoopMenu __instance, CoopMenu.Tab ___currentTab)
         {
@@ -87,7 +86,7 @@ namespace stardew_access.Patches
 
                 if (__instance.windowedButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
-                    toSpeak = "Fullscreen: " + ((Game1.isFullscreen) ? "on" : "off");
+                    toSpeak = "Fullscreen: " + ((Game1.isFullscreen) ? "enabled" : "disabled");
                 }
 
                 if (TitleMenu.subMenu != null && __instance.backButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
@@ -197,456 +196,77 @@ namespace stardew_access.Patches
         private static void CycleThroughItems(bool increase, CharacterCustomization __instance, bool ___skipIntro)
         {
             string toSpeak = " ";
+            Dictionary<ClickableComponent, string> buttons = new();
+
+            #region Add buttons with their names IF they are available
+            if (__instance.nameBoxCC != null && __instance.nameBoxCC.visible)
+                buttons.Add(__instance.nameBoxCC, "Enter Farmer's Name");
+
+            if (__instance.farmnameBoxCC != null && __instance.farmnameBoxCC.visible)
+                buttons.Add(__instance.farmnameBoxCC, "Enter Farm's Name");
+
+            if (__instance.favThingBoxCC != null && __instance.favThingBoxCC.visible)
+                buttons.Add(__instance.favThingBoxCC, "Enter Favourite Thing");
+
+            if (__instance.skipIntroButton != null && __instance.skipIntroButton.visible)
+                buttons.Add(__instance.skipIntroButton, (___skipIntro ? "Enabled" : "Disabled") + " Skip Intro Button");
+
+            if (__instance.randomButton != null && __instance.randomButton.visible)
+                buttons.Add(__instance.randomButton, "Random Skin Button");
+
+            if (__instance.genderButtons.Count > 0)
+            {
+                buttons.Add(__instance.genderButtons[0], "Gender: Male Button");
+                buttons.Add(__instance.genderButtons[1], "Gender: Female Button");
+            }
+
+            if (__instance.farmTypeButtons.Count > 0)
+            {
+                buttons.Add(__instance.farmTypeButtons[0], getFarmHoverText(__instance.farmTypeButtons[0]));
+                buttons.Add(__instance.farmTypeButtons[1], getFarmHoverText(__instance.farmTypeButtons[1]));
+                buttons.Add(__instance.farmTypeButtons[2], getFarmHoverText(__instance.farmTypeButtons[2]));
+                buttons.Add(__instance.farmTypeButtons[3], getFarmHoverText(__instance.farmTypeButtons[3]));
+                buttons.Add(__instance.farmTypeButtons[4], getFarmHoverText(__instance.farmTypeButtons[4]));
+                buttons.Add(__instance.farmTypeButtons[5], getFarmHoverText(__instance.farmTypeButtons[5]));
+                buttons.Add(__instance.farmTypeButtons[6], getFarmHoverText(__instance.farmTypeButtons[6]));
+            }
+
+            if (__instance.farmTypeNextPageButton != null && __instance.farmTypeNextPageButton.visible)
+                buttons.Add(__instance.farmTypeNextPageButton, "Next Farm Type Page Button");
+
+            if (__instance.farmTypePreviousPageButton != null && __instance.farmTypePreviousPageButton.visible)
+                buttons.Add(__instance.farmTypePreviousPageButton, "Previous Farm Type Page Button");
+
+            if (__instance.cabinLayoutButtons.Count > 0)
+            {
+                buttons.Add(__instance.cabinLayoutButtons[0], "Cabin layout: nearby Button");
+                buttons.Add(__instance.cabinLayoutButtons[1], "Cabin layout: separate Button");
+            }
+
+            if (__instance.okButton != null && __instance.okButton.visible)
+                buttons.Add(__instance.okButton, "OK Button");
+
+            if (__instance.backButton != null && __instance.backButton.visible)
+                buttons.Add(__instance.backButton, "Back Button");
+            #endregion
+
+            int size = buttons.Count - 1;
 
             if (increase)
             {
                 saveGameIndex++;
-                if (saveGameIndex > MAX_COMPONENTS)
-                    saveGameIndex = 1;
+                if (saveGameIndex > size)
+                    saveGameIndex = 0;
             }
             else
             {
                 saveGameIndex--;
-                if (saveGameIndex < 1)
-                    saveGameIndex = MAX_COMPONENTS;
+                if (saveGameIndex < 0)
+                    saveGameIndex = size;
             }
 
-
-            switch (saveGameIndex)
-            {
-                case 1:
-                    {
-                        #region Skip if button is not available
-                        if (!__instance.nameBoxCC.visible)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 2;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case MAX_COMPONENTS;
-                            }
-                        }
-                        #endregion
-
-                        __instance.nameBoxCC.snapMouseCursorToCenter();
-                        toSpeak = "Enter Farmer's Name";
-                    }
-                    break;
-
-                case 2:
-                    {
-                        #region Skip if button is not available
-                        if (!__instance.farmnameBoxCC.visible)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 3;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 1;
-                            }
-                        }
-                        #endregion
-
-                        __instance.farmnameBoxCC.snapMouseCursorToCenter();
-                        toSpeak = "Enter Farm's Name";
-                    }
-                    break;
-                case 3:
-                    {
-                        #region Skip if button is not available
-                        if (!__instance.favThingBoxCC.visible)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 4;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 2;
-                            }
-                        }
-                        #endregion
-
-                        __instance.favThingBoxCC.snapMouseCursorToCenter();
-                        toSpeak = "Enter Favourite Thing";
-                    }
-                    break;
-                case 4:
-                    {
-                        #region Skip if button is not available
-                        if (!__instance.skipIntroButton.visible)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 5;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 3;
-                            }
-                        }
-                        #endregion
-
-                        __instance.skipIntroButton.snapMouseCursorToCenter();
-                        toSpeak = (___skipIntro ? "Enabled" : "Disabled") + " Skip Intro Button";
-                    }
-                    break;
-                case 5:
-                    {
-                        #region Skip if button is not available
-                        if (!__instance.randomButton.visible)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 6;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 5;
-                            }
-                        }
-                        #endregion
-
-                        __instance.randomButton.snapMouseCursorToCenter();
-                        toSpeak = "Random Skin Button";
-                        break;
-                    }
-                case 6:
-                    {
-                        #region Skip if button is not available
-                        if (__instance.genderButtons.Count <= 0)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 8;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 6;
-                            }
-                        }
-                        #endregion
-
-                        __instance.genderButtons[0].snapMouseCursorToCenter();
-                        toSpeak = "Gender Male Button";
-                        break;
-                    }
-                case 7:
-                    {
-                        #region Skip if button is not available
-                        if (__instance.genderButtons.Count <= 0)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 8;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 6;
-                            }
-                        }
-                        #endregion
-
-                        __instance.genderButtons[1].snapMouseCursorToCenter();
-                        toSpeak = "Gender Female Button";
-                        break;
-                    }
-                case 8:
-                    {
-                        #region Skip if button is not available
-                        if (__instance.farmTypeButtons.Count <= 0)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 9;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 7;
-                            }
-                        }
-                        #endregion
-
-                        __instance.farmTypeButtons[0].snapMouseCursorToCenter();
-                        toSpeak = getFarmHoverText(__instance.farmTypeButtons[0]);
-                        break;
-                    }
-                case 9:
-                    {
-                        #region Skip if button is not available
-                        if (__instance.farmTypeButtons.Count <= 0)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 10;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 8;
-                            }
-                        }
-                        #endregion
-
-                        __instance.farmTypeButtons[1].snapMouseCursorToCenter();
-                        toSpeak = getFarmHoverText(__instance.farmTypeButtons[1]);
-                        break;
-                    }
-                case 10:
-                    {
-                        #region Skip if button is not available
-                        if (__instance.farmTypeButtons.Count <= 0)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 11;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 9;
-                            }
-                        }
-                        #endregion
-
-                        __instance.farmTypeButtons[2].snapMouseCursorToCenter();
-                        toSpeak = getFarmHoverText(__instance.farmTypeButtons[2]);
-                        break;
-                    }
-                case 11:
-                    {
-                        #region Skip if button is not available
-                        if (__instance.farmTypeButtons.Count <= 0)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 12;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 10;
-                            }
-                        }
-                        #endregion
-
-                        __instance.farmTypeButtons[3].snapMouseCursorToCenter();
-                        toSpeak = getFarmHoverText(__instance.farmTypeButtons[3]);
-                        break;
-                    }
-                case 12:
-                    {
-                        #region Skip if button is not available
-                        if (__instance.farmTypeButtons.Count <= 0)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 13;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 11;
-                            }
-                        }
-                        #endregion
-
-                        __instance.farmTypeButtons[4].snapMouseCursorToCenter();
-                        toSpeak = getFarmHoverText(__instance.farmTypeButtons[4]);
-                        break;
-                    }
-                case 13:
-                    {
-                        #region Skip if button is not available
-                        if (__instance.farmTypeButtons.Count <= 0)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 14;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 12;
-                            }
-                        }
-                        #endregion
-
-                        __instance.farmTypeButtons[5].snapMouseCursorToCenter();
-                        toSpeak = getFarmHoverText(__instance.farmTypeButtons[5]);
-                        break;
-                    }
-                case 14:
-                    {
-                        #region Skip if button is not available
-                        if (__instance.farmTypeButtons.Count <= 0)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 15;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 13;
-                            }
-                        }
-                        #endregion
-
-                        __instance.farmTypeButtons[6].snapMouseCursorToCenter();
-                        toSpeak = getFarmHoverText(__instance.farmTypeButtons[6]);
-                        break;
-                    }
-                case 15:
-                    {
-                        #region Skip if button is not available
-                        if (__instance.farmTypeNextPageButton == null)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 16;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 14;
-                            }
-                        }
-                        #endregion
-
-                        __instance.farmTypeNextPageButton.snapMouseCursorToCenter();
-                        toSpeak = "Next Farm Type Page Button";
-                        break;
-                    }
-                case 16:
-                    {
-                        #region Skip if button is not available
-                        if (__instance.farmTypePreviousPageButton == null)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 17;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 15;
-                            }
-                        }
-                        #endregion
-
-                        __instance.farmTypePreviousPageButton.snapMouseCursorToCenter();
-                        toSpeak = "Previous Farm Type Page Button";
-                        break;
-                    }
-                case 17:
-                    {
-                        #region Skip if button is not available
-                        if (__instance.cabinLayoutButtons.Count <= 0)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 18;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 16;
-                            }
-                        }
-                        #endregion
-
-                        __instance.cabinLayoutButtons[0].snapMouseCursorToCenter();
-                        toSpeak = "Cabin layout nearby";
-                        break;
-                    }
-                case 18:
-                    {
-                        #region Skip if button is not available
-                        if (__instance.cabinLayoutButtons.Count <= 0)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 19;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 17;
-                            }
-                        }
-                        #endregion
-
-                        __instance.cabinLayoutButtons[1].snapMouseCursorToCenter();
-                        toSpeak = "Cabin layout separate";
-                        break;
-                    }
-                case 19:
-                    {
-                        #region Skip if button is not available
-                        if (!__instance.okButton.visible)
-                        {
-                            if (increase)
-                            {
-                                ++saveGameIndex;
-                                goto case 18;
-                            }
-                            else
-                            {
-                                --saveGameIndex;
-                                goto case 20;
-                            }
-                        }
-                        #endregion
-
-                        __instance.okButton.snapMouseCursorToCenter();
-                        toSpeak = "Ok Button";
-                    }
-                    break;
-                case 20:
-                    {
-                        #region Exit if button is not available
-                        if (!__instance.backButton.visible)
-                        {
-                            break;
-                        }
-                        #endregion
-
-                        __instance.backButton.snapMouseCursorToCenter();
-                        toSpeak = "Back Button";
-                    }
-                    break;
-            }
+            buttons.ElementAt(saveGameIndex).Key.snapMouseCursor();
+            toSpeak = buttons.ElementAt(saveGameIndex).Value;
 
             if (toSpeak != " ")
             {
