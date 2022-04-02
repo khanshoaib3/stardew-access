@@ -160,7 +160,8 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void CharacterCustomizationMenuPatch(CharacterCustomization __instance, bool ___skipIntro)
+        internal static void CharacterCustomizationMenuPatch(CharacterCustomization __instance, bool ___skipIntro,
+        ClickableComponent ___startingCabinsLabel, ClickableComponent ___difficultyModifierLabel)
         {
             try
             {
@@ -179,13 +180,13 @@ namespace stardew_access.Patches
                 if (isNextArrowPressed && !isRunning)
                 {
                     isRunning = true;
-                    CycleThroughItems(true, __instance, ___skipIntro);
+                    CycleThroughItems(true, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel);
                     Task.Delay(200).ContinueWith(_ => { isRunning = false; });
                 }
                 else if (isPrevArrowPressed && !isRunning)
                 {
                     isRunning = true;
-                    CycleThroughItems(false, __instance, ___skipIntro);
+                    CycleThroughItems(false, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel);
                     Task.Delay(200).ContinueWith(_ => { isRunning = false; });
                 }
             }
@@ -195,12 +196,15 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void CycleThroughItems(bool increase, CharacterCustomization __instance, bool ___skipIntro)
+        private static void CycleThroughItems(bool increase, CharacterCustomization __instance, bool ___skipIntro,
+         ClickableComponent ___startingCabinsLabel, ClickableComponent ___difficultyModifierLabel)
         {
             string toSpeak = " ";
             Dictionary<ClickableComponent, string> buttons = new();
 
             #region Add buttons with their names IF they are available
+
+            #region Character related
             if (__instance.nameBoxCC != null && __instance.nameBoxCC.visible)
                 buttons.Add(__instance.nameBoxCC, "Enter Farmer's Name");
 
@@ -219,9 +223,6 @@ namespace stardew_access.Patches
                 buttons.Add(petNext, "Next pet: " + getPetName(+1, __instance.isModifyingExistingPet));
             }
 
-            if (__instance.skipIntroButton != null && __instance.skipIntroButton.visible)
-                buttons.Add(__instance.skipIntroButton, (___skipIntro ? "Enabled" : "Disabled") + " Skip Intro Button");
-
             if (__instance.randomButton != null && __instance.randomButton.visible)
                 buttons.Add(__instance.randomButton, "Random Skin Button");
 
@@ -230,7 +231,9 @@ namespace stardew_access.Patches
                 buttons.Add(__instance.genderButtons[0], "Gender: Male Button");
                 buttons.Add(__instance.genderButtons[1], "Gender: Female Button");
             }
+            #endregion
 
+            #region Farm layout related
             if (__instance.farmTypeButtons.Count > 0)
             {
                 buttons.Add(__instance.farmTypeButtons[0], getFarmHoverText(__instance.farmTypeButtons[0]));
@@ -247,12 +250,40 @@ namespace stardew_access.Patches
 
             if (__instance.farmTypePreviousPageButton != null && __instance.farmTypePreviousPageButton.visible)
                 buttons.Add(__instance.farmTypePreviousPageButton, "Previous Farm Type Page Button");
+            #endregion
 
-            if (__instance.cabinLayoutButtons.Count > 0)
+            #region Co-op related
+            if (__instance.source == Source.HostNewFarm)
             {
-                buttons.Add(__instance.cabinLayoutButtons[0], "Cabin layout: nearby Button");
-                buttons.Add(__instance.cabinLayoutButtons[1], "Cabin layout: separate Button");
+                ClickableComponent cabinLeft = __instance.getComponentWithID(621);
+                if (Game1.startingCabins > 0)
+                    buttons.Add(cabinLeft, "Decrease starting cabins button");
+
+                buttons.Add(___startingCabinsLabel, $"Starting cabins: {Game1.startingCabins}");
+
+                ClickableComponent cabinRight = __instance.getComponentWithID(622);
+                if (Game1.startingCabins < 3)
+                    buttons.Add(cabinRight, "Increase starting cabins button");
+
+                if (Game1.startingCabins > 0)
+                {
+                    buttons.Add(__instance.cabinLayoutButtons[0], "Cabin layout to nearby Button");
+                    buttons.Add(__instance.cabinLayoutButtons[1], "Cabin layout to separate Button");
+                }
+
+                ClickableComponent difficultyLeft = __instance.getComponentWithID(627);
+                buttons.Add(difficultyLeft, "Increase profit margin button");
+                buttons.Add(___difficultyModifierLabel, "Profit Margin: " + (((Game1.player.difficultyModifier * 100) == 100f) ? "normal" : Game1.player.difficultyModifier.ToString()));
+                ClickableComponent difficultyRight = __instance.getComponentWithID(628);
+                buttons.Add(difficultyRight, "Decrease profit margin button");
+
+                ClickableComponent walletLeft = __instance.getComponentWithID(631);
+                buttons.Add(walletLeft, "Money style to " + ((!Game1.player.team.useSeparateWallets.Value) ? "separate wallets" : "shared wallets") + " button");
             }
+            #endregion
+
+            if (__instance.skipIntroButton != null && __instance.skipIntroButton.visible)
+                buttons.Add(__instance.skipIntroButton, (___skipIntro ? "Enabled" : "Disabled") + " Skip Intro Button");
 
             if (__instance.okButton != null && __instance.okButton.visible)
                 buttons.Add(__instance.okButton, "OK Button");
