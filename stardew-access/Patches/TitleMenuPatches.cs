@@ -1,5 +1,7 @@
 ﻿using StardewValley;
+using StardewValley.Characters;
 using StardewValley.Menus;
+using static StardewValley.Menus.CharacterCustomization;
 using static StardewValley.Menus.LoadGameMenu;
 
 namespace stardew_access.Patches
@@ -208,6 +210,15 @@ namespace stardew_access.Patches
             if (__instance.favThingBoxCC != null && __instance.favThingBoxCC.visible)
                 buttons.Add(__instance.favThingBoxCC, "Enter Favourite Thing");
 
+            if (__instance.petPortraitBox.HasValue) // Cannot get petButtons like with others
+            {
+                ClickableComponent petPrev = __instance.getComponentWithID(511);
+                buttons.Add(petPrev, "Previous pet: " + getPetName(-1, __instance.isModifyingExistingPet));
+
+                ClickableComponent petNext = __instance.getComponentWithID(510);
+                buttons.Add(petNext, "Next pet: " + getPetName(+1, __instance.isModifyingExistingPet));
+            }
+
             if (__instance.skipIntroButton != null && __instance.skipIntroButton.visible)
                 buttons.Add(__instance.skipIntroButton, (___skipIntro ? "Enabled" : "Disabled") + " Skip Intro Button");
 
@@ -272,6 +283,29 @@ namespace stardew_access.Patches
             {
                 MainClass.GetScreenReader().Say(toSpeak, true);
             }
+        }
+
+        private static string getPetName(int change, bool isModifyingExistingPet)
+        {
+            Game1.player.whichPetBreed += change;
+            if (Game1.player.whichPetBreed >= 3)
+            {
+                Game1.player.whichPetBreed = 0;
+                if (!isModifyingExistingPet)
+                {
+                    Game1.player.catPerson = !Game1.player.catPerson;
+                }
+            }
+            else if (Game1.player.whichPetBreed < 0)
+            {
+                Game1.player.whichPetBreed = 2;
+                if (!isModifyingExistingPet)
+                {
+                    Game1.player.catPerson = !Game1.player.catPerson;
+                }
+            }
+
+            return ((Game1.player.catPerson) ? "Cat" : "Dog") + " Breed: " + Game1.player.whichPetBreed;
         }
 
         private static string getFarmHoverText(ClickableTextureComponent farm)
