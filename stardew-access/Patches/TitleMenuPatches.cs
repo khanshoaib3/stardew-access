@@ -97,6 +97,16 @@ namespace stardew_access.Patches
                     MainClass.GetScreenReader().SayWithChecker(text, true);
                 }
 
+                // Fix for back button not working using keyboard
+                if (TitleMenu.subMenu is CharacterCustomization && ((CharacterCustomization)TitleMenu.subMenu).backButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
+                {
+                    // Perform Left Click
+                    if (MainClass.Config.LeftClickMainKey.JustPressed())
+                    {
+                        __instance.backButtonPressed();
+                    }
+                }
+
                 if (TitleMenu.subMenu == null && toSpeak != "")
                     MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
             }
@@ -170,11 +180,7 @@ namespace stardew_access.Patches
 
                 if (__instance.backButton.containsPoint != null && __instance.backButton.visible && __instance.backButton.containsPoint((int)Game1.getMouseX(true), (int)Game1.getMouseY(true)))
                 {
-                    // Perform Left Click
-                    if (MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed())
-                    {
-                        Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
-                    }
+
                 }
 
                 if (isNextArrowPressed && !isRunning)
