@@ -170,11 +170,11 @@ namespace stardew_access
                 }
 
                 // Alternate Keybinds
-                if (!isCustomizingChrachter && Config.LeftClickAlternateKey.JustPressed()) // Excluding the character creation menu
+                if (!isCustomizingChrachter && Game1.activeClickableMenu is not AnimalQueryMenu && Config.LeftClickAlternateKey.JustPressed()) // Excluding the character creation menu
                 {
                     Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
-                if (!isCustomizingChrachter && Config.RightClickAlternateKey.JustPressed()) // Excluding the character creation menu
+                if (!isCustomizingChrachter && Game1.activeClickableMenu is not AnimalQueryMenu && Config.RightClickAlternateKey.JustPressed()) // Excluding the character creation menu
                 {
                     Game1.activeClickableMenu.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }

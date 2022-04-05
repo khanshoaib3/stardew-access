@@ -859,7 +859,7 @@ namespace stardew_access.Features
             {
                 if (Game1.currentLocation.resourceClumps[i].occupiesTile(x, y))
                 {
-                    int index = Game1.currentLocation.resourceClumps[i].parentSheetIndex;
+                    int index = Game1.currentLocation.resourceClumps[i].parentSheetIndex.Value;
 
                     switch (index)
                     {

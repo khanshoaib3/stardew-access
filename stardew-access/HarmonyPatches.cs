@@ -153,6 +153,11 @@ namespace stardew_access
                 original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(MuseumMenuPatches), nameof(MuseumMenuPatches.MuseumMenuPatch))
             );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(AnimalQueryMenu), nameof(AnimalQueryMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.AnimalQueryMenuPatch))
+            );
             #endregion
 
             #region Quest Patches
