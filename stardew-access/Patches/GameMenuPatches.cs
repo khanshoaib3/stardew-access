@@ -5,6 +5,7 @@ using StardewValley.Objects;
 
 namespace stardew_access.Patches
 {
+    // Menus in the game menu i.e., the menu which opens when we press `e`
     internal class GameMenuPatches
     {
         internal static string hoveredItemQueryKey = "";
@@ -19,10 +20,27 @@ namespace stardew_access.Patches
         internal static string socialPageQuery = "";
         internal static string profilePageQuery = "";
         internal static string junimoNoteMenuQuery = "";
+        internal static string collectionsPageQuery = "";
         internal static int currentSelectedCraftingRecipe = -1;
         internal static bool isSelectingRecipe = false;
         internal static bool isUsingCustomButtons = false;
         internal static int currentIngredientListItem = -1, currentIngredientInputSlot = -1, currentInventorySlot = -1;
+
+        internal static void CollectionsPagePatch(CollectionsPage __instance)
+        {
+            try
+            {
+                int x = Game1.getMousePosition().X, y = Game1.getMousePosition().Y;
+                if (__instance.letterviewerSubMenu != null)
+                {
+                    DialoguePatches.NarrateLetterContent(__instance.letterviewerSubMenu);
+                }
+            }
+            catch (System.Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
+        }
 
         internal static void JunimoNoteMenuPatch(JunimoNoteMenu __instance, bool ___specificBundlePage, int ___whichArea, Bundle ___currentPageBundle)
         {

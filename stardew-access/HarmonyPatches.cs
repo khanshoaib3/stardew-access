@@ -101,6 +101,11 @@ namespace stardew_access
                 original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.JunimoNoteMenuPatch))
             );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(CollectionsPage), nameof(CollectionsPage.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.CollectionsPagePatch))
+            );
             #endregion
 
             #region Menu Patches
