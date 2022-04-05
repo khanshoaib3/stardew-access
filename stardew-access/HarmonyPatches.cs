@@ -106,7 +106,7 @@ namespace stardew_access
             #region Menu Patches
             harmony.Patch(
                     original: AccessTools.Method(typeof(LetterViewerMenu), nameof(LetterViewerMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.LetterViewerMenuPatch))
+                    postfix: new HarmonyMethod(typeof(DialoguePatches), nameof(DialoguePatches.LetterViewerMenuPatch))
                 );
 
             harmony.Patch(
@@ -141,12 +141,12 @@ namespace stardew_access
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.receiveKeyPress), new Type[] { typeof(Keys) }),
-                prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.MuseumMenuKeyPressPatch))
+                prefix: new HarmonyMethod(typeof(MuseumMenuPatches), nameof(MuseumMenuPatches.MuseumMenuKeyPressPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.MuseumMenuPatch))
+                postfix: new HarmonyMethod(typeof(MuseumMenuPatches), nameof(MuseumMenuPatches.MuseumMenuPatch))
             );
             #endregion
 

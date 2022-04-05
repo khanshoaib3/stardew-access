@@ -15,14 +15,22 @@ namespace stardew_access
         #region Global Vars
         private static ModConfig config;
         private Harmony? harmony;
-        private static IMonitor monitor;
-        private static Radar radarFeature;
+        private static IMonitor? monitor;
+        private static Radar? radarFeature;
         private static IScreenReader? screenReader;
         private static IModHelper modHelper;
 
         internal static ModConfig Config { get => config; set => config = value; }
         public static IModHelper ModHelper { get => modHelper; }
-        public static Radar RadarFeature { get => radarFeature; set => radarFeature = value; }
+        public static Radar RadarFeature
+        {
+            get
+            {
+                if (radarFeature == null) { radarFeature = new Radar(); }
+                return radarFeature;
+            }
+            set => radarFeature = value;
+        }
 
         public static string hudMessageQueryKey = "";
         public static bool isNarratingHudMessage = false;
@@ -67,8 +75,6 @@ namespace stardew_access
 
             CustomCommands.Initialize();
 
-            RadarFeature = new Radar();
-
             harmony = new Harmony(ModManifest.UniqueID);
             HarmonyPatches.Initialize(harmony);
 
@@ -108,12 +114,10 @@ namespace stardew_access
             if (!Context.IsPlayerFree)
                 return;
 
-            // Reset variables
-            MenuPatches.resetGlobalVars();
-            QuestPatches.resetGlobalVars();
-
+            // Narrates currently selected inventory slot
             Other.narrateCurrentSlot();
 
+            // Narrate current location's name
             Other.narrateCurrentLocation();
 
             if (Config.SnapMouse)
@@ -246,11 +250,17 @@ namespace stardew_access
 
         public static void ErrorLog(string message)
         {
+            if (monitor == null)
+                return;
+
             monitor.Log(message, LogLevel.Error);
         }
 
         public static void DebugLog(string message)
         {
+            if (monitor == null)
+                return;
+
             monitor.Log(message, LogLevel.Debug);
         }
     }

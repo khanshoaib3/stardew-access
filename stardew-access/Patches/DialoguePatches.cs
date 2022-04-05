@@ -8,6 +8,7 @@ namespace stardew_access.Patches
 {
     internal class DialoguePatches
     {
+        internal static string currentLetterText = " ";
         internal static string currentDialogue = " ";
         internal static bool isDialogueAppearingFirstTime = true;
 
@@ -192,20 +193,20 @@ namespace stardew_access.Patches
                     return;
                 #endregion
 
-                StringBuilder toSpeak = new StringBuilder(" ");
+                string toSpeak = " ";
 
                 #region Add item count before title
                 if (hoveredItem != null && hoveredItem.HasBeenInInventory)
                 {
                     int count = hoveredItem.Stack;
                     if (count > 1)
-                        toSpeak.Append($"{count} ");
+                        toSpeak = $"{toSpeak} {count} ";
                 }
                 #endregion
 
                 #region Add title if any
                 if (boldTitleText != null)
-                    toSpeak.Append($"{boldTitleText}\n");
+                    toSpeak = $"{toSpeak} {boldTitleText}\n";
                 #endregion
 
                 #region Add quality of item
@@ -214,15 +215,15 @@ namespace stardew_access.Patches
                     int quality = ((StardewValley.Object)hoveredItem).quality;
                     if (quality == 1)
                     {
-                        toSpeak.Append("Silver quality");
+                        toSpeak = $"{toSpeak} Silver quality";
                     }
                     else if (quality == 2 || quality == 3)
                     {
-                        toSpeak.Append("Gold quality");
+                        toSpeak = $"{toSpeak} Gold quality";
                     }
                     else if (quality >= 4)
                     {
-                        toSpeak.Append("Iridium quality");
+                        toSpeak = $"{toSpeak} Iridium quality";
                     }
                 }
                 #endregion
@@ -233,26 +234,29 @@ namespace stardew_access.Patches
                     string itemName = Game1.objectInformation[extraItemToShowIndex].Split('/')[0];
 
                     if (extraItemToShowAmount != -1)
-                        toSpeak.Append($"Required: {extraItemToShowAmount} {itemName}");
+                        toSpeak = $"{toSpeak} Required: {extraItemToShowAmount} {itemName}";
                     else
-                        toSpeak.Append($"Required: {itemName}");
+                        toSpeak = $"{toSpeak} Required: {itemName}";
                 }
                 #endregion
 
                 #region Add money
                 if (moneyAmountToDisplayAtBottom != -1)
-                    toSpeak.Append($"\nCost: {moneyAmountToDisplayAtBottom}g\n");
+                    toSpeak = $"{toSpeak} \nCost: {moneyAmountToDisplayAtBottom}g\n";
                 #endregion
 
                 #region Add the base text
-                toSpeak.Append(text);
+                if (text == "???")
+                    toSpeak = "unknown";
+                else
+                    toSpeak = $"{toSpeak} {text}";
                 #endregion
 
                 #region Add crafting ingredients
                 if (craftingIngredients != null)
                 {
-                    toSpeak.Append($"\n{craftingIngredients.description}");
-                    toSpeak.Append("\nIngredients\n");
+                    toSpeak = $"{toSpeak} \n{craftingIngredients.description}";
+                    toSpeak = $"{toSpeak} \nIngredients\n";
 
                     craftingIngredients.recipeList.ToList().ForEach(recipe =>
                     {
@@ -260,7 +264,7 @@ namespace stardew_access.Patches
                         int item = recipe.Key;
                         string name = craftingIngredients.getNameFromIndex(item);
 
-                        toSpeak.Append($" ,{count} {name}");
+                        toSpeak = $"{toSpeak} ,{count} {name}";
                     });
                 }
                 #endregion
@@ -269,11 +273,11 @@ namespace stardew_access.Patches
                 if (hoveredItem is StardewValley.Object && ((StardewValley.Object)hoveredItem).Edibility != -300)
                 {
                     int stamina_recovery = ((StardewValley.Object)hoveredItem).staminaRecoveredOnConsumption();
-                    toSpeak.Append($"{stamina_recovery} Energy\n");
+                    toSpeak = $"{toSpeak} {stamina_recovery} Energy\n";
                     if (stamina_recovery >= 0)
                     {
                         int health_recovery = ((StardewValley.Object)hoveredItem).healthRecoveredOnConsumption();
-                        toSpeak.Append($"{health_recovery} Health");
+                        toSpeak = $"{toSpeak} {health_recovery} Health";
                     }
                 }
                 #endregion
@@ -292,7 +296,7 @@ namespace stardew_access.Patches
                         {
                             int count = int.Parse(buffName.Substring(0, buffName.IndexOf(' ')));
                             if (count != 0)
-                                toSpeak.Append($"{buffName}\n");
+                                toSpeak = $"{toSpeak} {buffName}\n";
                         }
                         catch (Exception) { }
                     }
@@ -315,6 +319,81 @@ namespace stardew_access.Patches
             catch (Exception e)
             {
                 MainClass.ErrorLog($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}");
+            }
+        }
+
+
+        internal static void LetterViewerMenuPatch(LetterViewerMenu __instance)
+        {
+            try
+            {
+                if (!__instance.IsActive())
+                    return;
+
+                int x = Game1.getMousePosition().X, y = Game1.getMousePosition().Y;
+                #region Texts in the letter
+                string message = __instance.mailMessage[__instance.page];
+
+                string toSpeak = $"{message}";
+
+                if (__instance.ShouldShowInteractable())
+                {
+                    if (__instance.moneyIncluded > 0)
+                    {
+                        string moneyText = Game1.content.LoadString("Strings\\UI:LetterViewer_MoneyIncluded", __instance.moneyIncluded);
+                        toSpeak += $"\t\n\t ,Included money: {moneyText}";
+                    }
+                    else if (__instance.learnedRecipe != null && __instance.learnedRecipe.Length > 0)
+                    {
+                        string recipeText = Game1.content.LoadString("Strings\\UI:LetterViewer_LearnedRecipe", __instance.cookingOrCrafting);
+                        toSpeak += $"\t\n\t ,Learned Recipe: {recipeText}";
+                    }
+                }
+
+                if (currentLetterText != toSpeak)
+                {
+                    currentLetterText = toSpeak;
+
+                    // snap mouse to accept quest button
+                    if (__instance.acceptQuestButton != null && __instance.questID != -1)
+                    {
+                        toSpeak += "\t\n Left click to accept quest.";
+                        __instance.acceptQuestButton.snapMouseCursorToCenter();
+                    }
+                    if (__instance.mailMessage.Count > 1)
+                        toSpeak = $"Page {__instance.page + 1} of {__instance.mailMessage.Count}:\n\t{toSpeak}";
+
+                    MainClass.GetScreenReader().Say(toSpeak, false);
+                }
+                #endregion
+
+                #region Narrate items given in the mail
+                if (__instance.ShouldShowInteractable())
+                {
+                    foreach (ClickableComponent c in __instance.itemsToGrab)
+                    {
+                        string name = c.name;
+                        string label = c.label;
+
+                        if (c.containsPoint(x, y))
+                            MainClass.GetScreenReader().SayWithChecker($"Grab: {name} \t\n {label}", false);
+                    }
+                }
+                #endregion
+
+                #region Narrate buttons
+                if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
+                    MainClass.GetScreenReader().SayWithChecker($"Previous page button", false);
+
+                if (__instance.forwardButton != null && __instance.forwardButton.visible && __instance.forwardButton.containsPoint(x, y))
+                    MainClass.GetScreenReader().SayWithChecker($"Next page button", false);
+
+                #endregion
+            }
+            catch (Exception e)
+            {
+
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
     }

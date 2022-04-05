@@ -10,147 +10,8 @@ namespace stardew_access.Patches
 {
     internal class MenuPatches
     {
-        private static string currentLetterText = " ";
-        private static string museumQueryKey = " ";
         private static string currentLevelUpTitle = " ";
         public static Vector2? prevTile = null;
-        private static bool isMoving = false;
-
-        #region Museum Menu Patch
-        internal static bool MuseumMenuKeyPressPatch()
-        {
-            try
-            {
-                if (isMoving)
-                    return false;
-
-                if (!isMoving)
-                {
-                    isMoving = true;
-                    Task.Delay(200).ContinueWith(_ => { isMoving = false; });
-                }
-
-            }
-            catch (Exception e)
-            {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
-            }
-
-            return true;
-        }
-
-        internal static void MuseumMenuPatch(MuseumMenu __instance, bool ___holdingMuseumPiece)
-        {
-            try
-            {
-                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-
-                if (__instance.heldItem != null)
-                {
-                    // Museum Inventory
-                    string toSpeak = "";
-                    int tileX = (int)(Utility.ModifyCoordinateFromUIScale(x) + (float)Game1.viewport.X) / 64;
-                    int tileY = (int)(Utility.ModifyCoordinateFromUIScale(y) + (float)Game1.viewport.Y) / 64;
-                    LibraryMuseum libraryMuseum = (LibraryMuseum)Game1.currentLocation;
-
-                    if (libraryMuseum.isTileSuitableForMuseumPiece(tileX, tileY))
-                        toSpeak = $"slot {tileX}x {tileY}y";
-
-                    if (museumQueryKey != toSpeak)
-                    {
-                        museumQueryKey = toSpeak;
-                        MainClass.GetScreenReader().Say(toSpeak, true);
-                    }
-                }
-                else
-                {
-                    // Player Inventory
-                    if (!narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
-                    {
-                        if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
-                        {
-                            if (museumQueryKey != $"ok button")
-                            {
-                                museumQueryKey = $"ok button";
-                                MainClass.GetScreenReader().Say("ok button", true);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
-            }
-        }
-        #endregion
-
-        internal static bool narrateHoveredItemInInventory(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y)
-        {
-            #region Narrate hovered item
-            for (int i = 0; i < inventory.Count; i++)
-            {
-                if (inventory[i].containsPoint(x, y))
-                {
-                    string toSpeak = "";
-                    if ((i + 1) <= actualInventory.Count)
-                    {
-                        if (actualInventory[i] != null)
-                        {
-                            string name = actualInventory[i].DisplayName;
-                            int stack = actualInventory[i].Stack;
-                            string quality = "";
-
-                            #region Add quality of item
-                            if (actualInventory[i] is StardewValley.Object && ((StardewValley.Object)actualInventory[i]).quality > 0)
-                            {
-                                int qualityIndex = ((StardewValley.Object)actualInventory[i]).quality;
-                                if (qualityIndex == 1)
-                                {
-                                    quality = "Silver quality";
-                                }
-                                else if (qualityIndex == 2 || qualityIndex == 3)
-                                {
-                                    quality = "Gold quality";
-                                }
-                                else if (qualityIndex >= 4)
-                                {
-                                    quality = "Iridium quality";
-                                }
-                            }
-                            #endregion
-
-                            if (inventoryMenu.highlightMethod(inventoryMenu.actualInventory[i]))
-                                name = $"Donatable {name}";
-
-                            if (stack > 1)
-                                toSpeak = $"{stack} {name} {quality}";
-                            else
-                                toSpeak = $"{name} {quality}";
-                        }
-                        else
-                        {
-                            // For empty slot
-                            toSpeak = "Empty Slot";
-                        }
-                    }
-                    else
-                    {
-                        // For empty slot
-                        toSpeak = "Empty Slot";
-                    }
-
-                    if (museumQueryKey != $"{toSpeak}:{i}")
-                    {
-                        museumQueryKey = $"{toSpeak}:{i}";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
-                    }
-                    return true;
-                }
-            }
-            #endregion
-            return false;
-        }
 
         internal static bool PlaySoundPatch(string cueName)
         {
@@ -407,80 +268,6 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void LetterViewerMenuPatch(LetterViewerMenu __instance)
-        {
-            try
-            {
-                if (!__instance.IsActive())
-                    return;
-
-                int x = Game1.getMousePosition().X, y = Game1.getMousePosition().Y;
-                #region Texts in the letter
-                string message = __instance.mailMessage[__instance.page];
-
-                string toSpeak = $"{message}";
-
-                if (__instance.ShouldShowInteractable())
-                {
-                    if (__instance.moneyIncluded > 0)
-                    {
-                        string moneyText = Game1.content.LoadString("Strings\\UI:LetterViewer_MoneyIncluded", __instance.moneyIncluded);
-                        toSpeak += $"\t\n\t ,Included money: {moneyText}";
-                    }
-                    else if (__instance.learnedRecipe != null && __instance.learnedRecipe.Length > 0)
-                    {
-                        string recipeText = Game1.content.LoadString("Strings\\UI:LetterViewer_LearnedRecipe", __instance.cookingOrCrafting);
-                        toSpeak += $"\t\n\t ,Learned Recipe: {recipeText}";
-                    }
-                }
-
-                if (currentLetterText != toSpeak)
-                {
-                    currentLetterText = toSpeak;
-
-                    // snap mouse to accept quest button
-                    if (__instance.acceptQuestButton != null && __instance.questID != -1)
-                    {
-                        toSpeak += "\t\n Left click to accept quest.";
-                        __instance.acceptQuestButton.snapMouseCursorToCenter();
-                    }
-                    if (__instance.mailMessage.Count > 1)
-                        toSpeak = $"Page {__instance.page + 1} of {__instance.mailMessage.Count}:\n\t{toSpeak}";
-
-                    MainClass.GetScreenReader().Say(toSpeak, false);
-                }
-                #endregion
-
-                #region Narrate items given in the mail
-                if (__instance.ShouldShowInteractable())
-                {
-                    foreach (ClickableComponent c in __instance.itemsToGrab)
-                    {
-                        string name = c.name;
-                        string label = c.label;
-
-                        if (c.containsPoint(x, y))
-                            MainClass.GetScreenReader().SayWithChecker($"Grab: {name} \t\n {label}", false);
-                    }
-                }
-                #endregion
-
-                #region Narrate buttons
-                if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
-                    MainClass.GetScreenReader().SayWithChecker($"Previous page button", false);
-
-                if (__instance.forwardButton != null && __instance.forwardButton.visible && __instance.forwardButton.containsPoint(x, y))
-                    MainClass.GetScreenReader().SayWithChecker($"Next page button", false);
-
-                #endregion
-            }
-            catch (Exception e)
-            {
-
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
-            }
-        }
-
         #region Cleanup on exitting a menu
         internal static void Game1ExitActiveMenuPatch()
         {
@@ -508,6 +295,21 @@ namespace stardew_access.Patches
 
         private static void Cleanup(IClickableMenu menu)
         {
+            if (menu is LetterViewerMenu)
+            {
+                DialoguePatches.currentLetterText = " ";
+            }
+
+            if (menu is LevelUpMenu)
+            {
+                currentLevelUpTitle = " ";
+            }
+
+            if (menu is Billboard)
+            {
+                QuestPatches.currentDailyQuestText = " ";
+            }
+
             if (menu is GameMenu)
             {
                 GameMenuPatches.gameMenuQueryKey = "";
@@ -575,11 +377,6 @@ namespace stardew_access.Patches
         {
             if (MainClass.GetScreenReader() != null)
                 MainClass.GetScreenReader().CloseScreenReader();
-        }
-        internal static void resetGlobalVars()
-        {
-            currentLetterText = " ";
-            currentLevelUpTitle = " ";
         }
     }
 }

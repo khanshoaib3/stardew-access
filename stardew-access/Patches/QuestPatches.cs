@@ -8,7 +8,7 @@ namespace stardew_access.Patches
 {
     internal class QuestPatches
     {
-        private static string currentDailyQuestText = " ";
+        internal static string currentDailyQuestText = " ";
 
         #region For Special Orders Board
         internal static void SpecialOrdersBoardPatch(SpecialOrdersBoard __instance)
@@ -243,10 +243,5 @@ namespace stardew_access.Patches
         }
         #endregion
 
-
-        internal static void resetGlobalVars()
-        {
-            currentDailyQuestText = " ";
-        }
     }
 }
