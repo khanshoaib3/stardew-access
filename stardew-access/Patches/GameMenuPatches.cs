@@ -1144,6 +1144,10 @@ namespace stardew_access.Patches
 
             __instance.setCurrentlySnappedComponentTo(pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(currentSelectedCraftingRecipe).Key.myID);
             pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(currentSelectedCraftingRecipe).Key.snapMouseCursorToCenter();
+
+            // Skip if recipe is not unlocked/unknown
+            if (pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(currentSelectedCraftingRecipe).Key.hoverText.Equals("ghosted"))
+                CycleThroughRecipies(pagesOfCraftingRecipes, ___currentCraftingPage, __instance);
         }
 
         // This method is used to get the inventory items to check if the player has enough ingredients for a recipe
