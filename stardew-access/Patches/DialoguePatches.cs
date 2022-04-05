@@ -191,6 +191,9 @@ namespace stardew_access.Patches
 
                 if (Game1.activeClickableMenu is PurchaseAnimalsMenu)
                     return;
+
+                if (Game1.activeClickableMenu is CraftingPage)
+                    return;
                 #endregion
 
                 string toSpeak = " ";

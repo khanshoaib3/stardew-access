@@ -1031,7 +1031,19 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered recipe
-                if (___hoverRecipe != null)
+                if (___hoverRecipe == null)
+                {
+                    string query = $"unknown recipe:{__instance.getCurrentlySnappedComponent().myID}";
+
+                    if (craftingPageQueryKey != query)
+                    {
+                        craftingPageQueryKey = query;
+                        gameMenuQueryKey = "";
+                        hoveredItemQueryKey = "";
+                        MainClass.GetScreenReader().Say("unknown recipe", true);
+                    }
+                }
+                else
                 {
                     string name = ___hoverRecipe.DisplayName;
                     int numberOfProduce = ___hoverRecipe.numberProducedPerCraft;
