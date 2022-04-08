@@ -143,7 +143,7 @@ namespace stardew_access.Patches
                         int itemStack = ___ingredients[i].Stack;
                         string itemQuality = "";
 
-                        int qualityValue = ((StardewValley.Object)___ingredients[i]).quality;
+                        int qualityValue = ((StardewValley.Object)___ingredients[i]).Quality;
                         if (qualityValue == 1)
                         {
                             itemQuality = "Silver quality";

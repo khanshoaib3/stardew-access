@@ -216,9 +216,9 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Add quality of item
-                if (hoveredItem is StardewValley.Object && ((StardewValley.Object)hoveredItem).quality > 0)
+                if (hoveredItem is StardewValley.Object && ((StardewValley.Object)hoveredItem).Quality > 0)
                 {
-                    int quality = ((StardewValley.Object)hoveredItem).quality;
+                    int quality = ((StardewValley.Object)hoveredItem).Quality;
                     if (quality == 1)
                     {
                         toSpeak = $"{toSpeak} Silver quality";

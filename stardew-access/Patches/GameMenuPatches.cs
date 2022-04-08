@@ -281,7 +281,7 @@ namespace stardew_access.Patches
 
                                     if ((item as StardewValley.Object) != null)
                                     {
-                                        int quality = ((StardewValley.Object)item).quality;
+                                        int quality = ((StardewValley.Object)item).Quality;
                                         if (quality == 1)
                                         {
                                             toSpeak = $"Silver quality {toSpeak}";
@@ -1477,9 +1477,9 @@ namespace stardew_access.Patches
                             string requirements = "";
 
                             #region Add quality of item
-                            if (actualInventory[i] is StardewValley.Object && ((StardewValley.Object)actualInventory[i]).quality > 0)
+                            if (actualInventory[i] is StardewValley.Object && ((StardewValley.Object)actualInventory[i]).Quality > 0)
                             {
-                                int qualityIndex = ((StardewValley.Object)actualInventory[i]).quality;
+                                int qualityIndex = ((StardewValley.Object)actualInventory[i]).Quality;
                                 if (qualityIndex == 1)
                                 {
                                     quality = "Silver quality";
