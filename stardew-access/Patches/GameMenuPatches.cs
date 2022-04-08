@@ -1031,19 +1031,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered recipe
-                if (___hoverRecipe == null)
-                {
-                    string query = $"unknown recipe:{__instance.getCurrentlySnappedComponent().myID}";
-
-                    if (craftingPageQueryKey != query)
-                    {
-                        craftingPageQueryKey = query;
-                        gameMenuQueryKey = "";
-                        hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say("unknown recipe", true);
-                    }
-                }
-                else
+                if (___hoverRecipe != null)
                 {
                     string name = ___hoverRecipe.DisplayName;
                     int numberOfProduce = ___hoverRecipe.numberProducedPerCraft;
@@ -1118,6 +1106,32 @@ namespace stardew_access.Patches
                         MainClass.GetScreenReader().Say(toSpeak, true);
                     }
                     return;
+                }
+                else
+                {
+                    var isRecipeInFocus = false;
+                    foreach (var item in __instance.pagesOfCraftingRecipes[___currentCraftingPage])
+                    {
+                        if (item.Key.containsPoint(x, y))
+                        {
+                            isRecipeInFocus = true;
+                            break;
+                        }
+                    }
+
+                    if (isRecipeInFocus)
+                    {
+                        string query = $"unknown recipe:{__instance.getCurrentlySnappedComponent().myID}";
+
+                        if (craftingPageQueryKey != query)
+                        {
+                            craftingPageQueryKey = query;
+                            gameMenuQueryKey = "";
+                            hoveredItemQueryKey = "";
+                            MainClass.GetScreenReader().Say("unknown recipe", true);
+                        }
+                        return;
+                    }
                 }
                 #endregion
 
