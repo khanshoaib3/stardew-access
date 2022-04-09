@@ -42,7 +42,7 @@ namespace stardew_access.Patches
                         int age = (___animal.GetDaysOwned() + 1) / 28 + 1;
                         string ageText = (age <= 1) ? Game1.content.LoadString("Strings\\UI:AnimalQuery_Age1") : Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeN", age);
                         string parent = "";
-                        if ((int)___animal.age < (byte)___animal.ageWhenMature)
+                        if ((int)___animal.age.Value < (byte)___animal.ageWhenMature.Value)
                         {
                             ageText += Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeBaby");
                         }
@@ -74,7 +74,7 @@ namespace stardew_access.Patches
                 if (animalQueryMenuQuery != toSpeak)
                 {
                     animalQueryMenuQuery = toSpeak;
-                    MainClass.GetScreenReader().Say($"{details} {toSpeak}", true);
+                    MainClass.ScreenReader.Say($"{details} {toSpeak}", true);
                 }
             }
             catch (System.Exception e)
@@ -123,13 +123,13 @@ namespace stardew_access.Patches
 
                 if (__instance.nextPageButton != null && __instance.nextPageButton.containsPoint(x, y))
                 {
-                    MainClass.GetScreenReader().SayWithMenuChecker($"Next Page Button", true);
+                    MainClass.ScreenReader.SayWithMenuChecker($"Next Page Button", true);
                     return;
                 }
 
                 if (__instance.previousPageButton != null && __instance.previousPageButton.containsPoint(x, y))
                 {
-                    MainClass.GetScreenReader().SayWithMenuChecker($"Previous Page Button", true);
+                    MainClass.ScreenReader.SayWithMenuChecker($"Previous Page Button", true);
                     return;
                 }
 
@@ -137,7 +137,7 @@ namespace stardew_access.Patches
                 {
                     if (__instance.languages[i].containsPoint(x, y))
                     {
-                        MainClass.GetScreenReader().SayWithMenuChecker($"{__instance.languageList[i]} Button", true);
+                        MainClass.ScreenReader.SayWithMenuChecker($"{__instance.languageList[i]} Button", true);
                         break;
                     }
                 }
@@ -157,7 +157,7 @@ namespace stardew_access.Patches
                 {
                     if (___elevators[i].containsPoint(x, y))
                     {
-                        MainClass.GetScreenReader().SayWithMenuChecker($"{___elevators[i].name} level", true);
+                        MainClass.ScreenReader.SayWithMenuChecker($"{___elevators[i].name} level", true);
                         break;
                     }
                 }
@@ -179,7 +179,7 @@ namespace stardew_access.Patches
                     toSpeak = $"Paste button";
 
                 if (toSpeak != "")
-                    MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithChecker(toSpeak, true);
             }
             catch (System.Exception e)
             {
@@ -222,7 +222,7 @@ namespace stardew_access.Patches
                 }
 
                 if (toSpeak != "")
-                    MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithChecker(toSpeak, true);
             }
             catch (Exception e)
             {
@@ -236,14 +236,14 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
 
-                MainClass.GetScreenReader().SayWithMenuChecker(___message, true);
+                MainClass.ScreenReader.SayWithMenuChecker(___message, true);
                 if (__instance.okButton.containsPoint(x, y))
                 {
-                    MainClass.GetScreenReader().SayWithMenuChecker("Ok Button", false);
+                    MainClass.ScreenReader.SayWithMenuChecker("Ok Button", false);
                 }
                 else if (__instance.cancelButton.containsPoint(x, y))
                 {
-                    MainClass.GetScreenReader().SayWithMenuChecker("Cancel Button", false);
+                    MainClass.ScreenReader.SayWithMenuChecker("Cancel Button", false);
                 }
             }
             catch (Exception e)
@@ -336,10 +336,10 @@ namespace stardew_access.Patches
                 }
 
                 if (toSpeak != " ")
-                    MainClass.GetScreenReader().SayWithMenuChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
                 else if (__instance.isProfessionChooser && currentLevelUpTitle != $"{___title}. Select a new profession.")
                 {
-                    MainClass.GetScreenReader().SayWithMenuChecker($"{___title}. Select a new profession.", true);
+                    MainClass.ScreenReader.SayWithMenuChecker($"{___title}. Select a new profession.", true);
                     currentLevelUpTitle = $"{___title}. Select a new profession.";
                 }
             }
@@ -366,14 +366,14 @@ namespace stardew_access.Patches
                             Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
                         }
                         toSpeak = $"{total}g in total. Press left mouse button to save.";
-                        MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                        MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                     }
                     for (int i = 0; i < __instance.categories.Count; i++)
                     {
                         if (__instance.categories[i].containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                         {
                             toSpeak = $"Money recieved from {__instance.getCategoryName(i)}: {___categoryTotals[i]}g.";
-                            MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                            MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                         }
                     }
                 }
@@ -491,8 +491,8 @@ namespace stardew_access.Patches
 
         internal static void ExitEventPatch()
         {
-            if (MainClass.GetScreenReader() != null)
-                MainClass.GetScreenReader().CloseScreenReader();
+            if (MainClass.ScreenReader != null)
+                MainClass.ScreenReader.CloseScreenReader();
         }
     }
 }

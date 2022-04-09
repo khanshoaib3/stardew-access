@@ -47,8 +47,8 @@ namespace stardew_access.Features
                 {
                     if (!manuallyTriggered && prevTile != tile)
                     {
-                        if (MainClass.GetScreenReader() != null)
-                            MainClass.GetScreenReader().PrevTextTile = " ";
+                        if (MainClass.ScreenReader != null)
+                            MainClass.ScreenReader.PrevTextTile = " ";
                     }
 
                     bool isColliding = isCollidingAtTile(x, y);
@@ -57,11 +57,11 @@ namespace stardew_access.Features
 
                     #region Narrate toSpeak
                     if (toSpeak != null)
-                        if (MainClass.GetScreenReader() != null)
+                        if (MainClass.ScreenReader != null)
                             if (manuallyTriggered)
-                                MainClass.GetScreenReader().Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             else
-                                MainClass.GetScreenReader().SayWithTileQuery(toSpeak, x, y, true);
+                                MainClass.ScreenReader.SayWithTileQuery(toSpeak, x, y, true);
                     #endregion
 
                     #region Play colliding sound effect
@@ -202,13 +202,13 @@ namespace stardew_access.Features
         {
             string? toReturn = null;
             Bush bush = (Bush)Game1.currentLocation.getLargeTerrainFeatureAt(x, y);
-            int size = bush.size;
+            int size = bush.size.Value;
 
             #region Check if bush is harvestable or not
-            if (!bush.townBush && (int)bush.tileSheetOffset == 1 && bush.inBloom(Game1.GetSeasonForLocation(Game1.currentLocation), Game1.dayOfMonth))
+            if (!bush.townBush.Value && (int)bush.tileSheetOffset.Value == 1 && bush.inBloom(Game1.GetSeasonForLocation(Game1.currentLocation), Game1.dayOfMonth))
             {
                 // Taken from the game's code
-                string season = ((int)bush.overrideSeason == -1) ? Game1.GetSeasonForLocation(Game1.currentLocation) : Utility.getSeasonNameFromNumber(bush.overrideSeason);
+                string season = ((int)bush.overrideSeason.Value == -1) ? Game1.GetSeasonForLocation(Game1.currentLocation) : Utility.getSeasonNameFromNumber(bush.overrideSeason.Value);
                 int shakeOff = -1;
                 if (!(season == "spring"))
                 {
@@ -238,9 +238,9 @@ namespace stardew_access.Features
             }
             #endregion
 
-            if (bush.townBush)
+            if (bush.townBush.Value)
                 toReturn = $"{toReturn} Town Bush";
-            else if (bush.greenhouseBush)
+            else if (bush.greenhouseBush.Value)
                 toReturn = $"{toReturn} Greenhouse Bush";
             else
                 toReturn = $"{toReturn} Bush";
@@ -409,7 +409,7 @@ namespace stardew_access.Features
                 HoeDirt dirt = (HoeDirt)terrain.Get();
                 if (dirt.crop != null)
                 {
-                    string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest].Split('/')[0];
+                    string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest.Value].Split('/')[0];
                     toReturn = $"{cropName}";
 
                     bool isWatered = dirt.state.Value == HoeDirt.watered;
@@ -633,7 +633,7 @@ namespace stardew_access.Features
             if (machine is CrabPot crabPot)
                 if (crabPot.bait.Value is not null && crabPot.heldObject.Value is null)
                     return MachineState.Busy;
-            return GetMachineState(machine.readyForHarvest.Value, machine.MinutesUntilReady, machine.heldObject);
+            return GetMachineState(machine.readyForHarvest.Value, machine.MinutesUntilReady, machine.heldObject.Value);
         }
 
         private static MachineState GetMachineState(bool readyForHarvest, int minutesUntilReady, StardewValley.Object? heldObject)

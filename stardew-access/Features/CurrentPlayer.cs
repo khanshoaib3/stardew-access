@@ -23,7 +23,7 @@ namespace stardew_access.Features
             if (Game1.player == null)
                 return 0;
 
-            int maxStamina = Game1.player.maxStamina;
+            int maxStamina = Game1.player.maxStamina.Value;
             int currentStamine = (int)Game1.player.stamina;
 
             int staminaPercentage = (int)(currentStamine * 100) / maxStamina;

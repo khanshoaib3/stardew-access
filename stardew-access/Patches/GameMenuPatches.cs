@@ -59,7 +59,7 @@ namespace stardew_access.Patches
                         if (junimoNoteMenuQuery != toSpeak)
                         {
                             junimoNoteMenuQuery = toSpeak;
-                            MainClass.GetScreenReader().Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                         return;
                     }
@@ -71,7 +71,7 @@ namespace stardew_access.Patches
                             if (junimoNoteMenuQuery != toSpeak)
                             {
                                 junimoNoteMenuQuery = toSpeak;
-                                MainClass.GetScreenReader().Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                             return;
                         }
@@ -82,7 +82,7 @@ namespace stardew_access.Patches
                         if (junimoNoteMenuQuery != toSpeak)
                         {
                             junimoNoteMenuQuery = toSpeak;
-                            MainClass.GetScreenReader().Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                         return;
                     }
@@ -94,7 +94,7 @@ namespace stardew_access.Patches
                             if (junimoNoteMenuQuery != toSpeak)
                             {
                                 junimoNoteMenuQuery = toSpeak;
-                                MainClass.GetScreenReader().Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                             return;
                         }
@@ -104,7 +104,7 @@ namespace stardew_access.Patches
                             if (junimoNoteMenuQuery != toSpeak)
                             {
                                 junimoNoteMenuQuery = toSpeak;
-                                MainClass.GetScreenReader().Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                             return;
                         }
@@ -140,12 +140,12 @@ namespace stardew_access.Patches
                     else if (isBackPressed && __instance.backButton != null && !__instance.backButton.containsPoint(x, y))
                     {
                         __instance.backButton.snapMouseCursorToCenter();
-                        MainClass.GetScreenReader().Say("Back Button", true);
+                        MainClass.ScreenReader.Say("Back Button", true);
                     }
                     else if (isPPressed && __instance.purchaseButton != null && !__instance.purchaseButton.containsPoint(x, y))
                     {
                         __instance.purchaseButton.snapMouseCursorToCenter();
-                        MainClass.GetScreenReader().Say("Purchase Button", true);
+                        MainClass.ScreenReader.Say("Purchase Button", true);
                     }
                 }
                 string reward = __instance.getRewardNameForArea(___whichArea);
@@ -215,7 +215,7 @@ namespace stardew_access.Patches
                                     toSpeak = $"Completed {toSpeak}";
 
                                 c.snapMouseCursorToCenter();
-                                MainClass.GetScreenReader().Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                         }
                         break;
@@ -250,7 +250,7 @@ namespace stardew_access.Patches
                                 }
 
                                 c.snapMouseCursorToCenter();
-                                MainClass.GetScreenReader().Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                         }
                         break;
@@ -303,7 +303,7 @@ namespace stardew_access.Patches
                                     toSpeak = "Empty Slot";
                                 }
                                 c.snapMouseCursorToCenter();
-                                MainClass.GetScreenReader().Say(toSpeak, true);
+                                MainClass.ScreenReader.Say(toSpeak, true);
                             }
                         }
                         break;
@@ -401,7 +401,7 @@ namespace stardew_access.Patches
                                 if (socialPageQuery != toSpeak)
                                 {
                                     socialPageQuery = toSpeak;
-                                    MainClass.GetScreenReader().Say(toSpeak, true);
+                                    MainClass.ScreenReader.Say(toSpeak, true);
                                 }
                                 return;
                             }
@@ -446,7 +446,7 @@ namespace stardew_access.Patches
                                     if (socialPageQuery != toSpeak)
                                     {
                                         socialPageQuery = toSpeak;
-                                        MainClass.GetScreenReader().Say(toSpeak, true);
+                                        MainClass.ScreenReader.Say(toSpeak, true);
                                     }
                                     return;
                                 }
@@ -490,7 +490,7 @@ namespace stardew_access.Patches
                     {
                         shopMenuQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                         Game1.playSound("drop_item");
                     }
                     return;
@@ -502,7 +502,7 @@ namespace stardew_access.Patches
                     {
                         shopMenuQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -513,7 +513,7 @@ namespace stardew_access.Patches
                     {
                         shopMenuQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -560,7 +560,7 @@ namespace stardew_access.Patches
                     {
                         shopMenuQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                 }
                 #endregion
@@ -589,7 +589,7 @@ namespace stardew_access.Patches
                         if (gameMenuQueryKey != toSpeak)
                         {
                             gameMenuQueryKey = toSpeak;
-                            MainClass.GetScreenReader().Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                         return;
                     }
@@ -618,7 +618,7 @@ namespace stardew_access.Patches
                     if (geodeMenuQueryKey != toSpeak)
                     {
                         geodeMenuQueryKey = toSpeak;
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -631,7 +631,7 @@ namespace stardew_access.Patches
                     if (geodeMenuQueryKey != toSpeak)
                     {
                         geodeMenuQueryKey = toSpeak;
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -643,7 +643,7 @@ namespace stardew_access.Patches
                     if (geodeMenuQueryKey != toSpeak)
                     {
                         geodeMenuQueryKey = toSpeak;
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                         Game1.playSound("drop_item");
                     }
                     return;
@@ -656,7 +656,7 @@ namespace stardew_access.Patches
                     if (geodeMenuQueryKey != toSpeak)
                     {
                         geodeMenuQueryKey = toSpeak;
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -668,7 +668,7 @@ namespace stardew_access.Patches
                     if (geodeMenuQueryKey != toSpeak)
                     {
                         geodeMenuQueryKey = toSpeak;
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -713,7 +713,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
                         gameMenuQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -725,7 +725,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -738,7 +738,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -751,7 +751,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -764,7 +764,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -778,7 +778,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -792,7 +792,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -805,7 +805,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                         Game1.playSound("drop_item");
                     }
                     return;
@@ -847,7 +847,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -987,7 +987,7 @@ namespace stardew_access.Patches
                     {
                         craftingPageQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -999,7 +999,7 @@ namespace stardew_access.Patches
                     {
                         craftingPageQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1011,7 +1011,7 @@ namespace stardew_access.Patches
                     {
                         craftingPageQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1023,7 +1023,7 @@ namespace stardew_access.Patches
                     {
                         craftingPageQueryKey = toSpeak;
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                         Game1.playSound("drop_item");
                     }
                     return;
@@ -1057,20 +1057,22 @@ namespace stardew_access.Patches
 
                     #region Health & stamina and buff items (effects like +1 walking speed)
                     Item producesItem = ___hoverRecipe.createItem();
-                    if (producesItem is StardewValley.Object && ((StardewValley.Object)producesItem).Edibility != -300)
+                    StardewValley.Object? producesItemObject = ((StardewValley.Object)producesItem);
+
+                    if (producesItem is StardewValley.Object && producesItemObject.Edibility != -300)
                     {
-                        int stamina_recovery = ((StardewValley.Object)producesItem).staminaRecoveredOnConsumption();
+                        int stamina_recovery = producesItemObject.staminaRecoveredOnConsumption();
                         buffs += $"{stamina_recovery} Energy";
                         if (stamina_recovery >= 0)
                         {
-                            int health_recovery = ((StardewValley.Object)producesItem).healthRecoveredOnConsumption();
+                            int health_recovery = producesItemObject.healthRecoveredOnConsumption();
                             buffs += $"\n{health_recovery} Health";
                         }
                     }
                     // These variables are taken from the game's code itself (IClickableMenu.cs -> 1016 line)
-                    bool edibleItem = producesItem != null && producesItem is StardewValley.Object && (int)((StardewValley.Object)producesItem).Edibility != -300;
-                    string[]? buffIconsToDisplay = (edibleItem && Game1.objectInformation[((StardewValley.Object)producesItem).ParentSheetIndex].Split('/').Length > 7)
-                        ? producesItem.ModifyItemBuffs(Game1.objectInformation[((StardewValley.Object)producesItem).ParentSheetIndex].Split('/')[7].Split(' '))
+                    bool edibleItem = producesItem != null && producesItem is StardewValley.Object && (int)producesItemObject.Edibility != -300;
+                    string[]? buffIconsToDisplay = (producesItem != null && edibleItem && Game1.objectInformation[producesItemObject.ParentSheetIndex].Split('/').Length > 7)
+                        ? producesItem.ModifyItemBuffs(Game1.objectInformation[producesItemObject.ParentSheetIndex].Split('/')[7].Split(' '))
                         : null;
 
                     if (buffIconsToDisplay != null)
@@ -1103,7 +1105,7 @@ namespace stardew_access.Patches
                         craftingPageQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1128,7 +1130,7 @@ namespace stardew_access.Patches
                             craftingPageQueryKey = query;
                             gameMenuQueryKey = "";
                             hoveredItemQueryKey = "";
-                            MainClass.GetScreenReader().Say("unknown recipe", true);
+                            MainClass.ScreenReader.Say("unknown recipe", true);
                         }
                         return;
                     }
@@ -1195,7 +1197,7 @@ namespace stardew_access.Patches
                         inventoryPageQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                         Game1.playSound("drop_item");
                     }
                     return;
@@ -1209,7 +1211,7 @@ namespace stardew_access.Patches
                         inventoryPageQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1222,7 +1224,7 @@ namespace stardew_access.Patches
                         inventoryPageQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1235,7 +1237,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1249,7 +1251,7 @@ namespace stardew_access.Patches
                         itemGrabMenuQueryKey = toSpeak;
                         gameMenuQueryKey = "";
                         hoveredItemQueryKey = "";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1345,7 +1347,7 @@ namespace stardew_access.Patches
                             inventoryPageQueryKey = toSpeak;
                             gameMenuQueryKey = "";
                             hoveredItemQueryKey = "";
-                            MainClass.GetScreenReader().Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                         return;
                     }
@@ -1408,7 +1410,7 @@ namespace stardew_access.Patches
                         {
                             gameMenuQueryKey = "";
                             optionsPageQueryKey = toSpeak;
-                            MainClass.GetScreenReader().Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                         return;
                     }
@@ -1432,7 +1434,7 @@ namespace stardew_access.Patches
                     {
                         gameMenuQueryKey = "";
                         exitPageQueryKey = toSpeak;
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1444,7 +1446,7 @@ namespace stardew_access.Patches
                     {
                         gameMenuQueryKey = "";
                         exitPageQueryKey = toSpeak;
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return;
                 }
@@ -1583,7 +1585,7 @@ namespace stardew_access.Patches
                     if (hoveredItemQueryKey != $"{toSpeak}:{i}")
                     {
                         hoveredItemQueryKey = $"{toSpeak}:{i}";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return true;
                 }

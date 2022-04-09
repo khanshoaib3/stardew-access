@@ -57,7 +57,7 @@ namespace stardew_access.Patches
                             else
                                 toSpeak = response;
 
-                            MainClass.GetScreenReader().Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                     }
                     else
@@ -65,7 +65,7 @@ namespace stardew_access.Patches
                         if (currentDialogue != dialogueText)
                         {
                             currentDialogue = dialogueText;
-                            MainClass.GetScreenReader().Say(dialogueText, true);
+                            MainClass.ScreenReader.Say(dialogueText, true);
                         }
                     }
                 }
@@ -106,7 +106,7 @@ namespace stardew_access.Patches
                             else
                                 toSpeak = response;
 
-                            MainClass.GetScreenReader().Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                     }
                     else
@@ -114,7 +114,7 @@ namespace stardew_access.Patches
                         if (currentDialogue != dialogueText)
                         {
                             currentDialogue = dialogueText;
-                            MainClass.GetScreenReader().Say(dialogueText, true);
+                            MainClass.ScreenReader.Say(dialogueText, true);
                         }
                     }
                 }
@@ -124,7 +124,7 @@ namespace stardew_access.Patches
                     if (currentDialogue != __instance.getCurrentString())
                     {
                         currentDialogue = __instance.getCurrentString();
-                        MainClass.GetScreenReader().Say(__instance.getCurrentString(), true);
+                        MainClass.ScreenReader.Say(__instance.getCurrentString(), true);
                     }
                 }
             }
@@ -316,9 +316,9 @@ namespace stardew_access.Patches
                 if (toSpeak.ToString() != " ")
                 {
                     if (Context.IsPlayerFree)
-                        MainClass.GetScreenReader().SayWithChecker(toSpeak.ToString(), true); // Normal Checker
+                        MainClass.ScreenReader.SayWithChecker(toSpeak.ToString(), true); // Normal Checker
                     else
-                        MainClass.GetScreenReader().SayWithMenuChecker(toSpeak.ToString(), true); // Menu Checker
+                        MainClass.ScreenReader.SayWithMenuChecker(toSpeak.ToString(), true); // Menu Checker
                 }
                 #endregion
             }
@@ -380,7 +380,7 @@ namespace stardew_access.Patches
                 if (__instance.mailMessage.Count > 1)
                     toSpeak = $"Page {__instance.page + 1} of {__instance.mailMessage.Count}:\n\t{toSpeak}";
 
-                MainClass.GetScreenReader().Say(toSpeak, true);
+                MainClass.ScreenReader.Say(toSpeak, true);
             }
             #endregion
 
@@ -393,17 +393,17 @@ namespace stardew_access.Patches
                     string label = c.label;
 
                     if (c.containsPoint(x, y))
-                        MainClass.GetScreenReader().SayWithChecker($"Grab: {name} \t\n {label}", false);
+                        MainClass.ScreenReader.SayWithChecker($"Grab: {name} \t\n {label}", false);
                 }
             }
             #endregion
 
             #region Narrate buttons
             if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
-                MainClass.GetScreenReader().SayWithChecker($"Previous page button", false);
+                MainClass.ScreenReader.SayWithChecker($"Previous page button", false);
 
             if (__instance.forwardButton != null && __instance.forwardButton.visible && __instance.forwardButton.containsPoint(x, y))
-                MainClass.GetScreenReader().SayWithChecker($"Next page button", false);
+                MainClass.ScreenReader.SayWithChecker($"Next page button", false);
 
             #endregion
         }

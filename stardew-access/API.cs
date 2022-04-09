@@ -55,10 +55,10 @@ namespace stardew_access.ScreenReader
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
         public void Say(String text, Boolean interrupt)
         {
-            if (MainClass.GetScreenReader() == null)
+            if (MainClass.ScreenReader == null)
                 return;
 
-            MainClass.GetScreenReader().Say(text, interrupt);
+            MainClass.ScreenReader.Say(text, interrupt);
         }
 
         /// <summary>Speaks the text via the loaded screen reader (if any).
@@ -67,10 +67,10 @@ namespace stardew_access.ScreenReader
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
         public void SayWithChecker(String text, Boolean interrupt)
         {
-            if (MainClass.GetScreenReader() == null)
+            if (MainClass.ScreenReader == null)
                 return;
 
-            MainClass.GetScreenReader().SayWithChecker(text, interrupt);
+            MainClass.ScreenReader.SayWithChecker(text, interrupt);
         }
 
         /// <summary>Speaks the text via the loaded screen reader (if any).
@@ -80,10 +80,10 @@ namespace stardew_access.ScreenReader
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
         public void SayWithMenuChecker(String text, Boolean interrupt)
         {
-            if (MainClass.GetScreenReader() == null)
+            if (MainClass.ScreenReader == null)
                 return;
 
-            MainClass.GetScreenReader().SayWithMenuChecker(text, interrupt);
+            MainClass.ScreenReader.SayWithMenuChecker(text, interrupt);
         }
 
         /// <summary>Speaks the text via the loaded screen reader (if any).
@@ -93,10 +93,10 @@ namespace stardew_access.ScreenReader
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
         public void SayWithChatChecker(String text, Boolean interrupt)
         {
-            if (MainClass.GetScreenReader() == null)
+            if (MainClass.ScreenReader == null)
                 return;
 
-            MainClass.GetScreenReader().SayWithChatChecker(text, interrupt);
+            MainClass.ScreenReader.SayWithChatChecker(text, interrupt);
         }
 
         /// <summary>Speaks the text via the loaded screen reader (if any).
@@ -108,10 +108,10 @@ namespace stardew_access.ScreenReader
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
         public void SayWithTileQuery(String text, int x, int y, Boolean interrupt)
         {
-            if (MainClass.GetScreenReader() == null)
+            if (MainClass.ScreenReader == null)
                 return;
 
-            MainClass.GetScreenReader().SayWithTileQuery(text, x, y, interrupt);
+            MainClass.ScreenReader.SayWithTileQuery(text, x, y, interrupt);
         }
 
     }

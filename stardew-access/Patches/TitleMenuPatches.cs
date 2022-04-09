@@ -44,7 +44,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 if (toSpeak != " ")
-                    MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithChecker(toSpeak, true);
             }
             catch (Exception e)
             {
@@ -94,7 +94,7 @@ namespace stardew_access.Patches
                 if (TitleMenu.subMenu != null && __instance.backButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
                     string text = "Back Button";
-                    MainClass.GetScreenReader().SayWithChecker(text, true);
+                    MainClass.ScreenReader.SayWithChecker(text, true);
                 }
 
                 // Fix for back button not working using keyboard
@@ -108,7 +108,7 @@ namespace stardew_access.Patches
                 }
 
                 if (TitleMenu.subMenu == null && toSpeak != "")
-                    MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithChecker(toSpeak, true);
             }
             catch (Exception e)
             {
@@ -128,7 +128,7 @@ namespace stardew_access.Patches
                         #region Farms
                         if (___menu.deleteButtons.Count > 0 && ___menu.deleteButtons[i].containsPoint(x, y))
                         {
-                            MainClass.GetScreenReader().SayWithChecker($"Delete {__instance.Farmer.farmName} Farm", true);
+                            MainClass.ScreenReader.SayWithChecker($"Delete {__instance.Farmer.farmName.Value} Farm", true);
                             return;
                         }
 
@@ -137,20 +137,20 @@ namespace stardew_access.Patches
                             // Used diff. functions to narrate to prevent it from speaking the message again on selecting another button.
                             string message = "Really delete farm?";
 
-                            MainClass.GetScreenReader().SayWithChecker(message, true);
+                            MainClass.ScreenReader.SayWithChecker(message, true);
                             if (___menu.okDeleteButton.containsPoint(x, y))
                             {
-                                MainClass.GetScreenReader().SayWithMenuChecker("Ok Button", false);
+                                MainClass.ScreenReader.SayWithMenuChecker("Ok Button", false);
                             }
                             else if (___menu.cancelDeleteButton.containsPoint(x, y))
                             {
-                                MainClass.GetScreenReader().SayWithMenuChecker("Cancel Button", false);
+                                MainClass.ScreenReader.SayWithMenuChecker("Cancel Button", false);
                             }
                             return;
                         }
 
                         String farmerName = __instance.Farmer.displayName;
-                        String farmName = __instance.Farmer.farmName;
+                        String farmName = __instance.Farmer.farmName.Value;
                         String money = __instance.Farmer.Money.ToString();
                         String hoursPlayed = Utility.getHoursMinutesStringFromMilliseconds(__instance.Farmer.millisecondsPlayed);
                         string dateStringForSaveGame = ((!__instance.Farmer.dayOfMonthForSaveGame.HasValue ||
@@ -159,7 +159,7 @@ namespace stardew_access.Patches
 
                         string toSpeak = $"{farmName} Farm Selected, \t\n Farmer:{farmerName}, \t\nMoney:{money}, \t\nHours Played:{hoursPlayed}, \t\nDate:{dateStringForSaveGame}";
 
-                        MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                        MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                         #endregion
                     }
                 }
@@ -318,7 +318,7 @@ namespace stardew_access.Patches
 
             if (toSpeak != " ")
             {
-                MainClass.GetScreenReader().Say(toSpeak, true);
+                MainClass.ScreenReader.Say(toSpeak, true);
             }
         }
 

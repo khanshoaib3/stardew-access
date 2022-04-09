@@ -71,7 +71,7 @@ namespace stardew_access.Patches
                     if (museumQueryKey != toSpeak)
                     {
                         museumQueryKey = toSpeak;
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                 }
                 else
@@ -92,9 +92,9 @@ namespace stardew_access.Patches
 
                                 if (((LibraryMuseum)Game1.currentLocation).isTileSuitableForMuseumPiece(tileX, tileY) && ((LibraryMuseum)Game1.currentLocation).isItemSuitableForDonation(__instance.inventory.actualInventory[i]))
                                 {
-                                    int objectID = __instance.inventory.actualInventory[i].parentSheetIndex;
+                                    int objectID = __instance.inventory.actualInventory[i].ParentSheetIndex;
                                     int rewardsCount = ((LibraryMuseum)Game1.currentLocation).getRewardsForPlayer(Game1.player).Count;
-                                    ((LibraryMuseum)Game1.currentLocation).museumPieces.Add(new Vector2(tileX, tileY), ((StardewValley.Object)__instance.inventory.actualInventory[i]).parentSheetIndex);
+                                    ((LibraryMuseum)Game1.currentLocation).museumPieces.Add(new Vector2(tileX, tileY), ((StardewValley.Object)__instance.inventory.actualInventory[i]).ParentSheetIndex);
                                     Game1.playSound("stoneStep");
                                     if (((LibraryMuseum)Game1.currentLocation).getRewardsForPlayer(Game1.player).Count > rewardsCount)
                                     {
@@ -115,13 +115,13 @@ namespace stardew_access.Patches
                                     switch (pieces)
                                     {
                                         case 95:
-                                            globalChatInfoMessage("MuseumComplete", Game1.player.farmName);
+                                            globalChatInfoMessage("MuseumComplete", Game1.player.farmName.Value);
                                             break;
                                         case 40:
-                                            globalChatInfoMessage("Museum40", Game1.player.farmName);
+                                            globalChatInfoMessage("Museum40", Game1.player.farmName.Value);
                                             break;
                                         default:
-                                            globalChatInfoMessage("donation", Game1.player.name, "object:" + objectID);
+                                            globalChatInfoMessage("donation", Game1.player.Name, "object:" + objectID);
                                             break;
                                     }
                                     break;
@@ -135,7 +135,7 @@ namespace stardew_access.Patches
                         if (museumQueryKey != $"ok button")
                         {
                             museumQueryKey = $"ok button";
-                            MainClass.GetScreenReader().Say("ok button", true);
+                            MainClass.ScreenReader.Say("ok button", true);
                         }
                     }
                 }
@@ -205,7 +205,7 @@ namespace stardew_access.Patches
                     if (museumQueryKey != $"{toSpeak}:{i}")
                     {
                         museumQueryKey = $"{toSpeak}:{i}";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     return i;
                 }
