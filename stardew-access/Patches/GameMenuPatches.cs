@@ -1068,7 +1068,7 @@ namespace stardew_access.Patches
                         }
                     }
                     // These variables are taken from the game's code itself (IClickableMenu.cs -> 1016 line)
-                    bool edibleItem = producesItem != null && producesItem is StardewValley.Object && (int)((StardewValley.Object)producesItem).edibility != -300;
+                    bool edibleItem = producesItem != null && producesItem is StardewValley.Object && (int)((StardewValley.Object)producesItem).Edibility != -300;
                     string[]? buffIconsToDisplay = (edibleItem && Game1.objectInformation[((StardewValley.Object)producesItem).ParentSheetIndex].Split('/').Length > 7)
                         ? producesItem.ModifyItemBuffs(Game1.objectInformation[((StardewValley.Object)producesItem).ParentSheetIndex].Split('/')[7].Split(' '))
                         : null;
@@ -1513,7 +1513,7 @@ namespace stardew_access.Patches
 
                                 #region Add buff items (effects like +1 walking speed)
                                 // These variables are taken from the game's code itself (IClickableMenu.cs -> 1016 line)
-                                bool edibleItem = actualInventory[i] != null && actualInventory[i] is StardewValley.Object && (int)((StardewValley.Object)actualInventory[i]).edibility != -300;
+                                bool edibleItem = actualInventory[i] != null && actualInventory[i] is StardewValley.Object && (int)((StardewValley.Object)actualInventory[i]).Edibility != -300;
                                 string[]? buffIconsToDisplay = (edibleItem && Game1.objectInformation[((StardewValley.Object)actualInventory[i]).ParentSheetIndex].Split('/').Length > 7) ? actualInventory[i].ModifyItemBuffs(Game1.objectInformation[((StardewValley.Object)actualInventory[i]).ParentSheetIndex].Split('/')[7].Split(' ')) : null;
                                 if (buffIconsToDisplay != null)
                                 {

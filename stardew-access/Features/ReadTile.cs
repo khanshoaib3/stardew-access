@@ -571,6 +571,9 @@ namespace stardew_access.Features
                     case "pine cone":
                         treeName = "Pine";
                         break;
+                    default:
+                        treeName = "Coconut";
+                        break;
                 }
 
                 if (treeStage == 1)

@@ -11,6 +11,7 @@ namespace stardew_access.Patches
     internal class MenuPatches
     {
         private static string currentLevelUpTitle = " ";
+        internal static bool firstTimeInNamingMenu = true;
         private static string animalQueryMenuQuery = " ";
         public static Vector2? prevTile = null;
 
@@ -167,15 +168,61 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void NamingMenuPatch(NamingMenu __instance, string title, TextBox ___textBox)
+        internal static void TitleTextInputMenuPatch(TitleTextInputMenu __instance)
         {
             try
             {
-                __instance.textBoxCC.snapMouseCursor();
-                ___textBox.SelectMe();
-                string toSpeak = $"{title}";
+                string toSpeak = "";
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
-                MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                if (__instance.pasteButton != null && __instance.pasteButton.containsPoint(x, y))
+                    toSpeak = $"Paste button";
+
+                if (toSpeak != "")
+                    MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+            }
+            catch (System.Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
+        }
+
+        internal static void NamingMenuPatch(NamingMenu __instance, TextBox ___textBox, string ___title)
+        {
+            try
+            {
+                string toSpeak = "";
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
+
+                if (firstTimeInNamingMenu)
+                {
+                    firstTimeInNamingMenu = false;
+                    ___textBox.Selected = false;
+                }
+
+                if (___textBox.Selected)
+                {
+                    ___textBox.Update();
+                    toSpeak = ___textBox.Text;
+
+                    if (isEscPressed)
+                    {
+                        ___textBox.Selected = false;
+                    }
+                }
+                else
+                {
+                    if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
+                        toSpeak = $"{___title} text box";
+                    else if (__instance.doneNamingButton != null && __instance.doneNamingButton.containsPoint(x, y))
+                        toSpeak = $"Done naming button";
+                    else if (__instance.randomButton != null && __instance.randomButton.containsPoint(x, y))
+                        toSpeak = $"Random button";
+                }
+
+                if (toSpeak != "")
+                    MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
             }
             catch (Exception e)
             {

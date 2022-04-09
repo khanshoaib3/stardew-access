@@ -184,6 +184,14 @@ namespace stardew_access
             if (!Context.IsPlayerFree)
                 return;
 
+            // Narrate Current Location
+            if (Config.LocationKey.JustPressed())
+            {
+                string toSpeak = $"{Game1.currentLocation.Name}";
+                MainClass.GetScreenReader().Say(toSpeak, true);
+                return;
+            }
+
             // Narrate Position
             if (Config.PositionKey.JustPressed())
             {
@@ -205,14 +213,6 @@ namespace stardew_access
             if (Config.HealthNStaminaKey.JustPressed())
             {
                 string toSpeak = $"Health is {CurrentPlayer.getHealth()} and Stamina is {CurrentPlayer.getStamina()}";
-                MainClass.GetScreenReader().Say(toSpeak, true);
-                return;
-            }
-
-            // Narrate Current Location
-            if (Config.LocationKey.JustPressed())
-            {
-                string toSpeak = $"{Game1.currentLocation.Name}";
                 MainClass.GetScreenReader().Say(toSpeak, true);
                 return;
             }
