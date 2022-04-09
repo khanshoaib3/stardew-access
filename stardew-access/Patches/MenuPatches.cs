@@ -15,6 +15,30 @@ namespace stardew_access.Patches
         private static string animalQueryMenuQuery = " ";
         public static Vector2? prevTile = null;
 
+        internal static void ChooseFromListMenuPatch(ChooseFromListMenu __instance, List<string> ___options, int ___index, bool ___isJukebox)
+        {
+            try
+            {
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                string toSpeak = "";
+
+                if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                    toSpeak = "Select " + (___isJukebox ? Utility.getSongTitleFromCueName(___options[___index]) : ___options[___index]) + " button";
+                else if (__instance.cancelButton != null && __instance.cancelButton.containsPoint(x, y))
+                    toSpeak = "Cancel button";
+                else if (__instance.backButton != null && __instance.backButton.containsPoint(x, y))
+                    toSpeak = "Previous option: " + (___isJukebox ? Utility.getSongTitleFromCueName(___options[Math.Max(0, ___index - 1)]) : ___options[Math.Max(0, ___index - 1)]) + " button";
+                else if (__instance.forwardButton != null && __instance.forwardButton.containsPoint(x, y))
+                    toSpeak = "Next option: " + (___isJukebox ? Utility.getSongTitleFromCueName(___options[Math.Min(___options.Count, ___index + 1)]) : ___options[Math.Min(___options.Count, ___index + 1)]) + " button";
+
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            }
+            catch (System.Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
+        }
+
         internal static void AnimalQueryMenuPatch(AnimalQueryMenu __instance, bool ___confirmingSell, FarmAnimal ___animal, TextBox ___textBox, string ___parentName)
         {
             try
@@ -235,16 +259,18 @@ namespace stardew_access.Patches
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
+                string toSpeak = ___message;
 
-                MainClass.ScreenReader.SayWithMenuChecker(___message, true);
                 if (__instance.okButton.containsPoint(x, y))
                 {
-                    MainClass.ScreenReader.SayWithMenuChecker("Ok Button", false);
+                    toSpeak += "\n\tOk Button";
                 }
                 else if (__instance.cancelButton.containsPoint(x, y))
                 {
-                    MainClass.ScreenReader.SayWithMenuChecker("Cancel Button", false);
+                    toSpeak += "\n\tCancel Button";
                 }
+
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
             }
             catch (Exception e)
             {

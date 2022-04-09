@@ -197,6 +197,12 @@ namespace stardew_access.Patches
 
                 if (Game1.activeClickableMenu is AnimalQueryMenu)
                     return;
+
+                if (Game1.activeClickableMenu is ConfirmationDialog)
+                    return;
+
+                if (Game1.activeClickableMenu is ReadyCheckDialog)
+                    return;
                 #endregion
 
                 string toSpeak = " ";
