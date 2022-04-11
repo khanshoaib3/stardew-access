@@ -511,6 +511,16 @@ namespace stardew_access.Patches
                 DialoguePatches.currentDialogue = " ";
             }
 
+            if (menu is JojaCDMenu)
+            {
+                BundleMenuPatches.jojaCDMenuQuery = "";
+            }
+
+            if (menu is QuestLog)
+            {
+                QuestPatches.questLogQuery = " ";
+            }
+
             GameMenuPatches.hoveredItemQueryKey = "";
         }
         #endregion

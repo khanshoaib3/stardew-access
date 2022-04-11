@@ -9,6 +9,7 @@ namespace stardew_access.Patches
     internal class QuestPatches
     {
         internal static string currentDailyQuestText = " ";
+        internal static string questLogQuery = " ";
 
         #region For Special Orders Board
         internal static void SpecialOrdersBoardPatch(SpecialOrdersBoard __instance)
@@ -153,27 +154,44 @@ namespace stardew_access.Patches
             try
             {
                 bool snapMouseToRewardBox = false;
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
                 if (___questPage == -1)
                 {
                     #region Quest Lists
+                    string toSpeak = " ";
                     for (int i = 0; i < __instance.questLogButtons.Count; i++)
                     {
                         if (___pages.Count() > 0 && ___pages[___currentPage].Count() > i)
                         {
+                            if (__instance.questLogButtons[i].containsPoint(x, y))
+                                continue;
+
                             string name = ___pages[___currentPage][i].GetName();
                             int daysLeft = ___pages[___currentPage][i].GetDaysLeft();
-                            string toSpeak = $"{name} quest";
+                            toSpeak = $"{name} quest";
 
                             if (daysLeft > 0 && ___pages[___currentPage][i].ShouldDisplayAsComplete())
                                 toSpeak += $"\t\n {daysLeft} days left";
 
                             toSpeak += ___pages[___currentPage][i].ShouldDisplayAsComplete() ? " completed!" : "";
-                            if (__instance.questLogButtons[i].containsPoint(Game1.getOldMouseX(), Game1.getOldMouseY()))
-                            {
-                                MainClass.ScreenReader.SayWithChecker(toSpeak, true);
-                            }
+                            break;
                         }
+                    }
+
+                    if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
+                        toSpeak = "Previous page button";
+                    else if (__instance.forwardButton != null && __instance.forwardButton.visible && __instance.forwardButton.containsPoint(x, y))
+                        toSpeak = "Next page button";
+                    else if (__instance.cancelQuestButton != null && __instance.cancelQuestButton.visible && __instance.cancelQuestButton.containsPoint(x, y))
+                        toSpeak = "Cancel quest button";
+                    else if (__instance.upperRightCloseButton != null && __instance.upperRightCloseButton.visible && __instance.upperRightCloseButton.containsPoint(x, y))
+                        toSpeak = "Close menu button";
+
+                    if (questLogQuery != toSpeak)
+                    {
+                        questLogQuery = toSpeak;
+                        MainClass.ScreenReader.Say(toSpeak, true);
                     }
                     #endregion
                 }

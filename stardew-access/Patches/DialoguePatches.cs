@@ -397,11 +397,13 @@ namespace stardew_access.Patches
             {
                 foreach (ClickableComponent c in __instance.itemsToGrab)
                 {
-                    string name = c.name;
-                    string label = c.label;
+                    if (c.item == null)
+                        continue;
+
+                    string name = c.item.DisplayName;
 
                     if (c.containsPoint(x, y))
-                        MainClass.ScreenReader.SayWithChecker($"Grab: {name} \t\n {label}", false);
+                        MainClass.ScreenReader.SayWithChecker($"Left click to collect {name}", false);
                 }
             }
             #endregion
