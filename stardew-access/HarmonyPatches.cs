@@ -98,13 +98,20 @@ namespace stardew_access
             );
 
             harmony.Patch(
+                original: AccessTools.Method(typeof(CollectionsPage), nameof(CollectionsPage.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.CollectionsPagePatch))
+            );
+            #endregion
+
+            #region Bundle Menu Patches
+            harmony.Patch(
                 original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.JunimoNoteMenuPatch))
+                postfix: new HarmonyMethod(typeof(BundleMenuPatches), nameof(BundleMenuPatches.JunimoNoteMenuPatch))
             );
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(CollectionsPage), nameof(CollectionsPage.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.CollectionsPagePatch))
+                original: AccessTools.Method(typeof(JojaCDMenu), nameof(JojaCDMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(BundleMenuPatches), nameof(BundleMenuPatches.JojaCDMenuPatch))
             );
             #endregion
 

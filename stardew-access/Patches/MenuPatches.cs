@@ -466,10 +466,10 @@ namespace stardew_access.Patches
 
             if (menu is JunimoNoteMenu)
             {
-                GameMenuPatches.currentIngredientListItem = -1;
-                GameMenuPatches.currentIngredientInputSlot = -1;
-                GameMenuPatches.currentInventorySlot = -1;
-                GameMenuPatches.junimoNoteMenuQuery = "";
+                BundleMenuPatches.currentIngredientListItem = -1;
+                BundleMenuPatches.currentIngredientInputSlot = -1;
+                BundleMenuPatches.currentInventorySlot = -1;
+                BundleMenuPatches.junimoNoteMenuQuery = "";
             }
 
             if (menu is ShopMenu)

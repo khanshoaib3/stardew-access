@@ -203,6 +203,9 @@ namespace stardew_access.Patches
 
                 if (Game1.activeClickableMenu is ReadyCheckDialog)
                     return;
+
+                if (Game1.activeClickableMenu is JojaCDMenu)
+                    return;
                 #endregion
 
                 string toSpeak = " ";
@@ -333,7 +336,6 @@ namespace stardew_access.Patches
                 MainClass.ErrorLog($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}");
             }
         }
-
 
         internal static void LetterViewerMenuPatch(LetterViewerMenu __instance)
         {
