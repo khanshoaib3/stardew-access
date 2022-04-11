@@ -15,6 +15,53 @@ namespace stardew_access.Patches
         private static string animalQueryMenuQuery = " ";
         public static Vector2? prevTile = null;
 
+        internal static void TailoringMenuPatch(TailoringMenu __instance)
+        {
+            try
+            {
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                string toSpeak = "";
+
+                if (__instance.leftIngredientSpot != null && __instance.leftIngredientSpot.containsPoint(x, y))
+                {
+                    if (__instance.leftIngredientSpot.item == null)
+                    {
+                        toSpeak = "Input cloth here";
+                    }
+                    else
+                    {
+                        Item item = __instance.leftIngredientSpot.item;
+                        toSpeak = $"Cloth slot: {item.Stack} {item.DisplayName}";
+                    }
+                }
+                else if (__instance.rightIngredientSpot != null && __instance.rightIngredientSpot.containsPoint(x, y))
+                {
+                    if (__instance.rightIngredientSpot.item == null)
+                    {
+                        toSpeak = "Input ingredient here";
+                    }
+                    else
+                    {
+                        Item item = __instance.rightIngredientSpot.item;
+                        toSpeak = $"Ingredient slot: {item.Stack} {item.DisplayName}";
+                    }
+                }
+                else if (__instance.startTailoringButton != null && __instance.startTailoringButton.containsPoint(x, y))
+                {
+                    toSpeak = "Star tailoring button";
+                }
+
+                // TODO add other things
+
+                if (toSpeak != "")
+                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            }
+            catch (System.Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
+        }
+
         internal static void ChooseFromListMenuPatch(ChooseFromListMenu __instance, List<string> ___options, int ___index, bool ___isJukebox)
         {
             try
