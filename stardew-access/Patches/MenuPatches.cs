@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using stardew_access.Features;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -15,8 +16,61 @@ namespace stardew_access.Patches
         internal static bool firstTimeInNamingMenu = true;
         internal static string animalQueryMenuQuery = " ";
         internal static string tailoringMenuQuery = " ";
-        internal static bool isCyclingThroughInv = false;
+        internal static string pondQueryMenuQuery = " ";
         public static Vector2? prevTile = null;
+
+        internal static void PondQueryMenuPatch(PondQueryMenu __instance, StardewValley.Object ____fishItem, FishPond ____pond, string ____statusText, bool ___confirmingEmpty)
+        {
+            try
+            {
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
+                bool isYPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Y);
+                bool isNPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.N);
+                string toSpeak = " ", extra = "";
+
+                if (___confirmingEmpty)
+                {
+                    if (__instance.yesButton != null && __instance.yesButton.containsPoint(x, y))
+                        toSpeak = "Confirm button";
+                    else if (__instance.noButton != null && __instance.noButton.containsPoint(x, y))
+                        toSpeak = "Cancel button";
+                }
+                else
+                {
+                    if (isCPressed)
+                    {
+                        string pond_name_text = Game1.content.LoadString("Strings\\UI:PondQuery_Name", ____fishItem.DisplayName);
+                        string population_text = Game1.content.LoadString("Strings\\UI:PondQuery_Population", string.Concat(____pond.FishCount), ____pond.maxOccupants.Value);
+                        bool has_unresolved_needs = ____pond.neededItem.Value != null && ____pond.HasUnresolvedNeeds() && !____pond.hasCompletedRequest.Value;
+                        string bring_text = "";
+
+                        if (has_unresolved_needs && ____pond.neededItem.Value != null)
+                            bring_text = Game1.content.LoadString("Strings\\UI:PondQuery_StatusRequest_Bring") + $": {____pond.neededItemCount} {____pond.neededItem.Value.DisplayName}";
+
+                        extra = $"{pond_name_text} {population_text} {bring_text} Status: {____statusText}";
+                        pondQueryMenuQuery = " ";
+                    }
+
+                    if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                        toSpeak = "Ok button";
+                    else if (__instance.changeNettingButton != null && __instance.changeNettingButton.containsPoint(x, y))
+                        toSpeak = "Change netting button";
+                    else if (__instance.emptyButton != null && __instance.emptyButton.containsPoint(x, y))
+                        toSpeak = "Empty pond button";
+                }
+
+                if (pondQueryMenuQuery != toSpeak)
+                {
+                    pondQueryMenuQuery = toSpeak;
+                    MainClass.ScreenReader.Say(extra + " \n\t" + toSpeak, true);
+                }
+            }
+            catch (System.Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
+        }
 
         internal static void TailoringMenuPatch(TailoringMenu __instance)
         {
@@ -57,22 +111,22 @@ namespace stardew_access.Patches
                 {
                     toSpeak = "Hat Slot";
 
-                    if (((Hat)Game1.player.hat) != null)
-                        toSpeak = $"{toSpeak}: {((Hat)Game1.player.hat).DisplayName}";
+                    if (Game1.player.hat.Value != null)
+                        toSpeak = $"{toSpeak}: {Game1.player.hat.Value.DisplayName}";
                 }
                 else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[1].containsPoint(x, y))
                 {
                     toSpeak = "Shirt Slot";
 
-                    if (((Clothing)Game1.player.shirtItem) != null)
-                        toSpeak = $"{toSpeak}: {((Clothing)Game1.player.shirtItem).DisplayName}";
+                    if (Game1.player.shirtItem.Value != null)
+                        toSpeak = $"{toSpeak}: {Game1.player.shirtItem.Value.DisplayName}";
                 }
                 else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[2].containsPoint(x, y))
                 {
                     toSpeak = "Pants Slot";
 
-                    if ((Clothing)Game1.player.pantsItem != null)
-                        toSpeak = $"{toSpeak}: {((Clothing)Game1.player.pantsItem).DisplayName}";
+                    if (Game1.player.pantsItem.Value != null)
+                        toSpeak = $"{toSpeak}: {Game1.player.pantsItem.Value.DisplayName}";
                 }
                 else
                 {
@@ -535,18 +589,15 @@ namespace stardew_access.Patches
             {
                 DialoguePatches.currentLetterText = " ";
             }
-
-            if (menu is LevelUpMenu)
+            else if (menu is LevelUpMenu)
             {
                 currentLevelUpTitle = " ";
             }
-
-            if (menu is Billboard)
+            else if (menu is Billboard)
             {
                 QuestPatches.currentDailyQuestText = " ";
             }
-
-            if (menu is GameMenu)
+            else if (menu is GameMenu)
             {
                 GameMenuPatches.gameMenuQueryKey = "";
                 GameMenuPatches.craftingPageQueryKey = "";
@@ -557,31 +608,26 @@ namespace stardew_access.Patches
                 GameMenuPatches.currentSelectedCraftingRecipe = -1;
                 GameMenuPatches.isSelectingRecipe = false;
             }
-
-            if (menu is JunimoNoteMenu)
+            else if (menu is JunimoNoteMenu)
             {
                 BundleMenuPatches.currentIngredientListItem = -1;
                 BundleMenuPatches.currentIngredientInputSlot = -1;
                 BundleMenuPatches.currentInventorySlot = -1;
                 BundleMenuPatches.junimoNoteMenuQuery = "";
             }
-
-            if (menu is ShopMenu)
+            else if (menu is ShopMenu)
             {
                 GameMenuPatches.shopMenuQueryKey = "";
             }
-
-            if (menu is ItemGrabMenu)
+            else if (menu is ItemGrabMenu)
             {
                 GameMenuPatches.itemGrabMenuQueryKey = "";
             }
-
-            if (menu is GeodeMenu)
+            else if (menu is GeodeMenu)
             {
                 GameMenuPatches.geodeMenuQueryKey = "";
             }
-
-            if (menu is CarpenterMenu)
+            else if (menu is CarpenterMenu)
             {
                 BuildingNAnimalMenuPatches.carpenterMenuQuery = "";
                 BuildingNAnimalMenuPatches.isUpgrading = false;
@@ -591,33 +637,32 @@ namespace stardew_access.Patches
                 BuildingNAnimalMenuPatches.isConstructing = false;
                 BuildingNAnimalMenuPatches.carpenterMenu = null;
             }
-
-            if (menu is PurchaseAnimalsMenu)
+            else if (menu is PurchaseAnimalsMenu)
             {
                 BuildingNAnimalMenuPatches.purchaseAnimalMenuQuery = "";
                 BuildingNAnimalMenuPatches.firstTimeInNamingMenu = true;
                 BuildingNAnimalMenuPatches.purchaseAnimalsMenu = null;
             }
-
-            if (menu is DialogueBox)
+            else if (menu is DialogueBox)
             {
                 DialoguePatches.isDialogueAppearingFirstTime = true;
                 DialoguePatches.currentDialogue = " ";
             }
-
-            if (menu is JojaCDMenu)
+            else if (menu is JojaCDMenu)
             {
                 BundleMenuPatches.jojaCDMenuQuery = "";
             }
-
-            if (menu is QuestLog)
+            else if (menu is QuestLog)
             {
                 QuestPatches.questLogQuery = " ";
             }
-
-            if (menu is TailoringMenu)
+            else if (menu is TailoringMenu)
             {
                 tailoringMenuQuery = " ";
+            }
+            else if (menu is PondQueryMenu)
+            {
+                pondQueryMenuQuery = " ";
             }
 
             GameMenuPatches.hoveredItemQueryKey = "";

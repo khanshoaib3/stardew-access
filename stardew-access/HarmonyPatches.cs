@@ -180,6 +180,11 @@ namespace stardew_access
                 original: AccessTools.Method(typeof(TailoringMenu), nameof(TailoringMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.TailoringMenuPatch))
             );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(PondQueryMenu), nameof(PondQueryMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.PondQueryMenuPatch))
+            );
             #endregion
 
             #region Quest Patches

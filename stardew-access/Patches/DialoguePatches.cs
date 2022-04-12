@@ -209,6 +209,9 @@ namespace stardew_access.Patches
 
                 if (Game1.activeClickableMenu is TailoringMenu)
                     return;
+
+                if (Game1.activeClickableMenu is PondQueryMenu)
+                    return;
                 #endregion
 
                 string toSpeak = " ";
