@@ -5,14 +5,17 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using StardewValley.Objects;
 
 namespace stardew_access.Patches
 {
     internal class MenuPatches
     {
-        private static string currentLevelUpTitle = " ";
+        internal static string currentLevelUpTitle = " ";
         internal static bool firstTimeInNamingMenu = true;
-        private static string animalQueryMenuQuery = " ";
+        internal static string animalQueryMenuQuery = " ";
+        internal static string tailoringMenuQuery = " ";
+        internal static bool isCyclingThroughInv = false;
         public static Vector2? prevTile = null;
 
         internal static void TailoringMenuPatch(TailoringMenu __instance)
@@ -20,7 +23,7 @@ namespace stardew_access.Patches
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                string toSpeak = "";
+                string toSpeak = " ";
 
                 if (__instance.leftIngredientSpot != null && __instance.leftIngredientSpot.containsPoint(x, y))
                 {
@@ -50,11 +53,55 @@ namespace stardew_access.Patches
                 {
                     toSpeak = "Star tailoring button";
                 }
+                else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[0].containsPoint(x, y))
+                {
+                    toSpeak = "Hat Slot";
 
-                // TODO add other things
+                    if (((Hat)Game1.player.hat) != null)
+                        toSpeak = $"{toSpeak}: {((Hat)Game1.player.hat).DisplayName}";
+                }
+                else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[1].containsPoint(x, y))
+                {
+                    toSpeak = "Shirt Slot";
 
-                if (toSpeak != "")
-                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+                    if (((Clothing)Game1.player.shirtItem) != null)
+                        toSpeak = $"{toSpeak}: {((Clothing)Game1.player.shirtItem).DisplayName}";
+                }
+                else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[2].containsPoint(x, y))
+                {
+                    toSpeak = "Pants Slot";
+
+                    if ((Clothing)Game1.player.pantsItem != null)
+                        toSpeak = $"{toSpeak}: {((Clothing)Game1.player.pantsItem).DisplayName}";
+                }
+                else
+                {
+                    for (int i = 0; i < __instance.inventory.inventory.Count; i++)
+                    {
+                        if (!__instance.inventory.inventory[i].containsPoint(x, y))
+                            continue;
+
+                        if (__instance.inventory.actualInventory[i] == null)
+                            toSpeak = "Empty slot";
+                        else
+                            toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
+
+                        if (tailoringMenuQuery != $"{toSpeak}:{i}")
+                        {
+                            tailoringMenuQuery = $"{toSpeak}:{i}";
+                            MainClass.ScreenReader.Say(toSpeak, true);
+                        }
+
+                        return;
+                    }
+                }
+
+
+                if (tailoringMenuQuery != toSpeak)
+                {
+                    tailoringMenuQuery = toSpeak;
+                    MainClass.ScreenReader.Say(toSpeak, true);
+                }
             }
             catch (System.Exception e)
             {
@@ -566,6 +613,11 @@ namespace stardew_access.Patches
             if (menu is QuestLog)
             {
                 QuestPatches.questLogQuery = " ";
+            }
+
+            if (menu is TailoringMenu)
+            {
+                tailoringMenuQuery = " ";
             }
 
             GameMenuPatches.hoveredItemQueryKey = "";
