@@ -149,68 +149,49 @@ namespace stardew_access.Patches
                 #region Skip narrating hover text for certain menus
                 if (Game1.activeClickableMenu is TitleMenu && !(((TitleMenu)Game1.activeClickableMenu).GetChildMenu() is CharacterCustomization))
                     return;
-
-                if (Game1.activeClickableMenu is LetterViewerMenu || Game1.activeClickableMenu is QuestLog)
+                else if (Game1.activeClickableMenu is LetterViewerMenu || Game1.activeClickableMenu is QuestLog)
                     return;
-
-                if (Game1.activeClickableMenu is Billboard)
+                else if (Game1.activeClickableMenu is Billboard)
                     return;
-
-                if (Game1.activeClickableMenu is GeodeMenu)
+                else if (Game1.activeClickableMenu is GeodeMenu)
                     return;
-
-                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is InventoryPage)
+                else if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is InventoryPage)
                     return;
-
-                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is CraftingPage)
+                else if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is CraftingPage)
                     return;
-
-                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is OptionsPage)
+                else if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is OptionsPage)
                     return;
-
-                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is ExitPage)
+                else if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is ExitPage)
                     return;
-
-                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is SocialPage)
+                else if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is SocialPage)
                     return;
-
-                if (Game1.activeClickableMenu is ItemGrabMenu)
+                else if (Game1.activeClickableMenu is ItemGrabMenu)
                     return;
-
-                if (Game1.activeClickableMenu is ShopMenu)
+                else if (Game1.activeClickableMenu is ShopMenu)
                     return;
-
-                if (Game1.activeClickableMenu is ConfirmationDialog)
+                else if (Game1.activeClickableMenu is ConfirmationDialog)
                     return;
-
-                if (Game1.activeClickableMenu is JunimoNoteMenu)
+                else if (Game1.activeClickableMenu is JunimoNoteMenu)
                     return;
-
-                if (Game1.activeClickableMenu is CarpenterMenu)
+                else if (Game1.activeClickableMenu is CarpenterMenu)
                     return;
-
-                if (Game1.activeClickableMenu is PurchaseAnimalsMenu)
+                else if (Game1.activeClickableMenu is PurchaseAnimalsMenu)
                     return;
-
-                if (Game1.activeClickableMenu is CraftingPage)
+                else if (Game1.activeClickableMenu is CraftingPage)
                     return;
-
-                if (Game1.activeClickableMenu is AnimalQueryMenu)
+                else if (Game1.activeClickableMenu is AnimalQueryMenu)
                     return;
-
-                if (Game1.activeClickableMenu is ConfirmationDialog)
+                else if (Game1.activeClickableMenu is ConfirmationDialog)
                     return;
-
-                if (Game1.activeClickableMenu is ReadyCheckDialog)
+                else if (Game1.activeClickableMenu is ReadyCheckDialog)
                     return;
-
-                if (Game1.activeClickableMenu is JojaCDMenu)
+                else if (Game1.activeClickableMenu is JojaCDMenu)
                     return;
-
-                if (Game1.activeClickableMenu is TailoringMenu)
+                else if (Game1.activeClickableMenu is TailoringMenu)
                     return;
-
-                if (Game1.activeClickableMenu is PondQueryMenu)
+                else if (Game1.activeClickableMenu is PondQueryMenu)
+                    return;
+                else if (Game1.activeClickableMenu is ForgeMenu)
                     return;
                 #endregion
 

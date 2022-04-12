@@ -17,7 +17,111 @@ namespace stardew_access.Patches
         internal static string animalQueryMenuQuery = " ";
         internal static string tailoringMenuQuery = " ";
         internal static string pondQueryMenuQuery = " ";
+        internal static string forgeMenuQuery = " ";
         public static Vector2? prevTile = null;
+
+        internal static void ForgeMenuPatch(ForgeMenu __instance)
+        {
+            try
+            {
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                string toSpeak = " ";
+
+                if (__instance.leftIngredientSpot != null && __instance.leftIngredientSpot.containsPoint(x, y))
+                {
+                    if (__instance.leftIngredientSpot.item == null)
+                    {
+                        toSpeak = "Input weapon or tool here";
+                    }
+                    else
+                    {
+                        Item item = __instance.leftIngredientSpot.item;
+                        toSpeak = $"Weapon slot: {item.Stack} {item.DisplayName}";
+                    }
+                }
+                else if (__instance.rightIngredientSpot != null && __instance.rightIngredientSpot.containsPoint(x, y))
+                {
+                    if (__instance.rightIngredientSpot.item == null)
+                    {
+                        toSpeak = "Input gemstone here";
+                    }
+                    else
+                    {
+                        Item item = __instance.rightIngredientSpot.item;
+                        toSpeak = $"Gemstone slot: {item.Stack} {item.DisplayName}";
+                    }
+                }
+                else if (__instance.startTailoringButton != null && __instance.startTailoringButton.containsPoint(x, y))
+                {
+                    toSpeak = "Star forging button";
+                }
+                else if (__instance.unforgeButton != null && __instance.unforgeButton.containsPoint(x, y))
+                {
+                    toSpeak = "Unforge button";
+                }
+                else if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
+                {
+                    toSpeak = "Trashcan";
+                }
+                else if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                {
+                    toSpeak = "ok button";
+                }
+                else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+                {
+                    toSpeak = "drop item";
+                }
+                else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[0].containsPoint(x, y))
+                {
+                    toSpeak = "Left ring Slot";
+
+                    if (Game1.player.leftRing.Value != null)
+                        toSpeak = $"{toSpeak}: {Game1.player.leftRing.Value.DisplayName}";
+                }
+                else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[1].containsPoint(x, y))
+                {
+                    toSpeak = "Right ring Slot";
+
+                    if (Game1.player.rightRing.Value != null)
+                        toSpeak = $"{toSpeak}: {Game1.player.rightRing.Value.DisplayName}";
+                }
+                else
+                {
+                    for (int i = 0; i < __instance.inventory.inventory.Count; i++)
+                    {
+                        if (!__instance.inventory.inventory[i].containsPoint(x, y))
+                            continue;
+
+                        if (__instance.inventory.actualInventory[i] == null)
+                            toSpeak = "Empty slot";
+                        else
+                            toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
+
+                        if (forgeMenuQuery != $"{toSpeak}:{i}")
+                        {
+                            forgeMenuQuery = $"{toSpeak}:{i}";
+                            MainClass.ScreenReader.Say(toSpeak, true);
+                        }
+
+                        return;
+                    }
+                }
+
+
+                if (forgeMenuQuery != toSpeak)
+                {
+                    forgeMenuQuery = toSpeak;
+                    MainClass.ScreenReader.Say(toSpeak, true);
+
+                    if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+                        Game1.playSound("drop_item");
+                }
+            }
+            catch (System.Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
+        }
 
         internal static void PondQueryMenuPatch(PondQueryMenu __instance, StardewValley.Object ____fishItem, FishPond ____pond, string ____statusText, bool ___confirmingEmpty)
         {
@@ -107,6 +211,18 @@ namespace stardew_access.Patches
                 {
                     toSpeak = "Star tailoring button";
                 }
+                else if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
+                {
+                    toSpeak = "Trashcan";
+                }
+                else if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                {
+                    toSpeak = "ok button";
+                }
+                else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+                {
+                    toSpeak = "drop item";
+                }
                 else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[0].containsPoint(x, y))
                 {
                     toSpeak = "Hat Slot";
@@ -155,6 +271,9 @@ namespace stardew_access.Patches
                 {
                     tailoringMenuQuery = toSpeak;
                     MainClass.ScreenReader.Say(toSpeak, true);
+
+                    if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+                        Game1.playSound("drop_item");
                 }
             }
             catch (System.Exception e)
@@ -659,6 +778,10 @@ namespace stardew_access.Patches
             else if (menu is TailoringMenu)
             {
                 tailoringMenuQuery = " ";
+            }
+            else if (menu is ForgeMenu)
+            {
+                forgeMenuQuery = " ";
             }
             else if (menu is PondQueryMenu)
             {
