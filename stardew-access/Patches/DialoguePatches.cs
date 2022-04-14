@@ -193,6 +193,10 @@ namespace stardew_access.Patches
                     return;
                 else if (Game1.activeClickableMenu is ForgeMenu)
                     return;
+                else if (Game1.activeClickableMenu is ItemListMenu)
+                    return;
+                else if (Game1.activeClickableMenu is FieldOfficeMenu)
+                    return;
                 #endregion
 
                 string toSpeak = " ";
