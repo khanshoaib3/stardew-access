@@ -18,7 +18,63 @@ namespace stardew_access.Patches
         internal static string tailoringMenuQuery = " ";
         internal static string pondQueryMenuQuery = " ";
         internal static string forgeMenuQuery = " ";
+        internal static string itemListMenuQuery = " ";
+        internal static string itemListMenuPreviousList = " ";
         public static Vector2? prevTile = null;
+
+        internal static void ItemListMenuPatch(ItemListMenu __instance, string ___title, int ___currentTab, int ___totalValueOfItems, List<Item> ___itemsToList)
+        {
+            try
+            {
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                string toSpeak = " ", currentList = " ";
+                bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
+
+                if (isCPressed)
+                    itemListMenuPreviousList = " ";
+
+                for (int i = ___currentTab * __instance.itemsPerCategoryPage; i < ___currentTab * __instance.itemsPerCategoryPage + __instance.itemsPerCategoryPage; i++)
+                {
+                    if (i == 0)
+                        currentList = ___title;
+
+                    if (___itemsToList.Count > i)
+                    {
+                        if (___itemsToList[i] == null)
+                        {
+                            currentList = $"{currentList}, \n" + Game1.content.LoadString("Strings\\UI:ItemList_ItemsLostValue", ___totalValueOfItems);
+                            continue;
+                        }
+
+                        currentList = $"{currentList}, \n {___itemsToList[i].Stack} {___itemsToList[i].DisplayName}";
+                    }
+                }
+
+                if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                    toSpeak = "ok button";
+                else if (__instance.forwardButton != null && __instance.forwardButton.containsPoint(x, y))
+                    toSpeak = "Next page button";
+                else if (__instance.backButton != null && __instance.backButton.containsPoint(x, y))
+                    toSpeak = "Previous page button";
+
+                if (itemListMenuQuery != toSpeak || itemListMenuPreviousList != currentList)
+                {
+                    itemListMenuQuery = toSpeak;
+
+                    if (itemListMenuPreviousList != currentList)
+                    {
+                        itemListMenuPreviousList = currentList;
+                        toSpeak = $"{currentList} \n {toSpeak}";
+                    }
+
+                    MainClass.ScreenReader.Say(toSpeak, true);
+                }
+            }
+            catch (System.Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
+        }
 
         internal static void ForgeMenuPatch(ForgeMenu __instance)
         {
@@ -129,8 +185,6 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
-                bool isYPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Y);
-                bool isNPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.N);
                 string toSpeak = " ", extra = "";
 
                 if (___confirmingEmpty)
