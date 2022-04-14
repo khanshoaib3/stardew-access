@@ -19,7 +19,6 @@ namespace stardew_access.Patches
         internal static string pondQueryMenuQuery = " ";
         internal static string forgeMenuQuery = " ";
         internal static string itemListMenuQuery = " ";
-        internal static string itemListMenuPreviousList = " ";
         public static Vector2? prevTile = null;
 
         internal static void ItemListMenuPatch(ItemListMenu __instance, string ___title, int ___currentTab, int ___totalValueOfItems, List<Item> ___itemsToList)
@@ -28,10 +27,6 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 string toSpeak = " ", currentList = " ";
-                bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
-
-                if (isCPressed)
-                    itemListMenuPreviousList = " ";
 
                 for (int i = ___currentTab * __instance.itemsPerCategoryPage; i < ___currentTab * __instance.itemsPerCategoryPage + __instance.itemsPerCategoryPage; i++)
                 {
@@ -51,22 +46,15 @@ namespace stardew_access.Patches
                 }
 
                 if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
-                    toSpeak = "ok button";
+                    toSpeak = $"Page {___currentTab + 1} of {((int)___itemsToList.Count / __instance.itemsPerCategoryPage) + 1} \n {currentList} \n ok button";
                 else if (__instance.forwardButton != null && __instance.forwardButton.containsPoint(x, y))
                     toSpeak = "Next page button";
                 else if (__instance.backButton != null && __instance.backButton.containsPoint(x, y))
                     toSpeak = "Previous page button";
 
-                if (itemListMenuQuery != toSpeak || itemListMenuPreviousList != currentList)
+                if (itemListMenuQuery != toSpeak)
                 {
                     itemListMenuQuery = toSpeak;
-
-                    if (itemListMenuPreviousList != currentList)
-                    {
-                        itemListMenuPreviousList = currentList;
-                        toSpeak = $"{currentList} \n {toSpeak}";
-                    }
-
                     MainClass.ScreenReader.Say(toSpeak, true);
                 }
             }
