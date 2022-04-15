@@ -858,14 +858,16 @@ namespace stardew_access.Features
 
                 string toSpeak = $"Parrot required nuts {perch.requiredNuts.Value}";
 
-                if (perch.currentState == StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Complete)
-                    return $"Request Completed";
-                else if (perch.currentState == StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Idle)
+                if (!perch.IsAvailable())
+                    return "Empty parrot perch";
+                else if (perch.currentState.Value == StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Idle)
                     return toSpeak;
-                else if (perch.currentState == StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.StartBuilding)
+                else if (perch.currentState.Value == StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.StartBuilding)
                     return "Parrots started building request";
-                else if (perch.currentState == StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Building)
+                else if (perch.currentState.Value == StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Building)
                     return "Parrots building request";
+                else if (perch.currentState.Value == StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Complete)
+                    return $"Request Completed";
                 else
                     return toSpeak;
             }
