@@ -62,6 +62,16 @@ namespace stardew_access.Features
                 toReturn = farmAnimal;
                 category = CATEGORY.FarmAnimals;
             }
+            else if (Game1.currentLocation is VolcanoDungeon && ((VolcanoDungeon)Game1.currentLocation).IsCooledLava(x, y))
+            {
+                toReturn = "Cooled lava";
+                category = CATEGORY.WaterTiles;
+            }
+            else if (Game1.currentLocation is VolcanoDungeon && StardewValley.Monsters.LavaLurk.IsLavaTile((VolcanoDungeon)Game1.currentLocation, x, y))
+            {
+                toReturn = "Lava";
+                category = CATEGORY.WaterTiles;
+            }
             else if (Game1.currentLocation.isWaterTile(x, y) && isColliding)
             {
                 toReturn = "Water";
