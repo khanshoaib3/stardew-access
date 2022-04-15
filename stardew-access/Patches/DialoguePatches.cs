@@ -2,7 +2,6 @@
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using System.Text;
 
 namespace stardew_access.Patches
 {
@@ -196,6 +195,8 @@ namespace stardew_access.Patches
                 else if (Game1.activeClickableMenu is ItemListMenu)
                     return;
                 else if (Game1.activeClickableMenu is FieldOfficeMenu)
+                    return;
+                else if (Game1.activeClickableMenu is MuseumMenu)
                     return;
                 #endregion
 

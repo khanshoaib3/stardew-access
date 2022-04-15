@@ -37,7 +37,7 @@ namespace stardew_access.ScreenReader
         /// <returns>Name of the object as the first item (Item1) and category as the second item (Item2). Returns null if no object found.</returns>
         public (string?, string?) GetNameWithCategoryNameAtTile(Vector2 tile)
         {
-            return ReadTile.getNameWithCategoryNameAtTile(tile);
+            return TileInfo.getNameWithCategoryNameAtTile(tile);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace stardew_access.ScreenReader
         /// <returns>Name of the object. Returns null if no object found.</returns>
         public string? GetNameAtTile(Vector2 tile)
         {
-            return ReadTile.getNameAtTile(tile);
+            return TileInfo.getNameAtTile(tile);
         }
 
         /// <summary>Speaks the text via the loaded screen reader (if any).</summary>

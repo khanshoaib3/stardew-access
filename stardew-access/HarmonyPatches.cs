@@ -158,12 +158,7 @@ namespace stardew_access
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.receiveKeyPress), new Type[] { typeof(Keys) }),
-                prefix: new HarmonyMethod(typeof(MuseumMenuPatches), nameof(MuseumMenuPatches.MuseumMenuKeyPressPatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MuseumMenuPatches), nameof(MuseumMenuPatches.MuseumMenuPatch))
+                prefix: new HarmonyMethod(typeof(DonationMenuPatches), nameof(DonationMenuPatches.MuseumMenuKeyPressPatch))
             );
 
             harmony.Patch(
@@ -194,11 +189,6 @@ namespace stardew_access
             harmony.Patch(
                 original: AccessTools.Method(typeof(ItemListMenu), nameof(ItemListMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ItemListMenuPatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(FieldOfficeMenu), nameof(FieldOfficeMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.FieldOfficeMenuPatch))
             );
             #endregion
 
@@ -249,6 +239,18 @@ namespace stardew_access
                     prefix: new HarmonyMethod(typeof(BuildingNAnimalMenuPatches), nameof(BuildingNAnimalMenuPatches.PurchaseAnimalsMenuPatch))
                 );
 
+            #endregion
+
+            #region Donation Menus
+            harmony.Patch(
+                original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(DonationMenuPatches), nameof(DonationMenuPatches.MuseumMenuPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(FieldOfficeMenu), nameof(FieldOfficeMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(DonationMenuPatches), nameof(DonationMenuPatches.FieldOfficeMenuPatch))
+            );
             #endregion
 
             harmony.Patch(

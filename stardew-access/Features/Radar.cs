@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
 
 namespace stardew_access.Features
 {
@@ -187,7 +186,7 @@ namespace stardew_access.Features
 
         public (bool, string?, string) CheckTile(Vector2 position)
         {
-            (string? name, CATEGORY? category) tileDetail = ReadTile.getNameWithCategoryAtTile(position);
+            (string? name, CATEGORY? category) tileDetail = TileInfo.getNameWithCategoryAtTile(position);
             if (tileDetail.name == null)
                 return (false, null, CATEGORY.Others.ToString());
 
@@ -204,7 +203,7 @@ namespace stardew_access.Features
             {
                 if (Game1.currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
                 {
-                    (string? name, CATEGORY category) objDetails = ReadTile.getObjectAtTile((int)position.X, (int)position.Y);
+                    (string? name, CATEGORY category) objDetails = TileInfo.getObjectAtTile((int)position.X, (int)position.Y);
                     string? objectName = objDetails.name;
                     CATEGORY category = objDetails.category;
                     StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)position.X, (int)position.Y);
@@ -228,7 +227,7 @@ namespace stardew_access.Features
                 }
                 else
                 {
-                    (string? name, CATEGORY? category) tileDetail = ReadTile.getNameWithCategoryAtTile(position);
+                    (string? name, CATEGORY? category) tileDetail = TileInfo.getNameWithCategoryAtTile(position);
                     if (tileDetail.name != null)
                     {
                         if (tileDetail.category == null)
