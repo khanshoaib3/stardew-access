@@ -355,7 +355,7 @@ namespace stardew_access.Features
             {
                 category = CATEGORY.Crops;
                 HoeDirt dirt = (HoeDirt)terrain.Get();
-                if (dirt.crop != null)
+                if (dirt.crop != null && !dirt.crop.forageCrop.Value)
                 {
                     string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest.Value].Split('/')[0];
                     toReturn = $"{cropName}";
@@ -372,6 +372,15 @@ namespace stardew_access.Features
 
                     if (isHarvestable)
                         toReturn = "Harvestable " + toReturn;
+                }
+                else if (dirt.crop != null && dirt.crop.forageCrop.Value)
+                {
+                    toReturn = dirt.crop.whichForageCrop.Value switch
+                    {
+                        1 => "Spring onion",
+                        2 => "Ginger",
+                        _ => "Forageable crop"
+                    };
                 }
                 else
                 {
