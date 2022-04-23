@@ -5,27 +5,29 @@ namespace stardew_access.Features
 {
     public class StaticTiles
     {
-        private JObject? data;
+        private JObject? data = null;
 
         public StaticTiles()
         {
-            using (StreamReader file = new StreamReader("static-tiles.json"))
+            if (MainClass.ModHelper == null)
+                return;
+
+            using (StreamReader file = new StreamReader(Path.Combine(MainClass.ModHelper.DirectoryPath, "static-tiles.json")))
             {
                 string json = file.ReadToEnd();
                 data = JObject.Parse(json);
-
             }
         }
 
         public bool isAvailable(string locationName)
         {
-            if (data != null)
+            if (data == null)
+                return false;
+
+            foreach (var location in data)
             {
-                foreach (var location in data)
-                {
-                    if (locationName.ToLower().Equals(location.Key))
-                        return true;
-                }
+                if (locationName.ToLower().Equals(location.Key))
+                    return true;
             }
 
             return false;
@@ -58,7 +60,7 @@ namespace stardew_access.Features
 
                         if (tileX == null || tileY == null || tileType == null)
                             continue;
-                        MainClass.DebugLog($"{tile.Key.ToString()}:\tx{tileX.ToString()}\ty{tileY.ToString()}\ttype{tileType.ToString()}");
+
                         if (short.Parse(tileX.ToString()) == x && short.Parse(tileY.ToString()) == y)
                             return (tile.Key, CATEGORY.FromString(tileType.ToString()));
                     }
