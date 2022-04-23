@@ -47,6 +47,7 @@ namespace stardew_access.Features
             string? resourceClump = getResourceClumpAtTile(x, y);
             string? farmAnimal = getFarmAnimalAt(Game1.currentLocation, x, y);
             string? parrot = getParrotPerchAtTile(x, y);
+            string? staticTile = MainClass.STiles.getStaticTileAt(x, y);
 
             if (Game1.currentLocation.isCharacterAtTile(tile) != null)
             {
@@ -61,6 +62,11 @@ namespace stardew_access.Features
             {
                 toReturn = farmAnimal;
                 category = CATEGORY.FarmAnimals;
+            }
+            else if (staticTile != null)
+            {
+                toReturn = staticTile;
+                category = CATEGORY.Others;
             }
             else if (Game1.currentLocation is VolcanoDungeon && ((VolcanoDungeon)Game1.currentLocation).IsCooledLava(x, y))
             {
@@ -893,5 +899,6 @@ namespace stardew_access.Features
 
             return null;
         }
+
     }
 }

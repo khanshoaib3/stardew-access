@@ -1,0 +1,23 @@
+{
+    "busstop":
+    {
+        "Ticket Machine":
+        {
+            "x":7,
+            "y":11,
+            "type":"interactable"
+        },
+        "Minecart":
+        {
+            "x":4,
+            "y":3,
+            "type":"interactable"
+        },
+        "Minecart":
+        {
+            "x":5,
+            "y":3,
+            "type":"interactable"
+        }
+    }
+}

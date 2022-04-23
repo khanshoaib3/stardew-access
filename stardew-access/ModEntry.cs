@@ -7,6 +7,7 @@ using stardew_access.Patches;
 using stardew_access.ScreenReader;
 using Microsoft.Xna.Framework;
 using StardewValley.Menus;
+using Newtonsoft.Json.Linq;
 
 namespace stardew_access
 {
@@ -17,16 +18,30 @@ namespace stardew_access
         private Harmony? harmony;
         private static IMonitor? monitor;
         private static Radar? radarFeature;
+        private static StaticTiles? sTiles;
         private static IScreenReader? screenReader;
         private static IModHelper? modHelper;
 
         internal static ModConfig Config { get => config; set => config = value; }
         public static IModHelper? ModHelper { get => modHelper; }
+        public static StaticTiles STiles
+        {
+            get
+            {
+                if (sTiles == null)
+                    sTiles = new StaticTiles();
+
+                return sTiles;
+            }
+            set => sTiles = value;
+        }
         public static Radar RadarFeature
         {
             get
             {
-                if (radarFeature == null) { radarFeature = new Radar(); }
+                if (radarFeature == null)
+                    radarFeature = new Radar();
+
                 return radarFeature;
             }
             set => radarFeature = value;
