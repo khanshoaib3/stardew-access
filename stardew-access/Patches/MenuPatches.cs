@@ -14,6 +14,7 @@ namespace stardew_access.Patches
     {
         internal static string currentLevelUpTitle = " ";
         internal static bool firstTimeInNamingMenu = true;
+        internal static bool isNarratingPondInfo = false;
         internal static string animalQueryMenuQuery = " ";
         internal static string tailoringMenuQuery = " ";
         internal static string pondQueryMenuQuery = " ";
@@ -184,7 +185,7 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    if (isCPressed)
+                    if (isCPressed && !isNarratingPondInfo)
                     {
                         string pond_name_text = Game1.content.LoadString("Strings\\UI:PondQuery_Name", ____fishItem.DisplayName);
                         string population_text = Game1.content.LoadString("Strings\\UI:PondQuery_Population", string.Concat(____pond.FishCount), ____pond.maxOccupants.Value);
@@ -196,6 +197,9 @@ namespace stardew_access.Patches
 
                         extra = $"{pond_name_text} {population_text} {bring_text} Status: {____statusText}";
                         pondQueryMenuQuery = " ";
+
+                        isNarratingPondInfo = true;
+                        Task.Delay(200).ContinueWith(_ => { isNarratingPondInfo = false; });
                     }
 
                     if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
@@ -210,6 +214,7 @@ namespace stardew_access.Patches
                 {
                     pondQueryMenuQuery = toSpeak;
                     MainClass.ScreenReader.Say(extra + " \n\t" + toSpeak, true);
+                    MainClass.DebugLog(extra + " \n\t" + toSpeak);
                 }
             }
             catch (System.Exception e)
