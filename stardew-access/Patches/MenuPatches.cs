@@ -15,6 +15,7 @@ namespace stardew_access.Patches
         internal static string currentLevelUpTitle = " ";
         internal static bool firstTimeInNamingMenu = true;
         internal static bool isNarratingPondInfo = false;
+        internal static bool isNarratingAnimalInfo = false;
         internal static string animalQueryMenuQuery = " ";
         internal static string tailoringMenuQuery = " ";
         internal static string pondQueryMenuQuery = " ";
@@ -214,7 +215,6 @@ namespace stardew_access.Patches
                 {
                     pondQueryMenuQuery = toSpeak;
                     MainClass.ScreenReader.Say(extra + " \n\t" + toSpeak, true);
-                    MainClass.DebugLog(extra + " \n\t" + toSpeak);
                 }
             }
             catch (System.Exception e)
@@ -373,7 +373,7 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    if (isCPressed)
+                    if (isCPressed & !isNarratingAnimalInfo)
                     {
                         string name = ___animal.displayName;
                         string type = ___animal.displayType;
@@ -391,6 +391,9 @@ namespace stardew_access.Patches
 
                         details = $"Name: {name} Type: {type} \n\t Age: {ageText} {parent}";
                         animalQueryMenuQuery = " ";
+
+                        isNarratingAnimalInfo = true;
+                        Task.Delay(200).ContinueWith(_ => { isNarratingAnimalInfo = false; });
                     }
 
                     if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
