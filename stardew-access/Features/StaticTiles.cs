@@ -31,10 +31,15 @@ namespace stardew_access.Features
             return false;
         }
 
-        public string? getStaticTileAt(int x, int y)
+        public string? getStaticTileInfoAt(int x, int y)
+        {
+            return getStaticTileInfoAtWithCategory(x, y).name;
+        }
+
+        public (string? name, CATEGORY category) getStaticTileInfoAtWithCategory(int x, int y)
         {
             if (data == null)
-                return null;
+                return (null, CATEGORY.Others);
 
             foreach (var location in data)
             {
@@ -49,16 +54,17 @@ namespace stardew_access.Features
 
                         JToken? tileX = tile.Value["x"];
                         JToken? tileY = tile.Value["y"];
+                        JToken? tileType = tile.Value["type"];
 
-                        if (tileX == null || tileY == null)
+                        if (tileX == null || tileY == null || tileType == null)
                             continue;
-
+                        MainClass.DebugLog($"{tile.Key.ToString()}:\tx{tileX.ToString()}\ty{tileY.ToString()}\ttype{tileType.ToString()}");
                         if (short.Parse(tileX.ToString()) == x && short.Parse(tileY.ToString()) == y)
-                            return tile.Key;
+                            return (tile.Key, CATEGORY.FromString(tileType.ToString()));
                     }
             }
 
-            return null;
+            return (null, CATEGORY.Others);
         }
     }
 }

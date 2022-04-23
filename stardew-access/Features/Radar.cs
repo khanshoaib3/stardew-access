@@ -4,44 +4,6 @@ using StardewValley.Objects;
 
 namespace stardew_access.Features
 {
-
-    /// <summary>
-    /// This is a custom enum class and contains the name of groups the objects are divided into for the feature
-    /// </summary>
-    public class CATEGORY
-    {
-        private string _typeKeyWord;
-
-        private CATEGORY(string typeKeyWord)
-        {
-            _typeKeyWord = typeKeyWord;
-        }
-
-        public override string ToString()
-        {
-            return _typeKeyWord;
-        }
-
-        public static CATEGORY Farmers = new CATEGORY("farmer");
-        public static CATEGORY FarmAnimals = new CATEGORY("animal");
-        public static CATEGORY NPCs = new CATEGORY("npc");
-        public static CATEGORY Furnitures = new CATEGORY("furniture");
-        public static CATEGORY Flooring = new CATEGORY("flooring");
-        public static CATEGORY Debris = new CATEGORY("debris");
-        public static CATEGORY Crops = new CATEGORY("crop");
-        public static CATEGORY Trees = new CATEGORY("tree");
-        public static CATEGORY Bush = new CATEGORY("bush");
-        public static CATEGORY Buildings = new CATEGORY("building");
-        public static CATEGORY MineItems = new CATEGORY("mine item");
-        public static CATEGORY ResourceClumps = new CATEGORY("resource clump");
-        public static CATEGORY Chests = new CATEGORY("chest");
-        public static CATEGORY JunimoBundle = new CATEGORY("bundle");
-        public static CATEGORY Doors = new CATEGORY("door"); // Also includes ladders and elevators
-        public static CATEGORY Others = new CATEGORY("other");
-        public static CATEGORY WaterTiles = new CATEGORY("water");
-
-    }
-
     public class Radar
     {
         private List<Vector2> closed;

@@ -7,6 +7,93 @@ using StardewValley.TerrainFeatures;
 
 namespace stardew_access.Features
 {
+
+    /// <summary>
+    /// This is a custom enum class and contains the name of groups the objects are divided into for the feature
+    /// </summary>
+    public class CATEGORY
+    {
+        private string _typeKeyWord;
+
+        private CATEGORY(string typeKeyWord)
+        {
+            _typeKeyWord = typeKeyWord;
+        }
+
+        public override string ToString()
+        {
+            return _typeKeyWord;
+        }
+
+        public static CATEGORY FromString(string name)
+        {
+            if (name == "farmer")
+                return CATEGORY.Farmers;
+            else if (name == "animal")
+                return CATEGORY.FarmAnimals;
+            else if (name == "npc")
+                return CATEGORY.NPCs;
+            else if (name == "furniture")
+                return CATEGORY.Furnitures;
+            else if (name == "flooring")
+                return CATEGORY.Flooring;
+            else if (name == "debris")
+                return CATEGORY.Debris;
+            else if (name == "crop")
+                return CATEGORY.Crops;
+            else if (name == "tree")
+                return CATEGORY.Trees;
+            else if (name == "bush")
+                return CATEGORY.Bush;
+            else if (name == "building")
+                return CATEGORY.Buildings;
+            else if (name == "mine item")
+                return CATEGORY.MineItems;
+            else if (name == "resource clump")
+                return CATEGORY.ResourceClumps;
+            else if (name == "chest")
+                return CATEGORY.Chests;
+            else if (name == "bundle")
+                return CATEGORY.JunimoBundle;
+            else if (name == "door")
+                return CATEGORY.Doors;
+            else if (name == "water")
+                return CATEGORY.WaterTiles;
+            else if (name == "interactables")
+                return CATEGORY.Interactables;
+            else if (name == "decoration")
+                return CATEGORY.Decor;
+            else if (name == "machines")
+                return CATEGORY.Machines;
+            else if (name == "other")
+                return CATEGORY.Others;
+
+            return Others;
+        }
+
+        public static CATEGORY Farmers = new CATEGORY("farmer");
+        public static CATEGORY FarmAnimals = new CATEGORY("animal");
+        public static CATEGORY NPCs = new CATEGORY("npc");
+        public static CATEGORY Furnitures = new CATEGORY("furniture");
+        public static CATEGORY Flooring = new CATEGORY("flooring");
+        public static CATEGORY Debris = new CATEGORY("debris");
+        public static CATEGORY Crops = new CATEGORY("crop");
+        public static CATEGORY Trees = new CATEGORY("tree");
+        public static CATEGORY Bush = new CATEGORY("bush");
+        public static CATEGORY Buildings = new CATEGORY("building");
+        public static CATEGORY MineItems = new CATEGORY("mine item");
+        public static CATEGORY ResourceClumps = new CATEGORY("resource clump");
+        public static CATEGORY Chests = new CATEGORY("chest");
+        public static CATEGORY JunimoBundle = new CATEGORY("bundle");
+        public static CATEGORY Doors = new CATEGORY("door"); // Also includes ladders and elevators
+        public static CATEGORY WaterTiles = new CATEGORY("water");
+        public static CATEGORY Interactables = new CATEGORY("interactables");
+        public static CATEGORY Decor = new CATEGORY("decoration");
+        public static CATEGORY Machines = new CATEGORY("machines");
+        public static CATEGORY Others = new CATEGORY("other");
+
+    }
+
     public enum MachineState
     {
         Ready, Busy, Waiting
@@ -14,6 +101,8 @@ namespace stardew_access.Features
 
     public class TileInfo
     {
+        public static string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom" };
+
         ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>
         public static (string? name, string? categoryName) getNameWithCategoryNameAtTile(Vector2 tile)
         {
@@ -47,7 +136,7 @@ namespace stardew_access.Features
             string? resourceClump = getResourceClumpAtTile(x, y);
             string? farmAnimal = getFarmAnimalAt(Game1.currentLocation, x, y);
             string? parrot = getParrotPerchAtTile(x, y);
-            string? staticTile = MainClass.STiles.getStaticTileAt(x, y);
+            (string? name, CATEGORY category) staticTile = MainClass.STiles.getStaticTileInfoAtWithCategory(x, y);
 
             if (Game1.currentLocation.isCharacterAtTile(tile) != null)
             {
@@ -63,10 +152,10 @@ namespace stardew_access.Features
                 toReturn = farmAnimal;
                 category = CATEGORY.FarmAnimals;
             }
-            else if (staticTile != null)
+            else if (staticTile.name != null)
             {
-                toReturn = staticTile;
-                category = CATEGORY.Others;
+                toReturn = staticTile.name;
+                category = staticTile.category;
             }
             else if (Game1.currentLocation is VolcanoDungeon && ((VolcanoDungeon)Game1.currentLocation).IsCooledLava(x, y))
             {
@@ -576,9 +665,20 @@ namespace stardew_access.Features
                 Chest chest = (Chest)obj;
                 toReturn = (chest.DisplayName, CATEGORY.Chests);
             }
-
-            if (obj is Furniture)
+            else if (obj is Furniture)
                 toReturn.category = CATEGORY.Furnitures;
+            else if (obj.type == "Crafting" && obj.bigCraftable)
+            {
+
+                foreach (string machine in trackable_machines)
+                {
+                    if (obj.Name.ToLower().Contains(machine))
+                    {
+                        toReturn.name = obj.DisplayName;
+                        toReturn.category = CATEGORY.Machines;
+                    }
+                }
+            }
 
             if (toReturn.category == CATEGORY.Others) // Fix for `Harvestable table` and `Busy nodes`
             {
