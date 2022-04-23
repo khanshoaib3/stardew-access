@@ -173,7 +173,7 @@ namespace stardew_access.Patches
 
                             string name = ___pages[___currentPage][i].GetName();
                             int daysLeft = ___pages[___currentPage][i].GetDaysLeft();
-                            toSpeak = $"{name} quest";
+                            toSpeak = $"{name}";
 
                             if (daysLeft > 0 && ___pages[___currentPage][i].ShouldDisplayAsComplete())
                                 toSpeak += $"\t\n {daysLeft} days left";
@@ -227,11 +227,13 @@ namespace stardew_access.Patches
 
                             for (int j = 0; j < ____objectiveText.Count; j++)
                             {
-                                if (____shownQuest != null)
-                                {
-                                    _ = ____shownQuest is SpecialOrder;
-                                }
                                 string parsed_text = Game1.parseText(____objectiveText[j], width: __instance.width - 192, whichFont: Game1.dialogueFont);
+                                if (____shownQuest != null && ____shownQuest is SpecialOrder)
+                                {
+                                    OrderObjective order_objective = ((SpecialOrder)____shownQuest).objectives[j];
+                                    if (order_objective.GetMaxCount() > 1 && order_objective.ShouldShowProgress())
+                                        parsed_text += "\n\t" + order_objective.GetCount() + " of " + order_objective.GetMaxCount() + " completed";
+                                }
 
                                 extra += $"\t\nOrder {j + 1}: {parsed_text} \t\n";
                             }
@@ -253,7 +255,9 @@ namespace stardew_access.Patches
 
                     if (!firstTimeInIndividualQuest)
                         if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
-                            toSpeak = "Back button";
+                            toSpeak = (___currentPage > 0) ? "Previous page button" : "Back button";
+                        else if (__instance.forwardButton != null && __instance.forwardButton.visible && __instance.forwardButton.containsPoint(x, y))
+                            toSpeak = "Next page button";
                         else if (__instance.cancelQuestButton != null && __instance.cancelQuestButton.visible && __instance.cancelQuestButton.containsPoint(x, y))
                             toSpeak = "Cancel quest button";
                         else if (__instance.upperRightCloseButton != null && __instance.upperRightCloseButton.visible && __instance.upperRightCloseButton.containsPoint(x, y))
