@@ -10,6 +10,7 @@ namespace stardew_access.Patches
     {
         internal static string currentDailyQuestText = " ";
         internal static string questLogQuery = " ";
+        internal static bool isNarratingQuestInfo = false, firstTimeInIndividualQuest = true;
 
         #region For Special Orders Board
         internal static void SpecialOrdersBoardPatch(SpecialOrdersBoard __instance)
@@ -153,18 +154,21 @@ namespace stardew_access.Patches
         {
             try
             {
-                bool snapMouseToRewardBox = false;
+                bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                string toSpeak = " ", extra = "";
 
                 if (___questPage == -1)
                 {
                     #region Quest Lists
-                    string toSpeak = " ";
+                    if (!firstTimeInIndividualQuest)
+                        firstTimeInIndividualQuest = true;
+
                     for (int i = 0; i < __instance.questLogButtons.Count; i++)
                     {
                         if (___pages.Count() > 0 && ___pages[___currentPage].Count() > i)
                         {
-                            if (__instance.questLogButtons[i].containsPoint(x, y))
+                            if (!__instance.questLogButtons[i].containsPoint(x, y))
                                 continue;
 
                             string name = ___pages[___currentPage][i].GetName();
@@ -183,8 +187,6 @@ namespace stardew_access.Patches
                         toSpeak = "Previous page button";
                     else if (__instance.forwardButton != null && __instance.forwardButton.visible && __instance.forwardButton.containsPoint(x, y))
                         toSpeak = "Next page button";
-                    else if (__instance.cancelQuestButton != null && __instance.cancelQuestButton.visible && __instance.cancelQuestButton.containsPoint(x, y))
-                        toSpeak = "Cancel quest button";
                     else if (__instance.upperRightCloseButton != null && __instance.upperRightCloseButton.visible && __instance.upperRightCloseButton.containsPoint(x, y))
                         toSpeak = "Close menu button";
 
@@ -198,59 +200,76 @@ namespace stardew_access.Patches
                 else
                 {
                     #region Individual quest
+                    bool containsReward = __instance.HasReward() || __instance.HasMoneyReward();
                     string description = Game1.parseText(____shownQuest.GetDescription(), Game1.dialogueFont, __instance.width - 128);
                     string title = ____shownQuest.GetName();
-                    string toSpeak = " ";
-                    if (____shownQuest.ShouldDisplayAsComplete())
+
+                    if (firstTimeInIndividualQuest || (isCPressed && !isNarratingQuestInfo))
                     {
-                        #region Quest completed menu
+                        if (firstTimeInIndividualQuest)
+                            toSpeak = "Back button";
 
-                        toSpeak = $"Quest: {title} Completed!";
-
-                        if (__instance.HasReward())
+                        if (____shownQuest.ShouldDisplayAsComplete())
                         {
-                            snapMouseToRewardBox = true;
+                            #region Quest completed menu
+
+                            extra = $"Quest: {title} Completed!";
+
                             if (__instance.HasMoneyReward())
+                                extra += $"you recieved {____shownQuest.GetMoneyReward()}g";
+
+                            #endregion
+                        }
+                        else
+                        {
+                            #region Quest in-complete menu
+                            extra = $"Title: {title}. \t\n Description: {description}";
+
+                            for (int j = 0; j < ____objectiveText.Count; j++)
                             {
-                                toSpeak += $"you recieved {____shownQuest.GetMoneyReward()}g";
+                                if (____shownQuest != null)
+                                {
+                                    _ = ____shownQuest is SpecialOrder;
+                                }
+                                string parsed_text = Game1.parseText(____objectiveText[j], width: __instance.width - 192, whichFont: Game1.dialogueFont);
+
+                                extra += $"\t\nOrder {j + 1}: {parsed_text} \t\n";
                             }
 
-                            toSpeak += "... left click to collect reward";
-                        }
-
-                        #endregion
-                    }
-                    else
-                    {
-                        #region Quest in-complete menu
-                        toSpeak = $"Title: {title}. \t\n Description: {description}";
-
-                        for (int j = 0; j < ____objectiveText.Count; j++)
-                        {
                             if (____shownQuest != null)
                             {
-                                _ = ____shownQuest is SpecialOrder;
+                                int daysLeft = ____shownQuest.GetDaysLeft();
+
+                                if (daysLeft > 0)
+                                    extra += $"\t\n{daysLeft} days left.";
                             }
-                            string parsed_text = Game1.parseText(____objectiveText[j], width: __instance.width - 192, whichFont: Game1.dialogueFont);
-
-                            toSpeak += $"\t\nOrder {j + 1}: {parsed_text} \t\n";
+                            #endregion
                         }
 
-                        if (____shownQuest != null)
-                        {
-                            int daysLeft = ____shownQuest.GetDaysLeft();
-
-                            if (daysLeft > 0)
-                                toSpeak += $"\t\n{daysLeft} days left.";
-                        }
-                        #endregion
+                        isNarratingQuestInfo = true;
+                        Task.Delay(200).ContinueWith(_ => { isNarratingQuestInfo = false; });
+                        questLogQuery = " ";
                     }
 
-                    // Move mouse to reward button
-                    if (snapMouseToRewardBox)
-                        __instance.rewardBox.snapMouseCursorToCenter();
+                    if (!firstTimeInIndividualQuest)
+                        if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
+                            toSpeak = "Back button";
+                        else if (__instance.cancelQuestButton != null && __instance.cancelQuestButton.visible && __instance.cancelQuestButton.containsPoint(x, y))
+                            toSpeak = "Cancel quest button";
+                        else if (__instance.upperRightCloseButton != null && __instance.upperRightCloseButton.visible && __instance.upperRightCloseButton.containsPoint(x, y))
+                            toSpeak = "Close menu button";
+                        else if (containsReward && __instance.rewardBox.containsPoint(x, y))
+                            toSpeak = "Left click to collect reward";
 
-                    MainClass.ScreenReader.SayWithChecker(toSpeak, true);
+                    if (firstTimeInIndividualQuest || (questLogQuery != toSpeak))
+                    {
+                        questLogQuery = toSpeak;
+                        MainClass.ScreenReader.Say(extra + " \n\t" + toSpeak, true);
+
+                        if (firstTimeInIndividualQuest)
+                            firstTimeInIndividualQuest = false;
+                    }
+
                     #endregion
                 }
             }
