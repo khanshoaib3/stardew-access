@@ -46,5 +46,338 @@
             "y":[79],
             "type":"interactable"
         }
+    },
+    "coop":
+    {
+        "Hay Hopper":
+        {
+            "x":[3],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 1":
+        {
+            "x":[6],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 2":
+        {
+            "x":[7],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 3":
+        {
+            "x":[8],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 4":
+        {
+            "x":[9],
+            "y":[3],
+            "type":"interactable"
+        }
+    },
+    "big coop":
+    {
+        "Hay Hopper":
+        {
+            "x":[3],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Incubator":
+        {
+            "x":[2],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 1":
+        {
+            "x":[6],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 2":
+        {
+            "x":[7],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 3":
+        {
+            "x":[8],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 4":
+        {
+            "x":[9],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 5":
+        {
+            "x":[10],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 6":
+        {
+            "x":[11],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 7":
+        {
+            "x":[12],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 8":
+        {
+            "x":[13],
+            "y":[3],
+            "type":"interactable"
+        }
+    },
+    "coop2":
+    {
+        "Hay Hopper":
+        {
+            "x":[3],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Incubator":
+        {
+            "x":[2],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 1":
+        {
+            "x":[6],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 2":
+        {
+            "x":[7],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 3":
+        {
+            "x":[8],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 4":
+        {
+            "x":[9],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 5":
+        {
+            "x":[10],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 6":
+        {
+            "x":[11],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 7":
+        {
+            "x":[12],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 8":
+        {
+            "x":[13],
+            "y":[3],
+            "type":"interactable"
+        }
+    },
+    "deluxe coop":
+    {
+        "Hay Hopper":
+        {
+            "x":[3],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Incubator":
+        {
+            "x":[2],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 1":
+        {
+            "x":[6],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 2":
+        {
+            "x":[7],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 3":
+        {
+            "x":[8],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 4":
+        {
+            "x":[9],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 5":
+        {
+            "x":[10],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 6":
+        {
+            "x":[11],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 7":
+        {
+            "x":[12],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 8":
+        {
+            "x":[13],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 9":
+        {
+            "x":[14],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 10":
+        {
+            "x":[15],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 11":
+        {
+            "x":[16],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 12":
+        {
+            "x":[17],
+            "y":[3],
+            "type":"interactable"
+        }
+    },
+    "coop3":
+    {
+        "Hay Hopper":
+        {
+            "x":[3],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Incubator":
+        {
+            "x":[2],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 1":
+        {
+            "x":[6],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 2":
+        {
+            "x":[7],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 3":
+        {
+            "x":[8],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 4":
+        {
+            "x":[9],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 5":
+        {
+            "x":[10],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 6":
+        {
+            "x":[11],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 7":
+        {
+            "x":[12],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 8":
+        {
+            "x":[13],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 9":
+        {
+            "x":[14],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 10":
+        {
+            "x":[15],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 11":
+        {
+            "x":[16],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Feeding Bench 12":
+        {
+            "x":[17],
+            "y":[3],
+            "type":"interactable"
+        }
     }
 }
