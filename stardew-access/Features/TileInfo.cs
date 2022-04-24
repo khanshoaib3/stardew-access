@@ -59,12 +59,14 @@ namespace stardew_access.Features
                 return CATEGORY.Doors;
             else if (name == "water")
                 return CATEGORY.WaterTiles;
-            else if (name == "interactables")
+            else if (name == "interactable")
                 return CATEGORY.Interactables;
             else if (name == "decoration")
                 return CATEGORY.Decor;
-            else if (name == "machines")
+            else if (name == "machine")
                 return CATEGORY.Machines;
+            else if (name == "bridge")
+                return CATEGORY.Bridges;
             else if (name == "other")
                 return CATEGORY.Others;
 
@@ -87,9 +89,10 @@ namespace stardew_access.Features
         public static CATEGORY JunimoBundle = new CATEGORY("bundle");
         public static CATEGORY Doors = new CATEGORY("door"); // Also includes ladders and elevators
         public static CATEGORY WaterTiles = new CATEGORY("water");
-        public static CATEGORY Interactables = new CATEGORY("interactables");
+        public static CATEGORY Interactables = new CATEGORY("interactable");
         public static CATEGORY Decor = new CATEGORY("decoration");
-        public static CATEGORY Machines = new CATEGORY("machines");
+        public static CATEGORY Machines = new CATEGORY("machine");
+        public static CATEGORY Bridges = new CATEGORY("bridge");
         public static CATEGORY Others = new CATEGORY("other");
 
     }
@@ -407,21 +410,6 @@ namespace stardew_access.Features
 
             if (index != null)
             {
-                switch (index)
-                {
-                    case 1955:
-                    case 41:
-                        return (CATEGORY.Furnitures, "Mail Box");
-                    case 1003:
-                        return (CATEGORY.Furnitures, "Street lamp");
-                    case 78:
-                        return (CATEGORY.Furnitures, "Trash bin");
-                    case 617:
-                        return (CATEGORY.Furnitures, "Daily quest");
-                    case 616:
-                        return (CATEGORY.Furnitures, "Calender");
-                }
-
                 if (Game1.currentLocation is FarmHouse || Game1.currentLocation is IslandFarmHouse)
                 {
                     switch (index)
