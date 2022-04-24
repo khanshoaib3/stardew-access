@@ -480,6 +480,13 @@ namespace stardew_access
 
                 MainClass.DebugLog("Mod Config refreshed!");
             });
+
+            helper.ConsoleCommands.Add("refst", "Refresh static tiles", (string commmand, string[] args) =>
+            {
+                MainClass.STiles = new Features.StaticTiles();
+
+                MainClass.DebugLog("Static tiles refreshed!");
+            });
         }
     }
 }
