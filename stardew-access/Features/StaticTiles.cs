@@ -54,14 +54,35 @@ namespace stardew_access.Features
                         if (tile.Value == null)
                             continue;
 
-                        JToken? tileX = tile.Value["x"];
-                        JToken? tileY = tile.Value["y"];
+                        JToken? tileXArray = tile.Value["x"];
+                        JToken? tileYArray = tile.Value["y"];
                         JToken? tileType = tile.Value["type"];
 
-                        if (tileX == null || tileY == null || tileType == null)
+                        if (tileXArray == null || tileYArray == null || tileType == null)
                             continue;
 
-                        if (short.Parse(tileX.ToString()) == x && short.Parse(tileY.ToString()) == y)
+                        bool isXPresent = false;
+                        bool isYPresent = false;
+
+                        foreach (var item in tileXArray)
+                        {
+                            if (short.Parse(item.ToString()) == x)
+                            {
+                                isXPresent = true;
+                                break;
+                            }
+                        }
+
+                        foreach (var item in tileYArray)
+                        {
+                            if (short.Parse(item.ToString()) == y)
+                            {
+                                isYPresent = true;
+                                break;
+                            }
+                        }
+
+                        if (isXPresent && isYPresent)
                             return (tile.Key, CATEGORY.FromString(tileType.ToString()));
                     }
             }
