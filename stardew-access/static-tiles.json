@@ -3,15 +3,48 @@
     {
         "Ticket Machine":
         {
-            "x":7,
-            "y":11,
-            "type":"interactables"
+            "x":[7],
+            "y":[11],
+            "type":"interactable"
         },
         "Minecart":
         {
-            "x":4,
-            "y":3,
-            "type":"interactables"
+            "x":[4,5],
+            "y":[3],
+            "type":"interactable"
+        }
+    },
+    "town":
+    {
+        "Calender Board":
+        {
+            "x":[41],
+            "y":[56],
+            "type":"interactable"
+        },
+        "Daily Quest Board":
+        {
+            "x":[42],
+            "y":[56],
+            "type":"interactable"
+        },
+        "Sewer":
+        {
+            "x":[34,35],
+            "y":[95,96],
+            "type":"interactable"
+        },
+        "Ice Cream Stand":
+        {
+            "x":[88],
+            "y":[92],
+            "type":"interactable"
+        },
+        "Minecart":
+        {
+            "x":[105,106],
+            "y":[79],
+            "type":"interactable"
         }
     }
 }

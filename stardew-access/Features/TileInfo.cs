@@ -395,17 +395,17 @@ namespace stardew_access.Features
 
             if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] != null)
                 index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
-            /* Add More
-            MainClass.monitor.Log(index.ToString(), LogLevel.Debug);
-            */
 
             if (Game1.currentLocation is Farm)
             {
                 Building building = ((Farm)Game1.currentLocation).getBuildingAt(new Vector2(x, y));
                 if (building != null)
-                {
                     return (CATEGORY.Buildings, building.buildingType.Value);
-                }
+            }
+            else if (Game1.currentLocation is Town)
+            {
+                if (SpecialOrder.IsSpecialOrdersBoardUnlocked() && x == 62 && y == 93)
+                    return (CATEGORY.Interactables, "Special quest board");
             }
 
             if (index != null)
