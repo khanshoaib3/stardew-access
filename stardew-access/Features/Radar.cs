@@ -41,7 +41,11 @@ namespace stardew_access.Features
             exclusions.Add("tree");
             exclusions.Add("flooring");
             exclusions.Add("water");
+            exclusions.Add("debris");
             exclusions.Add("grass");
+            exclusions.Add("decoration");
+            exclusions.Add("bridge");
+            exclusions.Add("other");
 
             /* Not excluded Categories
              * 
@@ -50,10 +54,14 @@ namespace stardew_access.Features
              * exclusions.Add("animal");
              * exclusions.Add("npc");
              * exclusions.Add("furniture")
-             * exclusions.Add("other");
              * exclusions.Add("building");
+             * exclusions.Add("resource clump");
              * exclusions.Add("mine item");
              * exclusions.Add("chest"); 
+             * exclusions.Add("bundle"); 
+             * exclusions.Add("door"); 
+             * exclusions.Add("machine"); 
+             * exclusions.Add("interactable"); 
              */
         }
 
