@@ -688,5 +688,32 @@
             "y":[3],
             "type":"interactable"
         }
+    },
+    "slime hutch":
+    {
+        "Water Trough 1":
+        {
+            "x":[16],
+            "y":[6],
+            "type":"interactable"
+        },
+        "Water Trough 2":
+        {
+            "x":[16],
+            "y":[7],
+            "type":"interactable"
+        },
+        "Water Trough 3":
+        {
+            "x":[16],
+            "y":[8],
+            "type":"interactable"
+        },
+        "Water Trough 4":
+        {
+            "x":[16],
+            "y":[9],
+            "type":"interactable"
+        }
     }
 }
