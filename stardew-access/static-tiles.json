@@ -736,5 +736,20 @@
             "y":[12],
             "type":"farmer"
         }
+    },
+    "caldera":
+    {
+        "Rare Chest":
+        {
+            "x":[25],
+            "y":[28],
+            "type":"chest"
+        },
+        "Forge":
+        {
+            "x":[23],
+            "y":[21],
+            "type":"interactable"
+        }
     }
 }
