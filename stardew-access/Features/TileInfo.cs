@@ -39,7 +39,7 @@ namespace stardew_access.Features
             bool isColliding = isCollidingAtTile(x, y);
             Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
             string? door = getDoorAtTile(x, y);
-            (CATEGORY? category, string? name) tileInfo = getDynamicTilesInfo(x, y);
+            (CATEGORY? category, string? name) dynamicTile = getDynamicTilesInfo(x, y);
             string? junimoBundle = getJunimoBundleAt(x, y);
             string? resourceClump = getResourceClumpAtTile(x, y);
             string? farmAnimal = getFarmAnimalAt(Game1.currentLocation, x, y);
@@ -64,6 +64,11 @@ namespace stardew_access.Features
             {
                 toReturn = staticTile.name;
                 category = staticTile.category;
+            }
+            else if (dynamicTile.name != null)
+            {
+                toReturn = dynamicTile.name;
+                category = dynamicTile.category;
             }
             else if (Game1.currentLocation is VolcanoDungeon && ((VolcanoDungeon)Game1.currentLocation).IsCooledLava(x, y))
             {
@@ -131,11 +136,6 @@ namespace stardew_access.Features
             {
                 toReturn = parrot;
                 category = CATEGORY.Buildings;
-            }
-            else if (tileInfo.name != null)
-            {
-                toReturn = tileInfo.name;
-                category = tileInfo.category;
             }
             else if (junimoBundle != null)
             {
@@ -325,6 +325,16 @@ namespace stardew_access.Features
             {
                 if (forest.travelingMerchantDay && x == 27 && y == 11)
                     return (CATEGORY.Interactables, "Travelling Merchant");
+            }
+            else if (Game1.currentLocation is Beach beach)
+            {
+                if (x == 58 && y == 13)
+                {
+                    if (!beach.bridgeFixed.Value)
+                        return (CATEGORY.Interactables, "Repair Bridge");
+                    else
+                        return (CATEGORY.Bridges, "Bridge");
+                }
             }
 
             return (null, null);
@@ -556,7 +566,7 @@ namespace stardew_access.Features
             }
             else if (obj is Furniture)
                 toReturn.category = CATEGORY.Furnitures;
-            else if (obj.type == "Crafting" && obj.bigCraftable)
+            else if (obj.Type == "Crafting" && obj.bigCraftable.Value)
             {
 
                 foreach (string machine in trackable_machines)
