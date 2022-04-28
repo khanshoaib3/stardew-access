@@ -715,5 +715,26 @@
             "y":[9],
             "type":"interactable"
         }
+    },
+    "adventureguild":
+    {
+        "Goals Board":
+        {
+            "x":[8],
+            "y":[10],
+            "type":"interactable"
+        },
+        "Counter":
+        {
+            "x":[5],
+            "y":[12],
+            "type":"interactable"
+        },
+        "Gil":
+        {
+            "x":[11],
+            "y":[12],
+            "type":"farmer"
+        }
     }
 }
