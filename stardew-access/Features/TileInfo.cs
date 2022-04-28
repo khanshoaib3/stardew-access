@@ -134,7 +134,7 @@ namespace stardew_access.Features
             bool isColliding = isCollidingAtTile(x, y);
             Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
             string? door = getDoorAtTile(x, y);
-            (CATEGORY? category, string? name) tileInfo = getTileInfo(x, y);
+            (CATEGORY? category, string? name) tileInfo = getDynamicTilesInfo(x, y);
             string? junimoBundle = getJunimoBundleAt(x, y);
             string? resourceClump = getResourceClumpAtTile(x, y);
             string? farmAnimal = getFarmAnimalAt(Game1.currentLocation, x, y);
@@ -388,17 +388,11 @@ namespace stardew_access.Features
         /// <param name="y"></param>
         /// <returns>category: This is the category of the tile. Default to Furnitures.
         /// <br/>name: This is the name of the tile. Default to null if the tile tile has nothing on it.</returns>
-        public static (CATEGORY? category, string? name) getTileInfo(int x, int y)
+        public static (CATEGORY? category, string? name) getDynamicTilesInfo(int x, int y)
         {
-
-            int? index = null;
-
-            if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] != null)
-                index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
-
-            if (Game1.currentLocation is Farm)
+            if (Game1.currentLocation is Farm farm)
             {
-                Building building = ((Farm)Game1.currentLocation).getBuildingAt(new Vector2(x, y));
+                Building building = farm.getBuildingAt(new Vector2(x, y));
                 if (building != null)
                     return (CATEGORY.Buildings, building.buildingType.Value);
             }
@@ -407,23 +401,25 @@ namespace stardew_access.Features
                 if (SpecialOrder.IsSpecialOrdersBoardUnlocked() && x == 62 && y == 93)
                     return (CATEGORY.Interactables, "Special quest board");
             }
-
-            if (index != null)
+            else if (Game1.currentLocation is FarmHouse farmHouse)
             {
-                if (Game1.currentLocation is FarmHouse || Game1.currentLocation is IslandFarmHouse)
-                {
-                    switch (index)
-                    {
-                        case 173:
-                            return (CATEGORY.Furnitures, "Fridge");
-                        case 169:
-                        case 170:
-                        case 171:
-                        case 172:
-                            return (CATEGORY.Furnitures, "Kitchen");
-                    }
-                }
-
+                if (farmHouse.upgradeLevel >= 1)
+                    if (farmHouse.getKitchenStandingSpot().X == x && (farmHouse.getKitchenStandingSpot().Y - 1) == y) // Standing spot is where the player will stand
+                        return (CATEGORY.Interactables, "Kitchen");
+                    else if (farmHouse.fridgePosition.X == x && farmHouse.fridgePosition.Y == y)
+                        return (CATEGORY.Interactables, "Fridge");
+            }
+            else if (Game1.currentLocation is IslandFarmHouse islandFarmHouse)
+            {
+                if ((islandFarmHouse.fridgePosition.X - 1) == x && islandFarmHouse.fridgePosition.Y == y)
+                    return (CATEGORY.Interactables, "Kitchen");
+                else if (islandFarmHouse.fridgePosition.X == x && islandFarmHouse.fridgePosition.Y == y)
+                    return (CATEGORY.Interactables, "Fridge");
+            }
+            else if (Game1.currentLocation is Forest forest)
+            {
+                if (forest.travelingMerchantDay && x == 27 && y == 11)
+                    return (CATEGORY.Interactables, "Travelling Merchant");
             }
 
             return (null, null);
