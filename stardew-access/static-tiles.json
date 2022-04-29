@@ -724,7 +724,7 @@
             "y":[10],
             "type":"interactable"
         },
-        "Counter":
+        "Shop Counter":
         {
             "x":[5],
             "y":[12],
@@ -734,7 +734,7 @@
         {
             "x":[11],
             "y":[12],
-            "type":"farmer"
+            "type":"npc"
         }
     },
     "caldera":
@@ -749,6 +749,63 @@
         {
             "x":[23],
             "y":[21],
+            "type":"interactable"
+        }
+    },
+    "club":
+    {
+        "Coin Machine":
+        {
+            "x":[12],
+            "y":[4],
+            "type":"interactable"
+        },
+        "Shop Counter":
+        {
+            "x":[25],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Calico Spin Machine":
+        {
+            "x":[11,13,15],
+            "y":[8,10],
+            "type":"interactable"
+        },
+        "High Stakes Calico Jack Table":
+        {
+            "x":[23,24],
+            "y":[10,11],
+            "type":"interactable"
+        },
+        "Low Stakes Calico Jack Table":
+        {
+            "x":[3],
+            "y":[7,9],
+            "type":"interactable"
+        },
+        "Man":
+        {
+            "x":[13],
+            "y":[11],
+            "type":"npc"
+        },
+        "Welwick":
+        {
+            "x":[18],
+            "y":[9],
+            "type":"npc"
+        },
+        "Unknown person":
+        {
+            "x":[16],
+            "y":[4],
+            "type":"npc"
+        },
+        "Stats Checker":
+        {
+            "x":[3],
+            "y":[4],
             "type":"interactable"
         }
     }
