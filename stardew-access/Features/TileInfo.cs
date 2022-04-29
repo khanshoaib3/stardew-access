@@ -336,6 +336,11 @@ namespace stardew_access.Features
                         return (CATEGORY.Bridges, "Bridge");
                 }
             }
+            else if (Game1.currentLocation is CommunityCenter communityCenter)
+            {
+                if (communityCenter.missedRewardsChestVisible.Value && x == 22 && y == 10)
+                    return (CATEGORY.Chests, "Missed Rewards Chest");
+            }
 
             return (null, null);
         }
