@@ -341,6 +341,15 @@ namespace stardew_access.Features
                 if (communityCenter.missedRewardsChestVisible.Value && x == 22 && y == 10)
                     return (CATEGORY.Chests, "Missed Rewards Chest");
             }
+            else if (Game1.currentLocation is BoatTunnel)
+            {
+                if (x == 4 && y == 9)
+                    return (CATEGORY.Interactables, ((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatFixed")) ? "Repair " : "") + "Ticket Machine");
+                else if (x == 6 && y == 8)
+                    return (((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatHull")) ? CATEGORY.Interactables : CATEGORY.Decor), ((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatHull")) ? "Repair " : "") + "Boat Hull");
+                else if (x == 8 && y == 9)
+                    return (((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatAnchor")) ? CATEGORY.Interactables : CATEGORY.Decor), ((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatAnchor")) ? "Repair " : "") + "Boat Anchor");
+            }
 
             return (null, null);
         }

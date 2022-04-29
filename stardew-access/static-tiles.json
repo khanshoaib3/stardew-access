@@ -853,5 +853,14 @@
             "y":[35,36],
             "type":"decoration"
         }
+    },
+    "fishshop":
+    {
+        "Shop Counter":
+        {
+            "x":[5],
+            "y":[5],
+            "type":"interactable"
+        }
     }
 }
