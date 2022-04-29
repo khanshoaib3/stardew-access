@@ -808,5 +808,50 @@
             "y":[4],
             "type":"interactable"
         }
+    },
+    "desert":
+    {
+        "Bus":
+        {
+            "x":[18],
+            "y":[27],
+            "type":"interactable"
+        },
+        "Desert Trader":
+        {
+            "x":[42],
+            "y":[23],
+            "type":"interactable"
+        },
+        "Three Pillars":
+        {
+            "x":[34,37,40],
+            "y":[8,13],
+            "type":"decoration"
+        },
+        "Three Pillars Center":
+        {
+            "x":[37],
+            "y":[11],
+            "type":"interactable"
+        },
+        "Skull Cavern Entrance":
+        {
+            "x":[8],
+            "y":[6],
+            "type":"door"
+        },
+        "Desert Warp Statue":
+        {
+            "x":[35],
+            "y":[43],
+            "type":"decoration"
+        },
+        "Sand Dragon Skull":
+        {
+            "x":[9,10],
+            "y":[35,36],
+            "type":"decoration"
+        }
     }
 }
