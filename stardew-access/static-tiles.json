@@ -1537,10 +1537,25 @@
             "y":[25],
             "type":"interactable"
         },
-        "Counter":
+        "Shop Counter":
         {
             "x":[10],
             "y":[25],
+            "type":"interactable"
+        }
+    },
+    "archaeologyhouse":
+    {
+        "Exit":
+        {
+            "x":[3],
+            "y":[14],
+            "type":"door"
+        },
+        "Counter":
+        {
+            "x":[3],
+            "y":[9],
             "type":"interactable"
         }
     }
