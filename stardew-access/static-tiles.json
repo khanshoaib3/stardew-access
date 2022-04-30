@@ -1198,5 +1198,14 @@
             "y":[2],
             "type":"door"
         }
+    },
+    "communitycenter":
+    {
+        "Exit":
+        {
+            "x":[32],
+            "y":[23],
+            "type":"door"
+        }
     }
 }
