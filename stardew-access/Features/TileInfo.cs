@@ -336,6 +336,10 @@ namespace stardew_access.Features
             {
                 if (forest.travelingMerchantDay && x == 27 && y == 11)
                     return (CATEGORY.Interactables, "Travelling Merchant");
+                else if (forest.log != null && x == 2 && y == 7)
+                    return (CATEGORY.Interactables, "Log");
+                else if (forest.log == null && x == 0 && y == 7)
+                    return (CATEGORY.Doors, "Secret Woods Entrance");
             }
             else if (Game1.currentLocation is Beach beach)
             {

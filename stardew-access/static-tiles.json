@@ -1018,5 +1018,71 @@
             "y":[11],
             "type":"door"
         }
+    },
+    "beach":
+    {
+        "Town Entrance":
+        {
+            "x":[38],
+            "y":[0],
+            "type":"door"
+        },
+        "Beach Warp Statue":
+        {
+            "x":[20],
+            "y":[4],
+            "type":"decoration"
+        }
+    },
+    "forest":
+    {
+        "Farm Entrance":
+        {
+            "x":[68],
+            "y":[0],
+            "type":"door"
+        },
+        "Town Entrance":
+        {
+            "x":[119],
+            "y":[25],
+            "type":"door"
+        },
+        "Bridge 1":
+        {
+            "x":[77,82],
+            "y":[49],
+            "type":"bridge"
+        },
+        "Bridge 2":
+        {
+            "x":[87],
+            "y":[52,56],
+            "type":"bridge"
+        },
+        "Bridge 3":
+        {
+            "x":[65,62],
+            "y":[70],
+            "type":"bridge"
+        },
+        "Bridge 4":
+        {
+            "x":[41],
+            "y":[79,82],
+            "type":"bridge"
+        },
+        "Bridge 5":
+        {
+            "x":[38],
+            "y":[85,87],
+            "type":"bridge"
+        },
+        "Abandoned House":
+        {
+            "x":[34],
+            "y":[95],
+            "type":"interactable"
+        }
     }
 }
