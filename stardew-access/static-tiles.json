@@ -1084,5 +1084,110 @@
             "y":[95],
             "type":"interactable"
         }
+    },
+    "beachnightmarket":
+    {
+       "Desert Trader":
+        {
+            "x":[14],
+            "y":[37],
+            "type":"npc"
+        },
+        "Famous Painter Lupini":
+        {
+            "x":[43],
+            "y":[34],
+            "type":"npc"
+        },
+        "Fishing Submarine":
+        {
+            "x":[5],
+            "y":[34],
+            "type":"door"
+        },
+        "Travelling Cart":
+        {
+            "x":[39],
+            "y":[30],
+            "type":"interactable"
+        },
+        "Shrouded Figure":
+        {
+            "x":[32],
+            "y":[34],
+            "type":"npc"
+        },
+        "Decoration Boat":
+        {
+            "x":[19],
+            "y":[33],
+            "type":"interactable"
+        },
+        "Magic Shop Boat":
+        {
+            "x":[48],
+            "y":[34],
+            "type":"interactable"
+        },
+        "Mermaid Boat":
+        {
+            "x":[58],
+            "y":[31],
+            "type":"door"
+        }
+    },
+    "mermaidhouse":
+    {
+        "Exit":
+        {
+            "x":[4],
+            "y":[10],
+            "type":"door"
+        },
+        "Clam Shell 1":
+        {
+            "x":[2],
+            "y":[6],
+            "type":"interactable"
+        },
+        "Clam Shell 2":
+        {
+            "x":[3],
+            "y":[6],
+            "type":"interactable"
+        },
+        "Clam Shell 3":
+        {
+            "x":[4],
+            "y":[6],
+            "type":"interactable"
+        },
+        "Clam Shell 4":
+        {
+            "x":[5],
+            "y":[6],
+            "type":"interactable"
+        },
+        "Clam Shell 5":
+        {
+            "x":[6],
+            "y":[6],
+            "type":"interactable"
+        }
+    },
+    "submarine":
+    {
+        "Exit":
+        {
+            "x":[14],
+            "y":[15],
+            "type":"door"
+        },
+        "Captain":
+        {
+            "x":[2],
+            "y":[9],
+            "type":"npc"
+        }
     }
 }

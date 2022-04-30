@@ -335,7 +335,7 @@ namespace stardew_access.Features
             else if (Game1.currentLocation is Forest forest)
             {
                 if (forest.travelingMerchantDay && x == 27 && y == 11)
-                    return (CATEGORY.Interactables, "Travelling Merchant");
+                    return (CATEGORY.Interactables, "Travelling Cart");
                 else if (forest.log != null && x == 2 && y == 7)
                     return (CATEGORY.Interactables, "Log");
                 else if (forest.log == null && x == 0 && y == 7)
