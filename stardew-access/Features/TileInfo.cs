@@ -315,7 +315,9 @@ namespace stardew_access.Features
             }
             else if (Game1.currentLocation is FarmHouse farmHouse)
             {
-                if (farmHouse.upgradeLevel >= 1)
+                if (farmHouse.getEntryLocation().X == x && farmHouse.getEntryLocation().Y == y)
+                    return (CATEGORY.Doors, "Exit");
+                else if (farmHouse.upgradeLevel >= 1)
                     if (farmHouse.getKitchenStandingSpot().X == x && (farmHouse.getKitchenStandingSpot().Y - 1) == y) // Standing spot is where the player will stand
                         return (CATEGORY.Interactables, "Kitchen");
                     else if (farmHouse.fridgePosition.X == x && farmHouse.fridgePosition.Y == y)
@@ -323,7 +325,9 @@ namespace stardew_access.Features
             }
             else if (Game1.currentLocation is IslandFarmHouse islandFarmHouse)
             {
-                if ((islandFarmHouse.fridgePosition.X - 1) == x && islandFarmHouse.fridgePosition.Y == y)
+                if (x == 14 && y == 17)
+                    return (CATEGORY.Doors, "Exit");
+                else if ((islandFarmHouse.fridgePosition.X - 1) == x && islandFarmHouse.fridgePosition.Y == y)
                     return (CATEGORY.Interactables, "Kitchen");
                 else if (islandFarmHouse.fridgePosition.X == x && islandFarmHouse.fridgePosition.Y == y)
                     return (CATEGORY.Interactables, "Fridge");
