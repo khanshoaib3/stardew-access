@@ -1522,5 +1522,26 @@
             "y":[28],
             "type":"interactable"
         }
+    },
+    "jojamart":
+    {
+        "Exit":
+        {
+            "x":[13],
+            "y":[29],
+            "type":"door"
+        },
+        "Morris's Kiosk":
+        {
+            "x":[21],
+            "y":[25],
+            "type":"interactable"
+        },
+        "Counter":
+        {
+            "x":[10],
+            "y":[25],
+            "type":"interactable"
+        }
     }
 }
