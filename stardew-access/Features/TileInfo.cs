@@ -299,7 +299,14 @@ namespace stardew_access.Features
             {
                 Building building = farm.getBuildingAt(new Vector2(x, y));
                 if (building != null)
-                    return (CATEGORY.Buildings, building.buildingType.Value);
+                {
+                    if ((building.humanDoor.Value.X + building.tileX.Value) == x && (building.humanDoor.Value.Y + building.tileY.Value) == y)
+                        return (CATEGORY.Doors, building.buildingType.Value + " Door");
+                    else if ((building.animalDoor.Value.X + building.tileX.Value) == x && (building.animalDoor.Value.Y + building.tileY.Value) == y)
+                        return (CATEGORY.Doors, building.buildingType.Value + " Animal Door " + ((building.animalDoorOpen.Value) ? "Opened" : "Closed"));
+                    else
+                        return (CATEGORY.Buildings, building.buildingType.Value);
+                }
             }
             else if (Game1.currentLocation is Town)
             {
