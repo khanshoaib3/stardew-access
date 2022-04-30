@@ -12,6 +12,18 @@
             "x":[4,5],
             "y":[3],
             "type":"interactable"
+        },
+        "Farm Entrance":
+        {
+            "x":[0],
+            "y":[23],
+            "type":"door"
+        },
+        "Town Entrance":
+        {
+            "x":[34],
+            "y":[23],
+            "type":"door"
         }
     },
     "town":
@@ -45,6 +57,30 @@
             "x":[105,106],
             "y":[79],
             "type":"interactable"
+        },
+        "Bus Stop Entrance":
+        {
+            "x":[0],
+            "y":[54],
+            "type":"door"
+        },
+        "Cindersap Forest Entrance":
+        {
+            "x":[0],
+            "y":[90],
+            "type":"door"
+        },
+        "Beach Entrance":
+        {
+            "x":[54],
+            "y":[109],
+            "type":"door"
+        },
+        "Mountain Entrance":
+        {
+            "x":[81],
+            "y":[0],
+            "type":"door"
         }
     },
     "coop":
@@ -78,6 +114,12 @@
             "x":[9],
             "y":[3],
             "type":"interactable"
+        },
+        "Exit":
+        {
+            "x":[2],
+            "y":[9],
+            "type":"door"
         }
     },
     "big coop":
@@ -141,6 +183,12 @@
             "x":[13],
             "y":[3],
             "type":"interactable"
+        },
+        "Exit":
+        {
+            "x":[2],
+            "y":[9],
+            "type":"door"
         }
     },
     "coop2":
@@ -204,6 +252,12 @@
             "x":[13],
             "y":[3],
             "type":"interactable"
+        },
+        "Exit":
+        {
+            "x":[2],
+            "y":[9],
+            "type":"door"
         }
     },
     "deluxe coop":
@@ -291,6 +345,12 @@
             "x":[17],
             "y":[3],
             "type":"interactable"
+        },
+        "Exit":
+        {
+            "x":[2],
+            "y":[9],
+            "type":"door"
         }
     },
     "coop3":
@@ -378,6 +438,12 @@
             "x":[17],
             "y":[3],
             "type":"interactable"
+        },
+        "Exit":
+        {
+            "x":[2],
+            "y":[9],
+            "type":"door"
         }
     },
     "barn":
@@ -411,6 +477,12 @@
             "x":[11],
             "y":[3],
             "type":"interactable"
+        },
+        "Exit":
+        {
+            "x":[11],
+            "y":[14],
+            "type":"door"
         }
     },
     "barn2":
@@ -468,6 +540,12 @@
             "x":[15],
             "y":[3],
             "type":"interactable"
+        },
+        "Exit":
+        {
+            "x":[11],
+            "y":[14],
+            "type":"door"
         }
     },
     "big barn":
@@ -525,6 +603,12 @@
             "x":[15],
             "y":[3],
             "type":"interactable"
+        },
+        "Exit":
+        {
+            "x":[11],
+            "y":[14],
+            "type":"door"
         }
     },
     "barn3":
@@ -606,6 +690,12 @@
             "x":[19],
             "y":[3],
             "type":"interactable"
+        },
+        "Exit":
+        {
+            "x":[11],
+            "y":[14],
+            "type":"door"
         }
     },
     "deluxe barn":
@@ -687,6 +777,12 @@
             "x":[19],
             "y":[3],
             "type":"interactable"
+        },
+        "Exit":
+        {
+            "x":[11],
+            "y":[14],
+            "type":"door"
         }
     },
     "slime hutch":
@@ -714,6 +810,12 @@
             "x":[16],
             "y":[9],
             "type":"interactable"
+        },
+        "Exit":
+        {
+            "x":[8],
+            "y":[12],
+            "type":"door"
         }
     },
     "adventureguild":
@@ -735,6 +837,12 @@
             "x":[11],
             "y":[12],
             "type":"npc"
+        },
+        "Exit":
+        {
+            "x":[6],
+            "y":[19],
+            "type":"door"
         }
     },
     "caldera":
@@ -750,6 +858,33 @@
             "x":[23],
             "y":[21],
             "type":"interactable"
+        },
+        "Volcano Dungeon 0 Entrance":
+        {
+            "x":[11],
+            "y":[36],
+            "type":"door"
+        },
+        "Volcano Dungeon 9 Entrance":
+        {
+            "x":[21],
+            "y":[39],
+            "type":"door"
+        }
+    },
+    "volcanodungeon0":
+    {
+        "Caldera Entrance":
+        {
+            "x":[44],
+            "y":[50],
+            "type":"door"
+        },
+        "Volcano Dungeon 1 Entrance":
+        {
+            "x":[37],
+            "y":[5],
+            "type":"door"
         }
     },
     "club":
@@ -807,6 +942,12 @@
             "x":[3],
             "y":[4],
             "type":"interactable"
+        },
+        "Exit":
+        {
+            "x":[8],
+            "y":[12],
+            "type":"door"
         }
     },
     "desert":
@@ -861,6 +1002,21 @@
             "x":[5],
             "y":[5],
             "type":"interactable"
+        },
+        "Exit":
+        {
+            "x":[5],
+            "y":[9],
+            "type":"door"
+        }
+    },
+    "boattunnel":
+    {
+        "Exit":
+        {
+            "x":[6],
+            "y":[11],
+            "type":"door"
         }
     }
 }
