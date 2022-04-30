@@ -1099,7 +1099,7 @@
             "y":[34],
             "type":"npc"
         },
-        "Fishing Submarine":
+        "Fishing Submarine Door":
         {
             "x":[5],
             "y":[34],
@@ -1129,7 +1129,7 @@
             "y":[34],
             "type":"interactable"
         },
-        "Mermaid Boat":
+        "Mermaid Boat Door":
         {
             "x":[58],
             "y":[31],
@@ -1206,6 +1206,321 @@
             "x":[32],
             "y":[23],
             "type":"door"
+        }
+    },
+    "islandeast":
+    {
+        "Banana Shrine":
+        {
+            "x":[16],
+            "y":[26],
+            "type":"interactable"
+        },
+        "Jungle Parrot Express":
+        {
+            "x":[28],
+            "y":[27],
+            "type":"interactable"
+        },
+        "Island Hut Entrance":
+        {
+            "x":[22],
+            "y":[10],
+            "type":"door"
+        },
+        "Island South Entrance":
+        {
+            "x":[0],
+            "y":[46],
+            "type":"door"
+        },
+        "Island Shrine Entrance":
+        {
+            "x":[32],
+            "y":[30],
+            "type":"door"
+        }
+    },
+    "islandhut":
+    {
+        "Exit":
+        {
+            "x":[7],
+            "y":[13],
+            "type":"door"
+        }
+    },
+    "islandsouth":
+    {
+        "Island East Entrance":
+        {
+            "x":[34],
+            "y":[12],
+            "type":"door"
+        },
+        "Ginger Island Warp Statue":
+        {
+            "x":[11],
+            "y":[11],
+            "type":"decoration"
+        },
+        "Island West Entrance":
+        {
+            "x":[0],
+            "y":[11],
+            "type":"door"
+        },
+        "Island North Entrance":
+        {
+            "x":[17],
+            "y":[0],
+            "type":"door"
+        },
+        "Docks Parrot Express":
+        {
+            "x":[6],
+            "y":[31],
+            "type":"interactable"
+        },
+        "Return Boat":
+        {
+            "x":[19],
+            "y":[43],
+            "type":"interactable"
+        }
+    },
+    "islandwest":
+    {
+        "Farm Parrot Express":
+        {
+            "x":[74],
+            "y":[9],
+            "type":"interactable"
+        },
+        "Bridge 1":
+        {
+            "x":[67,62],
+            "y":[16],
+            "type":"bridge"
+        },
+        "Qi's Walnut Room Door":
+        {
+            "x":[20],
+            "y":[22],
+            "type":"door"
+        },
+        "Birdie":
+        {
+            "x":[18],
+            "y":[58],
+            "type":"npc"
+        },
+        "Hole 1":
+        {
+            "x":[37],
+            "y":[87],
+            "type":"interactable"
+        },
+        "Hole 2":
+        {
+            "x":[41],
+            "y":[86],
+            "type":"interactable"
+        },
+        "Hole 3":
+        {
+            "x":[45],
+            "y":[86],
+            "type":"interactable"
+        },
+        "Hole 4":
+        {
+            "x":[48],
+            "y":[87],
+            "type":"interactable"
+        },
+        "Bridge 2":
+        {
+            "x":[55,52],
+            "y":[80],
+            "type":"bridge"
+        },
+        "Island Farm House Door":
+        {
+            "x":[77],
+            "y":[39],
+            "type":"door"
+        },
+        "Island Farm Cave Entrance":
+        {
+            "x":[96],
+            "y":[33],
+            "type":"door"
+        },
+        "Island South Entrance":
+        {
+            "x":[105],
+            "y":[40],
+            "type":"door"
+        }
+    },
+    "islandfarmcave":
+    {
+        "Exit":
+        {
+            "x":[4],
+            "y":[10],
+            "type":"door"
+        },
+        "Gourmand Frog":
+        {
+            "x":[5],
+            "y":[4],
+            "type":"npc"
+        }
+    },
+    "islandnorth":
+    {
+        "Island South Entrance":
+        {
+            "x":[35],
+            "y":[89],
+            "type":"door"
+        },
+        "Island Field Office Entrance":
+        {
+            "x":[46],
+            "y":[46],
+            "type":"door"
+        },
+        "Island North Cave Entrance":
+        {
+            "x":[21,22],
+            "y":[47],
+            "type":"door"
+        },
+        "Dig Site Parrot Express":
+        {
+            "x":[5],
+            "y":[48],
+            "type":"interactable"
+        },
+        "Volcano Dungeon Entrance":
+        {
+            "x":[40],
+            "y":[22],
+            "type":"door"
+        },
+        "Volcano Parrot Express":
+        {
+            "x":[60],
+            "y":[16],
+            "type":"interactable"
+        }
+    },
+    "islandfieldoffice":
+    {
+        "Exit":
+        {
+            "x":[4],
+            "y":[10],
+            "type":"door"
+        },
+        "Counter":
+        {
+            "x":[8],
+            "y":[7],
+            "type":"interactable"
+        },
+        "Island Survey":
+        {
+            "x":[5],
+            "y":[3],
+            "type":"interactable"
+        }
+    },
+    "qinutroom":
+    {
+        "Exit":
+        {
+            "x":[7],
+            "y":[7],
+            "type":"door"
+        },
+        "Perfection Tracker":
+        {
+            "x":[13],
+            "y":[4],
+            "type":"interactable"
+        },
+        "Vending Machine":
+        {
+            "x":[11],
+            "y":[3],
+            "type":"interactable"
+        },
+        "Special Order Board":
+        {
+            "x":[3],
+            "y":[3],
+            "type":"interactable"
+        }
+    },
+    "islandsoutheast":
+    {
+        "Island South East Cave Entrance":
+        {
+            "x":[30],
+            "y":[18],
+            "type":"door"
+        }
+    },
+    "islandsoutheastcave":
+    {
+        "Exit":
+        {
+            "x":[1],
+            "y":[8],
+            "type":"door"
+        }
+    },
+    "islandshrine":
+    {
+        "Exit":
+        {
+            "x":[13],
+            "y":[28],
+            "type":"door"
+        },
+        "Shrine":
+        {
+            "x":[24],
+            "y":[22],
+            "type":"interactable"
+        },
+        "North Pedestal":
+        {
+            "x":[24],
+            "y":[25],
+            "type":"interactable"
+        },
+        "East Pedestal":
+        {
+            "x":[27],
+            "y":[27],
+            "type":"interactable"
+        },
+        "West Pedestal":
+        {
+            "x":[21],
+            "y":[27],
+            "type":"interactable"
+        },
+        "South Pedestal":
+        {
+            "x":[24],
+            "y":[28],
+            "type":"interactable"
         }
     }
 }
