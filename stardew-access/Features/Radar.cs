@@ -134,6 +134,34 @@ namespace stardew_access.Features
         }
 
         /// <summary>
+        /// Search the entire location.
+        /// </summary>
+        /// <returns>A dictionary with all the detected tiles along with the name of the object on it and it's category.</returns>
+        public Dictionary<Vector2, (string, string)> SearchLocation()
+        {
+            Dictionary<Vector2, (string, string)> detectedTiles = new Dictionary<Vector2, (string, string)>();
+            Vector2 position = Vector2.Zero;
+            (bool, string? name, string category) tileInfo;
+            // FIXME try using BFS
+            for (int i = 0; i < Game1.currentLocation.Map.Layers[0].LayerSize.Width; i++)
+            {
+                for (int j = 0; j < Game1.currentLocation.Map.Layers[0].LayerSize.Height; j++)
+                {
+                    position.X = i;
+                    position.Y = j;
+                    tileInfo = CheckTile(position, true);
+                    if (tileInfo.Item1 && tileInfo.name != null)
+                    {
+                        MainClass.DebugLog($"\n{tileInfo.name}:\t{tileInfo.category}");
+                        detectedTiles.Add(position, (tileInfo.name, tileInfo.category));
+                    }
+                }
+            }
+
+            return detectedTiles;
+        }
+
+        /// <summary>
         /// Checks if the provided tile position is within the range/radius and whether the tile has already been checked or not.
         /// </summary>
         /// <param name="item">The position of the tile to be searched.</param>
@@ -154,9 +182,9 @@ namespace stardew_access.Features
             return true;
         }
 
-        public (bool, string?, string) CheckTile(Vector2 position)
+        public (bool, string? name, string category) CheckTile(Vector2 position, bool lessInfo = false)
         {
-            (string? name, CATEGORY? category) tileDetail = TileInfo.getNameWithCategoryAtTile(position);
+            (string? name, CATEGORY? category) tileDetail = TileInfo.getNameWithCategoryAtTile(position, lessInfo);
             if (tileDetail.name == null)
                 return (false, null, CATEGORY.Others.ToString());
 

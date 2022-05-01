@@ -29,7 +29,7 @@ namespace stardew_access.Features
         }
 
         ///<summary>Returns the name of the object at tile alongwith it's category</summary>
-        public static (string? name, CATEGORY? category) getNameWithCategoryAtTile(Vector2 tile)
+        public static (string? name, CATEGORY? category) getNameWithCategoryAtTile(Vector2 tile, bool lessInfo = false)
         {
             int x = (int)tile.X;
             int y = (int)tile.Y;
@@ -37,14 +37,15 @@ namespace stardew_access.Features
             CATEGORY? category = CATEGORY.Others;
 
             bool isColliding = isCollidingAtTile(x, y);
-            Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
+            var terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
             string? door = getDoorAtTile(x, y);
-            (CATEGORY? category, string? name) dynamicTile = getDynamicTilesInfo(x, y);
+            (CATEGORY? category, string? name) dynamicTile = getDynamicTilesInfo(x, y, lessInfo);
             string? junimoBundle = getJunimoBundleAt(x, y);
-            string? resourceClump = getResourceClumpAtTile(x, y);
+            string? resourceClump = getResourceClumpAtTile(x, y, lessInfo);
             string? farmAnimal = getFarmAnimalAt(Game1.currentLocation, x, y);
             string? parrot = getParrotPerchAtTile(x, y);
             (string? name, CATEGORY category) staticTile = MainClass.STiles.getStaticTileInfoAtWithCategory(x, y);
+            string? bush = getBushAtTile(x, y, lessInfo);
 
             if (Game1.currentLocation.isCharacterAtTile(tile) != null)
             {
@@ -70,24 +71,24 @@ namespace stardew_access.Features
                 toReturn = dynamicTile.name;
                 category = dynamicTile.category;
             }
-            else if (Game1.currentLocation is VolcanoDungeon && ((VolcanoDungeon)Game1.currentLocation).IsCooledLava(x, y))
+            else if (Game1.currentLocation is VolcanoDungeon && ((VolcanoDungeon)Game1.currentLocation).IsCooledLava(x, y) && !lessInfo)
             {
                 toReturn = "Cooled lava";
                 category = CATEGORY.WaterTiles;
             }
-            else if (Game1.currentLocation is VolcanoDungeon && StardewValley.Monsters.LavaLurk.IsLavaTile((VolcanoDungeon)Game1.currentLocation, x, y))
+            else if (Game1.currentLocation is VolcanoDungeon && StardewValley.Monsters.LavaLurk.IsLavaTile((VolcanoDungeon)Game1.currentLocation, x, y) && !lessInfo)
             {
                 toReturn = "Lava";
                 category = CATEGORY.WaterTiles;
             }
-            else if (Game1.currentLocation.isWaterTile(x, y) && isColliding)
+            else if (Game1.currentLocation.isWaterTile(x, y) && isColliding && !lessInfo)
             {
                 toReturn = "Water";
                 category = CATEGORY.WaterTiles;
             }
             else if (Game1.currentLocation.isObjectAtTile(x, y))
             {
-                (string? name, CATEGORY? category) obj = getObjectAtTile(x, y);
+                (string? name, CATEGORY? category) obj = getObjectAtTile(x, y, lessInfo);
                 toReturn = obj.name;
                 category = obj.category;
             }
@@ -102,9 +103,9 @@ namespace stardew_access.Features
                 }
 
             }
-            else if (Game1.currentLocation.getLargeTerrainFeatureAt(x, y) != null)
+            else if (bush != null)
             {
-                toReturn = getBushAtTile(x, y);
+                toReturn = bush;
                 category = CATEGORY.Bush;
             }
             else if (resourceClump != null)
@@ -149,10 +150,15 @@ namespace stardew_access.Features
             return (toReturn, category);
         }
 
-        public static string? getBushAtTile(int x, int y)
+        public static string? getBushAtTile(int x, int y, bool lessInfo = false)
         {
             string? toReturn = null;
-            Bush bush = (Bush)Game1.currentLocation.getLargeTerrainFeatureAt(x, y);
+            Bush? bush = (Bush)Game1.currentLocation.getLargeTerrainFeatureAt(x, y);
+            if (bush == null)
+                return null;
+            if (lessInfo && (bush.tilePosition.Value.X != x || bush.tilePosition.Value.Y != y))
+                return null;
+
             int size = bush.size.Value;
 
             #region Check if bush is harvestable or not
@@ -293,19 +299,23 @@ namespace stardew_access.Features
         /// <param name="y"></param>
         /// <returns>category: This is the category of the tile. Default to Furnitures.
         /// <br/>name: This is the name of the tile. Default to null if the tile tile has nothing on it.</returns>
-        public static (CATEGORY? category, string? name) getDynamicTilesInfo(int x, int y)
+        public static (CATEGORY? category, string? name) getDynamicTilesInfo(int x, int y, bool lessInfo = false)
         {
             if (Game1.currentLocation is Farm farm)
             {
                 Building building = farm.getBuildingAt(new Vector2(x, y));
                 if (building != null)
                 {
+                    string name = building.buildingType.Value;
+
                     if ((building.humanDoor.Value.X + building.tileX.Value) == x && (building.humanDoor.Value.Y + building.tileY.Value) == y)
-                        return (CATEGORY.Doors, building.buildingType.Value + " Door");
+                        return (CATEGORY.Doors, name + " Door");
                     else if ((building.animalDoor.Value.X + building.tileX.Value) == x && (building.animalDoor.Value.Y + building.tileY.Value) == y)
-                        return (CATEGORY.Doors, building.buildingType.Value + " Animal Door " + ((building.animalDoorOpen.Value) ? "Opened" : "Closed"));
-                    else
-                        return (CATEGORY.Buildings, building.buildingType.Value);
+                        return (CATEGORY.Doors, name + " Animal Door " + ((building.animalDoorOpen.Value) ? "Opened" : "Closed"));
+                    else if (building.tileX.Value == x && building.tileY.Value == y)
+                        return (CATEGORY.Buildings, name);
+                    else if (!lessInfo)
+                        return (CATEGORY.Buildings, name);
                 }
             }
             else if (Game1.currentLocation is Town)
@@ -582,7 +592,7 @@ namespace stardew_access.Features
         }
 
         #region Objects
-        public static (string? name, CATEGORY category) getObjectAtTile(int x, int y)
+        public static (string? name, CATEGORY category) getObjectAtTile(int x, int y, bool lessInfo = false)
         {
             (string? name, CATEGORY category) toReturn = (null, CATEGORY.Others);
 
@@ -604,7 +614,16 @@ namespace stardew_access.Features
                 toReturn = (chest.DisplayName, CATEGORY.Chests);
             }
             else if (obj is Furniture)
-                toReturn.category = CATEGORY.Furnitures;
+            {
+                if (lessInfo && (((Furniture)obj).TileLocation.X != x || ((Furniture)obj).TileLocation.Y != y))
+                {
+                    toReturn.category = CATEGORY.Others;
+                    toReturn.name = null;
+                }
+                else
+                    toReturn.category = CATEGORY.Furnitures;
+
+            }
             else if (obj.Type == "Crafting" && obj.bigCraftable.Value)
             {
 
@@ -618,7 +637,7 @@ namespace stardew_access.Features
                 }
             }
 
-            if (toReturn.category == CATEGORY.Others) // Fix for `Harvestable table` and `Busy nodes`
+            if (toReturn.category == CATEGORY.Machines) // Fix for `Harvestable table` and `Busy nodes`
             {
                 MachineState machineState = GetMachineState(obj);
                 if (machineState == MachineState.Ready)
@@ -854,42 +873,45 @@ namespace stardew_access.Features
             return null;
         }
 
-        public static string? getResourceClumpAtTile(int x, int y)
+        public static string? getResourceClumpAtTile(int x, int y, bool lessInfo = false)
         {
             if (Game1.currentLocation is Woods)
-                return getStumpsInWoods(x, y);
+                return getStumpsInWoods(x, y, true);
 
             for (int i = 0; i < Game1.currentLocation.resourceClumps.Count; i++)
             {
-                if (Game1.currentLocation.resourceClumps[i].occupiesTile(x, y))
-                {
-                    int index = Game1.currentLocation.resourceClumps[i].parentSheetIndex.Value;
+                if (!Game1.currentLocation.resourceClumps[i].occupiesTile(x, y))
+                    continue;
 
-                    switch (index)
-                    {
-                        case 600:
-                            return "Large Stump";
-                        case 602:
-                            return "Hollow Log";
-                        case 622:
-                            return "Meteorite";
-                        case 752:
-                        case 754:
-                        case 756:
-                        case 758:
-                            return "Mine Rock";
-                        case 672:
-                            return "Boulder";
-                        default:
-                            return "Unknown";
-                    }
+                if (lessInfo && (Game1.currentLocation.resourceClumps[i].tile.X != x || Game1.currentLocation.resourceClumps[i].tile.Y != y))
+                    continue;
+
+                int index = Game1.currentLocation.resourceClumps[i].parentSheetIndex.Value;
+
+                switch (index)
+                {
+                    case 600:
+                        return "Large Stump";
+                    case 602:
+                        return "Hollow Log";
+                    case 622:
+                        return "Meteorite";
+                    case 752:
+                    case 754:
+                    case 756:
+                    case 758:
+                        return "Mine Rock";
+                    case 672:
+                        return "Boulder";
+                    default:
+                        return "Unknown";
                 }
             }
 
             return null;
         }
 
-        public static string? getStumpsInWoods(int x, int y)
+        public static string? getStumpsInWoods(int x, int y, bool lessInfo = false)
         {
             if (Game1.currentLocation is not Woods)
                 return null;
@@ -901,10 +923,13 @@ namespace stardew_access.Features
             Netcode.NetObjectList<ResourceClump> stumps = ((Woods)Game1.currentLocation).stumps;
             for (int i = 0; i < stumps.Count; i++)
             {
-                if (stumps[i].occupiesTile(x, y))
-                {
-                    return "Large Stump";
-                }
+                if (!stumps[i].occupiesTile(x, y))
+                    continue;
+
+                if (lessInfo && (stumps[i].tile.X != x || stumps[i].tile.Y != y))
+                    continue;
+
+                return "Large Stump";
             }
             return null;
         }
