@@ -16,13 +16,13 @@ namespace stardew_access.ScreenReader
         /// <param name="center">The starting point.</param>
         /// <param name="limit">The limiting factor or simply radius of the search area.</param>
         /// <returns>A dictionary with all the detected tiles along with the name of the object on it and it's category.</returns>
-        public Dictionary<Vector2, (string, string)> SearchNearbyTiles(Vector2 center, int limit)
+        public Dictionary<Vector2, (string name, string category)> SearchNearbyTiles(Vector2 center, int limit)
         {
             /*
             * How to use the Dictionary to get the name and category of a tile:-
             * 
-            * string? objectName = detectedTiles.GetValueOrDefault(center).Item1;
-            * string? objectCategory = detectedTiles.GetValueOrDefault(center).Item2;
+            * string tileName = detectedTiles.GetValueOrDefault(tilePosition).name;
+            * string tileCategory = detectedTiles.GetValueOrDefault(tilePosition).category;
             *
             * Here detectedTiles is the Dictionary returned by this method
             */
@@ -31,11 +31,29 @@ namespace stardew_access.ScreenReader
         }
 
         /// <summary>
+        /// Search the entire location using Breadth First Search algorithm(BFS).
+        /// </summary>
+        /// <returns>A dictionary with all the detected tiles along with the name of the object on it and it's category.</returns>
+        public Dictionary<Vector2, (string name, string category)> SearchLocation()
+        {
+            /*
+            * How to use the Dictionary to get the name and category of a tile:-
+            * 
+            * string tileName = detectedTiles.GetValueOrDefault(tilePosition).name;
+            * string tileCategory = detectedTiles.GetValueOrDefault(tilePosition).category;
+            *
+            * Here detectedTiles is the Dictionary returned by this method
+            */
+
+            return new Radar().SearchLocation();
+        }
+
+        /// <summary>
         /// Check the tile for any object
         /// </summary>
         /// <param name="tile">The tile where we want to check the name and category of object if any</param>
-        /// <returns>Name of the object as the first item (Item1) and category as the second item (Item2). Returns null if no object found.</returns>
-        public (string?, string?) GetNameWithCategoryNameAtTile(Vector2 tile)
+        /// <returns>Name of the object as the first item (name) and category as the second item (category). Returns null if no object found.</returns>
+        public (string? name, string? category) GetNameWithCategoryNameAtTile(Vector2 tile)
         {
             return TileInfo.getNameWithCategoryNameAtTile(tile);
         }
