@@ -97,7 +97,6 @@ namespace stardew_access.Features
             List<Vector2> searched = new List<Vector2>();
             int[] dirX = { -1, 0, 1, 0 };
             int[] dirY = { 0, 1, 0, -1 };
-            int count = 0;
 
             toSearch.Enqueue(center);
             searched.Add(center);
@@ -116,7 +115,6 @@ namespace stardew_access.Features
                         detectedTiles.Add(item, (tileInfo.Item2, tileInfo.Item3));
                     }
                 }
-                count++;
 
                 for (int i = 0; i < 4; i++)
                 {
@@ -134,7 +132,7 @@ namespace stardew_access.Features
         }
 
         /// <summary>
-        /// Search the entire location.
+        /// Search the entire location using Breadth First Search algorithm(BFS).
         /// </summary>
         /// <returns>A dictionary with all the detected tiles along with the name of the object on it and it's category.</returns>
         public Dictionary<Vector2, (string, string)> SearchLocation()
@@ -142,18 +140,37 @@ namespace stardew_access.Features
             Dictionary<Vector2, (string, string)> detectedTiles = new Dictionary<Vector2, (string, string)>();
             Vector2 position = Vector2.Zero;
             (bool, string? name, string category) tileInfo;
-            // FIXME try using BFS
-            for (int i = 0; i < Game1.currentLocation.Map.Layers[0].LayerSize.Width; i++)
+
+            Queue<Vector2> toSearch = new Queue<Vector2>();
+            List<Vector2> searched = new List<Vector2>();
+            int[] dirX = { -1, 0, 1, 0 };
+            int[] dirY = { 0, 1, 0, -1 };
+            int count = 0;
+
+            toSearch.Enqueue(Game1.player.getTileLocation());
+            searched.Add(Game1.player.getTileLocation());
+            MainClass.DebugLog(Game1.player.getTileLocation().ToString());
+
+            while (toSearch.Count > 0)
             {
-                for (int j = 0; j < Game1.currentLocation.Map.Layers[0].LayerSize.Height; j++)
+                Vector2 item = toSearch.Dequeue();
+                tileInfo = CheckTile(item, true);
+                if (tileInfo.Item1 && tileInfo.name != null)
                 {
-                    position.X = i;
-                    position.Y = j;
-                    tileInfo = CheckTile(position, true);
-                    if (tileInfo.Item1 && tileInfo.name != null)
+                    // Add detected tile to the dictionary
+                    detectedTiles.Add(item, (tileInfo.name, tileInfo.category));
+                }
+
+                count++;
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 dir = new Vector2(item.X + dirX[i], item.Y + dirY[i]);
+
+                    if (!searched.Contains(dir) && Game1.currentLocation.isTileOnMap(dir))
                     {
-                        MainClass.DebugLog($"\n{tileInfo.name}:\t{tileInfo.category}");
-                        detectedTiles.Add(position, (tileInfo.name, tileInfo.category));
+                        toSearch.Enqueue(dir);
+                        searched.Add(dir);
                     }
                 }
             }
