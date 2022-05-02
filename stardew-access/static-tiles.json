@@ -2389,5 +2389,86 @@
             "y":[4],
             "type":"decoration"
         }
+    },
+    "haleyhouse":
+    {
+        "Exit":
+        {
+            "x":[2],
+            "y":[24],
+            "type":"door"
+        },
+        "Sewing Machine":
+        {
+            "x":[12,13],
+            "y":[23],
+            "type":"interactable"
+        },
+        "Dye Pots":
+        {
+            "x":[17],
+            "y":[25],
+            "type":"interactable"
+        },
+        "Emily's Room Door":
+        {
+            "x":[16],
+            "y":[12],
+            "type":"door"
+        },
+        "Emily's Computer":
+        {
+            "x":[22],
+            "y":[6],
+            "type":"decoration"
+        },
+        "Emily's Pet Parrot":
+        {
+            "x":[14],
+            "y":[4],
+            "type":"decoration"
+        },
+        "Magazine":
+        {
+            "x":[4],
+            "y":[22],
+            "type":"decoration"
+        },
+        "Globe":
+        {
+            "x":[8],
+            "y":[15],
+            "type":"decoration"
+        },
+        "Fridge":
+        {
+            "x":[21],
+            "y":[15],
+            "type":"decoration"
+        },
+        "Haley's Room Door":
+        {
+            "x":[5],
+            "y":[13],
+            "type":"door"
+        },
+        "Futan Bear":
+        {
+            "x":[8],
+            "y":[4],
+            "type":"decoration"
+        },
+        "Diary":
+        {
+            "x":[9],
+            "y":[5],
+            "type":"decoration"
+        },
+        "Haley's Camera":
+        {
+            "x":[1],
+            "y":[9],
+            "type":"decoration"
+        }
     }
 }
