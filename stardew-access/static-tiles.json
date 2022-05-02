@@ -1606,7 +1606,7 @@
     },
     "mine":
     {
-        "Exit":
+        "Mountain Exit":
         {
             "x":[18],
             "y":[13],
@@ -1617,6 +1617,135 @@
             "x":[11,12],
             "y":[10],
             "type":"interactable"
+        },
+        "Quarry Mine Ladder":
+        {
+            "x":[67],
+            "y":[9],
+            "type":"door"
+        },
+        "Quarry Exit":
+        {
+            "x":[18],
+            "y":[13],
+            "type":"door"
+        }
+    },
+    "mountain":
+    {
+        "Mine Entrance":
+        {
+            "x":[54],
+            "y":[5],
+            "type":"door"
+        },
+        "Mine Bridge":
+        {
+            "x":[47],
+            "y":[7],
+            "type":"bridge"
+        },
+        "Quarry Bridge":
+        {
+            "x":[90],
+            "y":[26],
+            "type":"bridge"
+        },
+        "Minecart":
+        {
+            "x":[124,125],
+            "y":[11],
+            "type":"interactable"
+        },
+        "Quarry Mine Entrance":
+        {
+            "x":[103],
+            "y":[17],
+            "type":"door"
+        },
+        "Bridge 1":
+        {
+            "x":[57],
+            "y":[30],
+            "type":"bridge"
+        },
+        "Bridge 2":
+        {
+            "x":[61],
+            "y":[21],
+            "type":"bridge"
+        },
+        "Mountain Warp Statue":
+        {
+            "x":[31],
+            "y":[20],
+            "type":"decoration"
+        },
+        "Linus Tent Entrance":
+        {
+            "x":[29],
+            "y":[7],
+            "type":"door"
+        },
+        "Backwoods Entrance":
+        {
+            "x":[0],
+            "y":[13],
+            "type":"door"
+        },
+        "Town Entrance":
+        {
+            "x":[15],
+            "y":[40],
+            "type":"door"
+        },
+        "Railroad Entrance":
+        {
+            "x":[9],
+            "y":[0],
+            "type":"door"
+        }
+    },
+    "undergroundmine77377":
+    {
+        "Grim Reaper Statue":
+        {
+            "x":[29,30],
+            "y":[6],
+            "type":"interactable"
+        }
+    },
+    "Tent":
+    {
+        "Exit":
+        {
+            "x":[2],
+            "y":[5],
+            "type":"door"
+        }
+    },
+    "railroad":
+    {
+        "Mountain Entrance":
+        {
+            "x":[29],
+            "y":[61],
+            "type":"door"
+        }
+    },
+    "backwoods":
+    {
+        "Mountain Entrance":
+        {
+            "x":[49],
+            "y":[14],
+            "type":"door"
+        },
+        "Farm Entrance":
+        {
+            "x":[14],
+            "y":[39],
+            "type":"door"
         }
     }
 }
