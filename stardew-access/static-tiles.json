@@ -1558,5 +1558,50 @@
             "y":[9],
             "type":"interactable"
         }
+    },
+    "manorhouse":
+    {
+        "Exit":
+        {
+            "x":[4],
+            "y":[11],
+            "type":"door"
+        },
+        "Town Ledger Book":
+        {
+            "x":[2],
+            "y":[5],
+            "type":"interactable"
+        },
+        "Marriage Log Book":
+        {
+            "x":[3],
+            "y":[5],
+            "type":"interactable"
+        },
+        "Lost and Found Box":
+        {
+            "x":[4],
+            "y":[5],
+            "type":"interactable"
+        },
+        "Mayor's Room Door":
+        {
+            "x":[16],
+            "y":[9],
+            "type":"door"
+        },
+        "Mayor's Oven":
+        {
+            "x":[7],
+            "y":[4],
+            "type":"decoration"
+        },
+        "Mayor's Fridge":
+        {
+            "x":[9],
+            "y":[4],
+            "type":"decoration"
+        }
     }
 }
