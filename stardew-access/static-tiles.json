@@ -1852,5 +1852,35 @@
             "y":[19],
             "type":"door"
         }
+    },
+    "wizardhouse":
+    {
+        "Exit":
+        {
+            "x":[8],
+            "y":[24],
+            "type":"door"
+        },
+        "Basement Door":
+        {
+            "x":[4],
+            "y":[4],
+            "type":"door"
+        }
+    },
+    "wizardhousebasement":
+    {
+        "Exit Ladder":
+        {
+            "x":[4],
+            "y":[3],
+            "type":"door"
+        },
+        "Shrine of Illusions":
+        {
+            "x":[12],
+            "y":[4],
+            "type":"door"
+        }
     }
 }
