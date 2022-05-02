@@ -2014,9 +2014,132 @@
             "y":[4],
             "type":"decoration"
         },
-        "Almirah":
+        "Clint's Drawer":
         {
             "x":[5,6],
+            "y":[4],
+            "type":"decoration"
+        }
+    },
+    "animalshop":
+    {
+        "Exit":
+        {
+            "x":[13],
+            "y":[19],
+            "type":"door"
+        },
+        "Counter":
+        {
+            "x":[12],
+            "y":[15],
+            "type":"interactable"
+        },
+        "Marnie's Room Door":
+        {
+            "x":[15],
+            "y":[12],
+            "type":"door"
+        },
+        "Jas's Room Door":
+        {
+            "x":[6],
+            "y":[13],
+            "type":"door"
+        },
+        "Shane's Room Door":
+        {
+            "x":[21],
+            "y":[13],
+            "type":"door"
+        },
+        "Marnie's Barn Door":
+        {
+            "x":[30],
+            "y":[13],
+            "type":"door"
+        },
+        "Fridge":
+        {
+            "x":[28],
+            "y":[14],
+            "type":"decoration"
+        },
+        "Oven":
+        {
+            "x":[24],
+            "y":[14],
+            "type":"decoration"
+        },
+        "Mega Station":
+        {
+            "x":[22],
+            "y":[5],
+            "type":"decoration"
+        },
+        "Shane's Radio":
+        {
+            "x":[24],
+            "y":[4],
+            "type":"decoration"
+        },
+        "Marnie's Dresser":
+        {
+            "x":[16],
+            "y":[4],
+            "type":"decoration"
+        },
+        "Marnie's Drawer":
+        {
+            "x":[17],
+            "y":[4],
+            "type":"decoration"
+        },
+        "Jack in the Box":
+        {
+            "x":[8],
+            "y":[5],
+            "type":"decoration"
+        },
+        "Futan Bear":
+        {
+            "x":[2,3],
+            "y":[4],
+            "type":"decoration"
+        },
+        "Colouring Book":
+        {
+            "x":[5],
+            "y":[4],
+            "type":"decoration"
+        },
+        "Paint Set":
+        {
+            "x":[5],
+            "y":[7],
+            "type":"decoration"
+        },
+        "Jas's Alarm Clock":
+        {
+            "x":[8],
+            "y":[8],
+            "type":"decoration"
+        },
+        "Jas's Radio":
+        {
+            "x":[4],
+            "y":[9],
+            "type":"decoration"
+        },
+        "Arts And Craft":
+        {
+            "x":[7],
+            "y":[6],
+            "type":"decoration"
+        },
+        "Doll House":
+        {
+            "x":[6,7],
             "y":[4],
             "type":"decoration"
         }
