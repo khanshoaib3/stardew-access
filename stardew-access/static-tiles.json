@@ -1780,5 +1780,56 @@
             "y":[9],
             "type":"npc"
         }
+    },
+    "seedshop":
+    {
+        "Exit":
+        {
+            "x":[6],
+            "y":[29],
+            "type":"door"
+        },
+        "Shop Counter":
+        {
+            "x":[4],
+            "y":[18],
+            "type":"interactable"
+        },
+        "Backpack Upgrade":
+        {
+            "x":[7],
+            "y":[18],
+            "type":"interactable"
+        },
+        "Shrine of Yoba":
+        {
+            "x":[37],
+            "y":[17],
+            "type":"decoration"
+        },
+        "Fridge":
+        {
+            "x":[39],
+            "y":[4],
+            "type":"decoration"
+        },
+        "Abigail's Room Door":
+        {
+            "x":[13],
+            "y":[11],
+            "type":"door"
+        },
+        "Pierre and Caroline's Room Door":
+        {
+            "x":[20],
+            "y":[11],
+            "type":"door"
+        },
+        "Living Room Door":
+        {
+            "x":[14],
+            "y":[16],
+            "type":"door"
+        }
     }
 }
