@@ -149,7 +149,6 @@ namespace stardew_access.Features
 
             toSearch.Enqueue(Game1.player.getTileLocation());
             searched.Add(Game1.player.getTileLocation());
-            MainClass.DebugLog(Game1.player.getTileLocation().ToString());
 
             while (toSearch.Count > 0)
             {

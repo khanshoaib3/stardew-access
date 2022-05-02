@@ -303,19 +303,24 @@ namespace stardew_access.Features
         {
             if (Game1.currentLocation is Farm farm)
             {
-                Building building = farm.getBuildingAt(new Vector2(x, y));
-                if (building != null)
+                if (farm.GetMainMailboxPosition().X == x && farm.GetMainMailboxPosition().Y == y)
+                    return (CATEGORY.Interactables, "Mail box");
+                else
                 {
-                    string name = building.buildingType.Value;
+                    Building building = farm.getBuildingAt(new Vector2(x, y));
+                    if (building != null)
+                    {
+                        string name = building.buildingType.Value;
 
-                    if ((building.humanDoor.Value.X + building.tileX.Value) == x && (building.humanDoor.Value.Y + building.tileY.Value) == y)
-                        return (CATEGORY.Doors, name + " Door");
-                    else if ((building.animalDoor.Value.X + building.tileX.Value) == x && (building.animalDoor.Value.Y + building.tileY.Value) == y)
-                        return (CATEGORY.Doors, name + " Animal Door " + ((building.animalDoorOpen.Value) ? "Opened" : "Closed"));
-                    else if (building.tileX.Value == x && building.tileY.Value == y)
-                        return (CATEGORY.Buildings, name);
-                    else if (!lessInfo)
-                        return (CATEGORY.Buildings, name);
+                        if ((building.humanDoor.Value.X + building.tileX.Value) == x && (building.humanDoor.Value.Y + building.tileY.Value) == y)
+                            return (CATEGORY.Doors, name + " Door");
+                        else if ((building.animalDoor.Value.X + building.tileX.Value) == x && (building.animalDoor.Value.Y + building.tileY.Value) == y)
+                            return (CATEGORY.Doors, name + " Animal Door " + ((building.animalDoorOpen.Value) ? "Opened" : "Closed"));
+                        else if (building.tileX.Value == x && building.tileY.Value == y)
+                            return (CATEGORY.Buildings, name);
+                        else if (!lessInfo)
+                            return (CATEGORY.Buildings, name);
+                    }
                 }
             }
             else if (Game1.currentLocation is Town)
