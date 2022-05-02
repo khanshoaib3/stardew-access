@@ -2338,5 +2338,56 @@
             "y":[4],
             "type":"decoration"
         }
+    },
+    "samhouse":
+    {
+        "Exit":
+        {
+            "x":[4],
+            "y":[23],
+            "type":"door"
+        },
+        "Radio":
+        {
+            "x":[6],
+            "y":[12],
+            "type":"decoration"
+        },
+        "Vincent's Room Door":
+        {
+            "x":[16],
+            "y":[18],
+            "type":"door"
+        },
+        "Sam's Room Door":
+        {
+            "x":[12],
+            "y":[14],
+            "type":"door"
+        },
+        "Jodi's Room Door":
+        {
+            "x":[17],
+            "y":[6],
+            "type":"door"
+        },
+        "Sam's Drawer":
+        {
+            "x":[7,8],
+            "y":[12],
+            "type":"decoration"
+        },
+        "Bookshelf":
+        {
+            "x":[18,19],
+            "y":[12],
+            "type":"decoration"
+        },
+        "Fridge":
+        {
+            "x":[7],
+            "y":[4],
+            "type":"decoration"
+        }
     }
 }
