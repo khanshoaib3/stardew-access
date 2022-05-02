@@ -1831,5 +1831,26 @@
             "y":[16],
             "type":"door"
         }
+    },
+    "sewer":
+    {
+        "Exit Ladder":
+        {
+            "x":[16],
+            "y":[10],
+            "type":"door"
+        },
+        "Statue Of Uncertainty":
+        {
+            "x":[8],
+            "y":[20],
+            "type":"interactable"
+        },
+        "Mutant Bug Lair":
+        {
+            "x":[3],
+            "y":[19],
+            "type":"door"
+        }
     }
 }
