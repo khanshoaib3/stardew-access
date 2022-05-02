@@ -1825,7 +1825,7 @@
             "y":[11],
             "type":"door"
         },
-        "Living Room Door":
+        "Living Area Door":
         {
             "x":[14],
             "y":[16],
@@ -2141,6 +2141,69 @@
         {
             "x":[6,7],
             "y":[4],
+            "type":"decoration"
+        }
+    },
+    "saloon":
+    {
+        "Exit":
+        {
+            "x":[14],
+            "y":[24],
+            "type":"door"
+        },
+        "Counter":
+        {
+            "x":[14],
+            "y":[19],
+            "type":"interactable"
+        },
+        "Journey of the Prairie King Arcade":
+        {
+            "x":[33],
+            "y":[17],
+            "type":"interactable"
+        },
+        "Junimo Kart Arcade":
+        {
+            "x":[35],
+            "y":[17],
+            "type":"interactable"
+        },
+        "Joja Vending Machine":
+        {
+            "x":[37,38],
+            "y":[17],
+            "type":"interactable"
+        },
+        "Jukebox":
+        {
+            "x":[1,2],
+            "y":[17],
+            "type":"interactable"
+        },
+        "Gus's Room Door":
+        {
+            "x":[20],
+            "y":[9],
+            "type":"door"
+        },
+        "Dining Room Door":
+        {
+            "x":[11],
+            "y":[9],
+            "type":"door"
+        },
+        "Living Area Door":
+        {
+            "x":[4],
+            "y":[16],
+            "type":"door"
+        },
+        "Gus's Radio":
+        {
+            "x":[16],
+            "y":[6],
             "type":"decoration"
         }
     }
