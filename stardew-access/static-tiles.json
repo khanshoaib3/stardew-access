@@ -1704,6 +1704,12 @@
             "x":[9],
             "y":[0],
             "type":"door"
+        },
+        "Science House Secondary Door":
+        {
+            "x":[8],
+            "y":[20],
+            "type":"door"
         }
     },
     "undergroundmine77377":
@@ -2204,6 +2210,132 @@
         {
             "x":[16],
             "y":[6],
+            "type":"decoration"
+        }
+    },
+    "sciencehouse":
+    {
+        "Exit":
+        {
+            "x":[6],
+            "y":[24],
+            "type":"door"
+        },
+        "Secondary Exit":
+        {
+            "x":[3],
+            "y":[8],
+            "type":"door"
+        },
+        "Counter":
+        {
+            "x":[8],
+            "y":[19],
+            "type":"interactable"
+        },
+        "Sebastian's Room Entrance":
+        {
+            "x":[12],
+            "y":[21],
+            "type":"door"
+        },
+        "Beaker Set":
+        {
+            "x":[17],
+            "y":[17],
+            "type":"decoration"
+        },
+        "Microscope":
+        {
+            "x":[19],
+            "y":[17],
+            "type":"decoration"
+        },
+        "Stereo Microscope":
+        {
+            "x":[23],
+            "y":[20],
+            "type":"decoration"
+        },
+        "Robin and Demetrius's Room Entrance":
+        {
+            "x":[13],
+            "y":[10],
+            "type":"door"
+        },
+        "Maru's Room Entrance":
+        {
+            "x":[7],
+            "y":[10],
+            "type":"door"
+        },
+        "Bookshelf":
+        {
+            "x":[16,17],
+            "y":[4],
+            "type":"decoration"
+        },
+        "Maru's Device":
+        {
+            "x":[6],
+            "y":[6],
+            "type":"decoration"
+        },
+        "Poster":
+        {
+            "x":[6],
+            "y":[3],
+            "type":"decoration"
+        },
+        "Computer":
+        {
+            "x":[9],
+            "y":[4],
+            "type":"decoration"
+        },
+        "Fridge":
+        {
+            "x":[27],
+            "y":[8],
+            "type":"decoration"
+        },
+        "Oven":
+        {
+            "x":[30],
+            "y":[10],
+            "type":"decoration"
+        }
+    },
+    "sebastianroom":
+    {
+        "Exit":
+        {
+            "x":[1],
+            "y":[1],
+            "type":"door"
+        },
+        "Room Door":
+        {
+            "x":[1],
+            "y":[3],
+            "type":"door"
+        },
+        "Sebastian's Radio":
+        {
+            "x":[3],
+            "y":[4],
+            "type":"decoration"
+        },
+        "Graphic Novel":
+        {
+            "x":[10],
+            "y":[6],
+            "type":"decoration"
+        },
+        "Computer":
+        {
+            "x":[7],
+            "y":[4],
             "type":"decoration"
         }
     }
