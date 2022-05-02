@@ -1603,5 +1603,20 @@
             "y":[4],
             "type":"decoration"
         }
+    },
+    "mine":
+    {
+        "Exit":
+        {
+            "x":[18],
+            "y":[13],
+            "type":"door"
+        },
+        "Minecart":
+        {
+            "x":[11,12],
+            "y":[10],
+            "type":"interactable"
+        }
     }
 }
