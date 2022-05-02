@@ -1897,5 +1897,128 @@
             "y":[7],
             "type":"interactable"
         }
+    },
+    "harveyroom":
+    {
+        "Exit":
+        {
+            "x":[6],
+            "y":[12],
+            "type":"door"
+        },
+        "Fridge":
+        {
+            "x":[21],
+            "y":[6],
+            "type":"decoration"
+        },
+        "Oven":
+        {
+            "x":[19],
+            "y":[6],
+            "type":"decoration"
+        },
+        "Airplane Collection":
+        {
+            "x":[6,7],
+            "y":[3],
+            "type":"decoration"
+        },
+        "Radio Broadcasting Set":
+        {
+            "x":[4,5],
+            "y":[4],
+            "type":"decoration"
+        },
+        "Cassette Deck":
+        {
+            "x":[8],
+            "y":[4],
+            "type":"decoration"
+        }
+    },
+    "hospital":
+    {
+        "Exit":
+        {
+            "x":[10],
+            "y":[19],
+            "type":"door"
+        },
+        "Harvey's Room Entrance":
+        {
+            "x":[10],
+            "y":[2],
+            "type":"door"
+        },
+        "Harvey's Room Entrance Door":
+        {
+            "x":[10],
+            "y":[5],
+            "type":"door"
+        },
+        "Main Area Door":
+        {
+            "x":[10],
+            "y":[13],
+            "type":"door"
+        },
+        "Counter":
+        {
+            "x":[6],
+            "y":[16],
+            "type":"interactable"
+        }
+    },
+    "blacksmith":
+    {
+        "Exit":
+        {
+            "x":[5],
+            "y":[19],
+            "type":"door"
+        },
+        "Counter":
+        {
+            "x":[3],
+            "y":[14],
+            "type":"interactable"
+        },
+        "Clint's Room Door":
+        {
+            "x":[4],
+            "y":[9],
+            "type":"door"
+        },
+        "Clint's Furnace":
+        {
+            "x":[9,10],
+            "y":[12],
+            "type":"decoration"
+        },
+        "Blueprints":
+        {
+            "x":[13],
+            "y":[15,16],
+            "type":"decoration"
+        },
+        "Anvil":
+        {
+            "x":[12,13],
+            "y":[13],
+            "type":"decoration"
+        },
+        "Cassette Deck":
+        {
+            "x":[2],
+            "y":[4],
+            "type":"decoration"
+        },
+        "Almirah":
+        {
+            "x":[5,6],
+            "y":[4],
+            "type":"decoration"
+        }
     }
 }
