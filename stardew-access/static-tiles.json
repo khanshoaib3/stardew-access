@@ -1747,5 +1747,38 @@
             "y":[39],
             "type":"door"
         }
+    },
+    "movietheater":
+    {
+        "Exit":
+        {
+            "x":[13],
+            "y":[15],
+            "type":"door"
+        },
+        "Concessions Counter":
+        {
+            "x":[7],
+            "y":[6],
+            "type":"interactable"
+        },
+        "Crane Game":
+        {
+            "x":[1,2],
+            "y":[8],
+            "type":"interactable"
+        },
+        "Theater Door":
+        {
+            "x":[13],
+            "y":[3],
+            "type":"door"
+        },
+        "Crane Man":
+        {
+            "x":[2],
+            "y":[9],
+            "type":"npc"
+        }
     }
 }
