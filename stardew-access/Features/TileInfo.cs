@@ -881,7 +881,7 @@ namespace stardew_access.Features
         public static string? getResourceClumpAtTile(int x, int y, bool lessInfo = false)
         {
             if (Game1.currentLocation is Woods)
-                return getStumpsInWoods(x, y, true);
+                return getStumpsInWoods(x, y, lessInfo);
 
             for (int i = 0; i < Game1.currentLocation.resourceClumps.Count; i++)
             {
@@ -921,10 +921,6 @@ namespace stardew_access.Features
             if (Game1.currentLocation is not Woods)
                 return null;
 
-            if ((x == 8 || x == 9) && y == 7)
-            {
-                return "Old Master Cannoli";
-            }
             Netcode.NetObjectList<ResourceClump> stumps = ((Woods)Game1.currentLocation).stumps;
             for (int i = 0; i < stumps.Count; i++)
             {

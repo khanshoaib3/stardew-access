@@ -1880,7 +1880,22 @@
         {
             "x":[12],
             "y":[4],
+            "type":"interactable"
+        }
+    },
+    "woods":
+    {
+        "Forest Entrance":
+        {
+            "x":[59],
+            "y":[17],
             "type":"door"
+        },
+        "Old Master Cannoli":
+        {
+            "x":[8,9],
+            "y":[7],
+            "type":"interactable"
         }
     }
 }
