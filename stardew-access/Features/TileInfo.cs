@@ -323,6 +323,56 @@ namespace stardew_access.Features
                     }
                 }
             }
+            else if (Game1.currentLocation.currentEvent != null)
+            {
+                string event_name = Game1.currentLocation.currentEvent.FestivalName;
+                if (event_name == "Egg Festival" && x == 21 && y == 55)
+                {
+                    return (CATEGORY.Interactables, "Egg Festival Shop");
+                }
+                else if (event_name == "Flower Dance" && x == 28 && y == 37)
+                {
+                    return (CATEGORY.Interactables, "Flower Dance Shop");
+                }
+                else if (event_name == "Luau" && x == 35 && y == 13)
+                {
+                    return (CATEGORY.Interactables, "Soup Pot");
+                }
+                else if (event_name == "Spirit's Eve" && x == 25 && y == 49)
+                {
+                    return (CATEGORY.Interactables, "Spirit's Eve Shop");
+                }
+                else if (event_name == "Stardew Valley Fair")
+                {
+                    if (x == 16 && y == 52)
+                        return (CATEGORY.Interactables, "Stardew Valley Fair Shop");
+                    else if (x == 23 && y == 62)
+                        return (CATEGORY.Interactables, "Slingshot Game");
+                    else if (x == 34 && y == 65)
+                        return (CATEGORY.Interactables, "Purchase Star Tokens");
+                    else if (x == 33 && y == 70)
+                        return (CATEGORY.Interactables, "The Wheel");
+                    else if (x == 23 && y == 70)
+                        return (CATEGORY.Interactables, "Fishing Challenge");
+                    else if (x == 47 && y == 87)
+                        return (CATEGORY.Interactables, "Fortune Teller");
+                    else if (x == 38 && y == 59)
+                        return (CATEGORY.Interactables, "Grange Display");
+                    else if (x == 30 && y == 56)
+                        return (CATEGORY.Interactables, "Strength Game");
+                    else if (x == 26 && y == 33)
+                        return (CATEGORY.Interactables, "Free Burgers");
+                }
+                else if (event_name == "Festival of Ice" && x == 55 && y == 31)
+                {
+                    return (CATEGORY.Interactables, "Travelling Cart");
+                }
+                else if (event_name == "Feast of the Winter Star" && x == 18 && y == 61)
+                {
+                    return (CATEGORY.Interactables, "Feast of the Winter Star Shop");
+                }
+
+            }
             else if (Game1.currentLocation is Town)
             {
                 if (SpecialOrder.IsSpecialOrdersBoardUnlocked() && x == 62 && y == 93)
@@ -420,6 +470,9 @@ namespace stardew_access.Features
 
                     if (isHarvestable)
                         toReturn = "Harvestable " + toReturn;
+
+                    if (dirt.crop.dead.Value)
+                        toReturn = "Dead " + toReturn;
                 }
                 else if (dirt.crop != null && dirt.crop.forageCrop.Value)
                 {
