@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <GamePath>/home/shoaib/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/Stardew Valley/</GamePath>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>stardew_access</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>

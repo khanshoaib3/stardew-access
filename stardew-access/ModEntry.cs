@@ -7,7 +7,6 @@ using stardew_access.Patches;
 using stardew_access.ScreenReader;
 using Microsoft.Xna.Framework;
 using StardewValley.Menus;
-using Newtonsoft.Json.Linq;
 
 namespace stardew_access
 {
