@@ -12,7 +12,7 @@ namespace stardew_access.Features
             if (MainClass.ModHelper == null)
                 return;
 
-            using (StreamReader file = new StreamReader(Path.Combine(MainClass.ModHelper.DirectoryPath, "static-tiles.json")))
+            using (StreamReader file = new StreamReader(Path.Combine(MainClass.ModHelper.DirectoryPath, "assets", "static-tiles.json")))
             {
                 string json = file.ReadToEnd();
                 data = JObject.Parse(json);
