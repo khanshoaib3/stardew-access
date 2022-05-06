@@ -20,6 +20,7 @@ namespace stardew_access
         private static StaticTiles? sTiles;
         private static IScreenReader? screenReader;
         private static IModHelper? modHelper;
+        private static MouseHandler? mouse;
 
         internal static ModConfig Config { get => config; set => config = value; }
         public static IModHelper? ModHelper { get => modHelper; }
@@ -62,6 +63,17 @@ namespace stardew_access
 
             set => screenReader = value;
         }
+
+        public static MouseHandler Mouse
+        {
+get
+            {
+                if (mouse == null)
+                    mouse = new MouseHandler();
+                return mouse;
+            }
+        }
+
         #endregion
 
         /*********
@@ -131,7 +143,7 @@ namespace stardew_access
             Other.narrateCurrentLocation();
 
             if (Config.SnapMouse)
-                Other.SnapMouseToPlayer();
+                Mouse.SnapMouseToPlayer();
 
             if (!ReadTile.isReadingTile && Config.ReadTile)
             {
