@@ -26,6 +26,16 @@ namespace stardew_access
         public KeybindList ReadTileKey { get; set; } = KeybindList.Parse("J");
         public KeybindList ReadStandingTileKey { get; set; } = KeybindList.Parse("LeftAlt + J");
 
+        //Tile viewer keys
+        public KeybindList TileCursorUpKey { get; set; } = KeybindList.Parse("Up");
+        public KeybindList TileCursorRightKey { get; set; } = KeybindList.Parse("Right");
+        public KeybindList TileCursorDownKey { get; set; } = KeybindList.Parse("Down");
+        public KeybindList TileCursorLeftKey { get; set; } = KeybindList.Parse("Left");
+        public KeybindList TileCursorPreciseUpKey { get; set; } = KeybindList.Parse("LeftShift + Up");
+        public KeybindList TileCursorPreciseRightKey { get; set; } = KeybindList.Parse("LeftShift + Right");
+        public KeybindList TileCursorPreciseDownKey { get; set; } = KeybindList.Parse("LeftShift + Down");
+        public KeybindList TileCursorPreciseLeftKey { get; set; } = KeybindList.Parse("LeftShift + Left");
+
         #endregion
 
         // TODO Add the exclusion and focus list too
