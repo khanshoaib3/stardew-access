@@ -430,17 +430,24 @@ namespace stardew_access.Features
                 else if (x == 8 && y == 9)
                     return (((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatAnchor")) ? CATEGORY.Interactables : CATEGORY.Decor), ((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatAnchor")) ? "Repair " : "") + "Boat Anchor");
             }
-            else if (Game1.currentLocation is IslandWest islandWest)
+            else if (Game1.currentLocation is IslandLocation islandLocation)
             {
-                if (islandWest.shippingBinPosition.X == x && islandWest.shippingBinPosition.Y == y)
-                    return (CATEGORY.Interactables, "Shipping Bin");
+                var nutTracker = Game1.player.team.collectedNutTracker;
+                if (islandLocation.IsBuriedNutLocation(new Point(x, y)) && !nutTracker.ContainsKey("Buried_" + islandLocation.Name + "_" + x + "_" + y))
+                {
+                    return (CATEGORY.Interactables, "Diggable spot");
+                }
+                else if (Game1.currentLocation is IslandWest islandWest)
+                {
+                    if (islandWest.shippingBinPosition.X == x && islandWest.shippingBinPosition.Y == y)
+                        return (CATEGORY.Interactables, "Shipping Bin");
+                }
+                else if (Game1.currentLocation is IslandNorth islandNorth)
+                {
+                    if (islandNorth.traderActivated.Value && x == 36 && y == 71)
+                        return (CATEGORY.Interactables, "Island Trader");
+                }
             }
-            else if (Game1.currentLocation is IslandNorth islandNorth)
-            {
-                if (islandNorth.traderActivated.Value && x == 36 && y == 71)
-                    return (CATEGORY.Interactables, "Island Trader");
-            }
-
             return (null, null);
         }
 
