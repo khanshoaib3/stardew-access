@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using xTile;
 using StardewValley;
+
 
 namespace stardew_access.Features
 {
@@ -40,6 +42,23 @@ switch (Game1.player.FacingDirection)
             }
         }
 
+        private static (int, int) GetMapTileDimensions()
+        {
+            Map map = Game1.currentLocation.map;
+            return (map.Layers[0].LayerWidth, map.Layers[0].LayerHeight);
+        }
+            
+        public bool MoveTileView(Vector2 delta)
+        {
+            Vector2 dest = this.PlayerPosition + this.PlayerFacingVector + this.ViewingOffset + delta;
+            if (Utility.isOnScreen(dest, 0))
+            {
+                this.ViewingOffset += delta;
+                return true;
+            }
+            return false;
+        }
+
         private void SnapMouseToPlayer()
         {
             Vector2 snapPosition = this.PlayerPosition + this.PlayerFacingVector + this.ViewingOffset;
@@ -53,5 +72,13 @@ public void update()
             if (MainClass.Config.SnapMouse)
             this.SnapMouseToPlayer();
         }
+    
+    private static bool IsTileOnMap(Vector2 tile)
+    {
+        (int width, int height) dimensions = GetMapTileDimensions();
+        if (tile.X < 0 || tile.X >= dimensions.width) return false;
+        if (tile.Y < 0 || tile.Y >= dimensions.height) return false;
+        return true;
     }
+}
 }
