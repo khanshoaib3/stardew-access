@@ -433,7 +433,7 @@ namespace stardew_access.Features
             else if (Game1.currentLocation is IslandLocation islandLocation)
             {
                 var nutTracker = Game1.player.team.collectedNutTracker;
-                if (islandLocation.IsBuriedNutLocation(new Point(x, y)) && !nutTracker.ContainsKey("Buried_" + islandLocation.Name + "_" + x + "_" + y))
+                if (islandLocation.IsBuriedNutLocation(new Point(x, y)) && !nutTracker.ContainsKey($"Buried_{islandLocation.Name}_{x}_{y}"))
                 {
                     return (CATEGORY.Interactables, "Diggable spot");
                 }
