@@ -8,9 +8,9 @@ namespace stardew_access.Features
     public class MouseHandler
     {
 
-        public Vector2 ViewingOffset { get; set; } = Vector2.Zero;
+        private Vector2 ViewingOffset = Vector2.Zero;
 
-        public Vector2 PlayerFacingVector
+        private Vector2 PlayerFacingVector
         {
             get
             {
@@ -30,7 +30,7 @@ switch (Game1.player.FacingDirection)
             }
         }
 
-        public Vector2 PlayerPosition
+        private Vector2 PlayerPosition
         {
             get
             {
@@ -40,11 +40,18 @@ switch (Game1.player.FacingDirection)
             }
         }
 
-        public void SnapMouseToPlayer()
+        private void SnapMouseToPlayer()
         {
             Vector2 snapPosition = this.PlayerPosition + this.PlayerFacingVector + this.ViewingOffset;
-            if (Utility.isOnScreen(snapPosition, 0))
-            Game1.setMousePosition((int)snapPosition.X, (int)snapPosition.Y);
+            Point snapPoint = new Point((int)snapPosition.X, (int)snapPosition.Y);
+            if (Utility.isOnScreen(snapPoint, 0))
+            Game1.setMousePosition(snapPoint.X, snapPoint.Y);
+        }
+
+public void update()
+        {
+            if (MainClass.Config.SnapMouse)
+            this.SnapMouseToPlayer();
         }
     }
 }

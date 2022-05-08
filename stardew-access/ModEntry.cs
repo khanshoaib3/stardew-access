@@ -142,8 +142,7 @@ get
             // Narrate current location's name
             Other.narrateCurrentLocation();
 
-            if (Config.SnapMouse)
-                Mouse.SnapMouseToPlayer();
+            Mouse.update();
 
             if (!ReadTile.isReadingTile && Config.ReadTile)
             {
