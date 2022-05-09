@@ -9,7 +9,7 @@ namespace stardew_access.Features
 {
     public class TileInfo
     {
-        public static string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom" };
+        public static string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom", "statue of endless fortune", "statue of perfection" };
 
         ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>
         public static (string? name, string? categoryName) getNameWithCategoryNameAtTile(Vector2 tile)
