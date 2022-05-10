@@ -8,9 +8,14 @@ using stardew_access.Features;
 
 namespace stardew_access.Features
 {
+
+    /// <summary>
+    /// Allows browsing of the map and snapping mouse to tiles with the arrow keys
+    /// </summary>
     public class TileViewer
     {
 
+        //None of these positions take viewport into account; other functions are responsible later
         private Vector2 ViewingOffset = Vector2.Zero;
         private Vector2 relativeOffsetLockPosition = Vector2.Zero;
         private Boolean relativeOffsetLock = false;
@@ -46,7 +51,11 @@ namespace stardew_access.Features
             }
         }
 
-        private Vector2 getTileCursorPosition()
+        /// <summary>
+        /// Return the position of the tile cursor in pixels from the upper-left corner of the map.
+        /// </summary>
+        /// <returns>Vector2</returns>
+        public Vector2 GetTileCursorPosition()
         {
             Vector2 target = this.PlayerPosition;
             if (this.relativeOffsetLock)
@@ -60,6 +69,19 @@ namespace stardew_access.Features
             return target;
         }
 
+        /// <summary>
+        /// Return the tile at the position of the tile cursor.
+        /// </summary>
+        /// <returns>Vector2</returns>
+        public Vector2 GetViewingTile()
+        {
+            Vector2 position = this.GetTileCursorPosition();
+            return new Vector2((int)position.X / Game1.tileSize, (int)position.Y / Game1.tileSize);
+        }
+
+        /// <summary>
+        /// Handle keyboard input related to the tile viewer.
+        /// </summary>
         public void HandleInput()
         {
             if (MainClass.Config.ToggleRelativeCursorLockKey.JustPressed())
@@ -68,12 +90,14 @@ namespace stardew_access.Features
                 if (this.relativeOffsetLock)
                 {
                     this.relativeOffsetLockPosition = this.PlayerFacingVector + this.ViewingOffset;
-                } else { 
+                }
+                else
+                {
                     this.relativeOffsetLockPosition = Vector2.Zero;
                 }
                 MainClass.ScreenReader.Say("Relative cursor lock " + (this.relativeOffsetLock ? "enabled" : "disabled") + ".", true);
             }
-                    else if (MainClass.Config.TileCursorPreciseUpKey.JustPressed())
+            else if (MainClass.Config.TileCursorPreciseUpKey.JustPressed())
             {
                 this.cursorMoveInput(new Vector2(0, -MainClass.Config.TileCursorPreciseMovementDistance), true);
             }
@@ -109,16 +133,18 @@ namespace stardew_access.Features
 
         private void cursorMoveInput(Vector2 delta, Boolean precise = false)
         {
-                        if (!tryMoveTileView(delta)) return;
-            Vector2 position = this.getTileCursorPosition();
-            Vector2 tile = new Vector2((float)Math.Floor(position.X / Game1.tileSize), (float)Math.Floor(position.Y / Game1.tileSize));
-            String ?name = TileInfo.getNameAtTile(tile);
+            if (!tryMoveTileView(delta)) return;
+            Vector2 position = this.GetTileCursorPosition();
+            Vector2 tile = this.GetViewingTile();
+            String? name = TileInfo.getNameAtTile(tile);
             if (name == null)
             {
+                // Report if a tile is empty or blocked if there is nothing on it
                 if (TileInfo.isCollidingAtTile((int)tile.X, (int)tile.Y))
                 {
                     name = "blocked";
-                } else
+                }
+                else
                 {
                     name = "empty";
                 }
@@ -135,14 +161,18 @@ namespace stardew_access.Features
 
         private bool tryMoveTileView(Vector2 delta)
         {
-            Vector2 dest = this.getTileCursorPosition() + delta;
+            Vector2 dest = this.GetTileCursorPosition() + delta;
             if (!isPositionOnMap(dest)) return false;
             if ((MainClass.Config.LimitTileCursorToScreen && Utility.isOnScreen(dest, 0)) || !MainClass.Config.LimitTileCursorToScreen)
             {
                 if (this.relativeOffsetLock)
+                {
                     this.relativeOffsetLockPosition += delta;
+                }
                 else
+                {
                     this.ViewingOffset += delta;
+                }
                 return true;
             }
             return false;
@@ -150,11 +180,15 @@ namespace stardew_access.Features
 
         private void SnapMouseToPlayer()
         {
-            Vector2 cursorPosition = this.getTileCursorPosition();
-                        if (allowMouseSnap(cursorPosition))
+            Vector2 cursorPosition = this.GetTileCursorPosition();
+            if (allowMouseSnap(cursorPosition))
+                // Must account for viewport here
                 Game1.setMousePosition((int)cursorPosition.X - Game1.viewport.X, (int)cursorPosition.Y - Game1.viewport.Y);
         }
 
+        /// <summary>
+        /// Handle tile viewer logic.
+        /// </summary>
         public void update()
         {
             //Reset the viewing cursor to the player when they turn or move. This will not reset the locked offset relative cursor position.
@@ -170,11 +204,13 @@ namespace stardew_access.Features
 
         private static bool allowMouseSnap(Vector2 point)
         {
+            // Utility.isOnScreen treats a vector as a pixel position, not a tile position
             if (!Utility.isOnScreen(point, 0)) return false;
 
             //prevent mousing over the toolbar or any other UI component with the tile cursor
             foreach (IClickableMenu menu in Game1.onScreenMenus)
             {
+                //must account for viewport here
                 if (menu.isWithinBounds((int)point.X - Game1.viewport.X, (int)point.Y - Game1.viewport.Y)) return false;
             }
             return true;
@@ -182,6 +218,7 @@ namespace stardew_access.Features
 
         private static bool isPositionOnMap(Vector2 position)
         {
+            //position does not take viewport into account since the entire map needs to be checked.
             Map map = Game1.currentLocation.map;
             if (position.X < 0 || position.X > map.Layers[0].DisplayWidth) return false;
             if (position.Y < 0 || position.Y > map.Layers[0].DisplayHeight) return false;

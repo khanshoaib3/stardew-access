@@ -66,7 +66,7 @@ namespace stardew_access
 
         public static TileViewer TileViewer
         {
-get
+            get
             {
                 if (tileViewer == null)
                     tileViewer = new TileViewer();
