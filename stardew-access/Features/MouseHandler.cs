@@ -63,7 +63,18 @@ namespace stardew_access.Features
 
         public void HandleInput()
         {
-            if (MainClass.Config.TileCursorPreciseUpKey.JustPressed())
+            if (MainClass.Config.ToggleRelativeCursorLockKey.JustPressed())
+            {
+                this.relativeOffsetLock = !this.relativeOffsetLock;
+                if (this.relativeOffsetLock)
+                {
+                    this.relativeOffsetLockPosition = this.PlayerFacingVector + this.ViewingOffset;
+                } else { 
+                    this.relativeOffsetLockPosition = Vector2.Zero;
+                }
+                MainClass.ScreenReader.Say("Relative cursor lock " + (this.relativeOffsetLock ? "enabled" : "disabled") + ".", true);
+            }
+                    else if (MainClass.Config.TileCursorPreciseUpKey.JustPressed())
             {
                 this.cursorMoveInput(new Vector2(0, -MainClass.Config.TileCursorPreciseMovementDistance), true);
             }
