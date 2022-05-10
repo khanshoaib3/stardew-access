@@ -6,7 +6,6 @@ using StardewValley;
 using StardewValley.Menus;
 using stardew_access.Features;
 
-
 namespace stardew_access.Features
 {
     public class MouseHandler
@@ -137,13 +136,13 @@ namespace stardew_access.Features
         private bool tryMoveTileView(Vector2 delta)
         {
             Vector2 dest = this.getTileCursorPosition() + delta;
-            if (Utility.isOnScreen(dest, 0))
+            if (!isPositionOnMap(dest)) return false;
+            if ((MainClass.Config.LimitTileCursorToScreen && Utility.isOnScreen(dest, 0)) || !MainClass.Config.LimitTileCursorToScreen)
             {
                 if (this.relativeOffsetLock)
                     this.relativeOffsetLockPosition += delta;
                 else
                     this.ViewingOffset += delta;
-
                 return true;
             }
             return false;
@@ -178,6 +177,14 @@ namespace stardew_access.Features
             {
                 if (menu.isWithinBounds((int)point.X - Game1.viewport.X, (int)point.Y - Game1.viewport.Y)) return false;
             }
+            return true;
+        }
+
+        private static bool isPositionOnMap(Vector2 position)
+        {
+            Map map = Game1.currentLocation.map;
+            if (position.X < 0 || position.X > map.Layers[0].DisplayWidth) return false;
+            if (position.Y < 0 || position.Y > map.Layers[0].DisplayHeight) return false;
             return true;
         }
     }

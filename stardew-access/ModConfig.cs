@@ -25,6 +25,7 @@ namespace stardew_access
         public KeybindList TimeNSeasonKey { get; set; } = KeybindList.Parse("Q");
         public KeybindList ReadTileKey { get; set; } = KeybindList.Parse("J");
         public KeybindList ReadStandingTileKey { get; set; } = KeybindList.Parse("LeftAlt + J");
+        public bool LimitTileCursorToScreen { get; set; } = false;
         public int TileCursorPreciseMovementDistance { get; set; } = 8;
 
         //Tile viewer keys
