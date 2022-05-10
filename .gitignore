@@ -5,6 +5,7 @@
 
 .vscode/*
 .git-old/
+bin/
 
 # User-specific files
 *.rsuser

@@ -7,6 +7,7 @@ namespace stardew_access.Patches
     internal class BundleMenuPatches
     {
         internal static string junimoNoteMenuQuery = "";
+        internal static string currentJunimoArea = "";
         internal static string jojaCDMenuQuery = "";
         internal static bool isUsingCustomButtons = false;
         internal static int currentIngredientListItem = -1, currentIngredientInputSlot = -1, currentInventorySlot = -1;
@@ -80,6 +81,8 @@ namespace stardew_access.Patches
                     isUsingCustomButtons = false;
 
                     string areaName = __instance.scrambledText ? CommunityCenter.getAreaEnglishDisplayNameFromNumber(___whichArea) : CommunityCenter.getAreaDisplayNameFromNumber(___whichArea);
+                    string reward = __instance.getRewardNameForArea(___whichArea);
+
                     if (__instance.scrambledText)
                     {
                         string toSpeak = "Scrambled Text";
@@ -90,6 +93,15 @@ namespace stardew_access.Patches
                         }
                         return;
                     }
+
+                    if (currentJunimoArea != areaName)
+                    {
+                        currentJunimoArea = areaName;
+                        MainClass.DebugLog(areaName);
+                        MainClass.ScreenReader.Say($"Area {areaName}, {reward}", true);
+                        return;
+                    }
+
                     for (int i = 0; i < __instance.bundles.Count; i++)
                     {
                         if (__instance.bundles[i].containsPoint(x, y))
@@ -175,7 +187,6 @@ namespace stardew_access.Patches
                         MainClass.ScreenReader.Say("Purchase Button", true);
                     }
                 }
-                string reward = __instance.getRewardNameForArea(___whichArea);
             }
             catch (Exception e)
             {
