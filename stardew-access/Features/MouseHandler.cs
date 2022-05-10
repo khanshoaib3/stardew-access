@@ -63,9 +63,9 @@ namespace stardew_access.Features
 
         private void cursorMoveInput(Vector2 delta, Boolean precise = false)
         {
-            if (!tryMoveTileView(delta)) return;
+                        if (!tryMoveTileView(delta)) return;
             Vector2 position = this.getTileCursorPosition();
-            Vector2 tile = position / Game1.tileSize;
+            Vector2 tile = new Vector2((float)Math.Floor(position.X / Game1.tileSize), (float)Math.Floor(position.Y / Game1.tileSize));
             String ?name = TileInfo.getNameAtTile(tile);
             if (name == null)
             {
@@ -79,7 +79,7 @@ namespace stardew_access.Features
             }
             if (precise)
             {
-                MainClass.ScreenReader.Say($"{position.X}, {position.Y}", true);
+                MainClass.ScreenReader.Say($"{name}, {position.X}, {position.Y}", true);
             }
             else
             {
@@ -111,6 +111,7 @@ namespace stardew_access.Features
 
         public void update()
         {
+            //Reset the viewing cursor to the player when they turn or move. This will not reset the locked offset relative cursor position.
             if (this.prevFacing != this.PlayerFacingVector || this.prevPlayerPosition != this.PlayerPosition)
             {
                 this.ViewingOffset = Vector2.Zero;
@@ -119,6 +120,7 @@ namespace stardew_access.Features
             this.prevPlayerPosition = this.PlayerPosition;
             if (MainClass.Config.SnapMouse)
                 this.SnapMouseToPlayer();
+
             if (MainClass.Config.TileCursorUpKey.JustPressed())
             {
                 this.cursorMoveInput(new Vector2(0, -Game1.tileSize));
@@ -136,7 +138,6 @@ namespace stardew_access.Features
                 this.cursorMoveInput(new Vector2(-Game1.tileSize, 0));
             }
         }
-
 
         private static bool allowMouseSnap(Vector2 point)
         {
