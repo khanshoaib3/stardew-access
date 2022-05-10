@@ -63,7 +63,23 @@ namespace stardew_access.Features
 
         public void HandleInput()
         {
-            if (MainClass.Config.TileCursorUpKey.JustPressed())
+            if (MainClass.Config.TileCursorPreciseUpKey.JustPressed())
+            {
+                this.cursorMoveInput(new Vector2(0, -MainClass.Config.TileCursorPreciseMovementDistance), true);
+            }
+            else if (MainClass.Config.TileCursorPreciseRightKey.JustPressed())
+            {
+                this.cursorMoveInput(new Vector2(MainClass.Config.TileCursorPreciseMovementDistance, 0), true);
+            }
+            else if (MainClass.Config.TileCursorPreciseDownKey.JustPressed())
+            {
+                this.cursorMoveInput(new Vector2(0, MainClass.Config.TileCursorPreciseMovementDistance), true);
+            }
+            else if (MainClass.Config.TileCursorPreciseLeftKey.JustPressed())
+            {
+                this.cursorMoveInput(new Vector2(-MainClass.Config.TileCursorPreciseMovementDistance, 0), true);
+            }
+            else if (MainClass.Config.TileCursorUpKey.JustPressed())
             {
                 this.cursorMoveInput(new Vector2(0, -Game1.tileSize));
             }

@@ -25,6 +25,7 @@ namespace stardew_access
         public KeybindList TimeNSeasonKey { get; set; } = KeybindList.Parse("Q");
         public KeybindList ReadTileKey { get; set; } = KeybindList.Parse("J");
         public KeybindList ReadStandingTileKey { get; set; } = KeybindList.Parse("LeftAlt + J");
+        public int TileCursorPreciseMovementDistance { get; set; } = 8;
 
         //Tile viewer keys
         public KeybindList TileCursorUpKey { get; set; } = KeybindList.Parse("Up");
@@ -35,7 +36,7 @@ namespace stardew_access
         public KeybindList TileCursorPreciseRightKey { get; set; } = KeybindList.Parse("LeftShift + Right");
         public KeybindList TileCursorPreciseDownKey { get; set; } = KeybindList.Parse("LeftShift + Down");
         public KeybindList TileCursorPreciseLeftKey { get; set; } = KeybindList.Parse("LeftShift + Left");
-
+        public KeybindList ToggleRelativeCursorLockKey { get; set; } = KeybindList.Parse("L");
         #endregion
 
         // TODO Add the exclusion and focus list too
