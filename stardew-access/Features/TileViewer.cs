@@ -8,7 +8,7 @@ using stardew_access.Features;
 
 namespace stardew_access.Features
 {
-    public class MouseHandler
+    public class TileViewer
     {
 
         private Vector2 ViewingOffset = Vector2.Zero;

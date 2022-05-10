@@ -20,7 +20,7 @@ namespace stardew_access
         private static StaticTiles? sTiles;
         private static IScreenReader? screenReader;
         private static IModHelper? modHelper;
-        private static MouseHandler? mouse;
+        private static TileViewer? tileViewer;
 
         internal static ModConfig Config { get => config; set => config = value; }
         public static IModHelper? ModHelper { get => modHelper; }
@@ -64,13 +64,13 @@ namespace stardew_access
             set => screenReader = value;
         }
 
-        public static MouseHandler Mouse
+        public static TileViewer TileViewer
         {
 get
             {
-                if (mouse == null)
-                    mouse = new MouseHandler();
-                return mouse;
+                if (tileViewer == null)
+                    tileViewer = new TileViewer();
+                return tileViewer;
             }
         }
 
@@ -142,7 +142,8 @@ get
             // Narrate current location's name
             Other.narrateCurrentLocation();
 
-            Mouse.update();
+            //handle TileCursor update logic
+            TileViewer.update();
 
             if (!ReadTile.isReadingTile && Config.ReadTile)
             {
@@ -269,7 +270,7 @@ get
             }
 
             // Tile viewing cursor keys
-            Mouse.HandleInput();
+            TileViewer.HandleInput();
         }
 
         public static void ErrorLog(string message)
