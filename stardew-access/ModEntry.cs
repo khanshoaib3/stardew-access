@@ -267,6 +267,9 @@ get
                 ReadTile.run(manuallyTriggered: true);
                 return;
             }
+
+            // Tile viewing cursor keys
+            Mouse.HandleInput();
         }
 
         public static void ErrorLog(string message)

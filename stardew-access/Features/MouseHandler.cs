@@ -61,6 +61,26 @@ namespace stardew_access.Features
             return target;
         }
 
+        public void HandleInput()
+        {
+            if (MainClass.Config.TileCursorUpKey.JustPressed())
+            {
+                this.cursorMoveInput(new Vector2(0, -Game1.tileSize));
+            }
+            else if (MainClass.Config.TileCursorRightKey.JustPressed())
+            {
+                this.cursorMoveInput(new Vector2(Game1.tileSize, 0));
+            }
+            else if (MainClass.Config.TileCursorDownKey.JustPressed())
+            {
+                this.cursorMoveInput(new Vector2(0, Game1.tileSize));
+            }
+            else if (MainClass.Config.TileCursorLeftKey.JustPressed())
+            {
+                this.cursorMoveInput(new Vector2(-Game1.tileSize, 0));
+            }
+        }
+
         private void cursorMoveInput(Vector2 delta, Boolean precise = false)
         {
                         if (!tryMoveTileView(delta)) return;
@@ -120,23 +140,6 @@ namespace stardew_access.Features
             this.prevPlayerPosition = this.PlayerPosition;
             if (MainClass.Config.SnapMouse)
                 this.SnapMouseToPlayer();
-
-            if (MainClass.Config.TileCursorUpKey.JustPressed())
-            {
-                this.cursorMoveInput(new Vector2(0, -Game1.tileSize));
-            }
-            else if (MainClass.Config.TileCursorRightKey.JustPressed())
-            {
-                this.cursorMoveInput(new Vector2(Game1.tileSize, 0));
-            }
-            else if (MainClass.Config.TileCursorDownKey.JustPressed())
-            {
-                this.cursorMoveInput(new Vector2(0, Game1.tileSize));
-            }
-            else if (MainClass.Config.TileCursorLeftKey.JustPressed())
-            {
-                this.cursorMoveInput(new Vector2(-Game1.tileSize, 0));
-            }
         }
 
         private static bool allowMouseSnap(Vector2 point)
@@ -146,11 +149,7 @@ namespace stardew_access.Features
             //prevent mousing over the toolbar or any other UI component with the tile cursor
             foreach (IClickableMenu menu in Game1.onScreenMenus)
             {
-                if (menu.allClickableComponents == null) continue;
-                foreach (ClickableComponent component in menu.allClickableComponents)
-                {
-                    if (component.containsPoint((int)point.X, (int)point.Y)) return false;
-                }
+                if (menu.isWithinBounds((int)point.X - Game1.viewport.X, (int)point.Y - Game1.viewport.Y)) return false;
             }
             return true;
         }
