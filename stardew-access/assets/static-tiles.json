@@ -1,4 +1,46 @@
 {
+    "farm":
+    {
+        "Bus Stop Entrance":
+        {
+            "x":[79],
+            "y":[15,16,17,18],
+            "type":"door"
+        },
+        "Backwoods Entrance":
+        {
+            "x":[40,41],
+            "y":[0],
+            "type":"door"
+        },
+        "Cindersap Forest Entrance":
+        {
+            "x":[40,41],
+            "y":[64],
+            "type":"door"
+        },
+        "Farm Cave Entrance":
+        {
+            "x":[34],
+            "y":[7],
+            "type":"door"
+        },
+        "Grandpa's Shrine":
+        {
+            "x":[8],
+            "y":[7],
+            "type":"interactable"
+        }
+    },
+    "farmcave":
+    {
+        "Exit":
+        {
+            "x":[8],
+            "y":[11],
+            "type":"door"
+        }
+    },
     "busstop":
     {
         "Ticket Machine":
@@ -1308,12 +1350,6 @@
             "x":[20],
             "y":[22],
             "type":"door"
-        },
-        "Birdie":
-        {
-            "x":[18],
-            "y":[58],
-            "type":"npc"
         },
         "Hole 1":
         {

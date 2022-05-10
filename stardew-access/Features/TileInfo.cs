@@ -9,7 +9,7 @@ namespace stardew_access.Features
 {
     public class TileInfo
     {
-        public static string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom" };
+        public static string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom", "statue of endless fortune", "statue of perfection" };
 
         ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>
         public static (string? name, string? categoryName) getNameWithCategoryNameAtTile(Vector2 tile)
@@ -430,17 +430,24 @@ namespace stardew_access.Features
                 else if (x == 8 && y == 9)
                     return (((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatAnchor")) ? CATEGORY.Interactables : CATEGORY.Decor), ((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatAnchor")) ? "Repair " : "") + "Boat Anchor");
             }
-            else if (Game1.currentLocation is IslandWest islandWest)
+            else if (Game1.currentLocation is IslandLocation islandLocation)
             {
-                if (islandWest.shippingBinPosition.X == x && islandWest.shippingBinPosition.Y == y)
-                    return (CATEGORY.Interactables, "Shipping Bin");
+                var nutTracker = Game1.player.team.collectedNutTracker;
+                if (islandLocation.IsBuriedNutLocation(new Point(x, y)) && !nutTracker.ContainsKey($"Buried_{islandLocation.Name}_{x}_{y}"))
+                {
+                    return (CATEGORY.Interactables, "Diggable spot");
+                }
+                else if (Game1.currentLocation is IslandWest islandWest)
+                {
+                    if (islandWest.shippingBinPosition.X == x && islandWest.shippingBinPosition.Y == y)
+                        return (CATEGORY.Interactables, "Shipping Bin");
+                }
+                else if (Game1.currentLocation is IslandNorth islandNorth)
+                {
+                    if (islandNorth.traderActivated.Value && x == 36 && y == 71)
+                        return (CATEGORY.Interactables, "Island Trader");
+                }
             }
-            else if (Game1.currentLocation is IslandNorth islandNorth)
-            {
-                if (islandNorth.traderActivated.Value && x == 36 && y == 71)
-                    return (CATEGORY.Interactables, "Island Trader");
-            }
-
             return (null, null);
         }
 
