@@ -92,6 +92,11 @@ namespace stardew_access.Features
                 toReturn = obj.name;
                 category = obj.category;
             }
+            else if (resourceClump != null)
+            {
+                toReturn = resourceClump;
+                category = CATEGORY.ResourceClumps;
+            }
             else if (terrainFeature.ContainsKey(tile))
             {
                 (string? name, CATEGORY category) tf = getTerrainFeatureAtTile(terrainFeature[tile]);
@@ -107,11 +112,6 @@ namespace stardew_access.Features
             {
                 toReturn = bush;
                 category = CATEGORY.Bush;
-            }
-            else if (resourceClump != null)
-            {
-                toReturn = resourceClump;
-                category = CATEGORY.ResourceClumps;
             }
             else if (door != null)
             {
@@ -501,23 +501,6 @@ namespace stardew_access.Features
 
                     if (isFertilized)
                         toReturn = "Fertilized " + toReturn;
-                }
-            }
-            else if (terrain.Get() is GiantCrop)
-            {
-                category = CATEGORY.Crops;
-                int whichCrop = ((GiantCrop)terrain.Get()).which.Value;
-                switch (whichCrop)
-                {
-                    case 0:
-                        toReturn = "Cauliflower";
-                        break;
-                    case 1:
-                        toReturn = "Melon";
-                        break;
-                    case 2:
-                        toReturn = "Pumpkin";
-                        break;
                 }
             }
             else if (terrain.Get() is CosmeticPlant)
@@ -970,6 +953,12 @@ namespace stardew_access.Features
                         return "Mine Rock";
                     case 672:
                         return "Boulder";
+                    case 190:
+                        return "Giant Cauliflower";
+                    case 254:
+                        return "Giant Melon";
+                    case 276:
+                        return "Giant Pumpkin";
                     default:
                         return "Unknown";
                 }
