@@ -562,11 +562,6 @@ namespace stardew_access.Features
                 category = CATEGORY.Trees;
                 toReturn = getTree((Tree)terrain.Get());
             }
-            else if (terrain.Get() is Quartz)
-            {
-                category = CATEGORY.MineItems;
-                toReturn = "Quartz";
-            }
 
             return (toReturn, category);
         }
@@ -674,6 +669,12 @@ namespace stardew_access.Features
                 toReturn.category = CATEGORY.Debris;
             else if (obj.name.ToLower().Equals("twig"))
                 toReturn.category = CATEGORY.Debris;
+            else if (obj.name.ToLower().Contains("quartz"))
+                toReturn.category = CATEGORY.MineItems;
+            else if (obj.name.ToLower().Contains("earth crystal"))
+                toReturn.category = CATEGORY.MineItems;
+            else if (obj.name.ToLower().Contains("frozen tear"))
+                toReturn.category = CATEGORY.MineItems;
             else if (obj is Chest)
             {
                 Chest chest = (Chest)obj;
