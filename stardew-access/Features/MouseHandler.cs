@@ -65,10 +65,17 @@ namespace stardew_access.Features
         {
             if (!tryMoveTileView(delta)) return;
             Vector2 position = this.getTileCursorPosition();
-            String ?name = TileInfo.getNameAtTile(position / Game1.tileSize);
+            Vector2 tile = position / Game1.tileSize;
+            String ?name = TileInfo.getNameAtTile(tile);
             if (name == null)
             {
-                name = "empty tile";
+                if (TileInfo.isCollidingAtTile((int)tile.X, (int)tile.Y))
+                {
+                    name = "blocked";
+                } else
+                {
+                    name = "empty";
+                }
             }
             if (precise)
             {
