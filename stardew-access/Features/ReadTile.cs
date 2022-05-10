@@ -19,8 +19,9 @@ namespace stardew_access.Features
             try
             {
                 Vector2 tile;
-                int x, y;
+
                 #region Get Tile
+                int x, y;
                 if (!playersPosition)
                 {
                     // Grab tile
@@ -31,9 +32,9 @@ namespace stardew_access.Features
                     // Player's standing tile
                     tile = CurrentPlayer.getPosition();
                 }
-                #endregion
                 x = (int)tile.X;
                 y = (int)tile.Y;
+                #endregion
 
                 if (Context.IsPlayerFree)
                 {
@@ -45,15 +46,15 @@ namespace stardew_access.Features
 
                     bool isColliding = TileInfo.isCollidingAtTile(x, y);
 
-                    string? toSpeak = TileInfo.getNameAtTile(tile);
+                    (string? name, string? category) info = TileInfo.getNameWithCategoryNameAtTile(tile);
 
                     #region Narrate toSpeak
-                    if (toSpeak != null)
+                    if (info.name != null)
                         if (MainClass.ScreenReader != null)
                             if (manuallyTriggered)
-                                MainClass.ScreenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say($"{info.name}, Category: {info.category}", true);
                             else
-                                MainClass.ScreenReader.SayWithTileQuery(toSpeak, x, y, true);
+                                MainClass.ScreenReader.SayWithTileQuery(info.name, x, y, true);
                     #endregion
 
                     #region Play colliding sound effect
