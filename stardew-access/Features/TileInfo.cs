@@ -667,13 +667,14 @@ namespace stardew_access.Features
 
             // Get object names based on index
             (string? name, CATEGORY category) correctNameAndCategory = getCorrectNameAndCategoryFromIndex(index);
+
             if (correctNameAndCategory.name != null)
                 toReturn = correctNameAndCategory;
-
-            if (toReturn.name.ToLower().Equals("stone")) // Fix for `Busy stone`
+            else if (obj.name.ToLower().Equals("stone"))
                 toReturn.category = CATEGORY.Debris;
-
-            if (obj is Chest)
+            else if (obj.name.ToLower().Equals("twig"))
+                toReturn.category = CATEGORY.Debris;
+            else if (obj is Chest)
             {
                 Chest chest = (Chest)obj;
                 toReturn = (chest.DisplayName, CATEGORY.Chests);
