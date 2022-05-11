@@ -2,6 +2,15 @@ namespace stardew_access.Features
 {
     public class Warnings
     {
+        private int prevStamina;
+        private int prevHealth;
+
+        public Warnings()
+        {
+            prevStamina = 100;
+            prevHealth = 100;
+        }
+
         public void update()
         {
             this.checkForHealth();
@@ -10,38 +19,36 @@ namespace stardew_access.Features
 
         public void checkForStamina()
         {
-            int stamina = CurrentPlayer.Stamina;
+            if (MainClass.ModHelper == null)
+                return;
 
-            if (stamina <= 50)
+            int stamina = CurrentPlayer.Stamina;
+            string toSpeak = MainClass.ModHelper.Translation.Get("warnings.label", new { type = "stamina", value = stamina });
+
+            if ((stamina <= 50 && prevStamina > 50) || (stamina <= 25 && prevStamina > 25) || (stamina <= 10 && prevStamina > 10))
             {
-                // 50% stamina warning
+                MainClass.DebugLog(toSpeak);
+                MainClass.ScreenReader.Say(toSpeak, true);
             }
-            else if (stamina <= 25)
-            {
-                // 25% stamina warning
-            }
-            else if (stamina <= 10)
-            {
-                // 10% stamina warning
-            }
+
+            prevStamina = stamina;
         }
 
         public void checkForHealth()
         {
-            int health = CurrentPlayer.Health;
+            if (MainClass.ModHelper == null)
+                return;
 
-            if (health <= 50)
+            int health = CurrentPlayer.Health;
+            string toSpeak = MainClass.ModHelper.Translation.Get("warnings.label", new { type = "health", value = health });
+
+            if ((health <= 50 && prevHealth > 50) || (health <= 25 && prevHealth > 25) || (health <= 10 && prevHealth > 10))
             {
-                // 50% health warning
+                MainClass.DebugLog(toSpeak);
+                MainClass.ScreenReader.Say(toSpeak, true);
             }
-            else if (health <= 25)
-            {
-                // 25% health warning
-            }
-            else if (health <= 10)
-            {
-                // 10% health warning
-            }
+
+            prevHealth = health;
         }
     }
 }
