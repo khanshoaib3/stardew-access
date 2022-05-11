@@ -262,7 +262,7 @@ namespace stardew_access.Features
             #region Check whether to skip the object or not
 
             // Skip if player is directly looking at the tile
-            if (CurrentPlayer.getNextTile().Equals(position))
+            if (CurrentPlayer.FacingTile.Equals(position))
                 return;
 
             if (!radarFocus)

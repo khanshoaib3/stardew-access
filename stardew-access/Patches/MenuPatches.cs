@@ -436,7 +436,7 @@ namespace stardew_access.Patches
 
                 if (cueName == "grassyStep" || cueName == "sandyStep" || cueName == "snowyStep" || cueName == "stoneStep" || cueName == "thudStep" || cueName == "woodyStep")
                 {
-                    Vector2 nextTile = CurrentPlayer.getNextTile();
+                    Vector2 nextTile = CurrentPlayer.FacingTile;
                     if (TileInfo.isCollidingAtTile((int)nextTile.X, (int)nextTile.Y))
                     {
                         if (prevTile != nextTile)

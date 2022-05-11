@@ -220,11 +220,11 @@ namespace stardew_access
                 string toSpeak;
                 if (Config.VerboseCoordinates)
                 {
-                    toSpeak = $"X: {CurrentPlayer.getPositionX()}, Y: {CurrentPlayer.getPositionY()}";
+                    toSpeak = $"X: {CurrentPlayer.PositionX}, Y: {CurrentPlayer.PositionY}";
                 }
                 else
                 {
-                    toSpeak = $"{CurrentPlayer.getPositionX()}, {CurrentPlayer.getPositionY()}";
+                    toSpeak = $"{CurrentPlayer.PositionX}, {CurrentPlayer.PositionY}";
                 }
 
                 MainClass.ScreenReader.Say(toSpeak, true);
@@ -234,7 +234,7 @@ namespace stardew_access
             // Narrate health and stamina
             if (Config.HealthNStaminaKey.JustPressed())
             {
-                string toSpeak = $"Health is {CurrentPlayer.getHealth()} and Stamina is {CurrentPlayer.getStamina()}";
+                string toSpeak = $"Health is {CurrentPlayer.Health} and Stamina is {CurrentPlayer.Stamina}";
                 MainClass.ScreenReader.Say(toSpeak, true);
                 return;
             }
@@ -242,7 +242,7 @@ namespace stardew_access
             // Narrate money at hand
             if (Config.MoneyKey.JustPressed())
             {
-                string toSpeak = $"You have {CurrentPlayer.getMoney()}g";
+                string toSpeak = $"You have {CurrentPlayer.Money}g";
                 MainClass.ScreenReader.Say(toSpeak, true);
                 return;
             }
@@ -250,7 +250,7 @@ namespace stardew_access
             // Narrate time and season
             if (Config.TimeNSeasonKey.JustPressed())
             {
-                string toSpeak = $"Time is {CurrentPlayer.getTimeOfDay()} and it is {CurrentPlayer.getDay()} {CurrentPlayer.getDate()} of {CurrentPlayer.getSeason()}";
+                string toSpeak = $"Time is {CurrentPlayer.TimeOfDay} and it is {CurrentPlayer.Day} {CurrentPlayer.Date} of {CurrentPlayer.Season}";
                 MainClass.ScreenReader.Say(toSpeak, true);
                 return;
             }

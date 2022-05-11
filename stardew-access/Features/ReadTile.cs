@@ -25,12 +25,12 @@ namespace stardew_access.Features
                 if (!playersPosition)
                 {
                     // Grab tile
-                    tile = CurrentPlayer.getNextTile();
+                    tile = CurrentPlayer.FacingTile;
                 }
                 else
                 {
                     // Player's standing tile
-                    tile = CurrentPlayer.getPosition();
+                    tile = CurrentPlayer.Position;
                 }
                 x = (int)tile.X;
                 y = (int)tile.Y;
