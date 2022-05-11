@@ -41,32 +41,6 @@ namespace stardew_access.Features
             MainClass.ScreenReader.Say($"{currentLocation.Name} Entered", true);
         }
 
-        public static void SnapMouseToPlayer()
-        {
-            int x = Game1.player.GetBoundingBox().Center.X - Game1.viewport.X;
-            int y = Game1.player.GetBoundingBox().Center.Y - Game1.viewport.Y;
-
-            int offset = 64;
-
-            switch (Game1.player.FacingDirection)
-            {
-                case 0:
-                    y -= offset;
-                    break;
-                case 1:
-                    x += offset;
-                    break;
-                case 2:
-                    y += offset;
-                    break;
-                case 3:
-                    x -= offset;
-                    break;
-            }
-
-            Game1.setMousePosition(x, y);
-        }
-
         public static void narrateHudMessages()
         {
             try
