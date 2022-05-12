@@ -1,0 +1,4 @@
+{
+    "warnings.health": "警告！健康状態は{{value}}パーセントです！",
+    "warnings.stamina": "警告！スタミナは{{value}}パーセントです！"
+}

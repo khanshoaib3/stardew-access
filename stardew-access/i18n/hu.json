@@ -1,0 +1,4 @@
+{
+    "warnings.health": "Figyelem! Az egészségi állapot {{érték}} százalék!",
+    "warnings.stamina": "Figyelem! Az állóképesség {{value}} százalék!"
+}

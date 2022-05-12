@@ -1,0 +1,4 @@
+{
+    "warnings.health": "¡Advertencia! ¡La salud está al {{value}} por ciento!",
+    "warnings.stamina": "¡Advertencia! ¡La resistencia es un {{value}} por ciento!"
+}

@@ -1,0 +1,4 @@
+{
+    "warnings.health": "警告！健康状况为 {{value}} 百分！",
+    "warnings.stamina": "警告！耐力为 {{value}} 百分！"
+}
