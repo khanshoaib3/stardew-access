@@ -66,6 +66,12 @@
             "x":[34],
             "y":[23],
             "type":"door"
+        },
+        "Backwoods Entrance":
+        {
+            "x":[0],
+            "y":[6,7,8,9],
+            "type":"door"
         }
     },
     "town":
@@ -122,6 +128,15 @@
         {
             "x":[81],
             "y":[0],
+            "type":"door"
+        }
+    },
+    "shed":
+    {
+        "Exit":
+        {
+            "x":[6],
+            "y":[13],
             "type":"door"
         }
     },
@@ -1787,6 +1802,27 @@
         {
             "x":[14],
             "y":[39],
+            "type":"door"
+        },
+        "Bus stop Entrance":
+        {
+            "x":[49],
+            "y":[28,29,30,31,32],
+            "type":"door"
+        },
+        "Tunnel Entrance":
+        {
+            "x":[23],
+            "y":[29,30,31],
+            "type":"door"
+        }
+    },
+    "tunnel":
+    {
+        "Exit":
+        {
+            "x":[39],
+            "y":[7,8,9,10,11],
             "type":"door"
         }
     },
