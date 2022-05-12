@@ -644,7 +644,7 @@ namespace stardew_access.Features
             toReturn.name = obj.DisplayName;
 
             // Get object names based on index
-            (string? name, CATEGORY category) correctNameAndCategory = getCorrectNameAndCategoryFromIndex(index);
+            (string? name, CATEGORY category) correctNameAndCategory = getCorrectNameAndCategoryFromIndex(index, obj.Name);
 
             if (correctNameAndCategory.name != null)
                 toReturn = correctNameAndCategory;
@@ -716,7 +716,7 @@ namespace stardew_access.Features
                 return MachineState.Waiting;
         }
 
-        private static (string? name, CATEGORY category) getCorrectNameAndCategoryFromIndex(int index)
+        private static (string? name, CATEGORY category) getCorrectNameAndCategoryFromIndex(int index, string objName)
         {
             switch (index)
             {
@@ -746,32 +746,6 @@ namespace stardew_access.Features
                 case 320:
                 case 321:
                     return ("Ice crystal", CATEGORY.Debris);
-                case 75:
-                    return ("Geode", CATEGORY.MineItems);
-                case 32:
-                case 34:
-                case 36:
-                case 38:
-                case 40:
-                case 42:
-                case 48:
-                case 50:
-                case 52:
-                case 54:
-                case 56:
-                case 58:
-                    return ("Coloured stone", CATEGORY.Debris);
-                case 668:
-                case 670:
-                case 845:
-                case 846:
-                case 847:
-                    return ("Mine stone", CATEGORY.MineItems);
-                case 818:
-                    return ("Clay stone", CATEGORY.Debris);
-                case 816:
-                case 817:
-                    return ("Fossil stone", CATEGORY.Debris);
                 case 118:
                 case 120:
                 case 122:
@@ -784,7 +758,7 @@ namespace stardew_access.Features
                     return ("Item box", CATEGORY.MineItems);
             }
 
-            if (Game1.currentLocation is Mine or MineShaft)
+            if (objName.ToLower().Contains("stone"))
             {
                 switch (index)
                 {
@@ -792,15 +766,47 @@ namespace stardew_access.Features
                         return ("Frozen geode", CATEGORY.MineItems);
                     case 77:
                         return ("Magma geode", CATEGORY.MineItems);
+                    case 75:
+                        return ("Geode", CATEGORY.MineItems);
+                    case 819:
+                        return ("Omni geode node", CATEGORY.MineItems);
+                    case 32:
+                    case 34:
+                    case 36:
+                    case 38:
+                    case 40:
+                    case 42:
+                    case 48:
+                    case 50:
+                    case 52:
+                    case 54:
+                    case 56:
+                    case 58:
+                        return ("Coloured stone", CATEGORY.Debris);
+                    case 668:
+                    case 670:
+                    case 845:
+                    case 846:
+                    case 847:
+                        return ("Mine stone", CATEGORY.MineItems);
+                    case 818:
+                        return ("Clay stone", CATEGORY.Debris);
+                    case 816:
+                    case 817:
+                        return ("Fossil stone", CATEGORY.Debris);
+                    case 25:
+                        return ("Mussel Node", CATEGORY.MineItems);
+                    case 95:
+                        return ("Radioactive Node", CATEGORY.MineItems);
+                    case 843:
+                    case 844:
+                        return ("Cinder shard node", CATEGORY.MineItems);
                     case 8:
                     case 66:
                         return ("Amethyst node", CATEGORY.MineItems);
                     case 14:
                     case 62:
                         return ("Aquamarine node", CATEGORY.MineItems);
-                    case 843:
-                    case 844:
-                        return ("Cinder shard node", CATEGORY.MineItems);
                     case 2:
                     case 72:
                         return ("Diamond node", CATEGORY.MineItems);
@@ -822,8 +828,6 @@ namespace stardew_access.Features
                     case 10:
                     case 68:
                         return ("Topaz node", CATEGORY.MineItems);
-                    case 819:
-                        return ("Omni geode node", CATEGORY.MineItems);
                     case 751:
                     case 849:
                         return ("Copper node", CATEGORY.MineItems);
