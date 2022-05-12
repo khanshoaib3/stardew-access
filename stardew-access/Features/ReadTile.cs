@@ -6,15 +6,44 @@ namespace stardew_access.Features
 {
     public class ReadTile
     {
-        public static bool isReadingTile = false;
-        public static Vector2 prevTile;
+        private bool isBusy; // To pause execution of run method between fixed intervals
+        private int delay; // Length of each interval (in ms)
+        private bool shouldPause; // To pause the execution
+        private Vector2 prevTile;
 
         public ReadTile()
         {
-            isReadingTile = false;
+            isBusy = false;
+            delay = 100;
         }
 
-        public static void run(bool manuallyTriggered = false, bool playersPosition = false)
+        public void update()
+        {
+            if (this.isBusy)
+                return;
+
+            if (this.shouldPause)
+                return;
+
+            if (!MainClass.Config.ReadTile)
+                return;
+
+            this.isBusy = true;
+            this.run();
+            Task.Delay(delay).ContinueWith(_ => { this.isBusy = false; });
+        }
+
+        /// <summary>
+        /// Pauses the read tile for the provided time.
+        /// </summary>
+        /// <param name="time">The amount of time we want to pause the execution (in ms).<br/>Default is 2500 (2.5s).</param>
+        public void pause(int time = 2500)
+        {
+            this.shouldPause = true;
+            Task.Delay(time).ContinueWith(_ => { this.shouldPause = false; });
+        }
+
+        public void run(bool manuallyTriggered = false, bool playersPosition = false)
         {
             try
             {

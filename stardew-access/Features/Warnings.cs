@@ -27,8 +27,9 @@ namespace stardew_access.Features
 
             if ((stamina <= 50 && prevStamina > 50) || (stamina <= 25 && prevStamina > 25) || (stamina <= 10 && prevStamina > 10))
             {
-                MainClass.DebugLog(toSpeak);
                 MainClass.ScreenReader.Say(toSpeak, true);
+                // Pause the read tile feature to prevent interruption in warning message
+                MainClass.ReadTileFeature.pause();
             }
 
             prevStamina = stamina;
@@ -44,8 +45,9 @@ namespace stardew_access.Features
 
             if ((health <= 50 && prevHealth > 50) || (health <= 25 && prevHealth > 25) || (health <= 10 && prevHealth > 10))
             {
-                MainClass.DebugLog(toSpeak);
                 MainClass.ScreenReader.Say(toSpeak, true);
+                // Pause the read tile feature to prevent interruption in warning message
+                MainClass.ReadTileFeature.pause();
             }
 
             prevHealth = health;

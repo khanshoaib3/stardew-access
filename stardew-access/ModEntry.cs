@@ -21,6 +21,8 @@ namespace stardew_access
         private static IScreenReader? screenReader;
         private static IModHelper? modHelper;
         private static TileViewer? tileViewer;
+        private static Warnings? warnings;
+        private static ReadTile? readTile;
 
         internal static ModConfig Config { get => config; set => config = value; }
         public static IModHelper? ModHelper { get => modHelper; }
@@ -64,7 +66,7 @@ namespace stardew_access
             set => screenReader = value;
         }
 
-        public static TileViewer TileViewer
+        public static TileViewer TileViewerFeature
         {
             get
             {
@@ -74,6 +76,26 @@ namespace stardew_access
             }
         }
 
+        public static ReadTile ReadTileFeature
+        {
+            get
+            {
+                if (readTile == null)
+                    readTile = new ReadTile();
+                return readTile;
+            }
+        }
+
+        public static Warnings WarningsFeature
+        {
+            get
+            {
+                if (warnings == null)
+                    warnings = new Warnings();
+
+                return warnings;
+            }
+        }
         #endregion
 
         /*********
@@ -120,7 +142,8 @@ namespace stardew_access
 
         public void OnExit(object? sender, EventArgs? e)
         {
-            // Don't if this ever gets called or not but, just in case if it does.
+            // This closes the connection with the screen reader, important for linux
+            // Don't know if this ever gets called or not but, just in case if it does.
             if (ScreenReader != null)
                 ScreenReader.CloseScreenReader();
         }
@@ -143,14 +166,11 @@ namespace stardew_access
             Other.narrateCurrentLocation();
 
             //handle TileCursor update logic
-            TileViewer.update();
+            TileViewerFeature.update();
 
-            if (!ReadTile.isReadingTile && Config.ReadTile)
-            {
-                ReadTile.isReadingTile = true;
-                ReadTile.run();
-                Task.Delay(100).ContinueWith(_ => { ReadTile.isReadingTile = false; });
-            }
+            WarningsFeature.update();
+
+            ReadTileFeature.update();
 
             if (!RadarFeature.isRunning && Config.Radar)
             {
@@ -258,19 +278,19 @@ namespace stardew_access
             // Manual read tile at player's position
             if (Config.ReadStandingTileKey.JustPressed())
             {
-                ReadTile.run(manuallyTriggered: true, playersPosition: true);
+                ReadTileFeature.run(manuallyTriggered: true, playersPosition: true);
                 return;
             }
 
             // Manual read tile at looking tile
             if (Config.ReadTileKey.JustPressed())
             {
-                ReadTile.run(manuallyTriggered: true);
+                ReadTileFeature.run(manuallyTriggered: true);
                 return;
             }
 
             // Tile viewing cursor keys
-            TileViewer.HandleInput();
+            TileViewerFeature.HandleInput();
         }
 
         public static void ErrorLog(string message)
