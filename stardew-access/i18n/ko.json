@@ -1,4 +1,5 @@
 {
     "warnings.health": "경고! 건강은 {{value}}퍼센트입니다!",
-    "warnings.stamina": "경고! 체력은 {{value}}퍼센트입니다!"
+    "warnings.stamina": "경고! 체력은 {{value}}퍼센트입니다!",
+    "warnings.time": "경고! 시간은 {{value}}입니다"
 }

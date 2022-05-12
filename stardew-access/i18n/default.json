@@ -1,4 +1,5 @@
 {
     "warnings.health": "Warning! Health is at {{value}} percent!",
-    "warnings.stamina": "Warning! Stamina is at {{value}} percent!"
+    "warnings.stamina": "Warning! Stamina is at {{value}} percent!",
+    "warnings.time": "Warning! Time is {{value}}"
 }
