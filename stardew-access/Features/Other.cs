@@ -63,8 +63,6 @@ namespace stardew_access.Features
                             MainClass.hudMessageQueryKey = searchQuery;
 
                             MainClass.ScreenReader.Say(toSpeak, true);
-                            // Pause to avoid interruption
-                            MainClass.ReadTileFeature.pause();
                         }
                     }
                 }
