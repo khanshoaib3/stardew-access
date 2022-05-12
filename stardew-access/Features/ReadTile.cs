@@ -39,6 +39,9 @@ namespace stardew_access.Features
         /// <param name="time">The amount of time we want to pause the execution (in ms).<br/>Default is 2500 (2.5s).</param>
         public void pause(int time = 2500)
         {
+            if (!MainClass.Config.ReadTileAllowPausing)
+                return;
+
             this.shouldPause = true;
             Task.Delay(time).ContinueWith(_ => { this.shouldPause = false; });
         }
