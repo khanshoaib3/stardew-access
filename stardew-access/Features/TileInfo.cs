@@ -47,16 +47,15 @@ namespace stardew_access.Features
             (string? name, CATEGORY category) staticTile = MainClass.STiles.getStaticTileInfoAtWithCategory(x, y);
             string? bush = getBushAtTile(x, y, lessInfo);
 
-            if (Game1.currentLocation.isCharacterAtTile(tile) != null)
+            if (Game1.currentLocation.isCharacterAtTile(tile) is NPC npc)
             {
-                NPC npc = Game1.currentLocation.isCharacterAtTile(tile);
-                toReturn = npc.displayName;
+                                toReturn = npc.displayName;
                 if (npc.isVillager() || npc.CanSocialize)
                     category = CATEGORY.Farmers;
                 else
                     category = CATEGORY.NPCs;
             }
-            else if (farmAnimal != null)
+                        else if (farmAnimal != null)
             {
                 toReturn = farmAnimal;
                 category = CATEGORY.FarmAnimals;
@@ -408,7 +407,11 @@ namespace stardew_access.Features
             }
             else if (Game1.currentLocation is Beach beach)
             {
-                if (x == 58 && y == 13)
+                                if (MainClass.ModHelper.Reflection.GetField<NPC>(beach, "oldMariner").GetValue() is NPC mariner && mariner.getTileLocation() == new Vector2(x, y))
+                {
+                    return (CATEGORY.NPCs, "Old Mariner");
+                }
+                else if (x == 58 && y == 13)
                 {
                     if (!beach.bridgeFixed.Value)
                         return (CATEGORY.Interactables, "Repair Bridge");
