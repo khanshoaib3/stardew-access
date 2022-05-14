@@ -47,9 +47,8 @@ namespace stardew_access.Features
             (string? name, CATEGORY category) staticTile = MainClass.STiles.getStaticTileInfoAtWithCategory(x, y);
             string? bush = getBushAtTile(x, y, lessInfo);
 
-            if (Game1.currentLocation.isCharacterAtTile(tile) != null)
+            if (Game1.currentLocation.isCharacterAtTile(tile) is NPC npc)
             {
-                NPC npc = Game1.currentLocation.isCharacterAtTile(tile);
                 toReturn = npc.displayName;
                 if (npc.isVillager() || npc.CanSocialize)
                     category = CATEGORY.Farmers;
@@ -301,7 +300,11 @@ namespace stardew_access.Features
         /// <br/>name: This is the name of the tile. Default to null if the tile tile has nothing on it.</returns>
         public static (CATEGORY? category, string? name) getDynamicTilesInfo(int x, int y, bool lessInfo = false)
         {
-            if (Game1.currentLocation is Farm farm)
+            if (Game1.currentLocation.orePanPoint != Point.Zero && Game1.currentLocation.orePanPoint == new Point(x, y))
+            {
+                return (CATEGORY.Interactables, "panning spot");
+            }
+            else if (Game1.currentLocation is Farm farm)
             {
                 if (farm.GetMainMailboxPosition().X == x && farm.GetMainMailboxPosition().Y == y)
                     return (CATEGORY.Interactables, "Mail box");
@@ -408,7 +411,11 @@ namespace stardew_access.Features
             }
             else if (Game1.currentLocation is Beach beach)
             {
-                if (x == 58 && y == 13)
+                if (MainClass.ModHelper.Reflection.GetField<NPC>(beach, "oldMariner").GetValue() is NPC mariner && mariner.getTileLocation() == new Vector2(x, y))
+                {
+                    return (CATEGORY.NPCs, "Old Mariner");
+                }
+                else if (x == 58 && y == 13)
                 {
                     if (!beach.bridgeFixed.Value)
                         return (CATEGORY.Interactables, "Repair Bridge");

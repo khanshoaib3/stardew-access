@@ -96,15 +96,10 @@ namespace stardew_access.Features
 
                 int minutes = timeOfDay % 100;
                 int hours = timeOfDay / 100;
-                string amOrpm = "A M";
-                if (hours >= 12)
-                {
-                    amOrpm = "P M";
-                    if (hours > 12)
-                        hours -= 12;
-                }
-
-                return $"{hours}:{minutes} {amOrpm}";
+                string amOrpm = hours / 12 == 1 ? "PM" : "AM";
+                hours = hours % 12;
+                if (hours == 0) hours = 12;
+                return $"{hours}:{minutes:00} {amOrpm}";
             }
         }
 
