@@ -30,6 +30,12 @@
             "x":[8],
             "y":[7],
             "type":"interactable"
+        },
+        "Water bowl":
+        {
+            "x":[54],
+            "y":[7],
+            "type":"interactable"
         }
     },
     "farmcave":
