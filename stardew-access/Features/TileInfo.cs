@@ -864,7 +864,7 @@ namespace stardew_access.Features
                 62 => "Aquamarine Gem Bird",
                 64 => "Ruby Gem Bird",
                 66 => "Amethyst Gem Bird",
-                68 => "Topaz",
+                68 => "Topaz Gem Bird",
                 _ => "Gem Bird",
             };
         }
