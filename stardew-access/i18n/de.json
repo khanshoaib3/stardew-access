@@ -1,5 +1,12 @@
 {
     "warnings.health": "Warnung! Die Gesundheit liegt bei {{value}} Prozent!",
     "warnings.stamina": "Warnung! Ausdauer beträgt ar {{value}} Prozent!",
-    "warnings.time": "Warnung! Zeit ist {{value}}"
+    "warnings.time": "Warnung! Zeit ist {{value}}",
+    "grandpastory.scene0":"Opa, auf seinem Sterbebett.",
+    "grandpastory.scene4":"Mitarbeiter der JoJa corp.",
+    "grandpastory.scene5":"Mitarbeiter in ihren Kabinen, einige von ihnen sehen erschöpft aus, Sie selbst eingeschlossen.",
+    "grandpastory.scene6":"Du erreichst deinen Schreibtisch und findest Opas Brief.",
+    "grandpastory.letteropen":"Linksklick, um Opas Brief zu öffnen",
+    "intro.scene3":"Fahrt zur Bushaltestelle Stardew Valley",
+    "intro.scene4":"Stardew Valley 0.5 Meilen entfernt"
 }

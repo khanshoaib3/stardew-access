@@ -1,5 +1,12 @@
 {
     "warnings.health": "Aviso! A saúde está em {{value}} por cento!",
     "warnings.stamina": "Aviso! A resistência está em {{value}} por cento!",
-    "warnings.time": "Aviso! O tempo é {{value}}"
+    "warnings.time": "Aviso! O tempo é {{value}}",
+    "grandpastory.scene0":"Vovô, em seu leito de morte.",
+    "grandpastory.scene4":"Funcionários que trabalham na JoJa corp.",
+    "grandpastory.scene5":"Funcionários em seus cubículos, alguns deles parecem exaustos, incluindo você.",
+    "grandpastory.scene6":"Você chega à sua mesa encontrando a carta do vovô.",
+    "grandpastory.letteropen":"Clique com o botão esquerdo para abrir a carta do vovô",
+    "intro.scene3":"Viajar para o ponto de ônibus Stardew Valley",
+    "intro.scene4":"Vale Stardew a 0.5 km de distância"
 }

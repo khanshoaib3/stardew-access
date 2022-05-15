@@ -1,5 +1,12 @@
 {
     "warnings.health": "¡Advertencia! ¡La salud está al {{value}} por ciento!",
     "warnings.stamina": "¡Advertencia! ¡La resistencia es un {{value}} por ciento!",
-    "warnings.time": "¡Advertencia! El tiempo es {{valor}}"
+    "warnings.time": "¡Advertencia! El tiempo es {{valor}}",
+    "grandpastory.scene0":"Abuelo, en su lecho de muerte.",
+    "grandpastory.scene4":"Empleados que trabajan en JoJa corp.",
+    "grandpastory.scene5":"Empleados en sus cubículos, algunos de ellos parecen exhaustos, incluido usted.",
+    "grandpastory.scene6":"Llegas a tu escritorio y encuentras la carta del abuelo.",
+    "grandpastory.letteropen":"Haz clic izquierdo para abrir la carta del abuelo.",
+    "intro.scene3":"Viajando a la parada de autobús de Stardew Valley",
+    "intro.scene4":"Valle de Stardew a 0.5 millas de distancia"
 }

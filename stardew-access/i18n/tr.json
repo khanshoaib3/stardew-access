@@ -1,5 +1,12 @@
 {
     "warnings.health": "Uyarı! Sağlık yüzde {{değer}}!",
     "warnings.stamina": "uyarı! Dayanıklılık yüzde {{değer}}!",
-    "warnings.time": "Uyarı! Zaman {{değer}}"
+    "warnings.time": "Uyarı! Zaman {{değer}}",
+    "grandpastory.scene0":"Büyükbaba, ölüm döşeğinde.",
+    "grandpastory.scene4":"JoJa şirketinde çalışan çalışanlar",
+    "grandpastory.scene5":"Kabinlerinde çalışanlar, siz de dahil olmak üzere bazıları bitkin görünüyor.",
+    "grandpastory.scene6":"Dedenizin mektubunu bulmak için masanıza ulaşıyorsunuz.",
+    "grandpastory.letteropen":"Büyükbabanın mektubunu açmak için sol tıklayın",
+    "intro.scene3":"Stardew Valley otobüs durağına seyahat",
+    "intro.scene4":"Stardew vadisi 0.5 mil uzakta"
 }
