@@ -444,6 +444,10 @@ namespace stardew_access.Features
                 {
                     return (CATEGORY.Interactables, "Diggable spot");
                 }
+                else if (islandLocation.locationGemBird.Value is IslandGemBird bird && ((int)bird.position.X / Game1.tileSize) == x && ((int)bird.position.Y / Game1.tileSize) == y)
+                {
+                    return (CATEGORY.NPCs, GetGemBirdName(bird));
+                }
                 else if (Game1.currentLocation is IslandWest islandWest)
                 {
                     if (islandWest.shippingBinPosition.X == x && islandWest.shippingBinPosition.Y == y)
@@ -851,6 +855,19 @@ namespace stardew_access.Features
             return (null, CATEGORY.Others);
         }
         #endregion  
+
+        public static String GetGemBirdName(IslandGemBird bird)
+        {
+            return bird.itemIndex.Value switch
+            {
+                60 => "Emerald Gem Bird",
+                62 => "Aquamarine Gem Bird",
+                64 => "Ruby Gem Bird",
+                66 => "Amethyst Gem Bird",
+                68 => "Topaz",
+                _ => "Gem Bird",
+            };
+        }
 
         public static bool isMineDownLadderAtTile(int x, int y)
         {
