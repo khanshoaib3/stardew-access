@@ -21,6 +21,7 @@ namespace stardew_access.Features
         private Boolean relativeOffsetLock = false;
         private Vector2 prevPlayerPosition = Vector2.Zero, prevFacing = Vector2.Zero;
         private Vector2 finalTile = Vector2.Zero;
+        private Vector2 prevTile = Vector2.Zero;
 
         public Boolean isAutoWalking = false;
 
@@ -240,6 +241,12 @@ namespace stardew_access.Features
 
             if (this.isAutoWalking)
             {
+                if (Vector2.Distance(this.prevTile, CurrentPlayer.Position) >= 2f)
+                {
+                    prevTile = CurrentPlayer.Position;
+                    Game1.player.checkForFootstep();
+                }
+
                 if (this.finalTile != Vector2.Zero && this.finalTile == CurrentPlayer.Position)
                 {
                     MainClass.ScreenReader.Say("Reached destination", true);
