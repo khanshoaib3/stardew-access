@@ -194,6 +194,7 @@ namespace stardew_access
 
             bool isLeftAltPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt);
 
+            #region Simulate left and right clicks
             if (Game1.activeClickableMenu != null)
             {
                 bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
@@ -222,6 +223,36 @@ namespace stardew_access
                 }
                 #endregion
             }
+
+            if (Game1.currentMinigame != null)
+            {
+                bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
+                bool isLeftControlPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl);
+                bool isCustomizingChrachter = Game1.activeClickableMenu is CharacterCustomization || (TitleMenu.subMenu != null && TitleMenu.subMenu is CharacterCustomization);
+
+                #region Mouse Click Simulation
+                // Main Keybinds
+                if (isLeftControlPressed && Config.LeftClickMainKey.JustPressed())
+                {
+                    Game1.currentMinigame.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                }
+                if (isLeftShiftPressed && Config.RightClickMainKey.JustPressed())
+                {
+                    Game1.currentMinigame.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                }
+
+                // Alternate Keybinds
+                if (Config.LeftClickAlternateKey.JustPressed())
+                {
+                    Game1.currentMinigame.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                }
+                if (Config.RightClickAlternateKey.JustPressed())
+                {
+                    Game1.currentMinigame.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                }
+                #endregion
+            }
+            #endregion
 
             if (!Context.IsPlayerFree)
                 return;

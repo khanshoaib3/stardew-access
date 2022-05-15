@@ -7,31 +7,27 @@ namespace stardew_access.Patches
     public class MiniGamesPatches
     {
         public static string grandpaStoryQuery = " ";
+        public static string introQuery = " ";
 
         internal static void IntroPatch(Intro __instance, int ___currentState)
         {
             try
             {
-                MainClass.DebugLog(___currentState + "\t intro");
+                string toSpeak = " ";
                 if (___currentState == 3)
                 {
-                    string text = "Travelling to Stardew Valley bus stop";
-                    if (grandpaStoryQuery != text)
-                    {
-                        grandpaStoryQuery = text;
-                        MainClass.ScreenReader.Say(text, true);
-                        return;
-                    }
+                    toSpeak = "Travelling to Stardew Valley bus stop";
                 }
                 if (___currentState == 4)
                 {
-                    string text = "Stardew valley 0.5 miles away";
-                    if (grandpaStoryQuery != text)
-                    {
-                        grandpaStoryQuery = text;
-                        MainClass.ScreenReader.Say(text, true);
-                        return;
-                    }
+                    toSpeak = "Stardew valley 0.5 miles away";
+                }
+
+                if (toSpeak != " " && introQuery != toSpeak)
+                {
+                    introQuery = toSpeak;
+                    MainClass.ScreenReader.Say(toSpeak, false);
+                    return;
                 }
             }
             catch (System.Exception e)
@@ -45,46 +41,42 @@ namespace stardew_access.Patches
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                string toSpeak = " ";
+                MainClass.DebugLog("" + ___scene);
 
-                // TODO add scene 0 explaination
-                // if(___scene == 0)
-                // {
-                //
-                // }
+                if (___letterView != null)
+                {
+                    DialoguePatches.NarrateLetterContent(___letterView);
+                }
+
+                if (MainClass.ModHelper == null)
+                    return;
+
+                if (___scene == 0)
+                {
+                    toSpeak = MainClass.ModHelper.Translation.Get("grandpastory.scene0");
+                }
 
                 if (___drawGrandpa)
                 {
                     if (___grandpaSpeech.Count > 0 && ___grandpaSpeechTimer > 3000)
                     {
-                        string text = ___grandpaSpeech.Peek();
-                        if (grandpaStoryQuery != text)
-                        {
-                            grandpaStoryQuery = text;
-                            MainClass.ScreenReader.Say(text, true);
-                            return;
-                        }
+                        toSpeak = ___grandpaSpeech.Peek();
                     }
                 }
                 if (___scene == 3)
                 {
-                    string text = Game1.content.LoadString("Strings\\StringsFromCSFiles:GrandpaStory.cs.12059");
-                    if (grandpaStoryQuery != text)
-                    {
-                        grandpaStoryQuery = text;
-                        MainClass.ScreenReader.Say(text, true);
-                        return;
-                    }
+                    toSpeak = Game1.content.LoadString("Strings\\StringsFromCSFiles:GrandpaStory.cs.12059");
                 }
 
-                // TODO add scene 4 & 5 explaination
-                // if(___scene == 4)
-                // {
-                // 
-                // }
-                // if(___scene == 5)
-                // {
-                // 
-                // }
+                if (___scene == 4)
+                {
+                    toSpeak = MainClass.ModHelper.Translation.Get("grandpastory.scene4");
+                }
+                if (___scene == 5)
+                {
+                    toSpeak = MainClass.ModHelper.Translation.Get("grandpastory.scene5");
+                }
 
                 if (___scene == 6)
                 {
@@ -92,13 +84,7 @@ namespace stardew_access.Patches
                     {
                         if (clickableGrandpaLetterRect(___parallaxPan, ___grandpaSpeechTimer).Contains(x, y))
                         {
-                            string text = "Left click to open grandpa's letter";
-                            if (grandpaStoryQuery != text)
-                            {
-                                grandpaStoryQuery = text;
-                                MainClass.ScreenReader.Say(text, true);
-                                return;
-                            }
+                            toSpeak = MainClass.ModHelper.Translation.Get("grandpastory.letteropen");
                         }
                         else if (___letterView == null)
                         {
@@ -107,10 +93,16 @@ namespace stardew_access.Patches
                             return;
                         }
                     }
+                    else
+                    {
+                        toSpeak = MainClass.ModHelper.Translation.Get("grandpastory.scene6");
+                    }
                 }
-                if (___letterView != null)
+
+                if (toSpeak != " " && grandpaStoryQuery != toSpeak)
                 {
-                    DialoguePatches.NarrateLetterContent(___letterView);
+                    grandpaStoryQuery = toSpeak;
+                    MainClass.ScreenReader.Say(toSpeak, false);
                 }
             }
             catch (System.Exception e)
@@ -119,6 +111,7 @@ namespace stardew_access.Patches
             }
         }
 
+        // This method is taken from the game's source code
         private static Rectangle clickableGrandpaLetterRect(int ___parallaxPan, int ___grandpaSpeechTimer)
         {
             return new Rectangle((int)Utility.getTopLeftPositionForCenteringOnScreen(Game1.viewport, 1294, 730).X + (286 - ___parallaxPan) * 4, (int)Utility.getTopLeftPositionForCenteringOnScreen(Game1.viewport, 1294, 730).Y + 218 + Math.Max(0, Math.Min(60, (___grandpaSpeechTimer - 5000) / 8)), 524, 344);
