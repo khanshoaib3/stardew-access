@@ -38,6 +38,7 @@ namespace stardew_access
         public KeybindList TileCursorPreciseDownKey { get; set; } = KeybindList.Parse("LeftShift + Down");
         public KeybindList TileCursorPreciseLeftKey { get; set; } = KeybindList.Parse("LeftShift + Left");
         public KeybindList ToggleRelativeCursorLockKey { get; set; } = KeybindList.Parse("L");
+        public KeybindList AutoWalkToTile { get; set; } = KeybindList.Parse("LeftControl + Enter");
         #endregion
 
         // TODO Add the exclusion and focus list too
