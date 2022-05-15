@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using stardew_access.Patches;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Minigames;
 
 namespace stardew_access
 {
@@ -251,6 +252,18 @@ namespace stardew_access
                 original: AccessTools.Method(typeof(FieldOfficeMenu), nameof(FieldOfficeMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(DonationMenuPatches), nameof(DonationMenuPatches.FieldOfficeMenuPatch))
             );
+            #endregion
+
+            #region Mini Games
+            harmony.Patch(
+                        original: AccessTools.Method(typeof(Intro), nameof(Intro.draw), new Type[] { typeof(SpriteBatch) }),
+                        postfix: new HarmonyMethod(typeof(MiniGamesPatches), nameof(MiniGamesPatches.IntroPatch))
+                    );
+
+            harmony.Patch(
+                        original: AccessTools.Method(typeof(GrandpaStory), nameof(GrandpaStory.draw), new Type[] { typeof(SpriteBatch) }),
+                        postfix: new HarmonyMethod(typeof(MiniGamesPatches), nameof(MiniGamesPatches.GrandpaStoryPatch))
+                    );
             #endregion
 
             harmony.Patch(
