@@ -411,6 +411,9 @@ namespace stardew_access.Features
             }
             else if (Game1.currentLocation is Beach beach)
             {
+                if (MainClass.ModHelper == null)
+                    return (null, null);
+
                 if (MainClass.ModHelper.Reflection.GetField<NPC>(beach, "oldMariner").GetValue() is NPC mariner && mariner.getTileLocation() == new Vector2(x, y))
                 {
                     return (CATEGORY.NPCs, "Old Mariner");
