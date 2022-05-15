@@ -226,6 +226,16 @@ namespace stardew_access
             if (!Context.IsPlayerFree)
                 return;
 
+            // Stops the auto walk controller if any movement key(WASD) is pressed
+            if (TileViewerFeature.isAutoWalking &&
+            (e.Button.Equals(SButtonExtensions.ToSButton(Game1.options.moveUpButton[0]))
+            || e.Button.Equals(SButtonExtensions.ToSButton(Game1.options.moveDownButton[0]))
+            || e.Button.Equals(SButtonExtensions.ToSButton(Game1.options.moveLeftButton[0]))
+            || e.Button.Equals(SButtonExtensions.ToSButton(Game1.options.moveRightButton[0]))))
+            {
+                TileViewerFeature.stopAutoWalking(wasForced: true);
+            }
+
             // Narrate Current Location
             if (Config.LocationKey.JustPressed())
             {

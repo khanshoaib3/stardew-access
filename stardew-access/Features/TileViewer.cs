@@ -20,8 +20,9 @@ namespace stardew_access.Features
         private Vector2 relativeOffsetLockPosition = Vector2.Zero;
         private Boolean relativeOffsetLock = false;
         private Vector2 prevPlayerPosition = Vector2.Zero, prevFacing = Vector2.Zero;
-        private Boolean isAutoWalking = false;
         private Vector2 finalTile = Vector2.Zero;
+
+        public Boolean isAutoWalking = false;
 
         private Vector2 PlayerFacingVector
         {
@@ -133,20 +134,38 @@ namespace stardew_access.Features
             }
             else if (MainClass.Config.AutoWalkToTile.JustPressed() && StardewModdingAPI.Context.IsPlayerFree)
             {
-                PathFindController controller = new PathFindController(Game1.player, Game1.currentLocation, this.GetViewingTile().ToPoint(), Game1.player.FacingDirection);
-                controller.allowPlayerPathingInEvent = true;
-                if (controller.pathToEndPoint != null && controller.pathToEndPoint.Count > 0)
-                {
-                    Game1.player.controller = controller;
-                    this.isAutoWalking = true;
-                    this.finalTile = this.GetViewingTile();
-                    MainClass.ScreenReader.Say($"Moving to {this.finalTile.X}x {this.finalTile.Y}y", true);
-                }
-                else
-                {
-                    MainClass.ScreenReader.Say($"Cannot move to {this.finalTile.X}x {this.finalTile.Y}y", true);
-                }
+                this.startAutoWalking();
             }
+        }
+
+        private void startAutoWalking()
+        {
+            PathFindController controller = new PathFindController(Game1.player, Game1.currentLocation, this.GetViewingTile().ToPoint(), Game1.player.FacingDirection);
+            controller.allowPlayerPathingInEvent = true;
+            if (controller.pathToEndPoint != null && controller.pathToEndPoint.Count > 0)
+            {
+                Game1.player.controller = controller;
+                this.isAutoWalking = true;
+                this.finalTile = this.GetViewingTile();
+                MainClass.ScreenReader.Say($"Moving to {this.finalTile.X}x {this.finalTile.Y}y", true);
+            }
+            else
+            {
+                MainClass.ScreenReader.Say($"Cannot move to {this.finalTile.X}x {this.finalTile.Y}y", true);
+            }
+        }
+
+        /// <summary>
+        /// Stop the auto walk controller and reset variables 
+        /// </summary>
+        /// <param name="wasForced">Narrates a message if set to true.</param>
+        public void stopAutoWalking(bool wasForced = false)
+        {
+            this.finalTile = Vector2.Zero;
+            this.isAutoWalking = false;
+            Game1.player.controller = null;
+            if (wasForced)
+                MainClass.ScreenReader.Say("Stopped moving", true);
         }
 
         private void cursorMoveInput(Vector2 delta, Boolean precise = false)
@@ -219,11 +238,13 @@ namespace stardew_access.Features
             if (MainClass.Config.SnapMouse)
                 this.SnapMouseToPlayer();
 
-            if (this.isAutoWalking && this.finalTile != Vector2.Zero && this.finalTile == CurrentPlayer.Position)
+            if (this.isAutoWalking)
             {
-                MainClass.ScreenReader.Say("Reached destination", true);
-                this.finalTile = Vector2.Zero;
-                this.isAutoWalking = false;
+                if (this.finalTile != Vector2.Zero && this.finalTile == CurrentPlayer.Position)
+                {
+                    MainClass.ScreenReader.Say("Reached destination", true);
+                    this.stopAutoWalking();
+                }
             }
 
         }
