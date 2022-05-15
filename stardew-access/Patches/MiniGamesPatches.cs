@@ -13,14 +13,18 @@ namespace stardew_access.Patches
         {
             try
             {
+                if (MainClass.ModHelper == null)
+                    return;
+
                 string toSpeak = " ";
+
                 if (___currentState == 3)
                 {
-                    toSpeak = "Travelling to Stardew Valley bus stop";
+                    toSpeak = MainClass.ModHelper.Translation.Get("intro.scene3");
                 }
-                if (___currentState == 4)
+                else if (___currentState == 4)
                 {
-                    toSpeak = "Stardew valley 0.5 miles away";
+                    toSpeak = MainClass.ModHelper.Translation.Get("intro.scene4");
                 }
 
                 if (toSpeak != " " && introQuery != toSpeak)
@@ -56,29 +60,26 @@ namespace stardew_access.Patches
                 {
                     toSpeak = MainClass.ModHelper.Translation.Get("grandpastory.scene0");
                 }
-
-                if (___drawGrandpa)
+                else if (___drawGrandpa)
                 {
                     if (___grandpaSpeech.Count > 0 && ___grandpaSpeechTimer > 3000)
                     {
                         toSpeak = ___grandpaSpeech.Peek();
                     }
                 }
-                if (___scene == 3)
+                else if (___scene == 3)
                 {
                     toSpeak = Game1.content.LoadString("Strings\\StringsFromCSFiles:GrandpaStory.cs.12059");
                 }
-
-                if (___scene == 4)
+                else if (___scene == 4)
                 {
                     toSpeak = MainClass.ModHelper.Translation.Get("grandpastory.scene4");
                 }
-                if (___scene == 5)
+                else if (___scene == 5)
                 {
                     toSpeak = MainClass.ModHelper.Translation.Get("grandpastory.scene5");
                 }
-
-                if (___scene == 6)
+                else if (___scene == 6)
                 {
                     if (___grandpaSpeechTimer > 3000)
                     {
