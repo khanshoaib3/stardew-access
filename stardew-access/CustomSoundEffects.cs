@@ -57,7 +57,7 @@ namespace stardew_access
                     }
 
                     SoundEffect effect;
-                    string filePath = Path.Combine(MainClass.ModHelper.DirectoryPath, "sounds", $"{soundEffect.Key}.wav");
+                    string filePath = Path.Combine(MainClass.ModHelper.DirectoryPath, "assets", "sounds", $"{soundEffect.Key}.wav");
                     using (FileStream stream = new(filePath, FileMode.Open))
                     {
                         effect = SoundEffect.FromStream(stream);

@@ -300,7 +300,7 @@ namespace stardew_access.Features
         /// <br/>name: This is the name of the tile. Default to null if the tile tile has nothing on it.</returns>
         public static (CATEGORY? category, string? name) getDynamicTilesInfo(int x, int y, bool lessInfo = false)
         {
-            if (Game1.currentLocation.orePanPoint != Point.Zero && Game1.currentLocation.orePanPoint == new Point(x, y))
+            if (Game1.currentLocation.orePanPoint.Value != Point.Zero && Game1.currentLocation.orePanPoint.Value == new Point(x, y))
             {
                 return (CATEGORY.Interactables, "panning spot");
             }
