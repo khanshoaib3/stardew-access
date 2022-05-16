@@ -125,7 +125,7 @@ namespace stardew_access.Patches
                         return;
 
                     int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                    bool isBPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.B);
+                    bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
                     string ingredients = "";
                     string name = currentBluprint.displayName;
                     string upgradeName = currentBluprint.nameOfBuildingToUpgrade;
@@ -162,7 +162,7 @@ namespace stardew_access.Patches
 
                     blueprintInfo = $"{name}, Price: {price}, Ingredients: {ingredients}, Dimensions: {width} width and {height} height, Description: {description}";
 
-                    if (isBPressed && !isSayingBlueprintInfo)
+                    if (isCPressed && !isSayingBlueprintInfo)
                     {
                         SayBlueprintInfo(blueprintInfo);
                     }
