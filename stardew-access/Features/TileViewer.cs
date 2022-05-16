@@ -148,6 +148,7 @@ namespace stardew_access.Features
                 Game1.player.controller = controller;
                 this.isAutoWalking = true;
                 this.finalTile = this.GetViewingTile();
+                MainClass.ReadTileFeature.pause();
                 MainClass.ScreenReader.Say($"Moving to {this.finalTile.X}x {this.finalTile.Y}y", true);
             }
             else
@@ -165,6 +166,7 @@ namespace stardew_access.Features
             this.finalTile = Vector2.Zero;
             this.isAutoWalking = false;
             Game1.player.controller = null;
+            MainClass.ReadTileFeature.resume();
             if (wasForced)
                 MainClass.ScreenReader.Say("Stopped moving", true);
         }

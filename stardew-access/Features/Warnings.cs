@@ -32,7 +32,7 @@ namespace stardew_access.Features
             {
                 MainClass.ScreenReader.Say(toSpeak, true);
                 // Pause the read tile feature to prevent interruption in warning message
-                MainClass.ReadTileFeature.pause();
+                MainClass.ReadTileFeature.pauseUntil();
             }
 
             prevHour = hours;
@@ -50,7 +50,7 @@ namespace stardew_access.Features
             {
                 MainClass.ScreenReader.Say(toSpeak, true);
                 // Pause the read tile feature to prevent interruption in warning message
-                MainClass.ReadTileFeature.pause();
+                MainClass.ReadTileFeature.pauseUntil();
             }
 
             prevStamina = stamina;
@@ -68,7 +68,7 @@ namespace stardew_access.Features
             {
                 MainClass.ScreenReader.Say(toSpeak, true);
                 // Pause the read tile feature to prevent interruption in warning message
-                MainClass.ReadTileFeature.pause();
+                MainClass.ReadTileFeature.pauseUntil();
             }
 
             prevHealth = health;

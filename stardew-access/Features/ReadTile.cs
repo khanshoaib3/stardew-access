@@ -34,13 +34,29 @@ namespace stardew_access.Features
         }
 
         /// <summary>
-        /// Pauses the read tile for the provided time.
+        /// Pauses the feature for the provided time.
         /// </summary>
         /// <param name="time">The amount of time we want to pause the execution (in ms).<br/>Default is 2500 (2.5s).</param>
-        public void pause(int time = 2500)
+        public void pauseUntil(int time = 2500)
         {
             this.shouldPause = true;
             Task.Delay(time).ContinueWith(_ => { this.shouldPause = false; });
+        }
+
+        /// <summary>
+        /// Pauses the feature
+        /// </summary>
+        public void pause()
+        {
+            this.shouldPause = true;
+        }
+
+        /// <summary>
+        /// Resumes the feature
+        /// </summary>
+        public void resume()
+        {
+            this.shouldPause = false;
         }
 
         public void run(bool manuallyTriggered = false, bool playersPosition = false)
