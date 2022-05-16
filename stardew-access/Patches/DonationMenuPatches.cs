@@ -82,7 +82,7 @@ namespace stardew_access.Patches
                     int i = narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y);
                     if (i != -9999)
                     {
-                        bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C); // For donating hovered item
+                        bool isCPressed = MainClass.Config.PrimaryInfoKey.JustPressed(); // For donating hovered item
 
                         if (isCPressed && __instance.inventory.actualInventory[i] != null)
                         {

@@ -151,11 +151,11 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I); // For the ingredients
-                    bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C); // For the items in inventory
-                    bool isPPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.P); // For the Purchase Button
-                    bool isVPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.V); // For the ingredient input slots
-                    bool isBackPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Back); // For the back button
+                    bool isIPressed = MainClass.Config.BundleMenuIngredientsInputSlotKey.JustPressed(); // For the ingredients
+                    bool isCPressed = MainClass.Config.BundleMenuInventoryItemsKey.JustPressed(); // For the items in inventory
+                    bool isPPressed = MainClass.Config.BundleMenuPurchaseButtonKey.JustPressed(); // For the Purchase Button
+                    bool isVPressed = MainClass.Config.BundleMenuIngredientsInputSlotKey.JustPressed(); // For the ingredient input slots
+                    bool isBackPressed = MainClass.Config.BundleMenuBackButtonKey.JustPressed(); // For the back button
                     bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
                     if (isIPressed && !isUsingCustomButtons)

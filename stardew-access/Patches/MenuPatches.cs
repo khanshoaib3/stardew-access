@@ -171,7 +171,7 @@ namespace stardew_access.Patches
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
+                bool isCPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
                 string toSpeak = " ", extra = "";
 
                 if (___confirmingEmpty)
@@ -355,7 +355,7 @@ namespace stardew_access.Patches
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C); // For narrating animal details
+                bool isCPressed = MainClass.Config.PrimaryInfoKey.JustPressed(); // For narrating animal details
                 bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
                 string toSpeak = " ", details = " ";
 

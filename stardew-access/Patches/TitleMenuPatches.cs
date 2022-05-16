@@ -175,21 +175,13 @@ namespace stardew_access.Patches
         {
             try
             {
-                bool isNextArrowPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right);
-                bool isPrevArrowPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left);
-
-                if (__instance.backButton.containsPoint != null && __instance.backButton.visible && __instance.backButton.containsPoint((int)Game1.getMouseX(true), (int)Game1.getMouseY(true)))
-                {
-
-                }
-
-                if (isNextArrowPressed && !isRunning)
+                if (MainClass.Config.CharacterCreationMenuNextKey.JustPressed() && !isRunning)
                 {
                     isRunning = true;
                     CycleThroughItems(true, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel);
                     Task.Delay(200).ContinueWith(_ => { isRunning = false; });
                 }
-                else if (isPrevArrowPressed && !isRunning)
+                else if (MainClass.Config.CharacterCreationMenuPreviousKey.JustPressed() && !isRunning)
                 {
                     isRunning = true;
                     CycleThroughItems(false, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel);

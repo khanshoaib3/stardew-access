@@ -191,15 +191,13 @@ namespace stardew_access.Patches
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
-                bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
-                if (isLeftShiftPressed && isIPressed && __instance.inventory.inventory.Count > 0)
+                if (MainClass.Config.SnapToFirstInventorySlotKey.JustPressed() && __instance.inventory.inventory.Count > 0)
                 {
                     __instance.inventory.inventory[0].snapMouseCursorToCenter();
                     __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
                 }
-                else if (!isLeftShiftPressed && isIPressed && __instance.forSaleButtons.Count > 0)
+                else if (MainClass.Config.SnapToFirstSecondaryInventorySlotKey.JustPressed() && __instance.forSaleButtons.Count > 0)
                 {
                     __instance.forSaleButtons[0].snapMouseCursorToCenter();
                     __instance.setCurrentlySnappedComponentTo(__instance.forSaleButtons[0].myID);
@@ -413,15 +411,13 @@ namespace stardew_access.Patches
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
-                bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
-                if (isLeftShiftPressed && isIPressed && __instance.inventory.inventory.Count > 0)
+                if (MainClass.Config.SnapToFirstInventorySlotKey.JustPressed() && __instance.inventory.inventory.Count > 0)
                 {
                     __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
                     __instance.inventory.inventory[0].snapMouseCursorToCenter();
                 }
-                else if (!isLeftShiftPressed && isIPressed && __instance.ItemsToGrabMenu.inventory.Count > 0 && !__instance.shippingBin)
+                else if (MainClass.Config.SnapToFirstSecondaryInventorySlotKey.JustPressed() && __instance.ItemsToGrabMenu.inventory.Count > 0 && !__instance.shippingBin)
                 {
                     __instance.setCurrentlySnappedComponentTo(__instance.ItemsToGrabMenu.inventory[0].myID);
                     __instance.ItemsToGrabMenu.inventory[0].snapMouseCursorToCenter();
@@ -677,25 +673,22 @@ namespace stardew_access.Patches
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
-                bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
-                bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
-                if (isLeftShiftPressed && isIPressed && __instance.inventory.inventory.Count > 0)
+                if (MainClass.Config.SnapToFirstInventorySlotKey.JustPressed() && __instance.inventory.inventory.Count > 0)
                 {
                     // snap to first inventory slot
                     __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
                     __instance.inventory.inventory[0].snapMouseCursorToCenter();
                     currentSelectedCraftingRecipe = -1;
                 }
-                else if (!isLeftShiftPressed && isIPressed && __instance.pagesOfCraftingRecipes[___currentCraftingPage].Count > 0)
+                else if (MainClass.Config.SnapToFirstSecondaryInventorySlotKey.JustPressed() && __instance.pagesOfCraftingRecipes[___currentCraftingPage].Count > 0)
                 {
                     // snap to first crafting recipe
                     __instance.setCurrentlySnappedComponentTo(__instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(0).Key.myID);
                     __instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(0).Key.snapMouseCursorToCenter();
                     currentSelectedCraftingRecipe = 0;
                 }
-                else if (isCPressed && !isSelectingRecipe)
+                else if (MainClass.Config.CraftingMenuCycleThroughRecipiesKey.JustPressed() && !isSelectingRecipe)
                 {
                     isSelectingRecipe = true;
                     CycleThroughRecipies(__instance.pagesOfCraftingRecipes, ___currentCraftingPage, __instance);

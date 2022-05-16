@@ -125,7 +125,7 @@ namespace stardew_access.Patches
                         return;
 
                     int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                    bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
+                    bool isCPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
                     string ingredients = "";
                     string name = currentBluprint.displayName;
                     string upgradeName = currentBluprint.nameOfBuildingToUpgrade;

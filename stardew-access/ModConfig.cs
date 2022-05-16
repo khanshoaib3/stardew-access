@@ -45,6 +45,28 @@ namespace stardew_access
         public Boolean RadarStereoSound { get; set; } = true;
         #endregion
 
+        #region Menu Keys
+        public KeybindList PrimaryInfoKey { get; set; } = KeybindList.Parse("C");
+
+        // Charachter Creatinon menu (new game menu) keys
+        public KeybindList CharacterCreationMenuNextKey { get; set; } = KeybindList.Parse("Right");
+        public KeybindList CharacterCreationMenuPreviousKey { get; set; } = KeybindList.Parse("Left");
+
+        // Bundle menu keys
+        public KeybindList BundleMenuIngredientsKey { get; set; } = KeybindList.Parse("I");
+        public KeybindList BundleMenuInventoryItemsKey { get; set; } = KeybindList.Parse("C");
+        public KeybindList BundleMenuPurchaseButtonKey { get; set; } = KeybindList.Parse("P");
+        public KeybindList BundleMenuIngredientsInputSlotKey { get; set; } = KeybindList.Parse("V");
+        public KeybindList BundleMenuBackButtonKey { get; set; } = KeybindList.Parse("Back");
+
+        // Menus with secondary inventory(shop inventory or chest inventory or crafting recipe list)
+        public KeybindList SnapToFirstInventorySlotKey { get; set; } = KeybindList.Parse("I");
+        public KeybindList SnapToFirstSecondaryInventorySlotKey { get; set; } = KeybindList.Parse("LeftShift + I");
+
+        // Crafting menu
+        public KeybindList CraftingMenuCycleThroughRecipiesKey { get; set; } = KeybindList.Parse("C");
+        #endregion
+
         #region Others
         public KeybindList HealthNStaminaKey { get; set; } = KeybindList.Parse("H");
         public KeybindList PositionKey { get; set; } = KeybindList.Parse("K");
