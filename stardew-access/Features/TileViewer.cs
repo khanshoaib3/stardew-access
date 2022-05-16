@@ -133,7 +133,7 @@ namespace stardew_access.Features
             {
                 this.cursorMoveInput(new Vector2(-Game1.tileSize, 0));
             }
-            else if (MainClass.Config.AutoWalkToTile.JustPressed() && StardewModdingAPI.Context.IsPlayerFree)
+            else if (MainClass.Config.AutoWalkToTileKey.JustPressed() && StardewModdingAPI.Context.IsPlayerFree)
             {
                 this.startAutoWalking();
             }

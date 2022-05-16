@@ -16,19 +16,19 @@ namespace stardew_access.Patches
 
                 if (__instance.chatBox.Selected)
                 {
-                    bool isPrevArrowPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.PageUp);
-                    bool isNextArrowPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.PageDown);
+                    bool isPrevButtonPressed = MainClass.Config.ChatMenuNextKey.JustPressed();
+                    bool isNextButtonPressed = MainClass.Config.ChatMenuPreviousKey.JustPressed();
 
                     if (___messages.Count > 0)
                     {
                         #region To narrate previous and next chat messages
-                        if (isNextArrowPressed && !isChatRunning)
+                        if (isNextButtonPressed && !isChatRunning)
                         {
                             isChatRunning = true;
                             CycleThroughChatMessages(true, ___messages);
                             Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
                         }
-                        else if (isPrevArrowPressed && !isChatRunning)
+                        else if (isPrevButtonPressed && !isChatRunning)
                         {
                             isChatRunning = true;
                             CycleThroughChatMessages(false, ___messages);
@@ -58,22 +58,9 @@ namespace stardew_access.Patches
         private static void CycleThroughChatMessages(bool increase, List<ChatMessage> ___messages)
         {
             string toSpeak = " ";
-            if (increase)
-            {
-                ++currentChatMessageIndex;
-                if (currentChatMessageIndex > ___messages.Count - 1)
-                {
-                    currentChatMessageIndex = ___messages.Count - 1;
-                }
-            }
-            else
-            {
-                --currentChatMessageIndex;
-                if (currentChatMessageIndex < 0)
-                {
-                    currentChatMessageIndex = 0;
-                }
-            }
+
+            currentChatMessageIndex = (increase) ? (Math.Min(currentChatMessageIndex + 1, ___messages.Count - 1)) : (currentChatMessageIndex = Math.Max(currentChatMessageIndex - 1, 0));
+
             ___messages[currentChatMessageIndex].message.ForEach(message =>
             {
                 toSpeak += $"{message.message}, ";
