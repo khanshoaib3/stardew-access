@@ -30,12 +30,6 @@
             "x":[8],
             "y":[7],
             "type":"interactable"
-        },
-        "Water bowl":
-        {
-            "x":[54],
-            "y":[7],
-            "type":"interactable"
         }
     },
     "farmcave":
@@ -937,6 +931,18 @@
     },
     "volcanodungeon0":
     {
+        "Island North Entrance 1":
+        {
+            "x":[31],
+            "y":[54],
+            "type":"door"
+        },
+        "Island North Entrance 2":
+        {
+            "x":[6],
+            "y":[50],
+            "type":"door"
+        },
         "Caldera Entrance":
         {
             "x":[44],
@@ -1335,7 +1341,13 @@
         },
         "Island North Entrance":
         {
-            "x":[17],
+            "x":[17,18,19],
+            "y":[0],
+            "type":"door"
+        },
+        "Island North Entrance 2":
+        {
+            "x":[27,28],
             "y":[0],
             "type":"door"
         },
@@ -1370,6 +1382,12 @@
         {
             "x":[20],
             "y":[22],
+            "type":"door"
+        },
+        "Door to Shipwreck Interior":
+        {
+            "x":[60],
+            "y":[92],
             "type":"door"
         },
         "Hole 1":
@@ -1421,6 +1439,15 @@
             "type":"door"
         }
     },
+    "captainroom":
+    {
+        "Exit":
+        {
+            "x":[0],
+            "y":[5],
+            "type":"door"
+        }
+    },
     "islandfarmcave":
     {
         "Exit":
@@ -1440,7 +1467,13 @@
     {
         "Island South Entrance":
         {
-            "x":[35],
+            "x":[35,36,37],
+            "y":[89],
+            "type":"door"
+        },
+        "Island South Entrance 2":
+        {
+            "x":[43,44],
             "y":[89],
             "type":"door"
         },
@@ -1464,8 +1497,14 @@
         },
         "Volcano Dungeon Entrance":
         {
-            "x":[40],
-            "y":[22],
+            "x":[39,40,41,42],
+            "y":[21],
+            "type":"door"
+        },
+        "Volcano Dungeon Entrance 2":
+        {
+            "x":[12],
+            "y":[31],
             "type":"door"
         },
         "Volcano Parrot Express":
