@@ -10,6 +10,9 @@ namespace stardew_access.Patches
     {
         private static int saveGameIndex = -1;
         private static bool isRunning = false;
+        public static string characterCreationMenuQueryKey = " ";
+        public static string prevPetName = " ";
+
 
         internal static void CoopMenuPatch(CoopMenu __instance, CoopMenu.Tab ___currentTab)
         {
@@ -171,11 +174,43 @@ namespace stardew_access.Patches
         }
 
         internal static void CharacterCustomizationMenuPatch(CharacterCustomization __instance, bool ___skipIntro,
-        ClickableComponent ___startingCabinsLabel, ClickableComponent ___difficultyModifierLabel)
+        ClickableComponent ___startingCabinsLabel, ClickableComponent ___difficultyModifierLabel, TextBox ___nameBox,
+        TextBox ___farmnameBox, TextBox ___favThingBox)
         {
             try
             {
-                if (MainClass.Config.CharacterCreationMenuNextKey.JustPressed() && !isRunning)
+                bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
+                string toSpeak = " ";
+                string currentPetName = getCurrentPetName();
+
+                if (___nameBox.Selected)
+                {
+                    toSpeak = ___nameBox.Text;
+
+                    if (isEscPressed)
+                    {
+                        ___nameBox.Selected = false;
+                    }
+                }
+                else if (___farmnameBox.Selected)
+                {
+                    toSpeak = ___farmnameBox.Text;
+
+                    if (isEscPressed)
+                    {
+                        ___farmnameBox.Selected = false;
+                    }
+                }
+                else if (___favThingBox.Selected)
+                {
+                    toSpeak = ___favThingBox.Text;
+
+                    if (isEscPressed)
+                    {
+                        ___favThingBox.Selected = false;
+                    }
+                }
+                else if (MainClass.Config.CharacterCreationMenuNextKey.JustPressed() && !isRunning)
                 {
                     isRunning = true;
                     CycleThroughItems(true, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel);
@@ -186,6 +221,18 @@ namespace stardew_access.Patches
                     isRunning = true;
                     CycleThroughItems(false, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel);
                     Task.Delay(200).ContinueWith(_ => { isRunning = false; });
+                }
+
+                if (prevPetName != currentPetName)
+                {
+                    prevPetName = currentPetName;
+                    toSpeak = $"Current Pet: {currentPetName} \n {toSpeak}";
+                }
+
+                if (characterCreationMenuQueryKey != toSpeak && toSpeak != " ")
+                {
+                    characterCreationMenuQueryKey = toSpeak;
+                    MainClass.ScreenReader.Say(toSpeak, true);
                 }
             }
             catch (Exception e)
@@ -204,21 +251,21 @@ namespace stardew_access.Patches
 
             #region Character related
             if (__instance.nameBoxCC != null && __instance.nameBoxCC.visible)
-                buttons.Add(__instance.nameBoxCC, "Enter Farmer's Name");
+                buttons.Add(__instance.nameBoxCC, "Farmer's Name Text box");
 
             if (__instance.farmnameBoxCC != null && __instance.farmnameBoxCC.visible)
-                buttons.Add(__instance.farmnameBoxCC, "Enter Farm's Name");
+                buttons.Add(__instance.farmnameBoxCC, "Farm's Name Text box");
 
             if (__instance.favThingBoxCC != null && __instance.favThingBoxCC.visible)
-                buttons.Add(__instance.favThingBoxCC, "Enter Favourite Thing");
+                buttons.Add(__instance.favThingBoxCC, "Favourite Thing Text box");
 
             if (__instance.petPortraitBox.HasValue) // Cannot get petButtons like with others
             {
                 ClickableComponent petPrev = __instance.getComponentWithID(511);
-                buttons.Add(petPrev, "Previous pet: " + getPetName(-1, __instance.isModifyingExistingPet));
+                buttons.Add(petPrev, "Previous pet button");
 
                 ClickableComponent petNext = __instance.getComponentWithID(510);
-                buttons.Add(petNext, "Next pet: " + getPetName(+1, __instance.isModifyingExistingPet));
+                buttons.Add(petNext, "Next pet button");
             }
 
             if (__instance.randomButton != null && __instance.randomButton.visible)
@@ -226,21 +273,18 @@ namespace stardew_access.Patches
 
             if (__instance.genderButtons.Count > 0)
             {
-                buttons.Add(__instance.genderButtons[0], "Gender: Male Button");
-                buttons.Add(__instance.genderButtons[1], "Gender: Female Button");
+                buttons.Add(__instance.genderButtons[0], ((Game1.player.IsMale) ? "Selected " : "") + "Gender: Male Button");
+                buttons.Add(__instance.genderButtons[1], ((!Game1.player.IsMale) ? "Selected " : "") + "Gender: Female Button");
             }
             #endregion
 
             #region Farm layout related
             if (__instance.farmTypeButtons.Count > 0)
             {
-                buttons.Add(__instance.farmTypeButtons[0], getFarmHoverText(__instance.farmTypeButtons[0]));
-                buttons.Add(__instance.farmTypeButtons[1], getFarmHoverText(__instance.farmTypeButtons[1]));
-                buttons.Add(__instance.farmTypeButtons[2], getFarmHoverText(__instance.farmTypeButtons[2]));
-                buttons.Add(__instance.farmTypeButtons[3], getFarmHoverText(__instance.farmTypeButtons[3]));
-                buttons.Add(__instance.farmTypeButtons[4], getFarmHoverText(__instance.farmTypeButtons[4]));
-                buttons.Add(__instance.farmTypeButtons[5], getFarmHoverText(__instance.farmTypeButtons[5]));
-                buttons.Add(__instance.farmTypeButtons[6], getFarmHoverText(__instance.farmTypeButtons[6]));
+                for (int i = 0; i < __instance.farmTypeButtons.Count; i++)
+                {
+                    buttons.Add(__instance.farmTypeButtons[i], ((i == Game1.whichFarm) ? "Selected " : "") + getFarmHoverText(__instance.farmTypeButtons[i]));
+                }
             }
 
             if (__instance.farmTypeNextPageButton != null && __instance.farmTypeNextPageButton.visible)
@@ -314,26 +358,8 @@ namespace stardew_access.Patches
             }
         }
 
-        private static string getPetName(int change, bool isModifyingExistingPet)
+        private static string getCurrentPetName()
         {
-            Game1.player.whichPetBreed += change;
-            if (Game1.player.whichPetBreed >= 3)
-            {
-                Game1.player.whichPetBreed = 0;
-                if (!isModifyingExistingPet)
-                {
-                    Game1.player.catPerson = !Game1.player.catPerson;
-                }
-            }
-            else if (Game1.player.whichPetBreed < 0)
-            {
-                Game1.player.whichPetBreed = 2;
-                if (!isModifyingExistingPet)
-                {
-                    Game1.player.catPerson = !Game1.player.catPerson;
-                }
-            }
-
             return ((Game1.player.catPerson) ? "Cat" : "Dog") + " Breed: " + Game1.player.whichPetBreed;
         }
 
