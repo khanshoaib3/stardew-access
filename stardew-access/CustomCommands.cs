@@ -347,7 +347,7 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("buildlist", "List all buildings for selection for upgrading/demolishing/painting", (string commmand, string[] args) =>
             {
-                if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu) || !BuildingNAnimalMenuPatches.isOnFarm)
+                if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu && Game1.activeClickableMenu is not AnimalQueryMenu) || !BuildingNAnimalMenuPatches.isOnFarm)
                 {
                     MainClass.DebugLog($"Cannot list buildings.");
                     return;
@@ -380,7 +380,7 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("buildsel", "Select the building index which you want to upgrade/demolish/paint", (string commmand, string[] args) =>
             {
-                if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu) || !BuildingNAnimalMenuPatches.isOnFarm)
+                if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu && Game1.activeClickableMenu is not AnimalQueryMenu) || !BuildingNAnimalMenuPatches.isOnFarm)
                 {
                     MainClass.DebugLog($"Cannot select building.");
                     return;
@@ -450,7 +450,14 @@ namespace stardew_access
 
                 string? response = null;
 
-                if (Game1.activeClickableMenu is PurchaseAnimalsMenu) { BuildingNAnimalMenuPatches.PurchaseAnimal(BuildingNAnimalMenuPatches.availableBuildings[index]); }
+                if (Game1.activeClickableMenu is PurchaseAnimalsMenu)
+                {
+                    BuildingNAnimalMenuPatches.PurchaseOrMoveAnimal(BuildingNAnimalMenuPatches.availableBuildings[index]);
+                }
+                else if (Game1.activeClickableMenu is AnimalQueryMenu)
+                {
+                    BuildingNAnimalMenuPatches.PurchaseOrMoveAnimal(BuildingNAnimalMenuPatches.availableBuildings[index]);
+                }
                 else
                 {
                     if (BuildingNAnimalMenuPatches.isConstructing && !BuildingNAnimalMenuPatches.isUpgrading) { response = BuildingNAnimalMenuPatches.Contstruct(BuildingNAnimalMenuPatches.marked[index]); }
