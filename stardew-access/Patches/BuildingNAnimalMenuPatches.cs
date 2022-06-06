@@ -637,59 +637,78 @@ namespace stardew_access.Patches
             return response;
         }
 
-        public static void PurchaseOrMoveAnimal(Building? selection)
+        public static void PurchaseAnimal(Building? selection)
         {
             if (selection == null)
                 return;
 
-            if (purchaseAnimalsMenu == null && animalQueryMenu == null)
+            if (purchaseAnimalsMenu == null)
                 return;
 
             int x = (selection.tileX.Value * Game1.tileSize) - Game1.viewport.X;
             int y = (selection.tileY.Value * Game1.tileSize) - Game1.viewport.Y;
 
-            if (purchaseAnimalsMenu != null)
+            if (animalBeingPurchasedOrMoved != null && !selection.buildingType.Value.Contains(animalBeingPurchasedOrMoved.buildingTypeILiveIn.Value))
             {
-                if (animalBeingPurchasedOrMoved != null && !selection.buildingType.Value.Contains(animalBeingPurchasedOrMoved.buildingTypeILiveIn.Value))
-                {
-                    string warn = Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11326", animalBeingPurchasedOrMoved.displayType);
-                    MainClass.ScreenReader.Say(warn, true);
-                    return;
-                }
-
-                if (((AnimalHouse)selection.indoors.Value).isFull())
-                {
-                    string warn = Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11321");
-                    MainClass.ScreenReader.Say(warn, true);
-                    return;
-                }
-
-                purchaseAnimalsMenu.receiveLeftClick(x, y);
+                string warn = Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11326", animalBeingPurchasedOrMoved.displayType);
+                MainClass.ScreenReader.Say(warn, true);
+                return;
             }
-            else if (animalQueryMenu != null)
-            {
-                if (animalBeingPurchasedOrMoved != null && !selection.buildingType.Value.Contains(animalBeingPurchasedOrMoved.buildingTypeILiveIn.Value))
-                {
-                    string warn = Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_CantLiveThere", animalBeingPurchasedOrMoved.shortDisplayType());
-                    MainClass.ScreenReader.Say(warn, true);
-                    return;
-                }
 
+            if (((AnimalHouse)selection.indoors.Value).isFull())
+            {
+                string warn = Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11321");
+                MainClass.ScreenReader.Say(warn, true);
+                return;
+            }
+
+            purchaseAnimalsMenu.receiveLeftClick(x, y);
+        }
+
+        public static void MoveAnimal(Building? selection)
+        {
+            if (selection == null)
+                return;
+
+            if (animalQueryMenu == null)
+                return;
+
+            if (animalBeingPurchasedOrMoved == null)
+                return;
+
+            // The following code is taken from the game's source code [AnimalQueryMenu.cs::receiveLeftClick]
+            if (selection.buildingType.Value.Contains(animalBeingPurchasedOrMoved.buildingTypeILiveIn.Value))
+            {
                 if (((AnimalHouse)selection.indoors.Value).isFull())
                 {
                     string warn = Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_BuildingFull");
                     MainClass.ScreenReader.Say(warn, true);
                     return;
                 }
-                if (animalBeingPurchasedOrMoved != null && selection.Equals(animalBeingPurchasedOrMoved.home))
+                if (selection.Equals(animalBeingPurchasedOrMoved.home))
                 {
                     string warn = Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_AlreadyHome");
                     MainClass.ScreenReader.Say(warn, true);
                     return;
                 }
-
-                animalQueryMenu.receiveLeftClick(x, y);
+                ((AnimalHouse)animalBeingPurchasedOrMoved.home.indoors.Value).animalsThatLiveHere.Remove(animalBeingPurchasedOrMoved.myID.Value);
+                if (((AnimalHouse)animalBeingPurchasedOrMoved.home.indoors.Value).animals.ContainsKey(animalBeingPurchasedOrMoved.myID.Value))
+                {
+                    ((AnimalHouse)selection.indoors.Value).animals.Add(animalBeingPurchasedOrMoved.myID.Value, animalBeingPurchasedOrMoved);
+                    ((AnimalHouse)animalBeingPurchasedOrMoved.home.indoors.Value).animals.Remove(animalBeingPurchasedOrMoved.myID.Value);
+                }
+                animalBeingPurchasedOrMoved.home = selection;
+                animalBeingPurchasedOrMoved.homeLocation.Value = new Vector2((int)selection.tileX.Value, (int)selection.tileY.Value);
+                ((AnimalHouse)selection.indoors.Value).animalsThatLiveHere.Add(animalBeingPurchasedOrMoved.myID.Value);
+                animalBeingPurchasedOrMoved.makeSound();
+                Game1.globalFadeToBlack(animalQueryMenu.finishedPlacingAnimal);
             }
+            else
+            {
+                string warn = Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_CantLiveThere");
+                MainClass.ScreenReader.Say(warn, true);
+            }
+            return;
         }
     }
 }

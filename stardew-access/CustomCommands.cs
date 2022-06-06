@@ -452,11 +452,11 @@ namespace stardew_access
 
                 if (Game1.activeClickableMenu is PurchaseAnimalsMenu)
                 {
-                    BuildingNAnimalMenuPatches.PurchaseOrMoveAnimal(BuildingNAnimalMenuPatches.availableBuildings[index]);
+                    BuildingNAnimalMenuPatches.PurchaseAnimal(BuildingNAnimalMenuPatches.availableBuildings[index]);
                 }
                 else if (Game1.activeClickableMenu is AnimalQueryMenu)
                 {
-                    BuildingNAnimalMenuPatches.PurchaseOrMoveAnimal(BuildingNAnimalMenuPatches.availableBuildings[index]);
+                    BuildingNAnimalMenuPatches.MoveAnimal(BuildingNAnimalMenuPatches.availableBuildings[index]);
                 }
                 else
                 {
