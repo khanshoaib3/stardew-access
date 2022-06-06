@@ -50,6 +50,11 @@ namespace stardew_access
                 original: AccessTools.Method(typeof(CoopMenu), nameof(CoopMenu.update), new Type[] { typeof(GameTime) }),
                 postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.CoopMenuPatch))
             );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(AdvancedGameOptions), nameof(AdvancedGameOptions.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.AdvancedGameOptionsPatch))
+            );
             #endregion
 
             #region Game Menu Patches
