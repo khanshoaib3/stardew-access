@@ -20,6 +20,18 @@ namespace stardew_access.Patches
             {
                 int currentItemIndex = Math.Max(0, Math.Min(__instance.options.Count - 7, __instance.currentItemIndex));
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
+
+                if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                {
+                    string toSpeak = "OK Button";
+                    if (advancedGameOptionsQueryKey != toSpeak)
+                    {
+                        advancedGameOptionsQueryKey = toSpeak;
+                        MainClass.ScreenReader.Say(toSpeak, true);
+                    }
+                    return;
+                }
+
                 for (int i = 0; i < __instance.optionSlots.Count; i++)
                 {
                     if (__instance.optionSlots[i].bounds.Contains(x, y) && currentItemIndex + i < __instance.options.Count && __instance.options[currentItemIndex + i].bounds.Contains(x - __instance.optionSlots[i].bounds.X, y - __instance.optionSlots[i].bounds.Y))
