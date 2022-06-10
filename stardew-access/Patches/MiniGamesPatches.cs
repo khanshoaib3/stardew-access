@@ -46,7 +46,6 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 string toSpeak = " ";
-                MainClass.DebugLog("" + ___scene);
 
                 if (___letterView != null)
                 {
