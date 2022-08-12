@@ -1,7 +1,11 @@
 namespace stardew_access.Features
 {
+    /// <summary>
+    /// Warns the player when their health or stamina/energy is low. Also warns when its past midnight.
+    /// </summary>
     public class Warnings
     {
+        // Store the previously checked value
         private int prevStamina;
         private int prevHealth;
         private int prevHour;
@@ -20,6 +24,9 @@ namespace stardew_access.Features
             this.checkForTimeOfDay();
         }
 
+        /// <summary>
+        /// Warns when its past 12:00 am and 1:00 am
+        /// </summary>
         private void checkForTimeOfDay()
         {
             if (MainClass.ModHelper == null)
@@ -38,6 +45,9 @@ namespace stardew_access.Features
             prevHour = hours;
         }
 
+        /// <summary>
+        /// Warns when stamina reaches below 50, 25 and 10.
+        /// </summary>
         public void checkForStamina()
         {
             if (MainClass.ModHelper == null)
@@ -56,6 +66,9 @@ namespace stardew_access.Features
             prevStamina = stamina;
         }
 
+        /// <summary>
+        /// Warns when health reaches below 50, 25 and 10.
+        /// </summary>
         public void checkForHealth()
         {
             if (MainClass.ModHelper == null)

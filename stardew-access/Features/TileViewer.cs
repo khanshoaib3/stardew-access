@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using xTile;
 using StardewValley;
 using StardewValley.Menus;
-using stardew_access.Features;
 
 namespace stardew_access.Features
 {

@@ -7,37 +7,37 @@ namespace stardew_access
         // https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Input#SButton button key codes
 
         #region Simulate mouse clicks
-        public KeybindList LeftClickMainKey { get; set; } = KeybindList.Parse("LeftControl + Enter");
-        public KeybindList RightClickMainKey { get; set; } = KeybindList.Parse("LeftShift + Enter");
-        public KeybindList LeftClickAlternateKey { get; set; } = KeybindList.Parse("OemOpenBrackets");
-        public KeybindList RightClickAlternateKey { get; set; } = KeybindList.Parse("OemCloseBrackets");
+        public KeybindList LeftClickMainKey { get; set; } = KeybindList.Parse("LeftControl + Enter"); // Primary key to simulate mouse left click
+        public KeybindList RightClickMainKey { get; set; } = KeybindList.Parse("LeftShift + Enter"); // Primary key to simulate mouse right click
+        public KeybindList LeftClickAlternateKey { get; set; } = KeybindList.Parse("OemOpenBrackets"); // Secondary key to simulate mouse left click
+        public KeybindList RightClickAlternateKey { get; set; } = KeybindList.Parse("OemCloseBrackets"); // Secondary key to simulate mouse right click
         #endregion
 
         #region Chat menu
-        public KeybindList ChatMenuNextKey { get; set; } = KeybindList.Parse("PageUp");
-        public KeybindList ChatMenuPreviousKey { get; set; } = KeybindList.Parse("PageDown");
+        public KeybindList ChatMenuNextKey { get; set; } = KeybindList.Parse("PageUp"); // Read previous chat message
+        public KeybindList ChatMenuPreviousKey { get; set; } = KeybindList.Parse("PageDown");  // Read next chat message
         #endregion
 
         #region Read tile
-        public Boolean ReadTile { get; set; } = true;
-        public KeybindList ReadTileKey { get; set; } = KeybindList.Parse("J");
-        public KeybindList ReadStandingTileKey { get; set; } = KeybindList.Parse("LeftAlt + J");
-        public Boolean ReadFlooring { get; set; } = false;
+        public Boolean ReadTile { get; set; } = true; // Toggle this feature.
+        public KeybindList ReadTileKey { get; set; } = KeybindList.Parse("J"); // Manually trigger read tile for the tile player is *looking at*.
+        public KeybindList ReadStandingTileKey { get; set; } = KeybindList.Parse("LeftAlt + J"); // Manually trigger read tile for the tile player is *standing on*.
+        public Boolean ReadFlooring { get; set; } = false; // Toggle reading floorings.
         #endregion
 
         #region Tile viewer
-        public KeybindList TileCursorUpKey { get; set; } = KeybindList.Parse("Up");
-        public KeybindList TileCursorRightKey { get; set; } = KeybindList.Parse("Right");
-        public KeybindList TileCursorDownKey { get; set; } = KeybindList.Parse("Down");
-        public KeybindList TileCursorLeftKey { get; set; } = KeybindList.Parse("Left");
-        public KeybindList TileCursorPreciseUpKey { get; set; } = KeybindList.Parse("LeftShift + Up");
-        public KeybindList TileCursorPreciseRightKey { get; set; } = KeybindList.Parse("LeftShift + Right");
-        public KeybindList TileCursorPreciseDownKey { get; set; } = KeybindList.Parse("LeftShift + Down");
-        public KeybindList TileCursorPreciseLeftKey { get; set; } = KeybindList.Parse("LeftShift + Left");
-        public KeybindList ToggleRelativeCursorLockKey { get; set; } = KeybindList.Parse("L");
-        public KeybindList AutoWalkToTileKey { get; set; } = KeybindList.Parse("LeftControl + Enter");
-        public bool LimitTileCursorToScreen { get; set; } = false;
-        public int TileCursorPreciseMovementDistance { get; set; } = 8;
+        public KeybindList TileCursorUpKey { get; set; } = KeybindList.Parse("Up"); // Move the cursor one tile up
+        public KeybindList TileCursorRightKey { get; set; } = KeybindList.Parse("Right"); // Move the cursor one tile right
+        public KeybindList TileCursorDownKey { get; set; } = KeybindList.Parse("Down"); // Move the cursor one tile down
+        public KeybindList TileCursorLeftKey { get; set; } = KeybindList.Parse("Left"); // Move the cursor one tile left
+        public KeybindList TileCursorPreciseUpKey { get; set; } = KeybindList.Parse("LeftShift + Up"); // Move the cursor up by precision i.e. pixel by pixel
+        public KeybindList TileCursorPreciseRightKey { get; set; } = KeybindList.Parse("LeftShift + Right"); // Move the cursor right by precision i.e. pixel by pixel
+        public KeybindList TileCursorPreciseDownKey { get; set; } = KeybindList.Parse("LeftShift + Down"); // Move the cursor down by precision i.e. pixel by pixel
+        public KeybindList TileCursorPreciseLeftKey { get; set; } = KeybindList.Parse("LeftShift + Left"); // Move the cursor left by precision i.e. pixel by pixel
+        public KeybindList ToggleRelativeCursorLockKey { get; set; } = KeybindList.Parse("L"); // Toggles realative cursor lock i.e. if enabled, the cursor will reset when player moves.
+        public KeybindList AutoWalkToTileKey { get; set; } = KeybindList.Parse("LeftControl + Enter"); // Auto walk to the tile
+        public bool LimitTileCursorToScreen { get; set; } = false; // #TODO add command for this // Toggle whether to prevent cursor from going out of screen.
+        public int TileCursorPreciseMovementDistance { get; set; } = 8;  // Specifies the number of pixels the cursor should move when using precision movement i.e. with *left shift*.
         #endregion
 
         #region Radar
@@ -68,13 +68,14 @@ namespace stardew_access
         #endregion
 
         #region Others
-        public KeybindList HealthNStaminaKey { get; set; } = KeybindList.Parse("H");
-        public KeybindList PositionKey { get; set; } = KeybindList.Parse("K");
-        public KeybindList LocationKey { get; set; } = KeybindList.Parse("LeftAlt + K");
-        public KeybindList MoneyKey { get; set; } = KeybindList.Parse("R");
-        public KeybindList TimeNSeasonKey { get; set; } = KeybindList.Parse("Q");
+        public KeybindList HealthNStaminaKey { get; set; } = KeybindList.Parse("H"); // Narrate health and stamina.
+        public KeybindList PositionKey { get; set; } = KeybindList.Parse("K"); // Narrate player position.
+        public KeybindList LocationKey { get; set; } = KeybindList.Parse("LeftAlt + K"); // Narrate current location name.
+        public KeybindList MoneyKey { get; set; } = KeybindList.Parse("R"); // Narrate the money the player has currently.
+        public KeybindList TimeNSeasonKey { get; set; } = KeybindList.Parse("Q"); // Narrate the time of day, day and date and season
         public Boolean VerboseCoordinates { get; set; } = true;
-        public Boolean SnapMouse { get; set; } = true;
+        public Boolean SnapMouse { get; set; } = true; // Toggles the snap mouse feature
+        // TODO add command to toggle warning feature
         #endregion
 
         // TODO Add the exclusion and focus list too

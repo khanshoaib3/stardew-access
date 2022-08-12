@@ -39,6 +39,7 @@ namespace stardew_access
                 MainClass.DebugLog("Flooring is " + (MainClass.Config.ReadFlooring ? "on" : "off"));
             });
 
+            #region Radar Feature
             helper.ConsoleCommands.Add("radar", "Toggle radar feature.", (string commmand, string[] args) =>
             {
                 MainClass.Config.Radar = !MainClass.Config.Radar;
@@ -47,7 +48,6 @@ namespace stardew_access
                 MainClass.DebugLog("Radar " + (MainClass.Config.Radar ? "on" : "off"));
             });
 
-            #region Radar Feature
             helper.ConsoleCommands.Add("rdebug", "Toggle debugging in radar feature.", (string commmand, string[] args) =>
             {
                 MainClass.radarDebug = !MainClass.radarDebug;

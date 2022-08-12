@@ -4,6 +4,9 @@ using StardewValley;
 
 namespace stardew_access.Features
 {
+    /// <summary>
+    /// Reads the name and information about a tile.
+    /// </summary>
     public class ReadTile
     {
         private bool isBusy; // To pause execution of run method between fixed intervals

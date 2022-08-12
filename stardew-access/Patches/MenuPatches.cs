@@ -169,7 +169,7 @@ namespace stardew_access.Patches
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                bool isCPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
+                bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
                 string toSpeak = " ", extra = "";
 
                 if (___confirmingEmpty)
@@ -181,7 +181,7 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    if (isCPressed && !isNarratingPondInfo)
+                    if (isPrimaryInfoKeyPressed && !isNarratingPondInfo)
                     {
                         string pond_name_text = Game1.content.LoadString("Strings\\UI:PondQuery_Name", ____fishItem.DisplayName);
                         string population_text = Game1.content.LoadString("Strings\\UI:PondQuery_Population", string.Concat(____pond.FishCount), ____pond.maxOccupants.Value);
@@ -458,7 +458,7 @@ namespace stardew_access.Patches
             {
                 string toSpeak = "";
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
+                bool isEnterPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter); // For escaping/unselecting from the animal name text box
 
                 if (firstTimeInNamingMenu)
                 {
@@ -471,7 +471,7 @@ namespace stardew_access.Patches
                     ___textBox.Update();
                     toSpeak = ___textBox.Text;
 
-                    if (isEscPressed)
+                    if (isEnterPressed)
                     {
                         ___textBox.Selected = false;
                     }

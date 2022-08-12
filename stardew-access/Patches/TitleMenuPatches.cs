@@ -247,7 +247,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
+                bool isEnterPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter); // For escaping/unselecting from the animal name text box
                 string toSpeak = " ";
                 string currentPetName = getCurrentPetName();
 
@@ -255,7 +255,7 @@ namespace stardew_access.Patches
                 {
                     toSpeak = ___nameBox.Text;
 
-                    if (isEscPressed)
+                    if (isEnterPressed)
                     {
                         ___nameBox.Selected = false;
                     }
@@ -264,7 +264,7 @@ namespace stardew_access.Patches
                 {
                     toSpeak = ___farmnameBox.Text;
 
-                    if (isEscPressed)
+                    if (isEnterPressed)
                     {
                         ___farmnameBox.Selected = false;
                     }
@@ -273,7 +273,7 @@ namespace stardew_access.Patches
                 {
                     toSpeak = ___favThingBox.Text;
 
-                    if (isEscPressed)
+                    if (isEnterPressed)
                     {
                         ___favThingBox.Selected = false;
                     }

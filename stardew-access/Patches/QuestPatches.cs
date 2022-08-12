@@ -153,7 +153,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                bool isCPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
+                bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 string toSpeak = " ", extra = "";
 
@@ -203,7 +203,7 @@ namespace stardew_access.Patches
                     string description = Game1.parseText(____shownQuest.GetDescription(), Game1.dialogueFont, __instance.width - 128);
                     string title = ____shownQuest.GetName();
 
-                    if (firstTimeInIndividualQuest || (isCPressed && !isNarratingQuestInfo))
+                    if (firstTimeInIndividualQuest || (isPrimaryInfoKeyPressed && !isNarratingQuestInfo))
                     {
                         if (firstTimeInIndividualQuest)
                             toSpeak = "Back button";
