@@ -693,11 +693,16 @@ namespace stardew_access.Features
             }
             else if (obj is IndoorPot indoorPot)
             {
-                toReturn.name = $"{obj.DisplayName} {getHoeDirtDetail(indoorPot.hoeDirt)}";
+                toReturn.name = $"{obj.DisplayName}, {getHoeDirtDetail(indoorPot.hoeDirt)}";
             }
-            else if (obj is Furniture)
+            else if (obj is Sign sign)
             {
-                if (lessInfo && (((Furniture)obj).TileLocation.X != x || ((Furniture)obj).TileLocation.Y != y))
+                if (sign.displayItem.Value != null)
+                    toReturn.name = $"{obj.DisplayName}, {sign.displayItem.Value.DisplayName}";
+            }
+            else if (obj is Furniture furniture)
+            {
+                if (lessInfo && (furniture.TileLocation.X != x || furniture.TileLocation.Y != y))
                 {
                     toReturn.category = CATEGORY.Others;
                     toReturn.name = null;
@@ -727,6 +732,7 @@ namespace stardew_access.Features
                 else if (machineState == MachineState.Busy)
                     toReturn.name = $"Busy {toReturn.name}";
             }
+
             return toReturn;
         }
 
