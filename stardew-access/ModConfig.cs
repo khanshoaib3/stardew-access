@@ -69,6 +69,7 @@ namespace stardew_access
 
         #region Others
         public KeybindList HealthNStaminaKey { get; set; } = KeybindList.Parse("H"); // Narrate health and stamina.
+        public bool HealthNStaminaInPercentage { get; set; } = true;
         public KeybindList PositionKey { get; set; } = KeybindList.Parse("K"); // Narrate player position.
         public KeybindList LocationKey { get; set; } = KeybindList.Parse("LeftAlt + K"); // Narrate current location name.
         public KeybindList MoneyKey { get; set; } = KeybindList.Parse("R"); // Narrate the money the player has currently.

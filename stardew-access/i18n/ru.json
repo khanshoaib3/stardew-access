@@ -8,5 +8,7 @@
     "grandpastory.scene6":"Вы подходите к своему столу и находите дедушкино письмо.",
     "grandpastory.letteropen":"Щелкните левой кнопкой мыши, чтобы открыть письмо дедушки",
     "intro.scene3":"Поездка на автобусную остановку Stardew Valley",
-    "intro.scene4":"Долина Стардью: 0.8 км"
+    "intro.scene4":"Долина Стардью: 0.8 км",
+    "manuallytriggered.healthnstamina.percent":"Здоровье составляет {{health}}%, а выносливость - {{stamina}}%",
+    "manuallytriggered.healthnstamina.normal":"Здоровье – {{health}}, а выносливость – {{stamina}}."
 }

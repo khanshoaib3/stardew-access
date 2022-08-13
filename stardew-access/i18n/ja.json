@@ -8,5 +8,7 @@
     "grandpastory.scene6":"おじいちゃんの手紙を見つけて机に着きます。",
     "grandpastory.letteropen":"左クリックしておじいちゃんの手紙を開く",
     "intro.scene3":"スターデューバレーバス停への移動",
-    "intro.scene4":"0.5マイル離れたスターデューバレー"
+    "intro.scene4":"0.5マイル離れたスターデューバレー",
+    "manuallytriggered.healthnstamina.percent":"体力は {{health}} %、スタミナは {{stamina}} %",
+    "manuallytriggered.healthnstamina.normal":"体力は{{health}}、スタミナは{{stamina}}です"
 }

@@ -8,5 +8,7 @@
     "grandpastory.scene6":"Du erreichst deinen Schreibtisch und findest Opas Brief.",
     "grandpastory.letteropen":"Linksklick, um Opas Brief zu öffnen",
     "intro.scene3":"Fahrt zur Bushaltestelle Stardew Valley",
-    "intro.scene4":"Stardew Valley 0.5 Meilen entfernt"
+    "intro.scene4":"Stardew Valley 0.5 Meilen entfernt",
+    "manuallytriggered.healthnstamina.percent":"Gesundheit ist {{health}} % und Ausdauer ist {{stamina}} %",
+    "manuallytriggered.healthnstamina.normal":"Gesundheit ist {{health}} und Ausdauer ist {{stamina}}"
 }

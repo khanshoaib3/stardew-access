@@ -53,7 +53,7 @@ namespace stardew_access.Features
             if (MainClass.ModHelper == null)
                 return;
 
-            int stamina = CurrentPlayer.Stamina;
+            int stamina = CurrentPlayer.PercentStamina;
             string toSpeak = MainClass.ModHelper.Translation.Get("warnings.stamina", new { value = stamina });
 
             if ((stamina <= 50 && prevStamina > 50) || (stamina <= 25 && prevStamina > 25) || (stamina <= 10 && prevStamina > 10))
@@ -74,7 +74,7 @@ namespace stardew_access.Features
             if (MainClass.ModHelper == null)
                 return;
 
-            int health = CurrentPlayer.Health;
+            int health = CurrentPlayer.PercentHealth;
             string toSpeak = MainClass.ModHelper.Translation.Get("warnings.health", new { value = health });
 
             if ((health <= 50 && prevHealth > 50) || (health <= 25 && prevHealth > 25) || (health <= 10 && prevHealth > 10))

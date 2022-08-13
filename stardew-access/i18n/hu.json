@@ -8,5 +8,7 @@
     "grandpastory.scene6":"Az asztalodhoz érve megtalálod a nagypapa levelét.",
     "grandpastory.letteropen":"Kattintson a bal gombbal a nagypapa levelének megnyitásához",
     "intro.scene3":"Utazás a Stardew Valley buszmegállóhoz",
-    "intro.scene4":"Stardew-völgy 0.5 mérföldre van"
+    "intro.scene4":"Stardew-völgy 0.5 mérföldre van",
+    "manuallytriggered.healthnstamina.percent":"Az egészségi állapot {{health}} %, az állóképesség pedig {{stamina}} %",
+    "manuallytriggered.healthnstamina.normal":"Az egészség {{health}}, az állóképesség pedig {{stamina}}"
 }

@@ -8,5 +8,7 @@
     "grandpastory.scene6":"Dedenizin mektubunu bulmak için masanıza ulaşıyorsunuz.",
     "grandpastory.letteropen":"Büyükbabanın mektubunu açmak için sol tıklayın",
     "intro.scene3":"Stardew Valley otobüs durağına seyahat",
-    "intro.scene4":"Stardew vadisi 0.5 mil uzakta"
+    "intro.scene4":"Stardew vadisi 0.5 mil uzakta",
+    "manuallytriggered.healthnstamina.percent":"Sağlık %{{health}} ve Dayanıklılık %{{stamina}}",
+    "manuallytriggered.healthnstamina.normal":"Sağlık {{health}} ve Dayanıklılık {{stamina}}"
 }

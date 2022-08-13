@@ -8,5 +8,7 @@
     "grandpastory.scene6":"Raggiungi la tua scrivania e trovi la lettera del nonno.",
     "grandpastory.letteropen":"Fare clic con il tasto sinistro per aprire la lettera del nonno",
     "intro.scene3":"In viaggio verso la fermata dell'autobus di Stardew Valley",
-    "intro.scene4":"Stardew Valley 0.5 miglia di distanza"
+    "intro.scene4":"Stardew Valley 0.5 miglia di distanza",
+    "manuallytriggered.healthnstamina.percent":"La salute è {{health}} % e la resistenza è {{stamina}} %",
+    "manuallytriggered.healthnstamina.normal":"La salute è {{health}} e la resistenza è {{stamina}}"
 }

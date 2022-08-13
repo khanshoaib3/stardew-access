@@ -8,5 +8,7 @@
     "grandpastory.scene6":"책상에 다가가 할아버지의 편지를 찾습니다.",
     "grandpastory.letteropen":"할아버지의 편지를 열려면 왼쪽 클릭",
     "intro.scene3":"스타듀밸리 버스정류장으로 이동",
-    "intro.scene4":"스타듀 밸리에서 0.8km 떨어짐"
+    "intro.scene4":"스타듀 밸리에서 0.8km 떨어짐",
+    "manuallytriggered.healthnstamina.percent":"체력은 {{health}} %이고 체력은 {{stamina}} %입니다.",
+    "manuallytriggered.healthnstamina.normal":"체력은 {{health}}이고 체력은 {{stamina}}입니다."
 }

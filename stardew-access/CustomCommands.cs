@@ -494,6 +494,14 @@ namespace stardew_access
 
                 MainClass.DebugLog("Static tiles refreshed!");
             });
+
+            helper.ConsoleCommands.Add("hnspercent", "Toggle between speaking in percentage or full health and stamina.", (string commmand, string[] args) =>
+            {
+                MainClass.Config.HealthNStaminaInPercentage = !MainClass.Config.HealthNStaminaInPercentage;
+                helper.WriteConfig(MainClass.Config);
+
+                MainClass.DebugLog("Speaking in percentage is " + (MainClass.Config.HealthNStaminaInPercentage ? "on" : "off"));
+            });
         }
     }
 }

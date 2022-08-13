@@ -8,5 +8,7 @@
     "grandpastory.scene6":"You reach your desk finding grandpa's letter.",
     "grandpastory.letteropen":"Left click to open grandpa's letter",
     "intro.scene3":"Travelling to Stardew Valley bus stop",
-    "intro.scene4":"Stardew valley 0.5 miles away"
+    "intro.scene4":"Stardew valley 0.5 miles away",
+    "manuallytriggered.healthnstamina.percent":"Health is {{health}} % and Stamina is {{stamina}} %",
+    "manuallytriggered.healthnstamina.normal":"Health is {{health}} and Stamina is {{stamina}}"
 }

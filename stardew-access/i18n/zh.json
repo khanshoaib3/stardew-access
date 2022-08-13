@@ -8,5 +8,7 @@
     "grandpastory.scene6":"你走到办公桌前，找到了爷爷的信。",
     "grandpastory.letteropen":"左方括号打开爷爷的信",
     "intro.scene3":"前往星露谷物语巴士站",
-    "intro.scene4":"星露谷物语 0.5 英里外"
+    "intro.scene4":"星露谷物语 0.5 英里外",
+    "manuallytriggered.healthnstamina.percent":"健康为 {{health}} %，耐力为 {{stamina}} %",
+    "manuallytriggered.healthnstamina.normal":"健康为 {{health}}，耐力为 {{stamina}}"
 }

@@ -8,5 +8,7 @@
     "grandpastory.scene6":"Você chega à sua mesa encontrando a carta do vovô.",
     "grandpastory.letteropen":"Clique com o botão esquerdo para abrir a carta do vovô",
     "intro.scene3":"Viajar para o ponto de ônibus Stardew Valley",
-    "intro.scene4":"Vale Stardew a 0.5 km de distância"
+    "intro.scene4":"Vale Stardew a 0.5 km de distância",
+    "manuallytriggered.healthnstamina.percent":"Saúde é {{health}} % e Stamina é {{stamina}} %",
+    "manuallytriggered.healthnstamina.normal":"Saúde é {{health}} e Stamina é {{stamina}}"
 }

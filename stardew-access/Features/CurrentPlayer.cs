@@ -9,37 +9,56 @@ namespace stardew_access.Features
         /// <summary>
         /// Returns the percentage health remaining of player.
         /// </summary>
-        public static int Health
+        public static int PercentHealth
         {
             get
             {
                 if (Game1.player == null)
                     return 0;
 
-                int maxHealth = Game1.player.maxHealth;
-                int currentHealth = Game1.player.health;
+                return (CurrentHealth * 100) / Game1.player.maxHealth; ;
+            }
+        }
 
-                int healthPercentage = (int)(currentHealth * 100) / maxHealth;
-                return healthPercentage;
+        /// <summary>
+        /// Returns the total health player has currently
+        /// </summary>
+        public static int CurrentHealth
+        {
+            get
+            {
+                if (Game1.player == null)
+                    return 0;
+
+                return Game1.player.health;
             }
         }
 
         /// <summary>
         /// Returns the percentage stamine/energy remaining of player.
         /// </summary>
-        public static int Stamina
+        public static int PercentStamina
         {
             get
             {
                 if (Game1.player == null)
                     return 0;
 
-                int maxStamina = Game1.player.maxStamina.Value;
-                int currentStamine = (int)Game1.player.stamina;
+                return (CurrentStamina * 100) / Game1.player.maxStamina.Value;
+            }
+        }
 
-                int staminaPercentage = (int)(currentStamine * 100) / maxStamina;
+        /// <summary>
+        /// Returns the total stamina player has currently
+        /// </summary>
+        public static int CurrentStamina
+        {
+            get
+            {
+                if (Game1.player == null)
+                    return 0;
 
-                return staminaPercentage;
+                return (int)Game1.player.stamina;
             }
         }
 
