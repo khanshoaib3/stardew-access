@@ -773,43 +773,44 @@ namespace stardew_access.Patches
 
                     #region Health & stamina and buff items (effects like +1 walking speed)
                     Item producesItem = ___hoverRecipe.createItem();
-                    StardewValley.Object? producesItemObject = ((StardewValley.Object)producesItem);
-
-                    if (producesItem is StardewValley.Object && producesItemObject.Edibility != -300)
+                    if (producesItem is StardewValley.Object producesItemObject)
                     {
-                        int stamina_recovery = producesItemObject.staminaRecoveredOnConsumption();
-                        buffs += $"{stamina_recovery} Energy";
-                        if (stamina_recovery >= 0)
+                        if (producesItemObject.Edibility != -300)
                         {
-                            int health_recovery = producesItemObject.healthRecoveredOnConsumption();
-                            buffs += $"\n{health_recovery} Health";
+                            int stamina_recovery = producesItemObject.staminaRecoveredOnConsumption();
+                            buffs += $"{stamina_recovery} Energy";
+                            if (stamina_recovery >= 0)
+                            {
+                                int health_recovery = producesItemObject.healthRecoveredOnConsumption();
+                                buffs += $"\n{health_recovery} Health";
+                            }
                         }
-                    }
-                    // These variables are taken from the game's code itself (IClickableMenu.cs -> 1016 line)
-                    bool edibleItem = producesItem != null && producesItem is StardewValley.Object && (int)producesItemObject.Edibility != -300;
-                    string[]? buffIconsToDisplay = (producesItem != null && edibleItem && Game1.objectInformation[producesItemObject.ParentSheetIndex].Split('/').Length > 7)
-                        ? producesItem.ModifyItemBuffs(Game1.objectInformation[producesItemObject.ParentSheetIndex].Split('/')[7].Split(' '))
-                        : null;
+                        // These variables are taken from the game's code itself (IClickableMenu.cs -> 1016 line)
+                        bool edibleItem = producesItem != null && (int)producesItemObject.Edibility != -300;
+                        string[]? buffIconsToDisplay = (producesItem != null && edibleItem && Game1.objectInformation[producesItemObject.ParentSheetIndex].Split('/').Length > 7)
+                            ? producesItem.ModifyItemBuffs(Game1.objectInformation[producesItemObject.ParentSheetIndex].Split('/')[7].Split(' '))
+                            : null;
 
-                    if (buffIconsToDisplay != null)
-                    {
-                        for (int j = 0; j < buffIconsToDisplay.Length; j++)
+                        if (buffIconsToDisplay != null)
                         {
-                            string buffName = ((Convert.ToInt32(buffIconsToDisplay[j]) > 0) ? "+" : "") + buffIconsToDisplay[j] + " ";
-                            if (j <= 11)
+                            for (int j = 0; j < buffIconsToDisplay.Length; j++)
                             {
-                                buffName = Game1.content.LoadString("Strings\\UI:ItemHover_Buff" + j, buffName);
+                                string buffName = ((Convert.ToInt32(buffIconsToDisplay[j]) > 0) ? "+" : "") + buffIconsToDisplay[j] + " ";
+                                if (j <= 11)
+                                {
+                                    buffName = Game1.content.LoadString("Strings\\UI:ItemHover_Buff" + j, buffName);
+                                }
+                                try
+                                {
+                                    int count = int.Parse(buffName.Substring(0, buffName.IndexOf(' ')));
+                                    if (count != 0)
+                                        buffs += $"{buffName}\n";
+                                }
+                                catch (Exception) { }
                             }
-                            try
-                            {
-                                int count = int.Parse(buffName.Substring(0, buffName.IndexOf(' ')));
-                                if (count != 0)
-                                    buffs += $"{buffName}\n";
-                            }
-                            catch (Exception) { }
-                        }
 
-                        buffs = $"Buffs and boosts:\n {buffs}";
+                            buffs = $"Buffs and boosts:\n {buffs}";
+                        }
                     }
                     #endregion
 
