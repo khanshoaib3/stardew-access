@@ -470,52 +470,10 @@ namespace stardew_access.Features
             string? toReturn = null;
             CATEGORY category = CATEGORY.Others;
 
-            if (terrain.Get() is HoeDirt)
+            if (terrain.Get() is HoeDirt dirt)
             {
+                toReturn = getHoeDirtDetail(dirt);
                 category = CATEGORY.Crops;
-                HoeDirt dirt = (HoeDirt)terrain.Get();
-                if (dirt.crop != null && !dirt.crop.forageCrop.Value)
-                {
-                    string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest.Value].Split('/')[0];
-                    toReturn = $"{cropName}";
-
-                    bool isWatered = dirt.state.Value == HoeDirt.watered;
-                    bool isHarvestable = dirt.readyForHarvest();
-                    bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
-
-                    if (isWatered)
-                        toReturn = "Watered " + toReturn;
-
-                    if (isFertilized)
-                        toReturn = "Fertilized " + toReturn;
-
-                    if (isHarvestable)
-                        toReturn = "Harvestable " + toReturn;
-
-                    if (dirt.crop.dead.Value)
-                        toReturn = "Dead " + toReturn;
-                }
-                else if (dirt.crop != null && dirt.crop.forageCrop.Value)
-                {
-                    toReturn = dirt.crop.whichForageCrop.Value switch
-                    {
-                        1 => "Spring onion",
-                        2 => "Ginger",
-                        _ => "Forageable crop"
-                    };
-                }
-                else
-                {
-                    toReturn = "Soil";
-                    bool isWatered = dirt.state.Value == HoeDirt.watered;
-                    bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
-
-                    if (isWatered)
-                        toReturn = "Watered " + toReturn;
-
-                    if (isFertilized)
-                        toReturn = "Fertilized " + toReturn;
-                }
             }
             else if (terrain.Get() is CosmeticPlant)
             {
@@ -561,6 +519,62 @@ namespace stardew_access.Features
             }
 
             return (toReturn, category);
+
+
+        }
+
+        /// <summary>
+        /// Returns the detail about the HoeDirt i.e. soil, plant, etc.
+        /// </summary>
+        /// <param name="dirt">The HoeDirt to be checked</param>
+        /// <returns>The details about the given HoeDirt</returns>
+        public static string getHoeDirtDetail(HoeDirt dirt)
+        {
+            string detail;
+
+            if (dirt.crop != null && !dirt.crop.forageCrop.Value)
+            {
+                string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest.Value].Split('/')[0];
+                detail = $"{cropName}";
+
+                bool isWatered = dirt.state.Value == HoeDirt.watered;
+                bool isHarvestable = dirt.readyForHarvest();
+                bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
+
+                if (isWatered)
+                    detail = "Watered " + detail;
+
+                if (isFertilized)
+                    detail = "Fertilized " + detail;
+
+                if (isHarvestable)
+                    detail = "Harvestable " + detail;
+
+                if (dirt.crop.dead.Value)
+                    detail = "Dead " + detail;
+            }
+            else if (dirt.crop != null && dirt.crop.forageCrop.Value)
+            {
+                detail = dirt.crop.whichForageCrop.Value switch
+                {
+                    1 => "Spring onion",
+                    2 => "Ginger",
+                    _ => "Forageable crop"
+                };
+            }
+            else
+            {
+                detail = "Soil";
+                bool isWatered = dirt.state.Value == HoeDirt.watered;
+                bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
+
+                if (isWatered)
+                    detail = "Watered " + detail;
+
+                if (isFertilized)
+                    detail = "Fertilized " + detail;
+            }
+            return detail;
         }
 
         public static string getFruitTree(FruitTree fruitTree)
@@ -676,6 +690,10 @@ namespace stardew_access.Features
             {
                 Chest chest = (Chest)obj;
                 toReturn = (chest.DisplayName, CATEGORY.Chests);
+            }
+            else if (obj is IndoorPot indoorPot)
+            {
+                toReturn.name = $"{obj.DisplayName} {getHoeDirtDetail(indoorPot.hoeDirt)}";
             }
             else if (obj is Furniture)
             {
