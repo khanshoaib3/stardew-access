@@ -9,7 +9,7 @@ namespace stardew_access.Features
 {
     public class TileInfo
     {
-        public static string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom", "statue of endless fortune", "statue of perfection" };
+        public static string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom", "statue of endless fortune", "statue of perfection", "crab pot" };
 
         ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>
         public static (string? name, string? categoryName) getNameWithCategoryNameAtTile(Vector2 tile)
@@ -80,16 +80,16 @@ namespace stardew_access.Features
                 toReturn = "Lava";
                 category = CATEGORY.WaterTiles;
             }
-            else if (Game1.currentLocation.isWaterTile(x, y) && isColliding && !lessInfo)
-            {
-                toReturn = "Water";
-                category = CATEGORY.WaterTiles;
-            }
             else if (Game1.currentLocation.isObjectAtTile(x, y))
             {
                 (string? name, CATEGORY? category) obj = getObjectAtTile(x, y, lessInfo);
                 toReturn = obj.name;
                 category = obj.category;
+            }
+            else if (Game1.currentLocation.isWaterTile(x, y) && isColliding && !lessInfo)
+            {
+                toReturn = "Water";
+                category = CATEGORY.WaterTiles;
             }
             else if (resourceClump != null)
             {
@@ -711,9 +711,8 @@ namespace stardew_access.Features
                     toReturn.category = CATEGORY.Furnitures;
 
             }
-            else if (obj.Type == "Crafting" && obj.bigCraftable.Value)
+            else if ((obj.Type == "Crafting" && obj.bigCraftable.Value) || obj.Name.ToLower().Equals("crab pot"))
             {
-
                 foreach (string machine in trackable_machines)
                 {
                     if (obj.Name.ToLower().Contains(machine))
@@ -739,8 +738,12 @@ namespace stardew_access.Features
         private static MachineState GetMachineState(StardewValley.Object machine)
         {
             if (machine is CrabPot crabPot)
+            {
                 if (crabPot.bait.Value is not null && crabPot.heldObject.Value is null)
                     return MachineState.Busy;
+                if (crabPot.bait.Value is not null && crabPot.heldObject.Value is not null)
+                    return MachineState.Ready;
+            }
             return GetMachineState(machine.readyForHarvest.Value, machine.MinutesUntilReady, machine.heldObject.Value);
         }
 
