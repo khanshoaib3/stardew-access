@@ -252,7 +252,7 @@ namespace stardew_access.Features
             return false;
         }
 
-        public static string? getFarmAnimalAt(GameLocation? location, int x, int y, bool onlyName = false)
+        public static string? getFarmAnimalAt(GameLocation? location, int x, int y)
         {
             if (location == null)
                 return null;
@@ -280,9 +280,6 @@ namespace stardew_access.Features
                     string name = farmAnimals[i].displayName;
                     int age = farmAnimals[i].age.Value;
                     string type = farmAnimals[i].displayType;
-
-                    if (onlyName)
-                        return name;
 
                     return $"{name}, {type}, age {age}";
                 }
