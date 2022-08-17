@@ -323,6 +323,10 @@ namespace stardew_access.Features
                             return (CATEGORY.Doors, name + " Animal Door " + ((building.animalDoorOpen.Value) ? "Opened" : "Closed"));
                         else if (building.tileX.Value == x && building.tileY.Value == y)
                             return (CATEGORY.Buildings, name);
+                        else if (building is Mill && (building.tileX.Value + 1) == x && (building.tileY.Value + 1) == y)
+                            return (CATEGORY.Buildings, name + " input");
+                        else if (building is Mill && (building.tileX.Value + 3) == x && (building.tileY.Value + 1) == y)
+                            return (CATEGORY.Buildings, name + " output");
                         else if (!lessInfo)
                             return (CATEGORY.Buildings, name);
                     }
