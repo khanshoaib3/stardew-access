@@ -26,7 +26,7 @@ namespace stardew_access.Features
 
             foreach (var location in data)
             {
-                if (locationName.ToLower().Equals(location.Key))
+                if (locationName.ToLower().Equals(location.Key.ToLower()))
                     return true;
             }
 
@@ -45,7 +45,7 @@ namespace stardew_access.Features
 
             foreach (var location in data)
             {
-                if (!Game1.currentLocation.Name.ToLower().Equals(location.Key))
+                if (!Game1.currentLocation.Name.ToLower().Equals(location.Key.ToLower()))
                     continue;
 
                 if (location.Value != null)
@@ -83,7 +83,7 @@ namespace stardew_access.Features
                         }
 
                         if (isXPresent && isYPresent)
-                            return (tile.Key, CATEGORY.FromString(tileType.ToString()));
+                            return (tile.Key, CATEGORY.FromString(tileType.ToString().ToLower()));
                     }
             }
 

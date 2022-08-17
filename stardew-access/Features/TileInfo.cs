@@ -122,6 +122,11 @@ namespace stardew_access.Features
                 toReturn = "Ladder";
                 category = CATEGORY.Doors;
             }
+            else if (isShaftAtTile(x, y))
+            {
+                toReturn = "Shaft";
+                category = CATEGORY.Doors;
+            }
             else if (isMineUpLadderAtTile(x, y))
             {
                 toReturn = "Up Ladder";
@@ -917,12 +922,32 @@ namespace stardew_access.Features
             {
                 if (Game1.currentLocation is Mine or MineShaft)
                 {
-                    int? index = null;
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] == null)
+                        return false;
 
-                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] != null)
-                        index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
+                    int index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
 
-                    if (index == 173 || index == 174)
+                    if (index == 173)
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (Exception) { }
+
+            return false;
+        }
+
+        public static bool isShaftAtTile(int x, int y)
+        {
+            try
+            {
+                if (Game1.currentLocation is Mine or MineShaft)
+                {
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] == null)
+                        return false;
+
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex == 174)
                         return true;
                 }
             }
@@ -937,12 +962,10 @@ namespace stardew_access.Features
             {
                 if (Game1.currentLocation is Mine or MineShaft)
                 {
-                    int? index = null;
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] == null)
+                        return false;
 
-                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] != null)
-                        index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
-
-                    if (index == 115)
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex == 115)
                         return true;
                 }
             }
