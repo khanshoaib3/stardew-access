@@ -10,5 +10,7 @@
     "intro.scene3":"Viajar para o ponto de ônibus Stardew Valley",
     "intro.scene4":"Vale Stardew a 0.5 km de distância",
     "manuallytriggered.healthnstamina.percent":"Saúde é {{health}} % e Stamina é {{stamina}} %",
-    "manuallytriggered.healthnstamina.normal":"Saúde é {{health}} e Stamina é {{stamina}}"
+    "manuallytriggered.healthnstamina.normal":"Saúde é {{health}} e Stamina é {{stamina}}",
+    "readtile.sprinkler.pressurenozzle":"Pressurizada {{value}}",
+    "readtile.sprinkler.enricher":"Enriquecimento {{value}}"
 }

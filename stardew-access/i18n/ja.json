@@ -10,5 +10,7 @@
     "intro.scene3":"スターデューバレーバス停への移動",
     "intro.scene4":"0.5マイル離れたスターデューバレー",
     "manuallytriggered.healthnstamina.percent":"体力は {{health}} %、スタミナは {{stamina}} %",
-    "manuallytriggered.healthnstamina.normal":"体力は{{health}}、スタミナは{{stamina}}です"
+    "manuallytriggered.healthnstamina.normal":"体力は{{health}}、スタミナは{{stamina}}です",
+    "readtile.sprinkler.pressurenozzle":"加圧 {{value}}",
+    "readtile.sprinkler.enricher":"豊かにする {{value}}"
 }

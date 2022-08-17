@@ -10,5 +10,7 @@
     "intro.scene3":"Utazás a Stardew Valley buszmegállóhoz",
     "intro.scene4":"Stardew-völgy 0.5 mérföldre van",
     "manuallytriggered.healthnstamina.percent":"Az egészségi állapot {{health}} %, az állóképesség pedig {{stamina}} %",
-    "manuallytriggered.healthnstamina.normal":"Az egészség {{health}}, az állóképesség pedig {{stamina}}"
+    "manuallytriggered.healthnstamina.normal":"Az egészség {{health}}, az állóképesség pedig {{stamina}}",
+    "readtile.sprinkler.pressurenozzle":"Nyomás alatt {{value}}",
+    "readtile.sprinkler.enricher":"Gazdagítás {{value}}"
 }

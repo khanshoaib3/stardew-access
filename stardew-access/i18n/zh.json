@@ -10,5 +10,7 @@
     "intro.scene3":"前往星露谷物语巴士站",
     "intro.scene4":"星露谷物语 0.5 英里外",
     "manuallytriggered.healthnstamina.percent":"健康为 {{health}} %，耐力为 {{stamina}} %",
-    "manuallytriggered.healthnstamina.normal":"健康为 {{health}}，耐力为 {{stamina}}"
+    "manuallytriggered.healthnstamina.normal":"健康为 {{health}}，耐力为 {{stamina}}",
+    "readtile.sprinkler.pressurenozzle":"加压 {{value}}",
+    "readtile.sprinkler.enricher":"丰富 {{value}}"
 }

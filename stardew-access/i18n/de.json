@@ -10,5 +10,7 @@
     "intro.scene3":"Fahrt zur Bushaltestelle Stardew Valley",
     "intro.scene4":"Stardew Valley 0.5 Meilen entfernt",
     "manuallytriggered.healthnstamina.percent":"Gesundheit ist {{health}} % und Ausdauer ist {{stamina}} %",
-    "manuallytriggered.healthnstamina.normal":"Gesundheit ist {{health}} und Ausdauer ist {{stamina}}"
+    "manuallytriggered.healthnstamina.normal":"Gesundheit ist {{health}} und Ausdauer ist {{stamina}}",
+    "readtile.sprinkler.pressurenozzle":"Druck-{{value}}",
+    "readtile.sprinkler.enricher":"Bereichernd {{value}}"
 }

@@ -708,6 +708,21 @@ namespace stardew_access.Features
                     toReturn.category = CATEGORY.Furnitures;
 
             }
+            else if (obj.IsSprinkler() && obj.heldObject.Value != null) // Detect the upgrade attached to the sprinkler
+            {
+                if (MainClass.ModHelper != null && obj.heldObject.Value.Name.ToLower().Contains("pressure nozzle"))
+                {
+                    toReturn.name = MainClass.ModHelper.Translation.Get("readtile.sprinkler.pressurenozzle", new { value = toReturn.name });
+                }
+                else if (MainClass.ModHelper != null && obj.heldObject.Value.Name.ToLower().Contains("enricher"))
+                {
+                    toReturn.name = MainClass.ModHelper.Translation.Get("readtile.sprinkler.enricher", new { value = toReturn.name });
+                }
+                else // fall through 
+                {
+                    toReturn.name = $"{obj.heldObject.Value.DisplayName} {toReturn.name}";
+                }
+            }
             else if ((obj.Type == "Crafting" && obj.bigCraftable.Value) || obj.Name.ToLower().Equals("crab pot"))
             {
                 foreach (string machine in trackable_machines)
