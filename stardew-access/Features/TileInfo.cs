@@ -317,6 +317,16 @@ namespace stardew_access.Features
                     {
                         string name = building.buildingType.Value;
 
+                        // Prepend fish name for fish ponds
+                        if (building is FishPond fishPond)
+                        {
+                            if (fishPond.fishType.Value >= 0)
+                            {
+                                name = $"{Game1.objectInformation[fishPond.fishType.Value].Split('/')[4]} {name}";
+                            }
+                        }
+
+                        // Detect doors, input slots, etc.
                         if ((building.humanDoor.Value.X + building.tileX.Value) == x && (building.humanDoor.Value.Y + building.tileY.Value) == y)
                             return (CATEGORY.Doors, name + " Door");
                         else if ((building.animalDoor.Value.X + building.tileX.Value) == x && (building.animalDoor.Value.Y + building.tileY.Value) == y)
@@ -327,7 +337,7 @@ namespace stardew_access.Features
                             return (CATEGORY.Buildings, name + " input");
                         else if (building is Mill && (building.tileX.Value + 3) == x && (building.tileY.Value + 1) == y)
                             return (CATEGORY.Buildings, name + " output");
-                        else if (!lessInfo)
+                        else
                             return (CATEGORY.Buildings, name);
                     }
                 }
@@ -984,12 +994,10 @@ namespace stardew_access.Features
             {
                 if (Game1.currentLocation is Mine or MineShaft)
                 {
-                    int? index = null;
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] == null)
+                        return false;
 
-                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] != null)
-                        index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
-
-                    if (index == 112)
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex == 112)
                         return true;
                 }
             }
