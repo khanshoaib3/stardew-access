@@ -39,6 +39,14 @@ namespace stardew_access
                 MainClass.DebugLog("Flooring is " + (MainClass.Config.ReadFlooring ? "on" : "off"));
             });
 
+            helper.ConsoleCommands.Add("watered", "Toggle speaking watered or unwatered for crops.", (string commmand, string[] args) =>
+            {
+                MainClass.Config.WateredToggle = !MainClass.Config.WateredToggle;
+                helper.WriteConfig(MainClass.Config);
+
+                MainClass.DebugLog("Watered toggle is " + (MainClass.Config.WateredToggle ? "on" : "off"));
+            });
+
             #region Radar Feature
             helper.ConsoleCommands.Add("radar", "Toggle radar feature.", (string commmand, string[] args) =>
             {

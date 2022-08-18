@@ -23,6 +23,7 @@ namespace stardew_access
         public KeybindList ReadTileKey { get; set; } = KeybindList.Parse("J"); // Manually trigger read tile for the tile player is *looking at*.
         public KeybindList ReadStandingTileKey { get; set; } = KeybindList.Parse("LeftAlt + J"); // Manually trigger read tile for the tile player is *standing on*.
         public Boolean ReadFlooring { get; set; } = false; // Toggle reading floorings.
+        public Boolean WateredToggle { get; set; } = true; // Toggle speaking watered or unwatered for crops.
         #endregion
 
         #region Tile viewer
