@@ -168,9 +168,11 @@ namespace stardew_access
             //handle TileCursor update logic
             TileViewerFeature.update();
 
-            WarningsFeature.update();
+            if (Config.Warning)
+                WarningsFeature.update();
 
-            ReadTileFeature.update();
+            if (Config.ReadTile)
+                ReadTileFeature.update();
 
             if (!RadarFeature.isRunning && Config.Radar)
             {

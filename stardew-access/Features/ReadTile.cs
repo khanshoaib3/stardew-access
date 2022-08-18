@@ -28,9 +28,6 @@ namespace stardew_access.Features
             if (this.shouldPause)
                 return;
 
-            if (!MainClass.Config.ReadTile)
-                return;
-
             this.isBusy = true;
             this.run();
             Task.Delay(delay).ContinueWith(_ => { this.isBusy = false; });
