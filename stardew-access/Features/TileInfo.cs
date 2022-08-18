@@ -543,8 +543,9 @@ namespace stardew_access.Features
         /// Returns the detail about the HoeDirt i.e. soil, plant, etc.
         /// </summary>
         /// <param name="dirt">The HoeDirt to be checked</param>
+        /// <param name="ignoreIfEmpty">Ignores returning `soil` if empty</param>
         /// <returns>The details about the given HoeDirt</returns>
-        public static string getHoeDirtDetail(HoeDirt dirt)
+        public static string getHoeDirtDetail(HoeDirt dirt, bool ignoreIfEmpty = false)
         {
             string detail;
 
@@ -557,8 +558,10 @@ namespace stardew_access.Features
                 bool isHarvestable = dirt.readyForHarvest();
                 bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
 
-                if (isWatered)
+                if (isWatered && MainClass.Config.WateredToggle)
                     detail = "Watered " + detail;
+                else if (!isWatered && !MainClass.Config.WateredToggle)
+                    detail = "Unwatered " + detail;
 
                 if (isFertilized)
                     detail = "Fertilized " + detail;
@@ -580,12 +583,14 @@ namespace stardew_access.Features
             }
             else
             {
-                detail = "Soil";
+                detail = (ignoreIfEmpty) ? "" : "Soil";
                 bool isWatered = dirt.state.Value == HoeDirt.watered;
                 bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
 
-                if (isWatered)
+                if (isWatered && MainClass.Config.WateredToggle)
                     detail = "Watered " + detail;
+                else if (!isWatered && !MainClass.Config.WateredToggle)
+                    detail = "Unwatered " + detail;
 
                 if (isFertilized)
                     detail = "Fertilized " + detail;
@@ -709,7 +714,7 @@ namespace stardew_access.Features
             }
             else if (obj is IndoorPot indoorPot)
             {
-                toReturn.name = $"{obj.DisplayName}, {getHoeDirtDetail(indoorPot.hoeDirt)}";
+                toReturn.name = $"{obj.DisplayName}, {getHoeDirtDetail(indoorPot.hoeDirt, true)}";
             }
             else if (obj is Sign sign)
             {
