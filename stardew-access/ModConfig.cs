@@ -77,6 +77,7 @@ namespace stardew_access
         public KeybindList TimeNSeasonKey { get; set; } = KeybindList.Parse("Q"); // Narrate the time of day, day and date and season
         public Boolean VerboseCoordinates { get; set; } = true;
         public Boolean SnapMouse { get; set; } = true; // Toggles the snap mouse feature
+        public Boolean Warning { get; set; } = true; // Toggles the warnings feature
         // TODO add command to toggle warning feature
         #endregion
 
