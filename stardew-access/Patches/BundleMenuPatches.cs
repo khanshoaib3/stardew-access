@@ -334,6 +334,10 @@ namespace stardew_access.Patches
                                     }
                                     toSpeak = $"{item.Stack} {toSpeak}";
 
+                                    if (!__instance.inventory.highlightMethod(__instance.inventory.actualInventory[currentInventorySlot]))
+                                    {
+                                        toSpeak = $"{toSpeak} not usable here";
+                                    }
                                 }
                                 else
                                 {

@@ -136,7 +136,14 @@ namespace stardew_access.Patches
                         if (__instance.inventory.actualInventory[i] == null)
                             toSpeak = "Empty slot";
                         else
+                        {
                             toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
+
+                            if (!__instance.inventory.highlightMethod(__instance.inventory.actualInventory[i]))
+                            {
+                                toSpeak = $"{toSpeak} not usable here";
+                            }
+                        }
 
                         if (forgeMenuQuery != $"{toSpeak}:{i}")
                         {
@@ -296,7 +303,14 @@ namespace stardew_access.Patches
                         if (__instance.inventory.actualInventory[i] == null)
                             toSpeak = "Empty slot";
                         else
+                        {
                             toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
+
+                            if (!__instance.inventory.highlightMethod(__instance.inventory.actualInventory[i]))
+                            {
+                                toSpeak = $"{toSpeak} not usable here";
+                            }
+                        }
 
                         if (tailoringMenuQuery != $"{toSpeak}:{i}")
                         {

@@ -241,7 +241,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, hoverPrice: __instance.hoverPrice))
+                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, hoverPrice: __instance.hoverPrice))
                 {
                     shopMenuQueryKey = "";
                     return;
@@ -396,7 +396,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                     geodeMenuQueryKey = "";
                 #endregion
             }
@@ -573,14 +573,14 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
                     gameMenuQueryKey = "";
                     itemGrabMenuQueryKey = "";
                     return;
                 }
 
-                if (narrateHoveredItemInInventory(__instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
+                if (narrateHoveredItemInInventory(__instance.ItemsToGrabMenu, __instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
                 {
                     gameMenuQueryKey = "";
                     itemGrabMenuQueryKey = "";
@@ -855,7 +855,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                 {
                     gameMenuQueryKey = "";
                     craftingPageQueryKey = "";
@@ -1072,7 +1072,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
                     gameMenuQueryKey = "";
                     inventoryPageQueryKey = "";
@@ -1174,7 +1174,7 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static bool narrateHoveredItemInInventory(List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y, bool giveExtraDetails = false, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1)
+        internal static bool narrateHoveredItemInInventory(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y, bool giveExtraDetails = false, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1)
         {
             #region Narrate hovered item
             for (int i = 0; i < inventory.Count; i++)
@@ -1270,6 +1270,11 @@ namespace stardew_access.Patches
                             if (hoverPrice != -1)
                             {
                                 price = $"Sell Price: {hoverPrice} g";
+                            }
+
+                            if (!inventoryMenu.highlightMethod(actualInventory[i]))
+                            {
+                                name = $"{name} not usable here";
                             }
 
                             if (giveExtraDetails)
