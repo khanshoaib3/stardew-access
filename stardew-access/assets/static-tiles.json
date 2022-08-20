@@ -1685,7 +1685,7 @@
       "x": [28],
       "y": [7],
       "type": "other"
-    },
+    }
   },
   "samhouse": {
     "Exit": {
@@ -2259,7 +2259,7 @@
       "x": [2],
       "y": [13],
       "type": "interactable"
-    },
+    }
   },
   "wizardhousebasement": {
     "Exit Ladder": {
