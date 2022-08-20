@@ -1,2705 +1,2293 @@
 {
-    "farm":
-    {
-        "Bus Stop Entrance":
-        {
-            "x":[79],
-            "y":[15,16,17,18],
-            "type":"door"
-        },
-        "Backwoods Entrance":
-        {
-            "x":[40,41],
-            "y":[0],
-            "type":"door"
-        },
-        "Cindersap Forest Entrance":
-        {
-            "x":[40,41],
-            "y":[64],
-            "type":"door"
-        },
-        "Farm Cave Entrance":
-        {
-            "x":[34],
-            "y":[7],
-            "type":"door"
-        },
-        "Grandpa's Shrine":
-        {
-            "x":[8],
-            "y":[7],
-            "type":"interactable"
-        }
-    },
-    "farmcave":
-    {
-        "Exit":
-        {
-            "x":[8],
-            "y":[11],
-            "type":"door"
-        }
-    },
-    "busstop":
-    {
-        "Ticket Machine":
-        {
-            "x":[7],
-            "y":[11],
-            "type":"interactable"
-        },
-        "Minecart":
-        {
-            "x":[4,5],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Farm Entrance":
-        {
-            "x":[0],
-            "y":[23],
-            "type":"door"
-        },
-        "Town Entrance":
-        {
-            "x":[34],
-            "y":[23],
-            "type":"door"
-        },
-        "Backwoods Entrance":
-        {
-            "x":[0],
-            "y":[6,7,8,9],
-            "type":"door"
-        }
-    },
-    "town":
-    {
-        "Calender Board":
-        {
-            "x":[41],
-            "y":[56],
-            "type":"interactable"
-        },
-        "Daily Quest Board":
-        {
-            "x":[42],
-            "y":[56],
-            "type":"interactable"
-        },
-        "Sewer":
-        {
-            "x":[34,35],
-            "y":[95,96],
-            "type":"interactable"
-        },
-        "Ice Cream Stand":
-        {
-            "x":[88],
-            "y":[92],
-            "type":"interactable"
-        },
-        "Minecart":
-        {
-            "x":[105,106],
-            "y":[79],
-            "type":"interactable"
-        },
-        "Bus Stop Entrance":
-        {
-            "x":[0],
-            "y":[54],
-            "type":"door"
-        },
-        "Cindersap Forest Entrance":
-        {
-            "x":[0],
-            "y":[90],
-            "type":"door"
-        },
-        "Beach Entrance":
-        {
-            "x":[54],
-            "y":[109],
-            "type":"door"
-        },
-        "Mountain Entrance":
-        {
-            "x":[81],
-            "y":[0],
-            "type":"door"
-        }
-    },
-    "shed":
-    {
-        "Exit":
-        {
-            "x":[6],
-            "y":[13],
-            "type":"door"
-        }
-    },
-    "coop":
-    {
-        "Hay Hopper":
-        {
-            "x":[3],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 1":
-        {
-            "x":[6],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 2":
-        {
-            "x":[7],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 3":
-        {
-            "x":[8],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 4":
-        {
-            "x":[9],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Exit":
-        {
-            "x":[2],
-            "y":[9],
-            "type":"door"
-        }
-    },
-    "big coop":
-    {
-        "Hay Hopper":
-        {
-            "x":[3],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Incubator":
-        {
-            "x":[2],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 1":
-        {
-            "x":[6],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 2":
-        {
-            "x":[7],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 3":
-        {
-            "x":[8],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 4":
-        {
-            "x":[9],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 5":
-        {
-            "x":[10],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 6":
-        {
-            "x":[11],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 7":
-        {
-            "x":[12],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 8":
-        {
-            "x":[13],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Exit":
-        {
-            "x":[2],
-            "y":[9],
-            "type":"door"
-        }
-    },
-    "coop2":
-    {
-        "Hay Hopper":
-        {
-            "x":[3],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Incubator":
-        {
-            "x":[2],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 1":
-        {
-            "x":[6],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 2":
-        {
-            "x":[7],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 3":
-        {
-            "x":[8],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 4":
-        {
-            "x":[9],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 5":
-        {
-            "x":[10],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 6":
-        {
-            "x":[11],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 7":
-        {
-            "x":[12],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 8":
-        {
-            "x":[13],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Exit":
-        {
-            "x":[2],
-            "y":[9],
-            "type":"door"
-        }
-    },
-    "deluxe coop":
-    {
-        "Hay Hopper":
-        {
-            "x":[3],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Incubator":
-        {
-            "x":[2],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 1":
-        {
-            "x":[6],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 2":
-        {
-            "x":[7],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 3":
-        {
-            "x":[8],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 4":
-        {
-            "x":[9],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 5":
-        {
-            "x":[10],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 6":
-        {
-            "x":[11],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 7":
-        {
-            "x":[12],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 8":
-        {
-            "x":[13],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 9":
-        {
-            "x":[14],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 10":
-        {
-            "x":[15],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 11":
-        {
-            "x":[16],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 12":
-        {
-            "x":[17],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Exit":
-        {
-            "x":[2],
-            "y":[9],
-            "type":"door"
-        }
-    },
-    "coop3":
-    {
-        "Hay Hopper":
-        {
-            "x":[3],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Incubator":
-        {
-            "x":[2],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 1":
-        {
-            "x":[6],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 2":
-        {
-            "x":[7],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 3":
-        {
-            "x":[8],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 4":
-        {
-            "x":[9],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 5":
-        {
-            "x":[10],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 6":
-        {
-            "x":[11],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 7":
-        {
-            "x":[12],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 8":
-        {
-            "x":[13],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 9":
-        {
-            "x":[14],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 10":
-        {
-            "x":[15],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 11":
-        {
-            "x":[16],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 12":
-        {
-            "x":[17],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Exit":
-        {
-            "x":[2],
-            "y":[9],
-            "type":"door"
-        }
-    },
-    "barn":
-    {
-        "Hay Hopper":
-        {
-            "x":[6],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 1":
-        {
-            "x":[8],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 2":
-        {
-            "x":[9],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 3":
-        {
-            "x":[10],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 4":
-        {
-            "x":[11],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Exit":
-        {
-            "x":[11],
-            "y":[14],
-            "type":"door"
-        }
-    },
-    "barn2":
-    {
-        "Hay Hopper":
-        {
-            "x":[6],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 1":
-        {
-            "x":[8],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 2":
-        {
-            "x":[9],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 3":
-        {
-            "x":[10],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 4":
-        {
-            "x":[11],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 5":
-        {
-            "x":[12],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 6":
-        {
-            "x":[13],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 7":
-        {
-            "x":[14],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 8":
-        {
-            "x":[15],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Exit":
-        {
-            "x":[11],
-            "y":[14],
-            "type":"door"
-        }
-    },
-    "big barn":
-    {
-        "Hay Hopper":
-        {
-            "x":[6],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 1":
-        {
-            "x":[8],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 2":
-        {
-            "x":[9],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 3":
-        {
-            "x":[10],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 4":
-        {
-            "x":[11],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 5":
-        {
-            "x":[12],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 6":
-        {
-            "x":[13],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 7":
-        {
-            "x":[14],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 8":
-        {
-            "x":[15],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Exit":
-        {
-            "x":[11],
-            "y":[14],
-            "type":"door"
-        }
-    },
-    "barn3":
-    {
-        "Hay Hopper":
-        {
-            "x":[6],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 1":
-        {
-            "x":[8],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 2":
-        {
-            "x":[9],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 3":
-        {
-            "x":[10],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 4":
-        {
-            "x":[11],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 5":
-        {
-            "x":[12],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 6":
-        {
-            "x":[13],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 7":
-        {
-            "x":[14],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 8":
-        {
-            "x":[15],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 9":
-        {
-            "x":[16],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 10":
-        {
-            "x":[17],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 11":
-        {
-            "x":[18],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 12":
-        {
-            "x":[19],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Exit":
-        {
-            "x":[11],
-            "y":[14],
-            "type":"door"
-        }
-    },
-    "deluxe barn":
-    {
-        "Hay Hopper":
-        {
-            "x":[6],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 1":
-        {
-            "x":[8],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 2":
-        {
-            "x":[9],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 3":
-        {
-            "x":[10],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 4":
-        {
-            "x":[11],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 5":
-        {
-            "x":[12],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 6":
-        {
-            "x":[13],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 7":
-        {
-            "x":[14],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 8":
-        {
-            "x":[15],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 9":
-        {
-            "x":[16],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 10":
-        {
-            "x":[17],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 11":
-        {
-            "x":[18],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Feeding Bench 12":
-        {
-            "x":[19],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Exit":
-        {
-            "x":[11],
-            "y":[14],
-            "type":"door"
-        }
-    },
-    "slime hutch":
-    {
-        "Water Trough 1":
-        {
-            "x":[16],
-            "y":[6],
-            "type":"interactable"
-        },
-        "Water Trough 2":
-        {
-            "x":[16],
-            "y":[7],
-            "type":"interactable"
-        },
-        "Water Trough 3":
-        {
-            "x":[16],
-            "y":[8],
-            "type":"interactable"
-        },
-        "Water Trough 4":
-        {
-            "x":[16],
-            "y":[9],
-            "type":"interactable"
-        },
-        "Exit":
-        {
-            "x":[8],
-            "y":[12],
-            "type":"door"
-        }
-    },
-    "adventureguild":
-    {
-        "Goals Board":
-        {
-            "x":[8],
-            "y":[10],
-            "type":"interactable"
-        },
-        "Shop Counter":
-        {
-            "x":[5],
-            "y":[12],
-            "type":"interactable"
-        },
-        "Gil":
-        {
-            "x":[11],
-            "y":[12],
-            "type":"npc"
-        },
-        "Exit":
-        {
-            "x":[6],
-            "y":[19],
-            "type":"door"
-        }
-    },
-    "caldera":
-    {
-        "Rare Chest":
-        {
-            "x":[25],
-            "y":[28],
-            "type":"chest"
-        },
-        "Forge":
-        {
-            "x":[23],
-            "y":[21],
-            "type":"interactable"
-        },
-        "Volcano Dungeon 0 Entrance":
-        {
-            "x":[11],
-            "y":[36],
-            "type":"door"
-        },
-        "Volcano Dungeon 9 Entrance":
-        {
-            "x":[21],
-            "y":[39],
-            "type":"door"
-        }
-    },
-    "volcanodungeon0":
-    {
-        "Island North Entrance 1":
-        {
-            "x":[31],
-            "y":[54],
-            "type":"door"
-        },
-        "Island North Entrance 2":
-        {
-            "x":[6],
-            "y":[50],
-            "type":"door"
-        },
-        "Caldera Entrance":
-        {
-            "x":[44],
-            "y":[50],
-            "type":"door"
-        },
-        "Volcano Dungeon 1 Entrance":
-        {
-            "x":[37],
-            "y":[5],
-            "type":"door"
-        }
-    },
-    "club":
-    {
-        "Coin Machine":
-        {
-            "x":[12],
-            "y":[4],
-            "type":"interactable"
-        },
-        "Shop Counter":
-        {
-            "x":[25],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Calico Spin Machine":
-        {
-            "x":[11,13,15],
-            "y":[8,10],
-            "type":"interactable"
-        },
-        "High Stakes Calico Jack Table":
-        {
-            "x":[23,24],
-            "y":[10,11],
-            "type":"interactable"
-        },
-        "Low Stakes Calico Jack Table":
-        {
-            "x":[3],
-            "y":[7,9],
-            "type":"interactable"
-        },
-        "Man":
-        {
-            "x":[13],
-            "y":[11],
-            "type":"npc"
-        },
-        "Welwick":
-        {
-            "x":[18],
-            "y":[9],
-            "type":"npc"
-        },
-        "Unknown person":
-        {
-            "x":[16],
-            "y":[4],
-            "type":"npc"
-        },
-        "Stats Checker":
-        {
-            "x":[3],
-            "y":[4],
-            "type":"interactable"
-        },
-        "Exit":
-        {
-            "x":[8],
-            "y":[12],
-            "type":"door"
-        }
-    },
-    "desert":
-    {
-        "Bus":
-        {
-            "x":[18],
-            "y":[27],
-            "type":"interactable"
-        },
-        "Desert Trader":
-        {
-            "x":[42],
-            "y":[23],
-            "type":"interactable"
-        },
-        "Three Pillars":
-        {
-            "x":[34,37,40],
-            "y":[8,13],
-            "type":"decoration"
-        },
-        "Three Pillars Center":
-        {
-            "x":[37],
-            "y":[11],
-            "type":"interactable"
-        },
-        "Skull Cavern Entrance":
-        {
-            "x":[8],
-            "y":[6],
-            "type":"door"
-        },
-        "Desert Warp Statue":
-        {
-            "x":[35],
-            "y":[43],
-            "type":"decoration"
-        },
-        "Sand Dragon Skull":
-        {
-            "x":[9,10],
-            "y":[35,36],
-            "type":"decoration"
-        }
-    },
-    "fishshop":
-    {
-        "Shop Counter":
-        {
-            "x":[5],
-            "y":[5],
-            "type":"interactable"
-        },
-        "Exit":
-        {
-            "x":[5],
-            "y":[9],
-            "type":"door"
-        }
-    },
-    "boattunnel":
-    {
-        "Exit":
-        {
-            "x":[6],
-            "y":[11],
-            "type":"door"
-        }
-    },
-    "beach":
-    {
-        "Town Entrance":
-        {
-            "x":[38],
-            "y":[0],
-            "type":"door"
-        },
-        "Beach Warp Statue":
-        {
-            "x":[20],
-            "y":[4],
-            "type":"decoration"
-        }
-    },
-    "forest":
-    {
-        "Farm Entrance":
-        {
-            "x":[68],
-            "y":[0],
-            "type":"door"
-        },
-        "Town Entrance":
-        {
-            "x":[119],
-            "y":[25],
-            "type":"door"
-        },
-        "Bridge 1":
-        {
-            "x":[77,82],
-            "y":[49],
-            "type":"bridge"
-        },
-        "Bridge 2":
-        {
-            "x":[87],
-            "y":[52,56],
-            "type":"bridge"
-        },
-        "Bridge 3":
-        {
-            "x":[65,62],
-            "y":[70],
-            "type":"bridge"
-        },
-        "Bridge 4":
-        {
-            "x":[41],
-            "y":[79,82],
-            "type":"bridge"
-        },
-        "Bridge 5":
-        {
-            "x":[38],
-            "y":[85,87],
-            "type":"bridge"
-        },
-        "Abandoned House":
-        {
-            "x":[34],
-            "y":[95],
-            "type":"interactable"
-        }
-    },
-    "beachnightmarket":
-    {
-       "Desert Trader":
-        {
-            "x":[14],
-            "y":[37],
-            "type":"npc"
-        },
-        "Famous Painter Lupini":
-        {
-            "x":[43],
-            "y":[34],
-            "type":"npc"
-        },
-        "Fishing Submarine Door":
-        {
-            "x":[5],
-            "y":[34],
-            "type":"door"
-        },
-        "Travelling Cart":
-        {
-            "x":[39],
-            "y":[30],
-            "type":"interactable"
-        },
-        "Shrouded Figure":
-        {
-            "x":[32],
-            "y":[34],
-            "type":"npc"
-        },
-        "Decoration Boat":
-        {
-            "x":[19],
-            "y":[33],
-            "type":"interactable"
-        },
-        "Magic Shop Boat":
-        {
-            "x":[48],
-            "y":[34],
-            "type":"interactable"
-        },
-        "Mermaid Boat Door":
-        {
-            "x":[58],
-            "y":[31],
-            "type":"door"
-        }
-    },
-    "mermaidhouse":
-    {
-        "Exit":
-        {
-            "x":[4],
-            "y":[10],
-            "type":"door"
-        },
-        "Clam Shell 1":
-        {
-            "x":[2],
-            "y":[6],
-            "type":"interactable"
-        },
-        "Clam Shell 2":
-        {
-            "x":[3],
-            "y":[6],
-            "type":"interactable"
-        },
-        "Clam Shell 3":
-        {
-            "x":[4],
-            "y":[6],
-            "type":"interactable"
-        },
-        "Clam Shell 4":
-        {
-            "x":[5],
-            "y":[6],
-            "type":"interactable"
-        },
-        "Clam Shell 5":
-        {
-            "x":[6],
-            "y":[6],
-            "type":"interactable"
-        }
-    },
-    "submarine":
-    {
-        "Exit":
-        {
-            "x":[14],
-            "y":[15],
-            "type":"door"
-        },
-        "Captain":
-        {
-            "x":[2],
-            "y":[9],
-            "type":"npc"
-        }
-    },
-    "cellar":
-    {
-        "Exit":
-        {
-            "x":[3],
-            "y":[2],
-            "type":"door"
-        }
-    },
-    "communitycenter":
-    {
-        "Exit":
-        {
-            "x":[32],
-            "y":[23],
-            "type":"door"
-        }
-    },
-    "islandeast":
-    {
-        "Banana Shrine":
-        {
-            "x":[16],
-            "y":[26],
-            "type":"interactable"
-        },
-        "Jungle Parrot Express":
-        {
-            "x":[28],
-            "y":[27],
-            "type":"interactable"
-        },
-        "Island Hut Entrance":
-        {
-            "x":[22],
-            "y":[10],
-            "type":"door"
-        },
-        "Island South Entrance":
-        {
-            "x":[0],
-            "y":[46],
-            "type":"door"
-        },
-        "Island Shrine Entrance":
-        {
-            "x":[32],
-            "y":[30],
-            "type":"door"
-        }
-    },
-    "islandhut":
-    {
-        "Exit":
-        {
-            "x":[7],
-            "y":[13],
-            "type":"door"
-        }
-    },
-    "islandsouth":
-    {
-        "Island East Entrance":
-        {
-            "x":[34],
-            "y":[12],
-            "type":"door"
-        },
-        "Ginger Island Warp Statue":
-        {
-            "x":[11],
-            "y":[11],
-            "type":"decoration"
-        },
-        "Island West Entrance":
-        {
-            "x":[0],
-            "y":[11],
-            "type":"door"
-        },
-        "Island North Entrance":
-        {
-            "x":[17,18,19],
-            "y":[0],
-            "type":"door"
-        },
-        "Island North Entrance 2":
-        {
-            "x":[27,28],
-            "y":[0],
-            "type":"door"
-        },
-        "Docks Parrot Express":
-        {
-            "x":[6],
-            "y":[31],
-            "type":"interactable"
-        },
-        "Return Boat":
-        {
-            "x":[19],
-            "y":[43],
-            "type":"interactable"
-        }
-    },
-    "islandwest":
-    {
-        "Farm Parrot Express":
-        {
-            "x":[74],
-            "y":[9],
-            "type":"interactable"
-        },
-        "Bridge 1":
-        {
-            "x":[67,62],
-            "y":[16],
-            "type":"bridge"
-        },
-        "Qi's Walnut Room Door":
-        {
-            "x":[20],
-            "y":[22],
-            "type":"door"
-        },
-        "Door to Shipwreck Interior":
-        {
-            "x":[60],
-            "y":[92],
-            "type":"door"
-        },
-        "Hole 1":
-        {
-            "x":[37],
-            "y":[87],
-            "type":"interactable"
-        },
-        "Hole 2":
-        {
-            "x":[41],
-            "y":[86],
-            "type":"interactable"
-        },
-        "Hole 3":
-        {
-            "x":[45],
-            "y":[86],
-            "type":"interactable"
-        },
-        "Hole 4":
-        {
-            "x":[48],
-            "y":[87],
-            "type":"interactable"
-        },
-        "Bridge 2":
-        {
-            "x":[55,52],
-            "y":[80],
-            "type":"bridge"
-        },
-        "Island Farm House Door":
-        {
-            "x":[77],
-            "y":[39],
-            "type":"door"
-        },
-        "Island Farm Cave Entrance":
-        {
-            "x":[96],
-            "y":[33],
-            "type":"door"
-        },
-        "Island South Entrance":
-        {
-            "x":[105],
-            "y":[40],
-            "type":"door"
-        }
-    },
-    "captainroom":
-    {
-        "Exit":
-        {
-            "x":[0],
-            "y":[5],
-            "type":"door"
-        }
-    },
-    "islandfarmcave":
-    {
-        "Exit":
-        {
-            "x":[4],
-            "y":[10],
-            "type":"door"
-        },
-        "Gourmand Frog":
-        {
-            "x":[5],
-            "y":[4],
-            "type":"npc"
-        }
-    },
-    "islandnorth":
-    {
-        "Island South Entrance":
-        {
-            "x":[35,36,37],
-            "y":[89],
-            "type":"door"
-        },
-        "Island South Entrance 2":
-        {
-            "x":[43,44],
-            "y":[89],
-            "type":"door"
-        },
-        "Island Field Office Entrance":
-        {
-            "x":[46],
-            "y":[46],
-            "type":"door"
-        },
-        "Island North Cave Entrance":
-        {
-            "x":[21,22],
-            "y":[47],
-            "type":"door"
-        },
-        "Dig Site Parrot Express":
-        {
-            "x":[5],
-            "y":[48],
-            "type":"interactable"
-        },
-        "Volcano Dungeon Entrance":
-        {
-            "x":[39,40,41,42],
-            "y":[21],
-            "type":"door"
-        },
-        "Volcano Dungeon Entrance 2":
-        {
-            "x":[12],
-            "y":[31],
-            "type":"door"
-        },
-        "Volcano Parrot Express":
-        {
-            "x":[60],
-            "y":[16],
-            "type":"interactable"
-        }
-    },
-    "islandfieldoffice":
-    {
-        "Exit":
-        {
-            "x":[4],
-            "y":[10],
-            "type":"door"
-        },
-        "Counter":
-        {
-            "x":[8],
-            "y":[7],
-            "type":"interactable"
-        },
-        "Island Survey":
-        {
-            "x":[5],
-            "y":[3],
-            "type":"interactable"
-        }
-    },
-    "qinutroom":
-    {
-        "Exit":
-        {
-            "x":[7],
-            "y":[7],
-            "type":"door"
-        },
-        "Perfection Tracker":
-        {
-            "x":[13],
-            "y":[4],
-            "type":"interactable"
-        },
-        "Vending Machine":
-        {
-            "x":[11],
-            "y":[3],
-            "type":"interactable"
-        },
-        "Special Order Board":
-        {
-            "x":[3],
-            "y":[3],
-            "type":"interactable"
-        }
-    },
-    "islandsoutheast":
-    {
-        "Island South East Cave Entrance":
-        {
-            "x":[30],
-            "y":[18],
-            "type":"door"
-        }
-    },
-    "islandsoutheastcave":
-    {
-        "Exit":
-        {
-            "x":[1],
-            "y":[8],
-            "type":"door"
-        }
-    },
-    "islandshrine":
-    {
-        "Exit":
-        {
-            "x":[13],
-            "y":[28],
-            "type":"door"
-        },
-        "Shrine":
-        {
-            "x":[24],
-            "y":[22],
-            "type":"interactable"
-        },
-        "North Pedestal":
-        {
-            "x":[24],
-            "y":[25],
-            "type":"interactable"
-        },
-        "East Pedestal":
-        {
-            "x":[27],
-            "y":[27],
-            "type":"interactable"
-        },
-        "West Pedestal":
-        {
-            "x":[21],
-            "y":[27],
-            "type":"interactable"
-        },
-        "South Pedestal":
-        {
-            "x":[24],
-            "y":[28],
-            "type":"interactable"
-        }
-    },
-    "jojamart":
-    {
-        "Exit":
-        {
-            "x":[13],
-            "y":[29],
-            "type":"door"
-        },
-        "Morris's Kiosk":
-        {
-            "x":[21],
-            "y":[25],
-            "type":"interactable"
-        },
-        "Shop Counter":
-        {
-            "x":[10],
-            "y":[25],
-            "type":"interactable"
-        }
-    },
-    "archaeologyhouse":
-    {
-        "Exit":
-        {
-            "x":[3],
-            "y":[14],
-            "type":"door"
-        },
-        "Counter":
-        {
-            "x":[3],
-            "y":[9],
-            "type":"interactable"
-        }
-    },
-    "manorhouse":
-    {
-        "Exit":
-        {
-            "x":[4],
-            "y":[11],
-            "type":"door"
-        },
-        "Town Ledger Book":
-        {
-            "x":[2],
-            "y":[5],
-            "type":"interactable"
-        },
-        "Marriage Log Book":
-        {
-            "x":[3],
-            "y":[5],
-            "type":"interactable"
-        },
-        "Lost and Found Box":
-        {
-            "x":[4],
-            "y":[5],
-            "type":"interactable"
-        },
-        "Mayor's Room Door":
-        {
-            "x":[16],
-            "y":[9],
-            "type":"door"
-        },
-        "Mayor's Oven":
-        {
-            "x":[7],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Mayor's Fridge":
-        {
-            "x":[9],
-            "y":[4],
-            "type":"decoration"
-        }
-    },
-    "mine":
-    {
-        "Mountain Exit":
-        {
-            "x":[18],
-            "y":[13],
-            "type":"door"
-        },
-        "Minecart":
-        {
-            "x":[11,12],
-            "y":[10],
-            "type":"interactable"
-        },
-        "Quarry Mine Ladder":
-        {
-            "x":[67],
-            "y":[9],
-            "type":"door"
-        },
-        "Quarry Exit":
-        {
-            "x":[18],
-            "y":[13],
-            "type":"door"
-        }
-    },
-    "mountain":
-    {
-        "Mine Entrance":
-        {
-            "x":[54],
-            "y":[5],
-            "type":"door"
-        },
-        "Mine Bridge":
-        {
-            "x":[47],
-            "y":[7],
-            "type":"bridge"
-        },
-        "Quarry Bridge":
-        {
-            "x":[90],
-            "y":[26],
-            "type":"bridge"
-        },
-        "Minecart":
-        {
-            "x":[124,125],
-            "y":[11],
-            "type":"interactable"
-        },
-        "Quarry Mine Entrance":
-        {
-            "x":[103],
-            "y":[17],
-            "type":"door"
-        },
-        "Bridge 1":
-        {
-            "x":[57],
-            "y":[30],
-            "type":"bridge"
-        },
-        "Bridge 2":
-        {
-            "x":[61],
-            "y":[21],
-            "type":"bridge"
-        },
-        "Mountain Warp Statue":
-        {
-            "x":[31],
-            "y":[20],
-            "type":"decoration"
-        },
-        "Linus Tent Entrance":
-        {
-            "x":[29],
-            "y":[7],
-            "type":"door"
-        },
-        "Backwoods Entrance":
-        {
-            "x":[0],
-            "y":[13],
-            "type":"door"
-        },
-        "Town Entrance":
-        {
-            "x":[15],
-            "y":[40],
-            "type":"door"
-        },
-        "Railroad Entrance":
-        {
-            "x":[9],
-            "y":[0],
-            "type":"door"
-        },
-        "Science House Secondary Door":
-        {
-            "x":[8],
-            "y":[20],
-            "type":"door"
-        }
-    },
-    "undergroundmine77377":
-    {
-        "Grim Reaper Statue":
-        {
-            "x":[29,30],
-            "y":[6],
-            "type":"interactable"
-        }
-    },
-    "Tent":
-    {
-        "Exit":
-        {
-            "x":[2],
-            "y":[5],
-            "type":"door"
-        }
-    },
-    "railroad":
-    {
-        "Mountain Entrance":
-        {
-            "x":[29],
-            "y":[61],
-            "type":"door"
-        }
-    },
-    "backwoods":
-    {
-        "Mountain Entrance":
-        {
-            "x":[49],
-            "y":[14],
-            "type":"door"
-        },
-        "Farm Entrance":
-        {
-            "x":[14],
-            "y":[39],
-            "type":"door"
-        },
-        "Bus stop Entrance":
-        {
-            "x":[49],
-            "y":[28,29,30,31,32],
-            "type":"door"
-        },
-        "Tunnel Entrance":
-        {
-            "x":[23],
-            "y":[29,30,31],
-            "type":"door"
-        }
-    },
-    "tunnel":
-    {
-        "Exit":
-        {
-            "x":[39],
-            "y":[7,8,9,10,11],
-            "type":"door"
-        }
-    },
-    "movietheater":
-    {
-        "Exit":
-        {
-            "x":[13],
-            "y":[15],
-            "type":"door"
-        },
-        "Concessions Counter":
-        {
-            "x":[7],
-            "y":[6],
-            "type":"interactable"
-        },
-        "Crane Game":
-        {
-            "x":[1,2],
-            "y":[8],
-            "type":"interactable"
-        },
-        "Theater Door":
-        {
-            "x":[13],
-            "y":[3],
-            "type":"door"
-        },
-        "Crane Man":
-        {
-            "x":[2],
-            "y":[9],
-            "type":"npc"
-        }
-    },
-    "seedshop":
-    {
-        "Exit":
-        {
-            "x":[6],
-            "y":[29],
-            "type":"door"
-        },
-        "Shop Counter":
-        {
-            "x":[4],
-            "y":[18],
-            "type":"interactable"
-        },
-        "Backpack Upgrade":
-        {
-            "x":[7],
-            "y":[18],
-            "type":"interactable"
-        },
-        "Shrine of Yoba":
-        {
-            "x":[37],
-            "y":[17],
-            "type":"decoration"
-        },
-        "Fridge":
-        {
-            "x":[39],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Abigail's Room Door":
-        {
-            "x":[13],
-            "y":[11],
-            "type":"door"
-        },
-        "Pierre and Caroline's Room Door":
-        {
-            "x":[20],
-            "y":[11],
-            "type":"door"
-        },
-        "Living Area Door":
-        {
-            "x":[14],
-            "y":[16],
-            "type":"door"
-        }
-    },
-    "sewer":
-    {
-        "Exit Ladder":
-        {
-            "x":[16],
-            "y":[10],
-            "type":"door"
-        },
-        "Statue Of Uncertainty":
-        {
-            "x":[8],
-            "y":[20],
-            "type":"interactable"
-        },
-        "Mutant Bug Lair":
-        {
-            "x":[3],
-            "y":[19],
-            "type":"door"
-        }
-    },
-    "wizardhouse":
-    {
-        "Exit":
-        {
-            "x":[8],
-            "y":[24],
-            "type":"door"
-        },
-        "Basement Door":
-        {
-            "x":[4],
-            "y":[4],
-            "type":"door"
-        }
-    },
-    "wizardhousebasement":
-    {
-        "Exit Ladder":
-        {
-            "x":[4],
-            "y":[3],
-            "type":"door"
-        },
-        "Shrine of Illusions":
-        {
-            "x":[12],
-            "y":[4],
-            "type":"interactable"
-        }
-    },
-    "woods":
-    {
-        "Forest Entrance":
-        {
-            "x":[59],
-            "y":[17],
-            "type":"door"
-        },
-        "Old Master Cannoli":
-        {
-            "x":[8,9],
-            "y":[7],
-            "type":"interactable"
-        }
-    },
-    "harveyroom":
-    {
-        "Exit":
-        {
-            "x":[6],
-            "y":[12],
-            "type":"door"
-        },
-        "Fridge":
-        {
-            "x":[21],
-            "y":[6],
-            "type":"decoration"
-        },
-        "Oven":
-        {
-            "x":[19],
-            "y":[6],
-            "type":"decoration"
-        },
-        "Airplane Collection":
-        {
-            "x":[6,7],
-            "y":[3],
-            "type":"decoration"
-        },
-        "Radio Broadcasting Set":
-        {
-            "x":[4,5],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Cassette Deck":
-        {
-            "x":[8],
-            "y":[4],
-            "type":"decoration"
-        }
-    },
-    "hospital":
-    {
-        "Exit":
-        {
-            "x":[10],
-            "y":[19],
-            "type":"door"
-        },
-        "Harvey's Room Entrance":
-        {
-            "x":[10],
-            "y":[2],
-            "type":"door"
-        },
-        "Harvey's Room Entrance Door":
-        {
-            "x":[10],
-            "y":[5],
-            "type":"door"
-        },
-        "Main Area Door":
-        {
-            "x":[10],
-            "y":[13],
-            "type":"door"
-        },
-        "Counter":
-        {
-            "x":[6],
-            "y":[16],
-            "type":"interactable"
-        }
-    },
-    "blacksmith":
-    {
-        "Exit":
-        {
-            "x":[5],
-            "y":[19],
-            "type":"door"
-        },
-        "Counter":
-        {
-            "x":[3],
-            "y":[14],
-            "type":"interactable"
-        },
-        "Clint's Room Door":
-        {
-            "x":[4],
-            "y":[9],
-            "type":"door"
-        },
-        "Clint's Furnace":
-        {
-            "x":[9,10],
-            "y":[12],
-            "type":"decoration"
-        },
-        "Blueprints":
-        {
-            "x":[13],
-            "y":[15,16],
-            "type":"decoration"
-        },
-        "Anvil":
-        {
-            "x":[12,13],
-            "y":[13],
-            "type":"decoration"
-        },
-        "Cassette Deck":
-        {
-            "x":[2],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Clint's Drawer":
-        {
-            "x":[5,6],
-            "y":[4],
-            "type":"decoration"
-        }
-    },
-    "animalshop":
-    {
-        "Exit":
-        {
-            "x":[13],
-            "y":[19],
-            "type":"door"
-        },
-        "Counter":
-        {
-            "x":[12],
-            "y":[15],
-            "type":"interactable"
-        },
-        "Marnie's Room Door":
-        {
-            "x":[15],
-            "y":[12],
-            "type":"door"
-        },
-        "Jas's Room Door":
-        {
-            "x":[6],
-            "y":[13],
-            "type":"door"
-        },
-        "Shane's Room Door":
-        {
-            "x":[21],
-            "y":[13],
-            "type":"door"
-        },
-        "Marnie's Barn Door":
-        {
-            "x":[30],
-            "y":[13],
-            "type":"door"
-        },
-        "Fridge":
-        {
-            "x":[28],
-            "y":[14],
-            "type":"decoration"
-        },
-        "Oven":
-        {
-            "x":[24],
-            "y":[14],
-            "type":"decoration"
-        },
-        "Mega Station":
-        {
-            "x":[22],
-            "y":[5],
-            "type":"decoration"
-        },
-        "Shane's Radio":
-        {
-            "x":[24],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Marnie's Dresser":
-        {
-            "x":[16],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Marnie's Drawer":
-        {
-            "x":[17],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Jack in the Box":
-        {
-            "x":[8],
-            "y":[5],
-            "type":"decoration"
-        },
-        "Futan Bear":
-        {
-            "x":[2,3],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Colouring Book":
-        {
-            "x":[5],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Paint Set":
-        {
-            "x":[5],
-            "y":[7],
-            "type":"decoration"
-        },
-        "Jas's Alarm Clock":
-        {
-            "x":[8],
-            "y":[8],
-            "type":"decoration"
-        },
-        "Jas's Radio":
-        {
-            "x":[4],
-            "y":[9],
-            "type":"decoration"
-        },
-        "Arts And Craft":
-        {
-            "x":[7],
-            "y":[6],
-            "type":"decoration"
-        },
-        "Doll House":
-        {
-            "x":[6,7],
-            "y":[4],
-            "type":"decoration"
-        }
-    },
-    "saloon":
-    {
-        "Exit":
-        {
-            "x":[14],
-            "y":[24],
-            "type":"door"
-        },
-        "Counter":
-        {
-            "x":[14],
-            "y":[19],
-            "type":"interactable"
-        },
-        "Journey of the Prairie King Arcade":
-        {
-            "x":[33],
-            "y":[17],
-            "type":"interactable"
-        },
-        "Junimo Kart Arcade":
-        {
-            "x":[35],
-            "y":[17],
-            "type":"interactable"
-        },
-        "Joja Vending Machine":
-        {
-            "x":[37,38],
-            "y":[17],
-            "type":"interactable"
-        },
-        "Jukebox":
-        {
-            "x":[1,2],
-            "y":[17],
-            "type":"interactable"
-        },
-        "Gus's Room Door":
-        {
-            "x":[20],
-            "y":[9],
-            "type":"door"
-        },
-        "Dining Room Door":
-        {
-            "x":[11],
-            "y":[9],
-            "type":"door"
-        },
-        "Living Area Door":
-        {
-            "x":[4],
-            "y":[16],
-            "type":"door"
-        },
-        "Gus's Radio":
-        {
-            "x":[16],
-            "y":[6],
-            "type":"decoration"
-        }
-    },
-    "sciencehouse":
-    {
-        "Exit":
-        {
-            "x":[6],
-            "y":[24],
-            "type":"door"
-        },
-        "Secondary Exit":
-        {
-            "x":[3],
-            "y":[8],
-            "type":"door"
-        },
-        "Counter":
-        {
-            "x":[8],
-            "y":[19],
-            "type":"interactable"
-        },
-        "Sebastian's Room Entrance":
-        {
-            "x":[12],
-            "y":[21],
-            "type":"door"
-        },
-        "Beaker Set":
-        {
-            "x":[17],
-            "y":[17],
-            "type":"decoration"
-        },
-        "Microscope":
-        {
-            "x":[19],
-            "y":[17],
-            "type":"decoration"
-        },
-        "Stereo Microscope":
-        {
-            "x":[23],
-            "y":[20],
-            "type":"decoration"
-        },
-        "Robin and Demetrius's Room Entrance":
-        {
-            "x":[13],
-            "y":[10],
-            "type":"door"
-        },
-        "Maru's Room Entrance":
-        {
-            "x":[7],
-            "y":[10],
-            "type":"door"
-        },
-        "Bookshelf":
-        {
-            "x":[16,17],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Maru's Device":
-        {
-            "x":[6],
-            "y":[6],
-            "type":"decoration"
-        },
-        "Poster":
-        {
-            "x":[6],
-            "y":[3],
-            "type":"decoration"
-        },
-        "Computer":
-        {
-            "x":[9],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Fridge":
-        {
-            "x":[27],
-            "y":[8],
-            "type":"decoration"
-        },
-        "Oven":
-        {
-            "x":[30],
-            "y":[10],
-            "type":"decoration"
-        }
-    },
-    "sebastianroom":
-    {
-        "Exit":
-        {
-            "x":[1],
-            "y":[1],
-            "type":"door"
-        },
-        "Room Door":
-        {
-            "x":[1],
-            "y":[3],
-            "type":"door"
-        },
-        "Sebastian's Radio":
-        {
-            "x":[3],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Graphic Novel":
-        {
-            "x":[10],
-            "y":[6],
-            "type":"decoration"
-        },
-        "Computer":
-        {
-            "x":[7],
-            "y":[4],
-            "type":"decoration"
-        }
-    },
-    "samhouse":
-    {
-        "Exit":
-        {
-            "x":[4],
-            "y":[23],
-            "type":"door"
-        },
-        "Radio":
-        {
-            "x":[6],
-            "y":[12],
-            "type":"decoration"
-        },
-        "Vincent's Room Door":
-        {
-            "x":[16],
-            "y":[18],
-            "type":"door"
-        },
-        "Sam's Room Door":
-        {
-            "x":[12],
-            "y":[14],
-            "type":"door"
-        },
-        "Jodi's Room Door":
-        {
-            "x":[17],
-            "y":[6],
-            "type":"door"
-        },
-        "Sam's Drawer":
-        {
-            "x":[7,8],
-            "y":[12],
-            "type":"decoration"
-        },
-        "Bookshelf":
-        {
-            "x":[18,19],
-            "y":[12],
-            "type":"decoration"
-        },
-        "Fridge":
-        {
-            "x":[7],
-            "y":[4],
-            "type":"decoration"
-        }
-    },
-    "haleyhouse":
-    {
-        "Exit":
-        {
-            "x":[2],
-            "y":[24],
-            "type":"door"
-        },
-        "Sewing Machine":
-        {
-            "x":[12,13],
-            "y":[23],
-            "type":"interactable"
-        },
-        "Dye Pots":
-        {
-            "x":[17],
-            "y":[25],
-            "type":"interactable"
-        },
-        "Emily's Room Door":
-        {
-            "x":[16],
-            "y":[12],
-            "type":"door"
-        },
-        "Emily's Computer":
-        {
-            "x":[22],
-            "y":[6],
-            "type":"decoration"
-        },
-        "Emily's Pet Parrot":
-        {
-            "x":[14],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Magazine":
-        {
-            "x":[4],
-            "y":[22],
-            "type":"decoration"
-        },
-        "Globe":
-        {
-            "x":[8],
-            "y":[15],
-            "type":"decoration"
-        },
-        "Fridge":
-        {
-            "x":[21],
-            "y":[15],
-            "type":"decoration"
-        },
-        "Haley's Room Door":
-        {
-            "x":[5],
-            "y":[13],
-            "type":"door"
-        },
-        "Futan Bear":
-        {
-            "x":[8],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Diary":
-        {
-            "x":[9],
-            "y":[5],
-            "type":"decoration"
-        },
-        "Haley's Camera":
-        {
-            "x":[1],
-            "y":[9],
-            "type":"decoration"
-        }
-    },
-    "joshhouse":
-    {
-        "Exit":
-        {
-            "x":[9],
-            "y":[24],
-            "type":"door"
-        },
-        "TV":
-        {
-            "x":[15,16],
-            "y":[20],
-            "type":"decoration"
-        },
-        "Bookshelf":
-        {
-            "x":[17,18],
-            "y":[16],
-            "type":"decoration"
-        },
-        "Fridge":
-        {
-            "x":[5],
-            "y":[16],
-            "type":"decoration"
-        },
-        "Evelyn and George's Room Door":
-        {
-            "x":[5],
-            "y":[9],
-            "type":"door"
-        },
-        "Alex's Room Door":
-        {
-            "x":[10],
-            "y":[10],
-            "type":"door"
-        },
-        "Radio":
-        {
-            "x":[3],
-            "y":[4],
-            "type":"door"
-        },
-        "Magazine":
-        {
-            "x":[11],
-            "y":[4],
-            "type":"door"
-        },
-        "Alex's Bookshelf":
-        {
-            "x":[12,13],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Alex's Drawer":
-        {
-            "x":[17,18],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Dumbbell":
-        {
-            "x":[14],
-            "y":[4],
-            "type":"door"
-        },
-        "Gridball":
-        {
-            "x":[23],
-            "y":[45],
-            "type":"door"
-        },
-        "Gridball Helmet":
-        {
-            "x":[23],
-            "y":[6],
-            "type":"door"
-        }
-    },
-    "trailer":
-    {
-        "Exit":
-        {
-            "x":[12],
-            "y":[9],
-            "type":"door"
-        },
-        "Penny's Room Door":
-        {
-            "x":[6],
-            "y":[7],
-            "type":"door"
-        },
-        "Bookshelf":
-        {
-            "x":[5,6],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Book":
-        {
-            "x":[2],
-            "y":[4],
-            "type":"decoration"
-        },
-        "Magazine":
-        {
-            "x":[1],
-            "y":[9],
-            "type":"decoration"
-        }
+  "adventureguild": {
+    "Exit": {
+      "x": [6],
+      "y": [19],
+      "type": "door"
+    },
+    "Goals Board": {
+      "x": [8],
+      "y": [10],
+      "type": "interactable"
+    },
+    "Shop Counter": {
+      "x": [5],
+      "y": [12],
+      "type": "interactable"
+    },
+    "Gil": {
+      "x": [11],
+      "y": [12],
+      "type": "npc"
     }
+  },
+  "animalshop": {
+    "Exit": {
+      "x": [13],
+      "y": [19],
+      "type": "door"
+    },
+    "Shop Counter": {
+      "x": [12, 13],
+      "y": [15],
+      "type": "interactable"
+    },
+    "Marnie's Room Door": {
+      "x": [15],
+      "y": [12],
+      "type": "door"
+    },
+    "Jas's Room Door": {
+      "x": [6],
+      "y": [13],
+      "type": "door"
+    },
+    "Shane's Room Door": {
+      "x": [21],
+      "y": [13],
+      "type": "door"
+    },
+    "Marnie's Barn Door": {
+      "x": [30],
+      "y": [13],
+      "type": "door"
+    },
+    "Fridge": {
+      "x": [28],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Oven": {
+      "x": [24],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Mega Station": {
+      "x": [22],
+      "y": [5],
+      "type": "decoration"
+    },
+    "Shane's Radio": {
+      "x": [24],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Marnie's Dresser": {
+      "x": [16],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Marnie's Drawer": {
+      "x": [17],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Jack in the Box": {
+      "x": [8],
+      "y": [5],
+      "type": "decoration"
+    },
+    "Futan Bear": {
+      "x": [2, 3],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Colouring Book": {
+      "x": [5],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Paint Set": {
+      "x": [5],
+      "y": [7],
+      "type": "decoration"
+    },
+    "Jas's Alarm Clock": {
+      "x": [8],
+      "y": [8],
+      "type": "decoration"
+    },
+    "Jas's Radio": {
+      "x": [4],
+      "y": [9],
+      "type": "decoration"
+    },
+    "Arts And Craft": {
+      "x": [7],
+      "y": [6],
+      "type": "decoration"
+    },
+    "Doll House": {
+      "x": [6, 7],
+      "y": [4],
+      "type": "decoration"
+    }
+  },
+  "archaeologyhouse": {
+    "Exit": {
+      "x": [3],
+      "y": [14],
+      "type": "door"
+    },
+    "Gunther's Box": {
+      "x": [6],
+      "y": [9],
+      "type": "other"
+    },
+    "Counter": {
+      "x": [3],
+      "y": [9],
+      "type": "interactable"
+    }
+  },
+  "backwoods": {
+    "Mountain Entrance": {
+      "x": [49],
+      "y": [14],
+      "type": "door"
+    },
+    "Farm Entrance": {
+      "x": [14],
+      "y": [39],
+      "type": "door"
+    },
+    "Bus stop Entrance": {
+      "x": [49],
+      "y": [28, 29, 30, 31, 32],
+      "type": "door"
+    },
+    "Tunnel Entrance": {
+      "x": [23],
+      "y": [29, 30, 31],
+      "type": "door"
+    }
+  },
+  "barn": {
+    "Hay Hopper": {
+      "x": [6],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Feeding Bench 1": {
+      "x": [8],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 2": {
+      "x": [9],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 3": {
+      "x": [10],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 4": {
+      "x": [11],
+      "y": [3],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [11],
+      "y": [14],
+      "type": "door"
+    }
+  },
+  "barn2": {
+    "Hay Hopper": {
+      "x": [6],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Feeding Bench 1": {
+      "x": [8],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 2": {
+      "x": [9],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 3": {
+      "x": [10],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 4": {
+      "x": [11],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 5": {
+      "x": [12],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 6": {
+      "x": [13],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 7": {
+      "x": [14],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 8": {
+      "x": [15],
+      "y": [3],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [11],
+      "y": [14],
+      "type": "door"
+    }
+  },
+  "barn3": {
+    "Hay Hopper": {
+      "x": [6],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Feeding Bench 1": {
+      "x": [8],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 2": {
+      "x": [9],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 3": {
+      "x": [10],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 4": {
+      "x": [11],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 5": {
+      "x": [12],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 6": {
+      "x": [13],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 7": {
+      "x": [14],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 8": {
+      "x": [15],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 9": {
+      "x": [16],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 10": {
+      "x": [17],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 11": {
+      "x": [18],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 12": {
+      "x": [19],
+      "y": [3],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [11],
+      "y": [14],
+      "type": "door"
+    }
+  },
+  "bathhouse_entry": {
+    "Exit": {
+      "x": [5],
+      "y": [9],
+      "type": "door"
+    }
+  },
+  "bathhouse_menslocker": {
+    "Entry Room Door": {
+      "x": [3],
+      "y": [27],
+      "type": "door"
+    },
+    "Pool Entrance": {
+      "x": [15],
+      "y": [27],
+      "type": "door"
+    }
+  },
+  "bathhouse_pool": {
+    "Women's Locker Room Door": {
+      "x": [6],
+      "y": [1],
+      "type": "door"
+    },
+    "Men's Locker Room Door": {
+      "x": [21],
+      "y": [1],
+      "type": "door"
+    }
+  },
+  "bathhouse_womenslocker": {
+    "Entry Room Door": {
+      "x": [13],
+      "y": [27],
+      "type": "door"
+    },
+    "Pool Entrance": {
+      "x": [2],
+      "y": [27],
+      "type": "door"
+    }
+  },
+  "beach": {
+    "Town Entrance": {
+      "x": [38],
+      "y": [0],
+      "type": "door"
+    },
+    "Beach Warp Statue": {
+      "x": [20],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Willy's Barrel": {
+      "x": [37],
+      "y": [33],
+      "type": "other"
+    }
+  },
+  "beachnightmarket": {
+    "Fishing Submarine Door": {
+      "x": [5],
+      "y": [34],
+      "type": "door"
+    },
+    "Mermaid Boat Door": {
+      "x": [58],
+      "y": [31],
+      "type": "door"
+    },
+    "Desert Trader": {
+      "x": [14],
+      "y": [37],
+      "type": "npc"
+    },
+    "Famous Painter Lupini": {
+      "x": [43],
+      "y": [34],
+      "type": "npc"
+    },
+    "Travelling Cart": {
+      "x": [39],
+      "y": [30],
+      "type": "interactable"
+    },
+    "Shrouded Figure": {
+      "x": [32],
+      "y": [34],
+      "type": "npc"
+    },
+    "Decoration Boat": {
+      "x": [19],
+      "y": [33],
+      "type": "interactable"
+    },
+    "Magic Shop Boat": {
+      "x": [48],
+      "y": [34],
+      "type": "interactable"
+    }
+  },
+  "blacksmith": {
+    "Exit": {
+      "x": [5],
+      "y": [19],
+      "type": "door"
+    },
+    "Shop Counter": {
+      "x": [3],
+      "y": [14],
+      "type": "interactable"
+    },
+    "Clint's Room Door": {
+      "x": [4],
+      "y": [9],
+      "type": "door"
+    },
+    "Clint's Furnace": {
+      "x": [9, 10],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Blueprints": {
+      "x": [13],
+      "y": [15, 16],
+      "type": "decoration"
+    },
+    "Anvil": {
+      "x": [12, 13],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Cassette Deck": {
+      "x": [2],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Clint's Drawer": {
+      "x": [5, 6],
+      "y": [4],
+      "type": "decoration"
+    }
+  },
+  "boattunnel": {
+    "Exit": {
+      "x": [6],
+      "y": [11],
+      "type": "door"
+    }
+  },
+  "busstop": {
+    "Ticket Machine": {
+      "x": [7],
+      "y": [11],
+      "type": "interactable"
+    },
+    "Minecart": {
+      "x": [4, 5],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Farm Entrance": {
+      "x": [0],
+      "y": [23],
+      "type": "door"
+    },
+    "Town Entrance": {
+      "x": [34],
+      "y": [23],
+      "type": "door"
+    },
+    "Backwoods Entrance": {
+      "x": [0],
+      "y": [6, 7, 8, 9],
+      "type": "door"
+    }
+  },
+  "caldera": {
+    "Rare Chest": {
+      "x": [25],
+      "y": [28],
+      "type": "chest"
+    },
+    "Forge": {
+      "x": [23],
+      "y": [21],
+      "type": "interactable"
+    },
+    "Volcano Dungeon 0 Entrance": {
+      "x": [11],
+      "y": [36],
+      "type": "door"
+    },
+    "Volcano Dungeon 9 Entrance": {
+      "x": [21],
+      "y": [39],
+      "type": "door"
+    }
+  },
+  "captainroom": {
+    "Exit": {
+      "x": [0],
+      "y": [5],
+      "type": "door"
+    }
+  },
+  "cellar": {
+    "Exit": {
+      "x": [3],
+      "y": [2],
+      "type": "door"
+    }
+  },
+  "club": {
+    "Coin Machine": {
+      "x": [12],
+      "y": [4],
+      "type": "interactable"
+    },
+    "Shop Counter": {
+      "x": [25],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Calico Spin Machine": {
+      "x": [11, 13, 15],
+      "y": [8, 10],
+      "type": "interactable"
+    },
+    "High Stakes Calico Jack Table": {
+      "x": [23, 24],
+      "y": [10, 11],
+      "type": "interactable"
+    },
+    "Low Stakes Calico Jack Table": {
+      "x": [3],
+      "y": [7, 9],
+      "type": "interactable"
+    },
+    "Man": {
+      "x": [13],
+      "y": [11],
+      "type": "npc"
+    },
+    "Welwick": {
+      "x": [18],
+      "y": [9],
+      "type": "npc"
+    },
+    "Unknown person": {
+      "x": [16],
+      "y": [4],
+      "type": "npc"
+    },
+    "Stats Checker": {
+      "x": [3],
+      "y": [4],
+      "type": "interactable"
+    },
+    "Exit": {
+      "x": [8],
+      "y": [12],
+      "type": "door"
+    }
+  },
+  "communitycenter": {
+    "Exit": {
+      "x": [32],
+      "y": [23],
+      "type": "door"
+    }
+  },
+  "coop": {
+    "Hay Hopper": {
+      "x": [3],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Feeding Bench 1": {
+      "x": [6],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 2": {
+      "x": [7],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 3": {
+      "x": [8],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 4": {
+      "x": [9],
+      "y": [3],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [2],
+      "y": [9],
+      "type": "door"
+    }
+  },
+  "coop2": {
+    "Hay Hopper": {
+      "x": [3],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Incubator": {
+      "x": [2],
+      "y": [3],
+      "type": "machine"
+    },
+    "Feeding Bench 1": {
+      "x": [6],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 2": {
+      "x": [7],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 3": {
+      "x": [8],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 4": {
+      "x": [9],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 5": {
+      "x": [10],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 6": {
+      "x": [11],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 7": {
+      "x": [12],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 8": {
+      "x": [13],
+      "y": [3],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [2],
+      "y": [9],
+      "type": "door"
+    }
+  },
+  "coop3": {
+    "Hay Hopper": {
+      "x": [3],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Incubator": {
+      "x": [2],
+      "y": [3],
+      "type": "machine"
+    },
+    "Feeding Bench 1": {
+      "x": [6],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 2": {
+      "x": [7],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 3": {
+      "x": [8],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 4": {
+      "x": [9],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 5": {
+      "x": [10],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 6": {
+      "x": [11],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 7": {
+      "x": [12],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 8": {
+      "x": [13],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 9": {
+      "x": [14],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 10": {
+      "x": [15],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 11": {
+      "x": [16],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 12": {
+      "x": [17],
+      "y": [3],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [2],
+      "y": [9],
+      "type": "door"
+    }
+  },
+  "desert": {
+    "Bus": {
+      "x": [18],
+      "y": [27],
+      "type": "interactable"
+    },
+    "Desert Trader": {
+      "x": [42],
+      "y": [23],
+      "type": "interactable"
+    },
+    "Three Pillars": {
+      "x": [34, 37, 40],
+      "y": [8, 13],
+      "type": "decoration"
+    },
+    "Three Pillars Center": {
+      "x": [37],
+      "y": [11],
+      "type": "interactable"
+    },
+    "Skull Cavern Entrance": {
+      "x": [8],
+      "y": [6],
+      "type": "door"
+    },
+    "Desert Warp Statue": {
+      "x": [35],
+      "y": [43],
+      "type": "decoration"
+    },
+    "Sand Dragon Skull": {
+      "x": [9, 10],
+      "y": [35, 36],
+      "type": "decoration"
+    }
+  },
+  "elliotthouse": {
+    "Exit": {
+      "x": [3],
+      "y": [9],
+      "type": "door"
+    },
+    "Piano Key 1": {
+      "x": [7],
+      "y": [4],
+      "type": "interactable"
+    },
+    "Piano Key 2": {
+      "x": [8],
+      "y": [4],
+      "type": "interactable"
+    },
+    "Piano Key 3": {
+      "x": [9],
+      "y": [4],
+      "type": "interactable"
+    },
+    "Piano Key 4": {
+      "x": [10],
+      "y": [4],
+      "type": "interactable"
+    }
+  },
+  "farm": {
+    "Bus Stop Entrance": {
+      "x": [79],
+      "y": [15, 16, 17, 18],
+      "type": "door"
+    },
+    "Backwoods Entrance": {
+      "x": [40, 41],
+      "y": [0],
+      "type": "door"
+    },
+    "Cindersap Forest Entrance": {
+      "x": [40, 41],
+      "y": [64],
+      "type": "door"
+    },
+    "Farm Cave Entrance": {
+      "x": [34],
+      "y": [7],
+      "type": "door"
+    },
+    "Grandpa's Shrine": {
+      "x": [8],
+      "y": [7],
+      "type": "interactable"
+    },
+    "Lumber Pile": {
+      "x": [60],
+      "y": [14],
+      "type": "decoration"
+    }
+  },
+  "farmcave": {
+    "Exit": {
+      "x": [8],
+      "y": [11],
+      "type": "door"
+    }
+  },
+  "fishshop": {
+    "Shop Counter": {
+      "x": [4, 5, 6],
+      "y": [5],
+      "type": "interactable"
+    },
+    "Exit": {
+      "x": [5],
+      "y": [9],
+      "type": "door"
+    }
+  },
+  "forest": {
+    "Farm Entrance": {
+      "x": [68],
+      "y": [0],
+      "type": "door"
+    },
+    "Town Entrance": {
+      "x": [119],
+      "y": [25],
+      "type": "door"
+    },
+    "Bridge 1": {
+      "x": [77, 82],
+      "y": [49],
+      "type": "bridge"
+    },
+    "Bridge 2": {
+      "x": [87],
+      "y": [52, 56],
+      "type": "bridge"
+    },
+    "Bridge 3": {
+      "x": [65, 62],
+      "y": [70],
+      "type": "bridge"
+    },
+    "Bridge 4": {
+      "x": [41],
+      "y": [79, 82],
+      "type": "bridge"
+    },
+    "Bridge 5": {
+      "x": [38],
+      "y": [85, 87],
+      "type": "bridge"
+    },
+    "Abandoned House": {
+      "x": [34],
+      "y": [95],
+      "type": "interactable"
+    }
+  },
+  "greenhouse": {
+    "Exit": {
+      "x": [10],
+      "y": [23],
+      "type": "door"
+    },
+    "Water Trough": {
+      "x": [9, 10],
+      "y": [7],
+      "type": "water"
+    }
+  },
+  "haleyhouse": {
+    "Exit": {
+      "x": [2],
+      "y": [24],
+      "type": "door"
+    },
+    "Sewing Machine": {
+      "x": [12, 13],
+      "y": [23],
+      "type": "interactable"
+    },
+    "Dye Pots": {
+      "x": [17],
+      "y": [25],
+      "type": "interactable"
+    },
+    "Emily's Room Door": {
+      "x": [16],
+      "y": [12],
+      "type": "door"
+    },
+    "Emily's Computer": {
+      "x": [22],
+      "y": [6],
+      "type": "decoration"
+    },
+    "Emily's Pet Parrot": {
+      "x": [14],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Magazine": {
+      "x": [4],
+      "y": [22],
+      "type": "decoration"
+    },
+    "Globe": {
+      "x": [8],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Fridge": {
+      "x": [21],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Haley's Room Door": {
+      "x": [5],
+      "y": [13],
+      "type": "door"
+    },
+    "Futan Bear": {
+      "x": [8],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Diary": {
+      "x": [9],
+      "y": [5],
+      "type": "decoration"
+    },
+    "Haley's Camera": {
+      "x": [1],
+      "y": [9],
+      "type": "decoration"
+    }
+  },
+  "harveyroom": {
+    "Exit": {
+      "x": [6],
+      "y": [12],
+      "type": "door"
+    },
+    "Fridge": {
+      "x": [21],
+      "y": [6],
+      "type": "decoration"
+    },
+    "Oven": {
+      "x": [19],
+      "y": [6],
+      "type": "decoration"
+    },
+    "Airplane Collection": {
+      "x": [6, 7],
+      "y": [3],
+      "type": "decoration"
+    },
+    "Radio Broadcasting Set": {
+      "x": [4, 5],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Cassette Deck": {
+      "x": [8],
+      "y": [4],
+      "type": "decoration"
+    }
+  },
+  "hospital": {
+    "Exit": {
+      "x": [10],
+      "y": [19],
+      "type": "door"
+    },
+    "Harvey's Room Entrance": {
+      "x": [10],
+      "y": [2],
+      "type": "door"
+    },
+    "Harvey's Room Entrance Door": {
+      "x": [10],
+      "y": [5],
+      "type": "door"
+    },
+    "Main Area Door": {
+      "x": [10],
+      "y": [13],
+      "type": "door"
+    },
+    "Shop Counter": {
+      "x": [5, 6, 7],
+      "y": [16],
+      "type": "interactable"
+    }
+  },
+  "islandeast": {
+    "Banana Shrine": {
+      "x": [16],
+      "y": [26],
+      "type": "interactable"
+    },
+    "Jungle Parrot Express": {
+      "x": [28],
+      "y": [27],
+      "type": "interactable"
+    },
+    "Island Hut Entrance": {
+      "x": [22],
+      "y": [10],
+      "type": "door"
+    },
+    "Island South Entrance": {
+      "x": [0],
+      "y": [46],
+      "type": "door"
+    },
+    "Island Shrine Entrance": {
+      "x": [32],
+      "y": [30],
+      "type": "door"
+    }
+  },
+  "islandfarmcave": {
+    "Exit": {
+      "x": [4],
+      "y": [10],
+      "type": "door"
+    },
+    "Gourmand Frog": {
+      "x": [5],
+      "y": [4],
+      "type": "npc"
+    }
+  },
+  "islandfieldoffice": {
+    "Exit": {
+      "x": [4],
+      "y": [10],
+      "type": "door"
+    },
+    "Counter": {
+      "x": [8],
+      "y": [7],
+      "type": "interactable"
+    },
+    "Island Survey": {
+      "x": [5],
+      "y": [3],
+      "type": "interactable"
+    }
+  },
+  "islandhut": {
+    "Exit": {
+      "x": [7],
+      "y": [13],
+      "type": "door"
+    }
+  },
+  "islandnorth": {
+    "Island South Entrance": {
+      "x": [35, 36, 37],
+      "y": [89],
+      "type": "door"
+    },
+    "Island South Entrance 2": {
+      "x": [43, 44],
+      "y": [89],
+      "type": "door"
+    },
+    "Island Field Office Entrance": {
+      "x": [46],
+      "y": [46],
+      "type": "door"
+    },
+    "Island North Cave Entrance": {
+      "x": [21, 22],
+      "y": [47],
+      "type": "door"
+    },
+    "Dig Site Parrot Express": {
+      "x": [5],
+      "y": [48],
+      "type": "interactable"
+    },
+    "Volcano Dungeon Entrance": {
+      "x": [39, 40, 41, 42],
+      "y": [21],
+      "type": "door"
+    },
+    "Volcano Dungeon Entrance 2": {
+      "x": [12],
+      "y": [31],
+      "type": "door"
+    },
+    "Volcano Parrot Express": {
+      "x": [60],
+      "y": [16],
+      "type": "interactable"
+    }
+  },
+  "islandshrine": {
+    "Exit": {
+      "x": [13],
+      "y": [28],
+      "type": "door"
+    },
+    "Shrine": {
+      "x": [24],
+      "y": [22],
+      "type": "interactable"
+    },
+    "North Pedestal": {
+      "x": [24],
+      "y": [25],
+      "type": "interactable"
+    },
+    "East Pedestal": {
+      "x": [27],
+      "y": [27],
+      "type": "interactable"
+    },
+    "West Pedestal": {
+      "x": [21],
+      "y": [27],
+      "type": "interactable"
+    },
+    "South Pedestal": {
+      "x": [24],
+      "y": [28],
+      "type": "interactable"
+    }
+  },
+  "islandsouth": {
+    "Island East Entrance": {
+      "x": [34],
+      "y": [12],
+      "type": "door"
+    },
+    "Ginger Island Warp Statue": {
+      "x": [11],
+      "y": [11],
+      "type": "decoration"
+    },
+    "Island West Entrance": {
+      "x": [0],
+      "y": [11],
+      "type": "door"
+    },
+    "Island North Entrance": {
+      "x": [17, 18, 19],
+      "y": [0],
+      "type": "door"
+    },
+    "Island North Entrance 2": {
+      "x": [27, 28],
+      "y": [0],
+      "type": "door"
+    },
+    "Docks Parrot Express": {
+      "x": [6],
+      "y": [31],
+      "type": "interactable"
+    },
+    "Return Boat": {
+      "x": [19],
+      "y": [43],
+      "type": "interactable"
+    }
+  },
+  "islandsoutheast": {
+    "Island South East Cave Entrance": {
+      "x": [30],
+      "y": [18],
+      "type": "door"
+    }
+  },
+  "islandsoutheastcave": {
+    "Exit": {
+      "x": [1],
+      "y": [8],
+      "type": "door"
+    }
+  },
+  "islandwest": {
+    "Farm Parrot Express": {
+      "x": [74],
+      "y": [9],
+      "type": "interactable"
+    },
+    "Bridge 1": {
+      "x": [67, 62],
+      "y": [16],
+      "type": "bridge"
+    },
+    "Qi's Walnut Room Door": {
+      "x": [20],
+      "y": [22],
+      "type": "door"
+    },
+    "Door to Shipwreck Interior": {
+      "x": [60],
+      "y": [92],
+      "type": "door"
+    },
+    "Hole 1": {
+      "x": [37],
+      "y": [87],
+      "type": "interactable"
+    },
+    "Hole 2": {
+      "x": [41],
+      "y": [86],
+      "type": "interactable"
+    },
+    "Hole 3": {
+      "x": [45],
+      "y": [86],
+      "type": "interactable"
+    },
+    "Hole 4": {
+      "x": [48],
+      "y": [87],
+      "type": "interactable"
+    },
+    "Bridge 2": {
+      "x": [55, 52],
+      "y": [80],
+      "type": "bridge"
+    },
+    "Island Farm House Door": {
+      "x": [77],
+      "y": [39],
+      "type": "door"
+    },
+    "Island Farm Cave Entrance": {
+      "x": [96],
+      "y": [33],
+      "type": "door"
+    },
+    "Island South Entrance": {
+      "x": [105],
+      "y": [40],
+      "type": "door"
+    }
+  },
+  "jojamart": {
+    "Exit": {
+      "x": [13],
+      "y": [29],
+      "type": "door"
+    },
+    "Morris's Kiosk": {
+      "x": [21],
+      "y": [25],
+      "type": "interactable"
+    },
+    "Shop Counter": {
+      "x": [10],
+      "y": [25],
+      "type": "interactable"
+    }
+  },
+  "joshhouse": {
+    "Exit": {
+      "x": [9],
+      "y": [24],
+      "type": "door"
+    },
+    "TV": {
+      "x": [15, 16],
+      "y": [20],
+      "type": "decoration"
+    },
+    "Bookshelf": {
+      "x": [17, 18],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Fridge": {
+      "x": [5],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Evelyn and George's Room Door": {
+      "x": [5],
+      "y": [9],
+      "type": "door"
+    },
+    "Alex's Room Door": {
+      "x": [10],
+      "y": [10],
+      "type": "door"
+    },
+    "Radio": {
+      "x": [3],
+      "y": [4],
+      "type": "door"
+    },
+    "Magazine": {
+      "x": [11],
+      "y": [4],
+      "type": "door"
+    },
+    "Alex's Bookshelf": {
+      "x": [12, 13],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Alex's Drawer": {
+      "x": [17, 18],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Dumbbell": {
+      "x": [14],
+      "y": [4],
+      "type": "door"
+    },
+    "Gridball": {
+      "x": [23],
+      "y": [45],
+      "type": "door"
+    },
+    "Gridball Helmet": {
+      "x": [23],
+      "y": [6],
+      "type": "door"
+    },
+    "Evelyn's Stove": {
+      "x": [3],
+      "y": [16],
+      "type": "other"
+    }
+  },
+  "manorhouse": {
+    "Exit": {
+      "x": [4],
+      "y": [11],
+      "type": "door"
+    },
+    "Town Ledger Book": {
+      "x": [2],
+      "y": [5],
+      "type": "interactable"
+    },
+    "Marriage Log Book": {
+      "x": [3],
+      "y": [5],
+      "type": "interactable"
+    },
+    "Lost and Found Box": {
+      "x": [4],
+      "y": [5],
+      "type": "interactable"
+    },
+    "Mayor's Room Door": {
+      "x": [16],
+      "y": [9],
+      "type": "door"
+    },
+    "Mayor's Oven": {
+      "x": [7],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Mayor's Fridge": {
+      "x": [9],
+      "y": [4],
+      "type": "decoration"
+    }
+  },
+  "mermaidhouse": {
+    "Exit": {
+      "x": [4],
+      "y": [10],
+      "type": "door"
+    },
+    "Clam Shell 1": {
+      "x": [2],
+      "y": [6],
+      "type": "interactable"
+    },
+    "Clam Shell 2": {
+      "x": [3],
+      "y": [6],
+      "type": "interactable"
+    },
+    "Clam Shell 3": {
+      "x": [4],
+      "y": [6],
+      "type": "interactable"
+    },
+    "Clam Shell 4": {
+      "x": [5],
+      "y": [6],
+      "type": "interactable"
+    },
+    "Clam Shell 5": {
+      "x": [6],
+      "y": [6],
+      "type": "interactable"
+    }
+  },
+  "mine": {
+    "Mountain Exit": {
+      "x": [18],
+      "y": [13],
+      "type": "door"
+    },
+    "Minecart": {
+      "x": [11, 12],
+      "y": [10],
+      "type": "interactable"
+    },
+    "Quarry Mine Ladder": {
+      "x": [67],
+      "y": [9],
+      "type": "door"
+    },
+    "Quarry Exit": {
+      "x": [18],
+      "y": [13],
+      "type": "door"
+    }
+  },
+  "mountain": {
+    "Mine Entrance": {
+      "x": [54],
+      "y": [5],
+      "type": "door"
+    },
+    "Mine Bridge": {
+      "x": [47],
+      "y": [7],
+      "type": "bridge"
+    },
+    "Quarry Bridge": {
+      "x": [90],
+      "y": [26],
+      "type": "bridge"
+    },
+    "Minecart": {
+      "x": [124, 125],
+      "y": [11],
+      "type": "interactable"
+    },
+    "Quarry Mine Entrance": {
+      "x": [103],
+      "y": [17],
+      "type": "door"
+    },
+    "Bridge 1": {
+      "x": [57],
+      "y": [30],
+      "type": "bridge"
+    },
+    "Bridge 2": {
+      "x": [61],
+      "y": [21],
+      "type": "bridge"
+    },
+    "Mountain Warp Statue": {
+      "x": [31],
+      "y": [20],
+      "type": "decoration"
+    },
+    "Linus Tent Entrance": {
+      "x": [29],
+      "y": [7],
+      "type": "door"
+    },
+    "Backwoods Entrance": {
+      "x": [0],
+      "y": [13],
+      "type": "door"
+    },
+    "Town Entrance": {
+      "x": [15],
+      "y": [40],
+      "type": "door"
+    },
+    "Railroad Entrance": {
+      "x": [9],
+      "y": [0],
+      "type": "door"
+    },
+    "Science House Secondary Door": {
+      "x": [8],
+      "y": [20],
+      "type": "door"
+    }
+  },
+  "movietheater": {
+    "Exit": {
+      "x": [13],
+      "y": [15],
+      "type": "door"
+    },
+    "Concessions Counter": {
+      "x": [7],
+      "y": [6],
+      "type": "interactable"
+    },
+    "Crane Game": {
+      "x": [1, 2],
+      "y": [8],
+      "type": "interactable"
+    },
+    "Theater Door": {
+      "x": [13],
+      "y": [3],
+      "type": "door"
+    },
+    "Crane Man": {
+      "x": [2],
+      "y": [9],
+      "type": "npc"
+    }
+  },
+  "qinutroom": {
+    "Exit": {
+      "x": [7],
+      "y": [7],
+      "type": "door"
+    },
+    "Perfection Tracker": {
+      "x": [13],
+      "y": [4],
+      "type": "interactable"
+    },
+    "Vending Machine": {
+      "x": [11],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Special Order Board": {
+      "x": [3],
+      "y": [3],
+      "type": "interactable"
+    }
+  },
+  "railroad": {
+    "Mountain Entrance": {
+      "x": [29],
+      "y": [61],
+      "type": "door"
+    },
+    "Witch's Cave Entrance": {
+      "x": [54],
+      "y": [35],
+      "type": "door"
+    },
+    "Empty Crate": {
+      "x": [45],
+      "y": [40],
+      "type": "other"
+    },
+    "Dumpster": {
+      "x": [28],
+      "y": [36],
+      "type": "other"
+    },
+    "Water": {
+      "x": [13, 14, 15, 16],
+      "y": [54, 55, 56],
+      "type": "water"
+    }
+  },
+  "saloon": {
+    "Exit": {
+      "x": [14],
+      "y": [24],
+      "type": "door"
+    },
+    "Shop Counter": {
+      "x": [14],
+      "y": [19],
+      "type": "interactable"
+    },
+    "Journey of the Prairie King Arcade": {
+      "x": [33],
+      "y": [17],
+      "type": "interactable"
+    },
+    "Junimo Kart Arcade": {
+      "x": [35],
+      "y": [17],
+      "type": "interactable"
+    },
+    "Joja Vending Machine": {
+      "x": [37, 38],
+      "y": [17],
+      "type": "interactable"
+    },
+    "Jukebox": {
+      "x": [1, 2],
+      "y": [17],
+      "type": "interactable"
+    },
+    "Gus's Fridge": {
+      "x": [18],
+      "y": [16],
+      "type": "other"
+    },
+    "Gus's Room Door": {
+      "x": [20],
+      "y": [9],
+      "type": "door"
+    },
+    "Dining Room Door": {
+      "x": [11],
+      "y": [9],
+      "type": "door"
+    },
+    "Living Area Door": {
+      "x": [4],
+      "y": [16],
+      "type": "door"
+    },
+    "Gus's Radio": {
+      "x": [16],
+      "y": [6],
+      "type": "decoration"
+    },
+    "Lockbox": {
+      "x": [28],
+      "y": [7],
+      "type": "other"
+    }
+  },
+  "samhouse": {
+    "Exit": {
+      "x": [4],
+      "y": [23],
+      "type": "door"
+    },
+    "Radio": {
+      "x": [6],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Vincent's Room Door": {
+      "x": [16],
+      "y": [18],
+      "type": "door"
+    },
+    "Toy Chest": {
+      "x": [12],
+      "y": [21],
+      "type": "other"
+    },
+    "Sam's Room Door": {
+      "x": [12],
+      "y": [14],
+      "type": "door"
+    },
+    "Jodi's Room Door": {
+      "x": [17],
+      "y": [6],
+      "type": "door"
+    },
+    "Sam's Drawer": {
+      "x": [7, 8],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Bookshelf": {
+      "x": [18, 19],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Fridge": {
+      "x": [7],
+      "y": [4],
+      "type": "decoration"
+    }
+  },
+  "sandyhouse": {
+    "Exit": {
+      "x": [4],
+      "y": [9],
+      "type": "door"
+    },
+    "Club Entrance": {
+      "x": [17],
+      "y": [1],
+      "type": "door"
+    },
+    "Shop Counter": {
+      "x": [2],
+      "y": [6],
+      "type": "interactable"
+    }
+  },
+  "sciencehouse": {
+    "Exit": {
+      "x": [6],
+      "y": [24],
+      "type": "door"
+    },
+    "Secondary Exit": {
+      "x": [3],
+      "y": [8],
+      "type": "door"
+    },
+    "Shop Counter": {
+      "x": [8],
+      "y": [19],
+      "type": "interactable"
+    },
+    "Robin's Wood Pile": {
+      "x": [11],
+      "y": [19],
+      "type": "other"
+    },
+    "Sebastian's Room Entrance": {
+      "x": [12],
+      "y": [21],
+      "type": "door"
+    },
+    "Beaker Set": {
+      "x": [17],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Microscope": {
+      "x": [19],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Stereo Microscope": {
+      "x": [23],
+      "y": [20],
+      "type": "decoration"
+    },
+    "Robin and Demetrius's Room Entrance": {
+      "x": [13],
+      "y": [10],
+      "type": "door"
+    },
+    "Maru's Room Entrance": {
+      "x": [7],
+      "y": [10],
+      "type": "door"
+    },
+    "Bookshelf": {
+      "x": [16, 17],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Maru's Device": {
+      "x": [6],
+      "y": [6],
+      "type": "decoration"
+    },
+    "Poster": {
+      "x": [6],
+      "y": [3],
+      "type": "decoration"
+    },
+    "Computer": {
+      "x": [9],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Fridge": {
+      "x": [27],
+      "y": [8],
+      "type": "decoration"
+    },
+    "Oven": {
+      "x": [30],
+      "y": [10],
+      "type": "decoration"
+    }
+  },
+  "sebastianroom": {
+    "Exit": {
+      "x": [1],
+      "y": [1],
+      "type": "door"
+    },
+    "Room Door": {
+      "x": [1],
+      "y": [3],
+      "type": "door"
+    },
+    "Sebastian's Radio": {
+      "x": [3],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Graphic Novel": {
+      "x": [10],
+      "y": [6],
+      "type": "decoration"
+    },
+    "Computer": {
+      "x": [7],
+      "y": [4],
+      "type": "decoration"
+    }
+  },
+  "seedshop": {
+    "Exit": {
+      "x": [6],
+      "y": [29],
+      "type": "door"
+    },
+    "Shop Counter": {
+      "x": [4, 5],
+      "y": [18],
+      "type": "interactable"
+    },
+    "Backpack Upgrade": {
+      "x": [7],
+      "y": [18],
+      "type": "interactable"
+    },
+    "Pierre's Bin": {
+      "x": [19],
+      "y": [28],
+      "type": "interactable"
+    },
+    "Shrine of Yoba": {
+      "x": [37],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Fridge": {
+      "x": [39],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Abigail's Room Door": {
+      "x": [13],
+      "y": [11],
+      "type": "door"
+    },
+    "Pierre and Caroline's Room Door": {
+      "x": [20],
+      "y": [11],
+      "type": "door"
+    },
+    "Living Area Door": {
+      "x": [14],
+      "y": [16],
+      "type": "door"
+    }
+  },
+  "sewer": {
+    "Exit Ladder": {
+      "x": [16],
+      "y": [10],
+      "type": "door"
+    },
+    "Statue Of Uncertainty": {
+      "x": [8],
+      "y": [20],
+      "type": "interactable"
+    },
+    "Mutant Bug Lair": {
+      "x": [3],
+      "y": [19],
+      "type": "door"
+    }
+  },
+  "shed": {
+    "Exit": {
+      "x": [6],
+      "y": [13],
+      "type": "door"
+    }
+  },
+  "shed2": {
+    "Exit": {
+      "x": [9],
+      "y": [16],
+      "type": "door"
+    }
+  },
+  "skullcave": {
+    "Exit": {
+      "x": [7],
+      "y": [9],
+      "type": "door"
+    },
+    "Skull Cavern Entrance": {
+      "x": [3],
+      "y": [3],
+      "type": "door"
+    }
+  },
+  "slime hutch": {
+    "Water Trough 1": {
+      "x": [16],
+      "y": [6],
+      "type": "other"
+    },
+    "Water Trough 2": {
+      "x": [16],
+      "y": [7],
+      "type": "other"
+    },
+    "Water Trough 3": {
+      "x": [16],
+      "y": [8],
+      "type": "other"
+    },
+    "Water Trough 4": {
+      "x": [16],
+      "y": [9],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [8],
+      "y": [12],
+      "type": "door"
+    }
+  },
+  "submarine": {
+    "Exit": {
+      "x": [14],
+      "y": [15],
+      "type": "door"
+    },
+    "Captain": {
+      "x": [2],
+      "y": [9],
+      "type": "npc"
+    }
+  },
+  "tent": {
+    "Exit": {
+      "x": [2],
+      "y": [5],
+      "type": "door"
+    }
+  },
+  "town": {
+    "Calender Board": {
+      "x": [41],
+      "y": [56],
+      "type": "interactable"
+    },
+    "Daily Quest Board": {
+      "x": [42],
+      "y": [56],
+      "type": "interactable"
+    },
+    "Sewer": {
+      "x": [34, 35],
+      "y": [95, 96],
+      "type": "interactable"
+    },
+    "Ice Cream Stand": {
+      "x": [88],
+      "y": [92],
+      "type": "interactable"
+    },
+    "Minecart": {
+      "x": [105, 106],
+      "y": [79],
+      "type": "interactable"
+    },
+    "Faded Gravestone": {
+      "x": [42],
+      "y": [85],
+      "type": "decoration"
+    },
+    "Mona's Grave": {
+      "x": [47],
+      "y": [86],
+      "type": "decoration"
+    },
+    "Dwarvish Headstone": {
+      "x": [51],
+      "y": [86],
+      "type": "decoration"
+    },
+    "Unknown Gravestone": {
+      "x": [42],
+      "y": [90],
+      "type": "decoration"
+    },
+    "brown box": {
+      "x": [100],
+      "y": [66],
+      "type": "other"
+    },
+    "Joja Mart Trash": {
+      "x": [110],
+      "y": [56],
+      "type": "interactable"
+    },
+    "1 River Road Trash": {
+      "x": [52],
+      "y": [63],
+      "type": "interactable"
+    },
+    "Stardew Saloon Trash": {
+      "x": [47],
+      "y": [70],
+      "type": "interactable"
+    },
+    "Blacksmith Trash": {
+      "x": [97],
+      "y": [80],
+      "type": "interactable"
+    },
+    "1 Willow Lane Trash": {
+      "x": [13],
+      "y": [86],
+      "type": "interactable"
+    },
+    "Manor Trash": {
+      "x": [56],
+      "y": [86],
+      "type": "interactable"
+    },
+    "2 Willow Lane Trash": {
+      "x": [19],
+      "y": [89],
+      "type": "interactable"
+    },
+    "Museum Trash": {
+      "x": [108],
+      "y": [91],
+      "type": "interactable"
+    },
+    "Bus Stop Entrance": {
+      "x": [0],
+      "y": [54],
+      "type": "door"
+    },
+    "Cindersap Forest Entrance": {
+      "x": [0],
+      "y": [90],
+      "type": "door"
+    },
+    "Beach Entrance": {
+      "x": [54],
+      "y": [109],
+      "type": "door"
+    },
+    "Mountain Entrance": {
+      "x": [81],
+      "y": [0],
+      "type": "door"
+    }
+  },
+  "trailer": {
+    "Exit": {
+      "x": [12],
+      "y": [9],
+      "type": "door"
+    },
+    "Penny's Room Door": {
+      "x": [6],
+      "y": [7],
+      "type": "door"
+    },
+    "Bookshelf": {
+      "x": [5, 6],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Book": {
+      "x": [2],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Magazine": {
+      "x": [1],
+      "y": [9],
+      "type": "decoration"
+    },
+    "Pam's Kitchen": {
+      "x": [10],
+      "y": [6],
+      "type": "other"
+    }
+  },
+  "trailer_big": {
+    "Exit": {
+      "x": [13],
+      "y": [25],
+      "type": "door"
+    },
+    "Pam's Kitchen": {
+      "x": [10],
+      "y": [6],
+      "type": "other"
+    }
+  },
+  "tunnel": {
+    "Exit": {
+      "x": [39],
+      "y": [7, 8, 9, 10, 11],
+      "type": "door"
+    },
+    "Safe Panel": {
+      "x": [17],
+      "y": [6],
+      "type": "other"
+    }
+  },
+  "undergroundmine77377": {
+    "Grim Reaper Statue": {
+      "x": [29, 30],
+      "y": [6],
+      "type": "interactable"
+    }
+  },
+  "volcanodungeon0": {
+    "Island North Entrance 1": {
+      "x": [31],
+      "y": [54],
+      "type": "door"
+    },
+    "Island North Entrance 2": {
+      "x": [6],
+      "y": [50],
+      "type": "door"
+    },
+    "Caldera Entrance": {
+      "x": [44],
+      "y": [50],
+      "type": "door"
+    },
+    "Volcano Dungeon 1 Entrance": {
+      "x": [37],
+      "y": [5],
+      "type": "door"
+    }
+  },
+  "witchhut": {
+    "Exit": {
+      "x": [7],
+      "y": [15],
+      "type": "door"
+    },
+    "Wizard's Basement Rune": {
+      "x": [11],
+      "y": [11],
+      "type": "door"
+    },
+    "Dark Shrine of Memory": {
+      "x": [7],
+      "y": [4, 5],
+      "type": "interactable"
+    },
+    "Dark Shrine of Night Terrors": {
+      "x": [12],
+      "y": [5, 6],
+      "type": "interactable"
+    },
+    "Dark Shrine of Selfishness": {
+      "x": [2],
+      "y": [5, 6],
+      "type": "interactable"
+    }
+  },
+  "witchswamp": {
+    "Witch's Cave Rune": {
+      "x": [20],
+      "y": [42],
+      "type": "door"
+    },
+    "Witch's Hut Door": {
+      "x": [20],
+      "y": [20],
+      "type": "door"
+    }
+  },
+  "witchwarpcave": {
+    "Witch's Swamp Rune": {
+      "x": [4],
+      "y": [5],
+      "type": "door"
+    },
+    "Railroad Entrance": {
+      "x": [4],
+      "y": [9],
+      "type": "door"
+    }
+  },
+  "wizardhouse": {
+    "Exit": {
+      "x": [8],
+      "y": [24],
+      "type": "door"
+    },
+    "Basement Door": {
+      "x": [4],
+      "y": [4],
+      "type": "door"
+    },
+    "Magic Buildings Book": {
+      "x": [2],
+      "y": [13],
+      "type": "interactable"
+    }
+  },
+  "wizardhousebasement": {
+    "Exit Ladder": {
+      "x": [4],
+      "y": [3],
+      "type": "door"
+    },
+    "Witch's Hut Rune": {
+      "x": [2],
+      "y": [5],
+      "type": "door"
+    },
+    "Shrine of Illusions": {
+      "x": [12],
+      "y": [4],
+      "type": "interactable"
+    }
+  },
+  "woods": {
+    "Forest Entrance": {
+      "x": [59],
+      "y": [17],
+      "type": "door"
+    },
+    "Old Master Cannoli": {
+      "x": [8, 9],
+      "y": [7],
+      "type": "interactable"
+    }
+  }
 }
