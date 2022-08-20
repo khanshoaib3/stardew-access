@@ -1,7 +1,7 @@
 {
   "Name": "Stardew Access",
   "Author": "Mohammad Shoaib",
-  "Version": "1.3.1",
+  "Version": "1.3.2",
   "Description": "An accessibility mod with screen reader support!",
   "UniqueID": "shoaib.stardewaccess",
   "EntryDll": "stardew-access.dll",
