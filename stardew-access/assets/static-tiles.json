@@ -792,6 +792,11 @@
       "x": [9, 10],
       "y": [35, 36],
       "type": "decoration"
+    },
+    "Bench": {
+      "x": [43, 44],
+      "y": [54],
+      "type": "furniture"
     }
   },
   "elliotthouse": {
@@ -1619,8 +1624,13 @@
       "y": [36],
       "type": "other"
     },
+    "Boulder": {
+      "x": [11],
+      "y": [38],
+      "type": "decoration"
+    },
     "Water": {
-      "x": [13, 14, 15, 16],
+      "x": [14, 15, 16],
       "y": [54, 55, 56],
       "type": "water"
     }
