@@ -1320,8 +1320,543 @@
     },
     "Shop Counter": {
       "x": [10],
-      "y": [25],
+      "y": [23, 24, 25, 26],
       "type": "interactable"
+    },
+    "Salt": {
+      "x": [3],
+      "y": [10, 11],
+      "type": "decoration"
+    },
+    "Multipurpose Sauce": {
+      "x": [3],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Marinara Sauce": {
+      "x": [3],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Pesto": {
+      "x": [3],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Vegan Sausage": {
+      "x": [3],
+      "y": [15, 16],
+      "type": "decoration"
+    },
+    "Coconut Meat": {
+      "x": [3],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Cowboy Sauce": {
+      "x": [3],
+      "y": [18, 19],
+      "type": "decoration"
+    },
+    "Hoisin Sauce": {
+      "x": [4],
+      "y": [10],
+      "type": "decoration"
+    },
+    "Pretzel Snacks": {
+      "x": [4],
+      "y": [11, 12],
+      "type": "decoration"
+    },
+    "Honey Sauce": {
+      "x": [4],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Yeast": {
+      "x": [4],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Sugar Cones": {
+      "x": [4],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Sugar Stars": {
+      "x": [4],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Gummies": {
+      "x": [4],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Fruit Snacks": {
+      "x": [4],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Marinated Mushrooms": {
+      "x": [4],
+      "y": [19],
+      "type": "decoration"
+    },
+    "Low Fat Beans": {
+      "x": [7],
+      "y": [11, 12],
+      "type": "decoration"
+    },
+    "White Fungus Soda": {
+      "x": [7],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Powdered Breakfast": {
+      "x": [7],
+      "y": [14, 15],
+      "type": "decoration"
+    },
+    "Powdered Wine": {
+      "x": [7],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Canned Scrambled Eggs": {
+      "x": [7],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Canned Fish": {
+      "x": [7],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Canned Meals": {
+      "x": [7],
+      "y": [19, 20],
+      "type": "decoration"
+    },
+    "Protein Bars": {
+      "x": [8],
+      "y": [10, 11],
+      "type": "decoration"
+    },
+    "Protein Shakes": {
+      "x": [8],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Protein Powder": {
+      "x": [8],
+      "y": [13, 14],
+      "type": "decoration"
+    },
+    "Jitter Juice": {
+      "x": [8],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Explosion Juice": {
+      "x": [8],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Blue Alien Energy": {
+      "x": [8],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Hyper Juice": {
+      "x": [8],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Joja Cola Amped": {
+      "x": [8],
+      "y": [19, 20],
+      "type": "decoration"
+    },
+    "Sugar Free Lollipop": {
+      "x": [11],
+      "y": [10, 11],
+      "type": "decoration"
+    },
+    "Drinkable Frosting": {
+      "x": [11],
+      "y": [12, 13],
+      "type": "decoration"
+    },
+    "Cocoa Zeppelins": {
+      "x": [11],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Silly Sauce": {
+      "x": [11],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Grape Nibble Pebbles": {
+      "x": [11],
+      "y": [16, 17],
+      "type": "decoration"
+    },
+    "Strawberry Lollipops": {
+      "x": [11],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Sugar Orbs": {
+      "x": [11],
+      "y": [19],
+      "type": "decoration"
+    },
+    "24 Grain Bread": {
+      "x": [12],
+      "y": [10, 11],
+      "type": "decoration"
+    },
+    "11 Grain Bread": {
+      "x": [12],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Wheat Bread": {
+      "x": [12],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Oat Bread": {
+      "x": [12],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Brown Bread": {
+      "x": [12],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Rye Bread": {
+      "x": [12],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Sourdough Bread": {
+      "x": [12],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Bread": {
+      "x": [12],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Pancakes": {
+      "x": [12],
+      "y": [19],
+      "type": "decoration"
+    },
+    "Maple Sauce": {
+      "x": [15],
+      "y": [10],
+      "type": "decoration"
+    },
+    "Maypul Syrup": {
+      "x": [15],
+      "y": [11],
+      "type": "decoration"
+    },
+    "Cooking Oil": {
+      "x": [15],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Corn Oil": {
+      "x": [15],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Synthetic Butter": {
+      "x": [15],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Powdered Cream": {
+      "x": [15],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Powdered Butter": {
+      "x": [15],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Joja Oil": {
+      "x": [15],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Canola Oil": {
+      "x": [15],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Olive Oil": {
+      "x": [15],
+      "y": [19, 20],
+      "type": "decoration"
+    },
+    "Marshmallows": {
+      "x": [16],
+      "y": [10],
+      "type": "decoration"
+    },
+    "Hair Gel": {
+      "x": [16],
+      "y": [11, 12],
+      "type": "decoration"
+    },
+    "Floss": {
+      "x": [16],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Mouthwash": {
+      "x": [16],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Toothpaste": {
+      "x": [16],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Hand Soap": {
+      "x": [16],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Multipurpose Detergent": {
+      "x": [16],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Laundry Detergent": {
+      "x": [16],
+      "y": [18, 19, 20],
+      "type": "decoration"
+    },
+    "Taco Sauce For Babies": {
+      "x": [19],
+      "y": [10],
+      "type": "decoration"
+    },
+    "Granny's Sauce": {
+      "x": [19],
+      "y": [11],
+      "type": "decoration"
+    },
+    "Very Mild Sauce": {
+      "x": [19],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Mild Sauce": {
+      "x": [19],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Take Me To The Emergency Room Sauce": {
+      "x": [19],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Unbearable Torturous Blaze Sauce": {
+      "x": [19],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Searing Pain Sauce": {
+      "x": [19],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Inferno Sauce": {
+      "x": [19],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Fire Sauce": {
+      "x": [19],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Hot Sauce": {
+      "x": [19],
+      "y": [19],
+      "type": "decoration"
+    },
+    "Hoisin Sauce": {
+      "x": [20],
+      "y": [10],
+      "type": "decoration"
+    },
+    "Churro Kit": {
+      "x": [20],
+      "y": [11, 12],
+      "type": "decoration"
+    },
+    "Honey Sauce": {
+      "x": [20],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Yeast": {
+      "x": [20],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Sugar Cones": {
+      "x": [20],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Sugar Stars": {
+      "x": [20],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Gummies": {
+      "x": [20],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Fruit Snacks": {
+      "x": [20],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Marinated Mushrooms": {
+      "x": [20],
+      "y": [19],
+      "type": "decoration"
+    },
+    "Canned Soup": {
+      "x": [23],
+      "y": [10, 11],
+      "type": "decoration"
+    },
+    "White Bread": {
+      "x": [23],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Canned Shrimp.": {
+      "x": [23],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Shrimp Snack": {
+      "x": [23],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Budget Wine": {
+      "x": [23],
+      "y": [15],
+      "type": "decoration"
+    },
+    "X-Treme Chipz": {
+      "x": [23],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Pure Gluten.": {
+      "x": [23],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Joja Meal": {
+      "x": [23],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Canned Pasta": {
+      "x": [23],
+      "y": [19],
+      "type": "decoration"
+    },
+    "Ranch Chips": {
+      "x": [24],
+      "y": [10, 11],
+      "type": "decoration"
+    },
+    "Smokehouse Chips": {
+      "x": [24],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Cinnamon Sugar Chips": {
+      "x": [24],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Sugar Cane Chips": {
+      "x": [24],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Inferno Chips": {
+      "x": [24],
+      "y": [15, 16],
+      "type": "decoration"
+    },
+    "Carbo Cones": {
+      "x": [24],
+      "y": [17, 18],
+      "type": "decoration"
+    },
+    "Corn Flour": {
+      "x": [24],
+      "y": [19],
+      "type": "decoration"
+    },
+    "Low Fat Beans": {
+      "x": [28],
+      "y": [11, 12],
+      "type": "decoration"
+    },
+    "White Fungus Soda": {
+      "x": [28],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Powdered Breakfast": {
+      "x": [28],
+      "y": [14, 15],
+      "type": "decoration"
+    },
+    "Powdered Wine": {
+      "x": [28],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Canned Scrambled Eggs": {
+      "x": [28],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Canned Fish": {
+      "x": [28],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Canned Meals": {
+      "x": [28],
+      "y": [19],
+      "type": "decoration"
     }
   },
   "joshhouse": {
@@ -1614,13 +2149,13 @@
       "y": [35],
       "type": "door"
     },
-    "Empty Crate": {
+    "Empty Box": {
       "x": [45],
       "y": [40],
       "type": "other"
     },
     "Dumpster": {
-      "x": [28],
+      "x": [28, 29],
       "y": [36],
       "type": "other"
     },
@@ -1628,6 +2163,16 @@
       "x": [11],
       "y": [38],
       "type": "decoration"
+    },
+    "Summit Boulder": {
+      "x": [24, 25],
+      "y": [35],
+      "type": "decoration"
+    },
+    "Bench": {
+      "x": [38, 39, 40],
+      "y": [40],
+      "type": "furniture"
     },
     "Water": {
       "x": [14, 15, 16],
