@@ -29,7 +29,7 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed(); // For narrating animal details
-                bool isEnterPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter); // For escaping/unselecting from the animal name text box
+                bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
                 string toSpeak = " ", details = " ";
 
                 isOnFarm = ___movingAnimal;
@@ -40,7 +40,7 @@ namespace stardew_access.Patches
                 {
                     toSpeak = ___textBox.Text;
 
-                    if (isEnterPressed)
+                    if (isEscPressed)
                     {
                         ___textBox.Selected = false;
                     }
