@@ -19,6 +19,41 @@
       "x": [11],
       "y": [12],
       "type": "npc"
+    },
+    "Stool[1]": {
+      "x": [2],
+      "y": [13],
+      "type": "furniture"
+    },
+    "Stool[2]": {
+      "x": [11],
+      "y": [16],
+      "type": "furniture"
+    },
+    "Stool[3]": {
+      "x": [9],
+      "y": [17],
+      "type": "furniture"
+    },
+    "Stool[4]": {
+      "x": [11],
+      "y": [18],
+      "type": "furniture"
+    },
+    "Fireplace": {
+      "x": [9, 10],
+      "y": [11],
+      "type": "decoration"
+    },
+    "Table": {
+      "x": [10, 11],
+      "y": [17],
+      "type": "decoration"
+    },
+    "House Plant": {
+      "x": [12],
+      "y": [18],
+      "type": "decoration"
     }
   },
   "animalshop": {
@@ -134,10 +169,230 @@
       "y": [9],
       "type": "other"
     },
+    "Rearrange Collection": {
+      "x": [2],
+      "y": [9],
+      "type": "interactable"
+    },
     "Counter": {
       "x": [3],
       "y": [9],
       "type": "interactable"
+    },
+    "Stool": {
+      "x": [1],
+      "y": [10],
+      "type": "furniture"
+    },
+    "Chair[1]": {
+      "x": [13],
+      "y": [14],
+      "type": "furniture"
+    },
+    "Chair[2]": {
+      "x": [9],
+      "y": [16],
+      "type": "furniture"
+    },
+    "Chair[3]": {
+      "x": [13],
+      "y": [18],
+      "type": "furniture"
+    },
+    "Chair[4]": {
+      "x": [17],
+      "y": [18],
+      "type": "furniture"
+    },
+    "Table": {
+      "x": [17, 18],
+      "y": [10, 11],
+      "type": "decoration"
+    },
+    "Desk[1]": {
+      "x": [9, 10],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Desk[2]": {
+      "x": [13, 14],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Desk[3]": {
+      "x": [17, 18],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Desk[4]": {
+      "x": [9, 10],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Desk[5]": {
+      "x": [13, 14],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Desk[6]": {
+      "x": [17, 18],
+      "y": [17],
+      "type": "decoration"
+    },
+    "House Plant[1]": {
+      "x": [27],
+      "y": [4],
+      "type": "decoration"
+    },
+    "House Plant[2]": {
+      "x": [26],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Palm Tree": {
+      "x": [38],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Fireplace": {
+      "x": [43, 44],
+      "y": [4],
+      "type": "decoration"
+    },
+    "History Book": {
+      "x": [15, 16, 17, 18, 19],
+      "y": [8],
+      "type": "decoration"
+    },
+    "Step Stool[1]": {
+      "x": [10],
+      "y": [9],
+      "type": "decoration"
+    },
+    "Step Stool[2]": {
+      "x": [18],
+      "y": [5],
+      "type": "decoration"
+    },
+    "Teddybear": {
+      "x": [20],
+      "y": [9],
+      "type": "decoration"
+    },
+    "Atlas": {
+      "x": [21],
+      "y": [7, 8],
+      "type": "decoration"
+    },
+    "Children's Book": {
+      "x": [21],
+      "y": [9, 10],
+      "type": "decoration"
+    },
+    "Book 1": {
+      "x": [9],
+      "y": [13],
+      "type": "other"
+    },
+    "Book 2": {
+      "x": [9],
+      "y": [12],
+      "type": "other"
+    },
+    "Book 3": {
+      "x": [9],
+      "y": [11],
+      "type": "other"
+    },
+    "Book 4": {
+      "x": [9],
+      "y": [10],
+      "type": "other"
+    },
+    "Book 5": {
+      "x": [9],
+      "y": [4],
+      "type": "other"
+    },
+    "Book 6": {
+      "x": [10],
+      "y": [4],
+      "type": "other"
+    },
+    "Book 7": {
+      "x": [11],
+      "y": [4],
+      "type": "other"
+    },
+    "Book 8": {
+      "x": [12],
+      "y": [4],
+      "type": "other"
+    },
+    "Book 9": {
+      "x": [13],
+      "y": [4],
+      "type": "other"
+    },
+    "Book 10": {
+      "x": [15],
+      "y": [4],
+      "type": "other"
+    },
+    "Book 11": {
+      "x": [16],
+      "y": [4],
+      "type": "other"
+    },
+    "Book 12": {
+      "x": [17],
+      "y": [4],
+      "type": "other"
+    },
+    "Book 13": {
+      "x": [19],
+      "y": [4],
+      "type": "other"
+    },
+    "Book 14": {
+      "x": [20],
+      "y": [4],
+      "type": "other"
+    },
+    "Book 15": {
+      "x": [21],
+      "y": [4],
+      "type": "other"
+    },
+    "Book 16": {
+      "x": [11],
+      "y": [8],
+      "type": "other"
+    },
+    "Book 17": {
+      "x": [12],
+      "y": [8],
+      "type": "other"
+    },
+    "Book 18": {
+      "x": [13],
+      "y": [8],
+      "type": "other"
+    },
+    "Book 19": {
+      "x": [9],
+      "y": [9],
+      "type": "other"
+    },
+    "Book 20": {
+      "x": [9],
+      "y": [8],
+      "type": "other"
+    },
+    "Book 21": {
+      "x": [9],
+      "y": [7],
+      "type": "other"
     }
   },
   "backwoods": {
@@ -2658,9 +2913,69 @@
       "type": "door"
     },
     "Mountain Entrance": {
-      "x": [81],
+      "x": [79, 80, 81, 82, 83],
       "y": [0],
       "type": "door"
+    },
+    "Joja Bridge": {
+      "x": [92, 93, 94, 95, 96],
+      "y": [11],
+      "type": "bridge"
+    },
+    "Beach Bridge": {
+      "x": [75, 76, 77, 78, 79, 80, 81, 82],
+      "y": [4, 5],
+      "type": "bridge"
+    },
+    "Bench[1]": {
+      "x": [25, 26, 27],
+      "y": [21],
+      "type": "furniture"
+    },
+    "Bench[2]": {
+      "x": [20],
+      "y": [26, 27],
+      "type": "furniture"
+    },
+    "Bench[3]": {
+      "x": [33],
+      "y": [26, 27],
+      "type": "furniture"
+    },
+    "Bench[4]": {
+      "x": [16],
+      "y": [57, 58],
+      "type": "furniture"
+    },
+    "Bench[5]": {
+      "x": [17, 18],
+      "y": [63],
+      "type": "furniture"
+    },
+    "Bench[6]": {
+      "x": [42, 43, 44, 45],
+      "y": [77],
+      "type": "furniture"
+    },
+    "Bench[7]": {
+      "x": [41],
+      "y": [78, 79],
+      "type": "furniture"
+    },
+    "Bench[8]": {
+      "x": [46],
+      "y": [78, 79],
+      "type": "furniture"
+    },
+    "Smelter": {
+      "x": [100, 101],
+      "y": [79, 80],
+      "type": "decoration"
+    },
+    "Fountain": {
+      "x": [24, 25, 26, 27, 28],
+      "y": [25, 26, 27, 28],
+      "type": "water"
     }
   },
   "trailer": {
