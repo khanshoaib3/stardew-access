@@ -169,7 +169,7 @@
       "y": [9],
       "type": "other"
     },
-    "Rearrange Collection": {
+    "Collection": {
       "x": [2],
       "y": [9],
       "type": "interactable"
@@ -288,111 +288,6 @@
       "x": [21],
       "y": [9, 10],
       "type": "decoration"
-    },
-    "Book 1": {
-      "x": [9],
-      "y": [13],
-      "type": "other"
-    },
-    "Book 2": {
-      "x": [9],
-      "y": [12],
-      "type": "other"
-    },
-    "Book 3": {
-      "x": [9],
-      "y": [11],
-      "type": "other"
-    },
-    "Book 4": {
-      "x": [9],
-      "y": [10],
-      "type": "other"
-    },
-    "Book 5": {
-      "x": [9],
-      "y": [4],
-      "type": "other"
-    },
-    "Book 6": {
-      "x": [10],
-      "y": [4],
-      "type": "other"
-    },
-    "Book 7": {
-      "x": [11],
-      "y": [4],
-      "type": "other"
-    },
-    "Book 8": {
-      "x": [12],
-      "y": [4],
-      "type": "other"
-    },
-    "Book 9": {
-      "x": [13],
-      "y": [4],
-      "type": "other"
-    },
-    "Book 10": {
-      "x": [15],
-      "y": [4],
-      "type": "other"
-    },
-    "Book 11": {
-      "x": [16],
-      "y": [4],
-      "type": "other"
-    },
-    "Book 12": {
-      "x": [17],
-      "y": [4],
-      "type": "other"
-    },
-    "Book 13": {
-      "x": [19],
-      "y": [4],
-      "type": "other"
-    },
-    "Book 14": {
-      "x": [20],
-      "y": [4],
-      "type": "other"
-    },
-    "Book 15": {
-      "x": [21],
-      "y": [4],
-      "type": "other"
-    },
-    "Book 16": {
-      "x": [11],
-      "y": [8],
-      "type": "other"
-    },
-    "Book 17": {
-      "x": [12],
-      "y": [8],
-      "type": "other"
-    },
-    "Book 18": {
-      "x": [13],
-      "y": [8],
-      "type": "other"
-    },
-    "Book 19": {
-      "x": [9],
-      "y": [9],
-      "type": "other"
-    },
-    "Book 20": {
-      "x": [9],
-      "y": [8],
-      "type": "other"
-    },
-    "Book 21": {
-      "x": [9],
-      "y": [7],
-      "type": "other"
     }
   },
   "backwoods": {
@@ -501,7 +396,131 @@
       "type": "door"
     }
   },
+  "big barn": {
+    "Hay Hopper": {
+      "x": [6],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Feeding Bench 1": {
+      "x": [8],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 2": {
+      "x": [9],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 3": {
+      "x": [10],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 4": {
+      "x": [11],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 5": {
+      "x": [12],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 6": {
+      "x": [13],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 7": {
+      "x": [14],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 8": {
+      "x": [15],
+      "y": [3],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [11],
+      "y": [14],
+      "type": "door"
+    }
+  },
   "barn3": {
+    "Hay Hopper": {
+      "x": [6],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Feeding Bench 1": {
+      "x": [8],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 2": {
+      "x": [9],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 3": {
+      "x": [10],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 4": {
+      "x": [11],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 5": {
+      "x": [12],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 6": {
+      "x": [13],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 7": {
+      "x": [14],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 8": {
+      "x": [15],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 9": {
+      "x": [16],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 10": {
+      "x": [17],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 11": {
+      "x": [18],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 12": {
+      "x": [19],
+      "y": [3],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [11],
+      "y": [14],
+      "type": "door"
+    }
+  },
+  "deluxe barn": {
     "Hay Hopper": {
       "x": [6],
       "y": [3],
@@ -935,7 +954,141 @@
       "type": "door"
     }
   },
+  "big coop": {
+    "Hay Hopper": {
+      "x": [3],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Incubator": {
+      "x": [2],
+      "y": [3],
+      "type": "machine"
+    },
+    "Feeding Bench 1": {
+      "x": [6],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 2": {
+      "x": [7],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 3": {
+      "x": [8],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 4": {
+      "x": [9],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 5": {
+      "x": [10],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 6": {
+      "x": [11],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 7": {
+      "x": [12],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 8": {
+      "x": [13],
+      "y": [3],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [2],
+      "y": [9],
+      "type": "door"
+    }
+  },
   "coop3": {
+    "Hay Hopper": {
+      "x": [3],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Incubator": {
+      "x": [2],
+      "y": [3],
+      "type": "machine"
+    },
+    "Feeding Bench 1": {
+      "x": [6],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 2": {
+      "x": [7],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 3": {
+      "x": [8],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 4": {
+      "x": [9],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 5": {
+      "x": [10],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 6": {
+      "x": [11],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 7": {
+      "x": [12],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 8": {
+      "x": [13],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 9": {
+      "x": [14],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 10": {
+      "x": [15],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 11": {
+      "x": [16],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench 12": {
+      "x": [17],
+      "y": [3],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [2],
+      "y": [9],
+      "type": "door"
+    }
+  },
+  "deluxe coop": {
     "Hay Hopper": {
       "x": [3],
       "y": [3],
