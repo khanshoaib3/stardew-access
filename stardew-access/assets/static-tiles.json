@@ -2901,6 +2901,13 @@
       "type": "door"
     }
   },
+  "big shed": {
+    "Exit": {
+      "x": [9],
+      "y": [16],
+      "type": "door"
+    }
+  },
   "skullcave": {
     "Exit": {
       "x": [7],
