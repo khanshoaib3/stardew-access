@@ -614,13 +614,48 @@
   "bathhouse_pool": {
     "Women's Locker Room Door": {
       "x": [6],
-      "y": [1],
+      "y": [0],
       "type": "door"
     },
     "Men's Locker Room Door": {
       "x": [21],
-      "y": [1],
+      "y": [0],
       "type": "door"
+    },
+    "Bench[1]": {
+      "x": [11],
+      "y": [9],
+      "type": "furniture"
+    },
+    "Bench[2]": {
+      "x": [13],
+      "y": [9],
+      "type": "furniture"
+    },
+    "Bench[3]": {
+      "x": [16],
+      "y": [9],
+      "type": "furniture"
+    },
+    "Northwest Steps": {
+      "x": [6],
+      "y": [8],
+      "type": "other"
+    },
+    "Northeast Steps": {
+      "x": [21],
+      "y": [8],
+      "type": "other"
+    },
+    "Southwest Steps": {
+      "x": [7],
+      "y": [26],
+      "type": "other"
+    },
+    "Southeast Steps": {
+      "x": [20],
+      "y": [26],
+      "type": "other"
     }
   },
   "bathhouse_womenslocker": {
@@ -2557,6 +2592,11 @@
       "y": [35],
       "type": "door"
     },
+    "Summit Entrance": {
+      "x": [32, 33, 34],
+      "y": [0],
+      "type": "door"
+    },
     "Empty Box": {
       "x": [45],
       "y": [40],
@@ -2648,6 +2688,81 @@
       "x": [28],
       "y": [7],
       "type": "other"
+    },
+    "Barstool[1]": {
+      "x": [7],
+      "y": [19],
+      "type": "furniture"
+    },
+    "Barstool[2]": {
+      "x": [13],
+      "y": [20],
+      "type": "furniture"
+    },
+    "Barstool[3]": {
+      "x": [15],
+      "y": [20],
+      "type": "furniture"
+    },
+    "Barstool[4]": {
+      "x": [19],
+      "y": [20],
+      "type": "furniture"
+    },
+    "Barstool[5]": {
+      "x": [20],
+      "y": [18],
+      "type": "furniture"
+    },
+    "Stool[1]": {
+      "x": [3],
+      "y": [19],
+      "type": "furniture"
+    },
+    "Stool[2]": {
+      "x": [4],
+      "y": [21],
+      "type": "furniture"
+    },
+    "Stool[3]": {
+      "x": [9],
+      "y": [21],
+      "type": "furniture"
+    },
+    "Stool[4]": {
+      "x": [2],
+      "y": [22],
+      "type": "furniture"
+    },
+    "Stool[5]": {
+      "x": [12],
+      "y": [22],
+      "type": "furniture"
+    },
+    "Stool[6]": {
+      "x": [16],
+      "y": [23],
+      "type": "furniture"
+    },
+    "Table[1]": {
+      "x": [3, 4],
+      "y": [20],
+      "type": "decoration"
+    },
+    "Table[2]": {
+      "x": [10, 11],
+      "y": [22],
+      "type": "decoration"
+    },
+    "Table[3]": {
+      "x": [1, 2],
+      "y": [23],
+      "type": "decoration"
+    },
+    "Table[4]": {
+      "x": [17, 18],
+      "y": [23],
+      "type": "decoration"
     }
   },
   "samhouse": {
