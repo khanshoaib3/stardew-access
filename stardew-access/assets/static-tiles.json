@@ -2957,7 +2957,7 @@
     "Pierre's Bin": {
       "x": [19],
       "y": [28],
-      "type": "interactable"
+      "type": "other"
     },
     "Shrine of Yoba": {
       "x": [37],
