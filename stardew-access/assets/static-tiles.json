@@ -1296,7 +1296,7 @@
       "type": "interactable"
     },
     "Lumber Pile": {
-      "x": [60],
+      "x": [60, 61],
       "y": [14],
       "type": "decoration"
     }
@@ -2957,7 +2957,7 @@
     "Pierre's Bin": {
       "x": [19],
       "y": [28],
-      "type": "other"
+      "type": "interactable"
     },
     "Shrine of Yoba": {
       "x": [37],
@@ -3426,7 +3426,7 @@
   "woods": {
     "Forest Entrance": {
       "x": [59],
-      "y": [17],
+      "y": [15, 16, 17],
       "type": "door"
     },
     "Old Master Cannoli": {
