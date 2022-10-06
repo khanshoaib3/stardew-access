@@ -19,6 +19,41 @@
       "x": [11],
       "y": [12],
       "type": "npc"
+    },
+    "Stool[1]": {
+      "x": [2],
+      "y": [13],
+      "type": "furniture"
+    },
+    "Stool[2]": {
+      "x": [11],
+      "y": [16],
+      "type": "furniture"
+    },
+    "Stool[3]": {
+      "x": [9],
+      "y": [17],
+      "type": "furniture"
+    },
+    "Stool[4]": {
+      "x": [11],
+      "y": [18],
+      "type": "furniture"
+    },
+    "Fireplace": {
+      "x": [9, 10],
+      "y": [11],
+      "type": "decoration"
+    },
+    "Table": {
+      "x": [10, 11],
+      "y": [17],
+      "type": "decoration"
+    },
+    "House Plant": {
+      "x": [12],
+      "y": [18],
+      "type": "decoration"
     }
   },
   "animalshop": {
@@ -134,10 +169,125 @@
       "y": [9],
       "type": "other"
     },
+    "Collection": {
+      "x": [2],
+      "y": [9],
+      "type": "interactable"
+    },
     "Counter": {
       "x": [3],
       "y": [9],
       "type": "interactable"
+    },
+    "Stool": {
+      "x": [1],
+      "y": [10],
+      "type": "furniture"
+    },
+    "Chair[1]": {
+      "x": [13],
+      "y": [14],
+      "type": "furniture"
+    },
+    "Chair[2]": {
+      "x": [9],
+      "y": [16],
+      "type": "furniture"
+    },
+    "Chair[3]": {
+      "x": [13],
+      "y": [18],
+      "type": "furniture"
+    },
+    "Chair[4]": {
+      "x": [17],
+      "y": [18],
+      "type": "furniture"
+    },
+    "Table": {
+      "x": [17, 18],
+      "y": [10, 11],
+      "type": "decoration"
+    },
+    "Desk[1]": {
+      "x": [9, 10],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Desk[2]": {
+      "x": [13, 14],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Desk[3]": {
+      "x": [17, 18],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Desk[4]": {
+      "x": [9, 10],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Desk[5]": {
+      "x": [13, 14],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Desk[6]": {
+      "x": [17, 18],
+      "y": [17],
+      "type": "decoration"
+    },
+    "House Plant[1]": {
+      "x": [27],
+      "y": [4],
+      "type": "decoration"
+    },
+    "House Plant[2]": {
+      "x": [26],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Palm Tree": {
+      "x": [38],
+      "y": [4],
+      "type": "decoration"
+    },
+    "Fireplace": {
+      "x": [43, 44],
+      "y": [4],
+      "type": "decoration"
+    },
+    "History Book": {
+      "x": [15, 16, 17, 18, 19],
+      "y": [8],
+      "type": "decoration"
+    },
+    "Step Stool[1]": {
+      "x": [10],
+      "y": [9],
+      "type": "decoration"
+    },
+    "Step Stool[2]": {
+      "x": [18],
+      "y": [5],
+      "type": "decoration"
+    },
+    "Teddybear": {
+      "x": [20],
+      "y": [9],
+      "type": "decoration"
+    },
+    "Atlas": {
+      "x": [21],
+      "y": [7, 8],
+      "type": "decoration"
+    },
+    "Children's Book": {
+      "x": [21],
+      "y": [9, 10],
+      "type": "decoration"
     }
   },
   "backwoods": {
@@ -168,22 +318,22 @@
       "y": [3],
       "type": "interactable"
     },
-    "Feeding Bench 1": {
+    "Feeding Bench A": {
       "x": [8],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 2": {
+    "Feeding Bench B": {
       "x": [9],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 3": {
+    "Feeding Bench C": {
       "x": [10],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 4": {
+    "Feeding Bench D": {
       "x": [11],
       "y": [3],
       "type": "other"
@@ -200,42 +350,94 @@
       "y": [3],
       "type": "interactable"
     },
-    "Feeding Bench 1": {
+    "Feeding Bench A": {
       "x": [8],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 2": {
+    "Feeding Bench B": {
       "x": [9],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 3": {
+    "Feeding Bench C": {
       "x": [10],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 4": {
+    "Feeding Bench D": {
       "x": [11],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 5": {
+    "Feeding Bench E": {
       "x": [12],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 6": {
+    "Feeding Bench F": {
       "x": [13],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 7": {
+    "Feeding Bench G": {
       "x": [14],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 8": {
+    "Feeding Bench H": {
+      "x": [15],
+      "y": [3],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [11],
+      "y": [14],
+      "type": "door"
+    }
+  },
+  "big barn": {
+    "Hay Hopper": {
+      "x": [6],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Feeding Bench A": {
+      "x": [8],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench B": {
+      "x": [9],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench C": {
+      "x": [10],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench D": {
+      "x": [11],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench E": {
+      "x": [12],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench F": {
+      "x": [13],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench G": {
+      "x": [14],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench H": {
       "x": [15],
       "y": [3],
       "type": "other"
@@ -252,62 +454,134 @@
       "y": [3],
       "type": "interactable"
     },
-    "Feeding Bench 1": {
+    "Feeding Bench A": {
       "x": [8],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 2": {
+    "Feeding Bench B": {
       "x": [9],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 3": {
+    "Feeding Bench C": {
       "x": [10],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 4": {
+    "Feeding Bench D": {
       "x": [11],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 5": {
+    "Feeding Bench E": {
       "x": [12],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 6": {
+    "Feeding Bench F": {
       "x": [13],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 7": {
+    "Feeding Bench G": {
       "x": [14],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 8": {
+    "Feeding Bench H": {
       "x": [15],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 9": {
+    "Feeding Bench I": {
       "x": [16],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 10": {
+    "Feeding Bench J": {
       "x": [17],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 11": {
+    "Feeding Bench K": {
       "x": [18],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 12": {
+    "Feeding Bench L": {
+      "x": [19],
+      "y": [3],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [11],
+      "y": [14],
+      "type": "door"
+    }
+  },
+  "deluxe barn": {
+    "Hay Hopper": {
+      "x": [6],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Feeding Bench A": {
+      "x": [8],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench B": {
+      "x": [9],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench C": {
+      "x": [10],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench D": {
+      "x": [11],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench E": {
+      "x": [12],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench F": {
+      "x": [13],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench G": {
+      "x": [14],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench H": {
+      "x": [15],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench I": {
+      "x": [16],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench J": {
+      "x": [17],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench K": {
+      "x": [18],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench L": {
       "x": [19],
       "y": [3],
       "type": "other"
@@ -340,13 +614,48 @@
   "bathhouse_pool": {
     "Women's Locker Room Door": {
       "x": [6],
-      "y": [1],
+      "y": [0],
       "type": "door"
     },
     "Men's Locker Room Door": {
       "x": [21],
-      "y": [1],
+      "y": [0],
       "type": "door"
+    },
+    "Bench[1]": {
+      "x": [11],
+      "y": [9],
+      "type": "furniture"
+    },
+    "Bench[2]": {
+      "x": [13],
+      "y": [9],
+      "type": "furniture"
+    },
+    "Bench[3]": {
+      "x": [16],
+      "y": [9],
+      "type": "furniture"
+    },
+    "Northwest Steps": {
+      "x": [6],
+      "y": [8],
+      "type": "other"
+    },
+    "Northeast Steps": {
+      "x": [21],
+      "y": [8],
+      "type": "other"
+    },
+    "Southwest Steps": {
+      "x": [7],
+      "y": [26],
+      "type": "other"
+    },
+    "Southeast Steps": {
+      "x": [20],
+      "y": [26],
+      "type": "other"
     }
   },
   "bathhouse_womenslocker": {
@@ -597,22 +906,22 @@
       "y": [3],
       "type": "interactable"
     },
-    "Feeding Bench 1": {
+    "Feeding Bench A": {
       "x": [6],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 2": {
+    "Feeding Bench B": {
       "x": [7],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 3": {
+    "Feeding Bench C": {
       "x": [8],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 4": {
+    "Feeding Bench D": {
       "x": [9],
       "y": [3],
       "type": "other"
@@ -634,42 +943,99 @@
       "y": [3],
       "type": "machine"
     },
-    "Feeding Bench 1": {
+    "Feeding Bench A": {
       "x": [6],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 2": {
+    "Feeding Bench B": {
       "x": [7],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 3": {
+    "Feeding Bench C": {
       "x": [8],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 4": {
+    "Feeding Bench D": {
       "x": [9],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 5": {
+    "Feeding Bench E": {
       "x": [10],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 6": {
+    "Feeding Bench F": {
       "x": [11],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 7": {
+    "Feeding Bench G": {
       "x": [12],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 8": {
+    "Feeding Bench H": {
+      "x": [13],
+      "y": [3],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [2],
+      "y": [9],
+      "type": "door"
+    }
+  },
+  "big coop": {
+    "Hay Hopper": {
+      "x": [3],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Incubator": {
+      "x": [2],
+      "y": [3],
+      "type": "machine"
+    },
+    "Feeding Bench A": {
+      "x": [6],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench B": {
+      "x": [7],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench C": {
+      "x": [8],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench D": {
+      "x": [9],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench E": {
+      "x": [10],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench F": {
+      "x": [11],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench G": {
+      "x": [12],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench H": {
       "x": [13],
       "y": [3],
       "type": "other"
@@ -691,62 +1057,139 @@
       "y": [3],
       "type": "machine"
     },
-    "Feeding Bench 1": {
+    "Feeding Bench A": {
       "x": [6],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 2": {
+    "Feeding Bench B": {
       "x": [7],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 3": {
+    "Feeding Bench C": {
       "x": [8],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 4": {
+    "Feeding Bench D": {
       "x": [9],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 5": {
+    "Feeding Bench E": {
       "x": [10],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 6": {
+    "Feeding Bench F": {
       "x": [11],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 7": {
+    "Feeding Bench G": {
       "x": [12],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 8": {
+    "Feeding Bench H": {
       "x": [13],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 9": {
+    "Feeding Bench I": {
       "x": [14],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 10": {
+    "Feeding Bench J": {
       "x": [15],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 11": {
+    "Feeding Bench K": {
       "x": [16],
       "y": [3],
       "type": "other"
     },
-    "Feeding Bench 12": {
+    "Feeding Bench L": {
+      "x": [17],
+      "y": [3],
+      "type": "other"
+    },
+    "Exit": {
+      "x": [2],
+      "y": [9],
+      "type": "door"
+    }
+  },
+  "deluxe coop": {
+    "Hay Hopper": {
+      "x": [3],
+      "y": [3],
+      "type": "interactable"
+    },
+    "Incubator": {
+      "x": [2],
+      "y": [3],
+      "type": "machine"
+    },
+    "Feeding Bench A": {
+      "x": [6],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench B": {
+      "x": [7],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench C": {
+      "x": [8],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench D": {
+      "x": [9],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench E": {
+      "x": [10],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench F": {
+      "x": [11],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench G": {
+      "x": [12],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench H": {
+      "x": [13],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench I": {
+      "x": [14],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench J": {
+      "x": [15],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench K": {
+      "x": [16],
+      "y": [3],
+      "type": "other"
+    },
+    "Feeding Bench L": {
       "x": [17],
       "y": [3],
       "type": "other"
@@ -792,6 +1235,11 @@
       "x": [9, 10],
       "y": [35, 36],
       "type": "decoration"
+    },
+    "Bench": {
+      "x": [43, 44],
+      "y": [54],
+      "type": "furniture"
     }
   },
   "elliotthouse": {
@@ -848,7 +1296,7 @@
       "type": "interactable"
     },
     "Lumber Pile": {
-      "x": [60],
+      "x": [60, 61],
       "y": [14],
       "type": "decoration"
     }
@@ -1315,8 +1763,543 @@
     },
     "Shop Counter": {
       "x": [10],
-      "y": [25],
+      "y": [23, 24, 25, 26],
       "type": "interactable"
+    },
+    "Salt": {
+      "x": [3],
+      "y": [10, 11],
+      "type": "decoration"
+    },
+    "Multipurpose Sauce": {
+      "x": [3],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Marinara Sauce": {
+      "x": [3],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Pesto": {
+      "x": [3],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Vegan Sausage": {
+      "x": [3],
+      "y": [15, 16],
+      "type": "decoration"
+    },
+    "Coconut Meat": {
+      "x": [3],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Cowboy Sauce": {
+      "x": [3],
+      "y": [18, 19],
+      "type": "decoration"
+    },
+    "Hoisin Sauce": {
+      "x": [4],
+      "y": [10],
+      "type": "decoration"
+    },
+    "Pretzel Snacks": {
+      "x": [4],
+      "y": [11, 12],
+      "type": "decoration"
+    },
+    "Honey Sauce": {
+      "x": [4],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Yeast": {
+      "x": [4],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Sugar Cones": {
+      "x": [4],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Sugar Stars": {
+      "x": [4],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Gummies": {
+      "x": [4],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Fruit Snacks": {
+      "x": [4],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Marinated Mushrooms": {
+      "x": [4],
+      "y": [19],
+      "type": "decoration"
+    },
+    "Low Fat Beans": {
+      "x": [7],
+      "y": [11, 12],
+      "type": "decoration"
+    },
+    "White Fungus Soda": {
+      "x": [7],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Powdered Breakfast": {
+      "x": [7],
+      "y": [14, 15],
+      "type": "decoration"
+    },
+    "Powdered Wine": {
+      "x": [7],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Canned Scrambled Eggs": {
+      "x": [7],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Canned Fish": {
+      "x": [7],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Canned Meals": {
+      "x": [7],
+      "y": [19, 20],
+      "type": "decoration"
+    },
+    "Protein Bars": {
+      "x": [8],
+      "y": [10, 11],
+      "type": "decoration"
+    },
+    "Protein Shakes": {
+      "x": [8],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Protein Powder": {
+      "x": [8],
+      "y": [13, 14],
+      "type": "decoration"
+    },
+    "Jitter Juice": {
+      "x": [8],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Explosion Juice": {
+      "x": [8],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Blue Alien Energy": {
+      "x": [8],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Hyper Juice": {
+      "x": [8],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Joja Cola Amped": {
+      "x": [8],
+      "y": [19, 20],
+      "type": "decoration"
+    },
+    "Sugar Free Lollipop": {
+      "x": [11],
+      "y": [10, 11],
+      "type": "decoration"
+    },
+    "Drinkable Frosting": {
+      "x": [11],
+      "y": [12, 13],
+      "type": "decoration"
+    },
+    "Cocoa Zeppelins": {
+      "x": [11],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Silly Sauce": {
+      "x": [11],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Grape Nibble Pebbles": {
+      "x": [11],
+      "y": [16, 17],
+      "type": "decoration"
+    },
+    "Strawberry Lollipops": {
+      "x": [11],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Sugar Orbs": {
+      "x": [11],
+      "y": [19],
+      "type": "decoration"
+    },
+    "24 Grain Bread": {
+      "x": [12],
+      "y": [10, 11],
+      "type": "decoration"
+    },
+    "11 Grain Bread": {
+      "x": [12],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Wheat Bread": {
+      "x": [12],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Oat Bread": {
+      "x": [12],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Brown Bread": {
+      "x": [12],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Rye Bread": {
+      "x": [12],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Sourdough Bread": {
+      "x": [12],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Bread": {
+      "x": [12],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Pancakes": {
+      "x": [12],
+      "y": [19],
+      "type": "decoration"
+    },
+    "Maple Sauce": {
+      "x": [15],
+      "y": [10],
+      "type": "decoration"
+    },
+    "Maypul Syrup": {
+      "x": [15],
+      "y": [11],
+      "type": "decoration"
+    },
+    "Cooking Oil": {
+      "x": [15],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Corn Oil": {
+      "x": [15],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Synthetic Butter": {
+      "x": [15],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Powdered Cream": {
+      "x": [15],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Powdered Butter": {
+      "x": [15],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Joja Oil": {
+      "x": [15],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Canola Oil": {
+      "x": [15],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Olive Oil": {
+      "x": [15],
+      "y": [19, 20],
+      "type": "decoration"
+    },
+    "Marshmallows": {
+      "x": [16],
+      "y": [10],
+      "type": "decoration"
+    },
+    "Hair Gel": {
+      "x": [16],
+      "y": [11, 12],
+      "type": "decoration"
+    },
+    "Floss": {
+      "x": [16],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Mouthwash": {
+      "x": [16],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Toothpaste": {
+      "x": [16],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Hand Soap": {
+      "x": [16],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Multipurpose Detergent": {
+      "x": [16],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Laundry Detergent": {
+      "x": [16],
+      "y": [18, 19, 20],
+      "type": "decoration"
+    },
+    "Taco Sauce For Babies": {
+      "x": [19],
+      "y": [10],
+      "type": "decoration"
+    },
+    "Granny's Sauce": {
+      "x": [19],
+      "y": [11],
+      "type": "decoration"
+    },
+    "Very Mild Sauce": {
+      "x": [19],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Mild Sauce": {
+      "x": [19],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Take Me To The Emergency Room Sauce": {
+      "x": [19],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Unbearable Torturous Blaze Sauce": {
+      "x": [19],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Searing Pain Sauce": {
+      "x": [19],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Inferno Sauce": {
+      "x": [19],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Fire Sauce": {
+      "x": [19],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Hot Sauce": {
+      "x": [19],
+      "y": [19],
+      "type": "decoration"
+    },
+    "Hoisin Sauce": {
+      "x": [20],
+      "y": [10],
+      "type": "decoration"
+    },
+    "Churro Kit": {
+      "x": [20],
+      "y": [11, 12],
+      "type": "decoration"
+    },
+    "Honey Sauce": {
+      "x": [20],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Yeast": {
+      "x": [20],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Sugar Cones": {
+      "x": [20],
+      "y": [15],
+      "type": "decoration"
+    },
+    "Sugar Stars": {
+      "x": [20],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Gummies": {
+      "x": [20],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Fruit Snacks": {
+      "x": [20],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Marinated Mushrooms": {
+      "x": [20],
+      "y": [19],
+      "type": "decoration"
+    },
+    "Canned Soup": {
+      "x": [23],
+      "y": [10, 11],
+      "type": "decoration"
+    },
+    "White Bread": {
+      "x": [23],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Canned Shrimp.": {
+      "x": [23],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Shrimp Snack": {
+      "x": [23],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Budget Wine": {
+      "x": [23],
+      "y": [15],
+      "type": "decoration"
+    },
+    "X-Treme Chipz": {
+      "x": [23],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Pure Gluten.": {
+      "x": [23],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Joja Meal": {
+      "x": [23],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Canned Pasta": {
+      "x": [23],
+      "y": [19],
+      "type": "decoration"
+    },
+    "Ranch Chips": {
+      "x": [24],
+      "y": [10, 11],
+      "type": "decoration"
+    },
+    "Smokehouse Chips": {
+      "x": [24],
+      "y": [12],
+      "type": "decoration"
+    },
+    "Cinnamon Sugar Chips": {
+      "x": [24],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Sugar Cane Chips": {
+      "x": [24],
+      "y": [14],
+      "type": "decoration"
+    },
+    "Inferno Chips": {
+      "x": [24],
+      "y": [15, 16],
+      "type": "decoration"
+    },
+    "Carbo Cones": {
+      "x": [24],
+      "y": [17, 18],
+      "type": "decoration"
+    },
+    "Corn Flour": {
+      "x": [24],
+      "y": [19],
+      "type": "decoration"
+    },
+    "Low Fat Beans": {
+      "x": [28],
+      "y": [11, 12],
+      "type": "decoration"
+    },
+    "White Fungus Soda": {
+      "x": [28],
+      "y": [13],
+      "type": "decoration"
+    },
+    "Powdered Breakfast": {
+      "x": [28],
+      "y": [14, 15],
+      "type": "decoration"
+    },
+    "Powdered Wine": {
+      "x": [28],
+      "y": [16],
+      "type": "decoration"
+    },
+    "Canned Scrambled Eggs": {
+      "x": [28],
+      "y": [17],
+      "type": "decoration"
+    },
+    "Canned Fish": {
+      "x": [28],
+      "y": [18],
+      "type": "decoration"
+    },
+    "Canned Meals": {
+      "x": [28],
+      "y": [19],
+      "type": "decoration"
     }
   },
   "joshhouse": {
@@ -1609,18 +2592,38 @@
       "y": [35],
       "type": "door"
     },
-    "Empty Crate": {
+    "Summit Entrance": {
+      "x": [32, 33, 34],
+      "y": [0],
+      "type": "door"
+    },
+    "Empty Box": {
       "x": [45],
       "y": [40],
       "type": "other"
     },
     "Dumpster": {
-      "x": [28],
+      "x": [28, 29],
       "y": [36],
       "type": "other"
     },
+    "Boulder": {
+      "x": [11],
+      "y": [38],
+      "type": "decoration"
+    },
+    "Summit Boulder": {
+      "x": [24, 25],
+      "y": [35],
+      "type": "decoration"
+    },
+    "Bench": {
+      "x": [38, 39, 40],
+      "y": [40],
+      "type": "furniture"
+    },
     "Water": {
-      "x": [13, 14, 15, 16],
+      "x": [14, 15, 16],
       "y": [54, 55, 56],
       "type": "water"
     }
@@ -1685,6 +2688,81 @@
       "x": [28],
       "y": [7],
       "type": "other"
+    },
+    "Barstool[1]": {
+      "x": [7],
+      "y": [19],
+      "type": "furniture"
+    },
+    "Barstool[2]": {
+      "x": [13],
+      "y": [20],
+      "type": "furniture"
+    },
+    "Barstool[3]": {
+      "x": [15],
+      "y": [20],
+      "type": "furniture"
+    },
+    "Barstool[4]": {
+      "x": [19],
+      "y": [20],
+      "type": "furniture"
+    },
+    "Barstool[5]": {
+      "x": [20],
+      "y": [18],
+      "type": "furniture"
+    },
+    "Stool[1]": {
+      "x": [3],
+      "y": [19],
+      "type": "furniture"
+    },
+    "Stool[2]": {
+      "x": [4],
+      "y": [21],
+      "type": "furniture"
+    },
+    "Stool[3]": {
+      "x": [9],
+      "y": [21],
+      "type": "furniture"
+    },
+    "Stool[4]": {
+      "x": [2],
+      "y": [22],
+      "type": "furniture"
+    },
+    "Stool[5]": {
+      "x": [12],
+      "y": [22],
+      "type": "furniture"
+    },
+    "Stool[6]": {
+      "x": [16],
+      "y": [23],
+      "type": "furniture"
+    },
+    "Table[1]": {
+      "x": [3, 4],
+      "y": [20],
+      "type": "decoration"
+    },
+    "Table[2]": {
+      "x": [10, 11],
+      "y": [22],
+      "type": "decoration"
+    },
+    "Table[3]": {
+      "x": [1, 2],
+      "y": [23],
+      "type": "decoration"
+    },
+    "Table[4]": {
+      "x": [17, 18],
+      "y": [23],
+      "type": "decoration"
     }
   },
   "samhouse": {
@@ -1938,6 +3016,13 @@
       "type": "door"
     }
   },
+  "big shed": {
+    "Exit": {
+      "x": [9],
+      "y": [16],
+      "type": "door"
+    }
+  },
   "skullcave": {
     "Exit": {
       "x": [7],
@@ -2103,9 +3188,69 @@
       "type": "door"
     },
     "Mountain Entrance": {
-      "x": [81],
+      "x": [79, 80, 81, 82, 83],
       "y": [0],
       "type": "door"
+    },
+    "Joja Bridge": {
+      "x": [92, 93, 94, 95, 96],
+      "y": [11],
+      "type": "bridge"
+    },
+    "Beach Bridge": {
+      "x": [75, 76, 77, 78, 79, 80, 81, 82],
+      "y": [4, 5],
+      "type": "bridge"
+    },
+    "Bench[1]": {
+      "x": [25, 26, 27],
+      "y": [21],
+      "type": "furniture"
+    },
+    "Bench[2]": {
+      "x": [20],
+      "y": [26, 27],
+      "type": "furniture"
+    },
+    "Bench[3]": {
+      "x": [33],
+      "y": [26, 27],
+      "type": "furniture"
+    },
+    "Bench[4]": {
+      "x": [16],
+      "y": [57, 58],
+      "type": "furniture"
+    },
+    "Bench[5]": {
+      "x": [17, 18],
+      "y": [63],
+      "type": "furniture"
+    },
+    "Bench[6]": {
+      "x": [42, 43, 44, 45],
+      "y": [77],
+      "type": "furniture"
+    },
+    "Bench[7]": {
+      "x": [41],
+      "y": [78, 79],
+      "type": "furniture"
+    },
+    "Bench[8]": {
+      "x": [46],
+      "y": [78, 79],
+      "type": "furniture"
+    },
+    "Smelter": {
+      "x": [100, 101],
+      "y": [79, 80],
+      "type": "decoration"
+    },
+    "Fountain": {
+      "x": [24, 25, 26, 27, 28],
+      "y": [25, 26, 27, 28],
+      "type": "water"
     }
   },
   "trailer": {
@@ -2281,7 +3426,7 @@
   "woods": {
     "Forest Entrance": {
       "x": [59],
-      "y": [17],
+      "y": [15, 16, 17],
       "type": "door"
     },
     "Old Master Cannoli": {
