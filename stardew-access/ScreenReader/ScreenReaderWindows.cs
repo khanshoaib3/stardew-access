@@ -62,6 +62,9 @@ namespace stardew_access.ScreenReader
             if (screenReader == null)
                 return;
 
+            if (!MainClass.Config.TTS)
+                return;
+
             screenReader.Speak(text, interrupt);
         }
 

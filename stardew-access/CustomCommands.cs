@@ -521,6 +521,14 @@ namespace stardew_access
 
                 MainClass.DebugLog("Warnings is " + (MainClass.Config.Warning ? "on" : "off"));
             });
+
+            helper.ConsoleCommands.Add("tts", "Toggles the screen reader/tts", (string commmand, string[] args) =>
+            {
+                MainClass.Config.TTS = !MainClass.Config.TTS;
+                helper.WriteConfig(MainClass.Config);
+
+                MainClass.DebugLog("TTS is " + (MainClass.Config.TTS ? "on" : "off"));
+            });
             #endregion
         }
     }

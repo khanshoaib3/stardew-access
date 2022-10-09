@@ -62,11 +62,14 @@ namespace stardew_access.ScreenReader
             if (text == null)
                 return;
 
-            if (initialized)
-            {
-                GoString str = new GoString(text, text.Length);
-                Speak(str, interrupt);
-            }
+            if (!initialized)
+                return;
+
+            if (!MainClass.Config.TTS)
+                return;
+
+            GoString str = new GoString(text, text.Length);
+            Speak(str, interrupt);
         }
 
         public void SayWithChecker(string text, bool interrupt)
