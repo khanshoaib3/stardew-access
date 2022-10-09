@@ -1801,7 +1801,7 @@
       "y": [18, 19],
       "type": "decoration"
     },
-    "Hoisin Sauce": {
+    "Hoisin Sauce A": {
       "x": [4],
       "y": [10],
       "type": "decoration"
@@ -1811,72 +1811,72 @@
       "y": [11, 12],
       "type": "decoration"
     },
-    "Honey Sauce": {
+    "Honey Sauce A": {
       "x": [4],
       "y": [13],
       "type": "decoration"
     },
-    "Yeast": {
+    "Yeast A": {
       "x": [4],
       "y": [14],
       "type": "decoration"
     },
-    "Sugar Cones": {
+    "Sugar Cones A": {
       "x": [4],
       "y": [15],
       "type": "decoration"
     },
-    "Sugar Stars": {
+    "Sugar Stars A": {
       "x": [4],
       "y": [16],
       "type": "decoration"
     },
-    "Gummies": {
+    "Gummies A": {
       "x": [4],
       "y": [17],
       "type": "decoration"
     },
-    "Fruit Snacks": {
+    "Fruit Snacks A": {
       "x": [4],
       "y": [18],
       "type": "decoration"
     },
-    "Marinated Mushrooms": {
+    "Marinated Mushrooms A": {
       "x": [4],
       "y": [19],
       "type": "decoration"
     },
-    "Low Fat Beans": {
+    "Low Fat Beans A": {
       "x": [7],
       "y": [11, 12],
       "type": "decoration"
     },
-    "White Fungus Soda": {
+    "White Fungus Soda A": {
       "x": [7],
       "y": [13],
       "type": "decoration"
     },
-    "Powdered Breakfast": {
+    "Powdered Breakfast A": {
       "x": [7],
       "y": [14, 15],
       "type": "decoration"
     },
-    "Powdered Wine": {
+    "Powdered Wine A": {
       "x": [7],
       "y": [16],
       "type": "decoration"
     },
-    "Canned Scrambled Eggs": {
+    "Canned Scrambled Eggs A": {
       "x": [7],
       "y": [17],
       "type": "decoration"
     },
-    "Canned Fish": {
+    "Canned Fish A": {
       "x": [7],
       "y": [18],
       "type": "decoration"
     },
-    "Canned Meals": {
+    "Canned Meals A": {
       "x": [7],
       "y": [19, 20],
       "type": "decoration"
@@ -2141,7 +2141,7 @@
       "y": [19],
       "type": "decoration"
     },
-    "Hoisin Sauce": {
+    "Hoisin Sauce B": {
       "x": [20],
       "y": [10],
       "type": "decoration"
@@ -2151,37 +2151,37 @@
       "y": [11, 12],
       "type": "decoration"
     },
-    "Honey Sauce": {
+    "Honey Sauce B": {
       "x": [20],
       "y": [13],
       "type": "decoration"
     },
-    "Yeast": {
+    "Yeast B": {
       "x": [20],
       "y": [14],
       "type": "decoration"
     },
-    "Sugar Cones": {
+    "Sugar Cones B": {
       "x": [20],
       "y": [15],
       "type": "decoration"
     },
-    "Sugar Stars": {
+    "Sugar Stars B": {
       "x": [20],
       "y": [16],
       "type": "decoration"
     },
-    "Gummies": {
+    "Gummies B": {
       "x": [20],
       "y": [17],
       "type": "decoration"
     },
-    "Fruit Snacks": {
+    "Fruit Snacks B": {
       "x": [20],
       "y": [18],
       "type": "decoration"
     },
-    "Marinated Mushrooms": {
+    "Marinated Mushrooms B": {
       "x": [20],
       "y": [19],
       "type": "decoration"
@@ -2266,37 +2266,37 @@
       "y": [19],
       "type": "decoration"
     },
-    "Low Fat Beans": {
+    "Low Fat Beans B": {
       "x": [28],
       "y": [11, 12],
       "type": "decoration"
     },
-    "White Fungus Soda": {
+    "White Fungus Soda B": {
       "x": [28],
       "y": [13],
       "type": "decoration"
     },
-    "Powdered Breakfast": {
+    "Powdered Breakfast B": {
       "x": [28],
       "y": [14, 15],
       "type": "decoration"
     },
-    "Powdered Wine": {
+    "Powdered Wine B": {
       "x": [28],
       "y": [16],
       "type": "decoration"
     },
-    "Canned Scrambled Eggs": {
+    "Canned Scrambled Eggs B": {
       "x": [28],
       "y": [17],
       "type": "decoration"
     },
-    "Canned Fish": {
+    "Canned Fish B": {
       "x": [28],
       "y": [18],
       "type": "decoration"
     },
-    "Canned Meals": {
+    "Canned Meals B": {
       "x": [28],
       "y": [19],
       "type": "decoration"
