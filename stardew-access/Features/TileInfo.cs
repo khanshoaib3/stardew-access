@@ -695,19 +695,7 @@ namespace stardew_access.Features
             // Get object names based on index
             (string? name, CATEGORY category) correctNameAndCategory = getCorrectNameAndCategoryFromIndex(index, obj.Name);
 
-            if (correctNameAndCategory.name != null)
-                toReturn = correctNameAndCategory;
-            else if (obj.name.ToLower().Equals("stone"))
-                toReturn.category = CATEGORY.Debris;
-            else if (obj.name.ToLower().Equals("twig"))
-                toReturn.category = CATEGORY.Debris;
-            else if (obj.name.ToLower().Contains("quartz"))
-                toReturn.category = CATEGORY.MineItems;
-            else if (obj.name.ToLower().Contains("earth crystal"))
-                toReturn.category = CATEGORY.MineItems;
-            else if (obj.name.ToLower().Contains("frozen tear"))
-                toReturn.category = CATEGORY.MineItems;
-            else if (obj is Chest)
+            if (obj is Chest)
             {
                 Chest chest = (Chest)obj;
                 toReturn = (chest.DisplayName, CATEGORY.Chests);
@@ -719,7 +707,7 @@ namespace stardew_access.Features
             else if (obj is Sign sign)
             {
                 if (sign.displayItem.Value != null)
-                    toReturn.name = $"{obj.DisplayName}, {sign.displayItem.Value.DisplayName}";
+                    toReturn.name = $"{sign.DisplayName}, {sign.displayItem.Value.DisplayName}";
             }
             else if (obj is Furniture furniture)
             {
@@ -758,6 +746,18 @@ namespace stardew_access.Features
                     }
                 }
             }
+            else if (correctNameAndCategory.name != null)
+                toReturn = correctNameAndCategory;
+            else if (obj.name.ToLower().Equals("stone"))
+                toReturn.category = CATEGORY.Debris;
+            else if (obj.name.ToLower().Equals("twig"))
+                toReturn.category = CATEGORY.Debris;
+            else if (obj.name.ToLower().Contains("quartz"))
+                toReturn.category = CATEGORY.MineItems;
+            else if (obj.name.ToLower().Contains("earth crystal"))
+                toReturn.category = CATEGORY.MineItems;
+            else if (obj.name.ToLower().Contains("frozen tear"))
+                toReturn.category = CATEGORY.MineItems;
 
             if (toReturn.category == CATEGORY.Machines) // Fix for `Harvestable table` and `Busy nodes`
             {
