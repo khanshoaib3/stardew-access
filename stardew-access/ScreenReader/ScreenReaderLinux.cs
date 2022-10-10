@@ -68,6 +68,8 @@ namespace stardew_access.ScreenReader
             if (!MainClass.Config.TTS)
                 return;
 
+            if (text.Contains('^')) text = text.Replace('^', '\n');
+
             GoString str = new GoString(text, text.Length);
             Speak(str, interrupt);
         }
