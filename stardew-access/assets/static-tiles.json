@@ -318,26 +318,6 @@
       "y": [3],
       "type": "interactable"
     },
-    "Feeding Bench A": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
     "Exit": {
       "x": [11],
       "y": [14],
@@ -349,46 +329,6 @@
       "x": [6],
       "y": [3],
       "type": "interactable"
-    },
-    "Feeding Bench A": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [14],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [15],
-      "y": [3],
-      "type": "other"
     },
     "Exit": {
       "x": [11],
@@ -402,46 +342,6 @@
       "y": [3],
       "type": "interactable"
     },
-    "Feeding Bench A": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [14],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [15],
-      "y": [3],
-      "type": "other"
-    },
     "Exit": {
       "x": [11],
       "y": [14],
@@ -454,66 +354,6 @@
       "y": [3],
       "type": "interactable"
     },
-    "Feeding Bench A": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [14],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [15],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench I": {
-      "x": [16],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench J": {
-      "x": [17],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench K": {
-      "x": [18],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench L": {
-      "x": [19],
-      "y": [3],
-      "type": "other"
-    },
     "Exit": {
       "x": [11],
       "y": [14],
@@ -525,66 +365,6 @@
       "x": [6],
       "y": [3],
       "type": "interactable"
-    },
-    "Feeding Bench A": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [14],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [15],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench I": {
-      "x": [16],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench J": {
-      "x": [17],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench K": {
-      "x": [18],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench L": {
-      "x": [19],
-      "y": [3],
-      "type": "other"
     },
     "Exit": {
       "x": [11],
@@ -906,26 +686,6 @@
       "y": [3],
       "type": "interactable"
     },
-    "Feeding Bench A": {
-      "x": [6],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [7],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
     "Exit": {
       "x": [2],
       "y": [9],
@@ -942,46 +702,6 @@
       "x": [2],
       "y": [3],
       "type": "machine"
-    },
-    "Feeding Bench A": {
-      "x": [6],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [7],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
     },
     "Exit": {
       "x": [2],
@@ -1000,46 +720,6 @@
       "y": [3],
       "type": "machine"
     },
-    "Feeding Bench A": {
-      "x": [6],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [7],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
-    },
     "Exit": {
       "x": [2],
       "y": [9],
@@ -1057,66 +737,6 @@
       "y": [3],
       "type": "machine"
     },
-    "Feeding Bench A": {
-      "x": [6],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [7],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench I": {
-      "x": [14],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench J": {
-      "x": [15],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench K": {
-      "x": [16],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench L": {
-      "x": [17],
-      "y": [3],
-      "type": "other"
-    },
     "Exit": {
       "x": [2],
       "y": [9],
@@ -1133,66 +753,6 @@
       "x": [2],
       "y": [3],
       "type": "machine"
-    },
-    "Feeding Bench A": {
-      "x": [6],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [7],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench I": {
-      "x": [14],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench J": {
-      "x": [15],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench K": {
-      "x": [16],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench L": {
-      "x": [17],
-      "y": [3],
-      "type": "other"
     },
     "Exit": {
       "x": [2],
