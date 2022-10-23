@@ -83,7 +83,21 @@ namespace stardew_access.Features
                         }
 
                         if (isXPresent && isYPresent)
-                            return (tile.Key, CATEGORY.FromString(tileType.ToString().ToLower()));
+                        {
+                            string key = tile.Key;
+                            if (key.Contains('[') && key.Contains(']'))
+                            {
+                                int i1 = key.IndexOf('[');
+                                int i2 = key.LastIndexOf(']');
+
+                                if (i1 < i2)
+                                {
+                                    key = key.Remove(i1, ++i2 - i1);
+                                }
+                            }
+
+                            return (key.Trim(), CATEGORY.FromString(tileType.ToString().ToLower()));
+                        }
                     }
             }
 

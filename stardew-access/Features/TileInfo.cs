@@ -478,6 +478,72 @@ namespace stardew_access.Features
                         return (CATEGORY.Interactables, "Island Trader");
                 }
             }
+            else if (Game1.currentLocation.Name.ToLower().Equals("coop"))
+            {
+                if (x >= 6 && x <= 9 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("big coop") || Game1.currentLocation.Name.ToLower().Equals("coop2"))
+            {
+                if (x >= 6 && x <= 13 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("deluxe coop") || Game1.currentLocation.Name.ToLower().Equals("coop3"))
+            {
+                if (x >= 6 && x <= 17 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("barn"))
+            {
+                if (x >= 8 && x <= 11 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("big barn") || Game1.currentLocation.Name.ToLower().Equals("barn2"))
+            {
+                if (x >= 8 && x <= 15 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("deluxe barn") || Game1.currentLocation.Name.ToLower().Equals("barn3"))
+            {
+                if (x >= 8 && x <= 19 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
             return (null, null);
         }
 
@@ -689,6 +755,8 @@ namespace stardew_access.Features
             (string? name, CATEGORY category) toReturn = (null, CATEGORY.Others);
 
             StardewValley.Object obj = Game1.currentLocation.getObjectAtTile(x, y);
+            if (obj == null) return toReturn;
+
             int index = obj.ParentSheetIndex;
             toReturn.name = obj.DisplayName;
 

@@ -318,26 +318,6 @@
       "y": [3],
       "type": "interactable"
     },
-    "Feeding Bench A": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
     "Exit": {
       "x": [11],
       "y": [14],
@@ -349,46 +329,6 @@
       "x": [6],
       "y": [3],
       "type": "interactable"
-    },
-    "Feeding Bench A": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [14],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [15],
-      "y": [3],
-      "type": "other"
     },
     "Exit": {
       "x": [11],
@@ -402,46 +342,6 @@
       "y": [3],
       "type": "interactable"
     },
-    "Feeding Bench A": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [14],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [15],
-      "y": [3],
-      "type": "other"
-    },
     "Exit": {
       "x": [11],
       "y": [14],
@@ -454,66 +354,6 @@
       "y": [3],
       "type": "interactable"
     },
-    "Feeding Bench A": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [14],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [15],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench I": {
-      "x": [16],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench J": {
-      "x": [17],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench K": {
-      "x": [18],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench L": {
-      "x": [19],
-      "y": [3],
-      "type": "other"
-    },
     "Exit": {
       "x": [11],
       "y": [14],
@@ -525,66 +365,6 @@
       "x": [6],
       "y": [3],
       "type": "interactable"
-    },
-    "Feeding Bench A": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [14],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [15],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench I": {
-      "x": [16],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench J": {
-      "x": [17],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench K": {
-      "x": [18],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench L": {
-      "x": [19],
-      "y": [3],
-      "type": "other"
     },
     "Exit": {
       "x": [11],
@@ -906,26 +686,6 @@
       "y": [3],
       "type": "interactable"
     },
-    "Feeding Bench A": {
-      "x": [6],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [7],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
     "Exit": {
       "x": [2],
       "y": [9],
@@ -942,46 +702,6 @@
       "x": [2],
       "y": [3],
       "type": "machine"
-    },
-    "Feeding Bench A": {
-      "x": [6],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [7],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
     },
     "Exit": {
       "x": [2],
@@ -1000,46 +720,6 @@
       "y": [3],
       "type": "machine"
     },
-    "Feeding Bench A": {
-      "x": [6],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [7],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
-    },
     "Exit": {
       "x": [2],
       "y": [9],
@@ -1057,66 +737,6 @@
       "y": [3],
       "type": "machine"
     },
-    "Feeding Bench A": {
-      "x": [6],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [7],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench I": {
-      "x": [14],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench J": {
-      "x": [15],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench K": {
-      "x": [16],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench L": {
-      "x": [17],
-      "y": [3],
-      "type": "other"
-    },
     "Exit": {
       "x": [2],
       "y": [9],
@@ -1133,66 +753,6 @@
       "x": [2],
       "y": [3],
       "type": "machine"
-    },
-    "Feeding Bench A": {
-      "x": [6],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench B": {
-      "x": [7],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench C": {
-      "x": [8],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench D": {
-      "x": [9],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench E": {
-      "x": [10],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench F": {
-      "x": [11],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench G": {
-      "x": [12],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench H": {
-      "x": [13],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench I": {
-      "x": [14],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench J": {
-      "x": [15],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench K": {
-      "x": [16],
-      "y": [3],
-      "type": "other"
-    },
-    "Feeding Bench L": {
-      "x": [17],
-      "y": [3],
-      "type": "other"
     },
     "Exit": {
       "x": [2],
@@ -1801,7 +1361,7 @@
       "y": [18, 19],
       "type": "decoration"
     },
-    "Hoisin Sauce A": {
+    "Hoisin Sauce[A]": {
       "x": [4],
       "y": [10],
       "type": "decoration"
@@ -1811,72 +1371,72 @@
       "y": [11, 12],
       "type": "decoration"
     },
-    "Honey Sauce A": {
+    "Honey Sauce[A]": {
       "x": [4],
       "y": [13],
       "type": "decoration"
     },
-    "Yeast A": {
+    "Yeast[A]": {
       "x": [4],
       "y": [14],
       "type": "decoration"
     },
-    "Sugar Cones A": {
+    "Sugar Cones[A]": {
       "x": [4],
       "y": [15],
       "type": "decoration"
     },
-    "Sugar Stars A": {
+    "Sugar Stars[A]": {
       "x": [4],
       "y": [16],
       "type": "decoration"
     },
-    "Gummies A": {
+    "Gummies[A]": {
       "x": [4],
       "y": [17],
       "type": "decoration"
     },
-    "Fruit Snacks A": {
+    "Fruit Snacks[A]": {
       "x": [4],
       "y": [18],
       "type": "decoration"
     },
-    "Marinated Mushrooms A": {
+    "Marinated Mushrooms[A]": {
       "x": [4],
       "y": [19],
       "type": "decoration"
     },
-    "Low Fat Beans A": {
+    "Low Fat Beans[A]": {
       "x": [7],
       "y": [11, 12],
       "type": "decoration"
     },
-    "White Fungus Soda A": {
+    "White Fungus Soda[A]": {
       "x": [7],
       "y": [13],
       "type": "decoration"
     },
-    "Powdered Breakfast A": {
+    "Powdered Breakfast[A]": {
       "x": [7],
       "y": [14, 15],
       "type": "decoration"
     },
-    "Powdered Wine A": {
+    "Powdered Wine[A]": {
       "x": [7],
       "y": [16],
       "type": "decoration"
     },
-    "Canned Scrambled Eggs A": {
+    "Canned Scrambled Eggs[A]": {
       "x": [7],
       "y": [17],
       "type": "decoration"
     },
-    "Canned Fish A": {
+    "Canned Fish[A]": {
       "x": [7],
       "y": [18],
       "type": "decoration"
     },
-    "Canned Meals A": {
+    "Canned Meals[A]": {
       "x": [7],
       "y": [19, 20],
       "type": "decoration"
@@ -2141,7 +1701,7 @@
       "y": [19],
       "type": "decoration"
     },
-    "Hoisin Sauce B": {
+    "Hoisin Sauce[B]": {
       "x": [20],
       "y": [10],
       "type": "decoration"
@@ -2151,37 +1711,37 @@
       "y": [11, 12],
       "type": "decoration"
     },
-    "Honey Sauce B": {
+    "Honey Sauce[B]": {
       "x": [20],
       "y": [13],
       "type": "decoration"
     },
-    "Yeast B": {
+    "Yeast[B]": {
       "x": [20],
       "y": [14],
       "type": "decoration"
     },
-    "Sugar Cones B": {
+    "Sugar Cones[B]": {
       "x": [20],
       "y": [15],
       "type": "decoration"
     },
-    "Sugar Stars B": {
+    "Sugar Stars[B]": {
       "x": [20],
       "y": [16],
       "type": "decoration"
     },
-    "Gummies B": {
+    "Gummies[B]": {
       "x": [20],
       "y": [17],
       "type": "decoration"
     },
-    "Fruit Snacks B": {
+    "Fruit Snacks[B]": {
       "x": [20],
       "y": [18],
       "type": "decoration"
     },
-    "Marinated Mushrooms B": {
+    "Marinated Mushrooms[B]": {
       "x": [20],
       "y": [19],
       "type": "decoration"
@@ -2266,37 +1826,37 @@
       "y": [19],
       "type": "decoration"
     },
-    "Low Fat Beans B": {
+    "Low Fat Beans[B]": {
       "x": [28],
       "y": [11, 12],
       "type": "decoration"
     },
-    "White Fungus Soda B": {
+    "White Fungus Soda[B]": {
       "x": [28],
       "y": [13],
       "type": "decoration"
     },
-    "Powdered Breakfast B": {
+    "Powdered Breakfast[B]": {
       "x": [28],
       "y": [14, 15],
       "type": "decoration"
     },
-    "Powdered Wine B": {
+    "Powdered Wine[B]": {
       "x": [28],
       "y": [16],
       "type": "decoration"
     },
-    "Canned Scrambled Eggs B": {
+    "Canned Scrambled Eggs[B]": {
       "x": [28],
       "y": [17],
       "type": "decoration"
     },
-    "Canned Fish B": {
+    "Canned Fish[B]": {
       "x": [28],
       "y": [18],
       "type": "decoration"
     },
-    "Canned Meals B": {
+    "Canned Meals[B]": {
       "x": [28],
       "y": [19],
       "type": "decoration"
