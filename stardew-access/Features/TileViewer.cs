@@ -174,6 +174,13 @@ namespace stardew_access.Features
             Vector2 position = this.GetTileCursorPosition();
             Vector2 tile = this.GetViewingTile();
             String? name = TileInfo.getNameAtTile(tile);
+
+            // Prepend the player's name if the viewing tile is occupied by the player itself
+            if (CurrentPlayer.PositionX == tile.X && CurrentPlayer.PositionY == tile.Y)
+            {
+                name = $"{Game1.player.displayName}, {name}";
+            }
+
             if (name == null)
             {
                 // Report if a tile is empty or blocked if there is nothing on it
