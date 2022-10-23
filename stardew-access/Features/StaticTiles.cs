@@ -45,7 +45,7 @@ namespace stardew_access.Features
 
             foreach (var location in data)
             {
-                if (!Game1.currentLocation.name.Value.ToLower().Equals(location.Key.ToLower()))
+                if (!Game1.currentLocation.Name.ToLower().Equals(location.Key.ToLower()))
                     continue;
 
                 if (location.Value != null)

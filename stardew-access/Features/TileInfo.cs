@@ -478,7 +478,7 @@ namespace stardew_access.Features
                         return (CATEGORY.Interactables, "Island Trader");
                 }
             }
-            else if (Game1.currentLocation.name.Value.ToLower().Equals("coop"))
+            else if (Game1.currentLocation.Name.ToLower().Equals("coop"))
             {
                 if (x >= 6 && x <= 9 && y == 3)
                 {
@@ -489,7 +489,7 @@ namespace stardew_access.Features
                         return (CATEGORY.Others, "Empty Feeding Bench");
                 }
             }
-            else if (Game1.currentLocation.name.Value.ToLower().Equals("big coop") || Game1.currentLocation.name.Value.ToLower().Equals("coop2"))
+            else if (Game1.currentLocation.Name.ToLower().Equals("big coop") || Game1.currentLocation.Name.ToLower().Equals("coop2"))
             {
                 if (x >= 6 && x <= 13 && y == 3)
                 {
@@ -500,7 +500,7 @@ namespace stardew_access.Features
                         return (CATEGORY.Others, "Empty Feeding Bench");
                 }
             }
-            else if (Game1.currentLocation.name.Value.ToLower().Equals("deluxe coop") || Game1.currentLocation.name.Value.ToLower().Equals("coop3"))
+            else if (Game1.currentLocation.Name.ToLower().Equals("deluxe coop") || Game1.currentLocation.Name.ToLower().Equals("coop3"))
             {
                 if (x >= 6 && x <= 17 && y == 3)
                 {
@@ -511,7 +511,7 @@ namespace stardew_access.Features
                         return (CATEGORY.Others, "Empty Feeding Bench");
                 }
             }
-            else if (Game1.currentLocation.name.Value.ToLower().Equals("barn"))
+            else if (Game1.currentLocation.Name.ToLower().Equals("barn"))
             {
                 if (x >= 8 && x <= 11 && y == 3)
                 {
@@ -522,7 +522,7 @@ namespace stardew_access.Features
                         return (CATEGORY.Others, "Empty Feeding Bench");
                 }
             }
-            else if (Game1.currentLocation.name.Value.ToLower().Equals("big barn") || Game1.currentLocation.name.Value.ToLower().Equals("barn2"))
+            else if (Game1.currentLocation.Name.ToLower().Equals("big barn") || Game1.currentLocation.Name.ToLower().Equals("barn2"))
             {
                 if (x >= 8 && x <= 15 && y == 3)
                 {
@@ -533,7 +533,7 @@ namespace stardew_access.Features
                         return (CATEGORY.Others, "Empty Feeding Bench");
                 }
             }
-            else if (Game1.currentLocation.name.Value.ToLower().Equals("deluxe barn") || Game1.currentLocation.name.Value.ToLower().Equals("barn3"))
+            else if (Game1.currentLocation.Name.ToLower().Equals("deluxe barn") || Game1.currentLocation.Name.ToLower().Equals("barn3"))
             {
                 if (x >= 8 && x <= 19 && y == 3)
                 {
