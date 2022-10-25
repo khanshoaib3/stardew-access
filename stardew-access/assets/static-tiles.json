@@ -1323,7 +1323,7 @@
     },
     "Shop Counter": {
       "x": [10],
-      "y": [23, 24, 25, 26],
+      "y": [24, 25],
       "type": "interactable"
     },
     "Salt": {
@@ -2655,7 +2655,7 @@
     "Sewer": {
       "x": [34, 35],
       "y": [95, 96],
-      "type": "interactable"
+      "type": "door"
     },
     "Ice Cream Stand": {
       "x": [88],
@@ -2666,6 +2666,16 @@
       "x": [105, 106],
       "y": [79],
       "type": "interactable"
+    },
+    "Clinic Sign": {
+      "x": [37],
+      "y": [56],
+      "type": "decoration"
+    },
+    "General Store Sign": {
+      "x": [45],
+      "y": [56],
+      "type": "decoration"
     },
     "Faded Gravestone": {
       "x": [42],
@@ -2896,6 +2906,13 @@
       "x": [37],
       "y": [5],
       "type": "door"
+    }
+  },
+  "volcanodungeon5": {
+    "Dwarf Shop": {
+      "x": [36],
+      "y": [30],
+      "type": "interactable"
     }
   },
   "witchhut": {
