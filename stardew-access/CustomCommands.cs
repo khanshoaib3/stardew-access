@@ -11,6 +11,7 @@ namespace stardew_access
     {
         internal static void Initialize()
         {
+            //TODO organise this, create separate method for all commands
             IModHelper? helper = MainClass.ModHelper;
             if (helper == null)
                 return;
@@ -349,35 +350,7 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("buildlist", "List all buildings for selection for upgrading/demolishing/painting", (string commmand, string[] args) =>
             {
-                if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu && Game1.activeClickableMenu is not AnimalQueryMenu) || !BuildingNAnimalMenuPatches.isOnFarm)
-                {
-                    MainClass.InfoLog($"Cannot list buildings.");
-                    return;
-                }
-
-                string toPrint = "";
-                Farm farm = (Farm)Game1.getLocationFromName("Farm");
-                Netcode.NetCollection<Building> buildings = farm.buildings;
-                int buildingIndex = 0;
-
-                for (int i = 0; i < buildings.Count; i++)
-                {
-                    string? name = buildings[i].nameOfIndoorsWithoutUnique;
-                    name = (name == "null") ? buildings[i].buildingType.Value : name;
-
-                    BuildingNAnimalMenuPatches.availableBuildings[buildingIndex] = buildings[i];
-                    toPrint = $"{toPrint}\nIndex {buildingIndex}: {name}: At {buildings[i].tileX}x and {buildings[i].tileY}y";
-                    ++buildingIndex;
-                }
-
-                if (toPrint == "")
-                {
-                    MainClass.InfoLog("No appropriate buildings to list");
-                }
-                else
-                {
-                    MainClass.InfoLog($"Available buildings:{toPrint}\nOpen command menu and use pageup and pagedown to check the list");
-                }
+                onBuildListCalled();
             });
 
             helper.ConsoleCommands.Add("buildsel", "Select the building index which you want to upgrade/demolish/paint", (string commmand, string[] args) =>
@@ -530,6 +503,33 @@ namespace stardew_access
                 MainClass.InfoLog("TTS is " + (MainClass.Config.TTS ? "on" : "off"));
             });
             #endregion
+        }
+
+        internal static void onBuildListCalled()
+        {
+            string toPrint = "";
+            Farm farm = (Farm)Game1.getLocationFromName("Farm");
+            Netcode.NetCollection<Building> buildings = farm.buildings;
+            int buildingIndex = 0;
+
+            for (int i = 0; i < buildings.Count; i++)
+            {
+                string? name = buildings[i].nameOfIndoorsWithoutUnique;
+                name = (name == "null") ? buildings[i].buildingType.Value : name;
+
+                BuildingNAnimalMenuPatches.availableBuildings[buildingIndex] = buildings[i];
+                toPrint = $"{toPrint}\nIndex {buildingIndex}: {name}: At {buildings[i].tileX}x and {buildings[i].tileY}y";
+                ++buildingIndex;
+            }
+
+            if (toPrint == "")
+            {
+                MainClass.InfoLog("No appropriate buildings to list");
+            }
+            else
+            {
+                MainClass.InfoLog($"Available buildings:{toPrint}\nOpen command menu and use pageup and pagedown to check the list");
+            }
         }
     }
 }

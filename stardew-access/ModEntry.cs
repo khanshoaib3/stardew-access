@@ -14,6 +14,7 @@ namespace stardew_access
     {
         #region Global Vars & Properties
 #pragma warning disable CS8603
+        private static int prevDate = -99;
         private static ModConfig? config;
         private Harmony? harmony;
         private static IMonitor? monitor;
@@ -27,6 +28,7 @@ namespace stardew_access
 
         internal static ModConfig Config { get => config; set => config = value; }
         public static IModHelper? ModHelper { get => modHelper; }
+
         public static StaticTiles STiles
         {
             get
@@ -189,6 +191,16 @@ namespace stardew_access
                 isNarratingHudMessage = true;
                 Other.narrateHudMessages();
                 Task.Delay(300).ContinueWith(_ => { isNarratingHudMessage = false; });
+            }
+
+            if (Game1.player != null)
+            {
+                if (Game1.timeOfDay >= 600 && prevDate != CurrentPlayer.Date)
+                {
+                    prevDate = CurrentPlayer.Date;
+                    DebugLog("Refreshing buildlist...");
+                    CustomCommands.onBuildListCalled();
+                }
             }
         }
 
