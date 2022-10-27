@@ -544,6 +544,58 @@ namespace stardew_access.Features
                         return (CATEGORY.Others, "Empty Feeding Bench");
                 }
             }
+            else if (Game1.currentLocation is LibraryMuseum libraryMuseum)
+            {
+                foreach (KeyValuePair<Vector2, int> pair in libraryMuseum.museumPieces.Pairs)
+                {
+                    if (pair.Key.X == x && pair.Key.Y == y)
+                    {
+                        string displayName = Game1.objectInformation[pair.Value].Split('/')[0];
+                        return (CATEGORY.Interactables, $"{displayName} showcase");
+                    }
+                }
+
+                int booksFound = Game1.netWorldState.Value.LostBooksFound.Value;
+                for (int x1 = 0; x1 < libraryMuseum.map.Layers[0].LayerWidth; x1++)
+                {
+                    for (int y1 = 0; y1 < libraryMuseum.map.Layers[0].LayerHeight; y1++)
+                    {
+                        if (x != x1 && y != y1) continue;
+
+                        if (libraryMuseum.doesTileHaveProperty(x1, y1, "Action", "Buildings") != null && libraryMuseum.doesTileHaveProperty(x1, y1, "Action", "Buildings").Contains("Notes"))
+                        {
+                            int key = Convert.ToInt32(libraryMuseum.doesTileHaveProperty(x1, y1, "Action", "Buildings").Split(' ')[1]);
+                            xTile.Tiles.Tile tile = libraryMuseum.map.GetLayer("Buildings").PickTile(new xTile.Dimensions.Location(x * 64, y * 64), Game1.viewport.Size);
+                            string? action = null;
+                            try
+                            {
+                                tile.Properties.TryGetValue("Action", out xTile.ObjectModel.PropertyValue? value);
+                                if (value != null) action = value.ToString();
+                            }
+                            catch (System.Exception)
+                            {
+                                MainClass.ErrorLog($"Cannot get action value at x:{x} y:{y} in LibraryMuseum");
+                            }
+
+                            if (action != null)
+                            {
+                                string[] actionParams = action.Split(' ');
+                                int which = Convert.ToInt32(actionParams[1]);
+
+                                if (booksFound >= which)
+                                {
+                                    string message = Game1.content.LoadString("Strings\\Notes:" + which);
+                                    return (CATEGORY.Interactables, $"{message.Split('\n')[0]} Book");
+                                }
+                                else
+                                {
+                                    return (CATEGORY.Others, $"Lost Book");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             return (null, null);
         }
 
