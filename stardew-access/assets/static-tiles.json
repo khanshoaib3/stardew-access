@@ -766,6 +766,11 @@
       "y": [27],
       "type": "interactable"
     },
+    "Camel": {
+      "x": [38],
+      "y": [24],
+      "type": "npc"
+    },
     "Desert Trader": {
       "x": [42],
       "y": [23],
