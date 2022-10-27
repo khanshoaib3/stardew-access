@@ -23,6 +23,7 @@ namespace stardew_access
         public KeybindList ReadTileKey { get; set; } = KeybindList.Parse("J"); // Manually trigger read tile for the tile player is *looking at*.
         public KeybindList ReadStandingTileKey { get; set; } = KeybindList.Parse("LeftAlt + J"); // Manually trigger read tile for the tile player is *standing on*.
         public Boolean ReadFlooring { get; set; } = false; // Toggle reading floorings.
+        public Boolean WateredToggle { get; set; } = true; // Toggle speaking watered or unwatered for crops.
         #endregion
 
         #region Tile viewer
@@ -76,6 +77,8 @@ namespace stardew_access
         public KeybindList TimeNSeasonKey { get; set; } = KeybindList.Parse("Q"); // Narrate the time of day, day and date and season
         public Boolean VerboseCoordinates { get; set; } = true;
         public Boolean SnapMouse { get; set; } = true; // Toggles the snap mouse feature
+        public Boolean Warning { get; set; } = true; // Toggles the warnings feature
+        public Boolean TTS { get; set; } = true; // Toggles the screen reader/tts.
         // TODO add command to toggle warning feature
         #endregion
 

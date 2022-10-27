@@ -136,7 +136,14 @@ namespace stardew_access.Patches
                         if (__instance.inventory.actualInventory[i] == null)
                             toSpeak = "Empty slot";
                         else
+                        {
                             toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
+
+                            if (!__instance.inventory.highlightMethod(__instance.inventory.actualInventory[i]))
+                            {
+                                toSpeak = $"{toSpeak} not usable here";
+                            }
+                        }
 
                         if (forgeMenuQuery != $"{toSpeak}:{i}")
                         {
@@ -296,7 +303,14 @@ namespace stardew_access.Patches
                         if (__instance.inventory.actualInventory[i] == null)
                             toSpeak = "Empty slot";
                         else
+                        {
                             toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
+
+                            if (!__instance.inventory.highlightMethod(__instance.inventory.actualInventory[i]))
+                            {
+                                toSpeak = $"{toSpeak} not usable here";
+                            }
+                        }
 
                         if (tailoringMenuQuery != $"{toSpeak}:{i}")
                         {
@@ -458,7 +472,7 @@ namespace stardew_access.Patches
             {
                 string toSpeak = "";
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                bool isEnterPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter); // For escaping/unselecting from the animal name text box
+                bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
 
                 if (firstTimeInNamingMenu)
                 {
@@ -471,7 +485,7 @@ namespace stardew_access.Patches
                     ___textBox.Update();
                     toSpeak = ___textBox.Text;
 
-                    if (isEnterPressed)
+                    if (isEscPressed)
                     {
                         ___textBox.Selected = false;
                     }

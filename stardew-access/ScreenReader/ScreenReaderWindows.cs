@@ -1,10 +1,10 @@
-﻿using AccessibleOutput;
+﻿using DavyKager;
 
 namespace stardew_access.ScreenReader
 {
     public class ScreenReaderWindows : IScreenReader
     {
-        public IAccessibleOutput? screenReader = null;
+        private bool isLoaded = false;
         public string prevText = "", prevTextTile = " ", prevChatText = "", prevMenuText = "";
 
         public string PrevTextTile
@@ -15,43 +15,30 @@ namespace stardew_access.ScreenReader
 
         public void InitializeScreenReader()
         {
+            MainClass.InfoLog("Initializing Tolk...");
+            Tolk.Load();
 
-            NvdaOutput? nvdaOutput = null;
-            JawsOutput? jawsOutput = null;
-            SapiOutput? sapiOutput = null;
-
-            // Initialize NVDA
-            try
+            MainClass.InfoLog("Querying for the active screen reader driver...");
+            string name = Tolk.DetectScreenReader();
+            if (name != null)
             {
-                nvdaOutput = new NvdaOutput();
+                MainClass.InfoLog($"The active screen reader driver is: {name}");
+                isLoaded = true;
             }
-            catch (Exception) { }
-
-            // Initialize JAWS
-            try
+            else
             {
-                jawsOutput = new JawsOutput();
+                MainClass.ErrorLog("None of the supported screen readers is running");
+                isLoaded = false;
             }
-            catch (Exception) { }
-
-            // Initialize SAPI
-            try
-            {
-                sapiOutput = new SapiOutput();
-            }
-            catch (Exception) { }
-
-            if (nvdaOutput != null && nvdaOutput.IsAvailable())
-                screenReader = nvdaOutput;
-            else if (jawsOutput != null && jawsOutput.IsAvailable())
-                screenReader = jawsOutput;
-            else if (sapiOutput != null && sapiOutput.IsAvailable())
-                screenReader = sapiOutput;
         }
 
         public void CloseScreenReader()
         {
-
+            if (isLoaded)
+            {
+                Tolk.Unload();
+                isLoaded = false;
+            }
         }
 
         public void Say(string text, bool interrupt)
@@ -59,10 +46,22 @@ namespace stardew_access.ScreenReader
             if (text == null)
                 return;
 
-            if (screenReader == null)
+            if (!isLoaded)
                 return;
 
-            screenReader.Speak(text, interrupt);
+            if (!MainClass.Config.TTS)
+                return;
+
+            if (text.Contains('^')) text = text.Replace('^', '\n');
+
+            if (Tolk.Output("Hello, World!"))
+            {
+                MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
+            }
+            else
+            {
+                MainClass.ErrorLog($"Failed to output text: {text}");
+            }
         }
 
         public void SayWithChecker(string text, bool interrupt)

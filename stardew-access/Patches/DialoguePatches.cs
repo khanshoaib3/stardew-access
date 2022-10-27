@@ -340,7 +340,6 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
@@ -408,6 +407,21 @@ namespace stardew_access.Patches
                 MainClass.ScreenReader.SayWithChecker($"Next page button", false);
 
             #endregion
+        }
+
+        internal static void drawAboveAlwaysFrontLayerPatch(NPC __instance, string ___textAboveHead, int ___textAboveHeadTimer)
+        {
+            try
+            {
+                if (___textAboveHeadTimer > 2900 && ___textAboveHead != null)
+                {
+                    MainClass.ScreenReader.SayWithChecker($"{__instance.displayName} says {___textAboveHead}", true);
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.ErrorLog($"Error in patch:NPCShowTextAboveHeadPatch \n{e.Message}\n{e.StackTrace}");
+            }
         }
     }
 }

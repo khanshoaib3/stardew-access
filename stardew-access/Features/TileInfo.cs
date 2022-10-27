@@ -478,6 +478,72 @@ namespace stardew_access.Features
                         return (CATEGORY.Interactables, "Island Trader");
                 }
             }
+            else if (Game1.currentLocation.Name.ToLower().Equals("coop"))
+            {
+                if (x >= 6 && x <= 9 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("big coop") || Game1.currentLocation.Name.ToLower().Equals("coop2"))
+            {
+                if (x >= 6 && x <= 13 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("deluxe coop") || Game1.currentLocation.Name.ToLower().Equals("coop3"))
+            {
+                if (x >= 6 && x <= 17 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("barn"))
+            {
+                if (x >= 8 && x <= 11 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("big barn") || Game1.currentLocation.Name.ToLower().Equals("barn2"))
+            {
+                if (x >= 8 && x <= 15 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("deluxe barn") || Game1.currentLocation.Name.ToLower().Equals("barn3"))
+            {
+                if (x >= 8 && x <= 19 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
             return (null, null);
         }
 
@@ -543,8 +609,9 @@ namespace stardew_access.Features
         /// Returns the detail about the HoeDirt i.e. soil, plant, etc.
         /// </summary>
         /// <param name="dirt">The HoeDirt to be checked</param>
+        /// <param name="ignoreIfEmpty">Ignores returning `soil` if empty</param>
         /// <returns>The details about the given HoeDirt</returns>
-        public static string getHoeDirtDetail(HoeDirt dirt)
+        public static string getHoeDirtDetail(HoeDirt dirt, bool ignoreIfEmpty = false)
         {
             string detail;
 
@@ -557,8 +624,10 @@ namespace stardew_access.Features
                 bool isHarvestable = dirt.readyForHarvest();
                 bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
 
-                if (isWatered)
+                if (isWatered && MainClass.Config.WateredToggle)
                     detail = "Watered " + detail;
+                else if (!isWatered && !MainClass.Config.WateredToggle)
+                    detail = "Unwatered " + detail;
 
                 if (isFertilized)
                     detail = "Fertilized " + detail;
@@ -580,12 +649,14 @@ namespace stardew_access.Features
             }
             else
             {
-                detail = "Soil";
+                detail = (ignoreIfEmpty) ? "" : "Soil";
                 bool isWatered = dirt.state.Value == HoeDirt.watered;
                 bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
 
-                if (isWatered)
+                if (isWatered && MainClass.Config.WateredToggle)
                     detail = "Watered " + detail;
+                else if (!isWatered && !MainClass.Config.WateredToggle)
+                    detail = "Unwatered " + detail;
 
                 if (isFertilized)
                     detail = "Fertilized " + detail;
@@ -684,37 +755,27 @@ namespace stardew_access.Features
             (string? name, CATEGORY category) toReturn = (null, CATEGORY.Others);
 
             StardewValley.Object obj = Game1.currentLocation.getObjectAtTile(x, y);
+            if (obj == null) return toReturn;
+
             int index = obj.ParentSheetIndex;
             toReturn.name = obj.DisplayName;
 
             // Get object names based on index
             (string? name, CATEGORY category) correctNameAndCategory = getCorrectNameAndCategoryFromIndex(index, obj.Name);
 
-            if (correctNameAndCategory.name != null)
-                toReturn = correctNameAndCategory;
-            else if (obj.name.ToLower().Equals("stone"))
-                toReturn.category = CATEGORY.Debris;
-            else if (obj.name.ToLower().Equals("twig"))
-                toReturn.category = CATEGORY.Debris;
-            else if (obj.name.ToLower().Contains("quartz"))
-                toReturn.category = CATEGORY.MineItems;
-            else if (obj.name.ToLower().Contains("earth crystal"))
-                toReturn.category = CATEGORY.MineItems;
-            else if (obj.name.ToLower().Contains("frozen tear"))
-                toReturn.category = CATEGORY.MineItems;
-            else if (obj is Chest)
+            if (obj is Chest)
             {
                 Chest chest = (Chest)obj;
                 toReturn = (chest.DisplayName, CATEGORY.Chests);
             }
             else if (obj is IndoorPot indoorPot)
             {
-                toReturn.name = $"{obj.DisplayName}, {getHoeDirtDetail(indoorPot.hoeDirt)}";
+                toReturn.name = $"{obj.DisplayName}, {getHoeDirtDetail(indoorPot.hoeDirt, true)}";
             }
             else if (obj is Sign sign)
             {
                 if (sign.displayItem.Value != null)
-                    toReturn.name = $"{obj.DisplayName}, {sign.displayItem.Value.DisplayName}";
+                    toReturn.name = $"{sign.DisplayName}, {sign.displayItem.Value.DisplayName}";
             }
             else if (obj is Furniture furniture)
             {
@@ -753,6 +814,18 @@ namespace stardew_access.Features
                     }
                 }
             }
+            else if (correctNameAndCategory.name != null)
+                toReturn = correctNameAndCategory;
+            else if (obj.name.ToLower().Equals("stone"))
+                toReturn.category = CATEGORY.Debris;
+            else if (obj.name.ToLower().Equals("twig"))
+                toReturn.category = CATEGORY.Debris;
+            else if (obj.name.ToLower().Contains("quartz"))
+                toReturn.category = CATEGORY.MineItems;
+            else if (obj.name.ToLower().Contains("earth crystal"))
+                toReturn.category = CATEGORY.MineItems;
+            else if (obj.name.ToLower().Contains("frozen tear"))
+                toReturn.category = CATEGORY.MineItems;
 
             if (toReturn.category == CATEGORY.Machines) // Fix for `Harvestable table` and `Busy nodes`
             {

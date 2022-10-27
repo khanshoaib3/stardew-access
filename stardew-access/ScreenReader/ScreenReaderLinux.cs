@@ -41,10 +41,16 @@ namespace stardew_access.ScreenReader
 
         public void InitializeScreenReader()
         {
+            MainClass.InfoLog("Initializing speech dispatcher...");
             int res = Initialize();
             if (res == 1)
             {
                 initialized = true;
+                MainClass.InfoLog("Successfully initialized.");
+            }
+            else
+            {
+                MainClass.ErrorLog("Unable to initialize.");
             }
         }
 
@@ -62,10 +68,24 @@ namespace stardew_access.ScreenReader
             if (text == null)
                 return;
 
-            if (initialized)
+            if (!initialized)
+                return;
+
+            if (!MainClass.Config.TTS)
+                return;
+
+            if (text.Contains('^')) text = text.Replace('^', '\n');
+
+            GoString str = new GoString(text, text.Length);
+            int re = Speak(str, interrupt);
+
+            if (re == 1)
             {
-                GoString str = new GoString(text, text.Length);
-                Speak(str, interrupt);
+                MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
+            }
+            else
+            {
+                MainClass.ErrorLog($"Failed to output text: {text}");
             }
         }
 

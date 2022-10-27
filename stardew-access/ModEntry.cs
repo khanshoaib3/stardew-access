@@ -114,6 +114,7 @@ namespace stardew_access
             Game1.options.setGamepadMode("force_on");
 
             ScreenReader = new ScreenReaderController().Initialize();
+            ScreenReader.Say("Initializing Stardew Access", true);
 
             CustomSoundEffects.Initialize();
 
@@ -168,9 +169,11 @@ namespace stardew_access
             //handle TileCursor update logic
             TileViewerFeature.update();
 
-            WarningsFeature.update();
+            if (Config.Warning)
+                WarningsFeature.update();
 
-            ReadTileFeature.update();
+            if (Config.ReadTile)
+                ReadTileFeature.update();
 
             if (!RadarFeature.isRunning && Config.Radar)
             {
@@ -342,6 +345,14 @@ namespace stardew_access
                 return;
 
             monitor.Log(message, LogLevel.Error);
+        }
+
+        public static void InfoLog(string message)
+        {
+            if (monitor == null)
+                return;
+
+            monitor.Log(message, LogLevel.Info);
         }
 
         public static void DebugLog(string message)

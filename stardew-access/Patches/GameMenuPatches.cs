@@ -241,7 +241,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, hoverPrice: __instance.hoverPrice))
+                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, hoverPrice: __instance.hoverPrice))
                 {
                     shopMenuQueryKey = "";
                     return;
@@ -396,7 +396,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                     geodeMenuQueryKey = "";
                 #endregion
             }
@@ -573,14 +573,14 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
                     gameMenuQueryKey = "";
                     itemGrabMenuQueryKey = "";
                     return;
                 }
 
-                if (narrateHoveredItemInInventory(__instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
+                if (narrateHoveredItemInInventory(__instance.ItemsToGrabMenu, __instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
                 {
                     gameMenuQueryKey = "";
                     itemGrabMenuQueryKey = "";
@@ -855,7 +855,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                 {
                     gameMenuQueryKey = "";
                     craftingPageQueryKey = "";
@@ -917,7 +917,6 @@ namespace stardew_access.Patches
                         MainClass.ScreenReader.Say(toSpeak, true);
                         Game1.playSound("drop_item");
                     }
-                    return;
                 }
 
                 if (__instance.organizeButton != null && __instance.organizeButton.containsPoint(x, y))
@@ -930,7 +929,6 @@ namespace stardew_access.Patches
                         hoveredItemQueryKey = "";
                         MainClass.ScreenReader.Say(toSpeak, true);
                     }
-                    return;
                 }
 
                 if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
@@ -943,7 +941,6 @@ namespace stardew_access.Patches
                         hoveredItemQueryKey = "";
                         MainClass.ScreenReader.Say(toSpeak, true);
                     }
-                    return;
                 }
 
                 if (__instance.organizeButton != null && __instance.organizeButton.containsPoint(x, y))
@@ -956,7 +953,6 @@ namespace stardew_access.Patches
                         hoveredItemQueryKey = "";
                         MainClass.ScreenReader.Say(toSpeak, true);
                     }
-                    return;
                 }
 
                 if (__instance.junimoNoteIcon != null && __instance.junimoNoteIcon.containsPoint(x, y))
@@ -970,7 +966,6 @@ namespace stardew_access.Patches
                         hoveredItemQueryKey = "";
                         MainClass.ScreenReader.Say(toSpeak, true);
                     }
-                    return;
                 }
                 #endregion
 
@@ -1066,19 +1061,44 @@ namespace stardew_access.Patches
                             hoveredItemQueryKey = "";
                             MainClass.ScreenReader.Say(toSpeak, true);
                         }
-                        return;
                     }
                 }
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
                     gameMenuQueryKey = "";
                     inventoryPageQueryKey = "";
-                    return;
                 }
                 #endregion
+
+                if (MainClass.Config.MoneyKey.JustPressed())
+                {
+                    string farmName = Game1.content.LoadString("Strings\\UI:Inventory_FarmName", Game1.player.farmName.Value);
+                    string currentFunds = Game1.content.LoadString("Strings\\UI:Inventory_CurrentFunds" + (Game1.player.useSeparateWallets ? "_Separate" : ""), Utility.getNumberWithCommas(Game1.player.Money));
+                    string totalEarnings = Game1.content.LoadString("Strings\\UI:Inventory_TotalEarnings" + (Game1.player.useSeparateWallets ? "_Separate" : ""), Utility.getNumberWithCommas((int)Game1.player.totalMoneyEarned));
+                    int festivalScore = Game1.player.festivalScore;
+                    int walnut = Game1.netWorldState.Value.GoldenWalnuts.Value;
+                    int qiGems = Game1.player.QiGems;
+                    int qiCoins = Game1.player.clubCoins;
+
+                    string toSpeak = $"{farmName}\n{currentFunds}\n{totalEarnings}";
+
+                    if (festivalScore > 0)
+                        toSpeak = $"{toSpeak}\nFestival Score: {festivalScore}";
+
+                    if (walnut > 0)
+                        toSpeak = $"{toSpeak}\nGolden Walnut: {walnut}";
+
+                    if (qiGems > 0)
+                        toSpeak = $"{toSpeak}\nQi Gems: {qiGems}";
+
+                    if (qiCoins > 0)
+                        toSpeak = $"{toSpeak}\nQi Club Coins: {qiCoins}";
+
+                    MainClass.ScreenReader.Say(toSpeak, true);
+                }
             }
             catch (Exception e)
             {
@@ -1174,7 +1194,7 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static bool narrateHoveredItemInInventory(List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y, bool giveExtraDetails = false, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1)
+        internal static bool narrateHoveredItemInInventory(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y, bool giveExtraDetails = false, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1)
         {
             #region Narrate hovered item
             for (int i = 0; i < inventory.Count; i++)
@@ -1270,6 +1290,11 @@ namespace stardew_access.Patches
                             if (hoverPrice != -1)
                             {
                                 price = $"Sell Price: {hoverPrice} g";
+                            }
+
+                            if (!inventoryMenu.highlightMethod(actualInventory[i]))
+                            {
+                                name = $"{name} not usable here";
                             }
 
                             if (giveExtraDetails)
