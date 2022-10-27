@@ -26,7 +26,16 @@ namespace stardew_access.Features
 
             foreach (var location in data)
             {
-                if (locationName.ToLower().Equals(location.Key.ToLower()))
+                if (location.Key.Contains("||") && MainClass.ModHelper != null)
+                {
+                    string uniqueModID = location.Key.Substring(location.Key.LastIndexOf("||") + 2);
+                    string locationNameInJson = location.Key.Remove(location.Key.LastIndexOf("||"));
+                    bool isLoaded = MainClass.ModHelper.ModRegistry.IsLoaded(uniqueModID);
+
+                    if (!isLoaded) continue; // Skip if the specified mod is not loaded
+                    if (locationName.ToLower().Equals(locationNameInJson.ToLower())) return true;
+                }
+                else if (locationName.ToLower().Equals(location.Key.ToLower()))
                     return true;
             }
 
@@ -45,8 +54,35 @@ namespace stardew_access.Features
 
             foreach (var location in data)
             {
-                if (!Game1.currentLocation.Name.ToLower().Equals(location.Key.ToLower()))
-                    continue;
+                if (location.Key.Contains("||") && MainClass.ModHelper != null)
+                {
+                    //                      Mod Specific Tiles
+                    // We can add tiles that only get detected when the specified mod is loaded.
+                    // Syntax: <location name>||<Mod's unique id, look into the mod's manifest.json for unique id>
+                    // Example: THe following tile will only be detected if Stardew Valley Expanded mod is installed
+                    //              {
+                    //                  .
+                    //                  .
+                    //                  .
+                    //                  "Town||FlashShifter.StardewValleyExpandedCP":{
+                    //                      "<Tile Name>":{
+                    //                          "x": [<x location(s)>],
+                    //                          "y": [<y location(s)>],
+                    //                          "type": "<Category name>"
+                    //                      }
+                    //                  },
+                    //                  .
+                    //                  .
+                    //                  .
+                    //              }
+                    string uniqueModID = location.Key.Substring(location.Key.LastIndexOf("||") + 2);
+                    string locationName = location.Key.Remove(location.Key.LastIndexOf("||"));
+                    bool isLoaded = MainClass.ModHelper.ModRegistry.IsLoaded(uniqueModID);
+
+                    if (!isLoaded) continue; // Skip if the specified mod is not loaded
+                    if (!Game1.currentLocation.Name.ToLower().Equals(locationName.ToLower())) continue;
+                }
+                else if (!Game1.currentLocation.Name.ToLower().Equals(location.Key.ToLower())) continue;
 
                 if (location.Value != null)
                     foreach (var tile in ((JObject)location.Value))
