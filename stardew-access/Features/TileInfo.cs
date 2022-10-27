@@ -770,7 +770,7 @@ namespace stardew_access.Features
             }
             else if (obj is IndoorPot indoorPot)
             {
-                toReturn.name = $"{obj.DisplayName}, {getHoeDirtDetail(indoorPot.hoeDirt, true)}";
+                toReturn.name = $"{obj.DisplayName}, {getHoeDirtDetail(indoorPot.hoeDirt.Value, true)}";
             }
             else if (obj is Sign sign)
             {

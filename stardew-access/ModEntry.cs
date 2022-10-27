@@ -13,6 +13,7 @@ namespace stardew_access
     public class MainClass : Mod
     {
         #region Global Vars & Properties
+#pragma warning disable CS8603
         private static ModConfig? config;
         private Harmony? harmony;
         private static IMonitor? monitor;
@@ -96,6 +97,7 @@ namespace stardew_access
                 return warnings;
             }
         }
+#pragma warning restore CS8603
         #endregion
 
         /*********
