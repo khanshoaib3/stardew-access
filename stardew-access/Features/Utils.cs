@@ -59,6 +59,8 @@ namespace stardew_access.Features
                 return CATEGORY.Machines;
             else if (name == "bridge")
                 return CATEGORY.Bridges;
+            else if (name == "dropped item")
+                return CATEGORY.DroppedItems;
             else if (name == "other")
                 return CATEGORY.Others;
 
@@ -85,6 +87,7 @@ namespace stardew_access.Features
         public static CATEGORY Decor = new CATEGORY("decoration");
         public static CATEGORY Machines = new CATEGORY("machine");
         public static CATEGORY Bridges = new CATEGORY("bridge");
+        public static CATEGORY DroppedItems = new CATEGORY("dropped item");
         public static CATEGORY Others = new CATEGORY("other");
 
     }

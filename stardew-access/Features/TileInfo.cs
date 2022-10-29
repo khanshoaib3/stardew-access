@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Netcode;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
@@ -147,6 +148,27 @@ namespace stardew_access.Features
                 toReturn = junimoBundle;
                 category = CATEGORY.JunimoBundle;
             }
+
+            #region Track dropped items
+            NetCollection<Debris> droppedItems = Game1.currentLocation.debris;
+            if (droppedItems.Count() > 0)
+            {
+                foreach (var item in droppedItems)
+                {
+                    int xPos = ((int)item.Chunks[0].position.Value.X / Game1.tileSize) + 1;
+                    int yPos = ((int)item.Chunks[0].position.Value.Y / Game1.tileSize) + 1;
+                    if (xPos != x || yPos != y) continue;
+
+                    string name = item.item.DisplayName;
+                    int count = item.item.Stack;
+
+                    if (toReturn == "")
+                        return ($"Dropped Item: {count} {name}", CATEGORY.DroppedItems);
+                    else
+                        toReturn = $"{toReturn}, Dropped Item: {count} {name}";
+                }
+            }
+            #endregion
 
             if (toReturn == "")
                 return (null, category);
