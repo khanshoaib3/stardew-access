@@ -57,7 +57,7 @@ namespace stardew_access.Features
              * exclusions.Add("building");
              * exclusions.Add("resource clump");
              * exclusions.Add("mine item");
-             * exclusions.Add("chest"); 
+             * exclusions.Add("container"); 
              * exclusions.Add("bundle"); 
              * exclusions.Add("door"); 
              * exclusions.Add("machine"); 
@@ -362,7 +362,7 @@ namespace stardew_access.Features
                 soundName = $"obj{soundName}";
             else if (category == CATEGORY.MineItems) // Mine items
                 soundName = $"obj{soundName}";
-            else if (category == CATEGORY.Chests) // Chests
+            else if (category == CATEGORY.Containers) // Chests
                 soundName = $"obj{soundName}";
             else if (category == CATEGORY.Debris) // Grass and debris
                 soundName = $"obj{soundName}";

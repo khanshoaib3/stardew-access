@@ -589,7 +589,7 @@
     "Rare Chest": {
       "x": [25],
       "y": [28],
-      "type": "chest"
+      "type": "container"
     },
     "Forge": {
       "x": [23],

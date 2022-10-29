@@ -467,7 +467,7 @@ namespace stardew_access.Features
             else if (Game1.currentLocation is CommunityCenter communityCenter)
             {
                 if (communityCenter.missedRewardsChestVisible.Value && x == 22 && y == 10)
-                    return (CATEGORY.Chests, "Missed Rewards Chest");
+                    return (CATEGORY.Containers, "Missed Rewards Chest");
             }
             else if (Game1.currentLocation is BoatTunnel)
             {
@@ -840,7 +840,7 @@ namespace stardew_access.Features
             if (obj is Chest)
             {
                 Chest chest = (Chest)obj;
-                toReturn = (chest.DisplayName, CATEGORY.Chests);
+                toReturn = (chest.DisplayName, CATEGORY.Containers);
             }
             else if (obj is IndoorPot indoorPot)
             {

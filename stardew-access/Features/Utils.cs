@@ -43,8 +43,8 @@ namespace stardew_access.Features
                 return CATEGORY.MineItems;
             else if (name == "resource clump")
                 return CATEGORY.ResourceClumps;
-            else if (name == "chest")
-                return CATEGORY.Chests;
+            else if (name == "container")
+                return CATEGORY.Containers;
             else if (name == "bundle")
                 return CATEGORY.JunimoBundle;
             else if (name == "door")
@@ -79,7 +79,7 @@ namespace stardew_access.Features
         public static CATEGORY Buildings = new CATEGORY("building");
         public static CATEGORY MineItems = new CATEGORY("mine item");
         public static CATEGORY ResourceClumps = new CATEGORY("resource clump");
-        public static CATEGORY Chests = new CATEGORY("chest");
+        public static CATEGORY Containers = new CATEGORY("container");
         public static CATEGORY JunimoBundle = new CATEGORY("bundle");
         public static CATEGORY Doors = new CATEGORY("door"); // Also includes ladders and elevators
         public static CATEGORY WaterTiles = new CATEGORY("water");
