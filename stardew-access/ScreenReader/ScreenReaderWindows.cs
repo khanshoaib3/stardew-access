@@ -54,7 +54,7 @@ namespace stardew_access.ScreenReader
 
             if (text.Contains('^')) text = text.Replace('^', '\n');
 
-            if (Tolk.Output("Hello, World!"))
+            if (Tolk.Output(text, interrupt))
             {
                 MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
             }
