@@ -582,7 +582,7 @@ namespace stardew_access.Features
                 {
                     for (int y1 = 0; y1 < libraryMuseum.map.Layers[0].LayerHeight; y1++)
                     {
-                        if (x != x1 && y != y1) continue;
+                        if (x != x1 || y != y1) continue;
 
                         if (libraryMuseum.doesTileHaveProperty(x1, y1, "Action", "Buildings") != null && libraryMuseum.doesTileHaveProperty(x1, y1, "Action", "Buildings").Contains("Notes"))
                         {
@@ -594,25 +594,31 @@ namespace stardew_access.Features
                                 tile.Properties.TryGetValue("Action", out xTile.ObjectModel.PropertyValue? value);
                                 if (value != null) action = value.ToString();
                             }
-                            catch (System.Exception)
+                            catch (System.Exception e)
                             {
                                 MainClass.ErrorLog($"Cannot get action value at x:{x} y:{y} in LibraryMuseum");
+                                MainClass.ErrorLog(e.Message);
                             }
 
                             if (action != null)
                             {
                                 string[] actionParams = action.Split(' ');
-                                int which = Convert.ToInt32(actionParams[1]);
 
-                                if (booksFound >= which)
+                                try
                                 {
-                                    string message = Game1.content.LoadString("Strings\\Notes:" + which);
-                                    return (CATEGORY.Interactables, $"{message.Split('\n')[0]} Book");
+                                    int which = Convert.ToInt32(actionParams[1]);
+                                    if (booksFound >= which)
+                                    {
+                                        string message = Game1.content.LoadString("Strings\\Notes:" + which);
+                                        return (CATEGORY.Interactables, $"{message.Split('\n')[0]} Book");
+                                    }
                                 }
-                                else
+                                catch (System.Exception e)
                                 {
-                                    return (CATEGORY.Others, $"Lost Book");
+                                    MainClass.ErrorLog(e.Message);
                                 }
+
+                                return (CATEGORY.Others, $"Lost Book");
                             }
                         }
                     }

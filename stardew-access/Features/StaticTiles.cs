@@ -48,8 +48,8 @@ namespace stardew_access.Features
         {
             List<JObject> allData = new List<JObject>();
 
-            if (staticTilesData != null) allData.Add(staticTilesData);
             if (customTilesData != null) allData.Add(customTilesData);
+            if (staticTilesData != null) allData.Add(staticTilesData);
 
             foreach (JObject data in allData)
             {
@@ -81,8 +81,8 @@ namespace stardew_access.Features
         {
             List<JObject> allData = new List<JObject>();
 
-            if (staticTilesData != null) allData.Add(staticTilesData);
             if (customTilesData != null) allData.Add(customTilesData);
+            if (staticTilesData != null) allData.Add(staticTilesData);
 
             foreach (JObject data in allData)
             {
