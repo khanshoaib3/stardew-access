@@ -167,7 +167,7 @@
     "Gunther's Box": {
       "x": [6],
       "y": [9],
-      "type": "other"
+      "type": "container"
     },
     "Collection": {
       "x": [2],
@@ -464,7 +464,7 @@
     "Willy's Barrel": {
       "x": [37],
       "y": [33],
-      "type": "other"
+      "type": "container"
     }
   },
   "beachnightmarket": {
@@ -1936,7 +1936,7 @@
     "Evelyn's Stove": {
       "x": [3],
       "y": [16],
-      "type": "other"
+      "type": "container"
     }
   },
   "manorhouse": {
@@ -2165,12 +2165,12 @@
     "Empty Box": {
       "x": [45],
       "y": [40],
-      "type": "other"
+      "type": "container"
     },
     "Dumpster": {
       "x": [28, 29],
       "y": [36],
-      "type": "other"
+      "type": "container"
     },
     "Boulder": {
       "x": [11],
@@ -2227,7 +2227,7 @@
     "Gus's Fridge": {
       "x": [18],
       "y": [16],
-      "type": "other"
+      "type": "container"
     },
     "Gus's Room Door": {
       "x": [20],
@@ -2252,7 +2252,7 @@
     "Lockbox": {
       "x": [28],
       "y": [7],
-      "type": "other"
+      "type": "container"
     },
     "Barstool[1]": {
       "x": [7],
@@ -2349,7 +2349,7 @@
     "Toy Chest": {
       "x": [12],
       "y": [21],
-      "type": "other"
+      "type": "container"
     },
     "Sam's Room Door": {
       "x": [12],
@@ -2413,7 +2413,7 @@
     "Robin's Wood Pile": {
       "x": [11],
       "y": [19],
-      "type": "other"
+      "type": "container"
     },
     "Sebastian's Room Entrance": {
       "x": [12],
@@ -2705,47 +2705,47 @@
     "brown box": {
       "x": [100],
       "y": [66],
-      "type": "other"
+      "type": "container"
     },
     "Joja Mart Trash": {
       "x": [110],
       "y": [56],
-      "type": "interactable"
+      "type": "container"
     },
     "1 River Road Trash": {
       "x": [52],
       "y": [63],
-      "type": "interactable"
+      "type": "container"
     },
     "Stardew Saloon Trash": {
       "x": [47],
       "y": [70],
-      "type": "interactable"
+      "type": "container"
     },
     "Blacksmith Trash": {
       "x": [97],
       "y": [80],
-      "type": "interactable"
+      "type": "container"
     },
     "1 Willow Lane Trash": {
       "x": [13],
       "y": [86],
-      "type": "interactable"
+      "type": "container"
     },
     "Manor Trash": {
       "x": [56],
       "y": [86],
-      "type": "interactable"
+      "type": "container"
     },
     "2 Willow Lane Trash": {
       "x": [19],
       "y": [89],
-      "type": "interactable"
+      "type": "container"
     },
     "Museum Trash": {
       "x": [108],
       "y": [91],
-      "type": "interactable"
+      "type": "container"
     },
     "Bus Stop Entrance": {
       "x": [0],
@@ -2857,7 +2857,7 @@
     "Pam's Kitchen": {
       "x": [10],
       "y": [6],
-      "type": "other"
+      "type": "container"
     }
   },
   "trailer_big": {
@@ -2869,7 +2869,7 @@
     "Pam's Kitchen": {
       "x": [10],
       "y": [6],
-      "type": "other"
+      "type": "container"
     }
   },
   "tunnel": {
@@ -2878,10 +2878,10 @@
       "y": [7, 8, 9, 10, 11],
       "type": "door"
     },
-    "Safe Panel": {
+    "Safe": {
       "x": [17],
       "y": [6],
-      "type": "other"
+      "type": "container"
     }
   },
   "undergroundmine77377": {
