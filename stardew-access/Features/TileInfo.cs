@@ -40,6 +40,7 @@ namespace stardew_access.Features
             bool isColliding = isCollidingAtTile(x, y);
             var terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
             string? door = getDoorAtTile(x, y);
+            string? warp = getWarpPointAtTile(x, y);
             (CATEGORY? category, string? name) dynamicTile = getDynamicTilesInfo(x, y, lessInfo);
             string? junimoBundle = getJunimoBundleAt(x, y);
             string? resourceClump = getResourceClumpAtTile(x, y, lessInfo);
@@ -112,6 +113,11 @@ namespace stardew_access.Features
             {
                 toReturn = bush;
                 category = CATEGORY.Bush;
+            }
+            else if (warp != null)
+            {
+                toReturn = warp;
+                category = CATEGORY.Doors;
             }
             else if (door != null)
             {
@@ -1162,6 +1168,27 @@ namespace stardew_access.Features
             catch (Exception) { }
 
             return false;
+        }
+
+        public static string? getWarpPointAtTile(int x, int y)
+        {
+            try
+            {
+                if (Game1.currentLocation == null) return null;
+
+                foreach (Warp warpPoint in Game1.currentLocation.warps)
+                {
+                    if (warpPoint.X != x || warpPoint.Y != y) continue;
+
+                    return $"{warpPoint.TargetName} Entrance";
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.ErrorLog($"Error while detecting warp points.\n{e.Message}");
+            }
+
+            return null;
         }
 
         public static string? getDoorAtTile(int x, int y)
