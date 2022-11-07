@@ -79,7 +79,7 @@ namespace stardew_access
         public Boolean SnapMouse { get; set; } = true; // Toggles the snap mouse feature
         public Boolean Warning { get; set; } = true; // Toggles the warnings feature
         public Boolean TTS { get; set; } = true; // Toggles the screen reader/tts.
-        // TODO add command to toggle warning feature
+        public Boolean TrackDroppedItems {get; set;} = true; // Toggles detecting the dropped items.
         #endregion
 
         // TODO Add the exclusion and focus list too

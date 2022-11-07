@@ -150,22 +150,27 @@ namespace stardew_access.Features
             }
 
             #region Track dropped items
-            NetCollection<Debris> droppedItems = Game1.currentLocation.debris;
-            if (droppedItems.Count() > 0)
+            if (MainClass.Config.TrackDroppedItems)
             {
-                foreach (var item in droppedItems)
+                NetCollection<Debris> droppedItems = Game1.currentLocation.debris;
+                if (droppedItems.Count() > 0)
                 {
-                    int xPos = ((int)item.Chunks[0].position.Value.X / Game1.tileSize) + 1;
-                    int yPos = ((int)item.Chunks[0].position.Value.Y / Game1.tileSize) + 1;
-                    if (xPos != x || yPos != y) continue;
+                    foreach (var item in droppedItems)
+                    {
+                        int xPos = ((int)item.Chunks[0].position.Value.X / Game1.tileSize) + 1;
+                        int yPos = ((int)item.Chunks[0].position.Value.Y / Game1.tileSize) + 1;
+                        if (xPos != x || yPos != y) continue;
 
-                    string name = item.item.DisplayName;
-                    int count = item.item.Stack;
+                        if (item.item == null) continue;
 
-                    if (toReturn == "")
-                        return ($"Dropped Item: {count} {name}", CATEGORY.DroppedItems);
-                    else
-                        toReturn = $"{toReturn}, Dropped Item: {count} {name}";
+                        string name = item.item.DisplayName;
+                        int count = item.item.Stack;
+
+                        if (toReturn == "")
+                            return ($"Dropped Item: {count} {name}", CATEGORY.DroppedItems);
+                        else
+                            toReturn = $"{toReturn}, Dropped Item: {count} {name}";
+                    }
                 }
             }
             #endregion
