@@ -1,10 +1,5 @@
 {
   "adventureguild": {
-    "Exit": {
-      "x": [6],
-      "y": [19],
-      "type": "door"
-    },
     "Goals Board": {
       "x": [8],
       "y": [10],
@@ -57,11 +52,6 @@
     }
   },
   "animalshop": {
-    "Exit": {
-      "x": [13],
-      "y": [19],
-      "type": "door"
-    },
     "Shop Counter": {
       "x": [12, 13],
       "y": [15],
@@ -159,11 +149,6 @@
     }
   },
   "archaeologyhouse": {
-    "Exit": {
-      "x": [3],
-      "y": [14],
-      "type": "door"
-    },
     "Gunther's Box": {
       "x": [6],
       "y": [9],
@@ -290,38 +275,11 @@
       "type": "decoration"
     }
   },
-  "backwoods": {
-    "Mountain Entrance": {
-      "x": [49],
-      "y": [14],
-      "type": "door"
-    },
-    "Farm Entrance": {
-      "x": [14],
-      "y": [39],
-      "type": "door"
-    },
-    "Bus stop Entrance": {
-      "x": [49],
-      "y": [28, 29, 30, 31, 32],
-      "type": "door"
-    },
-    "Tunnel Entrance": {
-      "x": [23],
-      "y": [29, 30, 31],
-      "type": "door"
-    }
-  },
   "barn": {
     "Hay Hopper": {
       "x": [6],
       "y": [3],
       "type": "interactable"
-    },
-    "Exit": {
-      "x": [11],
-      "y": [14],
-      "type": "door"
     }
   },
   "barn2": {
@@ -329,11 +287,6 @@
       "x": [6],
       "y": [3],
       "type": "interactable"
-    },
-    "Exit": {
-      "x": [11],
-      "y": [14],
-      "type": "door"
     }
   },
   "big barn": {
@@ -341,11 +294,6 @@
       "x": [6],
       "y": [3],
       "type": "interactable"
-    },
-    "Exit": {
-      "x": [11],
-      "y": [14],
-      "type": "door"
     }
   },
   "barn3": {
@@ -353,11 +301,6 @@
       "x": [6],
       "y": [3],
       "type": "interactable"
-    },
-    "Exit": {
-      "x": [11],
-      "y": [14],
-      "type": "door"
     }
   },
   "deluxe barn": {
@@ -365,28 +308,11 @@
       "x": [6],
       "y": [3],
       "type": "interactable"
-    },
-    "Exit": {
-      "x": [11],
-      "y": [14],
-      "type": "door"
-    }
-  },
-  "bathhouse_entry": {
-    "Exit": {
-      "x": [5],
-      "y": [9],
-      "type": "door"
     }
   },
   "bathhouse_menslocker": {
     "Entry Room Door": {
       "x": [3],
-      "y": [27],
-      "type": "door"
-    },
-    "Pool Entrance": {
-      "x": [15],
       "y": [27],
       "type": "door"
     }
@@ -443,19 +369,9 @@
       "x": [13],
       "y": [27],
       "type": "door"
-    },
-    "Pool Entrance": {
-      "x": [2],
-      "y": [27],
-      "type": "door"
     }
   },
   "beach": {
-    "Town Entrance": {
-      "x": [38],
-      "y": [0],
-      "type": "door"
-    },
     "Beach Warp Statue": {
       "x": [20],
       "y": [4],
@@ -510,11 +426,6 @@
     }
   },
   "blacksmith": {
-    "Exit": {
-      "x": [5],
-      "y": [19],
-      "type": "door"
-    },
     "Shop Counter": {
       "x": [3],
       "y": [14],
@@ -551,13 +462,6 @@
       "type": "decoration"
     }
   },
-  "boattunnel": {
-    "Exit": {
-      "x": [6],
-      "y": [11],
-      "type": "door"
-    }
-  },
   "busstop": {
     "Ticket Machine": {
       "x": [7],
@@ -568,21 +472,6 @@
       "x": [4, 5],
       "y": [3],
       "type": "interactable"
-    },
-    "Farm Entrance": {
-      "x": [0],
-      "y": [23],
-      "type": "door"
-    },
-    "Town Entrance": {
-      "x": [34],
-      "y": [23],
-      "type": "door"
-    },
-    "Backwoods Entrance": {
-      "x": [0],
-      "y": [6, 7, 8, 9],
-      "type": "door"
     }
   },
   "caldera": {
@@ -595,30 +484,6 @@
       "x": [23],
       "y": [21],
       "type": "interactable"
-    },
-    "Volcano Dungeon 0 Entrance": {
-      "x": [11],
-      "y": [36],
-      "type": "door"
-    },
-    "Volcano Dungeon 9 Entrance": {
-      "x": [21],
-      "y": [39],
-      "type": "door"
-    }
-  },
-  "captainroom": {
-    "Exit": {
-      "x": [0],
-      "y": [5],
-      "type": "door"
-    }
-  },
-  "cellar": {
-    "Exit": {
-      "x": [3],
-      "y": [2],
-      "type": "door"
     }
   },
   "club": {
@@ -666,18 +531,6 @@
       "x": [3],
       "y": [4],
       "type": "interactable"
-    },
-    "Exit": {
-      "x": [8],
-      "y": [12],
-      "type": "door"
-    }
-  },
-  "communitycenter": {
-    "Exit": {
-      "x": [32],
-      "y": [23],
-      "type": "door"
     }
   },
   "coop": {
@@ -685,11 +538,6 @@
       "x": [3],
       "y": [3],
       "type": "interactable"
-    },
-    "Exit": {
-      "x": [2],
-      "y": [9],
-      "type": "door"
     }
   },
   "coop2": {
@@ -702,11 +550,6 @@
       "x": [2],
       "y": [3],
       "type": "machine"
-    },
-    "Exit": {
-      "x": [2],
-      "y": [9],
-      "type": "door"
     }
   },
   "big coop": {
@@ -719,11 +562,6 @@
       "x": [2],
       "y": [3],
       "type": "machine"
-    },
-    "Exit": {
-      "x": [2],
-      "y": [9],
-      "type": "door"
     }
   },
   "coop3": {
@@ -736,11 +574,6 @@
       "x": [2],
       "y": [3],
       "type": "machine"
-    },
-    "Exit": {
-      "x": [2],
-      "y": [9],
-      "type": "door"
     }
   },
   "deluxe coop": {
@@ -753,11 +586,6 @@
       "x": [2],
       "y": [3],
       "type": "machine"
-    },
-    "Exit": {
-      "x": [2],
-      "y": [9],
-      "type": "door"
     }
   },
   "desert": {
@@ -786,11 +614,6 @@
       "y": [11],
       "type": "interactable"
     },
-    "Skull Cavern Entrance": {
-      "x": [8],
-      "y": [6],
-      "type": "door"
-    },
     "Desert Warp Statue": {
       "x": [35],
       "y": [43],
@@ -808,11 +631,6 @@
     }
   },
   "elliotthouse": {
-    "Exit": {
-      "x": [3],
-      "y": [9],
-      "type": "door"
-    },
     "Piano Key 1": {
       "x": [7],
       "y": [4],
@@ -835,26 +653,6 @@
     }
   },
   "farm": {
-    "Bus Stop Entrance": {
-      "x": [79],
-      "y": [15, 16, 17, 18],
-      "type": "door"
-    },
-    "Backwoods Entrance": {
-      "x": [40, 41],
-      "y": [0],
-      "type": "door"
-    },
-    "Cindersap Forest Entrance": {
-      "x": [40, 41],
-      "y": [64],
-      "type": "door"
-    },
-    "Farm Cave Entrance": {
-      "x": [34],
-      "y": [7],
-      "type": "door"
-    },
     "Grandpa's Shrine": {
       "x": [8],
       "y": [7],
@@ -866,36 +664,14 @@
       "type": "decoration"
     }
   },
-  "farmcave": {
-    "Exit": {
-      "x": [8],
-      "y": [11],
-      "type": "door"
-    }
-  },
   "fishshop": {
     "Shop Counter": {
       "x": [4, 5, 6],
       "y": [5],
       "type": "interactable"
-    },
-    "Exit": {
-      "x": [5],
-      "y": [9],
-      "type": "door"
     }
   },
   "forest": {
-    "Farm Entrance": {
-      "x": [68],
-      "y": [0],
-      "type": "door"
-    },
-    "Town Entrance": {
-      "x": [119],
-      "y": [25],
-      "type": "door"
-    },
     "Bridge 1": {
       "x": [77, 82],
       "y": [49],
@@ -928,11 +704,6 @@
     }
   },
   "greenhouse": {
-    "Exit": {
-      "x": [10],
-      "y": [23],
-      "type": "door"
-    },
     "Water Trough": {
       "x": [9, 10],
       "y": [7],
@@ -940,11 +711,6 @@
     }
   },
   "haleyhouse": {
-    "Exit": {
-      "x": [2],
-      "y": [24],
-      "type": "door"
-    },
     "Sewing Machine": {
       "x": [12, 13],
       "y": [23],
@@ -1007,11 +773,6 @@
     }
   },
   "harveyroom": {
-    "Exit": {
-      "x": [6],
-      "y": [12],
-      "type": "door"
-    },
     "Fridge": {
       "x": [21],
       "y": [6],
@@ -1039,21 +800,6 @@
     }
   },
   "hospital": {
-    "Exit": {
-      "x": [10],
-      "y": [19],
-      "type": "door"
-    },
-    "Harvey's Room Entrance": {
-      "x": [10],
-      "y": [2],
-      "type": "door"
-    },
-    "Harvey's Room Entrance Door": {
-      "x": [10],
-      "y": [5],
-      "type": "door"
-    },
     "Main Area Door": {
       "x": [10],
       "y": [13],
@@ -1075,29 +821,9 @@
       "x": [28],
       "y": [27],
       "type": "interactable"
-    },
-    "Island Hut Entrance": {
-      "x": [22],
-      "y": [10],
-      "type": "door"
-    },
-    "Island South Entrance": {
-      "x": [0],
-      "y": [46],
-      "type": "door"
-    },
-    "Island Shrine Entrance": {
-      "x": [32],
-      "y": [30],
-      "type": "door"
     }
   },
   "islandfarmcave": {
-    "Exit": {
-      "x": [4],
-      "y": [10],
-      "type": "door"
-    },
     "Gourmand Frog": {
       "x": [5],
       "y": [4],
@@ -1105,11 +831,6 @@
     }
   },
   "islandfieldoffice": {
-    "Exit": {
-      "x": [4],
-      "y": [10],
-      "type": "door"
-    },
     "Counter": {
       "x": [8],
       "y": [7],
@@ -1121,48 +842,11 @@
       "type": "interactable"
     }
   },
-  "islandhut": {
-    "Exit": {
-      "x": [7],
-      "y": [13],
-      "type": "door"
-    }
-  },
   "islandnorth": {
-    "Island South Entrance": {
-      "x": [35, 36, 37],
-      "y": [89],
-      "type": "door"
-    },
-    "Island South Entrance 2": {
-      "x": [43, 44],
-      "y": [89],
-      "type": "door"
-    },
-    "Island Field Office Entrance": {
-      "x": [46],
-      "y": [46],
-      "type": "door"
-    },
-    "Island North Cave Entrance": {
-      "x": [21, 22],
-      "y": [47],
-      "type": "door"
-    },
     "Dig Site Parrot Express": {
       "x": [5],
       "y": [48],
       "type": "interactable"
-    },
-    "Volcano Dungeon Entrance": {
-      "x": [39, 40, 41, 42],
-      "y": [21],
-      "type": "door"
-    },
-    "Volcano Dungeon Entrance 2": {
-      "x": [12],
-      "y": [31],
-      "type": "door"
     },
     "Volcano Parrot Express": {
       "x": [60],
@@ -1171,11 +855,6 @@
     }
   },
   "islandshrine": {
-    "Exit": {
-      "x": [13],
-      "y": [28],
-      "type": "door"
-    },
     "Shrine": {
       "x": [24],
       "y": [22],
@@ -1203,30 +882,10 @@
     }
   },
   "islandsouth": {
-    "Island East Entrance": {
-      "x": [34],
-      "y": [12],
-      "type": "door"
-    },
     "Ginger Island Warp Statue": {
       "x": [11],
       "y": [11],
       "type": "decoration"
-    },
-    "Island West Entrance": {
-      "x": [0],
-      "y": [11],
-      "type": "door"
-    },
-    "Island North Entrance": {
-      "x": [17, 18, 19],
-      "y": [0],
-      "type": "door"
-    },
-    "Island North Entrance 2": {
-      "x": [27, 28],
-      "y": [0],
-      "type": "door"
     },
     "Docks Parrot Express": {
       "x": [6],
@@ -1237,20 +896,6 @@
       "x": [19],
       "y": [43],
       "type": "interactable"
-    }
-  },
-  "islandsoutheast": {
-    "Island South East Cave Entrance": {
-      "x": [30],
-      "y": [18],
-      "type": "door"
-    }
-  },
-  "islandsoutheastcave": {
-    "Exit": {
-      "x": [1],
-      "y": [8],
-      "type": "door"
     }
   },
   "islandwest": {
@@ -1303,24 +948,9 @@
       "x": [77],
       "y": [39],
       "type": "door"
-    },
-    "Island Farm Cave Entrance": {
-      "x": [96],
-      "y": [33],
-      "type": "door"
-    },
-    "Island South Entrance": {
-      "x": [105],
-      "y": [40],
-      "type": "door"
     }
   },
   "jojamart": {
-    "Exit": {
-      "x": [13],
-      "y": [29],
-      "type": "door"
-    },
     "Morris's Kiosk": {
       "x": [21],
       "y": [25],
@@ -1868,11 +1498,6 @@
     }
   },
   "joshhouse": {
-    "Exit": {
-      "x": [9],
-      "y": [24],
-      "type": "door"
-    },
     "TV": {
       "x": [15, 16],
       "y": [20],
@@ -1940,11 +1565,6 @@
     }
   },
   "manorhouse": {
-    "Exit": {
-      "x": [4],
-      "y": [11],
-      "type": "door"
-    },
     "Town Ledger Book": {
       "x": [2],
       "y": [5],
@@ -1977,11 +1597,6 @@
     }
   },
   "mermaidhouse": {
-    "Exit": {
-      "x": [4],
-      "y": [10],
-      "type": "door"
-    },
     "Clam Shell 1": {
       "x": [2],
       "y": [6],
@@ -2009,11 +1624,6 @@
     }
   },
   "mine": {
-    "Mountain Exit": {
-      "x": [18],
-      "y": [13],
-      "type": "door"
-    },
     "Minecart": {
       "x": [11, 12],
       "y": [10],
@@ -2023,19 +1633,9 @@
       "x": [67],
       "y": [9],
       "type": "door"
-    },
-    "Quarry Exit": {
-      "x": [18],
-      "y": [13],
-      "type": "door"
     }
   },
   "mountain": {
-    "Mine Entrance": {
-      "x": [54],
-      "y": [5],
-      "type": "door"
-    },
     "Mine Bridge": {
       "x": [47],
       "y": [7],
@@ -2050,11 +1650,6 @@
       "x": [124, 125],
       "y": [11],
       "type": "interactable"
-    },
-    "Quarry Mine Entrance": {
-      "x": [103],
-      "y": [17],
-      "type": "door"
     },
     "Bridge 1": {
       "x": [57],
@@ -2071,26 +1666,6 @@
       "y": [20],
       "type": "decoration"
     },
-    "Linus Tent Entrance": {
-      "x": [29],
-      "y": [7],
-      "type": "door"
-    },
-    "Backwoods Entrance": {
-      "x": [0],
-      "y": [13],
-      "type": "door"
-    },
-    "Town Entrance": {
-      "x": [15],
-      "y": [40],
-      "type": "door"
-    },
-    "Railroad Entrance": {
-      "x": [9],
-      "y": [0],
-      "type": "door"
-    },
     "Science House Secondary Door": {
       "x": [8],
       "y": [20],
@@ -2098,11 +1673,6 @@
     }
   },
   "movietheater": {
-    "Exit": {
-      "x": [13],
-      "y": [15],
-      "type": "door"
-    },
     "Concessions Counter": {
       "x": [7],
       "y": [6],
@@ -2125,11 +1695,6 @@
     }
   },
   "qinutroom": {
-    "Exit": {
-      "x": [7],
-      "y": [7],
-      "type": "door"
-    },
     "Perfection Tracker": {
       "x": [13],
       "y": [4],
@@ -2147,21 +1712,6 @@
     }
   },
   "railroad": {
-    "Mountain Entrance": {
-      "x": [29],
-      "y": [61],
-      "type": "door"
-    },
-    "Witch's Cave Entrance": {
-      "x": [54],
-      "y": [35],
-      "type": "door"
-    },
-    "Summit Entrance": {
-      "x": [32, 33, 34],
-      "y": [0],
-      "type": "door"
-    },
     "Empty Box": {
       "x": [45],
       "y": [40],
@@ -2194,11 +1744,6 @@
     }
   },
   "saloon": {
-    "Exit": {
-      "x": [14],
-      "y": [24],
-      "type": "door"
-    },
     "Shop Counter": {
       "x": [14],
       "y": [19],
@@ -2331,11 +1876,6 @@
     }
   },
   "samhouse": {
-    "Exit": {
-      "x": [4],
-      "y": [23],
-      "type": "door"
-    },
     "Radio": {
       "x": [6],
       "y": [12],
@@ -2378,16 +1918,6 @@
     }
   },
   "sandyhouse": {
-    "Exit": {
-      "x": [4],
-      "y": [9],
-      "type": "door"
-    },
-    "Club Entrance": {
-      "x": [17],
-      "y": [1],
-      "type": "door"
-    },
     "Shop Counter": {
       "x": [2],
       "y": [6],
@@ -2395,16 +1925,6 @@
     }
   },
   "sciencehouse": {
-    "Exit": {
-      "x": [6],
-      "y": [24],
-      "type": "door"
-    },
-    "Secondary Exit": {
-      "x": [3],
-      "y": [8],
-      "type": "door"
-    },
     "Shop Counter": {
       "x": [8],
       "y": [19],
@@ -2414,11 +1934,6 @@
       "x": [11],
       "y": [19],
       "type": "container"
-    },
-    "Sebastian's Room Entrance": {
-      "x": [12],
-      "y": [21],
-      "type": "door"
     },
     "Beaker Set": {
       "x": [17],
@@ -2434,16 +1949,6 @@
       "x": [23],
       "y": [20],
       "type": "decoration"
-    },
-    "Robin and Demetrius's Room Entrance": {
-      "x": [13],
-      "y": [10],
-      "type": "door"
-    },
-    "Maru's Room Entrance": {
-      "x": [7],
-      "y": [10],
-      "type": "door"
     },
     "Bookshelf": {
       "x": [16, 17],
@@ -2477,11 +1982,6 @@
     }
   },
   "sebastianroom": {
-    "Exit": {
-      "x": [1],
-      "y": [1],
-      "type": "door"
-    },
     "Room Door": {
       "x": [1],
       "y": [3],
@@ -2504,11 +2004,6 @@
     }
   },
   "seedshop": {
-    "Exit": {
-      "x": [6],
-      "y": [29],
-      "type": "door"
-    },
     "Shop Counter": {
       "x": [4, 5],
       "y": [18],
@@ -2567,39 +2062,6 @@
       "type": "door"
     }
   },
-  "shed": {
-    "Exit": {
-      "x": [6],
-      "y": [13],
-      "type": "door"
-    }
-  },
-  "shed2": {
-    "Exit": {
-      "x": [9],
-      "y": [16],
-      "type": "door"
-    }
-  },
-  "big shed": {
-    "Exit": {
-      "x": [9],
-      "y": [16],
-      "type": "door"
-    }
-  },
-  "skullcave": {
-    "Exit": {
-      "x": [7],
-      "y": [9],
-      "type": "door"
-    },
-    "Skull Cavern Entrance": {
-      "x": [3],
-      "y": [3],
-      "type": "door"
-    }
-  },
   "slime hutch": {
     "Water Trough 1": {
       "x": [16],
@@ -2620,30 +2082,13 @@
       "x": [16],
       "y": [9],
       "type": "other"
-    },
-    "Exit": {
-      "x": [8],
-      "y": [12],
-      "type": "door"
     }
   },
   "submarine": {
-    "Exit": {
-      "x": [14],
-      "y": [15],
-      "type": "door"
-    },
     "Captain": {
       "x": [2],
       "y": [9],
       "type": "npc"
-    }
-  },
-  "tent": {
-    "Exit": {
-      "x": [2],
-      "y": [5],
-      "type": "door"
     }
   },
   "town": {
@@ -2747,26 +2192,6 @@
       "y": [91],
       "type": "container"
     },
-    "Bus Stop Entrance": {
-      "x": [0],
-      "y": [54],
-      "type": "door"
-    },
-    "Cindersap Forest Entrance": {
-      "x": [0],
-      "y": [90],
-      "type": "door"
-    },
-    "Beach Entrance": {
-      "x": [54],
-      "y": [109],
-      "type": "door"
-    },
-    "Mountain Entrance": {
-      "x": [79, 80, 81, 82, 83],
-      "y": [0],
-      "type": "door"
-    },
     "Joja Bridge": {
       "x": [92, 93, 94, 95, 96],
       "y": [11],
@@ -2829,11 +2254,6 @@
     }
   },
   "trailer": {
-    "Exit": {
-      "x": [12],
-      "y": [9],
-      "type": "door"
-    },
     "Penny's Room Door": {
       "x": [6],
       "y": [7],
@@ -2861,11 +2281,6 @@
     }
   },
   "trailer_big": {
-    "Exit": {
-      "x": [13],
-      "y": [25],
-      "type": "door"
-    },
     "Pam's Kitchen": {
       "x": [10],
       "y": [6],
@@ -2873,11 +2288,6 @@
     }
   },
   "tunnel": {
-    "Exit": {
-      "x": [39],
-      "y": [7, 8, 9, 10, 11],
-      "type": "door"
-    },
     "Safe": {
       "x": [17],
       "y": [6],
@@ -2891,28 +2301,6 @@
       "type": "interactable"
     }
   },
-  "volcanodungeon0": {
-    "Island North Entrance 1": {
-      "x": [31],
-      "y": [54],
-      "type": "door"
-    },
-    "Island North Entrance 2": {
-      "x": [6],
-      "y": [50],
-      "type": "door"
-    },
-    "Caldera Entrance": {
-      "x": [44],
-      "y": [50],
-      "type": "door"
-    },
-    "Volcano Dungeon 1 Entrance": {
-      "x": [37],
-      "y": [5],
-      "type": "door"
-    }
-  },
   "volcanodungeon5": {
     "Dwarf Shop": {
       "x": [36],
@@ -2921,11 +2309,6 @@
     }
   },
   "witchhut": {
-    "Exit": {
-      "x": [7],
-      "y": [15],
-      "type": "door"
-    },
     "Wizard's Basement Rune": {
       "x": [11],
       "y": [11],
@@ -2964,19 +2347,9 @@
       "x": [4],
       "y": [5],
       "type": "door"
-    },
-    "Railroad Entrance": {
-      "x": [4],
-      "y": [9],
-      "type": "door"
     }
   },
   "wizardhouse": {
-    "Exit": {
-      "x": [8],
-      "y": [24],
-      "type": "door"
-    },
     "Basement Door": {
       "x": [4],
       "y": [4],
@@ -3006,11 +2379,6 @@
     }
   },
   "woods": {
-    "Forest Entrance": {
-      "x": [59],
-      "y": [15, 16, 17],
-      "type": "door"
-    },
     "Old Master Cannoli": {
       "x": [8, 9],
       "y": [7],

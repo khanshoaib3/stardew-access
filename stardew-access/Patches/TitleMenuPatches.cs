@@ -228,7 +228,7 @@ namespace stardew_access.Patches
                             !__instance.Farmer.seasonForSaveGame.HasValue ||
                             !__instance.Farmer.yearForSaveGame.HasValue) ? __instance.Farmer.dateStringForSaveGame : Utility.getDateStringFor(__instance.Farmer.dayOfMonthForSaveGame.Value, __instance.Farmer.seasonForSaveGame.Value, __instance.Farmer.yearForSaveGame.Value));
 
-                        string toSpeak = $"{farmName} Farm Selected, \t\n Farmer:{farmerName}, \t\nMoney:{money}, \t\nHours Played:{hoursPlayed}, \t\nDate:{dateStringForSaveGame}";
+                        string toSpeak = $"{farmName} Farm Selected, \t\n Farmer: {farmerName}, \t\nMoney: {money}, \t\nHours Played: {hoursPlayed}, \t\nDate: {dateStringForSaveGame}";
 
                         MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                         #endregion
