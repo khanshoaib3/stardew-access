@@ -166,7 +166,7 @@ namespace stardew_access.Features
                 {
                     Vector2 dir = new Vector2(item.X + dirX[i], item.Y + dirY[i]);
 
-                    if (!searched.Contains(dir) && Game1.currentLocation.isTileOnMap(dir))
+                    if (!searched.Contains(dir) && (TileInfo.isWarpPointAtTile((int)dir.X, (int)dir.Y) || Game1.currentLocation.isTileOnMap(dir)))
                     {
                         toSearch.Enqueue(dir);
                         searched.Add(dir);

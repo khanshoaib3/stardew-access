@@ -279,6 +279,9 @@ namespace stardew_access.Features
         {
             Rectangle rect = new Rectangle(x * 64 + 1, y * 64 + 1, 62, 62);
 
+            // Check whether the position is a warp point, if so then return false, sometimes warp points are 1 tile off the map for example in coops and barns
+            if (isWarpPointAtTile(x, y)) return false;
+
             if (Game1.currentLocation.isCollidingPosition(rect, Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: true))
             {
                 return true;
@@ -286,6 +289,18 @@ namespace stardew_access.Features
 
             if (Game1.currentLocation is Woods && getStumpsInWoods(x, y) != null)
                 return true;
+
+            return false;
+        }
+
+        public static Boolean isWarpPointAtTile(int x, int y)
+        {
+            if (Game1.currentLocation == null) return false;
+
+            foreach (Warp warpPoint in Game1.currentLocation.warps)
+            {
+                if (warpPoint.X == x && warpPoint.Y == y) return true;
+            }
 
             return false;
         }
