@@ -950,6 +950,38 @@
       "type": "door"
     }
   },
+  "islandwestcave1": {
+    "Lion Statue": {
+      "x": [6],
+      "y": [2],
+      "type": "other"
+    },
+    "Crystal 1": {
+      "x": [3],
+      "y": [4],
+      "type": "interactable"
+    },
+    "Crystal 2": {
+      "x": [4],
+      "y": [6],
+      "type": "interactable"
+    },
+    "Crystal 3": {
+      "x": [6],
+      "y": [7],
+      "type": "interactable"
+    },
+    "Crystal 4": {
+      "x": [8],
+      "y": [6],
+      "type": "interactable"
+    },
+    "Crystal 5": {
+      "x": [9],
+      "y": [4],
+      "type": "interactable"
+    }
+  },
   "jojamart": {
     "Morris's Kiosk": {
       "x": [21],
@@ -2059,6 +2091,13 @@
     "Mutant Bug Lair": {
       "x": [3],
       "y": [19],
+      "type": "door"
+    }
+  },
+  "skullcave": {
+    "Skull Cavern Door": {
+      "x": [3],
+      "y": [3],
       "type": "door"
     }
   },
