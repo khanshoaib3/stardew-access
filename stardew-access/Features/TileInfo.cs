@@ -158,25 +158,32 @@ namespace stardew_access.Features
             #region Track dropped items
             if (MainClass.Config.TrackDroppedItems)
             {
-                NetCollection<Debris> droppedItems = Game1.currentLocation.debris;
-                if (droppedItems.Count() > 0)
+                try
                 {
-                    foreach (var item in droppedItems)
+                    NetCollection<Debris> droppedItems = Game1.currentLocation.debris;
+                    if (droppedItems.Count() > 0)
                     {
-                        int xPos = ((int)item.Chunks[0].position.Value.X / Game1.tileSize) + 1;
-                        int yPos = ((int)item.Chunks[0].position.Value.Y / Game1.tileSize) + 1;
-                        if (xPos != x || yPos != y) continue;
+                        foreach (var item in droppedItems)
+                        {
+                            int xPos = ((int)item.Chunks[0].position.Value.X / Game1.tileSize) + 1;
+                            int yPos = ((int)item.Chunks[0].position.Value.Y / Game1.tileSize) + 1;
+                            if (xPos != x || yPos != y) continue;
 
-                        if (item.item == null) continue;
+                            if (item.item == null) continue;
 
-                        string name = item.item.DisplayName;
-                        int count = item.item.Stack;
+                            string name = item.item.DisplayName;
+                            int count = item.item.Stack;
 
-                        if (toReturn == "")
-                            return ($"Dropped Item: {count} {name}", CATEGORY.DroppedItems);
-                        else
-                            toReturn = $"{toReturn}, Dropped Item: {count} {name}";
+                            if (toReturn == "")
+                                return ($"Dropped Item: {count} {name}", CATEGORY.DroppedItems);
+                            else
+                                toReturn = $"{toReturn}, Dropped Item: {count} {name}";
+                        }
                     }
+                }
+                catch (Exception e)
+                {
+                    MainClass.ErrorLog($"An error occured while detecting dropped items:\n{e.Message}");
                 }
             }
             #endregion

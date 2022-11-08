@@ -16,6 +16,7 @@ namespace stardew_access.ScreenReader
         public void InitializeScreenReader()
         {
             MainClass.InfoLog("Initializing Tolk...");
+            Tolk.TrySAPI(true);
             Tolk.Load();
 
             MainClass.InfoLog("Querying for the active screen reader driver...");
