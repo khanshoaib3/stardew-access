@@ -315,6 +315,11 @@
       "x": [3],
       "y": [27],
       "type": "door"
+    },
+    "Pool Entrance": {
+      "x": [15],
+      "y": [27],
+      "type": "door"
     }
   },
   "bathhouse_pool": {
@@ -367,6 +372,11 @@
   "bathhouse_womenslocker": {
     "Entry Room Door": {
       "x": [13],
+      "y": [27],
+      "type": "door"
+    },
+    "Pool Entrance": {
+      "x": [2],
       "y": [27],
       "type": "door"
     }
@@ -800,6 +810,11 @@
     }
   },
   "hospital": {
+    "Harvey's Room Entrance Door": {
+      "x": [10],
+      "y": [5],
+      "type": "door"
+    },
     "Main Area Door": {
       "x": [10],
       "y": [13],
@@ -1961,6 +1976,21 @@
       "x": [8],
       "y": [19],
       "type": "interactable"
+    },
+    "Sebastian's Room Entrance": {
+      "x": [12],
+      "y": [21],
+      "type": "door"
+    },
+    "Robin and Demetrius's Room Entrance": {
+      "x": [13],
+      "y": [10],
+      "type": "door"
+    },
+    "Maru's Room Entrance": {
+      "x": [7],
+      "y": [10],
+      "type": "door"
     },
     "Robin's Wood Pile": {
       "x": [11],
