@@ -212,7 +212,7 @@ namespace stardew_access
             #region Simulate left and right clicks
             if (Game1.activeClickableMenu != null)
             {
-                bool isCustomizingChrachter = Game1.activeClickableMenu is CharacterCustomization || (TitleMenu.subMenu != null && TitleMenu.subMenu is CharacterCustomization);
+                bool isCustomizingCharacter = Game1.activeClickableMenu is CharacterCustomization || (TitleMenu.subMenu != null && TitleMenu.subMenu is CharacterCustomization);
 
                 #region Mouse Click Simulation
                 // Main Keybinds
@@ -226,11 +226,11 @@ namespace stardew_access
                 }
 
                 // Alternate Keybinds
-                if (!isCustomizingChrachter && Game1.activeClickableMenu is not AnimalQueryMenu && Config.LeftClickAlternateKey.JustPressed()) // Excluding the character creation menu
+                if (!isCustomizingCharacter && Game1.activeClickableMenu is not AnimalQueryMenu && Config.LeftClickAlternateKey.JustPressed()) // Excluding the character creation menu
                 {
                     Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
-                if (!isCustomizingChrachter && Game1.activeClickableMenu is not AnimalQueryMenu && Config.RightClickAlternateKey.JustPressed()) // Excluding the character creation menu
+                if (!isCustomizingCharacter && Game1.activeClickableMenu is not AnimalQueryMenu && Config.RightClickAlternateKey.JustPressed()) // Excluding the character creation menu
                 {
                     Game1.activeClickableMenu.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
@@ -239,7 +239,7 @@ namespace stardew_access
 
             if (Game1.currentMinigame != null)
             {
-                bool isCustomizingChrachter = Game1.activeClickableMenu is CharacterCustomization || (TitleMenu.subMenu != null && TitleMenu.subMenu is CharacterCustomization);
+                bool isCustomizingCharacter = Game1.activeClickableMenu is CharacterCustomization || (TitleMenu.subMenu != null && TitleMenu.subMenu is CharacterCustomization);
 
                 #region Mouse Click Simulation
                 // Main Keybinds
