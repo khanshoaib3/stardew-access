@@ -49,9 +49,14 @@ namespace stardew_access
         #region Menu Keys
         public KeybindList PrimaryInfoKey { get; set; } = KeybindList.Parse("C");
 
-        // Charachter Creatinon menu (new game menu) keys
+        // Character Creation menu (new game menu) keys
         public KeybindList CharacterCreationMenuNextKey { get; set; } = KeybindList.Parse("Right");
         public KeybindList CharacterCreationMenuPreviousKey { get; set; } = KeybindList.Parse("Left");
+        public KeybindList CharacterCreationMenuSliderIncreaseKey { get; set; } = KeybindList.Parse("Up");
+        public KeybindList CharacterCreationMenuSliderLargeIncreaseKey { get; set; } = KeybindList.Parse("PageUp");
+        public KeybindList CharacterCreationMenuSliderDecreaseKey { get; set; } = KeybindList.Parse("Down");
+        public KeybindList CharacterCreationMenuSliderLargeDecreaseKey { get; set; } = KeybindList.Parse("PageDown");
+        public KeybindList CharacterCreationMenuDesignToggleKey { get; set; } = KeybindList.Parse("LeftControl + Space");
 
         // Bundle menu keys
         public KeybindList BundleMenuIngredientsKey { get; set; } = KeybindList.Parse("I");
