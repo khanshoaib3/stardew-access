@@ -307,7 +307,7 @@ namespace stardew_access.Patches
                 else if (MainClass.Config.CharacterCreationMenuNextKey.JustPressed() && !isRunning)
                 {
                     isRunning = true;
-                    itemsToSpeak =CycleThroughItems(true, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel);
+                    itemsToSpeak =CycleThroughItems(true, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel, ___nameBox, ___farmnameBox, ___favThingBox);
                     if (itemsToSpeak != "")
                         toSpeak = $"{itemsToSpeak} \n {toSpeak}";
                     Task.Delay(200).ContinueWith(_ => { isRunning = false; });
@@ -315,7 +315,7 @@ namespace stardew_access.Patches
                 else if (MainClass.Config.CharacterCreationMenuPreviousKey.JustPressed() && !isRunning)
                 {
                     isRunning = true;
-                    toSpeak = CycleThroughItems(false, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel);
+                    toSpeak = CycleThroughItems(false, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel, ___nameBox, ___farmnameBox, ___favThingBox);
                     Task.Delay(200).ContinueWith(_ => { isRunning = false; });
                 }
 
@@ -586,7 +586,8 @@ namespace stardew_access.Patches
 
 
         private static string CycleThroughItems(bool increase, CharacterCustomization __instance, bool ___skipIntro,
-         ClickableComponent ___startingCabinsLabel, ClickableComponent ___difficultyModifierLabel)
+         ClickableComponent ___startingCabinsLabel, ClickableComponent ___difficultyModifierLabel, TextBox ___nameBox,
+         TextBox ___farmnameBox, TextBox ___favThingBox)
         {
             string toSpeak = " ";
             int DesignControlsIndex = 0;
@@ -595,14 +596,39 @@ namespace stardew_access.Patches
             #region Add buttons with their names IF they are available
 
             #region Character related
+            string postText = "";
             if (__instance.nameBoxCC != null && __instance.nameBoxCC.visible)
-                buttons.Add(__instance.nameBoxCC, "Farmer's Name Text box");
+            {
+                if (___nameBox.Text != "")
+                {
+                    postText = $": {___nameBox.Text}";
+                } else {
+                    postText = " Text Box";
+                }
+                buttons.Add(__instance.nameBoxCC, $"Farmer's Name{postText}");
+            }
 
             if (__instance.farmnameBoxCC != null && __instance.farmnameBoxCC.visible)
-                buttons.Add(__instance.farmnameBoxCC, "Farm's Name Text box");
+            {
+                if (___farmnameBox.Text != "")
+                {
+                    postText = $": {___farmnameBox.Text}";
+                } else {
+                    postText = " Text Box";
+                }
+                buttons.Add(__instance.farmnameBoxCC, $"Farm's Name{postText}");
+            }
 
             if (__instance.favThingBoxCC != null && __instance.favThingBoxCC.visible)
-                buttons.Add(__instance.favThingBoxCC, "Favourite Thing Text box");
+            {
+                if (___favThingBox.Text != "")
+                {
+                    postText = $": {___favThingBox.Text}";
+                } else {
+                    postText = " Text Box";
+                }
+                buttons.Add(__instance.favThingBoxCC, $"Favourite Thing{postText}");
+            }
 
             if (__instance.petPortraitBox.HasValue) // Cannot get petButtons like with others
             {
