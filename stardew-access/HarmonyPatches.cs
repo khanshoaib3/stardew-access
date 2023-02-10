@@ -48,7 +48,7 @@ namespace stardew_access
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CharacterCustomization), nameof(CharacterCustomization.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.CharacterCustomizationMenuPatch))
+                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(CharacterCustomizationPatches.CharacterCustomizationMenuPatch))
             );
 
             harmony.Patch(
