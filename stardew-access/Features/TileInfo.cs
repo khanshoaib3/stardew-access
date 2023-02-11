@@ -261,7 +261,7 @@ namespace stardew_access.Features
                     (40, 10) => "Fish Tank",
                     (63, 14) => "Boiler Room",
                     (55, 6) => "Vault",
-                    (46, 11) => "Bulletin Board",
+                    (46, 12) => "Bulletin Board",
                     _ => null,
                 };
                 if (name != null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
