@@ -274,6 +274,12 @@ namespace stardew_access
                         original: AccessTools.Method(typeof(GrandpaStory), nameof(GrandpaStory.draw), new Type[] { typeof(SpriteBatch) }),
                         postfix: new HarmonyMethod(typeof(MiniGamesPatches), nameof(MiniGamesPatches.GrandpaStoryPatch))
                     );
+
+            harmony.Patch(
+                        original: AccessTools.Method(typeof(BobberBar), nameof(BobberBar.update)),
+                        postfix: new HarmonyMethod(typeof(FishingMiniGamePatch), nameof(FishingMiniGamePatch.BobberBarPatch))
+                    );
+
             #endregion
 
             harmony.Patch(
