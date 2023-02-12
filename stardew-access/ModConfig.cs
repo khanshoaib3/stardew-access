@@ -87,6 +87,9 @@ namespace stardew_access
         public Boolean TrackDroppedItems {get; set;} = true; // Toggles detecting the dropped items.
         #endregion
 
+        public int MaximumFishingDifficulty { get; set; } = 999; // TODO Add doc
+        public int FixFishingMotionType { get; set; } = 999;
+
         // TODO Add the exclusion and focus list too
         // public String ExclusionList { get; set; } = "test";
     }

@@ -22,6 +22,9 @@ namespace stardew_access
 
                 soundEffects.Add("drop_item", TYPE.Sound);
                 soundEffects.Add("colliding", TYPE.Sound);
+                
+                soundEffects.Add("bobber_target_up", TYPE.Sound);
+                soundEffects.Add("bobber_target_down", TYPE.Sound);
 
                 soundEffects.Add("npc_top", TYPE.Footstep);
                 soundEffects.Add("npc_right", TYPE.Footstep);
