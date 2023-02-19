@@ -123,7 +123,12 @@ namespace stardew_access.Features
 
                         if (farmTypeIndex != Game1.whichFarm) continue; // Skip if current farm type does not matches
                         // if (Game1.whichModFarm != null) MainClass.DebugLog($"{farmType} {Game1.whichModFarm.MapName}");
-                        if (farmTypeIndex != 7 || Game1.whichModFarm == null || !farmType.ToLower().Equals(Game1.whichModFarm.MapName.ToLower())) continue; // Not checked but should work
+                        if (farmTypeIndex != 7 || Game1.whichModFarm == null || !farmType.ToLower().Equals(Game1.whichModFarm.MapName.ToLower())) continue; // Not tested but should work
+                    }
+
+                    if (locationName.ToLower().Equals("town_joja") && Game1.MasterPlayer.mailReceived.Contains("JojaMember"))
+                    {
+                        locationName = "town";
                     }
 
                     if (!Game1.currentLocation.Name.ToLower().Equals(locationName.ToLower())) continue;
