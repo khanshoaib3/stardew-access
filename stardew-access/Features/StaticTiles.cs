@@ -122,6 +122,8 @@ namespace stardew_access.Features
                         locationName = locationName.Remove(locationName.LastIndexOf("_"));
 
                         if (farmTypeIndex != Game1.whichFarm) continue; // Skip if current farm type does not matches
+                        // if (Game1.whichModFarm != null) MainClass.DebugLog($"{farmType} {Game1.whichModFarm.MapName}");
+                        if (farmTypeIndex != 7 || Game1.whichModFarm == null || !farmType.ToLower().Equals(Game1.whichModFarm.MapName.ToLower())) continue; // Not checked but should work
                     }
 
                     if (!Game1.currentLocation.Name.ToLower().Equals(locationName.ToLower())) continue;
@@ -192,7 +194,7 @@ namespace stardew_access.Features
                 "combat" => 4,
                 "fourcorners" => 5,
                 "beach" => 6,
-                _ => 0,
+                _ => 7,
             };
         }
     }
