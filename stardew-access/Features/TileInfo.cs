@@ -455,15 +455,19 @@ namespace stardew_access.Features
             else if (Game1.currentLocation is FarmHouse farmHouse)
             {
                 if (farmHouse.upgradeLevel >= 1)
-                    if (farmHouse.getKitchenStandingSpot().X == x && (farmHouse.getKitchenStandingSpot().Y - 1) == y) // Standing spot is where the player will stand
-                        return (CATEGORY.Interactables, "Kitchen");
+                    if (farmHouse.getKitchenStandingSpot().X == x && (farmHouse.getKitchenStandingSpot().Y - 1) == y)
+                        return (CATEGORY.Interactables, "Stove");
+                    else if ((farmHouse.getKitchenStandingSpot().X + 1) == x && (farmHouse.getKitchenStandingSpot().Y - 1) == y)
+                        return (CATEGORY.Others, "Sink");
                     else if (farmHouse.fridgePosition.X == x && farmHouse.fridgePosition.Y == y)
                         return (CATEGORY.Interactables, "Fridge");
             }
             else if (Game1.currentLocation is IslandFarmHouse islandFarmHouse)
             {
-                if ((islandFarmHouse.fridgePosition.X - 1) == x && islandFarmHouse.fridgePosition.Y == y)
-                    return (CATEGORY.Interactables, "Kitchen");
+                if ((islandFarmHouse.fridgePosition.X - 2) == x && islandFarmHouse.fridgePosition.Y == y)
+                    return (CATEGORY.Interactables, "Stove");
+                else if ((islandFarmHouse.fridgePosition.X - 1) == x && islandFarmHouse.fridgePosition.Y == y)
+                    return (CATEGORY.Others, "Sink");
                 else if (islandFarmHouse.fridgePosition.X == x && islandFarmHouse.fridgePosition.Y == y)
                     return (CATEGORY.Interactables, "Fridge");
             }
