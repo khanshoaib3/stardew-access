@@ -524,7 +524,7 @@ namespace stardew_access.Features
                 }
                 else if (Game1.currentLocation is IslandWest islandWest)
                 {
-                    if (islandWest.shippingBinPosition.X == x && islandWest.shippingBinPosition.Y == y)
+                    if ((islandWest.shippingBinPosition.X == x || (islandWest.shippingBinPosition.X + 1) == x) && islandWest.shippingBinPosition.Y == y)
                         return (CATEGORY.Interactables, "Shipping Bin");
                 }
                 else if (Game1.currentLocation is IslandNorth islandNorth)
