@@ -264,7 +264,7 @@ namespace stardew_access.Patches
                         else
                             toSpeak = $"Slot {i + 1} finished: {__instance.pieceHolders[i].item.DisplayName}";
 
-                        if (__instance.heldItem != null && __instance.pieceHolders[i].item == null)
+                        if (!MainClass.Config.DisableInventoryVerbosity && __instance.heldItem != null && __instance.pieceHolders[i].item == null)
                         {
                             int highlight = getPieceIndexForDonationItem(__instance.heldItem.ParentSheetIndex);
                             if (highlight != -1 && highlight == i)

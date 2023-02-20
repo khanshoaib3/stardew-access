@@ -20,6 +20,7 @@ namespace stardew_access.Patches
 
             return true;
         }
+
         internal static int narrateHoveredSlotAndReturnIndex(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y,
                 bool giveExtraDetails = false, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1,
                 bool handleHighlightedItem = false, String highlightedItemPrefix = "", String highlightedItemSuffix = "")
@@ -177,6 +178,7 @@ namespace stardew_access.Patches
 
         private static String handleHighlightedItemPrefix(bool isHighlighted, String prefix)
         {
+            if (MainClass.Config.DisableInventoryVerbosity) return "";
             if (!isHighlighted) return "";
 
             return prefix;
@@ -184,6 +186,7 @@ namespace stardew_access.Patches
 
         private static String handleHighlightedItemSuffix(bool isHighlighted, String suffix)
         {
+            if (MainClass.Config.DisableInventoryVerbosity) return "";
             if (!isHighlighted) return "";
 
             return suffix;
@@ -196,6 +199,7 @@ namespace stardew_access.Patches
             if (prevSlotIndex != hoveredInventoryIndex)
                 Game1.playSound("invalid-selection");
 
+            if (MainClass.Config.DisableInventoryVerbosity) return "";
             return " not usable here";
         }
     }
