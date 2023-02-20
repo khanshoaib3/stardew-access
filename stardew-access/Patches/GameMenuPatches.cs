@@ -1,5 +1,4 @@
 ﻿using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
@@ -241,7 +240,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, hoverPrice: __instance.hoverPrice))
+                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, hoverPrice: __instance.hoverPrice))
                 {
                     shopMenuQueryKey = "";
                     return;
@@ -396,7 +395,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                     geodeMenuQueryKey = "";
                 #endregion
             }
@@ -573,14 +572,14 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
                     gameMenuQueryKey = "";
                     itemGrabMenuQueryKey = "";
                     return;
                 }
 
-                if (narrateHoveredItemInInventory(__instance.ItemsToGrabMenu, __instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
+                if (InventoryUtils.narrateHoveredSlot(__instance.ItemsToGrabMenu, __instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
                 {
                     gameMenuQueryKey = "";
                     itemGrabMenuQueryKey = "";
@@ -855,7 +854,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                 {
                     gameMenuQueryKey = "";
                     craftingPageQueryKey = "";
@@ -1066,7 +1065,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
                     gameMenuQueryKey = "";
                     inventoryPageQueryKey = "";
@@ -1192,148 +1191,6 @@ namespace stardew_access.Patches
             {
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
-        }
-
-        internal static bool narrateHoveredItemInInventory(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y, bool giveExtraDetails = false, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1)
-        {
-            #region Narrate hovered item
-            for (int i = 0; i < inventory.Count; i++)
-            {
-                if (inventory[i].containsPoint(x, y))
-                {
-                    string toSpeak = "";
-                    if ((i + 1) <= actualInventory.Count)
-                    {
-                        if (actualInventory[i] != null)
-                        {
-                            string name = actualInventory[i].DisplayName;
-                            int stack = actualInventory[i].Stack;
-                            string quality = "";
-                            string healthNStamine = "";
-                            string buffs = "";
-                            string description = "";
-                            string price = "";
-                            string requirements = "";
-
-                            #region Add quality of item
-                            if (actualInventory[i] is StardewValley.Object && ((StardewValley.Object)actualInventory[i]).Quality > 0)
-                            {
-                                int qualityIndex = ((StardewValley.Object)actualInventory[i]).Quality;
-                                if (qualityIndex == 1)
-                                {
-                                    quality = "Silver quality";
-                                }
-                                else if (qualityIndex == 2 || qualityIndex == 3)
-                                {
-                                    quality = "Gold quality";
-                                }
-                                else if (qualityIndex >= 4)
-                                {
-                                    quality = "Iridium quality";
-                                }
-                            }
-                            #endregion
-
-                            if (giveExtraDetails)
-                            {
-                                description = actualInventory[i].getDescription();
-                                #region Add health & stamina provided by the item
-                                if (actualInventory[i] is StardewValley.Object && ((StardewValley.Object)actualInventory[i]).Edibility != -300)
-                                {
-                                    int stamina_recovery = ((StardewValley.Object)actualInventory[i]).staminaRecoveredOnConsumption();
-                                    healthNStamine += $"{stamina_recovery} Energy";
-                                    if (stamina_recovery >= 0)
-                                    {
-                                        int health_recovery = ((StardewValley.Object)actualInventory[i]).healthRecoveredOnConsumption();
-                                        healthNStamine += $"\n\t{health_recovery} Health";
-                                    }
-                                }
-                                #endregion
-
-                                #region Add buff items (effects like +1 walking speed)
-                                // These variables are taken from the game's code itself (IClickableMenu.cs -> 1016 line)
-                                bool edibleItem = actualInventory[i] != null && actualInventory[i] is StardewValley.Object && (int)((StardewValley.Object)actualInventory[i]).Edibility != -300;
-                                string[]? buffIconsToDisplay = (edibleItem && Game1.objectInformation[((StardewValley.Object)actualInventory[i]).ParentSheetIndex].Split('/').Length > 7) ? actualInventory[i].ModifyItemBuffs(Game1.objectInformation[((StardewValley.Object)actualInventory[i]).ParentSheetIndex].Split('/')[7].Split(' ')) : null;
-                                if (buffIconsToDisplay != null)
-                                {
-                                    for (int j = 0; j < buffIconsToDisplay.Length; j++)
-                                    {
-                                        string buffName = ((Convert.ToInt32(buffIconsToDisplay[j]) > 0) ? "+" : "") + buffIconsToDisplay[j] + " ";
-                                        if (j <= 11)
-                                        {
-                                            buffName = Game1.content.LoadString("Strings\\UI:ItemHover_Buff" + j, buffName);
-                                        }
-                                        try
-                                        {
-                                            int count = int.Parse(buffName.Substring(0, buffName.IndexOf(' ')));
-                                            if (count != 0)
-                                                buffs += $"{buffName}\n";
-                                        }
-                                        catch (Exception) { }
-                                    }
-                                }
-                                #endregion 
-                            }
-
-                            #region Narrate hovered required ingredients
-                            if (extraItemToShowIndex != -1)
-                            {
-                                string itemName = Game1.objectInformation[extraItemToShowIndex].Split('/')[0];
-
-                                if (extraItemToShowAmount != -1)
-                                    requirements = $"Required: {extraItemToShowAmount} {itemName}";
-                                else
-                                    requirements = $"Required: {itemName}";
-                            }
-                            #endregion
-
-                            if (hoverPrice != -1)
-                            {
-                                price = $"Sell Price: {hoverPrice} g";
-                            }
-
-                            if (!inventoryMenu.highlightMethod(actualInventory[i]))
-                            {
-                                name = $"{name} not usable here";
-                            }
-
-                            if (giveExtraDetails)
-                            {
-                                if (stack > 1)
-                                    toSpeak = $"{stack} {name} {quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamine}, \n{buffs}";
-                                else
-                                    toSpeak = $"{name} {quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamine}, \n{buffs}";
-                            }
-                            else
-                            {
-                                if (stack > 1)
-                                    toSpeak = $"{stack} {name} {quality}, \n{requirements}, \n{price}";
-                                else
-                                    toSpeak = $"{name} {quality}, \n{requirements}, \n{price}";
-                            }
-                        }
-                        else
-                        {
-                            // For empty slot
-                            toSpeak = "Empty Slot";
-                        }
-                    }
-                    else
-                    {
-                        // For empty slot
-                        toSpeak = "Empty Slot";
-                    }
-
-                    if (hoveredItemQueryKey != $"{toSpeak}:{i}")
-                    {
-                        hoveredItemQueryKey = $"{toSpeak}:{i}";
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
-                    return true;
-                }
-            }
-            #endregion
-            return false;
         }
     }
 }

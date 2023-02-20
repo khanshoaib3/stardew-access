@@ -16,6 +16,7 @@ namespace stardew_access.Patches
         internal static string pondQueryMenuQuery = " ";
         internal static string forgeMenuQuery = " ";
         internal static string itemListMenuQuery = " ";
+        internal static int prevSlotIndex = -999;
         public static Vector2? prevTile = null;
 
         internal static void ItemListMenuPatch(ItemListMenu __instance, string ___title, int ___currentTab, int ___totalValueOfItems, List<Item> ___itemsToList)
@@ -126,35 +127,9 @@ namespace stardew_access.Patches
                     if (Game1.player.rightRing.Value != null)
                         toSpeak = $"{toSpeak}: {Game1.player.rightRing.Value.DisplayName}";
                 }
-                else
-                {
-                    for (int i = 0; i < __instance.inventory.inventory.Count; i++)
-                    {
-                        if (!__instance.inventory.inventory[i].containsPoint(x, y))
-                            continue;
 
-                        if (__instance.inventory.actualInventory[i] == null)
-                            toSpeak = "Empty slot";
-                        else
-                        {
-                            toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
-
-                            if (!__instance.inventory.highlightMethod(__instance.inventory.actualInventory[i]))
-                            {
-                                toSpeak = $"{toSpeak} not usable here";
-                            }
-                        }
-
-                        if (forgeMenuQuery != $"{toSpeak}:{i}")
-                        {
-                            forgeMenuQuery = $"{toSpeak}:{i}";
-                            MainClass.ScreenReader.Say(toSpeak, true);
-                        }
-
-                        return;
-                    }
-                }
-
+                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                    return;
 
                 if (forgeMenuQuery != toSpeak)
                 {
@@ -293,34 +268,9 @@ namespace stardew_access.Patches
                     if (Game1.player.pantsItem.Value != null)
                         toSpeak = $"{toSpeak}: {Game1.player.pantsItem.Value.DisplayName}";
                 }
-                else
-                {
-                    for (int i = 0; i < __instance.inventory.inventory.Count; i++)
-                    {
-                        if (!__instance.inventory.inventory[i].containsPoint(x, y))
-                            continue;
 
-                        if (__instance.inventory.actualInventory[i] == null)
-                            toSpeak = "Empty slot";
-                        else
-                        {
-                            toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
-
-                            if (!__instance.inventory.highlightMethod(__instance.inventory.actualInventory[i]))
-                            {
-                                toSpeak = $"{toSpeak} not usable here";
-                            }
-                        }
-
-                        if (tailoringMenuQuery != $"{toSpeak}:{i}")
-                        {
-                            tailoringMenuQuery = $"{toSpeak}:{i}";
-                            MainClass.ScreenReader.Say(toSpeak, true);
-                        }
-
-                        return;
-                    }
-                }
+                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                    return;
 
 
                 if (tailoringMenuQuery != toSpeak)
@@ -788,7 +738,8 @@ namespace stardew_access.Patches
                 pondQueryMenuQuery = " ";
             }
 
-            GameMenuPatches.hoveredItemQueryKey = "";
+            InventoryUtils.hoveredItemQueryKey = "";
+            InventoryUtils.prevSlotIndex = -999;
         }
         #endregion
 

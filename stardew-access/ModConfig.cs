@@ -85,6 +85,7 @@ namespace stardew_access
         public Boolean Warning { get; set; } = true; // Toggles the warnings feature
         public Boolean TTS { get; set; } = true; // Toggles the screen reader/tts.
         public Boolean TrackDroppedItems {get; set;} = true; // Toggles detecting the dropped items.
+        public Boolean DisableInventoryVerbosity {get; set;} = false; // If enabled, does not speaks 'not usable here' and 'donatable' in inventories
         #endregion
 
         // TODO Add the exclusion and focus list too
