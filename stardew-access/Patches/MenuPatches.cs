@@ -16,6 +16,7 @@ namespace stardew_access.Patches
         internal static string pondQueryMenuQuery = " ";
         internal static string forgeMenuQuery = " ";
         internal static string itemListMenuQuery = " ";
+        internal static int prevSlotIndex = -999;
         public static Vector2? prevTile = null;
 
         internal static void ItemListMenuPatch(ItemListMenu __instance, string ___title, int ___currentTab, int ___totalValueOfItems, List<Item> ___itemsToList)
@@ -142,6 +143,13 @@ namespace stardew_access.Patches
                             if (!__instance.inventory.highlightMethod(__instance.inventory.actualInventory[i]))
                             {
                                 toSpeak = $"{toSpeak} not usable here";
+                            }
+
+                            if (prevSlotIndex != i)
+                            {
+                                prevSlotIndex = i;
+                                MainClass.DebugLog("here");
+                                Game1.playSound("invalid-selection");
                             }
                         }
 
@@ -309,6 +317,13 @@ namespace stardew_access.Patches
                             if (!__instance.inventory.highlightMethod(__instance.inventory.actualInventory[i]))
                             {
                                 toSpeak = $"{toSpeak} not usable here";
+                            }
+
+                            if (prevSlotIndex != i)
+                            {
+                                prevSlotIndex = i;
+                                MainClass.DebugLog("here");
+                                Game1.playSound("invalid-selection");
                             }
                         }
 

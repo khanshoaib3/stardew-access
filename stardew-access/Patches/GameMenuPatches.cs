@@ -1,5 +1,4 @@
 ﻿using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
@@ -21,6 +20,7 @@ namespace stardew_access.Patches
         internal static string profilePageQuery = "";
         internal static int currentSelectedCraftingRecipe = -1;
         internal static bool isSelectingRecipe = false;
+        internal static int prevSlotIndex = -999;
 
         internal static void CollectionsPagePatch(CollectionsPage __instance)
         {
@@ -1295,6 +1295,12 @@ namespace stardew_access.Patches
                             if (!inventoryMenu.highlightMethod(actualInventory[i]))
                             {
                                 name = $"{name} not usable here";
+
+                            if (prevSlotIndex != i)
+                            {
+                                prevSlotIndex = i;
+                                Game1.playSound("invalid-selection");
+                            }
                             }
 
                             if (giveExtraDetails)
