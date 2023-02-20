@@ -303,31 +303,33 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    for (int i = 0; i < __instance.inventory.inventory.Count; i++)
-                    {
-                        if (!__instance.inventory.inventory[i].containsPoint(x, y))
-                            continue;
-
-                        if (__instance.inventory.actualInventory[i] == null)
-                            toSpeak = "Empty slot";
-                        else
-                        {
-                            toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
-
-                            if (!__instance.inventory.highlightMethod(__instance.inventory.actualInventory[i]))
-                            {
-                                toSpeak = $"{toSpeak} not usable here";
-                            }
-                        }
-
-                        if (fieldOfficeMenuQuery != $"{toSpeak}:{i}")
-                        {
-                            fieldOfficeMenuQuery = $"{toSpeak}:{i}";
-                            MainClass.ScreenReader.Say(toSpeak, true);
-                        }
-
+                    if (InventoryUtils.narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                         return;
-                    }
+                    // for (int i = 0; i < __instance.inventory.inventory.Count; i++)
+                    // {
+                    //     if (!__instance.inventory.inventory[i].containsPoint(x, y))
+                    //         continue;
+                    //
+                    //     if (__instance.inventory.actualInventory[i] == null)
+                    //         toSpeak = "Empty slot";
+                    //     else
+                    //     {
+                    //         toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
+                    //
+                    //         if (!__instance.inventory.highlightMethod(__instance.inventory.actualInventory[i]))
+                    //         {
+                    //             toSpeak = $"{toSpeak} not usable here";
+                    //         }
+                    //     }
+                    //
+                    //     if (fieldOfficeMenuQuery != $"{toSpeak}:{i}")
+                    //     {
+                    //         fieldOfficeMenuQuery = $"{toSpeak}:{i}";
+                    //         MainClass.ScreenReader.Say(toSpeak, true);
+                    //     }
+                    //
+                    //     return;
+                    // }
 
                     for (int i = 0; i < __instance.pieceHolders.Count; i++)
                     {

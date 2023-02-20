@@ -148,7 +148,6 @@ namespace stardew_access.Patches
                             if (prevSlotIndex != i)
                             {
                                 prevSlotIndex = i;
-                                MainClass.DebugLog("here");
                                 Game1.playSound("invalid-selection");
                             }
                         }
@@ -322,7 +321,6 @@ namespace stardew_access.Patches
                             if (prevSlotIndex != i)
                             {
                                 prevSlotIndex = i;
-                                MainClass.DebugLog("here");
                                 Game1.playSound("invalid-selection");
                             }
                         }
@@ -803,7 +801,8 @@ namespace stardew_access.Patches
                 pondQueryMenuQuery = " ";
             }
 
-            GameMenuPatches.hoveredItemQueryKey = "";
+            InventoryUtils.hoveredItemQueryKey = "";
+            InventoryUtils.prevSlotIndex = -999;
         }
         #endregion
 
