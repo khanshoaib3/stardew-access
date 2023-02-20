@@ -240,7 +240,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (InventoryUtils.narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, hoverPrice: __instance.hoverPrice))
+                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, hoverPrice: __instance.hoverPrice))
                 {
                     shopMenuQueryKey = "";
                     return;
@@ -395,7 +395,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (InventoryUtils.narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                     geodeMenuQueryKey = "";
                 #endregion
             }
@@ -572,14 +572,14 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (InventoryUtils.narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
                     gameMenuQueryKey = "";
                     itemGrabMenuQueryKey = "";
                     return;
                 }
 
-                if (InventoryUtils.narrateHoveredItemInInventory(__instance.ItemsToGrabMenu, __instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
+                if (InventoryUtils.narrateHoveredSlot(__instance.ItemsToGrabMenu, __instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
                 {
                     gameMenuQueryKey = "";
                     itemGrabMenuQueryKey = "";
@@ -854,7 +854,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (InventoryUtils.narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                 {
                     gameMenuQueryKey = "";
                     craftingPageQueryKey = "";
@@ -1065,7 +1065,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Narrate hovered item
-                if (InventoryUtils.narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
                     gameMenuQueryKey = "";
                     inventoryPageQueryKey = "";

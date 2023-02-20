@@ -79,7 +79,8 @@ namespace stardew_access.Patches
                 else
                 {
                     // Player Inventory
-                    int i = narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y);
+                    int i = InventoryUtils.narrateHoveredSlotAndReturnIndex(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y,
+                            handleHighlightedItem: true, highlightedItemPrefix: "Donatable ");
                     if (i != -9999)
                     {
                         bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed(); // For donating hovered item
@@ -148,74 +149,7 @@ namespace stardew_access.Patches
             }
         }
 
-        // Returns the index of the hovered item or -9999
-        internal static int narrateHoveredItemInInventory(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y)
-        {
-            #region Narrate hovered item
-            for (int i = 0; i < inventory.Count; i++)
-            {
-                if (inventory[i].containsPoint(x, y))
-                {
-                    string toSpeak = "";
-                    if ((i + 1) <= actualInventory.Count)
-                    {
-                        if (actualInventory[i] != null)
-                        {
-                            string name = actualInventory[i].DisplayName;
-                            int stack = actualInventory[i].Stack;
-                            string quality = "";
-
-                            #region Add quality of item
-                            if (actualInventory[i] is StardewValley.Object && ((StardewValley.Object)actualInventory[i]).Quality > 0)
-                            {
-                                int qualityIndex = ((StardewValley.Object)actualInventory[i]).Quality;
-                                if (qualityIndex == 1)
-                                {
-                                    quality = "Silver quality";
-                                }
-                                else if (qualityIndex == 2 || qualityIndex == 3)
-                                {
-                                    quality = "Gold quality";
-                                }
-                                else if (qualityIndex >= 4)
-                                {
-                                    quality = "Iridium quality";
-                                }
-                            }
-                            #endregion
-
-                            if (inventoryMenu.highlightMethod(inventoryMenu.actualInventory[i]))
-                                name = $"Donatable {name}";
-
-                            if (stack > 1)
-                                toSpeak = $"{stack} {name} {quality}";
-                            else
-                                toSpeak = $"{name} {quality}";
-                        }
-                        else
-                        {
-                            // For empty slot
-                            toSpeak = "Empty Slot";
-                        }
-                    }
-                    else
-                    {
-                        // For empty slot
-                        toSpeak = "Empty Slot";
-                    }
-
-                    if (museumQueryKey != $"{toSpeak}:{i}")
-                    {
-                        museumQueryKey = $"{toSpeak}:{i}";
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
-                    return i;
-                }
-            }
-            #endregion
-            return -9999;
-        }
-
+        
         #region These methods are taken from the game's source code, https://github.com/veywrn/StardewValley/blob/3ff171b6e9e6839555d7881a391b624ccd820a83/StardewValley/Multiplayer.cs#L1331-L1395
         internal static void globalChatInfoMessage(string messageKey, params string[] args)
         {
@@ -303,33 +237,8 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    if (InventoryUtils.narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                    if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                         return;
-                    // for (int i = 0; i < __instance.inventory.inventory.Count; i++)
-                    // {
-                    //     if (!__instance.inventory.inventory[i].containsPoint(x, y))
-                    //         continue;
-                    //
-                    //     if (__instance.inventory.actualInventory[i] == null)
-                    //         toSpeak = "Empty slot";
-                    //     else
-                    //     {
-                    //         toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
-                    //
-                    //         if (!__instance.inventory.highlightMethod(__instance.inventory.actualInventory[i]))
-                    //         {
-                    //             toSpeak = $"{toSpeak} not usable here";
-                    //         }
-                    //     }
-                    //
-                    //     if (fieldOfficeMenuQuery != $"{toSpeak}:{i}")
-                    //     {
-                    //         fieldOfficeMenuQuery = $"{toSpeak}:{i}";
-                    //         MainClass.ScreenReader.Say(toSpeak, true);
-                    //     }
-                    //
-                    //     return;
-                    // }
 
                     for (int i = 0; i < __instance.pieceHolders.Count; i++)
                     {

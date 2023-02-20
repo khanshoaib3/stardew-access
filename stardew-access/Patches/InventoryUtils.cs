@@ -9,7 +9,20 @@ namespace stardew_access.Patches
         internal static string hoveredItemQueryKey = "";
         internal static int prevSlotIndex = -999;
 
-        internal static bool narrateHoveredItemInInventory(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y, bool giveExtraDetails = false, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1)
+        internal static bool narrateHoveredSlot(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y,
+                bool giveExtraDetails = false, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1,
+                bool handleHighlightedItem = false, String highlightedItemPrefix = "", String highlightedItemSuffix = "")
+        {
+            if (narrateHoveredSlotAndReturnIndex(inventoryMenu, inventory, actualInventory, x, y,
+                giveExtraDetails = false, hoverPrice = -1, extraItemToShowIndex = -1, extraItemToShowAmount = -1,
+                handleHighlightedItem = false, highlightedItemPrefix = "", highlightedItemSuffix = "") == -999)
+                return false;
+
+            return true;
+        }
+        internal static int narrateHoveredSlotAndReturnIndex(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y,
+                bool giveExtraDetails = false, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1,
+                bool handleHighlightedItem = false, String highlightedItemPrefix = "", String highlightedItemSuffix = "")
         {
             for (int i = 0; i < inventory.Count; i++)
             {
@@ -20,11 +33,15 @@ namespace stardew_access.Patches
                     // For empty slot
                     checkAndSpeak("Empty Slot", i);
                     prevSlotIndex = i;
-                    return true;
+                    return i;
                 }
 
                 string toSpeak = "";
-                string name = $"{actualInventory[i].DisplayName}{handleUnHighlightedItem(inventoryMenu.highlightMethod(actualInventory[i]), i)}";
+                bool isHighlighted = inventoryMenu.highlightMethod(actualInventory[i]);
+
+                string namePrefix = handleHighlightedItemPrefix(isHighlighted, highlightedItemPrefix);
+                string nameSuffix = $"{handleHighlightedItemSuffix(isHighlighted, highlightedItemSuffix)}{handleUnHighlightedItem(isHighlighted, i)}";
+                string name = $"{namePrefix}{actualInventory[i].DisplayName}{nameSuffix}";
                 int stack = actualInventory[i].Stack;
                 string quality = getQualityFromItem(actualInventory[i]);
                 string healthNStamine = getHealthNStaminaFromItem(actualInventory[i]);
@@ -51,11 +68,11 @@ namespace stardew_access.Patches
 
                 checkAndSpeak(toSpeak, i);
                 prevSlotIndex = i;
-                return true;
+                return i;
             }
 
             // If no slot is hovered
-            return false;
+            return -999;
         }
         
         private static void checkAndSpeak(String toSpeak, int hoveredInventoryIndex)
@@ -156,6 +173,20 @@ namespace stardew_access.Patches
             if (price == -1) return "";
             
             return $"Sell Price: {price} g";
+        }
+
+        private static String handleHighlightedItemPrefix(bool isHighlighted, String prefix)
+        {
+            if (!isHighlighted) return "";
+
+            return prefix;
+        }
+
+        private static String handleHighlightedItemSuffix(bool isHighlighted, String suffix)
+        {
+            if (!isHighlighted) return "";
+
+            return suffix;
         }
 
         private static String handleUnHighlightedItem(bool isHighlighted, int hoveredInventoryIndex)
