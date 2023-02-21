@@ -285,6 +285,11 @@ namespace stardew_access
                     original: AccessTools.Method(typeof(InstanceGame), nameof(InstanceGame.Exit)),
                     prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ExitEventPatch))
                 );
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(TextBox), nameof(TextBox.Draw)),
+                    prefix: new HarmonyMethod(typeof(TextBoxPatch), nameof(TextBoxPatch.DrawPatch))
+                );
         }
     }
 }

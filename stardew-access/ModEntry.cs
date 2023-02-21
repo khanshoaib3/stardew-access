@@ -29,6 +29,8 @@ namespace stardew_access
         internal static ModConfig Config { get => config; set => config = value; }
         public static IModHelper? ModHelper { get => modHelper; }
 
+        public static bool isAnyTextBoxActive = false;
+
         public static StaticTiles STiles
         {
             get
@@ -226,7 +228,7 @@ namespace stardew_access
                 }
 
                 // Alternate Keybinds
-                if (!isCustomizingCharacter && Game1.activeClickableMenu is not AnimalQueryMenu && Config.LeftClickAlternateKey.JustPressed()) // Excluding the character creation menu
+                if (!isCustomizingCharacter && !isAnyTextBoxActive && Config.LeftClickAlternateKey.JustPressed()) // Excluding the character creation menu
                 {
                     Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
