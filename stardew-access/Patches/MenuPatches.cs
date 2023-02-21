@@ -420,35 +420,24 @@ namespace stardew_access.Patches
         {
             try
             {
-                string toSpeak = "";
-                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
-
                 if (firstTimeInNamingMenu)
                 {
                     firstTimeInNamingMenu = false;
                     ___textBox.Selected = false;
                 }
 
-                if (___textBox.Selected)
-                {
-                    ___textBox.Update();
-                    toSpeak = ___textBox.Text;
+                if (MainClass.isAnyTextBoxActive) return;
 
-                    if (isEscPressed)
-                    {
-                        ___textBox.Selected = false;
-                    }
-                }
-                else
-                {
-                    if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
-                        toSpeak = $"{___title} text box";
-                    else if (__instance.doneNamingButton != null && __instance.doneNamingButton.containsPoint(x, y))
-                        toSpeak = $"Done naming button";
-                    else if (__instance.randomButton != null && __instance.randomButton.containsPoint(x, y))
-                        toSpeak = $"Random button";
-                }
+                string toSpeak = "";
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
+
+                if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
+                    toSpeak = $"{___title} text box";
+                else if (__instance.doneNamingButton != null && __instance.doneNamingButton.containsPoint(x, y))
+                    toSpeak = $"Done naming button";
+                else if (__instance.randomButton != null && __instance.randomButton.containsPoint(x, y))
+                    toSpeak = $"Random button";
 
                 if (toSpeak != "")
                     MainClass.ScreenReader.SayWithChecker(toSpeak, true);

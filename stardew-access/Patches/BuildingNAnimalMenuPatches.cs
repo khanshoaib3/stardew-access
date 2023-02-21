@@ -91,6 +91,8 @@ namespace stardew_access.Patches
         {
             try
             {
+                if (MainClass.isAnyTextBoxActive) return;
+
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 purchaseAnimalsMenu = __instance;
                 isOnFarm = ___onFarm;
@@ -114,9 +116,9 @@ namespace stardew_access.Patches
                     else if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
                     {
                         toSpeak = "Name Text Box";
-                        string? value = ___textBox.Text;
-                        if (value != "" && value != null && value != "null")
-                            toSpeak = $"{toSpeak}, Value: {value}";
+                        // string? value = ___textBox.Text;
+                        // if (value != "" && value != null && value != "null")
+                        //     toSpeak = $"{toSpeak}, Value: {value}";
                     }
 
                     if (purchaseAnimalMenuQuery != toSpeak)

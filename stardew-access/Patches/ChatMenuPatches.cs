@@ -1,5 +1,4 @@
-﻿using StardewValley;
-using StardewValley.Menus;
+﻿using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {

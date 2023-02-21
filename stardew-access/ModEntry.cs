@@ -218,21 +218,21 @@ namespace stardew_access
 
                 #region Mouse Click Simulation
                 // Main Keybinds
-                if (Config.LeftClickMainKey.JustPressed())
+                if (!isAnyTextBoxActive && Config.LeftClickMainKey.JustPressed())
                 {
                     Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
-                if (Config.RightClickMainKey.JustPressed())
+                if (!isAnyTextBoxActive && Config.RightClickMainKey.JustPressed())
                 {
                     Game1.activeClickableMenu.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
 
                 // Alternate Keybinds
-                if (!isCustomizingCharacter && !isAnyTextBoxActive && Config.LeftClickAlternateKey.JustPressed()) // Excluding the character creation menu
+                if (!isAnyTextBoxActive && Config.LeftClickAlternateKey.JustPressed()) // Excluding the character creation menu
                 {
                     Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
-                if (!isCustomizingCharacter && Game1.activeClickableMenu is not AnimalQueryMenu && Config.RightClickAlternateKey.JustPressed()) // Excluding the character creation menu
+                if (!isAnyTextBoxActive && Config.RightClickAlternateKey.JustPressed()) // Excluding the character creation menu
                 {
                     Game1.activeClickableMenu.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }

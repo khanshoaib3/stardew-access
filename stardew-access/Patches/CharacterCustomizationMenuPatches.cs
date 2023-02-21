@@ -34,6 +34,8 @@ namespace stardew_access.Patches {
         {
             try
             {
+                if (MainClass.isAnyTextBoxActive) return;
+
                 bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
                 string toSpeak = "";
                 if (characterDesignToggleShouldSpeak)
@@ -44,34 +46,7 @@ namespace stardew_access.Patches {
                 string itemsToSpeak = "";
                 string changesToSpeak = "";
 
-                if (___nameBox.Selected)
-                {
-                    toSpeak = ___nameBox.Text;
-
-                    if (isEscPressed)
-                    {
-                        ___nameBox.Selected = false;
-                    }
-                }
-                else if (___farmnameBox.Selected)
-                {
-                    toSpeak = ___farmnameBox.Text;
-
-                    if (isEscPressed)
-                    {
-                        ___farmnameBox.Selected = false;
-                    }
-                }
-                else if (___favThingBox.Selected)
-                {
-                    toSpeak = ___favThingBox.Text;
-
-                    if (isEscPressed)
-                    {
-                        ___favThingBox.Selected = false;
-                    }
-                }
-                else if (MainClass.Config.CharacterCreationMenuNextKey.JustPressed() && !isRunning)
+                if (MainClass.Config.CharacterCreationMenuNextKey.JustPressed() && !isRunning)
                 {
                     isRunning = true;
                     itemsToSpeak =CycleThroughItems(true, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel, ___nameBox, ___farmnameBox, ___favThingBox);
