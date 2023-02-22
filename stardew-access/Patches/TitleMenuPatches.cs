@@ -6,7 +6,6 @@ namespace stardew_access.Patches
 {
     internal class TitleMenuPatches
     {
-        private static bool isRunning = false;
         public static string advancedGameOptionsQueryKey = " ";
 
         internal static void AdvancedGameOptionsPatch(AdvancedGameOptions __instance)

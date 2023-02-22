@@ -290,11 +290,6 @@ namespace stardew_access
                     original: AccessTools.Method(typeof(TextBox), nameof(TextBox.Draw)),
                     prefix: new HarmonyMethod(typeof(TextBoxPatch), nameof(TextBoxPatch.DrawPatch))
                 );
-
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.draw)),
-                    prefix: new HarmonyMethod(typeof(IClickableMenuPatch), nameof(IClickableMenuPatch.DrawPatch))
-                );
         }
     }
 }
