@@ -225,7 +225,7 @@ namespace stardew_access
             #region On Menu CLose Patch
             harmony.Patch(
                     original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.exitThisMenu)),
-                    postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.IClickableMenuOnExitPatch))
+                    postfix: new HarmonyMethod(typeof(IClickableMenuPatch), nameof(IClickableMenuPatch.ExitThisMenuPatch))
                 );
             harmony.Patch(
                     original: AccessTools.Method(typeof(Game1), nameof(Game1.exitActiveMenu)),
@@ -289,6 +289,11 @@ namespace stardew_access
             harmony.Patch(
                     original: AccessTools.Method(typeof(TextBox), nameof(TextBox.Draw)),
                     prefix: new HarmonyMethod(typeof(TextBoxPatch), nameof(TextBoxPatch.DrawPatch))
+                );
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.draw)),
+                    prefix: new HarmonyMethod(typeof(IClickableMenuPatch), nameof(IClickableMenuPatch.DrawPatch))
                 );
         }
     }

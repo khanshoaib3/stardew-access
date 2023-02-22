@@ -604,134 +604,17 @@ namespace stardew_access.Patches
             }
         }
 
-        #region Cleanup on exitting a menu
         internal static void Game1ExitActiveMenuPatch()
         {
             try
             {
-                Cleanup(Game1.activeClickableMenu);
+                IClickableMenuPatch.Cleanup(Game1.activeClickableMenu);
             }
             catch (Exception e)
             {
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
-
-        internal static void IClickableMenuOnExitPatch(IClickableMenu __instance)
-        {
-            try
-            {
-                Cleanup(__instance);
-            }
-            catch (Exception e)
-            {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
-            }
-        }
-
-        private static void Cleanup(IClickableMenu menu)
-        {
-            if (menu is LetterViewerMenu)
-            {
-                DialoguePatches.currentLetterText = " ";
-            }
-            else if (menu is LevelUpMenu)
-            {
-                currentLevelUpTitle = " ";
-            }
-            else if (menu is Billboard)
-            {
-                QuestPatches.currentDailyQuestText = " ";
-            }
-            else if (menu is GameMenu)
-            {
-                GameMenuPatches.gameMenuQueryKey = "";
-                GameMenuPatches.craftingPageQueryKey = "";
-                GameMenuPatches.inventoryPageQueryKey = "";
-                GameMenuPatches.exitPageQueryKey = "";
-                GameMenuPatches.optionsPageQueryKey = "";
-                GameMenuPatches.socialPageQuery = "";
-                GameMenuPatches.currentSelectedCraftingRecipe = -1;
-                GameMenuPatches.isSelectingRecipe = false;
-            }
-            else if (menu is JunimoNoteMenu)
-            {
-                BundleMenuPatches.currentIngredientListItem = -1;
-                BundleMenuPatches.currentIngredientInputSlot = -1;
-                BundleMenuPatches.currentInventorySlot = -1;
-                BundleMenuPatches.junimoNoteMenuQuery = "";
-            }
-            else if (menu is ShopMenu)
-            {
-                GameMenuPatches.shopMenuQueryKey = "";
-            }
-            else if (menu is ItemGrabMenu)
-            {
-                GameMenuPatches.itemGrabMenuQueryKey = "";
-            }
-            else if (menu is GeodeMenu)
-            {
-                GameMenuPatches.geodeMenuQueryKey = "";
-            }
-            else if (menu is CarpenterMenu)
-            {
-                BuildingNAnimalMenuPatches.carpenterMenuQuery = "";
-                BuildingNAnimalMenuPatches.isUpgrading = false;
-                BuildingNAnimalMenuPatches.isDemolishing = false;
-                BuildingNAnimalMenuPatches.isPainting = false;
-                BuildingNAnimalMenuPatches.isMoving = false;
-                BuildingNAnimalMenuPatches.isConstructing = false;
-                BuildingNAnimalMenuPatches.carpenterMenu = null;
-            }
-            else if (menu is PurchaseAnimalsMenu)
-            {
-                BuildingNAnimalMenuPatches.purchaseAnimalMenuQuery = "";
-                BuildingNAnimalMenuPatches.firstTimeInNamingMenu = true;
-                BuildingNAnimalMenuPatches.purchaseAnimalsMenu = null;
-            }
-            else if (menu is DialogueBox)
-            {
-                DialoguePatches.isDialogueAppearingFirstTime = true;
-                DialoguePatches.currentDialogue = " ";
-            }
-            else if (menu is JojaCDMenu)
-            {
-                BundleMenuPatches.jojaCDMenuQuery = "";
-            }
-            else if (menu is QuestLog)
-            {
-                QuestPatches.questLogQuery = " ";
-            }
-            else if (menu is TailoringMenu)
-            {
-                tailoringMenuQuery = " ";
-            }
-            else if (menu is ForgeMenu)
-            {
-                forgeMenuQuery = " ";
-            }
-            else if (menu is ItemListMenu)
-            {
-                itemListMenuQuery = " ";
-            }
-            else if (menu is FieldOfficeMenu)
-            {
-                DonationMenuPatches.fieldOfficeMenuQuery = " ";
-            }
-            else if (menu is MuseumMenu)
-            {
-                DonationMenuPatches.museumQueryKey = " ";
-            }
-            else if (menu is PondQueryMenu)
-            {
-                pondQueryMenuQuery = " ";
-            }
-
-            InventoryUtils.hoveredItemQueryKey = "";
-            InventoryUtils.prevSlotIndex = -999;
-            TextBoxPatch.activeTextBoxes = "";
-        }
-        #endregion
 
         internal static void ExitEventPatch()
         {
