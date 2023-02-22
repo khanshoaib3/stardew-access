@@ -13,7 +13,8 @@ namespace stardew_access
     public class MainClass : Mod
     {
         #region Global Vars & Properties
-#pragma warning disable CS8603
+
+        #pragma warning disable CS8603
         private static int prevDate = -99;
         private static ModConfig? config;
         private Harmony? harmony;
@@ -99,7 +100,6 @@ namespace stardew_access
                 return warnings;
             }
         }
-#pragma warning restore CS8603
         #endregion
 
         /*********
@@ -210,54 +210,32 @@ namespace stardew_access
                 return;
 
             #region Simulate left and right clicks
-            if (Game1.activeClickableMenu != null)
+            if (Game1.activeClickableMenu != null && !TextBoxPatch.isAnyTextBoxActive)
             {
                 bool isCustomizingCharacter = Game1.activeClickableMenu is CharacterCustomization || (TitleMenu.subMenu != null && TitleMenu.subMenu is CharacterCustomization);
 
                 #region Mouse Click Simulation
-                // Main Keybinds
-                if (Config.LeftClickMainKey.JustPressed())
+                if (Config.LeftClickMainKey.JustPressed() || Config.LeftClickAlternateKey.JustPressed())
                 {
                     Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
-                }
-                if (Config.RightClickMainKey.JustPressed())
-                {
-                    Game1.activeClickableMenu.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
 
-                // Alternate Keybinds
-                if (!isCustomizingCharacter && Game1.activeClickableMenu is not AnimalQueryMenu && Config.LeftClickAlternateKey.JustPressed()) // Excluding the character creation menu
-                {
-                    Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
-                }
-                if (!isCustomizingCharacter && Game1.activeClickableMenu is not AnimalQueryMenu && Config.RightClickAlternateKey.JustPressed()) // Excluding the character creation menu
+                if (Config.RightClickMainKey.JustPressed() || Config.RightClickAlternateKey.JustPressed())
                 {
                     Game1.activeClickableMenu.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
                 #endregion
             }
 
-            if (Game1.currentMinigame != null)
+            if (Game1.currentMinigame != null && !TextBoxPatch.isAnyTextBoxActive)
             {
-                bool isCustomizingCharacter = Game1.activeClickableMenu is CharacterCustomization || (TitleMenu.subMenu != null && TitleMenu.subMenu is CharacterCustomization);
-
                 #region Mouse Click Simulation
-                // Main Keybinds
-                if (Config.LeftClickMainKey.JustPressed())
+                if (Config.LeftClickMainKey.JustPressed() || Config.LeftClickAlternateKey.JustPressed())
                 {
                     Game1.currentMinigame.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
-                }
-                if (Config.RightClickMainKey.JustPressed())
-                {
-                    Game1.currentMinigame.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
 
-                // Alternate Keybinds
-                if (Config.LeftClickAlternateKey.JustPressed())
-                {
-                    Game1.currentMinigame.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
-                }
-                if (Config.RightClickAlternateKey.JustPressed())
+                if (Config.RightClickMainKey.JustPressed() || Config.RightClickAlternateKey.JustPressed())
                 {
                     Game1.currentMinigame.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
