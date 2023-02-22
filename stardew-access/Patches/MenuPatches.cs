@@ -426,7 +426,7 @@ namespace stardew_access.Patches
                     ___textBox.Selected = false;
                 }
 
-                if (MainClass.isAnyTextBoxActive) return;
+                if (TextBoxPatch.isAnyTextBoxActive) return;
 
                 string toSpeak = "";
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
@@ -729,6 +729,7 @@ namespace stardew_access.Patches
 
             InventoryUtils.hoveredItemQueryKey = "";
             InventoryUtils.prevSlotIndex = -999;
+            TextBoxPatch.activeTextBoxes = "";
         }
         #endregion
 

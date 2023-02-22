@@ -27,7 +27,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                if (MainClass.isAnyTextBoxActive) return;
+                if (TextBoxPatch.isAnyTextBoxActive) return;
 
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed(); // For narrating animal details
@@ -91,7 +91,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                if (MainClass.isAnyTextBoxActive) return;
+                if (TextBoxPatch.isAnyTextBoxActive) return;
 
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 purchaseAnimalsMenu = __instance;

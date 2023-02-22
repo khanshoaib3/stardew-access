@@ -30,8 +30,6 @@ namespace stardew_access
         internal static ModConfig Config { get => config; set => config = value; }
         public static IModHelper? ModHelper { get => modHelper; }
 
-        public static bool isAnyTextBoxActive = false;
-
         public static StaticTiles STiles
         {
             get
@@ -212,7 +210,7 @@ namespace stardew_access
                 return;
 
             #region Simulate left and right clicks
-            if (Game1.activeClickableMenu != null && !isAnyTextBoxActive)
+            if (Game1.activeClickableMenu != null && !TextBoxPatch.isAnyTextBoxActive)
             {
                 bool isCustomizingCharacter = Game1.activeClickableMenu is CharacterCustomization || (TitleMenu.subMenu != null && TitleMenu.subMenu is CharacterCustomization);
 
@@ -229,7 +227,7 @@ namespace stardew_access
                 #endregion
             }
 
-            if (Game1.currentMinigame != null && !isAnyTextBoxActive)
+            if (Game1.currentMinigame != null && !TextBoxPatch.isAnyTextBoxActive)
             {
                 #region Mouse Click Simulation
                 if (Config.LeftClickMainKey.JustPressed() || Config.LeftClickAlternateKey.JustPressed())

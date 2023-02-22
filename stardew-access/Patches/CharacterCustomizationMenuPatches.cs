@@ -36,7 +36,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                if (MainClass.isAnyTextBoxActive) return;
+                if (TextBoxPatch.isAnyTextBoxActive) return;
 
                 bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
                 string toSpeak = "";
