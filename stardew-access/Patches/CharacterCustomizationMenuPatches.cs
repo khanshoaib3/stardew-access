@@ -1,8 +1,10 @@
 using StardewValley;
 using StardewValley.Menus;
 
-namespace stardew_access.Patches {
-    internal class CharacterCustomizationPatches {
+namespace stardew_access.Patches
+{
+    internal class CharacterCustomizationMenuPatch
+    {
         private static bool isRunning = false;
         private static int saveGameIndex = -1;
         public static string characterCreationMenuQueryKey = " ";
@@ -28,7 +30,7 @@ namespace stardew_access.Patches {
         public static bool characterDesignToggleShouldSpeak = true;
         public static ClickableComponent? currentComponent = null;
 
-        internal static void CharacterCustomizationMenuPatch(CharacterCustomization __instance, bool ___skipIntro,
+        internal static void DrawPatch(CharacterCustomization __instance, bool ___skipIntro,
         ClickableComponent ___startingCabinsLabel, ClickableComponent ___difficultyModifierLabel, TextBox ___nameBox,
         TextBox ___farmnameBox, TextBox ___favThingBox)
         {
@@ -49,7 +51,7 @@ namespace stardew_access.Patches {
                 if (MainClass.Config.CharacterCreationMenuNextKey.JustPressed() && !isRunning)
                 {
                     isRunning = true;
-                    itemsToSpeak =CycleThroughItems(true, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel, ___nameBox, ___farmnameBox, ___favThingBox);
+                    itemsToSpeak = CycleThroughItems(true, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel, ___nameBox, ___farmnameBox, ___favThingBox);
                     if (itemsToSpeak != "")
                         toSpeak = $"{itemsToSpeak} \n {toSpeak}";
                     Task.Delay(200).ContinueWith(_ => { isRunning = false; });
@@ -97,7 +99,9 @@ namespace stardew_access.Patches {
                     if (characterDesignToggle)
                     {
                         displayState = "shown";
-                    } else {
+                    }
+                    else
+                    {
                         displayState = "hidden";
                     }
                     toSpeak = $"Character design controls {displayState}. \n {toSpeak}";
@@ -185,7 +189,9 @@ namespace stardew_access.Patches {
                         prevEyeColorHue = currentEyeColorHue;
                         if (currentEyeColorHue != "")
                             toSpeak = $"{toSpeak} \n Hue: {currentEyeColorHue}";
-                    } else {
+                    }
+                    else
+                    {
                         prevEyeColorHue = "";
                     }
                 }
@@ -197,7 +203,9 @@ namespace stardew_access.Patches {
                         prevEyeColorSaturation = currentEyeColorSaturation;
                         if (currentEyeColorSaturation != "")
                             toSpeak = $"{toSpeak} \n Saturation: {currentEyeColorSaturation}";
-                    } else {
+                    }
+                    else
+                    {
                         prevEyeColorSaturation = "";
                     }
                 }
@@ -209,7 +217,9 @@ namespace stardew_access.Patches {
                         prevEyeColorValue = currentEyeColorValue;
                         if (currentEyeColorValue != "")
                             toSpeak = $"{toSpeak} \n Value: {currentEyeColorValue}";
-                    } else {
+                    }
+                    else
+                    {
                         prevEyeColorValue = "";
                     }
                 }
@@ -231,7 +241,9 @@ namespace stardew_access.Patches {
                         prevHairColorHue = currentHairColorHue;
                         if (currentHairColorHue != "")
                             toSpeak = $"{toSpeak} \n Hue: {currentHairColorHue}";
-                    } else {
+                    }
+                    else
+                    {
                         prevHairColorHue = "";
                     }
                 }
@@ -243,7 +255,9 @@ namespace stardew_access.Patches {
                         prevHairColorSaturation = currentHairColorSaturation;
                         if (currentHairColorSaturation != "")
                             toSpeak = $"{toSpeak} \n Saturation: {currentHairColorSaturation}";
-                    } else {
+                    }
+                    else
+                    {
                         prevHairColorSaturation = "";
                     }
                 }
@@ -255,7 +269,9 @@ namespace stardew_access.Patches {
                         prevHairColorValue = currentHairColorValue;
                         if (currentHairColorValue != "")
                             toSpeak = $"{toSpeak} \n Value: {currentHairColorValue}";
-                    } else {
+                    }
+                    else
+                    {
                         prevHairColorValue = "";
                     }
                 }
@@ -277,7 +293,9 @@ namespace stardew_access.Patches {
                         prevPantsColorHue = currentPantsColorHue;
                         if (currentPantsColorHue != "")
                             toSpeak = $"{toSpeak} \n Hue: {currentPantsColorHue}";
-                    } else {
+                    }
+                    else
+                    {
                         prevPantsColorHue = "";
                     }
                 }
@@ -289,7 +307,9 @@ namespace stardew_access.Patches {
                         prevPantsColorSaturation = currentPantsColorSaturation;
                         if (currentPantsColorSaturation != "")
                             toSpeak = $"{toSpeak} \n Saturation: {currentPantsColorSaturation}";
-                    } else {
+                    }
+                    else
+                    {
                         prevPantsColorSaturation = "";
                     }
                 }
@@ -301,7 +321,9 @@ namespace stardew_access.Patches {
                         prevPantsColorValue = currentPantsColorValue;
                         if (currentPantsColorValue != "")
                             toSpeak = $"{toSpeak} \n Value: {currentPantsColorValue}";
-                    } else {
+                    }
+                    else
+                    {
                         prevPantsColorValue = "";
                     }
                 }
@@ -320,12 +342,11 @@ namespace stardew_access.Patches {
             if (prevPetName != currentPetName)
             {
                 prevPetName = currentPetName;
-                if (currentPetName  != "")
+                if (currentPetName != "")
                     toSpeak = $"{toSpeak} \n Current Pet: {currentPetName}";
             }
             return toSpeak.Trim();
         }
-
 
         private static string CycleThroughItems(bool increase, CharacterCustomization __instance, bool ___skipIntro,
          ClickableComponent ___startingCabinsLabel, ClickableComponent ___difficultyModifierLabel, TextBox ___nameBox,
@@ -344,7 +365,9 @@ namespace stardew_access.Patches {
                 if (___nameBox.Text != "")
                 {
                     postText = $": {___nameBox.Text}";
-                } else {
+                }
+                else
+                {
                     postText = " Text Box";
                 }
                 buttons.Add(__instance.nameBoxCC, $"Farmer's Name{postText}");
@@ -355,7 +378,9 @@ namespace stardew_access.Patches {
                 if (___farmnameBox.Text != "")
                 {
                     postText = $": {___farmnameBox.Text}";
-                } else {
+                }
+                else
+                {
                     postText = " Text Box";
                 }
                 buttons.Add(__instance.farmnameBoxCC, $"Farm's Name{postText}");
@@ -366,7 +391,9 @@ namespace stardew_access.Patches {
                 if (___favThingBox.Text != "")
                 {
                     postText = $": {___favThingBox.Text}";
-                } else {
+                }
+                else
+                {
                     postText = " Text Box";
                 }
                 buttons.Add(__instance.favThingBoxCC, $"Favourite Thing{postText}");
@@ -386,10 +413,10 @@ namespace stardew_access.Patches {
 
             // Controls to rotate the farmer (Potentially useful for low vision players) are first if they're available.
             // They also appear above the gender buttons, so we handle them separately here.
-            if (characterDesignToggle && new[] {__instance.leftSelectionButtons.Count, __instance.rightSelectionButtons.Count }.All(c => c >= 0)) // both have Count > 0
+            if (characterDesignToggle && new[] { __instance.leftSelectionButtons.Count, __instance.rightSelectionButtons.Count }.All(c => c >= 0)) // both have Count > 0
             {
-                if (new[] {__instance.leftSelectionButtons[DesignControlsIndex].visible, __instance.rightSelectionButtons[DesignControlsIndex].visible }.All(v => v == true) // both visible
-                    && new[] {__instance.leftSelectionButtons[DesignControlsIndex].name, __instance.rightSelectionButtons[DesignControlsIndex].name }.All(n => n == "Direction")) // both named "Direction"
+                if (new[] { __instance.leftSelectionButtons[DesignControlsIndex].visible, __instance.rightSelectionButtons[DesignControlsIndex].visible }.All(v => v == true) // both visible
+                    && new[] { __instance.leftSelectionButtons[DesignControlsIndex].name, __instance.rightSelectionButtons[DesignControlsIndex].name }.All(n => n == "Direction")) // both named "Direction"
                 {
                     buttons.Add(__instance.leftSelectionButtons[DesignControlsIndex], "Rotate Left Button");
                     buttons.Add(__instance.rightSelectionButtons[DesignControlsIndex], "Rotate Right Button");
@@ -403,9 +430,9 @@ namespace stardew_access.Patches {
                 buttons.Add(__instance.genderButtons[1], ((!Game1.player.IsMale) ? "Selected " : "") + "Gender: Female Button");
             }
 
-            if (characterDesignToggle&& new[] {__instance.leftSelectionButtons.Count, __instance.rightSelectionButtons.Count }.All(c => c >= DesignControlsIndex) && new[] {__instance.leftSelectionButtons[DesignControlsIndex].visible, __instance.rightSelectionButtons[DesignControlsIndex].visible }.All(v => v == true))
+            if (characterDesignToggle && new[] { __instance.leftSelectionButtons.Count, __instance.rightSelectionButtons.Count }.All(c => c >= DesignControlsIndex) && new[] { __instance.leftSelectionButtons[DesignControlsIndex].visible, __instance.rightSelectionButtons[DesignControlsIndex].visible }.All(v => v == true))
             {
-                while(DesignControlsIndex < __instance.leftSelectionButtons.Count)
+                while (DesignControlsIndex < __instance.leftSelectionButtons.Count)
                 {
                     ClickableComponent left = __instance.leftSelectionButtons[DesignControlsIndex];
                     ClickableComponent right = __instance.rightSelectionButtons[DesignControlsIndex];
@@ -549,7 +576,7 @@ namespace stardew_access.Patches {
             }
 
             currentComponent = buttons.ElementAt(saveGameIndex).Key;
-            currentComponent!.snapMouseCursor(); 
+            currentComponent!.snapMouseCursor();
             __instance.setCurrentlySnappedComponentTo(currentComponent!.myID);
 
             toSpeak = buttons.ElementAt(saveGameIndex).Value;
@@ -630,16 +657,18 @@ namespace stardew_access.Patches {
                         break;
                 }
                 return sb;
-            } else {
+            }
+            else
+            {
                 return null;
             }
         }
 
-        private static  void AdjustCurrentSlider(bool increase, CharacterCustomization __instance, int amount=1) 
+        private static void AdjustCurrentSlider(bool increase, CharacterCustomization __instance, int amount = 1)
         {
             if (currentComponent != null && currentComponent.myID >= 522 && currentComponent.myID <= 530)
             {
-                SliderBar sb = getCurrentSliderBar(currentComponent.myID, __instance) !;
+                SliderBar sb = getCurrentSliderBar(currentComponent.myID, __instance)!;
                 if (sb != null)
                 {
                     double step = ((double)sb.bounds.Width / 100d); // size of 1% change in slider value
@@ -650,7 +679,9 @@ namespace stardew_access.Patches {
                     {
                         value = Math.Min(value + amount, 99d);
                         x = Math.Min(Math.Ceiling((value * step)), (double)sb.bounds.Width);
-                    } else {
+                    }
+                    else
+                    {
                         value = Math.Max(value - amount, 0d);
                         x = Math.Max(Math.Ceiling((value * step)), 0d);
                     }
@@ -796,7 +827,9 @@ namespace stardew_access.Patches {
             if (currentComponent != null && currentComponent.name == "Pet")
             {
                 return ((Game1.player.catPerson) ? "Cat" : "Dog") + " Breed: " + Game1.player.whichPetBreed;
-            } else {
+            }
+            else
+            {
                 return "";
             }
         }
