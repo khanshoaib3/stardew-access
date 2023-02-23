@@ -63,19 +63,24 @@ namespace stardew_access.Patches
             }
             else if (menu is CarpenterMenu)
             {
-                BuildingNAnimalMenuPatches.carpenterMenuQuery = "";
-                BuildingNAnimalMenuPatches.isUpgrading = false;
-                BuildingNAnimalMenuPatches.isDemolishing = false;
-                BuildingNAnimalMenuPatches.isPainting = false;
-                BuildingNAnimalMenuPatches.isMoving = false;
-                BuildingNAnimalMenuPatches.isConstructing = false;
-                BuildingNAnimalMenuPatches.carpenterMenu = null;
+                CarpenterMenuPatch.carpenterMenuQuery = "";
+                CarpenterMenuPatch.isUpgrading = false;
+                CarpenterMenuPatch.isDemolishing = false;
+                CarpenterMenuPatch.isPainting = false;
+                CarpenterMenuPatch.isMoving = false;
+                CarpenterMenuPatch.isConstructing = false;
+                CarpenterMenuPatch.carpenterMenu = null;
             }
             else if (menu is PurchaseAnimalsMenu)
             {
-                BuildingNAnimalMenuPatches.purchaseAnimalMenuQuery = "";
-                BuildingNAnimalMenuPatches.firstTimeInNamingMenu = true;
-                BuildingNAnimalMenuPatches.purchaseAnimalsMenu = null;
+                PurchaseAnimalsMenuPatch.purchaseAnimalMenuQuery = "";
+                PurchaseAnimalsMenuPatch.firstTimeInNamingMenu = true;
+                PurchaseAnimalsMenuPatch.purchaseAnimalsMenu = null;
+            }
+            else if (menu is AnimalQueryMenu)
+            {
+                AnimalQueryMenuPatch.animalQueryMenuQuery = "";
+                AnimalQueryMenuPatch.animalQueryMenu = null;
             }
             else if (menu is DialogueBox)
             {

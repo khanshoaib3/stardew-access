@@ -128,14 +128,14 @@ namespace stardew_access
             HarmonyPatches.Initialize(harmony);
 
             //Initialize marked locations
-            for (int i = 0; i < BuildingNAnimalMenuPatches.marked.Length; i++)
+            for (int i = 0; i < BuildingOperations.marked.Length; i++)
             {
-                BuildingNAnimalMenuPatches.marked[i] = Vector2.Zero;
+                BuildingOperations.marked[i] = Vector2.Zero;
             }
 
-            for (int i = 0; i < BuildingNAnimalMenuPatches.availableBuildings.Length; i++)
+            for (int i = 0; i < BuildingOperations.availableBuildings.Length; i++)
             {
-                BuildingNAnimalMenuPatches.availableBuildings[i] = null;
+                BuildingOperations.availableBuildings[i] = null;
             }
             #endregion
 
