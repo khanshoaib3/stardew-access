@@ -34,13 +34,11 @@ namespace stardew_access.Patches
             else if (menu is GameMenu)
             {
                 GameMenuPatches.gameMenuQueryKey = "";
-                GameMenuPatches.craftingPageQueryKey = "";
                 GameMenuPatches.inventoryPageQueryKey = "";
                 GameMenuPatches.exitPageQueryKey = "";
                 GameMenuPatches.optionsPageQueryKey = "";
                 SocialPagePatch.Cleanup();
-                GameMenuPatches.currentSelectedCraftingRecipe = -1;
-                GameMenuPatches.isSelectingRecipe = false;
+                CraftingPagePatch.Cleanup();
             }
             else if (menu is JunimoNoteMenu)
             {
