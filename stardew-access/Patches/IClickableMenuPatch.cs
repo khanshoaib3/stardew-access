@@ -118,8 +118,7 @@ namespace stardew_access.Patches
                 MenuPatches.pondQueryMenuQuery = " ";
             }
 
-            InventoryUtils.hoveredItemQueryKey = "";
-            InventoryUtils.prevSlotIndex = -999;
+            InventoryUtils.Cleanup();
             TextBoxPatch.activeTextBoxes = "";
         }
     }

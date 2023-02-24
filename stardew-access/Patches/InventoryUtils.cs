@@ -202,5 +202,11 @@ namespace stardew_access.Patches
             if (MainClass.Config.DisableInventoryVerbosity) return "";
             return " not usable here";
         }
+
+        internal static void Cleanup()
+        {
+            hoveredItemQueryKey = "";
+            prevSlotIndex = -999;
+        }
     }
 }
