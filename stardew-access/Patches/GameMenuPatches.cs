@@ -18,21 +18,6 @@ namespace stardew_access.Patches
         internal static int currentSelectedCraftingRecipe = -1;
         internal static bool isSelectingRecipe = false;
 
-        internal static void CollectionsPagePatch(CollectionsPage __instance)
-        {
-            try
-            {
-                int x = Game1.getMousePosition().X, y = Game1.getMousePosition().Y;
-                if (__instance.letterviewerSubMenu != null)
-                {
-                    DialoguePatches.NarrateLetterContent(__instance.letterviewerSubMenu);
-                }
-            }
-            catch (System.Exception e)
-            {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
-            }
-        }
 
         internal static void SocialPagePatch(SocialPage __instance, List<ClickableTextureComponent> ___sprites, int ___slotPosition, List<string> ___kidsNames)
         {
