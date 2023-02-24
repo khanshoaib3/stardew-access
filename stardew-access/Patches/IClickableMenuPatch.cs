@@ -34,10 +34,10 @@ namespace stardew_access.Patches
             else if (menu is GameMenu)
             {
                 GameMenuPatches.gameMenuQueryKey = "";
-                GameMenuPatches.inventoryPageQueryKey = "";
                 GameMenuPatches.exitPageQueryKey = "";
                 GameMenuPatches.optionsPageQueryKey = "";
                 SocialPagePatch.Cleanup();
+                InventoryPagePatch.Cleanup();
                 CraftingPagePatch.Cleanup();
             }
             else if (menu is JunimoNoteMenu)
