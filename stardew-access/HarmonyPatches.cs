@@ -105,7 +105,7 @@ namespace stardew_access
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(SocialPage), nameof(SocialPage.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.SocialPagePatch))
+                postfix: new HarmonyMethod(typeof(SocialPagePatch), nameof(SocialPagePatch.DrawPatch))
             );
 
             harmony.Patch(

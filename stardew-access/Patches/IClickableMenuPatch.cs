@@ -38,7 +38,7 @@ namespace stardew_access.Patches
                 GameMenuPatches.inventoryPageQueryKey = "";
                 GameMenuPatches.exitPageQueryKey = "";
                 GameMenuPatches.optionsPageQueryKey = "";
-                GameMenuPatches.socialPageQuery = "";
+                SocialPagePatch.Cleanup();
                 GameMenuPatches.currentSelectedCraftingRecipe = -1;
                 GameMenuPatches.isSelectingRecipe = false;
             }
