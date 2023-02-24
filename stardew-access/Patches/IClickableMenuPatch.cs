@@ -35,7 +35,7 @@ namespace stardew_access.Patches
             {
                 GameMenuPatches.gameMenuQueryKey = "";
                 GameMenuPatches.exitPageQueryKey = "";
-                GameMenuPatches.optionsPageQueryKey = "";
+                OptionsPagePatch.Cleanup();
                 SocialPagePatch.Cleanup();
                 InventoryPagePatch.Cleanup();
                 CraftingPagePatch.Cleanup();
