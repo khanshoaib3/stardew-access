@@ -51,7 +51,7 @@ namespace stardew_access.Patches
             }
             else if (menu is ShopMenu)
             {
-                GameMenuPatches.shopMenuQueryKey = "";
+                ShopMenuPatch.Cleanup();
             }
             else if (menu is ItemGrabMenu)
             {
