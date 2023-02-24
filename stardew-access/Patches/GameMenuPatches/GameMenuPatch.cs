@@ -1,14 +1,13 @@
 ﻿using StardewValley;
 using StardewValley.Menus;
-using StardewValley.Objects;
 
 namespace stardew_access.Patches
 {
-    internal class GameMenuPatches
+    internal class GameMenuPatch
     {
         internal static string gameMenuQueryKey = "";
 
-        internal static void GameMenuPatch(GameMenu __instance)
+        internal static void DrawPatch(GameMenu __instance)
         {
             try
             {
@@ -37,6 +36,11 @@ namespace stardew_access.Patches
             {
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
+        }
+
+        internal static void Cleanup()
+        {
+            gameMenuQueryKey = "";
         }
     }
 }

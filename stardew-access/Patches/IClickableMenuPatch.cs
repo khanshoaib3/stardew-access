@@ -33,7 +33,7 @@ namespace stardew_access.Patches
             }
             else if (menu is GameMenu)
             {
-                GameMenuPatches.gameMenuQueryKey = "";
+                GameMenuPatch.Cleanup();
                 ExitPagePatch.Cleanup();
                 OptionsPagePatch.Cleanup();
                 SocialPagePatch.Cleanup();
