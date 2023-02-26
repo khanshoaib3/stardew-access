@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
@@ -94,7 +95,7 @@ namespace stardew_access.Features
             Dictionary<Vector2, (string, string)> detectedTiles = new Dictionary<Vector2, (string, string)>();
 
             Queue<Vector2> toSearch = new Queue<Vector2>();
-            List<Vector2> searched = new List<Vector2>();
+            HashSet<Vector2> searched = new HashSet<Vector2>();
             int[] dirX = { -1, 0, 1, 0 };
             int[] dirY = { 0, 1, 0, -1 };
 
@@ -142,7 +143,7 @@ namespace stardew_access.Features
             (bool, string? name, string category) tileInfo;
 
             Queue<Vector2> toSearch = new Queue<Vector2>();
-            List<Vector2> searched = new List<Vector2>();
+            HashSet<Vector2> searched = new HashSet<Vector2>();
             int[] dirX = { -1, 0, 1, 0 };
             int[] dirY = { 0, 1, 0, -1 };
             int count = 0;
@@ -185,7 +186,7 @@ namespace stardew_access.Features
         /// <param name="searched">The list of searched items.</param>
         /// <param name="limit">The radius of search</param>
         /// <returns>Returns true if the tile is valid for search.</returns>
-        public bool isValid(Vector2 item, Vector2 center, List<Vector2> searched, int limit)
+        public bool isValid(Vector2 item, Vector2 center, HashSet<Vector2> searched, int limit)
         {
             if (Math.Abs(item.X - center.X) > limit)
                 return false;
