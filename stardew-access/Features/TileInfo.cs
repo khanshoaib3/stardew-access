@@ -34,7 +34,7 @@ namespace stardew_access.Features
         {
             int x = (int)tile.X;
             int y = (int)tile.Y;
-            string? toReturn = "";
+            string? toReturn = null;
             CATEGORY? category = CATEGORY.Others;
 
             bool isColliding = isCollidingAtTile(x, y);
@@ -57,7 +57,7 @@ namespace stardew_access.Features
                 else
                     category = CATEGORY.NPCs;
             }
-            else if (farmAnimal != null)
+            else if (farmAnimal is not null)
             {
                 toReturn = farmAnimal;
                 category = CATEGORY.FarmAnimals;
@@ -161,10 +161,12 @@ namespace stardew_access.Features
                 try
                 {
                     NetCollection<Debris> droppedItems = Game1.currentLocation.debris;
-                    if (droppedItems.Count() > 0)
+                    int droppedItemsCount = droppedItems.Count();
+                    if (droppedItemsCount > 0)
                     {
-                        foreach (var item in droppedItems)
+                        for (int i = 0; i < droppedItemsCount; i++)
                         {
+                            var item = droppedItems[i];
                             int xPos = ((int)item.Chunks[0].position.Value.X / Game1.tileSize) + 1;
                             int yPos = ((int)item.Chunks[0].position.Value.Y / Game1.tileSize) + 1;
                             if (xPos != x || yPos != y) continue;
@@ -174,10 +176,11 @@ namespace stardew_access.Features
                             string name = item.item.DisplayName;
                             int count = item.item.Stack;
 
-                            if (toReturn == "")
+                            if (toReturn is null)
                                 return ($"Dropped Item: {count} {name}", CATEGORY.DroppedItems);
                             else
                                 toReturn = $"{toReturn}, Dropped Item: {count} {name}";
+                            item = null;
                         }
                     }
                 }
@@ -188,9 +191,6 @@ namespace stardew_access.Features
             }
             #endregion
 
-            if (toReturn == "")
-                return (null, category);
-
             return (toReturn, category);
         }
 
@@ -198,7 +198,7 @@ namespace stardew_access.Features
         {
             string? toReturn = null;
             Bush? bush = (Bush)Game1.currentLocation.getLargeTerrainFeatureAt(x, y);
-            if (bush == null)
+            if (bush is null)
                 return null;
             if (lessInfo && (bush.tilePosition.Value.X != x || bush.tilePosition.Value.Y != y))
                 return null;
@@ -264,7 +264,7 @@ namespace stardew_access.Features
                     (46, 12) => "Bulletin Board",
                     _ => null,
                 };
-                if (name != null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
+                if (name is not null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
                     return $"{name} bundle";
             }
             else if (Game1.currentLocation is AbandonedJojaMart)
@@ -275,7 +275,7 @@ namespace stardew_access.Features
                     _ => null,
                 };
 
-                if (name != null)
+                if (name is not null)
                     return $"{name} bundle";
             }
 
@@ -286,6 +286,7 @@ namespace stardew_access.Features
         {
             Rectangle rect = new Rectangle(x * 64 + 1, y * 64 + 1, 62, 62);
 
+            /* Reference
             // Check whether the position is a warp point, if so then return false, sometimes warp points are 1 tile off the map for example in coops and barns
             if (isWarpPointAtTile(x, y)) return false;
 
@@ -294,19 +295,32 @@ namespace stardew_access.Features
                 return true;
             }
 
-            if (Game1.currentLocation is Woods && getStumpsInWoods(x, y) != null)
+            if (Game1.currentLocation is Woods && getStumpsInWoods(x, y) is not null)
                 return true;
 
+            return false;
+            */
+            
+            // Optimized
+            // Sometimes warp points are 1 tile off the map for example in coops and barns; check that this is not a warp point
+            if (!isWarpPointAtTile(x, y)) 
+            {
+                // not a warp point
+                //directly return the value of the logical comparison rather than wasting time in conditional
+                return ((Game1.currentLocation.isCollidingPosition(rect, Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: true)) || (Game1.currentLocation is Woods && getStumpsInWoods(x, y) is not null));
+            }
+            // was a warp point; return false
             return false;
         }
 
         public static Boolean isWarpPointAtTile(int x, int y)
         {
-            if (Game1.currentLocation == null) return false;
+            if (Game1.currentLocation is null) return false;
 
-            foreach (Warp warpPoint in Game1.currentLocation.warps)
+            int warpsCount = Game1.currentLocation.warps.Count();
+            for (int i = 0; i < warpsCount; i++)
             {
-                if (warpPoint.X == x && warpPoint.Y == y) return true;
+                if (Game1.currentLocation.warps[i].X == x && Game1.currentLocation.warps[i].Y == y) return true;
             }
 
             return false;
@@ -314,11 +328,11 @@ namespace stardew_access.Features
 
         public static string? getFarmAnimalAt(GameLocation? location, int x, int y)
         {
-            if (location == null)
+            if (location is null || (location is not Farm && location is not AnimalHouse))
                 return null;
 
-            if (location is not Farm && location is not AnimalHouse)
-                return null;
+            //if (location is not Farm && location is not AnimalHouse)
+                //return null;
 
             List<FarmAnimal>? farmAnimals = null;
 
@@ -368,7 +382,7 @@ namespace stardew_access.Features
                 else
                 {
                     Building building = farm.getBuildingAt(new Vector2(x, y));
-                    if (building != null)
+                    if (building is not null)
                     {
                         string name = building.buildingType.Value;
 
@@ -397,7 +411,7 @@ namespace stardew_access.Features
                     }
                 }
             }
-            else if (Game1.currentLocation.currentEvent != null)
+            else if (Game1.currentLocation.currentEvent is not null)
             {
                 string event_name = Game1.currentLocation.currentEvent.FestivalName;
                 if (event_name == "Egg Festival" && x == 21 && y == 55)
@@ -1198,8 +1212,10 @@ namespace stardew_access.Features
             {
                 if (Game1.currentLocation == null) return null;
 
-                foreach (Warp warpPoint in Game1.currentLocation.warps)
+                int warpCount = Game1.currentLocation.warps.Count();
+                for (int i = 0; i < warpCount; i++)
                 {
+                    Warp warpPoint = Game1.currentLocation.warps[i];
                     if (warpPoint.X != x || warpPoint.Y != y) continue;
 
                     return $"{warpPoint.TargetName} Entrance";
@@ -1303,8 +1319,10 @@ namespace stardew_access.Features
             if (Game1.currentLocation is not IslandLocation islandLocation)
                 return null;
 
-            foreach (var perch in islandLocation.parrotUpgradePerches)
+            int perchCount = islandLocation.parrotUpgradePerches.Count();
+            for (int i = 0; i < perchCount; i++)
             {
+                var perch = islandLocation.parrotUpgradePerches[i];
                 if (!perch.tilePosition.Value.Equals(new Point(x, y)))
                     continue;
 

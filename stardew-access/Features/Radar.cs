@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
@@ -129,6 +130,7 @@ namespace stardew_access.Features
                 }
             }
 
+            searched.Clear();
             return detectedTiles;
         }
 
@@ -138,6 +140,7 @@ namespace stardew_access.Features
         /// <returns>A dictionary with all the detected tiles along with the name of the object on it and it's category.</returns>
         public Dictionary<Vector2, (string, string)> SearchLocation()
         {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             Dictionary<Vector2, (string, string)> detectedTiles = new Dictionary<Vector2, (string, string)>();
             Vector2 position = Vector2.Zero;
             (bool, string? name, string category) tileInfo;
@@ -151,6 +154,11 @@ namespace stardew_access.Features
             toSearch.Enqueue(Game1.player.getTileLocation());
             searched.Add(Game1.player.getTileLocation());
 
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            MainClass.DebugLog($"Search init duration: {elapsedMs}");
+            elapsedMs = 0;
+            watch = System.Diagnostics.Stopwatch.StartNew();
             while (toSearch.Count > 0)
             {
                 Vector2 item = toSearch.Dequeue();
@@ -174,7 +182,10 @@ namespace stardew_access.Features
                     }
                 }
             }
-
+            watch.Stop();
+            elapsedMs = watch.ElapsedMilliseconds;
+            MainClass.DebugLog($"Search loop duration: {elapsedMs}; {count} iterations.");
+            searched.Clear();
             return detectedTiles;
         }
 
@@ -209,7 +220,7 @@ namespace stardew_access.Features
                 tileDetail.category = CATEGORY.Others;
 
             return (true, tileDetail.name, tileDetail.category.ToString());
-
+            
         }
 
         public void CheckTileAndPlaySound(Vector2 position)
