@@ -547,67 +547,67 @@ namespace stardew_access.Features
                         return (CATEGORY.Interactables, "Island Trader");
                 }
             }
-            else if (Game1.currentLocation.Name.ToLower().Equals("coop"))
+            else if (Game1.currentLocation.Name.Equals("coop", StringComparison.OrdinalIgnoreCase))
             {
                 if (x >= 6 && x <= 9 && y == 3)
                 {
                     (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
-                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                    if (bench.name is not null && bench.name.Contains("hay", StringComparison.OrdinalIgnoreCase))
                         return (CATEGORY.Others, "Feeding Bench");
                     else
                         return (CATEGORY.Others, "Empty Feeding Bench");
                 }
             }
-            else if (Game1.currentLocation.Name.ToLower().Equals("big coop") || Game1.currentLocation.Name.ToLower().Equals("coop2"))
+            else if (Game1.currentLocation.Name.Equals("coop2", StringComparison.OrdinalIgnoreCase) || Game1.currentLocation.Name.Equals("big coop", StringComparison.OrdinalIgnoreCase))
             {
                 if (x >= 6 && x <= 13 && y == 3)
                 {
                     (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
-                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                    if (bench.name is not null && bench.name.Contains("hay", StringComparison.OrdinalIgnoreCase))
                         return (CATEGORY.Others, "Feeding Bench");
                     else
                         return (CATEGORY.Others, "Empty Feeding Bench");
                 }
             }
-            else if (Game1.currentLocation.Name.ToLower().Equals("deluxe coop") || Game1.currentLocation.Name.ToLower().Equals("coop3"))
+            else if (Game1.currentLocation.Name.Equals("coop3", StringComparison.OrdinalIgnoreCase) || Game1.currentLocation.Name.Equals("deluxe coop", StringComparison.OrdinalIgnoreCase))
             {
                 if (x >= 6 && x <= 17 && y == 3)
                 {
                     (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
-                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                    if (bench.name is not null && bench.name.Contains("hay", StringComparison.OrdinalIgnoreCase))
                         return (CATEGORY.Others, "Feeding Bench");
                     else
                         return (CATEGORY.Others, "Empty Feeding Bench");
                 }
             }
-            else if (Game1.currentLocation.Name.ToLower().Equals("barn"))
+            else if (Game1.currentLocation.Name.Equals("barn", StringComparison.OrdinalIgnoreCase))
             {
                 if (x >= 8 && x <= 11 && y == 3)
                 {
                     (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
-                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                    if (bench.name != null && bench.name.Contains("hay", StringComparison.OrdinalIgnoreCase))
                         return (CATEGORY.Others, "Feeding Bench");
                     else
                         return (CATEGORY.Others, "Empty Feeding Bench");
                 }
             }
-            else if (Game1.currentLocation.Name.ToLower().Equals("big barn") || Game1.currentLocation.Name.ToLower().Equals("barn2"))
+            else if (Game1.currentLocation.Name.Equals("barn2", StringComparison.OrdinalIgnoreCase) || Game1.currentLocation.Name.Equals("big barn", StringComparison.OrdinalIgnoreCase))
             {
                 if (x >= 8 && x <= 15 && y == 3)
                 {
                     (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
-                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                    if (bench.name is not null && bench.name.Contains("hay", StringComparison.OrdinalIgnoreCase))
                         return (CATEGORY.Others, "Feeding Bench");
                     else
                         return (CATEGORY.Others, "Empty Feeding Bench");
                 }
             }
-            else if (Game1.currentLocation.Name.ToLower().Equals("deluxe barn") || Game1.currentLocation.Name.ToLower().Equals("barn3"))
+            else if (Game1.currentLocation.Name.Equals("barn3", StringComparison.OrdinalIgnoreCase) || Game1.currentLocation.Name.Equals("deluxe barn", StringComparison.OrdinalIgnoreCase))
             {
                 if (x >= 8 && x <= 19 && y == 3)
                 {
                     (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
-                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                    if (bench.name is not null && bench.name.Contains("hay", StringComparison.OrdinalIgnoreCase))
                         return (CATEGORY.Others, "Feeding Bench");
                     else
                         return (CATEGORY.Others, "Empty Feeding Bench");
@@ -917,11 +917,11 @@ namespace stardew_access.Features
             }
             else if (obj.IsSprinkler() && obj.heldObject.Value != null) // Detect the upgrade attached to the sprinkler
             {
-                if (MainClass.ModHelper != null && obj.heldObject.Value.Name.ToLower().Contains("pressure nozzle"))
+                if (MainClass.ModHelper is not null && obj.heldObject.Value.Name.Contains("pressure nozzle", StringComparison.OrdinalIgnoreCase))
                 {
                     toReturn.name = MainClass.ModHelper.Translation.Get("readtile.sprinkler.pressurenozzle", new { value = toReturn.name });
                 }
-                else if (MainClass.ModHelper != null && obj.heldObject.Value.Name.ToLower().Contains("enricher"))
+                else if (MainClass.ModHelper is not null && obj.heldObject.Value.Name.Contains("enricher", StringComparison.OrdinalIgnoreCase))
                 {
                     toReturn.name = MainClass.ModHelper.Translation.Get("readtile.sprinkler.enricher", new { value = toReturn.name });
                 }
@@ -930,11 +930,11 @@ namespace stardew_access.Features
                     toReturn.name = $"{obj.heldObject.Value.DisplayName} {toReturn.name}";
                 }
             }
-            else if ((obj.Type == "Crafting" && obj.bigCraftable.Value) || obj.Name.ToLower().Equals("crab pot"))
+            else if ((obj.Type == "Crafting" && obj.bigCraftable.Value) || obj.Name.Equals("crab pot", StringComparison.OrdinalIgnoreCase))
             {
                 foreach (string machine in trackable_machines)
                 {
-                    if (obj.Name.ToLower().Contains(machine))
+                    if (obj.Name.Contains(machine, StringComparison.OrdinalIgnoreCase))
                     {
                         toReturn.name = obj.DisplayName;
                         toReturn.category = CATEGORY.Machines;
@@ -943,15 +943,15 @@ namespace stardew_access.Features
             }
             else if (correctNameAndCategory.name != null)
                 toReturn = correctNameAndCategory;
-            else if (obj.name.ToLower().Equals("stone"))
+            else if (obj.name.Equals("stone", StringComparison.OrdinalIgnoreCase))
                 toReturn.category = CATEGORY.Debris;
-            else if (obj.name.ToLower().Equals("twig"))
+            else if (obj.name.Equals("twig", StringComparison.OrdinalIgnoreCase))
                 toReturn.category = CATEGORY.Debris;
-            else if (obj.name.ToLower().Contains("quartz"))
+            else if (obj.name.Contains("quartz", StringComparison.OrdinalIgnoreCase))
                 toReturn.category = CATEGORY.MineItems;
-            else if (obj.name.ToLower().Contains("earth crystal"))
+            else if (obj.name.Contains("earth crystal", StringComparison.OrdinalIgnoreCase))
                 toReturn.category = CATEGORY.MineItems;
-            else if (obj.name.ToLower().Contains("frozen tear"))
+            else if (obj.name.Contains("frozen tear", StringComparison.OrdinalIgnoreCase))
                 toReturn.category = CATEGORY.MineItems;
 
             if (toReturn.category == CATEGORY.Machines) // Fix for `Harvestable table` and `Busy nodes`
@@ -1030,7 +1030,7 @@ namespace stardew_access.Features
                     return ("Item box", CATEGORY.MineItems);
             }
 
-            if (objName.ToLower().Contains("stone"))
+            if (objName.Contains("stone", StringComparison.OrdinalIgnoreCase))
             {
                 switch (index)
                 {

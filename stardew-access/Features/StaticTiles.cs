@@ -12,7 +12,7 @@ namespace stardew_access.Features
 
         public StaticTiles()
         {
-            if (MainClass.ModHelper == null)
+            if (MainClass.ModHelper is  null)
                 return;
 
             try
@@ -72,9 +72,9 @@ namespace stardew_access.Features
                         bool isLoaded = MainClass.ModHelper.ModRegistry.IsLoaded(uniqueModID);
 
                         if (!isLoaded) continue; // Skip if the specified mod is not loaded
-                        if (locationName.ToLower().Equals(locationNameInJson.ToLower())) return true;
+                        if (locationName.Equals(locationNameInJson, StringComparison.OrdinalIgnoreCase)) return true;
                     }
-                    else if (locationName.ToLower().Equals(location.Key.ToLower()))
+                    else if (locationName.Equals(location.Key, StringComparison.OrdinalIgnoreCase))
                         return true;
                 }
             }
@@ -82,16 +82,12 @@ namespace stardew_access.Features
             return false;
         }
 
-        public string? getStaticTileInfoAt(int x, int y)
+        public (string? name, CATEGORY category) GetTileFromSet(int x, int y, GameLocation currentLocation, HashSet<KeyValuePair<string, JToken?>> data)
         {
-            return getStaticTileInfoAtWithCategory(x, y).name;
-        }
-
-        public (string? name, CATEGORY category) GetTileFromSet(int x, int y, HashSet<KeyValuePair<string, JToken>> data) {
             foreach (KeyValuePair<string, JToken?> location in data)
             {
                 string locationName = location.Key;
-                if (locationName.Contains("||") && MainClass.ModHelper != null)
+                if (locationName.Contains("||") && MainClass.ModHelper is not null)
                 {
                     //                      Mod Specific Tiles
                     // We can add tiles that only get detected when the specified mod is loaded.
@@ -119,34 +115,34 @@ namespace stardew_access.Features
                     if (!isLoaded) continue; // Skip if the specified mod is not loaded
                 }
 
-                if (locationName.Contains("_") && locationName.ToLower().StartsWith("farm_"))
+                if (locationName.StartsWith("farm_", StringComparison.OrdinalIgnoreCase))
                 {
                     string farmType = locationName.Substring(locationName.LastIndexOf("_") + 1);
                     int farmTypeIndex = getFarmTypeIndex(farmType);
                     locationName = locationName.Remove(locationName.LastIndexOf("_"));
 
                     if (farmTypeIndex != Game1.whichFarm) continue; // Skip if current farm type does not matches
-                    // if (Game1.whichModFarm != null) MainClass.DebugLog($"{farmType} {Game1.whichModFarm.MapName}");
-                    if (farmTypeIndex != 7 || Game1.whichModFarm == null || !farmType.ToLower().Equals(Game1.whichModFarm.MapName.ToLower())) continue; // Not tested but should work
+                    // if (Game1.whichModFarm is not null) MainClass.DebugLog($"{farmType} {Game1.whichModFarm.MapName}");
+                    if (farmTypeIndex != 7 || Game1.whichModFarm is null || !farmType.Equals(Game1.whichModFarm.MapName, StringComparison.OrdinalIgnoreCase)) continue; // Not tested but should work
                 }
 
-                if (locationName.ToLower().Equals("town_joja") && Game1.MasterPlayer.mailReceived.Contains("JojaMember"))
+                if (locationName.Equals("town_joja", StringComparison.OrdinalIgnoreCase) && Game1.MasterPlayer.mailReceived.Contains("JojaMember"))
                 {
                     locationName = "town";
                 }
 
-                if (!Game1.currentLocation.Name.ToLower().Equals(locationName.ToLower())) continue;
-                if (location.Value == null) continue;
+                if (!currentLocation.Name.Equals(locationName, StringComparison.OrdinalIgnoreCase)) continue;
+                if (location.Value is null) continue;
 
                 foreach (var tile in ((JObject)location.Value))
                 {
-                    if (tile.Value == null) continue;
+                    if (tile.Value is null) continue;
 
                     JToken? tileXArray = tile.Value["x"];
                     JToken? tileYArray = tile.Value["y"];
                     JToken? tileType = tile.Value["type"];
 
-                    if (tileXArray == null || tileYArray == null || tileType == null)
+                    if (tileXArray is null || tileYArray is null || tileType is null)
                         continue;
 
                     bool isXPresent = false;
@@ -189,12 +185,19 @@ namespace stardew_access.Features
                 }
             }
 
-        return (null, CATEGORY.Others);
+            return (null, CATEGORY.Others);
         }
 
-        public (string? name, CATEGORY category) getStaticTileInfoAtWithCategory(int x, int y) {
-            if (customTilesDataSet != null) return GetTileFromSet(x, y, customTilesDataSet);
-            if (staticTilesDataSet != null) return GetTileFromSet(x, y, staticTilesDataSet);
+        public string? getStaticTileInfoAt(int x, int y)
+        {
+            return getStaticTileInfoAtWithCategory(x, y).name;
+        }
+
+        public (string? name, CATEGORY category) getStaticTileInfoAtWithCategory(int x, int y)
+        {
+            GameLocation currentLocation = Game1.currentLocation;
+            if (customTilesDataSet is not null) return GetTileFromSet(x, y, currentLocation, customTilesDataSet);
+            if (staticTilesDataSet is not null) return GetTileFromSet(x, y, currentLocation, staticTilesDataSet);
 
             return (null, CATEGORY.Others);
         }
