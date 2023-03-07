@@ -42,10 +42,7 @@ namespace stardew_access.Patches
             }
             else if (menu is JunimoNoteMenu)
             {
-                BundleMenuPatches.currentIngredientListItem = -1;
-                BundleMenuPatches.currentIngredientInputSlot = -1;
-                BundleMenuPatches.currentInventorySlot = -1;
-                BundleMenuPatches.junimoNoteMenuQuery = "";
+                JunimoNoteMenuPatch.Cleanup();
             }
             else if (menu is ShopMenu)
             {
@@ -86,7 +83,7 @@ namespace stardew_access.Patches
             }
             else if (menu is JojaCDMenu)
             {
-                BundleMenuPatches.jojaCDMenuQuery = "";
+                JojaCDMenuPatch.Cleanup();
             }
             else if (menu is QuestLog)
             {

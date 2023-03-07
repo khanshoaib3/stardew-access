@@ -117,12 +117,12 @@ namespace stardew_access
             #region Bundle Menu Patches
             harmony.Patch(
                 original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(BundleMenuPatches), nameof(BundleMenuPatches.JunimoNoteMenuPatch))
+                postfix: new HarmonyMethod(typeof(JunimoNoteMenuPatch), nameof(JunimoNoteMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(JojaCDMenu), nameof(JojaCDMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(BundleMenuPatches), nameof(BundleMenuPatches.JojaCDMenuPatch))
+                postfix: new HarmonyMethod(typeof(JojaCDMenuPatch), nameof(JojaCDMenuPatch.DrawPatch))
             );
             #endregion
 
