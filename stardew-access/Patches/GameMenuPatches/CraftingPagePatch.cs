@@ -43,19 +43,19 @@ namespace stardew_access.Patches
 
         private static void handleKeyBinds(CraftingPage __instance, int ___currentCraftingPage)
         {
-            if (MainClass.Config.SnapToFirstInventorySlotKey.JustPressed() && __instance.inventory.inventory.Count > 0)
-            {
-                // snap to first inventory slot
-                __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
-                __instance.inventory.inventory[0].snapMouseCursorToCenter();
-                currentSelectedCraftingRecipe = -1;
-            }
-            else if (MainClass.Config.SnapToFirstSecondaryInventorySlotKey.JustPressed() && __instance.pagesOfCraftingRecipes[___currentCraftingPage].Count > 0)
+            if (MainClass.Config.SnapToFirstSecondaryInventorySlotKey.JustPressed() && __instance.pagesOfCraftingRecipes[___currentCraftingPage].Count > 0)
             {
                 // snap to first crafting recipe
                 __instance.setCurrentlySnappedComponentTo(__instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(0).Key.myID);
                 __instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(0).Key.snapMouseCursorToCenter();
                 currentSelectedCraftingRecipe = 0;
+            }
+            else if (MainClass.Config.SnapToFirstInventorySlotKey.JustPressed() && __instance.inventory.inventory.Count > 0)
+            {
+                // snap to first inventory slot
+                __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
+                __instance.inventory.inventory[0].snapMouseCursorToCenter();
+                currentSelectedCraftingRecipe = -1;
             }
             else if (MainClass.Config.CraftingMenuCycleThroughRecipiesKey.JustPressed() && !isSelectingRecipe)
             {

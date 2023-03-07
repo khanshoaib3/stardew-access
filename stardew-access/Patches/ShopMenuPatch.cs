@@ -14,15 +14,15 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
-                if (MainClass.Config.SnapToFirstInventorySlotKey.JustPressed() && __instance.inventory.inventory.Count > 0)
-                {
-                    __instance.inventory.inventory[0].snapMouseCursorToCenter();
-                    __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
-                }
-                else if (MainClass.Config.SnapToFirstSecondaryInventorySlotKey.JustPressed() && __instance.forSaleButtons.Count > 0)
+                if (MainClass.Config.SnapToFirstSecondaryInventorySlotKey.JustPressed() && __instance.forSaleButtons.Count > 0)
                 {
                     __instance.forSaleButtons[0].snapMouseCursorToCenter();
                     __instance.setCurrentlySnappedComponentTo(__instance.forSaleButtons[0].myID);
+                }
+                else if (MainClass.Config.SnapToFirstInventorySlotKey.JustPressed() && __instance.inventory.inventory.Count > 0)
+                {
+                    __instance.inventory.inventory[0].snapMouseCursorToCenter();
+                    __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
                 }
 
                 #region Narrate buttons in the menu
