@@ -19,7 +19,23 @@ namespace stardew_access.Patches
 
         internal static void Cleanup(IClickableMenu menu)
         {
-            if (menu is LetterViewerMenu)
+            if (menu is TitleMenu)
+            {
+                TitleMenuPatch.Cleanup();
+            }
+            else if (menu is CoopMenu)
+            {
+                CoopMenuPatch.Cleanup();
+            }
+            else if (menu is LoadGameMenu)
+            {
+                LoadGameMenuPatch.Cleanup();
+            }
+            else if (menu is AdvancedGameOptions)
+            {
+                AdvancedGameOptionsPatch.Cleanup();
+            }
+            else if (menu is LetterViewerMenu)
             {
                 DialoguePatches.currentLetterText = " ";
             }
