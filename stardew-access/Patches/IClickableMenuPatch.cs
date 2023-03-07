@@ -77,8 +77,7 @@ namespace stardew_access.Patches
             }
             else if (menu is AnimalQueryMenu)
             {
-                AnimalQueryMenuPatch.animalQueryMenuQuery = "";
-                AnimalQueryMenuPatch.animalQueryMenu = null;
+                AnimalQueryMenuPatch.Cleanup();
             }
             else if (menu is DialogueBox)
             {
