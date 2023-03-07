@@ -17,6 +17,8 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
+                handleKeyBinds(__instance, ___currentCraftingPage);
+
                 if (narrateMenuButtons(__instance, x, y))
                 {
                     return;
@@ -32,8 +34,6 @@ namespace stardew_access.Patches
                     craftingPageQueryKey = "";
                     return;
                 }
-
-                handleKeyBinds(__instance, ___currentCraftingPage);
             }
             catch (Exception e)
             {

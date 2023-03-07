@@ -14,6 +14,8 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
+                handleKeyBinds();
+
                 if (narrateHoveredButton(__instance, x, y))
                 {
                     return;
@@ -29,8 +31,6 @@ namespace stardew_access.Patches
                     inventoryPageQueryKey = "";
                     return;
                 }
-
-                handleKeyBinds();
 
                 // If no slot or button is hovered
                 Cleanup();
