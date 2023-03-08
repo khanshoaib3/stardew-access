@@ -283,7 +283,7 @@ namespace stardew_access.Patches
             }
             else if (menu is DialogueBox)
             {
-                DialoguePatches.Cleanup();
+                DialogueBoxPatch.Cleanup();
             }
             else if (menu is JojaCDMenu)
             {

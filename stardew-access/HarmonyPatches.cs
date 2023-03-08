@@ -16,12 +16,12 @@ namespace stardew_access
             #region Dialogue Patches
             harmony.Patch(
                    original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.draw), new Type[] { typeof(SpriteBatch) }),
-                   postfix: new HarmonyMethod(typeof(DialoguePatches), nameof(DialoguePatches.DialoguePatch))
+                   postfix: new HarmonyMethod(typeof(DialogueBoxPatch), nameof(DialogueBoxPatch.DrawPatch))
                 );
 
             harmony.Patch(
                original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.receiveLeftClick)),
-               postfix: new HarmonyMethod(typeof(DialoguePatches), nameof(DialoguePatches.RecieveLeftClickPatch))
+               postfix: new HarmonyMethod(typeof(DialogueBoxPatch), nameof(DialogueBoxPatch.RecieveLeftClickPatch))
             );
 
             harmony.Patch(

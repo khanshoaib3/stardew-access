@@ -1,17 +1,14 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
-using StardewValley;
+﻿using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class DialoguePatches
+    internal class DialogueBoxPatch
     {
         private static string currentDialogue = "";
-        private static string previousSpeakerName = "";
         private static bool isDialogueAppearingFirstTime = true;
 
-        internal static void DialoguePatch(DialogueBox __instance, SpriteBatch b)
+        internal static void DrawPatch(DialogueBox __instance)
         {
             try
             {
