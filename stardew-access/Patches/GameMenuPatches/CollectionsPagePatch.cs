@@ -9,7 +9,7 @@ namespace stardew_access.Patches
                 int x = StardewValley.Game1.getMousePosition().X, y = StardewValley.Game1.getMousePosition().Y;
                 if (__instance.letterviewerSubMenu != null)
                 {
-                    DialoguePatches.NarrateLetterContent(__instance.letterviewerSubMenu);
+                    LetterViwerMenuPatch.narrateLetterContent(__instance.letterviewerSubMenu);
                 }
             }
             catch (System.Exception e)

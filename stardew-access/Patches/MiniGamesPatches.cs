@@ -49,7 +49,7 @@ namespace stardew_access.Patches
 
                 if (___letterView != null)
                 {
-                    DialoguePatches.NarrateLetterContent(___letterView);
+                    LetterViwerMenuPatch.narrateLetterContent(___letterView);
                 }
 
                 if (MainClass.ModHelper == null)
