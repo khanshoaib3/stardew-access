@@ -25,146 +25,17 @@ namespace stardew_access.Patches
                     __instance.inventory.inventory[0].snapMouseCursorToCenter();
                 }
 
-                #region Narrate buttons in the menu
-                if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                if (narrateHoveredButton(__instance, x, y))
                 {
-                    string toSpeak = "Ok Button";
-                    if (itemGrabMenuQueryKey != toSpeak)
-                    {
-                        itemGrabMenuQueryKey = toSpeak;
-                        hoveredItemQueryKey = "";
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
+                    InventoryUtils.Cleanup();
                     return;
                 }
-                if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
+                if (narrateLastShippedItem(__instance, x, y))
                 {
-                    string toSpeak = "Trash Can";
-                    if (itemGrabMenuQueryKey != toSpeak)
-                    {
-                        itemGrabMenuQueryKey = toSpeak;
-                        hoveredItemQueryKey = "";
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
+                    InventoryUtils.Cleanup();
                     return;
                 }
 
-                if (__instance.organizeButton != null && __instance.organizeButton.containsPoint(x, y))
-                {
-                    string toSpeak = "Organize Button";
-                    if (itemGrabMenuQueryKey != toSpeak)
-                    {
-                        itemGrabMenuQueryKey = toSpeak;
-                        hoveredItemQueryKey = "";
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
-                    return;
-                }
-
-                if (__instance.fillStacksButton != null && __instance.fillStacksButton.containsPoint(x, y))
-                {
-                    string toSpeak = "Add to existing stacks button";
-                    if (itemGrabMenuQueryKey != toSpeak)
-                    {
-                        itemGrabMenuQueryKey = toSpeak;
-                        hoveredItemQueryKey = "";
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
-                    return;
-                }
-
-                if (__instance.specialButton != null && __instance.specialButton.containsPoint(x, y))
-                {
-                    string toSpeak = "Special Button";
-                    if (itemGrabMenuQueryKey != toSpeak)
-                    {
-                        itemGrabMenuQueryKey = toSpeak;
-                        hoveredItemQueryKey = "";
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
-                    return;
-                }
-
-                if (__instance.colorPickerToggleButton != null && __instance.colorPickerToggleButton.containsPoint(x, y))
-                {
-
-                    string toSpeak = "Color Picker: " + (__instance.chestColorPicker.visible ? "Enabled" : "Disabled");
-                    if (itemGrabMenuQueryKey != toSpeak)
-                    {
-                        itemGrabMenuQueryKey = toSpeak;
-                        hoveredItemQueryKey = "";
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
-                    return;
-                }
-
-                if (__instance.junimoNoteIcon != null && __instance.junimoNoteIcon.containsPoint(x, y))
-                {
-
-                    string toSpeak = "Community Center Button";
-                    if (itemGrabMenuQueryKey != toSpeak)
-                    {
-                        itemGrabMenuQueryKey = toSpeak;
-                        hoveredItemQueryKey = "";
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
-                    return;
-                }
-
-                if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
-                {
-                    string toSpeak = "Drop Item";
-                    if (itemGrabMenuQueryKey != toSpeak)
-                    {
-                        itemGrabMenuQueryKey = toSpeak;
-                        hoveredItemQueryKey = "";
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                        Game1.playSound("drop_item");
-                    }
-                    return;
-                }
-
-                // FIXME
-                /*if (__instance.discreteColorPickerCC.Count > 0) {
-                    for (int i = 0; i < __instance.discreteColorPickerCC.Count; i++)
-                    {
-                        if (__instance.discreteColorPickerCC[i].containsPoint(x, y))
-                        {
-                            MainClass.monitor.Log(i.ToString(), LogLevel.Debug);
-                            string toSpeak = getChestColorName(i);
-                            if (itemGrabMenuQueryKey != toSpeak)
-                            {
-                                itemGrabMenuQueryKey = toSpeak;
-                                hoveredItemQueryKey = "";
-                                ScreenReader.say(toSpeak, true);
-                                Game1.playSound("sa_drop_item");
-                            }
-                            return;
-                        }
-                    }
-                }*/
-                #endregion
-
-                #region Narrate the last shipped item if in the shipping bin
-                if (__instance.shippingBin && Game1.getFarm().lastItemShipped != null && __instance.lastShippedHolder.containsPoint(x, y))
-                {
-                    Item lastShippedItem = Game1.getFarm().lastItemShipped;
-                    string name = lastShippedItem.DisplayName;
-                    int count = lastShippedItem.Stack;
-
-                    string toSpeak = $"Last Shipped: {count} {name}";
-
-                    if (itemGrabMenuQueryKey != toSpeak)
-                    {
-                        itemGrabMenuQueryKey = toSpeak;
-                        hoveredItemQueryKey = "";
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
-                    return;
-                }
-                #endregion
-
-                #region Narrate hovered item
                 if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
                     itemGrabMenuQueryKey = "";
@@ -176,13 +47,104 @@ namespace stardew_access.Patches
                     itemGrabMenuQueryKey = "";
                     return;
                 }
-
-                #endregion
             }
             catch (Exception e)
             {
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
+        }
+
+        private static bool narrateHoveredButton(ItemGrabMenu __instance, int x, int y)
+        {
+            string toSpeak = "";
+            bool isDropItemButton = false;
+
+            if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+            {
+                toSpeak = "Ok Button";
+            }
+            else if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
+            {
+                toSpeak = "Trash Can";
+            }
+            else if (__instance.organizeButton != null && __instance.organizeButton.containsPoint(x, y))
+            {
+                toSpeak = "Organize Button";
+            }
+            else if (__instance.fillStacksButton != null && __instance.fillStacksButton.containsPoint(x, y))
+            {
+                toSpeak = "Add to existing stacks button";
+            }
+            else if (__instance.specialButton != null && __instance.specialButton.containsPoint(x, y))
+            {
+                toSpeak = "Special Button";
+            }
+            else if (__instance.colorPickerToggleButton != null && __instance.colorPickerToggleButton.containsPoint(x, y))
+            {
+                toSpeak = "Color Picker: " + (__instance.chestColorPicker.visible ? "Enabled" : "Disabled");
+            }
+            else if (__instance.junimoNoteIcon != null && __instance.junimoNoteIcon.containsPoint(x, y))
+            {
+                toSpeak = "Community Center Button";
+            }
+            else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+            {
+                toSpeak = "Drop Item";
+                isDropItemButton = true;
+            }
+            else
+            {
+                return false;
+            }
+
+            // FIXME
+            /*if (__instance.discreteColorPickerCC.Count > 0) {
+                for (int i = 0; i < __instance.discreteColorPickerCC.Count; i++)
+                {
+                    if (__instance.discreteColorPickerCC[i].containsPoint(x, y))
+                    {
+                        MainClass.monitor.Log(i.ToString(), LogLevel.Debug);
+                        string toSpeak = getChestColorName(i);
+                        if (itemGrabMenuQueryKey != toSpeak)
+                        {
+                            itemGrabMenuQueryKey = toSpeak;
+                            hoveredItemQueryKey = "";
+                            ScreenReader.say(toSpeak, true);
+                            Game1.playSound("sa_drop_item");
+                        }
+                        return;
+                    }
+                }
+            }*/
+
+            if (itemGrabMenuQueryKey == toSpeak) return true;
+
+            itemGrabMenuQueryKey = toSpeak;
+            hoveredItemQueryKey = "";
+            MainClass.ScreenReader.Say(toSpeak, true);
+            if (isDropItemButton) Game1.playSound("drop_item");
+
+            return true;
+        }
+
+        private static bool narrateLastShippedItem(ItemGrabMenu __instance, int x, int y)
+        {
+            if (!__instance.shippingBin || Game1.getFarm().lastItemShipped == null || !__instance.lastShippedHolder.containsPoint(x, y))
+                return false;
+
+            Item lastShippedItem = Game1.getFarm().lastItemShipped;
+            string name = lastShippedItem.DisplayName;
+            int count = lastShippedItem.Stack;
+
+            string toSpeak = $"Last Shipped: {count} {name}";
+
+            if (itemGrabMenuQueryKey != toSpeak)
+            {
+                itemGrabMenuQueryKey = toSpeak;
+                hoveredItemQueryKey = "";
+                MainClass.ScreenReader.Say(toSpeak, true);
+            }
+            return true;
         }
 
         // TODO Add color names
@@ -258,7 +220,8 @@ namespace stardew_access.Patches
             return toReturn;
         }
 
-        internal static void Cleanup() {
+        internal static void Cleanup()
+        {
             hoveredItemQueryKey = "";
             itemGrabMenuQueryKey = "";
         }

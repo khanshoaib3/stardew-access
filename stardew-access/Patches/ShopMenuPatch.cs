@@ -45,6 +45,7 @@ namespace stardew_access.Patches
         {
             string toSpeak = "";
             bool isDropItemButton = false;
+
             if (__instance.inventory.dropItemInvisibleButton != null && __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
             {
                 toSpeak = "Drop Item";
