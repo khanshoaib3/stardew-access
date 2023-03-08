@@ -273,9 +273,7 @@ namespace stardew_access.Patches
             }
             else if (menu is PurchaseAnimalsMenu)
             {
-                PurchaseAnimalsMenuPatch.purchaseAnimalMenuQuery = "";
-                PurchaseAnimalsMenuPatch.firstTimeInNamingMenu = true;
-                PurchaseAnimalsMenuPatch.purchaseAnimalsMenu = null;
+                PurchaseAnimalsMenuPatch.Cleanup();
             }
             else if (menu is AnimalQueryMenu)
             {
