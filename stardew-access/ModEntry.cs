@@ -141,6 +141,7 @@ namespace stardew_access
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
+            helper.Events.GameLoop.GameLaunched += this.onGameLaunched;
             AppDomain.CurrentDomain.DomainUnload += OnExit;
             AppDomain.CurrentDomain.ProcessExit += OnExit;
         }
@@ -157,6 +158,12 @@ namespace stardew_access
         public override object GetApi()
         {
             return new API();
+        }
+
+        private void onGameLaunched(object? sender, GameLaunchedEventArgs? e)
+        {
+            if (sTiles is not null)
+                sTiles.SetupTilesDicts();
         }
 
         private void onUpdateTicked(object? sender, UpdateTickedEventArgs? e)

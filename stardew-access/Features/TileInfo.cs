@@ -46,7 +46,7 @@ namespace stardew_access.Features
             string? resourceClump = getResourceClumpAtTile(x, y, lessInfo);
             string? farmAnimal = getFarmAnimalAt(Game1.currentLocation, x, y);
             string? parrot = getParrotPerchAtTile(x, y);
-            (string? name, CATEGORY category) staticTile = MainClass.STiles.getStaticTileInfoAtWithCategory(x, y);
+            (string? name, CATEGORY category) staticTile = StaticTiles.GetStaticTileInfoAtWithCategory(x, y);
             string? bush = getBushAtTile(x, y, lessInfo);
 
             if (Game1.currentLocation.isCharacterAtTile(tile) is NPC npc)

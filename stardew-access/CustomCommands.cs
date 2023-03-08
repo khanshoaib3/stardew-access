@@ -18,7 +18,7 @@ namespace stardew_access
                 return;
 
             #region Read Tile
-            helper.ConsoleCommands.Add("readtile", "Toggle read tile feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("readtile", "Toggle read tile feature.", (string command, string[] args) =>
                         {
                             MainClass.Config.ReadTile = !MainClass.Config.ReadTile;
                             helper.WriteConfig(MainClass.Config);
@@ -26,7 +26,7 @@ namespace stardew_access
                             MainClass.InfoLog("Read Tile is " + (MainClass.Config.ReadTile ? "on" : "off"));
                         });
 
-            helper.ConsoleCommands.Add("flooring", "Toggle flooring in read tile.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("flooring", "Toggle flooring in read tile.", (string command, string[] args) =>
             {
                 MainClass.Config.ReadFlooring = !MainClass.Config.ReadFlooring;
                 helper.WriteConfig(MainClass.Config);
@@ -34,7 +34,7 @@ namespace stardew_access
                 MainClass.InfoLog("Flooring is " + (MainClass.Config.ReadFlooring ? "on" : "off"));
             });
 
-            helper.ConsoleCommands.Add("watered", "Toggle speaking watered or unwatered for crops.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("watered", "Toggle speaking watered or unwatered for crops.", (string command, string[] args) =>
             {
                 MainClass.Config.WateredToggle = !MainClass.Config.WateredToggle;
                 helper.WriteConfig(MainClass.Config);
@@ -44,7 +44,7 @@ namespace stardew_access
             #endregion
 
             #region Radar Feature
-            helper.ConsoleCommands.Add("radar", "Toggle radar feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("radar", "Toggle radar feature.", (string command, string[] args) =>
             {
                 MainClass.Config.Radar = !MainClass.Config.Radar;
                 helper.WriteConfig(MainClass.Config);
@@ -52,14 +52,14 @@ namespace stardew_access
                 MainClass.InfoLog("Radar " + (MainClass.Config.Radar ? "on" : "off"));
             });
 
-            helper.ConsoleCommands.Add("rdebug", "Toggle debugging in radar feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("rdebug", "Toggle debugging in radar feature.", (string command, string[] args) =>
             {
                 MainClass.radarDebug = !MainClass.radarDebug;
 
                 MainClass.InfoLog("Radar debugging " + (MainClass.radarDebug ? "on" : "off"));
             });
 
-            helper.ConsoleCommands.Add("rstereo", "Toggle stereo sound in radar feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("rstereo", "Toggle stereo sound in radar feature.", (string command, string[] args) =>
             {
                 MainClass.Config.RadarStereoSound = !MainClass.Config.RadarStereoSound;
                 helper.WriteConfig(MainClass.Config);
@@ -67,14 +67,14 @@ namespace stardew_access
                 MainClass.InfoLog("Stereo sound is " + (MainClass.Config.RadarStereoSound ? "on" : "off"));
             });
 
-            helper.ConsoleCommands.Add("rfocus", "Toggle focus mode in radar feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("rfocus", "Toggle focus mode in radar feature.", (string command, string[] args) =>
             {
                 bool focus = MainClass.RadarFeature.ToggleFocus();
 
                 MainClass.InfoLog("Focus mode is " + (focus ? "on" : "off"));
             });
 
-            helper.ConsoleCommands.Add("rdelay", "Set the delay of radar feature in milliseconds.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("rdelay", "Set the delay of radar feature in milliseconds.", (string command, string[] args) =>
             {
                 string? delayInString = null;
 
@@ -107,7 +107,7 @@ namespace stardew_access
 
             });
 
-            helper.ConsoleCommands.Add("rrange", "Set the range of radar feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("rrange", "Set the range of radar feature.", (string command, string[] args) =>
             {
                 string? rangeInString = null;
 
@@ -142,7 +142,7 @@ namespace stardew_access
 
 
             #region Exclusions
-            helper.ConsoleCommands.Add("readd", "Add an object key to the exclusions list of radar feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("readd", "Add an object key to the exclusions list of radar feature.", (string command, string[] args) =>
                 {
                     string? keyToAdd = null;
 
@@ -167,7 +167,7 @@ namespace stardew_access
                     }
                 });
 
-            helper.ConsoleCommands.Add("reremove", "Remove an object key from the exclusions list of radar feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("reremove", "Remove an object key from the exclusions list of radar feature.", (string command, string[] args) =>
             {
                 string? keyToAdd = null;
 
@@ -192,7 +192,7 @@ namespace stardew_access
                 }
             });
 
-            helper.ConsoleCommands.Add("relist", "List all the exclusions in the radar feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("relist", "List all the exclusions in the radar feature.", (string command, string[] args) =>
             {
                 if (MainClass.RadarFeature.exclusions.Count > 0)
                 {
@@ -209,20 +209,20 @@ namespace stardew_access
                 }
             });
 
-            helper.ConsoleCommands.Add("reclear", "Clear the focus exclusions in the radar featrure.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("reclear", "Clear the focus exclusions in the radar featrure.", (string command, string[] args) =>
             {
                 MainClass.RadarFeature.exclusions.Clear();
                 MainClass.InfoLog($"Cleared the focus list in the exclusions feature.");
             });
 
-            helper.ConsoleCommands.Add("recount", "Number of exclusions in the radar feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("recount", "Number of exclusions in the radar feature.", (string command, string[] args) =>
             {
                 MainClass.InfoLog($"There are {MainClass.RadarFeature.exclusions.Count} exclusiond in the radar feature.");
             });
             #endregion
 
             #region Focus
-            helper.ConsoleCommands.Add("rfadd", "Add an object key to the focus list of radar feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("rfadd", "Add an object key to the focus list of radar feature.", (string command, string[] args) =>
                 {
                     string? keyToAdd = null;
 
@@ -247,7 +247,7 @@ namespace stardew_access
                     }
                 });
 
-            helper.ConsoleCommands.Add("rfremove", "Remove an object key from the focus list of radar feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("rfremove", "Remove an object key from the focus list of radar feature.", (string command, string[] args) =>
             {
                 string? keyToAdd = null;
 
@@ -272,7 +272,7 @@ namespace stardew_access
                 }
             });
 
-            helper.ConsoleCommands.Add("rflist", "List all the exclusions in the radar feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("rflist", "List all the exclusions in the radar feature.", (string command, string[] args) =>
             {
                 if (MainClass.RadarFeature.focus.Count > 0)
                 {
@@ -289,13 +289,13 @@ namespace stardew_access
                 }
             });
 
-            helper.ConsoleCommands.Add("rfclear", "Clear the focus list in the radar featrure.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("rfclear", "Clear the focus list in the radar featrure.", (string command, string[] args) =>
             {
                 MainClass.RadarFeature.focus.Clear();
                 MainClass.InfoLog($"Cleared the focus list in the radar feature.");
             });
 
-            helper.ConsoleCommands.Add("rfcount", "Number of list in the radar feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("rfcount", "Number of list in the radar feature.", (string command, string[] args) =>
             {
                 MainClass.InfoLog($"There are {MainClass.RadarFeature.focus.Count} objects in the focus list in the radar feature.");
             });
@@ -304,7 +304,7 @@ namespace stardew_access
             #endregion
 
             #region Tile marking
-            helper.ConsoleCommands.Add("mark", "Marks the player's position for use in building construction in Carpenter Menu.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("mark", "Marks the player's position for use in building construction in Carpenter Menu.", (string command, string[] args) =>
             {
                 if (Game1.currentLocation is not Farm)
                 {
@@ -332,7 +332,7 @@ namespace stardew_access
                 MainClass.InfoLog($"Location {(int)Game1.player.getTileX()}x {(int)Game1.player.getTileY()}y added at {index} index.");
             });
 
-            helper.ConsoleCommands.Add("marklist", "List all marked positions.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("marklist", "List all marked positions.", (string command, string[] args) =>
             {
                 string toPrint = "";
                 for (int i = 0; i < BuildingOperations.marked.Length; i++)
@@ -349,12 +349,12 @@ namespace stardew_access
                     MainClass.InfoLog($"Marked positions:{toPrint}\nOpen command menu and use pageup and pagedown to check the list");
             });
 
-            helper.ConsoleCommands.Add("buildlist", "List all buildings for selection for upgrading/demolishing/painting", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("buildlist", "List all buildings for selection for upgrading/demolishing/painting", (string command, string[] args) =>
             {
                 onBuildListCalled();
             });
 
-            helper.ConsoleCommands.Add("buildsel", "Select the building index which you want to upgrade/demolish/paint", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("buildsel", "Select the building index which you want to upgrade/demolish/paint", (string command, string[] args) =>
             {
                 if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu && Game1.activeClickableMenu is not AnimalQueryMenu) || !CarpenterMenuPatch.isOnFarm)
                 {
@@ -451,28 +451,28 @@ namespace stardew_access
             #endregion
 
             #region Other
-            helper.ConsoleCommands.Add("refsr", "Refresh screen reader", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("refsr", "Refresh screen reader", (string command, string[] args) =>
                         {
                             MainClass.ScreenReader.InitializeScreenReader();
 
                             MainClass.InfoLog("Screen Reader refreshed!");
                         });
 
-            helper.ConsoleCommands.Add("refmc", "Refresh mod config", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("refmc", "Refresh mod config", (string command, string[] args) =>
             {
                 MainClass.Config = helper.ReadConfig<ModConfig>();
 
                 MainClass.InfoLog("Mod Config refreshed!");
             });
 
-            helper.ConsoleCommands.Add("refst", "Refresh static tiles", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("refst", "Refresh static tiles", (string command, string[] args) =>
             {
                 MainClass.STiles = new Features.StaticTiles();
 
                 MainClass.InfoLog("Static tiles refreshed!");
             });
 
-            helper.ConsoleCommands.Add("hnspercent", "Toggle between speaking in percentage or full health and stamina.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("hnspercent", "Toggle between speaking in percentage or full health and stamina.", (string command, string[] args) =>
             {
                 MainClass.Config.HealthNStaminaInPercentage = !MainClass.Config.HealthNStaminaInPercentage;
                 helper.WriteConfig(MainClass.Config);
@@ -480,7 +480,7 @@ namespace stardew_access
                 MainClass.InfoLog("Speaking in percentage is " + (MainClass.Config.HealthNStaminaInPercentage ? "on" : "off"));
             });
 
-            helper.ConsoleCommands.Add("snapmouse", "Toggle snap mouse feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("snapmouse", "Toggle snap mouse feature.", (string command, string[] args) =>
             {
                 MainClass.Config.SnapMouse = !MainClass.Config.SnapMouse;
                 helper.WriteConfig(MainClass.Config);
@@ -488,7 +488,7 @@ namespace stardew_access
                 MainClass.InfoLog("Snap Mouse is " + (MainClass.Config.SnapMouse ? "on" : "off"));
             });
 
-            helper.ConsoleCommands.Add("warning", "Toggle warnings feature.", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("warning", "Toggle warnings feature.", (string command, string[] args) =>
             {
                 MainClass.Config.Warning = !MainClass.Config.Warning;
                 helper.WriteConfig(MainClass.Config);
@@ -496,7 +496,7 @@ namespace stardew_access
                 MainClass.InfoLog("Warnings is " + (MainClass.Config.Warning ? "on" : "off"));
             });
 
-            helper.ConsoleCommands.Add("tts", "Toggles the screen reader/tts", (string commmand, string[] args) =>
+            helper.ConsoleCommands.Add("tts", "Toggles the screen reader/tts", (string command, string[] args) =>
             {
                 MainClass.Config.TTS = !MainClass.Config.TTS;
                 helper.WriteConfig(MainClass.Config);
