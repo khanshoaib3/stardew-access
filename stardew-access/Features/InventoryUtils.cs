@@ -2,7 +2,7 @@
 using StardewValley;
 using StardewValley.Menus;
 
-namespace stardew_access.Patches
+namespace stardew_access.Features
 {
     internal class InventoryUtils
     {
