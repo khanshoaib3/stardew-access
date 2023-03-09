@@ -4,43 +4,11 @@ using StardewValley.Minigames;
 
 namespace stardew_access.Patches
 {
-    public class MiniGamesPatches
+    public class GrandpaStoryPatch
     {
         public static string grandpaStoryQuery = " ";
-        public static string introQuery = " ";
 
-        internal static void IntroPatch(Intro __instance, int ___currentState)
-        {
-            try
-            {
-                if (MainClass.ModHelper == null)
-                    return;
-
-                string toSpeak = " ";
-
-                if (___currentState == 3)
-                {
-                    toSpeak = MainClass.ModHelper.Translation.Get("intro.scene3");
-                }
-                else if (___currentState == 4)
-                {
-                    toSpeak = MainClass.ModHelper.Translation.Get("intro.scene4");
-                }
-
-                if (toSpeak != " " && introQuery != toSpeak)
-                {
-                    introQuery = toSpeak;
-                    MainClass.ScreenReader.Say(toSpeak, false);
-                    return;
-                }
-            }
-            catch (System.Exception e)
-            {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
-            }
-        }
-
-        internal static void GrandpaStoryPatch(GrandpaStory __instance, StardewValley.Menus.LetterViewerMenu ___letterView, bool ___drawGrandpa, bool ___letterReceived, bool ___mouseActive, Queue<string> ___grandpaSpeech, int ___grandpaSpeechTimer, int ___totalMilliseconds, int ___scene, int ___parallaxPan)
+        internal static void DrawPatch(GrandpaStory __instance, StardewValley.Menus.LetterViewerMenu ___letterView, bool ___drawGrandpa, bool ___letterReceived, bool ___mouseActive, Queue<string> ___grandpaSpeech, int ___grandpaSpeechTimer, int ___totalMilliseconds, int ___scene, int ___parallaxPan)
         {
             try
             {

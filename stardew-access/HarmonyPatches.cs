@@ -267,12 +267,12 @@ namespace stardew_access
             #region Mini Games
             harmony.Patch(
                         original: AccessTools.Method(typeof(Intro), nameof(Intro.draw), new Type[] { typeof(SpriteBatch) }),
-                        postfix: new HarmonyMethod(typeof(MiniGamesPatches), nameof(MiniGamesPatches.IntroPatch))
+                        postfix: new HarmonyMethod(typeof(IntroPatch), nameof(IntroPatch.DrawPatch))
                     );
 
             harmony.Patch(
                         original: AccessTools.Method(typeof(GrandpaStory), nameof(GrandpaStory.draw), new Type[] { typeof(SpriteBatch) }),
-                        postfix: new HarmonyMethod(typeof(MiniGamesPatches), nameof(MiniGamesPatches.GrandpaStoryPatch))
+                        postfix: new HarmonyMethod(typeof(GrandpaStoryPatch), nameof(GrandpaStoryPatch.DrawPatch))
                     );
             #endregion
 
