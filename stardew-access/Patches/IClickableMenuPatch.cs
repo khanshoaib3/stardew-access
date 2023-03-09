@@ -309,6 +309,10 @@ namespace stardew_access.Patches
             {
                 MenuPatches.pondQueryMenuQuery = " ";
             }
+            else if (menu is GeodeMenu)
+            {
+                GeodeMenuPatch.Cleanup();
+            }
 
             InventoryUtils.Cleanup();
             TextBoxPatch.activeTextBoxes = "";
