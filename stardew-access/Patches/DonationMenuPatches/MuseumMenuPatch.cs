@@ -88,6 +88,8 @@ namespace stardew_access.Patches
         {
             if (__instance.heldItem != null) return;
 
+            if (narrateHoveredButtons(__instance, x, y)) return;
+
             int hoveredItemIndex = InventoryUtils.narrateHoveredSlotAndReturnIndex(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y,
                     handleHighlightedItem: true, highlightedItemPrefix: "Donatable ");
             if (hoveredItemIndex != -9999)
@@ -99,32 +101,35 @@ namespace stardew_access.Patches
                     manuallyDonateItem(__instance, hoveredItemIndex);
                 }
             }
+        }
+
+        private static bool narrateHoveredButtons(MuseumMenu __instance, int x, int y)
+        {
+            string toSpeak = "";
+            bool isDropItemButton = false;
+
+            if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+            {
+                toSpeak = "Ok button";
+            }
+            else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+            {
+                toSpeak = "Drop Item";
+                isDropItemButton = true;
+            }
             else
             {
-                string toSpeak = "";
-                bool isDropItemButton = false;
-
-                if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
-                {
-                    toSpeak = "Ok button";
-                }
-                else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
-                {
-                    toSpeak = "Drop Item";
-                    isDropItemButton = true;
-                }
-                else
-                {
-                    return;
-                }
-
-                if (museumQueryKey != toSpeak)
-                {
-                    museumQueryKey = toSpeak;
-                    MainClass.ScreenReader.Say(toSpeak, true);
-                    if (isDropItemButton) Game1.playSound("drop_item");
-                }
+                return false;
             }
+
+            if (museumQueryKey != toSpeak)
+            {
+                museumQueryKey = toSpeak;
+                MainClass.ScreenReader.Say(toSpeak, true);
+                if (isDropItemButton) Game1.playSound("drop_item");
+            }
+
+            return true;
         }
 
         private static void manuallyDonateItem(MuseumMenu __instance, int i)
