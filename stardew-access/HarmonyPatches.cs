@@ -196,17 +196,17 @@ namespace stardew_access
             #region Quest Patches
             harmony.Patch(
                     original: AccessTools.Method(typeof(SpecialOrdersBoard), nameof(SpecialOrdersBoard.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(QuestPatches), nameof(QuestPatches.SpecialOrdersBoardPatch))
+                    postfix: new HarmonyMethod(typeof(SpecialOrdersBoardPatch), nameof(SpecialOrdersBoardPatch.DrawPatch))
                 );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(QuestLog), nameof(QuestLog.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(QuestPatches), nameof(QuestPatches.QuestLogPatch))
+                postfix: new HarmonyMethod(typeof(QuestLogPatch), nameof(QuestLogPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Billboard), nameof(Billboard.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(QuestPatches), nameof(QuestPatches.BillboardPatch))
+                postfix: new HarmonyMethod(typeof(BillboardPatch), nameof(BillboardPatch.DrawPatch))
             );
             #endregion
 

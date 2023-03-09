@@ -235,7 +235,7 @@ namespace stardew_access.Patches
             }
             else if (menu is Billboard)
             {
-                QuestPatches.currentDailyQuestText = " ";
+                BillboardPatch.Cleanup();
             }
             else if (menu is GameMenu)
             {
@@ -284,7 +284,7 @@ namespace stardew_access.Patches
             }
             else if (menu is QuestLog)
             {
-                QuestPatches.questLogQuery = " ";
+                QuestLogPatch.Cleaup();
             }
             else if (menu is TailoringMenu)
             {
@@ -313,6 +313,10 @@ namespace stardew_access.Patches
             else if (menu is GeodeMenu)
             {
                 GeodeMenuPatch.Cleanup();
+            }
+            else if (menu is SpecialOrdersBoard)
+            {
+                SpecialOrdersBoardPatch.Cleanup();
             }
 
             InventoryUtils.Cleanup();
