@@ -16,6 +16,12 @@ namespace stardew_access.Features
             if (MainClass.ModHelper is  null)
                 return;
 
+            if (staticTilesData is null) LoadTilesFiles();
+            this.SetupTilesDicts();
+        }
+
+        public static void LoadTilesFiles()
+        {
             try
             {
                 using (StreamReader file = new(Path.Combine(MainClass.ModHelper.DirectoryPath, "assets", "static-tiles.json")))
@@ -51,9 +57,7 @@ namespace stardew_access.Features
             {
                 MainClass.InfoLog($"custom-tiles.json file not found or an error occured while initializing custom-tiles.json\nThe path of the file should be:\n\t{Path.Combine(MainClass.ModHelper.DirectoryPath, "assets", "custom-tiles.json")}");
             }
-            this.SetupTilesDicts();
         }
-
         public static bool IsAvailable(string locationName)
         {
             List<JObject> allData = new();
