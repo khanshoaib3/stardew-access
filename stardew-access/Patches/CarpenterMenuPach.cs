@@ -159,5 +159,16 @@ namespace stardew_access.Patches
                 MainClass.ScreenReader.Say(toSpeak, true);
             }
         }
+
+        internal static void Cleanup()
+        {
+            CarpenterMenuPatch.carpenterMenuQuery = "";
+            CarpenterMenuPatch.isUpgrading = false;
+            CarpenterMenuPatch.isDemolishing = false;
+            CarpenterMenuPatch.isPainting = false;
+            CarpenterMenuPatch.isMoving = false;
+            CarpenterMenuPatch.isConstructing = false;
+            CarpenterMenuPatch.carpenterMenu = null;
+        }
     }
 }

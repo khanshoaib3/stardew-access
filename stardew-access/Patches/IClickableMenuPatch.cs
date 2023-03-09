@@ -263,13 +263,7 @@ namespace stardew_access.Patches
             }
             else if (menu is CarpenterMenu)
             {
-                CarpenterMenuPatch.carpenterMenuQuery = "";
-                CarpenterMenuPatch.isUpgrading = false;
-                CarpenterMenuPatch.isDemolishing = false;
-                CarpenterMenuPatch.isPainting = false;
-                CarpenterMenuPatch.isMoving = false;
-                CarpenterMenuPatch.isConstructing = false;
-                CarpenterMenuPatch.carpenterMenu = null;
+                CarpenterMenuPatch.Cleanup();
             }
             else if (menu is PurchaseAnimalsMenu)
             {
@@ -305,11 +299,11 @@ namespace stardew_access.Patches
             }
             else if (menu is FieldOfficeMenu)
             {
-                DonationMenuPatches.fieldOfficeMenuQuery = " ";
+                FieldOfficeMenuPatch.Cleanup();
             }
             else if (menu is MuseumMenu)
             {
-                DonationMenuPatches.museumQueryKey = " ";
+                MuseumMenuPatch.Cleanup();
             }
             else if (menu is PondQueryMenu)
             {
