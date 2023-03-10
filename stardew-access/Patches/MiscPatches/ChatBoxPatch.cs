@@ -2,7 +2,7 @@
 
 namespace stardew_access.Patches
 {
-    internal class ChatMenuPatch
+    internal class ChatBoxPatch
     {
         private static int currentChatMessageIndex = 0;
         private static bool isChatRunning = false;
