@@ -1,14 +1,13 @@
-﻿using StardewValley;
-using StardewValley.Menus;
+﻿using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class ChatMenuPatches
+    internal class ChatMenuPatch
     {
         private static int currentChatMessageIndex = 0;
         private static bool isChatRunning = false;
 
-        internal static void ChatBoxPatch(ChatBox __instance, List<ChatMessage> ___messages)
+        internal static void UpdatePatch(ChatBox __instance, List<ChatMessage> ___messages)
         {
             try
             {

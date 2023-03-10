@@ -311,7 +311,6 @@ namespace stardew_access.Patches
             }
         }
 
-
         internal static void LanguageSelectionMenuPatch(LanguageSelectionMenu __instance)
         {
             try
