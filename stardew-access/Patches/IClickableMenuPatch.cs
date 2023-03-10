@@ -292,7 +292,7 @@ namespace stardew_access.Patches
             }
             else if (menu is ForgeMenu)
             {
-                MenuPatches.forgeMenuQuery = " ";
+                ForgeMenuPatch.Cleanup();
             }
             else if (menu is ItemListMenu)
             {
