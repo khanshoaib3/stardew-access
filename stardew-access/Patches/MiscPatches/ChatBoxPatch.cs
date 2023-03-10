@@ -1,14 +1,13 @@
-﻿using StardewValley;
-using StardewValley.Menus;
+﻿using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class ChatMenuPatches
+    internal class ChatBoxPatch
     {
         private static int currentChatMessageIndex = 0;
         private static bool isChatRunning = false;
 
-        internal static void ChatBoxPatch(ChatBox __instance, List<ChatMessage> ___messages)
+        internal static void UpdatePatch(ChatBox __instance, List<ChatMessage> ___messages)
         {
             try
             {
@@ -19,23 +18,22 @@ namespace stardew_access.Patches
                     bool isPrevButtonPressed = MainClass.Config.ChatMenuNextKey.JustPressed();
                     bool isNextButtonPressed = MainClass.Config.ChatMenuPreviousKey.JustPressed();
 
-                    if (___messages.Count > 0)
+                    if (___messages.Count <= 0) return;
+
+                    #region To narrate previous and next chat messages
+                    if (isNextButtonPressed && !isChatRunning)
                     {
-                        #region To narrate previous and next chat messages
-                        if (isNextButtonPressed && !isChatRunning)
-                        {
-                            isChatRunning = true;
-                            CycleThroughChatMessages(true, ___messages);
-                            Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
-                        }
-                        else if (isPrevButtonPressed && !isChatRunning)
-                        {
-                            isChatRunning = true;
-                            CycleThroughChatMessages(false, ___messages);
-                            Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
-                        }
-                        #endregion
+                        isChatRunning = true;
+                        CycleThroughChatMessages(true, ___messages);
+                        Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
                     }
+                    else if (isPrevButtonPressed && !isChatRunning)
+                    {
+                        isChatRunning = true;
+                        CycleThroughChatMessages(false, ___messages);
+                        Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
+                    }
+                    #endregion
                 }
                 else if (___messages.Count > 0)
                 {

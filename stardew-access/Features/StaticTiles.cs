@@ -77,18 +77,17 @@ namespace stardew_access.Features
             return getStaticTileInfoAtWithCategory(x, y).name;
         }
 
-        public (string? name, CATEGORY category) getStaticTileInfoAtWithCategory(int x, int y)
-        {
+        public (string? name, CATEGORY category) getStaticTileInfoAtWithCategory(int x, int y) {
             List<JObject> allData = new List<JObject>();
 
             if (customTilesData != null) allData.Add(customTilesData);
             if (staticTilesData != null) allData.Add(staticTilesData);
 
-            foreach (JObject data in allData)
-            {
+            foreach (JObject data in allData) {
                 foreach (KeyValuePair<string, JToken?> location in data)
                 {
-                    if (location.Key.Contains("||") && MainClass.ModHelper != null)
+                    string locationName = location.Key;
+                    if (locationName.Contains("||") && MainClass.ModHelper != null)
                     {
                         //                      Mod Specific Tiles
                         // We can add tiles that only get detected when the specified mod is loaded.
@@ -109,69 +108,99 @@ namespace stardew_access.Features
                         //                  .
                         //                  .
                         //              }
-                        string uniqueModID = location.Key.Substring(location.Key.LastIndexOf("||") + 2);
-                        string locationName = location.Key.Remove(location.Key.LastIndexOf("||"));
+                        string uniqueModID = locationName.Substring(locationName.LastIndexOf("||") + 2);
+                        locationName = locationName.Remove(locationName.LastIndexOf("||"));
                         bool isLoaded = MainClass.ModHelper.ModRegistry.IsLoaded(uniqueModID);
 
                         if (!isLoaded) continue; // Skip if the specified mod is not loaded
-                        if (!Game1.currentLocation.Name.ToLower().Equals(locationName.ToLower())) continue;
                     }
-                    else if (!Game1.currentLocation.Name.ToLower().Equals(location.Key.ToLower())) continue;
 
-                    if (location.Value != null)
-                        foreach (var tile in ((JObject)location.Value))
+                    if (locationName.Contains("_") && locationName.ToLower().StartsWith("farm_"))
+                    {
+                        string farmType = locationName.Substring(locationName.LastIndexOf("_") + 1);
+                        int farmTypeIndex = getFarmTypeIndex(farmType);
+                        locationName = locationName.Remove(locationName.LastIndexOf("_"));
+
+                        if (farmTypeIndex != Game1.whichFarm) continue; // Skip if current farm type does not matches
+                        // if (Game1.whichModFarm != null) MainClass.DebugLog($"{farmType} {Game1.whichModFarm.MapName}");
+                        if (farmTypeIndex != 7 || Game1.whichModFarm == null || !farmType.ToLower().Equals(Game1.whichModFarm.MapName.ToLower())) continue; // Not tested but should work
+                    }
+
+                    if (locationName.ToLower().Equals("town_joja") && Game1.MasterPlayer.mailReceived.Contains("JojaMember"))
+                    {
+                        locationName = "town";
+                    }
+
+                    if (!Game1.currentLocation.Name.ToLower().Equals(locationName.ToLower())) continue;
+                    if (location.Value == null) continue;
+
+                    foreach (var tile in ((JObject)location.Value))
+                    {
+                        if (tile.Value == null) continue;
+
+                        JToken? tileXArray = tile.Value["x"];
+                        JToken? tileYArray = tile.Value["y"];
+                        JToken? tileType = tile.Value["type"];
+
+                        if (tileXArray == null || tileYArray == null || tileType == null)
+                            continue;
+
+                        bool isXPresent = false;
+                        bool isYPresent = false;
+
+                        foreach (var item in tileXArray)
                         {
-                            if (tile.Value == null)
+                            if (short.Parse(item.ToString()) != x)
                                 continue;
 
-                            JToken? tileXArray = tile.Value["x"];
-                            JToken? tileYArray = tile.Value["y"];
-                            JToken? tileType = tile.Value["type"];
-
-                            if (tileXArray == null || tileYArray == null || tileType == null)
-                                continue;
-
-                            bool isXPresent = false;
-                            bool isYPresent = false;
-
-                            foreach (var item in tileXArray)
-                            {
-                                if (short.Parse(item.ToString()) == x)
-                                {
-                                    isXPresent = true;
-                                    break;
-                                }
-                            }
-
-                            foreach (var item in tileYArray)
-                            {
-                                if (short.Parse(item.ToString()) == y)
-                                {
-                                    isYPresent = true;
-                                    break;
-                                }
-                            }
-
-                            if (isXPresent && isYPresent)
-                            {
-                                string key = tile.Key;
-                                if (key.Contains('[') && key.Contains(']'))
-                                {
-                                    int i1 = key.IndexOf('[');
-                                    int i2 = key.LastIndexOf(']');
-
-                                    if (i1 < i2)
-                                    {
-                                        key = key.Remove(i1, ++i2 - i1);
-                                    }
-                                }
-
-                                return (key.Trim(), CATEGORY.FromString(tileType.ToString().ToLower()));
-                            }
+                            isXPresent = true;
+                            break;
                         }
+
+                        foreach (var item in tileYArray)
+                        {
+                            if (short.Parse(item.ToString()) != y)
+                                continue;
+
+                            isYPresent = true;
+                            break;
+                        }
+
+                        if (isXPresent && isYPresent)
+                        {
+                            string key = tile.Key;
+                            if (key.Contains('[') && key.Contains(']'))
+                            {
+                                int i1 = key.IndexOf('[');
+                                int i2 = key.LastIndexOf(']');
+
+                                if (i1 < i2)
+                                {
+                                    key = key.Remove(i1, ++i2 - i1);
+                                }
+                            }
+
+                            return (key.Trim(), CATEGORY.FromString(tileType.ToString().ToLower()));
+                        }
+                    }
                 }
             }
             return (null, CATEGORY.Others);
+        }
+
+        private int getFarmTypeIndex(string farmType)
+        {
+            return farmType.ToLower() switch
+            {
+                "default" => 0,
+                "riverlands" => 1,
+                "forest" => 2,
+                "mountains" => 3,
+                "combat" => 4,
+                "fourcorners" => 5,
+                "beach" => 6,
+                _ => 7,
+            };
         }
     }
 }

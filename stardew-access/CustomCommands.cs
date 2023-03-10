@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using stardew_access.Features;
 using stardew_access.Patches;
 using StardewModdingAPI;
 using StardewValley;
@@ -327,18 +328,18 @@ namespace stardew_access
                     return;
                 }
 
-                BuildingNAnimalMenuPatches.marked[index] = new Vector2((int)Game1.player.getTileX(), (int)Game1.player.getTileY());
+                BuildingOperations.marked[index] = new Vector2((int)Game1.player.getTileX(), (int)Game1.player.getTileY());
                 MainClass.InfoLog($"Location {(int)Game1.player.getTileX()}x {(int)Game1.player.getTileY()}y added at {index} index.");
             });
 
             helper.ConsoleCommands.Add("marklist", "List all marked positions.", (string commmand, string[] args) =>
             {
                 string toPrint = "";
-                for (int i = 0; i < BuildingNAnimalMenuPatches.marked.Length; i++)
+                for (int i = 0; i < BuildingOperations.marked.Length; i++)
                 {
-                    if (BuildingNAnimalMenuPatches.marked[i] != Vector2.Zero)
+                    if (BuildingOperations.marked[i] != Vector2.Zero)
                     {
-                        toPrint = $"{toPrint}\n Index {i}: {BuildingNAnimalMenuPatches.marked[i].X}x {BuildingNAnimalMenuPatches.marked[i].Y}y";
+                        toPrint = $"{toPrint}\n Index {i}: {BuildingOperations.marked[i].X}x {BuildingOperations.marked[i].Y}y";
                     }
                 }
 
@@ -355,7 +356,7 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("buildsel", "Select the building index which you want to upgrade/demolish/paint", (string commmand, string[] args) =>
             {
-                if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu && Game1.activeClickableMenu is not AnimalQueryMenu) || !BuildingNAnimalMenuPatches.isOnFarm)
+                if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu && Game1.activeClickableMenu is not AnimalQueryMenu) || !CarpenterMenuPatch.isOnFarm)
                 {
                     MainClass.InfoLog($"Cannot select building.");
                     return;
@@ -380,12 +381,12 @@ namespace stardew_access
                 string? positionIndexInString = args.ElementAtOrDefault(1);
                 int positionIndex = 0;
 
-                if (BuildingNAnimalMenuPatches.isMoving)
+                if (CarpenterMenuPatch.isMoving)
                 {
 
-                    if (BuildingNAnimalMenuPatches.isConstructing || BuildingNAnimalMenuPatches.isMoving)
+                    if (CarpenterMenuPatch.isConstructing || CarpenterMenuPatch.isMoving)
                     {
-                        if (BuildingNAnimalMenuPatches.availableBuildings[index] == null)
+                        if (BuildingOperations.availableBuildings[index] == null)
                         {
                             MainClass.InfoLog($"No building found with index {index}. Use buildlist.");
                             return;
@@ -406,9 +407,9 @@ namespace stardew_access
                         }
                     }
                 }
-                else if (BuildingNAnimalMenuPatches.isConstructing && !BuildingNAnimalMenuPatches.isUpgrading)
+                else if (CarpenterMenuPatch.isConstructing && !CarpenterMenuPatch.isUpgrading)
                 {
-                    if (BuildingNAnimalMenuPatches.marked[index] == Vector2.Zero)
+                    if (BuildingOperations.marked[index] == Vector2.Zero)
                     {
                         MainClass.InfoLog($"No marked position found at {index} index.");
                         return;
@@ -416,7 +417,7 @@ namespace stardew_access
                 }
                 else
                 {
-                    if (BuildingNAnimalMenuPatches.availableBuildings[index] == null)
+                    if (BuildingOperations.availableBuildings[index] == null)
                     {
                         MainClass.InfoLog($"No building found with index {index}. Use buildlist.");
                         return;
@@ -427,19 +428,19 @@ namespace stardew_access
 
                 if (Game1.activeClickableMenu is PurchaseAnimalsMenu)
                 {
-                    BuildingNAnimalMenuPatches.PurchaseAnimal(BuildingNAnimalMenuPatches.availableBuildings[index]);
+                    BuildingOperations.PurchaseAnimal(BuildingOperations.availableBuildings[index]);
                 }
                 else if (Game1.activeClickableMenu is AnimalQueryMenu)
                 {
-                    BuildingNAnimalMenuPatches.MoveAnimal(BuildingNAnimalMenuPatches.availableBuildings[index]);
+                    BuildingOperations.MoveAnimal(BuildingOperations.availableBuildings[index]);
                 }
                 else
                 {
-                    if (BuildingNAnimalMenuPatches.isConstructing && !BuildingNAnimalMenuPatches.isUpgrading) { response = BuildingNAnimalMenuPatches.Contstruct(BuildingNAnimalMenuPatches.marked[index]); }
-                    else if (BuildingNAnimalMenuPatches.isMoving) { response = BuildingNAnimalMenuPatches.Move(BuildingNAnimalMenuPatches.availableBuildings[index], BuildingNAnimalMenuPatches.marked[positionIndex]); }
-                    else if (BuildingNAnimalMenuPatches.isDemolishing) { response = BuildingNAnimalMenuPatches.Demolish(BuildingNAnimalMenuPatches.availableBuildings[index]); }
-                    else if (BuildingNAnimalMenuPatches.isUpgrading) { response = BuildingNAnimalMenuPatches.Upgrade(BuildingNAnimalMenuPatches.availableBuildings[index]); }
-                    else if (BuildingNAnimalMenuPatches.isPainting) { response = BuildingNAnimalMenuPatches.Paint(BuildingNAnimalMenuPatches.availableBuildings[index]); }
+                    if (CarpenterMenuPatch.isConstructing && !CarpenterMenuPatch.isUpgrading) { response = BuildingOperations.Contstruct(BuildingOperations.marked[index]); }
+                    else if (CarpenterMenuPatch.isMoving) { response = BuildingOperations.Move(BuildingOperations.availableBuildings[index], BuildingOperations.marked[positionIndex]); }
+                    else if (CarpenterMenuPatch.isDemolishing) { response = BuildingOperations.Demolish(BuildingOperations.availableBuildings[index]); }
+                    else if (CarpenterMenuPatch.isUpgrading) { response = BuildingOperations.Upgrade(BuildingOperations.availableBuildings[index]); }
+                    else if (CarpenterMenuPatch.isPainting) { response = BuildingOperations.Paint(BuildingOperations.availableBuildings[index]); }
                 }
 
                 if (response != null)
@@ -517,7 +518,7 @@ namespace stardew_access
                 string? name = buildings[i].nameOfIndoorsWithoutUnique;
                 name = (name == "null") ? buildings[i].buildingType.Value : name;
 
-                BuildingNAnimalMenuPatches.availableBuildings[buildingIndex] = buildings[i];
+                BuildingOperations.availableBuildings[buildingIndex] = buildings[i];
                 toPrint = $"{toPrint}\nIndex {buildingIndex}: {name}: At {buildings[i].tileX}x and {buildings[i].tileY}y";
                 ++buildingIndex;
             }
