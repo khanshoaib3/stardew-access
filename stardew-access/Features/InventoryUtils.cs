@@ -2,7 +2,7 @@
 using StardewValley;
 using StardewValley.Menus;
 
-namespace stardew_access.Patches
+namespace stardew_access.Features
 {
     internal class InventoryUtils
     {
@@ -201,6 +201,12 @@ namespace stardew_access.Patches
 
             if (MainClass.Config.DisableInventoryVerbosity) return "";
             return " not usable here";
+        }
+
+        internal static void Cleanup()
+        {
+            hoveredItemQueryKey = "";
+            prevSlotIndex = -999;
         }
     }
 }

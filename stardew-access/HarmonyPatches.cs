@@ -16,34 +16,34 @@ namespace stardew_access
             #region Dialogue Patches
             harmony.Patch(
                    original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.draw), new Type[] { typeof(SpriteBatch) }),
-                   postfix: new HarmonyMethod(typeof(DialoguePatches), nameof(DialoguePatches.DialoguePatch))
+                   postfix: new HarmonyMethod(typeof(DialogueBoxPatch), nameof(DialogueBoxPatch.DrawPatch))
                 );
 
             harmony.Patch(
                original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.receiveLeftClick)),
-               postfix: new HarmonyMethod(typeof(DialoguePatches), nameof(DialoguePatches.ClearDialogueString))
+               postfix: new HarmonyMethod(typeof(DialogueBoxPatch), nameof(DialogueBoxPatch.RecieveLeftClickPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.drawHoverText), new Type[] { typeof(SpriteBatch), typeof(string), typeof(SpriteFont), typeof(int), typeof(int), typeof(int), typeof(string), typeof(int), typeof(string[]), typeof(Item), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(float), typeof(CraftingRecipe), typeof(IList<Item>) }),
-                postfix: new HarmonyMethod(typeof(DialoguePatches), nameof(DialoguePatches.HoverTextPatch))
+                postfix: new HarmonyMethod(typeof(IClickableMenuPatch), nameof(IClickableMenuPatch.DrawHoverTextPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(NPC), nameof(NPC.drawAboveAlwaysFrontLayer)),
-                postfix: new HarmonyMethod(typeof(DialoguePatches), nameof(DialoguePatches.drawAboveAlwaysFrontLayerPatch))
+                postfix: new HarmonyMethod(typeof(NPCPatch), nameof(NPCPatch.DrawAboveAlwaysFrontLayerPatch))
             );
             #endregion
 
             #region Title Menu Patches
             harmony.Patch(
                     original: AccessTools.Method(typeof(TitleMenu), nameof(TitleMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.TitleMenuPatch))
+                    postfix: new HarmonyMethod(typeof(TitleMenuPatch), nameof(TitleMenuPatch.DrawPatch))
                 );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(LoadGameMenu.SaveFileSlot), nameof(LoadGameMenu.SaveFileSlot.Draw), new Type[] { typeof(SpriteBatch), typeof(int) }),
-                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.LoadGameMenuPatch))
+                postfix: new HarmonyMethod(typeof(LoadGameMenuPatch), nameof(LoadGameMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
@@ -53,172 +53,167 @@ namespace stardew_access
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CoopMenu), nameof(CoopMenu.update), new Type[] { typeof(GameTime) }),
-                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.CoopMenuPatch))
+                postfix: new HarmonyMethod(typeof(CoopMenuPatch), nameof(CoopMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(AdvancedGameOptions), nameof(AdvancedGameOptions.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.AdvancedGameOptionsPatch))
+                postfix: new HarmonyMethod(typeof(AdvancedGameOptionsPatch), nameof(AdvancedGameOptionsPatch.DrawPatch))
             );
             #endregion
 
             #region Game Menu Patches
             harmony.Patch(
                 original: AccessTools.Method(typeof(GameMenu), nameof(GameMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.GameMenuPatch))
+                postfix: new HarmonyMethod(typeof(GameMenuPatch), nameof(GameMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                     original: AccessTools.Method(typeof(OptionsPage), nameof(OptionsPage.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.OptionsPagePatch))
+                    postfix: new HarmonyMethod(typeof(OptionsPagePatch), nameof(OptionsPagePatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(ExitPage), nameof(ExitPage.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.ExitPagePatch))
+                postfix: new HarmonyMethod(typeof(ExitPagePatch), nameof(ExitPagePatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CraftingPage), nameof(CraftingPage.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.CraftingPagePatch))
+                postfix: new HarmonyMethod(typeof(CraftingPagePatch), nameof(CraftingPagePatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(InventoryPage), nameof(InventoryPage.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.InventoryPagePatch))
+                postfix: new HarmonyMethod(typeof(InventoryPagePatch), nameof(InventoryPagePatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.ItemGrabMenuPatch))
+                postfix: new HarmonyMethod(typeof(ItemGrabMenuPatch), nameof(ItemGrabMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(GeodeMenu), nameof(GeodeMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.GeodeMenuPatch))
+                postfix: new HarmonyMethod(typeof(GeodeMenuPatch), nameof(GeodeMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.ShopMenuPatch))
+                postfix: new HarmonyMethod(typeof(ShopMenuPatch), nameof(ShopMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(SocialPage), nameof(SocialPage.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.SocialPagePatch))
+                postfix: new HarmonyMethod(typeof(SocialPagePatch), nameof(SocialPagePatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CollectionsPage), nameof(CollectionsPage.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.CollectionsPagePatch))
+                postfix: new HarmonyMethod(typeof(CollectionsPagePatch), nameof(CollectionsPagePatch.DrawPatch))
             );
             #endregion
 
             #region Bundle Menu Patches
             harmony.Patch(
                 original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(BundleMenuPatches), nameof(BundleMenuPatches.JunimoNoteMenuPatch))
+                postfix: new HarmonyMethod(typeof(JunimoNoteMenuPatch), nameof(JunimoNoteMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(JojaCDMenu), nameof(JojaCDMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(BundleMenuPatches), nameof(BundleMenuPatches.JojaCDMenuPatch))
+                postfix: new HarmonyMethod(typeof(JojaCDMenuPatch), nameof(JojaCDMenuPatch.DrawPatch))
             );
             #endregion
 
             #region Menu Patches
             harmony.Patch(
                     original: AccessTools.Method(typeof(LetterViewerMenu), nameof(LetterViewerMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(DialoguePatches), nameof(DialoguePatches.LetterViewerMenuPatch))
+                    postfix: new HarmonyMethod(typeof(LetterViwerMenuPatch), nameof(LetterViwerMenuPatch.DrawPatch))
                 );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(ShippingMenu), nameof(ShippingMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ShippingMenuPatch))
+                postfix: new HarmonyMethod(typeof(ShippingMenuPatch), nameof(ShippingMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(LevelUpMenu), nameof(LevelUpMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.LevelUpMenuPatch))
+                postfix: new HarmonyMethod(typeof(LevelUpMenuPatch), nameof(LevelUpMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(ConfirmationDialog), nameof(ConfirmationDialog.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ConfirmationDialogPatch))
+                postfix: new HarmonyMethod(typeof(ConfirmationDialogMenuPatch), nameof(ConfirmationDialogMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(TitleTextInputMenu), nameof(TitleTextInputMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.TitleTextInputMenuPatch))
+                postfix: new HarmonyMethod(typeof(TitleTextInputMenuPatch), nameof(TitleTextInputMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(NamingMenu), nameof(NamingMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.NamingMenuPatch))
+                postfix: new HarmonyMethod(typeof(NamingMenuPatch), nameof(NamingMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(MineElevatorMenu), nameof(MineElevatorMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.MineElevatorMenuPatch))
+                postfix: new HarmonyMethod(typeof(MineElevatorMenuPatch), nameof(MineElevatorMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(LanguageSelectionMenu), nameof(LanguageSelectionMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.LanguageSelectionMenuPatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.receiveKeyPress), new Type[] { typeof(Keys) }),
-                prefix: new HarmonyMethod(typeof(DonationMenuPatches), nameof(DonationMenuPatches.MuseumMenuKeyPressPatch))
+                postfix: new HarmonyMethod(typeof(LanguageSelectionMenuPatch), nameof(LanguageSelectionMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(ChooseFromListMenu), nameof(ChooseFromListMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ChooseFromListMenuPatch))
+                postfix: new HarmonyMethod(typeof(ChooseFromListMenuPatch), nameof(ChooseFromListMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(TailoringMenu), nameof(TailoringMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.TailoringMenuPatch))
+                postfix: new HarmonyMethod(typeof(TailoringMenuPatch), nameof(TailoringMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(PondQueryMenu), nameof(PondQueryMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.PondQueryMenuPatch))
+                postfix: new HarmonyMethod(typeof(PondQueryMenuPatch), nameof(PondQueryMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(ForgeMenu), nameof(ForgeMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ForgeMenuPatch))
+                postfix: new HarmonyMethod(typeof(ForgeMenuPatch), nameof(ForgeMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(ItemListMenu), nameof(ItemListMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ItemListMenuPatch))
+                postfix: new HarmonyMethod(typeof(ItemListMenuPatch), nameof(ItemListMenuPatch.DrawPatch))
             );
             #endregion
 
             #region Quest Patches
             harmony.Patch(
                     original: AccessTools.Method(typeof(SpecialOrdersBoard), nameof(SpecialOrdersBoard.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(QuestPatches), nameof(QuestPatches.SpecialOrdersBoardPatch))
+                    postfix: new HarmonyMethod(typeof(SpecialOrdersBoardPatch), nameof(SpecialOrdersBoardPatch.DrawPatch))
                 );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(QuestLog), nameof(QuestLog.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(QuestPatches), nameof(QuestPatches.QuestLogPatch))
+                postfix: new HarmonyMethod(typeof(QuestLogPatch), nameof(QuestLogPatch.DrawPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Billboard), nameof(Billboard.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(QuestPatches), nameof(QuestPatches.BillboardPatch))
+                postfix: new HarmonyMethod(typeof(BillboardPatch), nameof(BillboardPatch.DrawPatch))
             );
             #endregion
 
             #region Chat Menu Patches
             harmony.Patch(
                     original: AccessTools.Method(typeof(ChatBox), nameof(ChatBox.update), new Type[] { typeof(GameTime) }),
-                    postfix: new HarmonyMethod(typeof(ChatMenuPatches), nameof(ChatMenuPatches.ChatBoxPatch))
+                    postfix: new HarmonyMethod(typeof(ChatBoxPatch), nameof(ChatBoxPatch.UpdatePatch))
                 );
             #endregion
 
@@ -227,9 +222,10 @@ namespace stardew_access
                     original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.exitThisMenu)),
                     postfix: new HarmonyMethod(typeof(IClickableMenuPatch), nameof(IClickableMenuPatch.ExitThisMenuPatch))
                 );
+
             harmony.Patch(
                     original: AccessTools.Method(typeof(Game1), nameof(Game1.exitActiveMenu)),
-                    prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.Game1ExitActiveMenuPatch))
+                    prefix: new HarmonyMethod(typeof(Game1Patch), nameof(Game1Patch.ExitActiveMenuPatch))
                 );
             #endregion
 
@@ -237,17 +233,17 @@ namespace stardew_access
 
             harmony.Patch(
                     original: AccessTools.Method(typeof(CarpenterMenu), nameof(CarpenterMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                    prefix: new HarmonyMethod(typeof(BuildingNAnimalMenuPatches), nameof(BuildingNAnimalMenuPatches.CarpenterMenuPatch))
+                    prefix: new HarmonyMethod(typeof(CarpenterMenuPatch), nameof(CarpenterMenuPatch.DrawPatch))
                 );
 
             harmony.Patch(
                     original: AccessTools.Method(typeof(PurchaseAnimalsMenu), nameof(PurchaseAnimalsMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                    prefix: new HarmonyMethod(typeof(BuildingNAnimalMenuPatches), nameof(BuildingNAnimalMenuPatches.PurchaseAnimalsMenuPatch))
+                    prefix: new HarmonyMethod(typeof(PurchaseAnimalsMenuPatch), nameof(PurchaseAnimalsMenuPatch.DrawPatch))
                 );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(AnimalQueryMenu), nameof(AnimalQueryMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(BuildingNAnimalMenuPatches), nameof(BuildingNAnimalMenuPatches.AnimalQueryMenuPatch))
+                postfix: new HarmonyMethod(typeof(AnimalQueryMenuPatch), nameof(AnimalQueryMenuPatch.DrawPatch))
             );
 
             #endregion
@@ -255,35 +251,40 @@ namespace stardew_access
             #region Donation Menus
             harmony.Patch(
                 original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(DonationMenuPatches), nameof(DonationMenuPatches.MuseumMenuPatch))
+                postfix: new HarmonyMethod(typeof(MuseumMenuPatch), nameof(MuseumMenuPatch.DrawPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.receiveKeyPress), new Type[] { typeof(Keys) }),
+                prefix: new HarmonyMethod(typeof(MuseumMenuPatch), nameof(MuseumMenuPatch.RecieveKeyPressPatch))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(FieldOfficeMenu), nameof(FieldOfficeMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(DonationMenuPatches), nameof(DonationMenuPatches.FieldOfficeMenuPatch))
+                postfix: new HarmonyMethod(typeof(FieldOfficeMenuPatch), nameof(FieldOfficeMenuPatch.DrawPatch))
             );
             #endregion
 
             #region Mini Games
             harmony.Patch(
                         original: AccessTools.Method(typeof(Intro), nameof(Intro.draw), new Type[] { typeof(SpriteBatch) }),
-                        postfix: new HarmonyMethod(typeof(MiniGamesPatches), nameof(MiniGamesPatches.IntroPatch))
+                        postfix: new HarmonyMethod(typeof(IntroPatch), nameof(IntroPatch.DrawPatch))
                     );
 
             harmony.Patch(
                         original: AccessTools.Method(typeof(GrandpaStory), nameof(GrandpaStory.draw), new Type[] { typeof(SpriteBatch) }),
-                        postfix: new HarmonyMethod(typeof(MiniGamesPatches), nameof(MiniGamesPatches.GrandpaStoryPatch))
+                        postfix: new HarmonyMethod(typeof(GrandpaStoryPatch), nameof(GrandpaStoryPatch.DrawPatch))
                     );
             #endregion
 
             harmony.Patch(
                     original: AccessTools.Method(typeof(Game1), nameof(Game1.playSound)),
-                    prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.PlaySoundPatch))
+                    prefix: new HarmonyMethod(typeof(Game1Patch), nameof(Game1Patch.PlaySoundPatch))
                 );
 
             harmony.Patch(
                     original: AccessTools.Method(typeof(InstanceGame), nameof(InstanceGame.Exit)),
-                    prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ExitEventPatch))
+                    prefix: new HarmonyMethod(typeof(InstanceGamePatch), nameof(InstanceGamePatch.ExitPatch))
                 );
 
             harmony.Patch(

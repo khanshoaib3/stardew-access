@@ -119,7 +119,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occured in character customization menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
