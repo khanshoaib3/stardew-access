@@ -308,7 +308,7 @@ namespace stardew_access.Patches
             }
             else if (menu is PondQueryMenu)
             {
-                MenuPatches.pondQueryMenuQuery = " ";
+                PondQueryMenuPatch.Cleanup();
             }
             else if (menu is GeodeMenu)
             {
