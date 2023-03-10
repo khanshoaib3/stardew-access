@@ -231,7 +231,7 @@ namespace stardew_access.Patches
             }
             else if (menu is LevelUpMenu)
             {
-                MenuPatches.currentLevelUpTitle = " ";
+                LevelUpMenuPatch.Cleanup();
             }
             else if (menu is Billboard)
             {
