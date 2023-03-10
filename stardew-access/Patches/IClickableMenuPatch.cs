@@ -288,7 +288,7 @@ namespace stardew_access.Patches
             }
             else if (menu is TailoringMenu)
             {
-                MenuPatches.tailoringMenuQuery = " ";
+                TailoringMenuPatch.Cleanup();
             }
             else if (menu is ForgeMenu)
             {
