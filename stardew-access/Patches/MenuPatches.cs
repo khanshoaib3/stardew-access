@@ -17,7 +17,6 @@ namespace stardew_access.Patches
         internal static string forgeMenuQuery = " ";
         internal static string itemListMenuQuery = " ";
         internal static int prevSlotIndex = -999;
-        public static Vector2? prevTile = null;
 
         internal static void ItemListMenuPatch(ItemListMenu __instance, string ___title, int ___currentTab, int ___totalValueOfItems, List<Item> ___itemsToList)
         {
@@ -312,37 +311,6 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static bool PlaySoundPatch(string cueName)
-        {
-            try
-            {
-                if (!Context.IsPlayerFree)
-                    return true;
-
-                if (!Game1.player.isMoving())
-                    return true;
-
-                if (cueName == "grassyStep" || cueName == "sandyStep" || cueName == "snowyStep" || cueName == "stoneStep" || cueName == "thudStep" || cueName == "woodyStep")
-                {
-                    Vector2 nextTile = CurrentPlayer.FacingTile;
-                    if (TileInfo.isCollidingAtTile((int)nextTile.X, (int)nextTile.Y))
-                    {
-                        if (prevTile != nextTile)
-                        {
-                            prevTile = nextTile;
-                            //Game1.playSound("colliding");
-                        }
-                        return false;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
-            }
-
-            return true;
-        }
 
         internal static void LanguageSelectionMenuPatch(LanguageSelectionMenu __instance)
         {
@@ -604,22 +572,6 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void Game1ExitActiveMenuPatch()
-        {
-            try
-            {
-                IClickableMenuPatch.Cleanup(Game1.activeClickableMenu);
-            }
-            catch (Exception e)
-            {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
-            }
-        }
 
-        internal static void ExitEventPatch()
-        {
-            if (MainClass.ScreenReader != null)
-                MainClass.ScreenReader.CloseScreenReader();
-        }
     }
 }

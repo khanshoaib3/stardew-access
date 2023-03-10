@@ -222,9 +222,10 @@ namespace stardew_access
                     original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.exitThisMenu)),
                     postfix: new HarmonyMethod(typeof(IClickableMenuPatch), nameof(IClickableMenuPatch.ExitThisMenuPatch))
                 );
+
             harmony.Patch(
                     original: AccessTools.Method(typeof(Game1), nameof(Game1.exitActiveMenu)),
-                    prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.Game1ExitActiveMenuPatch))
+                    prefix: new HarmonyMethod(typeof(Game1Patch), nameof(Game1Patch.ExitActiveMenuPatch))
                 );
             #endregion
 
@@ -278,12 +279,12 @@ namespace stardew_access
 
             harmony.Patch(
                     original: AccessTools.Method(typeof(Game1), nameof(Game1.playSound)),
-                    prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.PlaySoundPatch))
+                    prefix: new HarmonyMethod(typeof(Game1Patch), nameof(Game1Patch.PlaySoundPatch))
                 );
 
             harmony.Patch(
                     original: AccessTools.Method(typeof(InstanceGame), nameof(InstanceGame.Exit)),
-                    prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ExitEventPatch))
+                    prefix: new HarmonyMethod(typeof(InstanceGamePatch), nameof(InstanceGamePatch.ExitPatch))
                 );
 
             harmony.Patch(
