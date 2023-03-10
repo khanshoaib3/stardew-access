@@ -296,7 +296,7 @@ namespace stardew_access.Patches
             }
             else if (menu is ItemListMenu)
             {
-                MenuPatches.itemListMenuQuery = " ";
+                ItemListMenuPatch.Cleanup();
             }
             else if (menu is FieldOfficeMenu)
             {
