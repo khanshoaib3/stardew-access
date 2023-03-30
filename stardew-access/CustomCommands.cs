@@ -467,7 +467,8 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("refst", "Refresh static tiles", (string command, string[] args) =>
             {
-                MainClass.STiles = new Features.StaticTiles();
+                StaticTiles.LoadTilesFiles();
+                StaticTiles.SetupTilesDicts();
 
                 MainClass.InfoLog("Static tiles refreshed!");
             });

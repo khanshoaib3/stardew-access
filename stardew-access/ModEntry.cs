@@ -20,7 +20,6 @@ namespace stardew_access
         private Harmony? harmony;
         private static IMonitor? monitor;
         private static Radar? radarFeature;
-        private static StaticTiles? sTiles;
         private static IScreenReader? screenReader;
         private static IModHelper? modHelper;
         private static TileViewer? tileViewer;
@@ -30,17 +29,6 @@ namespace stardew_access
         internal static ModConfig Config { get => config; set => config = value; }
         public static IModHelper? ModHelper { get => modHelper; }
 
-        public static StaticTiles STiles
-        {
-            get
-            {
-                if (sTiles == null)
-                    sTiles = new StaticTiles();
-
-                return sTiles;
-            }
-            set => sTiles = value;
-        }
         public static Radar RadarFeature
         {
             get
@@ -162,8 +150,8 @@ namespace stardew_access
 
         private void onGameLaunched(object? sender, GameLaunchedEventArgs? e)
         {
-            if (sTiles is not null)
-                sTiles.SetupTilesDicts();
+            StaticTiles.LoadTilesFiles();
+            StaticTiles.SetupTilesDicts();
         }
 
         private void onUpdateTicked(object? sender, UpdateTickedEventArgs? e)

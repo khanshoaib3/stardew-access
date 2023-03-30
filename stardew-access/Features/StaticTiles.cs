@@ -1,298 +1,550 @@
-using Newtonsoft.Json.Linq;
-using StardewValley;
+using System.IO;
+using System.Text.Json;
 using System.Linq;
+using System.Collections.Generic;
+using StardewValley;
 
 namespace stardew_access.Features
 {
     public class StaticTiles
     {
-        private static JObject? staticTilesData = null;
-        private static JObject? customTilesData = null;
-        private static Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>?>? staticTilesDataDict = null;
-        private static Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>?>? customTilesDataDict = null;
-        
-        public StaticTiles()
-        {
-            if (MainClass.ModHelper is  null)
-                return;
+        // Static instance for the singleton pattern
+        private static StaticTiles? _instance;
 
-            if (staticTilesData is null) LoadTilesFiles();
-            this.SetupTilesDicts();
+        /// <summary>
+        /// The singleton instance of the <see cref="StaticTiles"/> class.
+        /// </summary>
+        public static StaticTiles Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new StaticTiles();
+                }
+                return _instance;
+            }
         }
 
+        /// <summary>
+        /// A nullable JsonElement containing static tile data.
+        /// </summary>
+        private static JsonElement? staticTilesData;
+
+        /// <summary>
+        /// A nullable JsonElement containing custom tile data.
+        /// </summary>
+        private static JsonElement? customTilesData;
+
+        /// <summary>
+        /// A dictionary that maps location names to tile data dictionaries for static tiles.
+        /// Each tile data dictionary maps tile coordinates (x, y) to a tuple containing the object name and category.
+        /// </summary>
+        private static Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>> staticTilesDataDict;
+
+        /// <summary>
+        /// A dictionary that maps location names to tile data dictionaries for custom tiles.
+        /// Each tile data dictionary maps tile coordinates (x, y) to a tuple containing the object name and category.
+        /// </summary>
+        private static Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>> customTilesDataDict;
+
+        /// <summary>
+        /// The file name of the JSON file containing static tile data.
+        /// </summary>
+        private const string StaticTilesFileName = "static-tiles.json";
+
+        /// <summary>
+        /// The file name of the JSON file containing custom tile data.
+        /// </summary>
+        private const string CustomTilesFileName = "custom-tiles.json";
+
+        /// <summary>
+        /// A dictionary that contains conditional lambda functions for checking specific game conditions.
+        /// Each lambda function takes two arguments: a conditionType (string) and a uniqueModId (string) and returns a boolean value.
+        /// </summary>
+        /// <remarks>
+        /// The following lambda functions are currently supported:
+        /// <list type="bullet">
+        /// <item>
+        /// <description>"Farm": Checks if the current in-game farm type matches the given farm type (conditionType).</description>
+        /// </item>
+        /// <item>
+        /// <description>"JojaMember": Checks if the player has the "JojaMember" mail. The input arguments are ignored.</description>
+        /// </item>
+        /// </list>
+        /// Additional lambda functions can be added as needed.
+        /// </remarks>
+        private static readonly Dictionary<string, Func<string, string, bool>> conditionals = new Dictionary<string, Func<string, string, bool>>
+        {
+            ["Farm"] = (conditionType, uniqueModId) =>
+            {
+                if (string.IsNullOrEmpty(uniqueModId))
+                {
+                    // Branch for vanilla locations
+                    // Calculate farmTypeIndex using the switch expression
+                    int farmTypeIndex = conditionType.ToLower() switch
+                    {
+                        "default" => 0,
+                        "riverlands" => 1,
+                        "forest" => 2,
+                        "mountains" => 3,
+                        "combat" => 4,
+                        "fourcorners" => 5,
+                        "beach" => 6,
+                        _ => 7,
+                    };
+
+                    // Return true if the farmTypeIndex matches the current in-game farm type, otherwise false
+                    return farmTypeIndex == Game1.whichFarm;
+                }
+                else
+                {
+                    // Branch for mod locations
+                    // Log an error message and return false, as mod locations are not yet supported for the Farm conditional
+                    MainClass.ErrorLog("Mod locations are not yet supported for the Farm conditional.");
+                    return false;
+                }
+            },
+            ["JojaMember"] = (conditionType, uniqueModId) =>
+            {
+                // Return true if the player has the "JojaMember" mail, otherwise false
+                return Game1.MasterPlayer.mailReceived.Contains("JojaMember");
+            }
+        };
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StaticTiles"/> class.
+        /// Loads the tile files and sets up the tile dictionaries.
+        /// </summary>
+        private StaticTiles()
+        {
+            LoadTilesFiles();
+            SetupTilesDicts();
+        }
+        
+        /// <summary>
+        /// Loads a JSON file from the specified file name in the assets folder.
+        /// </summary>
+        /// <param name="fileName">The name of the JSON file to load.</param>
+        /// <returns>A <see cref="JsonElement"/> containing the deserialized JSON data, or default if an error occurs.</returns>
+        private static JsonElement LoadJsonFile(string fileName)
+        {
+            string filePath = Path.Combine(MainClass.ModHelper!.DirectoryPath, "assets", fileName);
+
+            try
+            {
+                string json = File.ReadAllText(filePath);
+                return JsonSerializer.Deserialize<JsonElement>(json);
+            }
+            catch (FileNotFoundException ex)
+            {
+                MainClass.ErrorLog($"{fileName} file not found: {ex.Message}");
+            }
+            catch (JsonException ex)
+            {
+                MainClass.ErrorLog($"Error parsing {fileName}: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                MainClass.ErrorLog($"An error occurred while initializing {fileName}: {ex.Message}");
+            }
+
+            return default;
+        }
+
+        /// <summary>
+        /// Loads the static and custom tile files.
+        /// </summary>
         public static void LoadTilesFiles()
         {
-            try
-            {
-                using (StreamReader file = new(Path.Combine(MainClass.ModHelper.DirectoryPath, "assets", "static-tiles.json")))
-                {
-                    string json = file.ReadToEnd();
-                    staticTilesData = JObject.Parse(json);
-                }
-                if (staticTilesData is not null)
-                {
-                }
+            if (MainClass.ModHelper is null) return;
 
-                MainClass.InfoLog($"Loaded static-tile.json");
-            }
-            catch (System.Exception)
-            {
-                MainClass.ErrorLog($"static-tiles.json file not found or an error occured while initializing static-tiles.json\nThe path of the file should be:\n\t{Path.Combine(MainClass.ModHelper.DirectoryPath, "assets", "static-tiles.json")}");
-            }
-
-            try
-            {
-                using (StreamReader file = new(Path.Combine(MainClass.ModHelper.DirectoryPath, "assets", "custom-tiles.json")))
-                {
-                    string json = file.ReadToEnd();
-                    customTilesData = JObject.Parse(json);
-                }
-                if (customTilesData is not null)
-                {
-                }
-
-                MainClass.InfoLog($"Loaded custom-tile.json");
-            }
-            catch (System.Exception)
-            {
-                MainClass.InfoLog($"custom-tiles.json file not found or an error occured while initializing custom-tiles.json\nThe path of the file should be:\n\t{Path.Combine(MainClass.ModHelper.DirectoryPath, "assets", "custom-tiles.json")}");
-            }
+            staticTilesData = LoadJsonFile(StaticTilesFileName);
+            customTilesData = LoadJsonFile(CustomTilesFileName);
         }
-        public static bool IsAvailable(string locationName)
+
+        /// <summary>
+        /// Adds a conditional lambda function to the conditionals dictionary at runtime.
+        /// </summary>
+        /// <param name="conditionName">The name of the condition to be added.</param>
+        /// <param name="conditionLambda">The lambda function to be added. It should accept two strings (conditionName and uniqueModID) and return a bool.</param>
+        /// <returns>Returns true if the lambda was added successfully, and false otherwise.</returns>
+        /// <exception cref="ArgumentException">Thrown if the conditionName or conditionLambda is null or empty.</exception>
+        public static bool AddConditionalLambda(string conditionName, Func<string, string, bool> conditionLambda)
         {
-            List<JObject> allData = new();
-
-            if (customTilesData != null) allData.Add(customTilesData);
-            if (staticTilesData != null) allData.Add(staticTilesData);
-
-            foreach (JObject data in allData)
+            // Check if the conditionName is not null or empty
+            if (string.IsNullOrEmpty(conditionName))
             {
-                foreach (KeyValuePair<string, JToken?> location in data)
-                {
-                    if (location.Key.Contains("||") && MainClass.ModHelper != null)
-                    {
-                        string uniqueModID = location.Key[(location.Key.LastIndexOf("||") + 2)..];
-                        string locationNameInJson = location.Key.Remove(location.Key.LastIndexOf("||"));
-                        bool isLoaded = MainClass.ModHelper.ModRegistry.IsLoaded(uniqueModID);
+                throw new ArgumentException("Condition name cannot be null or empty.", nameof(conditionName));
+            }
 
-                        if (!isLoaded) continue; // Skip if the specified mod is not loaded
-                        if (locationName.Equals(locationNameInJson, StringComparison.OrdinalIgnoreCase)) return true;
+            // Check if the conditionLambda is not null
+            if (conditionLambda == null)
+            {
+                throw new ArgumentException("Condition lambda cannot be null.", nameof(conditionLambda));
+            }
+
+            // Check if the conditionName already exists in the dictionary
+            if (conditionals.ContainsKey(conditionName))
+            {
+                MainClass.ErrorLog($"A conditional with the name '{conditionName}' already exists.");
+                return false;
+            }
+
+            // Add the lambda to the dictionary
+            conditionals.Add(conditionName, conditionLambda);
+            return true;
+
+        }
+
+        /// <summary>
+        /// Creates a location tile dictionary based on the given JSON dictionary.
+        /// </summary>
+        /// <param name="jsonDict">The JSON dictionary containing location tile data.</param>
+        /// <returns>A dictionary mapping tile coordinates to tile names and categories.</returns>
+        public static Dictionary<(short x, short y), (string name, CATEGORY category)> CreateLocationTileDict(JsonElement locationJson)
+        {
+            var jsonDict = locationJson.EnumerateObject().ToDictionary(p => p.Name, p => p.Value);
+            var locationData = new Dictionary<(short x, short y), (string name, CATEGORY category)>(jsonDict.Count);
+
+            // Iterate over the JSON dictionary
+            foreach (var item in jsonDict)
+            {
+                var name = item.Key;
+
+                // Error handling: Check if "x" and "y" properties exist in the JSON object
+                if (!item.Value.TryGetProperty("x", out var xElement) || !item.Value.TryGetProperty("y", out var yElement))
+                {
+                    MainClass.ErrorLog($"Missing x or y property for {name}");
+                    continue;
+                }
+
+                var xValues = xElement.EnumerateArray().Select(x => x.GetInt16()).ToArray();
+                var yValues = yElement.EnumerateArray().Select(y => y.GetInt16()).ToArray();
+
+                // Error handling: Ensure that x and y arrays are not empty
+                if (xValues.Length == 0 || yValues.Length == 0)
+                {
+                    MainClass.ErrorLog($"Empty x or y array for {name}");
+                    continue;
+                }
+
+                // Get the "type" property if it exists, otherwise use the default value "Others"
+                var type = item.Value.TryGetProperty("type", out var typeElement) ? typeElement.GetString() : "Others";
+
+                // Obtain the category instance
+                var category = CATEGORY.FromString(type);
+
+                // Iterate over y and x values, adding entries to the locationData dictionary
+                for (int j = 0; j < yValues.Length; j++)
+                {
+                    var y = yValues[j];
+                    for (int i = 0; i < xValues.Length; i++)
+                    {
+                        var x = xValues[i];
+                        locationData.TryAdd((x, y), (name, category));
                     }
-                    else if (locationName.Equals(location.Key, StringComparison.OrdinalIgnoreCase))
-                        return true;
                 }
             }
 
-            return false;
+            return locationData;
         }
 
-        public static (string? name, CATEGORY category) GetTileFromDict(int x, int y)
+        /// <summary>
+                /// Represents the different categories of locations.
+        /// </summary>
+        public enum LocationCategory
         {
-            if (staticTilesDataDict is not null && staticTilesDataDict.TryGetValue(Game1.currentLocation.Name, out var locationDict))
+            /// <summary>
+            /// Represents mod locations with conditional requirements.
+            /// </summary>
+            ModConditional,
+
+            /// <summary>
+            /// Represents mod locations without conditional requirements.
+            /// </summary>
+            Mod,
+
+            /// <summary>
+            /// Represents vanilla locations with conditional requirements.
+            /// </summary>
+            VanillaConditional,
+
+            /// <summary>
+            /// Represents vanilla locations without conditional requirements.
+            /// </summary>
+            Vanilla
+        }
+
+        /// <summary>
+        /// Determines the location category based on the given location name.
+        /// </summary>
+        /// <param name="name">The location name.</param>
+        /// <returns>The location category.</returns>
+        public static LocationCategory GetLocationCategory(string name)
+        {
+            bool hasDoubleUnderscore = name.Contains("__");
+            bool hasDoubleVerticalBar = name.Contains("||");
+
+            if (hasDoubleUnderscore && hasDoubleVerticalBar)
+                return LocationCategory.ModConditional;
+            if (hasDoubleVerticalBar)
+                return LocationCategory.Mod;
+            if (hasDoubleUnderscore)
+                return LocationCategory.VanillaConditional;
+
+            return LocationCategory.Vanilla;
+        }
+
+        /// <summary>
+        /// Sorts location data from a JsonElement into four dictionaries based on their type (mod conditional, mod, vanilla conditional, or vanilla).
+        /// </summary>
+        /// <param name="json">A JsonElement containing location data.</param>
+        /// <returns>
+        /// A tuple containing four dictionaries:
+        /// - modConditionalLocations: A dictionary of mod locations with conditionals.
+        /// - modLocations: A dictionary of mod locations without conditionals.
+        /// - vanillaConditionalLocations: A dictionary of vanilla locations with conditionals.
+        /// - vanillaLocations: A dictionary of vanilla locations without conditionals.
+        /// Each dictionary maps a location name to another dictionary, which maps tile coordinates (x, y) to a tuple containing the object name and category.
+        /// </returns>
+        /// <remarks>
+        /// This function iterates over the properties of the input JsonElement and categorizes each location based on the naming conventions.
+        /// If a location has a conditional, the function checks if the condition is met before adding it to the respective dictionary.
+        /// If a mod location is specified, the function checks if the mod is loaded before adding it to the respective dictionary.
+        /// </remarks>
+        public static (
+            Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>> modConditionalLocations,
+            Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>> modLocations,
+            Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>> vanillaConditionalLocations,
+            Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>> vanillaLocations
+        ) SortLocationsByType(JsonElement json)
+        {
+            var modConditionalLocations = new Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>();
+            var modLocations = new Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>();
+            var vanillaConditionalLocations = new Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>();
+            var vanillaLocations = new Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>();
+
+            var categoryDicts = new Dictionary<LocationCategory, Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>>
             {
-                if (locationDict is not null && locationDict.TryGetValue(((short)x, (short)y), out var tile))
+                { LocationCategory.ModConditional, modConditionalLocations },
+                { LocationCategory.Mod, modLocations },
+                { LocationCategory.VanillaConditional, vanillaConditionalLocations },
+                { LocationCategory.Vanilla, vanillaLocations }
+            };
+
+            foreach (var property in json.EnumerateObject())
+            {
+                if (property.Value.ValueKind != JsonValueKind.Object)
                 {
-                    //MainClass.DebugLog($"Tile ({x}, {y}) is in the dict as {tile.name}.");
-                    return tile;
+                    MainClass.ErrorLog($"Invalid value type for {property.Name}");
+                    continue;
                 }
-            } /*else if (locationDict is null) {
-                //MainClass.DebugLog($"Skipping null entry for location {Game1.currentLocation.Name}.");
-            }
-            else {
-                MainClass.InfoLog($"Location {Game1.currentLocation.Name} not found in static tiles.");
-            }*/
-            return (null, CATEGORY.Others);
-        }
 
-        private static Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>?>? BuildTilesDict(JObject? data)
-        {
-            if (data is null) return null;
-            //MainClass.DebugLog("Loading dict data");
-            var comparer = StringComparer.OrdinalIgnoreCase;
-            Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>?> tilesDict = new(comparer);
-            foreach (KeyValuePair<string, JToken?> location in data)
-            {
-                try
+                string propertyName = property.Name;
+                string uniqueModId = null;
+
+                var splitModId = propertyName.Split("||", StringSplitOptions.RemoveEmptyEntries);
+                if (splitModId.Length == 2)
                 {
-                    //MainClass.DebugLog($"Entering loop for location {location}.");
-                    if (location.Value is null) continue;
-                    string locationName = location.Key;
-                    if (locationName.Contains("||") && MainClass.ModHelper is not null)
-                    {
-                        /*                      Mod Specific Tiles
-                         * We can add tiles that only get detected when the specified mod is loaded.
-                         * Syntax: <location name>||<Mod's unique id, look into the mod's manifest.json for unique id>
-                         * Example: The following tile will only be detected if Stardew Valley Expanded mod is installed
-                         *              {
-                         *                  .
-                         *                  .
-                         *                  .
-                         *                  "Town||FlashShifter.StardewValleyExpandedCP":{
-                         *                      "<Tile Name>":{
-                         *                          "x": [<x location(s)>],
-                         *                          "y": [<y location(s)>],
-                         *                          "type": "<Category name>"
-                         *                      }
-                         *                  },
-                         *                  .
-                         *                  .
-                         *                  .
-                         *              }
-                        */
-                        string uniqueModID = locationName[(locationName.LastIndexOf("||") + 2)..];
-                        locationName = locationName.Remove(locationName.LastIndexOf("||"));
-                        bool isLoaded = MainClass.ModHelper.ModRegistry.IsLoaded(uniqueModID);
+                    propertyName = splitModId[0];
+                    uniqueModId = splitModId[1];
 
-                        if (!isLoaded) continue; // Skip if the specified mod is not loaded
-                    }
-                    //MainClass.DebugLog($"Loading tiles for {locationName}.");
-                    if (location.Value.Type == JTokenType.Null)
+                    if (MainClass.ModHelper == null || !MainClass.ModHelper.ModRegistry.IsLoaded(uniqueModId))
                     {
-                        tilesDict.Add(location.Key, null);
-                        //MainClass.DebugLog($"Created null entry for location {location.Key}.");
-                        //MainClass.DebugLog("SPAM!!!");
                         continue;
                     }
-                    
+                }
 
-                    Dictionary<(short x, short y), (string name, CATEGORY category)>? locationDict = new();
-                    //MainClass.DebugLog($"Entering tiles loop for {locationName}.");
-                    foreach (var tileInfo in ((JObject)location.Value))
+                var category = GetLocationCategory(propertyName);
+
+                if (category == LocationCategory.VanillaConditional || category == LocationCategory.ModConditional)
+                {
+                    var splitPropertyName = propertyName.Split("__", StringSplitOptions.RemoveEmptyEntries);
+                    if (splitPropertyName.Length == 2)
                     {
-                        if (tileInfo.Value == null) continue;
-                        string key = tileInfo.Key;
-                        var tile = tileInfo.Value;
-                        if (tile.Type == JTokenType.Object )
+                        propertyName = splitPropertyName[0];
+                        string conditionalName = splitPropertyName[1];
+
+                        if (conditionals.TryGetValue(conditionalName, out var conditionalFunc))
                         {
-                            JToken? tileXArray = tile["x"];
-                            JToken? tileYArray = tile["y"];
-                            JToken? tileType = tile["type"];
-
-                            if (tileXArray is null || tileYArray is null || tileType is null)
+                            if (!conditionalFunc(conditionalName, uniqueModId))
+                            {
                                 continue;
-
-                            //MainClass.DebugLog($"Adding tile {key} to location {locationName}.");
-                            if (key.Contains('[') && key.Contains(']'))
-                            {
-                                int i1 = key.IndexOf('[');
-                                int i2 = key.LastIndexOf(']');
-
-                                if (i1 < i2)
-                                {
-                                    key = key.Remove(i1, ++i2 - i1);
-                                }
-                            }
-                            (string key, CATEGORY category) tileData = (key.Trim(), CATEGORY.FromString(tileType.ToString().ToLower()));
-
-                            foreach (var item_x in tileXArray)
-                            {
-                                short x = short.Parse(item_x.ToString());
-                                foreach (var item_y in tileYArray)
-                                {
-                                    short y = short.Parse(item_y.ToString());
-                                    (short x, short y) coords = (x, y);
-                                    try
-                                    {
-                                        locationDict.Add(coords, tileData);            
-                                    }
-                                    catch (System.Exception e)
-                                    {
-                                        MainClass.ErrorLog($"Failed setting tile {key} for location {locationName}. Reason:\n\t{e}");
-                                    }
-                                }
                             }
                         }
-                    }
-                    //MainClass.DebugLog($"Location Dict has {locationDict.Count} members.");
-                    if (locationDict.Count > 0)
-                    {
-                        //MainClass.DebugLog($"Adding locationDict for {locationName}");
-                        tilesDict.Add(locationName, locationDict);
-                        //MainClass.DebugLog($"Added locationDict for {locationName}");
-                    }
-                } catch (System.Exception e) {
-                    if (location.Value is null || location.Value.Type == JTokenType.Null)
-                    {
-                        tilesDict.Add(location.Key, null);
-                        //MainClass.DebugLog($"Created null entry for location {location.Key}.");
-                    } else {
-                        MainClass.ErrorLog($"Unable to build tiles dict; failed on location {location.Key} with value ({location.Value.GetType()}){location.Value}. Reason:\n\t{e}");
-                        throw;
+                        else
+                        {
+                            MainClass.ErrorLog($"Unknown conditional name: {conditionalName}");
+                            continue;
+                        }
                     }
                 }
-            }
 
-            if (tilesDict.Count > 0)
-            {
-                //MainClass.DebugLog("Dict loaded, returning.");
-                return tilesDict;
-            } else {
-                //MainClass.DebugLog("Dict not loaded, returning null");
-                return null;
-            }
-        }
+                var locationDict = CreateLocationTileDict(property.Value);
 
-        public void SetupTilesDicts()
-        {
-            //MainClass.DebugLog("Attempting to set dicts");
-            try
-            {
-                staticTilesDataDict = BuildTilesDict(staticTilesData);
-                if (staticTilesDataDict is not null)
+                if (categoryDicts.TryGetValue(category, out var targetDict))
                 {
-                    //MainClass.DebugLog($"staticTilesDataDict has {staticTilesDataDict.Count} entries.");
-                    //MainClass.DebugLog($"Keys: {staticTilesDataDict.Keys}");
-                } else {
-                    //MainClass.DebugLog("Static tiles not loaded.");
+                    targetDict.Add(propertyName, locationDict);
                 }
-            }
-            catch (System.Exception e)
-            {
-                MainClass.ErrorLog($"Failed to set static tiles dict. Reason: \n\t{e}");
-            }
-            try
-            {
-                customTilesDataDict = BuildTilesDict(customTilesData);
-                if (customTilesDataDict is not null)
+                else
                 {
-                    //MainClass.DebugLog($"customTilesDataDict has {customTilesDataDict.Count} entries.");
-                } else {
-                    //MainClass.DebugLog("Custom tiles not loaded.");
+                    MainClass.ErrorLog($"Unknown location category for {propertyName}");
                 }
             }
-            catch (System.Exception e)
+
+            return (modConditionalLocations, modLocations, vanillaConditionalLocations, vanillaLocations);
+        }
+
+        /// <summary>
+        /// Merges the contents of the source dictionary into the destination dictionary.
+        /// If a key exists in both dictionaries and the associated values are dictionaries, the function merges them recursively.
+        /// If the values are not dictionaries, the value from the source dictionary overwrites the value in the destination dictionary.
+        /// </summary>
+        /// <typeparam name="TKey">The type of keys in the dictionaries.</typeparam>
+        /// <typeparam name="TValue">The type of values in the dictionaries.</typeparam>
+        /// <param name="destinationDictionary">The destination dictionary to merge the source dictionary into.</param>
+        /// <param name="sourceDictionary">The source dictionary containing the data to merge into the destination dictionary.</param>
+        private static void MergeDicts<TKey, TValue>(
+            Dictionary<TKey, TValue> destinationDictionary,
+            Dictionary<TKey, TValue> sourceDictionary)
+        {
+            if (destinationDictionary == null || sourceDictionary == null)
             {
-                MainClass.ErrorLog($"Faild to set custom tiles dict. Reason:\n\t{e}");
+                // Log a warning or throw an exception if either dictionary is null
+                return;
             }
-            //MainClass.DebugLog("Successfully created tiles dicts.");
-        }
 
-        public static string? GetStaticTileInfoAt(int x, int y)
-        {
-            return GetStaticTileInfoAtWithCategory(x, y).name;
-        }
-
-        public static (string? name, CATEGORY category) GetStaticTileInfoAtWithCategory(int x, int y)
-        {
-            if (customTilesDataDict is not null) return GetTileFromDict(x, y);
-            if (staticTilesDataDict is not null) return GetTileFromDict(x, y);
-
-            return (null, CATEGORY.Others);
-        }
-
-        private static int GetFarmTypeIndex(string farmType)
-        {
-            return farmType.ToLower() switch
+            foreach (var sourceEntry in sourceDictionary)
             {
-                "default" => 0,
-                "riverlands" => 1,
-                "forest" => 2,
-                "mountains" => 3,
-                "combat" => 4,
-                "fourcorners" => 5,
-                "beach" => 6,
-                _ => 7,
-            };
+                // Try to get the existing value from the destination dictionary
+                if (destinationDictionary.TryGetValue(sourceEntry.Key, out var existingValue))
+                {
+                    // If both existing value and the source value are dictionaries,
+                    // merge them recursively
+                    if (existingValue is Dictionary<TKey, TValue> existingDictionary
+                        && sourceEntry.Value is Dictionary<TKey, TValue> sourceSubDictionary)
+                    {
+                        MergeDicts(existingDictionary, sourceSubDictionary);
+                    }
+                    else
+                    {
+                        // Overwrite the existing value if it's not a dictionary
+                        destinationDictionary[sourceEntry.Key] = sourceEntry.Value;
+                    }
+                }
+                else
+                {
+                    // Add a new entry if the key doesn't exist in the destination dictionary
+                    destinationDictionary[sourceEntry.Key] = sourceEntry.Value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Builds a dictionary containing location data and tile information based on the provided JsonElement.
+        /// </summary>
+        /// <param name="json">A JsonElement containing the location and tile data.</param>
+        /// <returns>A dictionary containing location data and tile information.</returns>
+        public static Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>> BuildTilesDict(JsonElement json)
+        {
+            // Sort the locations by their types (modConditional, mod, vanillaConditional, vanilla)
+            var (modConditionalLocations, modLocations, vanillaConditionalLocations, vanillaLocations) = SortLocationsByType(json);
+
+            // Create a merged dictionary to store all the location dictionaries
+            var mergedDict = new Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>();
+
+            // Merge each category-specific dictionary into the merged dictionary. Prioritize conditional locations whose conditions are true and mod locations where the corresponding mod is loaded. Overwrite their default and vanilla versions, respectively.
+            MergeDicts(mergedDict, modConditionalLocations);
+            MergeDicts(mergedDict, modLocations);
+            MergeDicts(mergedDict, vanillaConditionalLocations);
+            MergeDicts(mergedDict, vanillaLocations);
+
+            return mergedDict;
+        }
+
+        /// <summary>
+        /// Sets up the tile dictionaries (staticTilesDataDict and customTilesDataDict) using the data from the loaded JsonElements.
+        /// </summary>
+        public static void SetupTilesDicts()
+        {
+            if (staticTilesData.HasValue)
+            {
+                staticTilesDataDict = BuildTilesDict(staticTilesData.Value);
+            }
+            else
+            {
+                staticTilesDataDict = new Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>();
+            }
+            
+            if (customTilesData.HasValue)
+            {
+                customTilesDataDict = BuildTilesDict(customTilesData.Value);
+            }
+            else
+            {
+                customTilesDataDict = new Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>();
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the tile information (name and optionally category) from the dictionaries based on the specified location and coordinates.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile.</param>
+        /// <param name="y">The y-coordinate of the tile.</param>
+        /// <param name="currentLocationName">The name of the current location. Defaults to Game1.currentLocation.Name.</param>
+        /// <param name="includeCategory">Specifies whether to include the tile's category in the returned tuple.</param>
+        /// <returns>A tuple containing the tile's name and optionally its category. If the tile is not found, the name will be null and the category will be CATEGORY.Others if requested.</returns>
+        private static (string? name, CATEGORY? category) GetTileInfoAt(int x, int y, string currentLocationName = null, bool includeCategory = false)
+        {
+            if (currentLocationName == null)
+            {
+                currentLocationName = Game1.currentLocation.Name;
+            }
+
+            if (customTilesDataDict != null && customTilesDataDict.TryGetValue(currentLocationName, out var customLocationDict))
+            {
+                if (customLocationDict != null && customLocationDict.TryGetValue(((short)x, (short)y), out var customTile))
+                {
+                    return (customTile.name, includeCategory ? customTile.category : (CATEGORY?)null);
+                }
+            }
+
+            if (staticTilesDataDict != null && staticTilesDataDict.TryGetValue(currentLocationName, out var staticLocationDict))
+            {
+                if (staticLocationDict != null && staticLocationDict.TryGetValue(((short)x, (short)y), out var staticTile))
+                {
+                    return (staticTile.name, includeCategory ? staticTile.category : (CATEGORY?)null);
+                }
+            }
+
+            return (null, includeCategory ? CATEGORY.Others : (CATEGORY?)null);
+        }
+
+        /// <summary>
+        /// Retrieves the tile name from the dictionaries based on the specified location and coordinates.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile.</param>
+        /// <param name="y">The y-coordinate of the tile.</param>
+        /// <param name="currentLocationName">The name of the current location. Defaults to Game1.currentLocation.Name.</param>
+        /// <returns>The name of the tile if found, or null if not found.</returns>
+        public static string GetStaticTileNameAt(int x, int y, string currentLocationName = null)
+        {
+            var (name, _) = GetTileInfoAt(x, y, currentLocationName, includeCategory: false);
+            return name;
+        }
+
+        /// <summary>
+        /// Retrieves the tile information (name and category) from the dictionaries based on the specified location and coordinates.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile.</param>
+        /// <param name="y">The y-coordinate of the tile.</param>
+        /// <param name="currentLocationName">The name of the current location. Defaults to Game1.currentLocation.Name.</param>
+        /// <returns>A tuple containing the tile's name and category. If the tile is not found, the name will be null and the category will be CATEGORY.Others.</returns>
+        public static (string? name, CATEGORY category) GetStaticTileInfoAtWithCategory(int x, int y, string currentLocationName = null)
+        {
+            var (name, category) = GetTileInfoAt(x, y, currentLocationName, includeCategory: true);
+            return (name, category ?? CATEGORY.Others);
         }
     }
 }
