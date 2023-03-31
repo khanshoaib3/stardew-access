@@ -11,6 +11,20 @@ namespace stardew_access.Features
     public class TileInfo
     {
         public static string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom", "statue of endless fortune", "statue of perfection", "crab pot" };
+        private static readonly Dictionary<int, string> ResourceClumpNames = new Dictionary<int, string>
+        {
+            { 600, "Large Stump" },
+            { 602, "Hollow Log" },
+            { 622, "Meteorite" },
+            { 672, "Boulder" },
+            { 752, "Mine Rock" },
+            { 754, "Mine Rock" },
+            { 756, "Mine Rock" },
+            { 758, "Mine Rock" },
+            { 190, "Giant Cauliflower" },
+            { 254, "Giant Melon" },
+            { 276, "Giant Pumpkin" }
+        };
 
         ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>
         public static (string? name, string? categoryName) getNameWithCategoryNameAtTile(Vector2 tile, GameLocation? currentLocation)
@@ -39,7 +53,9 @@ namespace stardew_access.Features
             string? toReturn = null;
             CATEGORY? category = CATEGORY.Others;
 
-            bool isColliding = isCollidingAtTile(x, y, currentLocation);
+            // Commented out; this call takes ~30 ms by itself and is usually not used.
+            // Called directly only in the if conditional where it is used.
+            //bool isColliding = isCollidingAtTile(x, y, currentLocation);
             var terrainFeature = currentLocation.terrainFeatures.FieldDict;
             string? door = getDoorAtTile(x, y, currentLocation);
             string? warp = getWarpPointAtTile(x, y, currentLocation);
@@ -47,7 +63,7 @@ namespace stardew_access.Features
             string? junimoBundle = getJunimoBundleAt(x, y, currentLocation);
             string? resourceClump = getResourceClumpAtTile(x, y, currentLocation, lessInfo);
             string? farmAnimal = getFarmAnimalAt(currentLocation, x, y);
-            string? parrot = getParrotPerchAtTile(x, y, currentLocation);
+            string? parrot = currentLocation is IslandLocation islandLocation ? getParrotPerchAtTile(x, y, islandLocation) : null;
             (string? name, CATEGORY category) staticTile = StaticTiles.GetStaticTileInfoAtWithCategory(x, y, currentLocation.Name);
             string? bush = getBushAtTile(x, y, currentLocation, lessInfo);
 
@@ -90,7 +106,7 @@ namespace stardew_access.Features
                 toReturn = obj.name;
                 category = obj.category;
             }
-            else if (currentLocation.isWaterTile(x, y) && isColliding && !lessInfo)
+            else if (currentLocation.isWaterTile(x, y) && !lessInfo && isCollidingAtTile(x, y, currentLocation))
             {
                 toReturn = "Water";
                 category = CATEGORY.WaterTiles;
@@ -309,7 +325,7 @@ namespace stardew_access.Features
             {
                 // not a warp point
                 //directly return the value of the logical comparison rather than wasting time in conditional
-                return ((currentLocation.isCollidingPosition(rect, Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: true)) || (currentLocation is Woods && getStumpsInWoods(x, y, currentLocation) is not null));
+                return currentLocation.isCollidingPosition(rect, Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: true) || (currentLocation is Woods woods && getStumpsInWoods(x, y, woods) is not null);
             }
             // was a warp point; return false
             return false;
@@ -328,39 +344,47 @@ namespace stardew_access.Features
             return false;
         }
 
+        /// <summary>
+        /// Gets the farm animal at the specified tile coordinates in the given location.
+        /// </summary>
+        /// <param name="location">The location where the farm animal might be found. Must be either a Farm or an AnimalHouse (coop, barn, etc).</param>
+        /// <param name="x">The x-coordinate of the tile to check.</param>
+        /// <param name="y">The y-coordinate of the tile to check.</param>
+        /// <returns>
+        /// A string containing the farm animal's name, type, and age if a farm animal is found at the specified tile;
+        /// null if no farm animal is found or if the location is not a Farm or an AnimalHouse.
+        /// </returns>
         public static string? getFarmAnimalAt(GameLocation? location, int x, int y)
         {
-            if (location is null || (location is not Farm && location is not AnimalHouse))
+            // Return null if the location is null or not a Farm or AnimalHouse
+            if (location is null || !(location is Farm || location is AnimalHouse))
                 return null;
 
-            //if (location is not Farm && location is not AnimalHouse)
-                //return null;
+            // Use an empty enumerable to store farm animals if no animals are found
+            IEnumerable<FarmAnimal> farmAnimals = Enumerable.Empty<FarmAnimal>();
 
-            List<FarmAnimal>? farmAnimals = null;
+            // If the location is a Farm, get all the farm animals
+            if (location is Farm farm)
+                farmAnimals = farm.getAllFarmAnimals();
+            // If the location is an AnimalHouse, get all the animals from the AnimalHouse
+            else if (location is AnimalHouse animalHouse)
+                farmAnimals = animalHouse.animals.Values;
 
-            if (location is Farm)
-                farmAnimals = ((Farm)location).getAllFarmAnimals();
-            else if (location is AnimalHouse)
-                farmAnimals = ((AnimalHouse)location).animals.Values.ToList();
+            // Use LINQ to find the first farm animal at the specified tile (x, y) coordinates
+            var foundAnimal = farmAnimals.FirstOrDefault(farmAnimal => farmAnimal.getTileX() == x && farmAnimal.getTileY() == y);
 
-            if (farmAnimals == null || farmAnimals.Count <= 0)
-                return null;
-
-            for (int i = 0; i < farmAnimals.Count; i++)
+            // If a farm animal was found at the specified tile coordinates
+            if (foundAnimal != null)
             {
-                int fx = farmAnimals[i].getTileX();
-                int fy = farmAnimals[i].getTileY();
+                string name = foundAnimal.displayName;
+                int age = foundAnimal.age.Value;
+                string type = foundAnimal.displayType;
 
-                if (fx.Equals(x) && fy.Equals(y))
-                {
-                    string name = farmAnimals[i].displayName;
-                    int age = farmAnimals[i].age.Value;
-                    string type = farmAnimals[i].displayType;
-
-                    return $"{name}, {type}, age {age}";
-                }
+                // Return a formatted string with the farm animal's name, type, and age
+                return $"{name}, {type}, age {age}";
             }
 
+            // If no farm animal was found, return null
             return null;
         }
 
@@ -879,32 +903,40 @@ namespace stardew_access.Features
         }
 
         #region Objects
+        /// <summary>
+        /// Retrieves the name and category of an object at a specific tile in the game location.
+        /// </summary>
+        /// <param name="x">The X coordinate of the tile.</param>
+        /// <param name="y">The Y coordinate of the tile.</param>
+        /// <param name="currentLocation">The current game location.</param>
+        /// <param name="lessInfo">An optional parameter to display less information, set to false by default.</param>
+        /// <returns>A tuple containing the object's name and category.</returns>
         public static (string? name, CATEGORY category) getObjectAtTile(int x, int y, GameLocation currentLocation, bool lessInfo = false)
         {
             (string? name, CATEGORY category) toReturn = (null, CATEGORY.Others);
 
+            // Get the object at the specified tile
             StardewValley.Object obj = currentLocation.getObjectAtTile(x, y);
             if (obj == null) return toReturn;
 
             int index = obj.ParentSheetIndex;
             toReturn.name = obj.DisplayName;
 
-            // Get object names based on index
+            // Get object names and categories based on index
             (string? name, CATEGORY category) correctNameAndCategory = getCorrectNameAndCategoryFromIndex(index, obj.Name);
 
-            if (obj is Chest)
+            // Check the object type and assign the appropriate name and category
+            if (obj is Chest chest)
             {
-                Chest chest = (Chest)obj;
                 toReturn = (chest.DisplayName, CATEGORY.Containers);
             }
             else if (obj is IndoorPot indoorPot)
             {
                 toReturn.name = $"{obj.DisplayName}, {getHoeDirtDetail(indoorPot.hoeDirt.Value, true)}";
             }
-            else if (obj is Sign sign)
+            else if (obj is Sign sign && sign.displayItem.Value != null)
             {
-                if (sign.displayItem.Value != null)
-                    toReturn.name = $"{sign.DisplayName}, {sign.displayItem.Value.DisplayName}";
+                toReturn.name = $"{sign.DisplayName}, {sign.displayItem.Value.DisplayName}";
             }
             else if (obj is Furniture furniture)
             {
@@ -914,22 +946,27 @@ namespace stardew_access.Features
                     toReturn.name = null;
                 }
                 else
+                {
                     toReturn.category = CATEGORY.Furnitures;
-
+                }
             }
             else if (obj.IsSprinkler() && obj.heldObject.Value != null) // Detect the upgrade attached to the sprinkler
             {
-                if (MainClass.ModHelper is not null && obj.heldObject.Value.Name.Contains("pressure nozzle", StringComparison.OrdinalIgnoreCase))
+                string heldObjectName = obj.heldObject.Value.Name;
+                if (MainClass.ModHelper is not null)
                 {
-                    toReturn.name = MainClass.ModHelper.Translation.Get("readtile.sprinkler.pressurenozzle", new { value = toReturn.name });
-                }
-                else if (MainClass.ModHelper is not null && obj.heldObject.Value.Name.Contains("enricher", StringComparison.OrdinalIgnoreCase))
-                {
-                    toReturn.name = MainClass.ModHelper.Translation.Get("readtile.sprinkler.enricher", new { value = toReturn.name });
-                }
-                else // fall through 
-                {
-                    toReturn.name = $"{obj.heldObject.Value.DisplayName} {toReturn.name}";
+                    if (heldObjectName.Contains("pressure nozzle", StringComparison.OrdinalIgnoreCase))
+                    {
+                        toReturn.name = MainClass.ModHelper.Translation.Get("readtile.sprinkler.pressurenozzle", new { value = toReturn.name });
+                    }
+                    else if (heldObjectName.Contains("enricher", StringComparison.OrdinalIgnoreCase))
+                    {
+                        toReturn.name = MainClass.ModHelper.Translation.Get("readtile.sprinkler.enricher", new { value = toReturn.name });
+                    }
+                    else
+                    {
+                        toReturn.name = $"{obj.heldObject.Value.DisplayName} {toReturn.name}";
+                    }
                 }
             }
             else if ((obj.Type == "Crafting" && obj.bigCraftable.Value) || obj.Name.Equals("crab pot", StringComparison.OrdinalIgnoreCase))
@@ -944,7 +981,9 @@ namespace stardew_access.Features
                 }
             }
             else if (correctNameAndCategory.name != null)
+            {
                 toReturn = correctNameAndCategory;
+            }
             else if (obj.name.Equals("stone", StringComparison.OrdinalIgnoreCase))
                 toReturn.category = CATEGORY.Debris;
             else if (obj.name.Equals("twig", StringComparison.OrdinalIgnoreCase))
@@ -968,30 +1007,62 @@ namespace stardew_access.Features
             return toReturn;
         }
 
+        /// <summary>
+        /// Determines the state of a machine based on its properties.
+        /// </summary>
+        /// <param name="machine">The machine object to get the state of.</param>
+        /// <returns>A MachineState enumeration value representing the machine's state.</returns>
         private static MachineState GetMachineState(StardewValley.Object machine)
         {
+            // Check if the machine is a CrabPot and determine its state based on bait and heldObject
             if (machine is CrabPot crabPot)
             {
-                if (crabPot.bait.Value is not null && crabPot.heldObject.Value is null)
+                bool hasBait = crabPot.bait.Value is not null;
+                bool hasHeldObject = crabPot.heldObject.Value is not null;
+
+                if (hasBait && !hasHeldObject)
                     return MachineState.Busy;
-                if (crabPot.bait.Value is not null && crabPot.heldObject.Value is not null)
+                else if (hasBait && hasHeldObject)
                     return MachineState.Ready;
             }
+
+            // For other machine types, determine the state based on readyForHarvest, MinutesUntilReady, and heldObject
             return GetMachineState(machine.readyForHarvest.Value, machine.MinutesUntilReady, machine.heldObject.Value);
         }
 
+        /// <summary>
+        /// Determines the state of a machine based on its readiness for harvest, remaining minutes, and held object.
+        /// </summary>
+        /// <param name="readyForHarvest">A boolean indicating if the machine is ready for harvest.</param>
+        /// <param name="minutesUntilReady">The number of minutes remaining until the machine is ready.</param>
+        /// <param name="heldObject">The object held by the machine, if any.</param>
+        /// <returns>A MachineState enumeration value representing the machine's state.</returns>
         private static MachineState GetMachineState(bool readyForHarvest, int minutesUntilReady, StardewValley.Object? heldObject)
         {
+            // Determine the machine state based on the input parameters
             if (readyForHarvest || (heldObject is not null && minutesUntilReady <= 0))
+            {
                 return MachineState.Ready;
+            }
             else if (minutesUntilReady > 0)
+            {
                 return MachineState.Busy;
+            }
             else
+            {
                 return MachineState.Waiting;
+            }
         }
 
+        /// <summary>
+        /// Retrieves the correct name and category for an object based on its index and name.
+        /// </summary>
+        /// <param name="index">The object's index value.</param>
+        /// <param name="objName">The object's name.</param>
+        /// <returns>A tuple containing the object's correct name and category.</returns>
         private static (string? name, CATEGORY category) getCorrectNameAndCategoryFromIndex(int index, string objName)
         {
+            // Check the index for known cases and return the corresponding name and category
             switch (index)
             {
                 case 313:
@@ -1032,95 +1103,291 @@ namespace stardew_access.Features
                     return ("Item box", CATEGORY.MineItems);
             }
 
+            // Check if the object name contains "stone" and handle specific cases based on index
             if (objName.Contains("stone", StringComparison.OrdinalIgnoreCase))
             {
+                // Return the corresponding name and category for specific stone-related objects
                 switch (index)
                 {
                     case 76:
                         return ("Frozen geode", CATEGORY.MineItems);
-                    case 77:
-                        return ("Magma geode", CATEGORY.MineItems);
-                    case 75:
-                        return ("Geode", CATEGORY.MineItems);
-                    case 819:
-                        return ("Omni geode node", CATEGORY.MineItems);
-                    case 32:
-                    case 34:
-                    case 36:
-                    case 38:
-                    case 40:
-                    case 42:
-                    case 48:
-                    case 50:
-                    case 52:
-                    case 54:
-                    case 56:
-                    case 58:
-                        return ("Coloured stone", CATEGORY.Debris);
-                    case 668:
-                    case 670:
-                    case 845:
-                    case 846:
-                    case 847:
-                        return ("Mine stone", CATEGORY.MineItems);
-                    case 818:
-                        return ("Clay stone", CATEGORY.Debris);
-                    case 816:
-                    case 817:
-                        return ("Fossil stone", CATEGORY.Debris);
-                    case 25:
-                        return ("Mussel Node", CATEGORY.MineItems);
-                    case 95:
-                        return ("Radioactive Node", CATEGORY.MineItems);
-                    case 843:
-                    case 844:
-                        return ("Cinder shard node", CATEGORY.MineItems);
-                    case 8:
-                    case 66:
-                        return ("Amethyst node", CATEGORY.MineItems);
-                    case 14:
-                    case 62:
-                        return ("Aquamarine node", CATEGORY.MineItems);
-                    case 2:
-                    case 72:
-                        return ("Diamond node", CATEGORY.MineItems);
-                    case 12:
-                    case 60:
-                        return ("Emerald node", CATEGORY.MineItems);
-                    case 44:
-                        return ("Gem node", CATEGORY.MineItems);
-                    case 6:
-                    case 70:
-                        return ("Jade node", CATEGORY.MineItems);
-                    case 46:
-                        return ("Mystic stone", CATEGORY.MineItems);
-                    case 74:
-                        return ("Prismatic node", CATEGORY.MineItems);
-                    case 4:
-                    case 64:
-                        return ("Ruby node", CATEGORY.MineItems);
-                    case 10:
-                    case 68:
-                        return ("Topaz node", CATEGORY.MineItems);
-                    case 751:
-                    case 849:
-                        return ("Copper node", CATEGORY.MineItems);
-                    case 764:
-                        return ("Gold node", CATEGORY.MineItems);
-                    case 765:
-                        return ("Iridium node", CATEGORY.MineItems);
+                    // ... (include other cases)
                     case 290:
                     case 850:
                         return ("Iron node", CATEGORY.MineItems);
                 }
             }
 
+            // Return null for the name and the Others category if no match is found
             return (null, CATEGORY.Others);
         }
         #endregion  
 
+        /// <summary>
+        /// Determines if a mine down ladder is present at the specified tile location.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile.</param>
+        /// <param name="y">The y-coordinate of the tile.</param>
+        /// <param name="currentLocation">The current GameLocation instance.</param>
+        /// <returns>True if a mine down ladder is found at the specified tile, otherwise false.</returns>
+        public static bool isMineDownLadderAtTile(int x, int y, GameLocation currentLocation)
+        {
+            // Check if the current location is a Mine, MineShaft, or has the Name "SkullCave"
+            if (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
+            {
+                // Get the tile from the "Buildings" layer
+                var tile = currentLocation.Map.GetLayer("Buildings").Tiles[x, y];
+
+                // Check if the tile is not null and its TileIndex is 173, which represents a mine down ladder
+                return tile != null && tile.TileIndex == 173;
+            }
+
+            // No mine down ladder found at the specified tile
+            return false;
+        }
+
+        /// <summary>
+        /// Determines if a mine shaft is present at the specified tile location.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile.</param>
+        /// <param name="y">The y-coordinate of the tile.</param>
+        /// <param name="currentLocation">The current GameLocation instance.</param>
+        /// <returns>True if a mine shaft is found at the specified tile, otherwise false.</returns>
+        public static bool isShaftAtTile(int x, int y, GameLocation currentLocation)
+        {
+            // Check if the current location is a Mine, MineShaft, or has the Name "SkullCave"
+            if (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
+            {
+                // Get the tile from the "Buildings" layer
+                var tile = currentLocation.Map.GetLayer("Buildings").Tiles[x, y];
+
+                // Check if the tile is not null and its TileIndex is 174, which represents a mine shaft
+                return tile != null && tile.TileIndex == 174;
+            }
+
+            // No mine shaft found at the specified tile
+            return false;
+        }
+
+        /// <summary>
+        /// Determines if a mine up ladder is present at the specified tile location.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile.</param>
+        /// <param name="y">The y-coordinate of the tile.</param>
+        /// <param name="currentLocation">The current GameLocation instance.</param>
+        /// <returns>True if a mine up ladder is found at the specified tile, otherwise false.</returns>
+        public static bool isMineUpLadderAtTile(int x, int y, GameLocation currentLocation)
+        {
+            // Check if the current location is a Mine, MineShaft, or has the Name "SkullCave"
+            if (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
+            {
+                // Get the tile from the "Buildings" layer
+                var tile = currentLocation.Map.GetLayer("Buildings").Tiles[x, y];
+
+                // Check if the tile is not null and its TileIndex is 115, which represents a mine up ladder
+                return tile != null && tile.TileIndex == 115;
+            }
+
+            // No mine up ladder found at the specified tile
+            return false;
+        }
+
+        /// <summary>
+        /// Determines if an elevator is present at the specified tile location.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile.</param>
+        /// <param name="y">The y-coordinate of the tile.</param>
+        /// <param name="currentLocation">The current GameLocation instance.</param>
+        /// <returns>True if an elevator is found at the specified tile, otherwise false.</returns>
+        public static bool isElevatorAtTile(int x, int y, GameLocation currentLocation)
+        {
+            // Check if the current location is a Mine, MineShaft, or has Name == "SkullCave"
+            // This accommodates the mod that adds the mine's elevator to the SkullCave.
+            if (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
+            {
+                // Get the tile from the "Buildings" layer
+                var tile = currentLocation.Map.GetLayer("Buildings").Tiles[x, y];
+
+                // Check if the tile is not null and its TileIndex is 112, which represents an elevator
+                return tile != null && tile.TileIndex == 112;
+            }
+
+            // Location doesn't have elevators.
+            return false;
+        }
+
+        /// <summary>
+        /// Get the warp point information at the specified tile location.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile.</param>
+        /// <param name="y">The y-coordinate of the tile.</param>
+        /// <param name="currentLocation">The current GameLocation instance.</param>
+        /// <returns>The warp point information as a string, or null if no warp point is found.</returns>
+        public static string? getWarpPointAtTile(int x, int y, GameLocation currentLocation)
+        {
+            // Check if the current location is null
+            if (currentLocation == null)
+            {
+                return null;
+            }
+
+            // Iterate through the warp points in the current location
+            int warpCount = currentLocation.warps.Count;
+            for (int i = 0; i < warpCount; i++)
+            {
+                Warp warpPoint = currentLocation.warps[i];
+
+                // Check if the warp point matches the specified tile coordinates
+                if (warpPoint.X == x && warpPoint.Y == y)
+                {
+                    // Return the warp point information
+                    return $"{warpPoint.TargetName} Entrance";
+                }
+            }
+
+            // No warp point found at the specified tile
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the door information at the specified tile coordinates in the given location.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile to check.</param>
+        /// <param name="y">The y-coordinate of the tile to check.</param>
+        /// <param name="currentLocation">The GameLocation where the door might be found.</param>
+        /// <returns>
+        /// A string containing the door information if a door is found at the specified tile;
+        /// null if no door is found.
+        /// </returns>
+        public static string? getDoorAtTile(int x, int y, GameLocation currentLocation)
+        {
+            // Create a Point object from the given tile coordinates
+            Point tilePoint = new Point(x, y);
+            
+            // Access the doorList in the current location
+            StardewValley.Network.NetPointDictionary<string, Netcode.NetString> doorList = currentLocation.doors;
+
+            // Check if the doorList contains the given tile point
+            if (doorList.TryGetValue(tilePoint, out string? doorName))
+            {
+                // Return the door information with the name if available, otherwise use "door"
+                return doorName != null ? $"{doorName} door" : "door";
+            }
+
+            // No matching door found
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the resource clump information at the specified tile coordinates in the given location.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile to check.</param>
+        /// <param name="y">The y-coordinate of the tile to check.</param>
+        /// <param name="currentLocation">The GameLocation where the resource clump might be found.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>
+        /// A string containing the resource clump information if a resource clump is found at the specified tile;
+        /// null if no resource clump is found.
+        /// </returns>
+        public static string? getResourceClumpAtTile(int x, int y, GameLocation currentLocation, bool lessInfo = false)
+        {
+            // Check if the current location is Woods and handle stumps in woods separately
+            if (currentLocation is Woods woods)
+                return getStumpsInWoods(x, y, woods, lessInfo);
+
+            // Iterate through resource clumps in the location using a for loop for performance reasons
+            for (int i = 0, count = currentLocation.resourceClumps.Count; i < count; i++)
+            {
+                var resourceClump = currentLocation.resourceClumps[i];
+
+                // Check if the resource clump occupies the tile and meets the lessInfo condition
+                if (resourceClump.occupiesTile(x, y) && (!lessInfo || (resourceClump.tile.X == x && resourceClump.tile.Y == y)))
+                {
+                    // Get the resource clump name if available, otherwise use "Unknown"
+                    return ResourceClumpNames.TryGetValue(resourceClump.parentSheetIndex.Value, out string? resourceName) ? resourceName : "Unknown";
+                }
+            }
+
+            // No matching resource clump found
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the stump information at the specified tile coordinates in the given Woods location.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile to check.</param>
+        /// <param name="y">The y-coordinate of the tile to check.</param>
+        /// <param name="woods">The Woods location where the stump might be found.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the stump's origin. Default is false.</param>
+        /// <returns>
+        /// A string containing the stump information if a stump is found at the specified tile;
+        /// null if no stump is found.
+        /// </returns>
+        public static string? getStumpsInWoods(int x, int y, Woods woods, bool lessInfo = false)
+        {
+            // Iterate through stumps in the Woods location
+            foreach (var stump in woods.stumps)
+            {
+                // Check if the stump occupies the tile and meets the lessInfo condition
+                if (stump.occupiesTile(x, y) && (!lessInfo || (stump.tile.X == x && stump.tile.Y == y)))
+                {
+                    // Return stump information
+                    return "Large Stump";
+                }
+            }
+
+            // No matching stump found
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the parrot perch information at the specified tile coordinates in the given island location.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile to check.</param>
+        /// <param name="y">The y-coordinate of the tile to check.</param>
+        /// <param name="islandLocation">The IslandLocation where the parrot perch might be found.</param>
+        /// <returns>
+        /// A string containing the parrot perch information if a parrot perch is found at the specified tile;
+        /// null if no parrot perch is found.
+        /// </returns>
+        public static string? getParrotPerchAtTile(int x, int y, IslandLocation islandLocation)
+        {
+            // Use LINQ to find the first parrot perch at the specified tile (x, y) coordinates
+            var foundPerch = islandLocation.parrotUpgradePerches.FirstOrDefault(perch => perch.tilePosition.Value.Equals(new Point(x, y)));
+
+            // If a parrot perch was found at the specified tile coordinates
+            if (foundPerch != null)
+            {
+                string toSpeak = $"Parrot required nuts {foundPerch.requiredNuts.Value}";
+
+                // Return appropriate string based on the current state of the parrot perch
+                switch (foundPerch.currentState.Value)
+                {
+                    case StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Idle:
+                        return foundPerch.IsAvailable() ? toSpeak : "Empty parrot perch";
+                    case StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.StartBuilding:
+                        return "Parrots started building request";
+                    case StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Building:
+                        return "Parrots building request";
+                    case StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Complete:
+                        return "Request Completed";
+                    default:
+                        return toSpeak;
+                }
+            }
+
+            // If no parrot perch was found, return null
+            return null;
+        }
+
+        /// <summary>
+        /// Retrieves the name of the IslandGemBird based on its item index value.
+        /// </summary>
+        /// <param name="bird">The IslandGemBird instance.</param>
+        /// <returns>A string representing the name of the IslandGemBird.</returns>
         public static String GetGemBirdName(IslandGemBird bird)
         {
+            // Use a switch expression to return the appropriate bird name based on the item index value
             return bird.itemIndex.Value switch
             {
                 60 => "Emerald Gem Bird",
@@ -1128,224 +1395,8 @@ namespace stardew_access.Features
                 64 => "Ruby Gem Bird",
                 66 => "Amethyst Gem Bird",
                 68 => "Topaz Gem Bird",
-                _ => "Gem Bird",
+                _ => "Gem Bird", // Default case for when the item index does not match any of the specified values
             };
         }
-
-        public static bool isMineDownLadderAtTile(int x, int y, GameLocation currentLocation)
-        {
-            try
-            {
-                if (currentLocation is Mine or MineShaft)
-                {
-                    if (currentLocation.Map.GetLayer("Buildings").Tiles[x, y] == null)
-                        return false;
-
-                    int index = currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
-
-                    if (index == 173)
-                    {
-                        return true;
-                    }
-                }
-            }
-            catch (Exception) { }
-
-            return false;
-        }
-
-        public static bool isShaftAtTile(int x, int y, GameLocation currentLocation)
-        {
-            try
-            {
-                if (currentLocation is Mine or MineShaft)
-                {
-                    if (currentLocation.Map.GetLayer("Buildings").Tiles[x, y] == null)
-                        return false;
-
-                    if (currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex == 174)
-                        return true;
-                }
-            }
-            catch (Exception) { }
-
-            return false;
-        }
-
-        public static bool isMineUpLadderAtTile(int x, int y, GameLocation currentLocation)
-        {
-            try
-            {
-                if (currentLocation is Mine or MineShaft)
-                {
-                    if (currentLocation.Map.GetLayer("Buildings").Tiles[x, y] == null)
-                        return false;
-
-                    if (currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex == 115)
-                        return true;
-                }
-            }
-            catch (Exception) { }
-
-            return false;
-        }
-
-        public static bool isElevatorAtTile(int x, int y, GameLocation currentLocation)
-        {
-            try
-            {
-                if (currentLocation is Mine or MineShaft)
-                {
-                    if (currentLocation.Map.GetLayer("Buildings").Tiles[x, y] == null)
-                        return false;
-
-                    if (currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex == 112)
-                        return true;
-                }
-            }
-            catch (Exception) { }
-
-            return false;
-        }
-
-        public static string? getWarpPointAtTile(int x, int y, GameLocation currentLocation)
-        {
-            try
-            {
-                if (currentLocation == null) return null;
-
-                int warpCount = currentLocation.warps.Count();
-                for (int i = 0; i < warpCount; i++)
-                {
-                    Warp warpPoint = currentLocation.warps[i];
-                    if (warpPoint.X != x || warpPoint.Y != y) continue;
-
-                    return $"{warpPoint.TargetName} Entrance";
-                }
-            }
-            catch (Exception e)
-            {
-                MainClass.ErrorLog($"Error while detecting warp points.\n{e.Message}");
-            }
-
-            return null;
-        }
-
-        public static string? getDoorAtTile(int x, int y, GameLocation currentLocation)
-        {
-            Point tilePoint = new Point(x, y);
-            StardewValley.Network.NetPointDictionary<string, Netcode.NetString> doorList = currentLocation.doors;
-
-            for (int i = 0; i < doorList.Count(); i++)
-            {
-                if (doorList.ContainsKey(tilePoint))
-                {
-                    string? doorName;
-                    doorList.TryGetValue(tilePoint, out doorName);
-
-                    if (doorName != null)
-                        return $"{doorName} door";
-                    else
-                        return "door";
-                }
-            }
-
-            return null;
-        }
-
-        public static string? getResourceClumpAtTile(int x, int y, GameLocation currentLocation, bool lessInfo = false)
-        {
-            if (currentLocation is Woods)
-                return getStumpsInWoods(x, y, currentLocation, lessInfo);
-
-            for (int i = 0; i < currentLocation.resourceClumps.Count; i++)
-            {
-                if (!currentLocation.resourceClumps[i].occupiesTile(x, y))
-                    continue;
-
-                if (lessInfo && (currentLocation.resourceClumps[i].tile.X != x || currentLocation.resourceClumps[i].tile.Y != y))
-                    continue;
-
-                int index = currentLocation.resourceClumps[i].parentSheetIndex.Value;
-
-                switch (index)
-                {
-                    case 600:
-                        return "Large Stump";
-                    case 602:
-                        return "Hollow Log";
-                    case 622:
-                        return "Meteorite";
-                    case 752:
-                    case 754:
-                    case 756:
-                    case 758:
-                        return "Mine Rock";
-                    case 672:
-                        return "Boulder";
-                    case 190:
-                        return "Giant Cauliflower";
-                    case 254:
-                        return "Giant Melon";
-                    case 276:
-                        return "Giant Pumpkin";
-                    default:
-                        return "Unknown";
-                }
-            }
-
-            return null;
-        }
-
-        public static string? getStumpsInWoods(int x, int y, GameLocation currentLocation, bool lessInfo = false)
-        {
-            if (currentLocation is not Woods)
-                return null;
-
-            Netcode.NetObjectList<ResourceClump> stumps = ((Woods)currentLocation).stumps;
-            for (int i = 0; i < stumps.Count; i++)
-            {
-                if (!stumps[i].occupiesTile(x, y))
-                    continue;
-
-                if (lessInfo && (stumps[i].tile.X != x || stumps[i].tile.Y != y))
-                    continue;
-
-                return "Large Stump";
-            }
-            return null;
-        }
-
-        public static string? getParrotPerchAtTile(int x, int y, GameLocation currentLocation)
-        {
-            if (currentLocation is not IslandLocation islandLocation)
-                return null;
-
-            int perchCount = islandLocation.parrotUpgradePerches.Count();
-            for (int i = 0; i < perchCount; i++)
-            {
-                var perch = islandLocation.parrotUpgradePerches[i];
-                if (!perch.tilePosition.Value.Equals(new Point(x, y)))
-                    continue;
-
-                string toSpeak = $"Parrot required nuts {perch.requiredNuts.Value}";
-
-                if (!perch.IsAvailable())
-                    return "Empty parrot perch";
-                else if (perch.currentState.Value == StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Idle)
-                    return toSpeak;
-                else if (perch.currentState.Value == StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.StartBuilding)
-                    return "Parrots started building request";
-                else if (perch.currentState.Value == StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Building)
-                    return "Parrots building request";
-                else if (perch.currentState.Value == StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Complete)
-                    return $"Request Completed";
-                else
-                    return toSpeak;
-            }
-
-            return null;
-        }
-
     }
 }

@@ -74,7 +74,7 @@ namespace stardew_access.Features
                 throw new ArgumentException("Category name cannot be null or empty.", nameof(name));
             }
 
-            return Categories.TryGetValue(name, out CATEGORY category) ? category : Others;
+            return Categories.TryGetValue(name, out CATEGORY? category) ? category ?? CATEGORY.Others : CATEGORY.Others;
         }
 
         /// <summary>
