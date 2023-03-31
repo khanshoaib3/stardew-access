@@ -129,7 +129,7 @@ namespace stardew_access
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
-            helper.Events.GameLoop.GameLaunched += this.onGameLaunched;
+            helper.Events.GameLoop.DayStarted += this.onDayStarted;
             AppDomain.CurrentDomain.DomainUnload += OnExit;
             AppDomain.CurrentDomain.ProcessExit += OnExit;
         }
@@ -148,7 +148,7 @@ namespace stardew_access
             return new API();
         }
 
-        private void onGameLaunched(object? sender, GameLaunchedEventArgs? e)
+        private void onDayStarted(object? sender, DayStartedEventArgs? e)
         {
             StaticTiles.LoadTilesFiles();
             StaticTiles.SetupTilesDicts();

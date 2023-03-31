@@ -40,13 +40,13 @@ namespace stardew_access.Features
         /// A dictionary that maps location names to tile data dictionaries for static tiles.
         /// Each tile data dictionary maps tile coordinates (x, y) to a tuple containing the object name and category.
         /// </summary>
-        private static Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>> staticTilesDataDict;
+        private static Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>> staticTilesDataDict = new();
 
         /// <summary>
         /// A dictionary that maps location names to tile data dictionaries for custom tiles.
         /// Each tile data dictionary maps tile coordinates (x, y) to a tuple containing the object name and category.
         /// </summary>
-        private static Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>> customTilesDataDict;
+        private static Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>> customTilesDataDict = new();
 
         /// <summary>
         /// The file name of the JSON file containing static tile data.
@@ -233,7 +233,7 @@ namespace stardew_access.Features
                 var type = item.Value.TryGetProperty("type", out var typeElement) ? typeElement.GetString() : "Others";
 
                 // Obtain the category instance
-                var category = CATEGORY.FromString(type);
+                var category = CATEGORY.FromString(type!);
 
                 // Iterate over y and x values, adding entries to the locationData dictionary
                 for (int j = 0; j < yValues.Length; j++)
@@ -342,7 +342,7 @@ namespace stardew_access.Features
                 }
 
                 string propertyName = property.Name;
-                string uniqueModId = null;
+                string uniqueModId = "";
 
                 var splitModId = propertyName.Split("||", StringSplitOptions.RemoveEmptyEntries);
                 if (splitModId.Length == 2)
@@ -407,7 +407,7 @@ namespace stardew_access.Features
         /// <param name="sourceDictionary">The source dictionary containing the data to merge into the destination dictionary.</param>
         private static void MergeDicts<TKey, TValue>(
             Dictionary<TKey, TValue> destinationDictionary,
-            Dictionary<TKey, TValue> sourceDictionary)
+            Dictionary<TKey, TValue> sourceDictionary) where TKey : notnull
         {
             if (destinationDictionary == null || sourceDictionary == null)
             {
@@ -495,7 +495,7 @@ namespace stardew_access.Features
         /// <param name="currentLocationName">The name of the current location. Defaults to Game1.currentLocation.Name.</param>
         /// <param name="includeCategory">Specifies whether to include the tile's category in the returned tuple.</param>
         /// <returns>A tuple containing the tile's name and optionally its category. If the tile is not found, the name will be null and the category will be CATEGORY.Others if requested.</returns>
-        private static (string? name, CATEGORY? category) GetTileInfoAt(int x, int y, string currentLocationName = null, bool includeCategory = false)
+        private static (string? name, CATEGORY? category) GetTileInfoAt(int x, int y, string? currentLocationName = null, bool includeCategory = false)
         {
             if (currentLocationName == null)
             {
@@ -528,10 +528,10 @@ namespace stardew_access.Features
         /// <param name="y">The y-coordinate of the tile.</param>
         /// <param name="currentLocationName">The name of the current location. Defaults to Game1.currentLocation.Name.</param>
         /// <returns>The name of the tile if found, or null if not found.</returns>
-        public static string GetStaticTileNameAt(int x, int y, string currentLocationName = null)
+        public static string GetStaticTileNameAt(int x, int y, string? currentLocationName = null)
         {
             var (name, _) = GetTileInfoAt(x, y, currentLocationName, includeCategory: false);
-            return name;
+            return name ?? "";
         }
 
         /// <summary>
@@ -541,7 +541,7 @@ namespace stardew_access.Features
         /// <param name="y">The y-coordinate of the tile.</param>
         /// <param name="currentLocationName">The name of the current location. Defaults to Game1.currentLocation.Name.</param>
         /// <returns>A tuple containing the tile's name and category. If the tile is not found, the name will be null and the category will be CATEGORY.Others.</returns>
-        public static (string? name, CATEGORY category) GetStaticTileInfoAtWithCategory(int x, int y, string currentLocationName = null)
+        public static (string? name, CATEGORY category) GetStaticTileInfoAtWithCategory(int x, int y, string? currentLocationName = null)
         {
             var (name, category) = GetTileInfoAt(x, y, currentLocationName, includeCategory: true);
             return (name, category ?? CATEGORY.Others);

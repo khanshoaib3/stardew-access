@@ -93,6 +93,7 @@ namespace stardew_access.Features
         /// <returns>A dictionary with all the detected tiles along with the name of the object on it and it's category.</returns>
         public Dictionary<Vector2, (string, string)> SearchNearbyTiles(Vector2 center, int limit, bool playSound = true)
         {
+            var currentLocation = Game1.currentLocation;
             Dictionary<Vector2, (string, string)> detectedTiles = new Dictionary<Vector2, (string, string)>();
 
             Queue<Vector2> toSearch = new Queue<Vector2>();
@@ -107,10 +108,10 @@ namespace stardew_access.Features
             {
                 Vector2 item = toSearch.Dequeue();
                 if (playSound)
-                    CheckTileAndPlaySound(item);
+                    CheckTileAndPlaySound(item, currentLocation);
                 else
                 {
-                    (bool, string?, string) tileInfo = CheckTile(item);
+                    (bool, string?, string) tileInfo = CheckTile(item, currentLocation);
                     if (tileInfo.Item1 && tileInfo.Item2 != null)
                     {
                         // Add detected tile to the dictionary
@@ -141,6 +142,7 @@ namespace stardew_access.Features
         public Dictionary<Vector2, (string, string)> SearchLocation()
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
+            var currentLocation = Game1.currentLocation;
             Dictionary<Vector2, (string, string)> detectedTiles = new Dictionary<Vector2, (string, string)>();
             Vector2 position = Vector2.Zero;
             (bool, string? name, string category) tileInfo;
@@ -162,7 +164,7 @@ namespace stardew_access.Features
             while (toSearch.Count > 0)
             {
                 Vector2 item = toSearch.Dequeue();
-                tileInfo = CheckTile(item, true);
+                tileInfo = CheckTile(item, currentLocation, true);
                 if (tileInfo.Item1 && tileInfo.name != null)
                 {
                     // Add detected tile to the dictionary
@@ -175,7 +177,7 @@ namespace stardew_access.Features
                 {
                     Vector2 dir = new Vector2(item.X + dirX[i], item.Y + dirY[i]);
 
-                    if (!searched.Contains(dir) && (TileInfo.isWarpPointAtTile((int)dir.X, (int)dir.Y) || Game1.currentLocation.isTileOnMap(dir)))
+                    if (!searched.Contains(dir) && (TileInfo.isWarpPointAtTile((int)dir.X, (int)dir.Y, currentLocation) || currentLocation.isTileOnMap(dir)))
                     {
                         toSearch.Enqueue(dir);
                         searched.Add(dir);
@@ -210,9 +212,9 @@ namespace stardew_access.Features
             return true;
         }
 
-        public (bool, string? name, string category) CheckTile(Vector2 position, bool lessInfo = false)
+        public (bool, string? name, string category) CheckTile(Vector2 position, GameLocation currentLocation, bool lessInfo = false)
         {
-            (string? name, CATEGORY? category) tileDetail = TileInfo.getNameWithCategoryAtTile(position, lessInfo);
+            (string? name, CATEGORY? category) tileDetail = TileInfo.getNameWithCategoryAtTile(position, currentLocation, lessInfo);
             if (tileDetail.name == null)
                 return (false, null, CATEGORY.Others.ToString());
 
@@ -223,16 +225,16 @@ namespace stardew_access.Features
             
         }
 
-        public void CheckTileAndPlaySound(Vector2 position)
+        public void CheckTileAndPlaySound(Vector2 position, GameLocation currentLocation)
         {
             try
             {
-                if (Game1.currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
+                if (currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
                 {
-                    (string? name, CATEGORY category) objDetails = TileInfo.getObjectAtTile((int)position.X, (int)position.Y);
+                    (string? name, CATEGORY category) objDetails = TileInfo.getObjectAtTile((int)position.X, (int)position.Y, currentLocation);
                     string? objectName = objDetails.name;
                     CATEGORY category = objDetails.category;
-                    StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)position.X, (int)position.Y);
+                    StardewValley.Object obj = currentLocation.getObjectAtTile((int)position.X, (int)position.Y);
 
                     if (objectName != null)
                     {
@@ -243,23 +245,23 @@ namespace stardew_access.Features
                             if (!furnitures.Contains((Furniture)obj))
                             {
                                 furnitures.Add((Furniture)obj);
-                                PlaySoundAt(position, objectName, category);
+                                PlaySoundAt(position, objectName, category, currentLocation);
                             }
                         }
                         else
-                            PlaySoundAt(position, objectName, category);
+                            PlaySoundAt(position, objectName, category, currentLocation);
 
                     }
                 }
                 else
                 {
-                    (string? name, CATEGORY? category) tileDetail = TileInfo.getNameWithCategoryAtTile(position);
+                    (string? name, CATEGORY? category) tileDetail = TileInfo.getNameWithCategoryAtTile(position, currentLocation);
                     if (tileDetail.name != null)
                     {
                         if (tileDetail.category == null)
                             tileDetail.category = CATEGORY.Others;
 
-                        PlaySoundAt(position, tileDetail.name, tileDetail.category);
+                        PlaySoundAt(position, tileDetail.name, tileDetail.category, currentLocation);
                     }
                 }
             }
@@ -269,7 +271,7 @@ namespace stardew_access.Features
             }
         }
 
-        public void PlaySoundAt(Vector2 position, string searchQuery, CATEGORY category)
+        public void PlaySoundAt(Vector2 position, string searchQuery, CATEGORY category, GameLocation currentLocation)
         {
             #region Check whether to skip the object or not
 
@@ -330,19 +332,19 @@ namespace stardew_access.Features
 
             if (dy < 0 && (Math.Abs(dy) >= Math.Abs(dx))) // Object is at top
             {
-                Game1.currentLocation.localSoundAt(GetSoundName(category, "top"), position);
+                currentLocation.localSoundAt(GetSoundName(category, "top"), position);
             }
             else if (dx > 0 && (Math.Abs(dx) >= Math.Abs(dy))) // Object is at right
             {
-                Game1.currentLocation.localSoundAt(GetSoundName(category, "right"), position);
+                currentLocation.localSoundAt(GetSoundName(category, "right"), position);
             }
             else if (dx < 0 && (Math.Abs(dx) > Math.Abs(dy))) // Object is at left
             {
-                Game1.currentLocation.localSoundAt(GetSoundName(category, "left"), position);
+                currentLocation.localSoundAt(GetSoundName(category, "left"), position);
             }
             else if (dy > 0 && (Math.Abs(dy) > Math.Abs(dx))) // Object is at bottom
             {
-                Game1.currentLocation.localSoundAt(GetSoundName(category, "bottom"), position);
+                currentLocation.localSoundAt(GetSoundName(category, "bottom"), position);
             }
 
         }

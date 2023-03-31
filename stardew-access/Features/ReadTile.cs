@@ -89,9 +89,10 @@ namespace stardew_access.Features
                             MainClass.ScreenReader.PrevTextTile = " ";
                     }
 
-                    bool isColliding = TileInfo.isCollidingAtTile(x, y);
+                    var currentLocation = Game1.currentLocation;
+                    bool isColliding = TileInfo.isCollidingAtTile(x, y, currentLocation);
 
-                    (string? name, string? category) info = TileInfo.getNameWithCategoryNameAtTile(tile);
+                    (string? name, string? category) info = TileInfo.getNameWithCategoryNameAtTile(tile, currentLocation);
 
                     #region Narrate toSpeak
                     if (info.name != null)
