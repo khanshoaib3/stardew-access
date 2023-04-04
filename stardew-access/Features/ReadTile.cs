@@ -90,7 +90,7 @@ namespace stardew_access.Features
                     }
 
                     var currentLocation = Game1.currentLocation;
-                    bool isColliding = TileInfo.isCollidingAtTile(x, y, currentLocation);
+                    bool isColliding = TileInfo.IsCollidingAtTile(x, y, currentLocation);
 
                     (string? name, string? category) info = TileInfo.getNameWithCategoryNameAtTile(tile, currentLocation);
 

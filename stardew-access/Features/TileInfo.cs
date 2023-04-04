@@ -50,213 +50,167 @@ namespace stardew_access.Features
             currentLocation ??= Game1.currentLocation;
             int x = (int)tile.X;
             int y = (int)tile.Y;
-            string? toReturn = null;
-            CATEGORY? category = CATEGORY.Others;
 
-            // Commented out; this call takes ~30 ms by itself and is usually not used.
-            // Called directly only in the if conditional where it is used.
-            //bool isColliding = isCollidingAtTile(x, y, currentLocation);
             var terrainFeature = currentLocation.terrainFeatures.FieldDict;
-            string? door = getDoorAtTile(x, y, currentLocation);
-            string? warp = getWarpPointAtTile(x, y, currentLocation);
-            (string? name, CATEGORY? category) dynamicTile = DynamicTiles.GetDynamicTileAt(x, y, currentLocation, lessInfo);
-            string? junimoBundle = getJunimoBundleAt(x, y, currentLocation);
-            string? resourceClump = getResourceClumpAtTile(x, y, currentLocation, lessInfo);
-            string? farmAnimal = getFarmAnimalAt(currentLocation, x, y);
-            (string? name, CATEGORY category) staticTile = StaticTiles.GetStaticTileInfoAtWithCategory(x, y, currentLocation.Name);
-            string? bush = GetBushAtTile(x, y, currentLocation, lessInfo);
 
             if (currentLocation.isCharacterAtTile(tile) is NPC npc)
             {
-                toReturn = npc.displayName;
-                if (npc.isVillager() || npc.CanSocialize)
-                    category = CATEGORY.Farmers;
-                else
-                    category = CATEGORY.NPCs;
+                CATEGORY category = npc.isVillager() || npc.CanSocialize ? CATEGORY.Farmers : CATEGORY.NPCs;
+                return (npc.displayName, category);
             }
-            else if (farmAnimal is not null)
+
+            string? farmAnimal = getFarmAnimalAt(currentLocation, x, y);
+            if (farmAnimal is not null)
             {
-                toReturn = farmAnimal;
-                category = CATEGORY.FarmAnimals;
+                return (farmAnimal, CATEGORY.FarmAnimals);
             }
-            else if (staticTile.name != null)
+
+            (string? name, CATEGORY category) staticTile = StaticTiles.GetStaticTileInfoAtWithCategory(x, y, currentLocation.Name);
+            if (staticTile.name != null)
             {
-                toReturn = staticTile.name;
-                category = staticTile.category;
+                return (staticTile.name, staticTile.category);
             }
-            else if (dynamicTile.name != null)
+
+            (string? name, CATEGORY? category) dynamicTile = DynamicTiles.GetDynamicTileAt(x, y, currentLocation, lessInfo);
+            if (dynamicTile.name != null)
             {
-                toReturn = dynamicTile.name;
-                category = dynamicTile.category;
+                return (dynamicTile.name, dynamicTile.category);
             }
-            else if (currentLocation.isObjectAtTile(x, y))
+
+            if (currentLocation.isObjectAtTile(x, y))
             {
                 (string? name, CATEGORY? category) obj = getObjectAtTile(x, y, currentLocation, lessInfo);
-                toReturn = obj.name;
-                category = obj.category;
+                return (obj.name, obj.category);
             }
-            else if (currentLocation.isWaterTile(x, y) && !lessInfo && isCollidingAtTile(x, y, currentLocation))
+
+            if (currentLocation.isWaterTile(x, y) && !lessInfo && IsCollidingAtTile(x, y, currentLocation))
             {
-                toReturn = "Water";
-                category = CATEGORY.WaterTiles;
+                return ("Water", CATEGORY.WaterTiles);
             }
-            else if (resourceClump != null)
+
+            string? resourceClump = getResourceClumpAtTile(x, y, currentLocation, lessInfo);
+            if (resourceClump != null)
             {
-                toReturn = resourceClump;
-                category = CATEGORY.ResourceClumps;
+                return (resourceClump, CATEGORY.ResourceClumps);
             }
-            else if (terrainFeature.ContainsKey(tile))
+
+            if (terrainFeature.TryGetValue(tile, out var tf))
             {
-                (string? name, CATEGORY category) tf = getTerrainFeatureAtTile(terrainFeature[tile]);
-                string? terrain = tf.name;
-                if (terrain != null)
+                (string? name, CATEGORY category) terrain = getTerrainFeatureAtTile(tf);
+                if (terrain.name != null)
                 {
-                    toReturn = terrain;
-                    category = tf.category;
+                    return (terrain.name, terrain.category);
                 }
-
-            }
-            else if (bush != null)
-            {
-                toReturn = bush;
-                category = CATEGORY.Bush;
-            }
-            else if (warp != null)
-            {
-                toReturn = warp;
-                category = CATEGORY.Doors;
-            }
-            else if (door != null)
-            {
-                toReturn = door;
-                category = CATEGORY.Doors;
-            }
-            else if (isMineDownLadderAtTile(x, y, currentLocation))
-            {
-                toReturn = "Ladder";
-                category = CATEGORY.Doors;
-            }
-            else if (isShaftAtTile(x, y, currentLocation))
-            {
-                toReturn = "Shaft";
-                category = CATEGORY.Doors;
-            }
-            else if (isMineUpLadderAtTile(x, y, currentLocation))
-            {
-                toReturn = "Up Ladder";
-                category = CATEGORY.Doors;
-            }
-            else if (isElevatorAtTile(x, y, currentLocation))
-            {
-                toReturn = "Elevator";
-                category = CATEGORY.Doors;
-            }
-            else if (junimoBundle != null)
-            {
-                toReturn = junimoBundle;
-                category = CATEGORY.JunimoBundle;
             }
 
-            #region Track dropped items
+            string? bush = GetBushAtTile(x, y, currentLocation, lessInfo);
+            if (bush != null)
+            {
+                return (bush, CATEGORY.Bush);
+            }
+
+            string? door = getDoorAtTile(x, y, currentLocation);
+            string? warp = getWarpPointAtTile(x, y, currentLocation);
+            if (warp != null || door != null)
+            {
+                return (warp ?? door, CATEGORY.Doors);
+            }
+
+            string? junimoBundle = GetJunimoBundleAt(x, y, currentLocation);
+            if (junimoBundle != null)
+            {
+                return (junimoBundle, CATEGORY.JunimoBundle);
+            }
+
+            // Track dropped items
             if (MainClass.Config.TrackDroppedItems)
             {
                 try
                 {
-                    NetCollection<Debris> droppedItems = currentLocation.debris;
-                    int droppedItemsCount = droppedItems.Count;
-                    if (droppedItemsCount > 0)
+                    foreach (var item in currentLocation.debris)
                     {
-                        for (int i = 0; i < droppedItemsCount; i++)
-                        {
-                            var item = droppedItems[i];
-                            int xPos = ((int)item.Chunks[0].position.Value.X / Game1.tileSize) + 1;
-                            int yPos = ((int)item.Chunks[0].position.Value.Y / Game1.tileSize) + 1;
-                            if (xPos != x || yPos != y) continue;
+                        int xPos = ((int)item.Chunks[0].position.Value.X / Game1.tileSize) + 1;
+                        int yPos = ((int)item.Chunks[0].position.Value.Y / Game1.tileSize) + 1;
+                        if (xPos != x || yPos != y || item.item == null) continue;
 
-                            if (item.item == null) continue;
-
-                            string name = item.item.DisplayName;
-                            int count = item.item.Stack;
-
-                            if (toReturn is null)
-                                return ($"Dropped Item: {count} {name}", CATEGORY.DroppedItems);
-                            else
-                                toReturn = $"{toReturn}, Dropped Item: {count} {name}";
-                            item = null;
-                        }
+                        string name = item.item.DisplayName;
+                        int count = item.item.Stack;
+                        return ($"Dropped Item: {count} {name}", CATEGORY.DroppedItems);
                     }
                 }
                 catch (Exception e)
                 {
-                    MainClass.ErrorLog($"An error occured while detecting dropped items:\n{e.Message}");
+                    MainClass.ErrorLog($"An error occurred while detecting dropped items:\n{e.Message}");
                 }
             }
-            #endregion
 
-            return (toReturn, category);
+            return (null, CATEGORY.Others);
         }
 
+        /// <summary>
+        /// Gets the bush at the specified tile coordinates in the provided GameLocation.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile to check.</param>
+        /// <param name="y">The y-coordinate of the tile to check.</param>
+        /// <param name="currentLocation">The GameLocation instance to search for bushes.</param>
+        /// <param name="lessInfo">Whether to return less information about the bush.</param>
+        /// <returns>A string describing the bush if one is found at the specified coordinates, otherwise null.</returns>
         public static string? GetBushAtTile(int x, int y, GameLocation currentLocation, bool lessInfo = false)
         {
-            string? toReturn = null;
             Bush? bush = (Bush)currentLocation.getLargeTerrainFeatureAt(x, y);
-            if (bush is null)
-                return null;
-            if (lessInfo && (bush.tilePosition.Value.X != x || bush.tilePosition.Value.Y != y))
+
+            if (bush is null || (lessInfo && (bush.tilePosition.Value.X != x || bush.tilePosition.Value.Y != y)))
                 return null;
 
-            int size = bush.size.Value;
-
-            #region Check if bush is harvestable or not
-            if (!bush.townBush.Value && (int)bush.tileSheetOffset.Value == 1 && bush.inBloom(Game1.GetSeasonForLocation(currentLocation), Game1.dayOfMonth))
+            if (!bush.townBush.Value && bush.tileSheetOffset.Value == 1 && bush.inBloom(Game1.GetSeasonForLocation(currentLocation), Game1.dayOfMonth))
             {
-                // Taken from the game's code
-                string season = ((int)bush.overrideSeason.Value == -1) ? Game1.GetSeasonForLocation(currentLocation) : Utility.getSeasonNameFromNumber(bush.overrideSeason.Value);
-                int shakeOff = -1;
-                if (!(season == "spring"))
+                string season = bush.overrideSeason.Value == -1 ? Game1.GetSeasonForLocation(currentLocation) : Utility.getSeasonNameFromNumber(bush.overrideSeason.Value);
+                int shakeOff = season switch
                 {
-                    if (season == "fall")
-                    {
-                        shakeOff = 410;
-                    }
-                }
-                else
+                    "spring" => 296,
+                    "fall" => 410,
+                    _ => -1
+                };
+
+                shakeOff = bush.size.Value switch
                 {
-                    shakeOff = 296;
-                }
-                if ((int)size == 3)
-                {
-                    shakeOff = 815;
-                }
-                if ((int)size == 4)
-                {
-                    shakeOff = 73;
-                }
+                    3 => 815,
+                    4 => 73,
+                    _ => shakeOff
+                };
+
                 if (shakeOff == -1)
                 {
                     return null;
                 }
 
-                toReturn = "Harvestable";
+                return bush.townBush.Value
+                    ? "Harvestable Town Bush"
+                    : bush.greenhouseBush.Value
+                        ? "Harvestable Greenhouse Bush"
+                        : "Harvestable Bush";
             }
-            #endregion
 
-            if (bush.townBush.Value)
-                toReturn = $"{toReturn} Town Bush";
-            else if (bush.greenhouseBush.Value)
-                toReturn = $"{toReturn} Greenhouse Bush";
-            else
-                toReturn = $"{toReturn} Bush";
-
-            return toReturn;
+            return bush.townBush.Value
+                ? "Town Bush"
+                : bush.greenhouseBush.Value
+                    ? "Greenhouse Bush"
+                    : "Bush";
         }
 
-        public static string? getJunimoBundleAt(int x, int y, GameLocation currentLocation)
+        /// <summary>
+        /// Determines if there is a Junimo bundle at the specified tile coordinates in the provided GameLocation.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile to check.</param>
+        /// <param name="y">The y-coordinate of the tile to check.</param>
+        /// <param name="currentLocation">The GameLocation instance to search for Junimo bundles.</param>
+        /// <returns>The name of the Junimo bundle if one is found at the specified coordinates, otherwise null.</returns>
+        public static string? GetJunimoBundleAt(int x, int y, GameLocation currentLocation)
         {
-			string? name;
-			if (currentLocation is CommunityCenter communityCenter)
+            if (currentLocation is CommunityCenter communityCenter)
             {
-                name = (x, y) switch
+                // Determine the name of the bundle based on the tile coordinates
+                string? name = (x, y) switch
                 {
                     (14, 5) => "Pantry",
                     (14, 23) => "Crafts Room",
@@ -266,66 +220,85 @@ namespace stardew_access.Features
                     (46, 12) => "Bulletin Board",
                     _ => null,
                 };
+
+                // If a bundle name is found and a note should appear in the area, return the bundle name
                 if (name is not null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
                     return $"{name} bundle";
             }
             else if (currentLocation is AbandonedJojaMart)
             {
-                name = (x, y) switch
+                // Determine the name of the bundle based on the tile coordinates
+                string? name = (x, y) switch
                 {
                     (8, 8) => "Missing",
                     _ => null,
                 };
 
                 if (name is not null)
+                    // Bundle name was found
                     return $"{name} bundle";
+            }
+
+            // No bundle was found
+            return null;
+        }
+
+        /// <summary>
+        /// Determines if there is a collision at the specified tile coordinates in the provided GameLocation.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile to check.</param>
+        /// <param name="y">The y-coordinate of the tile to check.</param>
+        /// <param name="currentLocation">The GameLocation instance to search for collisions.</param>
+        /// <returns>True if a collision is detected at the specified tile coordinates, otherwise False.</returns>
+        public static bool IsCollidingAtTile(int x, int y, GameLocation currentLocation)
+        {
+            // This function highly optimized over readability because `currentLocation.isCollidingPosition` takes ~30ms on the Farm map, more on larger maps I.E. Forest.
+            // Return the result of the logical comparison directly, inlining operations
+            // Check if the tile is NOT a warp point and if it collides with an object or terrain feature
+            // OR if the tile has stumps in a Woods location
+            return !isWarpPointAtTile(x, y, currentLocation) &&
+                   (currentLocation.isCollidingPosition(new Rectangle(x * 64 + 1, y * 64 + 1, 62, 62), Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: true) ||
+                   (currentLocation is Woods woods && getStumpsInWoods(x, y, woods) is not null));
+        }
+
+        /// <summary>
+        /// Returns the Warp object at the specified tile coordinates or null if not found.
+        /// </summary>
+        private static Warp? GetWarpAtTile(int x, int y, GameLocation currentLocation)
+        {
+            if (currentLocation is null) return null;
+
+            int warpsCount = currentLocation.warps.Count;
+            for (int i = 0; i < warpsCount; i++)
+            {
+                if (currentLocation.warps[i].X == x && currentLocation.warps[i].Y == y)
+                    return currentLocation.warps[i];
             }
 
             return null;
         }
 
-        public static bool isCollidingAtTile(int x, int y, GameLocation currentLocation)
+        /// <summary>
+        /// Returns the name of the warp point at the specified tile coordinates, or null if not found.
+        /// </summary>
+        public static string? getWarpPointAtTile(int x, int y, GameLocation currentLocation)
         {
-            Rectangle rect = new(x * 64 + 1, y * 64 + 1, 62, 62);
+            Warp? warpPoint = GetWarpAtTile(x, y, currentLocation);
 
-            /* Reference
-            // Check whether the position is a warp point, if so then return false, sometimes warp points are 1 tile off the map for example in coops and barns
-            if (isWarpPointAtTile(x, y, currentLocation)) return false;
-
-            if (currentLocation.isCollidingPosition(rect, Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: true))
+            if (warpPoint != null)
             {
-                return true;
+                return $"{warpPoint.TargetName} Entrance";
             }
 
-            if (currentLocation is Woods && getStumpsInWoods(x, y, currentLocation) is not null)
-                return true;
-
-            return false;
-            */
-            
-            // Optimized
-            // Sometimes warp points are 1 tile off the map for example in coops and barns; check that this is not a warp point
-            if (!isWarpPointAtTile(x, y, currentLocation)) 
-            {
-                // not a warp point
-                //directly return the value of the logical comparison rather than wasting time in conditional
-                return currentLocation.isCollidingPosition(rect, Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: true) || (currentLocation is Woods woods && getStumpsInWoods(x, y, woods) is not null);
-            }
-            // was a warp point; return false
-            return false;
+            return null;
         }
 
-        public static Boolean isWarpPointAtTile(int x, int y, GameLocation currentLocation)
+        /// <summary>
+        /// Returns true if there's a warp point at the specified tile coordinates, or false otherwise.
+        /// </summary>
+        public static bool isWarpPointAtTile(int x, int y, GameLocation currentLocation)
         {
-            if (currentLocation is null) return false;
-
-            int warpsCount = currentLocation.warps.Count;
-            for (int i = 0; i < warpsCount; i++)
-            {
-                if (currentLocation.warps[i].X == x && currentLocation.warps[i].Y == y) return true;
-            }
-
-            return false;
+            return GetWarpAtTile(x, y, currentLocation) != null;
         }
 
         /// <summary>
@@ -808,6 +781,20 @@ namespace stardew_access.Features
         #endregion  
 
         /// <summary>
+        /// Check if a tile with the specified index exists at the given coordinates in the specified location.
+        /// </summary>
+        /// <param name="x">The X coordinate of the tile.</param>
+        /// <param name="y">The Y coordinate of the tile.</param>
+        /// <param name="currentLocation">The current game location.</param>
+        /// <param name="targetTileIndex">The target tile index to check for.</param>
+        /// <returns>True if a tile with the specified index exists at the given coordinates, false otherwise.</returns>
+        private static bool CheckTileIndex(int x, int y, GameLocation currentLocation, int targetTileIndex)
+        {
+            var tile = currentLocation.Map.GetLayer("Buildings").Tiles[x, y];
+            return tile != null && tile.TileIndex == targetTileIndex;
+        }
+
+        /// <summary>
         /// Determines if a mine down ladder is present at the specified tile location.
         /// </summary>
         /// <param name="x">The x-coordinate of the tile.</param>
@@ -816,18 +803,9 @@ namespace stardew_access.Features
         /// <returns>True if a mine down ladder is found at the specified tile, otherwise false.</returns>
         public static bool isMineDownLadderAtTile(int x, int y, GameLocation currentLocation)
         {
-            // Check if the current location is a Mine, MineShaft, or has the Name "SkullCave"
-            if (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
-            {
-                // Get the tile from the "Buildings" layer
-                var tile = currentLocation.Map.GetLayer("Buildings").Tiles[x, y];
-
-                // Check if the tile is not null and its TileIndex is 173, which represents a mine down ladder
-                return tile != null && tile.TileIndex == 173;
-            }
-
-            // No mine down ladder found at the specified tile
-            return false;
+            return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave" 
+                   ? CheckTileIndex(x, y, currentLocation, 173)
+                   : false;
         }
 
         /// <summary>
@@ -839,18 +817,9 @@ namespace stardew_access.Features
         /// <returns>True if a mine shaft is found at the specified tile, otherwise false.</returns>
         public static bool isShaftAtTile(int x, int y, GameLocation currentLocation)
         {
-            // Check if the current location is a Mine, MineShaft, or has the Name "SkullCave"
-            if (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
-            {
-                // Get the tile from the "Buildings" layer
-                var tile = currentLocation.Map.GetLayer("Buildings").Tiles[x, y];
-
-                // Check if the tile is not null and its TileIndex is 174, which represents a mine shaft
-                return tile != null && tile.TileIndex == 174;
-            }
-
-            // No mine shaft found at the specified tile
-            return false;
+            return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
+                   ? CheckTileIndex(x, y, currentLocation, 174)
+                   : false;
         }
 
         /// <summary>
@@ -862,18 +831,9 @@ namespace stardew_access.Features
         /// <returns>True if a mine up ladder is found at the specified tile, otherwise false.</returns>
         public static bool isMineUpLadderAtTile(int x, int y, GameLocation currentLocation)
         {
-            // Check if the current location is a Mine, MineShaft, or has the Name "SkullCave"
-            if (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
-            {
-                // Get the tile from the "Buildings" layer
-                var tile = currentLocation.Map.GetLayer("Buildings").Tiles[x, y];
-
-                // Check if the tile is not null and its TileIndex is 115, which represents a mine up ladder
-                return tile != null && tile.TileIndex == 115;
-            }
-
-            // No mine up ladder found at the specified tile
-            return false;
+            return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
+                   ? CheckTileIndex(x, y, currentLocation, 115)
+                   : false;
         }
 
         /// <summary>
@@ -885,52 +845,9 @@ namespace stardew_access.Features
         /// <returns>True if an elevator is found at the specified tile, otherwise false.</returns>
         public static bool isElevatorAtTile(int x, int y, GameLocation currentLocation)
         {
-            // Check if the current location is a Mine, MineShaft, or has Name == "SkullCave"
-            // This accommodates the mod that adds the mine's elevator to the SkullCave.
-            if (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
-            {
-                // Get the tile from the "Buildings" layer
-                var tile = currentLocation.Map.GetLayer("Buildings").Tiles[x, y];
-
-                // Check if the tile is not null and its TileIndex is 112, which represents an elevator
-                return tile != null && tile.TileIndex == 112;
-            }
-
-            // Location doesn't have elevators.
-            return false;
-        }
-
-        /// <summary>
-        /// Get the warp point information at the specified tile location.
-        /// </summary>
-        /// <param name="x">The x-coordinate of the tile.</param>
-        /// <param name="y">The y-coordinate of the tile.</param>
-        /// <param name="currentLocation">The current GameLocation instance.</param>
-        /// <returns>The warp point information as a string, or null if no warp point is found.</returns>
-        public static string? getWarpPointAtTile(int x, int y, GameLocation currentLocation)
-        {
-            // Check if the current location is null
-            if (currentLocation == null)
-            {
-                return null;
-            }
-
-            // Iterate through the warp points in the current location
-            int warpCount = currentLocation.warps.Count;
-            for (int i = 0; i < warpCount; i++)
-            {
-                Warp warpPoint = currentLocation.warps[i];
-
-                // Check if the warp point matches the specified tile coordinates
-                if (warpPoint.X == x && warpPoint.Y == y)
-                {
-                    // Return the warp point information
-                    return $"{warpPoint.TargetName} Entrance";
-                }
-            }
-
-            // No warp point found at the specified tile
-            return null;
+            return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
+                   ? CheckTileIndex(x, y, currentLocation, 112)
+                   : false;
         }
 
         /// <summary>

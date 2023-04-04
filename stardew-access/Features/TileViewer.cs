@@ -184,7 +184,7 @@ namespace stardew_access.Features
             if (name == null)
             {
                 // Report if a tile is empty or blocked if there is nothing on it
-                if (TileInfo.isCollidingAtTile((int)tile.X, (int)tile.Y, Game1.currentLocation))
+                if (TileInfo.IsCollidingAtTile((int)tile.X, (int)tile.Y, Game1.currentLocation))
                 {
                     name = "blocked";
                 }
