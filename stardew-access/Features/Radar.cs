@@ -160,7 +160,7 @@ namespace stardew_access.Features
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
             MainClass.DebugLog($"Search init duration: {elapsedMs}");
-			watch.Reset();
+            watch.Reset();
             watch.Start();
             while (toSearch.Count > 0)
             {
@@ -178,7 +178,7 @@ namespace stardew_access.Features
                 {
                     Vector2 dir = new(item.X + dirX[i], item.Y + dirY[i]);
 
-                    if (!searched.Contains(dir) && (TileInfo.isWarpPointAtTile((int)dir.X, (int)dir.Y, currentLocation) || currentLocation.isTileOnMap(dir)))
+                    if (!searched.Contains(dir) && (TileInfo.isWarpPointAtTile(currentLocation, (int)dir.X, (int)dir.Y) || currentLocation.isTileOnMap(dir)))
                     {
                         toSearch.Enqueue(dir);
                         searched.Add(dir);
@@ -231,7 +231,7 @@ namespace stardew_access.Features
             {
                 if (currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
                 {
-                    (string? name, CATEGORY category) objDetails = TileInfo.getObjectAtTile((int)position.X, (int)position.Y, currentLocation);
+                    (string? name, CATEGORY category) objDetails = TileInfo.getObjectAtTile(currentLocation, (int)position.X, (int)position.Y);
                     string? objectName = objDetails.name;
                     CATEGORY category = objDetails.category;
                     StardewValley.Object obj = currentLocation.getObjectAtTile((int)position.X, (int)position.Y);

@@ -184,7 +184,7 @@ namespace stardew_access.Features
             if (name == null)
             {
                 // Report if a tile is empty or blocked if there is nothing on it
-                if (TileInfo.IsCollidingAtTile((int)tile.X, (int)tile.Y, Game1.currentLocation))
+                if (TileInfo.IsCollidingAtTile(Game1.currentLocation, (int)tile.X, (int)tile.Y))
                 {
                     name = "blocked";
                 }
@@ -280,7 +280,7 @@ namespace stardew_access.Features
         {
             var currentLocation = Game1.currentLocation;
             // Check whether the position is a warp point, if so then return true, sometimes warp points are 1 tile off the map for example in coops and barns
-            if (TileInfo.isWarpPointAtTile((int)(position.X / Game1.tileSize), (int)(position.Y / Game1.tileSize), currentLocation)) return true;
+            if (TileInfo.isWarpPointAtTile(currentLocation, (int)(position.X / Game1.tileSize), (int)(position.Y / Game1.tileSize))) return true;
 
             //position does not take viewport into account since the entire map needs to be checked.
             Map map = currentLocation.map;

@@ -11,9 +11,9 @@ namespace stardew_access.Features
 {
     public class TileInfo
     {
-		private static readonly string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom", "statue of endless fortune", "statue of perfection", "crab pot" };
+        private static readonly string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom", "statue of endless fortune", "statue of perfection", "crab pot" };
         private static readonly Dictionary<int, string> ResourceClumpNames = new()
-		{
+        {
             { 600, "Large Stump" },
             { 602, "Hollow Log" },
             { 622, "Meteorite" },
@@ -71,7 +71,7 @@ namespace stardew_access.Features
                 return (staticTile.name, staticTile.category);
             }
 
-            (string? name, CATEGORY? category) dynamicTile = DynamicTiles.GetDynamicTileAt(x, y, currentLocation, lessInfo);
+            (string? name, CATEGORY? category) dynamicTile = DynamicTiles.GetDynamicTileAt(currentLocation, x, y, lessInfo);
             if (dynamicTile.name != null)
             {
                 return (dynamicTile.name, dynamicTile.category);
@@ -79,16 +79,16 @@ namespace stardew_access.Features
 
             if (currentLocation.isObjectAtTile(x, y))
             {
-                (string? name, CATEGORY? category) obj = getObjectAtTile(x, y, currentLocation, lessInfo);
+                (string? name, CATEGORY? category) obj = getObjectAtTile(currentLocation, x, y, lessInfo);
                 return (obj.name, obj.category);
             }
 
-            if (currentLocation.isWaterTile(x, y) && !lessInfo && IsCollidingAtTile(x, y, currentLocation))
+            if (currentLocation.isWaterTile(x, y) && !lessInfo && IsCollidingAtTile(currentLocation, x, y))
             {
                 return ("Water", CATEGORY.WaterTiles);
             }
 
-            string? resourceClump = getResourceClumpAtTile(x, y, currentLocation, lessInfo);
+            string? resourceClump = getResourceClumpAtTile(currentLocation, x, y, lessInfo);
             if (resourceClump != null)
             {
                 return (resourceClump, CATEGORY.ResourceClumps);
@@ -103,20 +103,20 @@ namespace stardew_access.Features
                 }
             }
 
-            string? bush = GetBushAtTile(x, y, currentLocation, lessInfo);
+            string? bush = GetBushAtTile(currentLocation, x, y, lessInfo);
             if (bush != null)
             {
                 return (bush, CATEGORY.Bush);
             }
 
-            string? door = getDoorAtTile(x, y, currentLocation);
-            string? warp = getWarpPointAtTile(x, y, currentLocation);
+            string? door = getDoorAtTile(currentLocation, x, y);
+            string? warp = getWarpPointAtTile(currentLocation, x, y);
             if (warp != null || door != null)
             {
                 return (warp ?? door, CATEGORY.Doors);
             }
 
-            string? junimoBundle = GetJunimoBundleAt(x, y, currentLocation);
+            string? junimoBundle = GetJunimoBundleAt(currentLocation, x, y);
             if (junimoBundle != null)
             {
                 return (junimoBundle, CATEGORY.JunimoBundle);
@@ -150,12 +150,12 @@ namespace stardew_access.Features
         /// <summary>
         /// Gets the bush at the specified tile coordinates in the provided GameLocation.
         /// </summary>
+        /// <param name="currentLocation">The GameLocation instance to search for bushes.</param>
         /// <param name="x">The x-coordinate of the tile to check.</param>
         /// <param name="y">The y-coordinate of the tile to check.</param>
-        /// <param name="currentLocation">The GameLocation instance to search for bushes.</param>
         /// <param name="lessInfo">Whether to return less information about the bush.</param>
         /// <returns>A string describing the bush if one is found at the specified coordinates, otherwise null.</returns>
-        public static string? GetBushAtTile(int x, int y, GameLocation currentLocation, bool lessInfo = false)
+        public static string? GetBushAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false)
         {
             Bush? bush = (Bush)currentLocation.getLargeTerrainFeatureAt(x, y);
 
@@ -201,11 +201,11 @@ namespace stardew_access.Features
         /// <summary>
         /// Determines if there is a Junimo bundle at the specified tile coordinates in the provided GameLocation.
         /// </summary>
+        /// <param name="currentLocation">The GameLocation instance to search for Junimo bundles.</param>
         /// <param name="x">The x-coordinate of the tile to check.</param>
         /// <param name="y">The y-coordinate of the tile to check.</param>
-        /// <param name="currentLocation">The GameLocation instance to search for Junimo bundles.</param>
         /// <returns>The name of the Junimo bundle if one is found at the specified coordinates, otherwise null.</returns>
-        public static string? GetJunimoBundleAt(int x, int y, GameLocation currentLocation)
+        public static string? GetJunimoBundleAt(GameLocation currentLocation, int x, int y)
         {
             if (currentLocation is CommunityCenter communityCenter)
             {
@@ -246,25 +246,25 @@ namespace stardew_access.Features
         /// <summary>
         /// Determines if there is a collision at the specified tile coordinates in the provided GameLocation.
         /// </summary>
+        /// <param name="currentLocation">The GameLocation instance to search for collisions.</param>
         /// <param name="x">The x-coordinate of the tile to check.</param>
         /// <param name="y">The y-coordinate of the tile to check.</param>
-        /// <param name="currentLocation">The GameLocation instance to search for collisions.</param>
         /// <returns>True if a collision is detected at the specified tile coordinates, otherwise False.</returns>
-        public static bool IsCollidingAtTile(int x, int y, GameLocation currentLocation)
+        public static bool IsCollidingAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false)
         {
             // This function highly optimized over readability because `currentLocation.isCollidingPosition` takes ~30ms on the Farm map, more on larger maps I.E. Forest.
             // Return the result of the logical comparison directly, inlining operations
             // Check if the tile is NOT a warp point and if it collides with an object or terrain feature
             // OR if the tile has stumps in a Woods location
-            return !isWarpPointAtTile(x, y, currentLocation) &&
+            return !isWarpPointAtTile(currentLocation, x, y) &&
                    (currentLocation.isCollidingPosition(new Rectangle(x * 64 + 1, y * 64 + 1, 62, 62), Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: true) ||
-                   (currentLocation is Woods woods && getStumpsInWoods(x, y, woods) is not null));
+                   (currentLocation is Woods woods && getStumpsInWoods(woods, x, y, lessInfo) is not null));
         }
 
         /// <summary>
         /// Returns the Warp object at the specified tile coordinates or null if not found.
         /// </summary>
-        private static Warp? GetWarpAtTile(int x, int y, GameLocation currentLocation)
+        private static Warp? GetWarpAtTile(GameLocation currentLocation, int x, int y)
         {
             if (currentLocation is null) return null;
 
@@ -281,13 +281,13 @@ namespace stardew_access.Features
         /// <summary>
         /// Returns the name of the warp point at the specified tile coordinates, or null if not found.
         /// </summary>
-        public static string? getWarpPointAtTile(int x, int y, GameLocation currentLocation)
+        public static string? getWarpPointAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false)
         {
-            Warp? warpPoint = GetWarpAtTile(x, y, currentLocation);
+            Warp? warpPoint = GetWarpAtTile(currentLocation, x, y);
 
             if (warpPoint != null)
             {
-                return $"{warpPoint.TargetName} Entrance";
+                return lessInfo ? warpPoint.TargetName : $"{warpPoint.TargetName} Entrance";
             }
 
             return null;
@@ -296,9 +296,9 @@ namespace stardew_access.Features
         /// <summary>
         /// Returns true if there's a warp point at the specified tile coordinates, or false otherwise.
         /// </summary>
-        public static bool isWarpPointAtTile(int x, int y, GameLocation currentLocation)
+        public static bool isWarpPointAtTile(GameLocation currentLocation, int x, int y)
         {
-            return GetWarpAtTile(x, y, currentLocation) != null;
+            return GetWarpAtTile(currentLocation, x, y) != null;
         }
 
         /// <summary>
@@ -311,7 +311,7 @@ namespace stardew_access.Features
         /// A string containing the farm animal's name, type, and age if a farm animal is found at the specified tile;
         /// null if no farm animal is found or if the location is not a Farm or an AnimalHouse.
         /// </returns>
-        public static string? getFarmAnimalAt(GameLocation? location, int x, int y)
+        public static string? getFarmAnimalAt(GameLocation location, int x, int y)
         {
             // Return null if the location is null or not a Farm or AnimalHouse
             if (location is null || !(location is Farm || location is AnimalHouse))
@@ -499,10 +499,10 @@ namespace stardew_access.Features
         {
             int treeType = tree.treeType.Value;
             int treeStage = tree.growthStage.Value;
-			string seedName = "";
+            string seedName = "";
 
-			// Handle special tree types and return their names
-			switch (treeType)
+            // Handle special tree types and return their names
+            switch (treeType)
             {
                 case 4:
                 case 5:
@@ -522,28 +522,28 @@ namespace stardew_access.Features
             // Determine the tree name and growth stage description
             if (treeStage >= 1)
             {
-				string treeName;
-				switch (seedName.ToLower())
-				{
-					case "mahogany seed":
-						treeName = "Mahogany";
-						break;
-					case "acorn":
-						treeName = "Oak";
-						break;
-					case "maple seed":
-						treeName = "Maple";
-						break;
-					case "pine cone":
-						treeName = "Pine";
-						break;
-					default:
-						treeName = "Coconut";
-						break;
-				}
+                string treeName;
+                switch (seedName.ToLower())
+                {
+                    case "mahogany seed":
+                        treeName = "Mahogany";
+                        break;
+                    case "acorn":
+                        treeName = "Oak";
+                        break;
+                    case "maple seed":
+                        treeName = "Maple";
+                        break;
+                    case "pine cone":
+                        treeName = "Pine";
+                        break;
+                    default:
+                        treeName = "Coconut";
+                        break;
+                }
 
-				// Append the growth stage description to the tree name
-				if (treeStage == 1)
+                // Append the growth stage description to the tree name
+                if (treeStage == 1)
                     treeName = $"{treeName} sprout";
                 else if (treeStage == 2)
                     treeName = $"{treeName} sapling";
@@ -563,12 +563,12 @@ namespace stardew_access.Features
         /// <summary>
         /// Retrieves the name and category of an object at a specific tile in the game location.
         /// </summary>
+        /// <param name="currentLocation">The current game location.</param>
         /// <param name="x">The X coordinate of the tile.</param>
         /// <param name="y">The Y coordinate of the tile.</param>
-        /// <param name="currentLocation">The current game location.</param>
         /// <param name="lessInfo">An optional parameter to display less information, set to false by default.</param>
         /// <returns>A tuple containing the object's name and category.</returns>
-        public static (string? name, CATEGORY category) getObjectAtTile(int x, int y, GameLocation currentLocation, bool lessInfo = false)
+        public static (string? name, CATEGORY category) getObjectAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false)
         {
             (string? name, CATEGORY category) toReturn = (null, CATEGORY.Others);
 
@@ -783,12 +783,12 @@ namespace stardew_access.Features
         /// <summary>
         /// Check if a tile with the specified index exists at the given coordinates in the specified location.
         /// </summary>
+        /// <param name="currentLocation">The current game location.</param>
         /// <param name="x">The X coordinate of the tile.</param>
         /// <param name="y">The Y coordinate of the tile.</param>
-        /// <param name="currentLocation">The current game location.</param>
         /// <param name="targetTileIndex">The target tile index to check for.</param>
         /// <returns>True if a tile with the specified index exists at the given coordinates, false otherwise.</returns>
-        private static bool CheckTileIndex(int x, int y, GameLocation currentLocation, int targetTileIndex)
+        private static bool CheckTileIndex(GameLocation currentLocation, int x, int y, int targetTileIndex)
         {
             var tile = currentLocation.Map.GetLayer("Buildings").Tiles[x, y];
             return tile != null && tile.TileIndex == targetTileIndex;
@@ -797,70 +797,67 @@ namespace stardew_access.Features
         /// <summary>
         /// Determines if a mine down ladder is present at the specified tile location.
         /// </summary>
+        /// <param name="currentLocation">The current GameLocation instance.</param>
         /// <param name="x">The x-coordinate of the tile.</param>
         /// <param name="y">The y-coordinate of the tile.</param>
-        /// <param name="currentLocation">The current GameLocation instance.</param>
         /// <returns>True if a mine down ladder is found at the specified tile, otherwise false.</returns>
-        public static bool isMineDownLadderAtTile(int x, int y, GameLocation currentLocation)
+        public static bool isMineDownLadderAtTile(GameLocation currentLocation, int x, int y)
         {
             return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave" 
-                   ? CheckTileIndex(x, y, currentLocation, 173)
+                   ? CheckTileIndex(currentLocation, x, y, 173)
                    : false;
         }
 
         /// <summary>
         /// Determines if a mine shaft is present at the specified tile location.
         /// </summary>
+        /// <param name="currentLocation">The current GameLocation instance.</param>
         /// <param name="x">The x-coordinate of the tile.</param>
         /// <param name="y">The y-coordinate of the tile.</param>
-        /// <param name="currentLocation">The current GameLocation instance.</param>
         /// <returns>True if a mine shaft is found at the specified tile, otherwise false.</returns>
-        public static bool isShaftAtTile(int x, int y, GameLocation currentLocation)
+        public static bool isShaftAtTile(GameLocation currentLocation, int x, int y)
         {
             return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
-                   ? CheckTileIndex(x, y, currentLocation, 174)
+                   ? CheckTileIndex(currentLocation, x, y, 174)
                    : false;
         }
 
         /// <summary>
         /// Determines if a mine up ladder is present at the specified tile location.
         /// </summary>
+        /// <param name="currentLocation">The current GameLocation instance.</param>
         /// <param name="x">The x-coordinate of the tile.</param>
         /// <param name="y">The y-coordinate of the tile.</param>
-        /// <param name="currentLocation">The current GameLocation instance.</param>
         /// <returns>True if a mine up ladder is found at the specified tile, otherwise false.</returns>
-        public static bool isMineUpLadderAtTile(int x, int y, GameLocation currentLocation)
+        public static bool isMineUpLadderAtTile(GameLocation currentLocation, int x, int y)
         {
             return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
-                   ? CheckTileIndex(x, y, currentLocation, 115)
+                   ? CheckTileIndex(currentLocation, x, y, 115)
                    : false;
         }
 
         /// <summary>
         /// Determines if an elevator is present at the specified tile location.
         /// </summary>
+        /// <param name="currentLocation">The current GameLocation instance.</param>
         /// <param name="x">The x-coordinate of the tile.</param>
         /// <param name="y">The y-coordinate of the tile.</param>
-        /// <param name="currentLocation">The current GameLocation instance.</param>
         /// <returns>True if an elevator is found at the specified tile, otherwise false.</returns>
-        public static bool isElevatorAtTile(int x, int y, GameLocation currentLocation)
+        public static bool isElevatorAtTile(GameLocation currentLocation, int x, int y)
         {
             return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
-                   ? CheckTileIndex(x, y, currentLocation, 112)
+                   ? CheckTileIndex(currentLocation, x, y, 112)
                    : false;
         }
 
         /// <summary>
         /// Gets the door information at the specified tile coordinates in the given location.
         /// </summary>
+        /// <param name="currentLocation">The GameLocation where the door might be found.</param>
         /// <param name="x">The x-coordinate of the tile to check.</param>
         /// <param name="y">The y-coordinate of the tile to check.</param>
-        /// <param name="currentLocation">The GameLocation where the door might be found.</param>
-        /// <returns>
-        /// A string containing the door information if a door is found at the specified tile;
-        /// null if no door is found.
-        /// </returns>
-        public static string? getDoorAtTile(int x, int y, GameLocation currentLocation)
+        /// <returns>A string containing the door information if a door is found at the specified tile; null if no door is found.</returns>
+        public static string? getDoorAtTile(GameLocation currentLocation, int x, int y)
         {
             // Create a Point object from the given tile coordinates
             Point tilePoint = new(x, y);
@@ -882,19 +879,16 @@ namespace stardew_access.Features
         /// <summary>
         /// Gets the resource clump information at the specified tile coordinates in the given location.
         /// </summary>
+        /// <param name="currentLocation">The GameLocation where the resource clump might be found.</param>
         /// <param name="x">The x-coordinate of the tile to check.</param>
         /// <param name="y">The y-coordinate of the tile to check.</param>
-        /// <param name="currentLocation">The GameLocation where the resource clump might be found.</param>
         /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
-        /// <returns>
-        /// A string containing the resource clump information if a resource clump is found at the specified tile;
-        /// null if no resource clump is found.
-        /// </returns>
-        public static string? getResourceClumpAtTile(int x, int y, GameLocation currentLocation, bool lessInfo = false)
+        /// <returns>A string containing the resource clump information if a resource clump is found at the specified tile; null if no resource clump is found.</returns>
+        public static string? getResourceClumpAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false)
         {
             // Check if the current location is Woods and handle stumps in woods separately
             if (currentLocation is Woods woods)
-                return getStumpsInWoods(x, y, woods, lessInfo);
+                return getStumpsInWoods(woods, x, y, lessInfo);
 
             // Iterate through resource clumps in the location using a for loop for performance reasons
             for (int i = 0, count = currentLocation.resourceClumps.Count; i < count; i++)
@@ -916,15 +910,12 @@ namespace stardew_access.Features
         /// <summary>
         /// Gets the stump information at the specified tile coordinates in the given Woods location.
         /// </summary>
+        /// <param name="woods">The Woods location where the stump might be found.</param>
         /// <param name="x">The x-coordinate of the tile to check.</param>
         /// <param name="y">The y-coordinate of the tile to check.</param>
-        /// <param name="woods">The Woods location where the stump might be found.</param>
         /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the stump's origin. Default is false.</param>
-        /// <returns>
-        /// A string containing the stump information if a stump is found at the specified tile;
-        /// null if no stump is found.
-        /// </returns>
-        public static string? getStumpsInWoods(int x, int y, Woods woods, bool lessInfo = false)
+        /// <returns>A string containing the stump information if a stump is found at the specified tile; null if no stump is found.</returns>
+        public static string? getStumpsInWoods(Woods woods, int x, int y, bool lessInfo = false)
         {
             // Iterate through stumps in the Woods location
             foreach (var stump in woods.stumps)

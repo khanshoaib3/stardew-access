@@ -73,7 +73,7 @@ namespace stardew_access.Features
         /// Additional lambda functions can be added as needed.
         /// </remarks>
         private static readonly Dictionary<string, Func<string, string, bool>> conditionals = new()
-		{
+        {
             ["Farm"] = (conditionType, uniqueModId) =>
             {
                 if (string.IsNullOrEmpty(uniqueModId))

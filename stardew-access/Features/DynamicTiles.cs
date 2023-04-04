@@ -12,10 +12,10 @@ using System.Text.Json;
 
 namespace stardew_access.Features
 {
-	/// <summary>
-	/// Provides methods to locate tiles of interest in various game locations that are conditional or unpredictable (I.E. not static).
-	/// </summary>
-	/// <remarks>
+    /// <summary>
+    /// Provides methods to locate tiles of interest in various game locations that are conditional or unpredictable (I.E. not static).
+    /// </summary>
+    /// <remarks>
         /// The DynamicTiles class currently supports the following location types:
         /// - Beach
         /// - BoatTunnel
@@ -111,441 +111,465 @@ namespace stardew_access.Features
         /// - "CaptainRoom"
         /// - "IslandNorthCave1"
         /// - "QiNutRoom"
-	/// </remarks>
-	public class DynamicTiles
-	{
-		// Static instance for the singleton pattern
-		private static DynamicTiles? _instance;
+    /// </remarks>
+    public class DynamicTiles
+    {
+        // Static instance for the singleton pattern
+        private static DynamicTiles? _instance;
 
-		/// <summary>
-		/// The singleton instance of the <see cref="DynamicTiles"/> class.
-		/// </summary>
-		public static DynamicTiles Instance
-		{
-			get
-			{
-				_instance ??= new DynamicTiles();
-				return _instance;
-			}
-		}
+        /// <summary>
+        /// The singleton instance of the <see cref="DynamicTiles"/> class.
+        /// </summary>
+        public static DynamicTiles Instance
+        {
+            get
+            {
+                _instance ??= new DynamicTiles();
+                return _instance;
+            }
+        }
 
-		// HashSet for storing which unimplemented locations have been previously logged
-		private static readonly HashSet<object> loggedLocations = new();
+        // HashSet for storing which unimplemented locations have been previously logged
+        private static readonly HashSet<object> loggedLocations = new();
 
-		// Dictionary of coordinates for feeding benches in barns and coops
-		private static readonly Dictionary<string, (int minX, int maxX, int y)> FeedingBenchBounds = new()
-		{
-			{ "Barn", (8, 11, 3) },
-			{ "Barn2", (8, 15, 3) },
-			{ "Big Barn", (8, 15, 3) },
-			{ "Barn3", (8, 19, 3) },
-			{ "Deluxe Barn", (8, 19, 3) },
-			{ "Coop", (6, 9, 3) },
-			{ "Coop2", (6, 13, 3) },
-			{ "Big Coop", (6, 13, 3) },
-			{ "Coop3", (6, 17, 3) },
-			{ "Deluxe Coop", (6, 17, 3) }
-		};
+        // Dictionary of coordinates for feeding benches in barns and coops
+        private static readonly Dictionary<string, (int minX, int maxX, int y)> FeedingBenchBounds = new()
+        {
+            { "Barn", (8, 11, 3) },
+            { "Barn2", (8, 15, 3) },
+            { "Big Barn", (8, 15, 3) },
+            { "Barn3", (8, 19, 3) },
+            { "Deluxe Barn", (8, 19, 3) },
+            { "Coop", (6, 9, 3) },
+            { "Coop2", (6, 13, 3) },
+            { "Big Coop", (6, 13, 3) },
+            { "Coop3", (6, 17, 3) },
+            { "Deluxe Coop", (6, 17, 3) }
+        };
 
-		// Dictionary to hold event info
-		private static readonly Dictionary<string, Dictionary<(int X, int Y), string>> EventInteractables;
+        // Dictionary to hold event info
+        private static readonly Dictionary<string, Dictionary<(int X, int Y), string>> EventInteractables;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="DynamicTiles"/> class.
-		/// Loads the event file.
-		/// </summary>
-		static DynamicTiles()
-		{
-			EventInteractables = LoadEventTiles();
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicTiles"/> class.
+        /// Loads the event file.
+        /// </summary>
+        static DynamicTiles()
+        {
+            EventInteractables = LoadEventTiles();
+        }
 
-		/// <summary>
-		/// Loads event tiles from the "event-tiles.json" file and returns a dictionary representation of the data.
-		/// </summary>
-		/// <returns>
-		/// A dictionary with event names as keys and nested dictionaries as values, where nested dictionaries have
-		/// coordinate tuples (x, y) as keys and tile names as values.
-		/// </returns>
-		private static Dictionary<string, Dictionary<(int x, int y), string>> LoadEventTiles()
-		{
-			JsonElement json = LoadJsonFile("event-tiles.json");
+        /// <summary>
+        /// Loads event tiles from the "event-tiles.json" file and returns a dictionary representation of the data.
+        /// </summary>
+        /// <returns>
+        /// A dictionary with event names as keys and nested dictionaries as values, where nested dictionaries have
+        /// coordinate tuples (x, y) as keys and tile names as values.
+        /// </returns>
+        private static Dictionary<string, Dictionary<(int x, int y), string>> LoadEventTiles()
+        {
+            JsonElement json = LoadJsonFile("event-tiles.json");
 
-			if (json.ValueKind == JsonValueKind.Undefined)
-			{
-				// If the JSON couldn't be loaded or parsed, return an empty dictionary
-				return new Dictionary<string, Dictionary<(int x, int y), string>>();
-			}
+            if (json.ValueKind == JsonValueKind.Undefined)
+            {
+                // If the JSON couldn't be loaded or parsed, return an empty dictionary
+                return new Dictionary<string, Dictionary<(int x, int y), string>>();
+            }
 
-			var eventTiles = new Dictionary<string, Dictionary<(int x, int y), string>>();
+            var eventTiles = new Dictionary<string, Dictionary<(int x, int y), string>>();
 
-			// Iterate over the JSON properties to create a dictionary representation of the data
-			foreach (JsonProperty eventProperty in json.EnumerateObject())
-			{
-				string eventName = eventProperty.Name;
-				var coordinates = new Dictionary<(int x, int y), string>();
+            // Iterate over the JSON properties to create a dictionary representation of the data
+            foreach (JsonProperty eventProperty in json.EnumerateObject())
+            {
+                string eventName = eventProperty.Name;
+                var coordinates = new Dictionary<(int x, int y), string>();
 
-				// Iterate over the coordinate properties to create a nested dictionary with coordinate tuples as keys
-				foreach (JsonProperty coordinateProperty in eventProperty.Value.EnumerateObject())
-				{
-					string[] xy = coordinateProperty.Name.Split(',');
-					int x = int.Parse(xy[0]);
-					int y = int.Parse(xy[1]);
-					coordinates.Add((x, y), value: coordinateProperty.Value.GetString() ?? string.Empty);
-				}
+                // Iterate over the coordinate properties to create a nested dictionary with coordinate tuples as keys
+                foreach (JsonProperty coordinateProperty in eventProperty.Value.EnumerateObject())
+                {
+                    string[] xy = coordinateProperty.Name.Split(',');
+                    int x = int.Parse(xy[0]);
+                    int y = int.Parse(xy[1]);
+                    coordinates.Add((x, y), value: coordinateProperty.Value.GetString() ?? string.Empty);
+                }
 
-				eventTiles.Add(eventName, coordinates);
-			}
+                eventTiles.Add(eventName, coordinates);
+            }
 
-			return eventTiles;
-		}
+            return eventTiles;
+        }
 
-		/// <summary>
-		/// Retrieves information about interactables, NPCs, or other features at a given coordinate in a Beach.
-		/// </summary>
-		/// <param name="beach">The Beach to search.</param>
-		/// <param name="x">The x-coordinate to search.</param>
-		/// <param name="y">The y-coordinate to search.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
-		private static (string? name, CATEGORY? category) GetBeachInfo(Beach beach, int x, int y)
-		{
-			if (MainClass.ModHelper == null)
-			{
-				return (null, null);
-			}
-			if (MainClass.ModHelper.Reflection.GetField<NPC>(beach, "oldMariner").GetValue() is NPC mariner && mariner.getTileLocation() == new Vector2(x, y))
-			{
-				return ("Old Mariner", CATEGORY.NPCs);
-			}
-			else if (x == 58 && y == 13)
-			{
-				if (!beach.bridgeFixed.Value)
-				{
-					return ("Repair Bridge", CATEGORY.Interactables);
-				}
-				else
-				{
-					return ("Bridge", CATEGORY.Bridges);
-				}
-			}
+        /// <summary>
+        /// Retrieves information about interactables, NPCs, or other features at a given coordinate in a Beach.
+        /// </summary>
+        /// <param name="beach">The Beach to search.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+        private static (string? name, CATEGORY? category) GetBeachInfo(Beach beach, int x, int y, bool lessInfo = false)
+        {
+            if (MainClass.ModHelper == null)
+            {
+                return (null, null);
+            }
+            if (MainClass.ModHelper.Reflection.GetField<NPC>(beach, "oldMariner").GetValue() is NPC mariner && mariner.getTileLocation() == new Vector2(x, y))
+            {
+                return ("Old Mariner", CATEGORY.NPCs);
+            }
+            else if (x == 58 && y == 13)
+            {
+                if (!beach.bridgeFixed.Value)
+                {
+                    return ("Repair Bridge", CATEGORY.Interactables);
+                }
+                else
+                {
+                    return ("Bridge", CATEGORY.Bridges);
+                }
+            }
 
-			return (null, null);
-		}
+            return (null, null);
+        }
 
-		/// <summary>
-		/// Retrieves information about interactables or other features at a given coordinate in a BoatTunnel.
-		/// </summary>
-		/// <param name="boatTunnel">The BoatTunnel to search.</param>
-		/// <param name="x">The x-coordinate to search.</param>
-		/// <param name="y">The y-coordinate to search.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
-		private static (string? name, CATEGORY? category) GetBoatTunnelInfo(BoatTunnel boatTunnel, int x, int y)
-		{
-			if (boatTunnel is null)
-			{
-				throw new ArgumentNullException(nameof(boatTunnel));
-			}
+        /// <summary>
+        /// Retrieves information about interactables or other features at a given coordinate in a BoatTunnel.
+        /// </summary>
+        /// <param name="boatTunnel">The BoatTunnel to search.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+        private static (string? name, CATEGORY? category) GetBoatTunnelInfo(BoatTunnel boatTunnel, int x, int y, bool lessInfo = false)
+        {
+            // Check if the player has received the specified mail or not
+            bool HasMail(string mail) => Game1.MasterPlayer.hasOrWillReceiveMail(mail);
 
-			if (x == 4 && y == 9)
-			{
-				return ((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatFixed") ? "Repair " : "") + "Ticket Machine", CATEGORY.Interactables);
-			}
-			else if (x == 6 && y == 8)
-			{
-				return ((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatHull") ? "Repair " : "") + "Boat Hull", (!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatHull") ? CATEGORY.Interactables : CATEGORY.Decor));
-			}
-			else if (x == 8 && y == 9)
-			{
-				return ((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatAnchor") ? "Repair " : "") + "Boat Anchor", (!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatAnchor") ? CATEGORY.Interactables : CATEGORY.Decor));
-			}
+            // If the position matches one of the interactable elements in the boat tunnel
+            if ((x, y) == (4, 9) || (x, y) == (6, 8) || (x, y) == (8, 9))
+            {
+                string mail = (x, y) switch
+                {
+                    (4, 9) => "willyBoatFixed",
+                    (6, 8) => "willyBoatHull",
+                    (8, 9) => "willyBoatAnchor",
+                    _ => throw new InvalidOperationException("Unexpected (x, y) values"),
+                };
 
-			return (null, null);
-		}
+                string itemName = (x, y) switch
+                {
+                    (4, 9) => "Ticket Machine",
+                    (6, 8) => "Boat Hull",
+                    (8, 9) => "Boat Anchor",
+                    _ => throw new InvalidOperationException("Unexpected (x, y) values"),
+                };
 
-		/// <summary>
-		/// Retrieves information about interactables or other features at a given coordinate in a CommunityCenter.
-		/// </summary>
-		/// <param name="communityCenter">The CommunityCenter to search.</param>
-		/// <param name="x">The x-coordinate to search.</param>
-		/// <param name="y">The y-coordinate to search.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
-		private static (string? name, CATEGORY? category) GetCommunityCenterInfo(CommunityCenter communityCenter, int x, int y)
-		{
-			if (communityCenter.missedRewardsChestVisible.Value && x == 22 && y == 10)
-			{
-				return ("Missed Rewards Chest", CATEGORY.Containers);
-			}
+                CATEGORY category = (x, y) == (4, 9) ? CATEGORY.Interactables : (!HasMail(mail) ? CATEGORY.Interactables : CATEGORY.Decor);
 
-			return (null, null);
-		}
+                return ((!HasMail(mail) ? "Repair " : "") + itemName, category);
+            }
 
-		/// <summary>
-		/// Gets the building information for a given position on a farm.
-		/// </summary>
-		/// <param name="building">The Building instance.</param>
-		/// <param name="x">The x-coordinate of the position.</param>
-		/// <param name="y">The y-coordinate of the position.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the door or building found, or (null, null) if no door or building is found.</returns>
-		private static (string? name, CATEGORY? category) GetBuildingInfo(Building building, int x, int y)
-		{
-			string name = building.buildingType.Value;
-			int buildingTileX = building.tileX.Value;
-			int buildingTileY = building.tileY.Value;
+            return (null, null);
+        }
 
-			// If the building is a FishPond, prepend the fish name
-			if (building is FishPond fishPond && fishPond.fishType.Value >= 0)
-			{
-				name = $"{Game1.objectInformation[fishPond.fishType.Value].Split('/')[4]} {name}";
-			}
+        /// <summary>
+        /// Retrieves information about interactables or other features at a given coordinate in a CommunityCenter.
+        /// </summary>
+        /// <param name="communityCenter">The CommunityCenter to search.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+        private static (string? name, CATEGORY? category) GetCommunityCenterInfo(CommunityCenter communityCenter, int x, int y, bool lessInfo = false)
+        {
+            if (communityCenter.missedRewardsChestVisible.Value && x == 22 && y == 10)
+            {
+                return ("Missed Rewards Chest", CATEGORY.Containers);
+            }
 
-			// Calculate differences in x and y coordinates
-			int offsetX = x - buildingTileX;
-			int offsetY = y - buildingTileY;
+            return (null, null);
+        }
 
-			// Check if the position matches the human door
-			if (building.humanDoor.Value.X == offsetX && building.humanDoor.Value.Y == offsetY)
-			{
-				return (name + " Door", CATEGORY.Doors);
-			}
-			// Check if the position matches the animal door
-			else if (building.animalDoor.Value.X == offsetX && building.animalDoor.Value.Y == offsetY)
-			{
-				return (name + " Animal Door " + ((building.animalDoorOpen.Value) ? "Opened" : "Closed"), CATEGORY.Doors);
-			}
-			// Check if the position matches the building's top-left corner
-			else if (offsetX == 0 && offsetY == 0)
-			{
-				return (name, CATEGORY.Buildings);
-			}
-			// Special handling for Mill buildings
-			else if (building is Mill)
-			{
-				// Check if the position matches the input
-				if (offsetX == 1 && offsetY == 1)
-				{
-					return (name + " input", CATEGORY.Buildings);
-				}
-				// Check if the position matches the output
-				else if (offsetX == 3 && offsetY == 1)
-				{
-					return (name + " output", CATEGORY.Buildings);
-				}
-			}
+        /// <summary>
+        /// Gets the building information for a given position on a farm.
+        /// </summary>
+        /// <param name="building">The Building instance.</param>
+        /// <param name="x">The x-coordinate of the position.</param>
+        /// <param name="y">The y-coordinate of the position.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the door or building found, or (null, null) if no door or building is found.</returns>
+        private static (string? name, CATEGORY? category) GetBuildingInfo(Building building, int x, int y, bool lessInfo = false)
+        {
+            string name = building.buildingType.Value;
+            int buildingTileX = building.tileX.Value;
+            int buildingTileY = building.tileY.Value;
 
-			// Return the building name for any other position within the building's area
-			return (name, CATEGORY.Buildings);
-		}
+            // If the building is a FishPond, prepend the fish name
+            if (building is FishPond fishPond && fishPond.fishType.Value >= 0)
+            {
+                name = $"{Game1.objectInformation[fishPond.fishType.Value].Split('/')[4]} {name}";
+            }
 
-		/// <summary>
-		/// Retrieves information about interactables or other features at a given coordinate in a Farm.
-		/// </summary>
-		/// <param name="farm">The Farm to search.</param>
-		/// <param name="x">The x-coordinate to search.</param>
-		/// <param name="y">The y-coordinate to search.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
-		private static (string? name, CATEGORY? category) GetFarmInfo(Farm farm, int x, int y)
-		{
-			var mainMailboxPos = farm.GetMainMailboxPosition();
-			Building building = farm.getBuildingAt(new Vector2(x, y));
+            // Calculate differences in x and y coordinates
+            int offsetX = x - buildingTileX;
+            int offsetY = y - buildingTileY;
 
-			if (mainMailboxPos.X == x && mainMailboxPos.Y == y)
-			{
-				return ("Mail box", CATEGORY.Interactables);
-			}
-			else if (building is not null) // Check if there is a building at the current position
-			{
-				return GetBuildingInfo(building, x, y);
-			}
+            // Check if the position matches the human door
+            if (building.humanDoor.Value.X == offsetX && building.humanDoor.Value.Y == offsetY)
+            {
+                return (name + " Door", CATEGORY.Doors);
+            }
+            // Check if the position matches the animal door
+            else if (building.animalDoor.Value.X == offsetX && building.animalDoor.Value.Y == offsetY)
+            {
+                return (name + " Animal Door " + ((building.animalDoorOpen.Value) ? "Opened" : "Closed"), CATEGORY.Doors);
+            }
+            // Check if the position matches the building's top-left corner
+            else if (offsetX == 0 && offsetY == 0)
+            {
+                return (name, CATEGORY.Buildings);
+            }
+            // Special handling for Mill buildings
+            else if (building is Mill)
+            {
+                // Check if the position matches the input
+                if (offsetX == 1 && offsetY == 1)
+                {
+                    return (name + " input", CATEGORY.Buildings);
+                }
+                // Check if the position matches the output
+                else if (offsetX == 3 && offsetY == 1)
+                {
+                    return (name + " output", CATEGORY.Buildings);
+                }
+            }
 
-			return (null, null);
-		}
+            // Return the building name for any other position within the building's area
+            return (name, CATEGORY.Buildings);
+        }
 
-		/// <summary>
-		/// Retrieves information about interactables or other features at a given coordinate in a FarmHouse.
-		/// </summary>
-		/// <param name="farmHouse">The FarmHouse to search.</param>
-		/// <param name="x">The x-coordinate to search.</param>
-		/// <param name="y">The y-coordinate to search.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
-		private static (string? name, CATEGORY? category) GetFarmHouseInfo(FarmHouse farmHouse, int x, int y)
-		{
-			if (farmHouse.upgradeLevel >= 1)
-			{
-				int kitchenX = farmHouse.getKitchenStandingSpot().X;
-				int kitchenY = farmHouse.getKitchenStandingSpot().Y - 1;
+        /// <summary>
+        /// Retrieves information about interactables or other features at a given coordinate in a Farm.
+        /// </summary>
+        /// <param name="farm">The Farm to search.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+        private static (string? name, CATEGORY? category) GetFarmInfo(Farm farm, int x, int y, bool lessInfo = false)
+        {
+            var mainMailboxPos = farm.GetMainMailboxPosition();
+            Building building = farm.getBuildingAt(new Vector2(x, y));
 
-				if (kitchenX == x && kitchenY == y)
-				{
-					return ("Stove", CATEGORY.Interactables);
-				}
-				else if (kitchenX + 1 == x && kitchenY == y)
-				{
-					return ("Sink", CATEGORY.Others);
-				}
-				else if (farmHouse.fridgePosition.X == x && farmHouse.fridgePosition.Y == y)
-				{
-					return ("Fridge", CATEGORY.Interactables);
-				}
-			}
+            if (mainMailboxPos.X == x && mainMailboxPos.Y == y)
+            {
+                return ("Mail box", CATEGORY.Interactables);
+            }
+            else if (building is not null) // Check if there is a building at the current position
+            {
+                return GetBuildingInfo(building, x, y, lessInfo);
+            }
 
-			return (null, null);
-		}
+            return (null, null);
+        }
 
-		/// <summary>
-		/// Retrieves information about interactables or other features at a given coordinate in a Forest.
-		/// </summary>
-		/// <param name="forest">The Forest to search.</param>
-		/// <param name="x">The x-coordinate to search.</param>
-		/// <param name="y">The y-coordinate to search.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
-		private static (string? name, CATEGORY? category) GetForestInfo(Forest forest, int x, int y)
-		{
-			if (forest.travelingMerchantDay && x == 27 && y == 11)
-			{
-				return ("Travelling Cart", CATEGORY.Interactables);
-			}
-			else if (forest.log != null && x == 2 && y == 7)
-			{
-				return ("Log", CATEGORY.Interactables);
-			}
-			else if (forest.log == null && x == 0 && y == 7)
-			{
-				return ("Secret Woods Entrance", CATEGORY.Doors);
-			}
+        /// <summary>
+        /// Retrieves information about interactables or other features at a given coordinate in a FarmHouse.
+        /// </summary>
+        /// <param name="farmHouse">The FarmHouse to search.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+        private static (string? name, CATEGORY? category) GetFarmHouseInfo(FarmHouse farmHouse, int x, int y, bool lessInfo = false)
+        {
+            if (farmHouse.upgradeLevel >= 1)
+            {
+                int kitchenX = farmHouse.getKitchenStandingSpot().X;
+                int kitchenY = farmHouse.getKitchenStandingSpot().Y - 1;
 
-			return (null, null);
-		}
+                if (kitchenX == x && kitchenY == y)
+                {
+                    return ("Stove", CATEGORY.Interactables);
+                }
+                else if (kitchenX + 1 == x && kitchenY == y)
+                {
+                    return ("Sink", CATEGORY.Others);
+                }
+                else if (farmHouse.fridgePosition.X == x && farmHouse.fridgePosition.Y == y)
+                {
+                    return ("Fridge", CATEGORY.Interactables);
+                }
+            }
 
-		/// <summary>
-		/// Retrieves information about interactables, NPCs, or other features at a given coordinate in an IslandFarmHouse.
-		/// </summary>
-		/// <param name="islandFarmHouse">The IslandFarmHouse to search.</param>
-		/// <param name="x">The x-coordinate to search.</param>
-		/// <param name="y">The y-coordinate to search.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
-		private static (string? name, CATEGORY? category) GetIslandFarmHouseInfo(IslandFarmHouse islandFarmHouse, int x, int y)
-		{
-			int fridgeX = islandFarmHouse.fridgePosition.X;
-			int fridgeY = islandFarmHouse.fridgePosition.Y;
-			if (fridgeX - 2 == x && fridgeY == y)
-			{
-				return ("Stove", CATEGORY.Interactables);
-			}
-			else if (fridgeX - 1 == x && fridgeY == y)
-			{
-				return ("Sink", CATEGORY.Others);
-			}
-			else if (fridgeX == x && fridgeY == y)
-			{
-				return ("Fridge", CATEGORY.Interactables);
-			}
+            return (null, null);
+        }
 
-			return (null, null);
-		}
+        /// <summary>
+        /// Retrieves information about interactables or other features at a given coordinate in a Forest.
+        /// </summary>
+        /// <param name="forest">The Forest to search.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+        private static (string? name, CATEGORY? category) GetForestInfo(Forest forest, int x, int y, bool lessInfo = false)
+        {
+            if (forest.travelingMerchantDay && x == 27 && y == 11)
+            {
+                return ("Travelling Cart", CATEGORY.Interactables);
+            }
+            else if (forest.log != null && x == 2 && y == 7)
+            {
+                return ("Log", CATEGORY.Interactables);
+            }
+            else if (forest.log == null && x == 0 && y == 7)
+            {
+                return ("Secret Woods Entrance", CATEGORY.Doors);
+            }
 
-		/// <summary>
-		/// Retrieves information about interactables, NPCs, or other features at a given coordinate in an IslandNorth.
-		/// </summary>
-		/// <param name="islandNorth">The IslandNorth to search.</param>
-		/// <param name="x">The x-coordinate to search.</param>
-		/// <param name="y">The y-coordinate to search.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
-		private static (string? name, CATEGORY? category) GetIslandNorthInfo(IslandNorth islandNorth, int x, int y)
-		{
-			// Check if the trader is activated and the coordinates match the trader's location
-			if (islandNorth.traderActivated.Value && x == 36 && y == 71)
-			{
-				return ("Island Trader", CATEGORY.Interactables);
-			}
+            return (null, null);
+        }
 
-			// Return (null, null) if no relevant object is found
-			return (null, null);
-		}
+        /// <summary>
+        /// Retrieves information about interactables, NPCs, or other features at a given coordinate in an IslandFarmHouse.
+        /// </summary>
+        /// <param name="islandFarmHouse">The IslandFarmHouse to search.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+        private static (string? name, CATEGORY? category) GetIslandFarmHouseInfo(IslandFarmHouse islandFarmHouse, int x, int y, bool lessInfo = false)
+        {
+            int fridgeX = islandFarmHouse.fridgePosition.X;
+            int fridgeY = islandFarmHouse.fridgePosition.Y;
+            if (fridgeX - 2 == x && fridgeY == y)
+            {
+                return ("Stove", CATEGORY.Interactables);
+            }
+            else if (fridgeX - 1 == x && fridgeY == y)
+            {
+                return ("Sink", CATEGORY.Others);
+            }
+            else if (fridgeX == x && fridgeY == y)
+            {
+                return ("Fridge", CATEGORY.Interactables);
+            }
 
-		/// <summary>
-		/// Retrieves information about interactables, NPCs, or other features at a given coordinate in an IslandWest.
-		/// </summary>
-		/// <param name="islandWest">The IslandWest to search.</param>
-		/// <param name="x">The x-coordinate to search.</param>
-		/// <param name="y">The y-coordinate to search.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
-		private static (string? name, CATEGORY? category) GetIslandWestInfo(IslandWest islandWest, int x, int y)
-		{
-			// Check if the coordinates match the shipping bin's location
-			if ((islandWest.shippingBinPosition.X == x || (islandWest.shippingBinPosition.X + 1) == x) && islandWest.shippingBinPosition.Y == y)
-			{
-				return ("Shipping Bin", CATEGORY.Interactables);
-			}
+            return (null, null);
+        }
 
-			// Return (null, null) if no relevant object is found
-			return (null, null);
-		}
+        /// <summary>
+        /// Retrieves information about interactables, NPCs, or other features at a given coordinate in an IslandNorth.
+        /// </summary>
+        /// <param name="islandNorth">The IslandNorth to search.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+        private static (string? name, CATEGORY? category) GetIslandNorthInfo(IslandNorth islandNorth, int x, int y, bool lessInfo = false)
+        {
+            // Check if the trader is activated and the coordinates match the trader's location
+            if (islandNorth.traderActivated.Value && x == 36 && y == 71)
+            {
+                return ("Island Trader", CATEGORY.Interactables);
+            }
 
-		/// <summary>
-		/// Retrieves information about tiles at a given coordinate in a VolcanoDungeon.
-		/// </summary>
-		/// <param name="dungeon">The VolcanoDungeon to search.</param>
-		/// <param name="x">The x-coordinate to search.</param>
-		/// <param name="y">The y-coordinate to search.</param>
-		/// <returns>A tuple containing the name of the tile and the CATEGORY, or (null, null) if no relevant tile is found.</returns>
-		private static (string? name, CATEGORY? category) GetVolcanoDungeonInfo(VolcanoDungeon dungeon, int x, int y)
-		{
-			if (dungeon.IsCooledLava(x, y))
-			{
-				return ("Cooled lava", CATEGORY.WaterTiles);
-			}
-			else if (StardewValley.Monsters.LavaLurk.IsLavaTile(dungeon, x, y))
-			{
-				return ("Lava", CATEGORY.WaterTiles);
-			}
+            // Return (null, null) if no relevant object is found
+            return (null, null);
+        }
 
-			return (null, null);
-		}
+        /// <summary>
+        /// Retrieves information about interactables, NPCs, or other features at a given coordinate in an IslandWest.
+        /// </summary>
+        /// <param name="islandWest">The IslandWest to search.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+        private static (string? name, CATEGORY? category) GetIslandWestInfo(IslandWest islandWest, int x, int y, bool lessInfo = false)
+        {
+            // Check if the coordinates match the shipping bin's location
+            if ((islandWest.shippingBinPosition.X == x || (islandWest.shippingBinPosition.X + 1) == x) && islandWest.shippingBinPosition.Y == y)
+            {
+                return ("Shipping Bin", CATEGORY.Interactables);
+            }
 
-		/// <summary>
-		/// Retrieves information about interactables, NPCs, or other features at a given coordinate in a named IslandLocation.
-		/// </summary>
-		/// <param name="islandLocation">The named IslandLocation to search.</param>
-		/// <param name="x">The x-coordinate to search.</param>
-		/// <param name="y">The y-coordinate to search.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
-		private static (string? name, CATEGORY? category) GetNamedIslandLocationInfo(IslandLocation islandLocation, int x, int y)
-		{
-			object locationType = islandLocation is not null and IslandLocation ? islandLocation.Name ?? "Undefined Island Location" : islandLocation!.GetType();
+            // Return (null, null) if no relevant object is found
+            return (null, null);
+        }
 
-			// Implement specific logic for named  IslandLocations here, if necessary
+        /// <summary>
+        /// Retrieves information about tiles at a given coordinate in a VolcanoDungeon.
+        /// </summary>
+        /// <param name="dungeon">The VolcanoDungeon to search.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name of the tile and the CATEGORY, or (null, null) if no relevant tile is found.</returns>
+        private static (string? name, CATEGORY? category) GetVolcanoDungeonInfo(VolcanoDungeon dungeon, int x, int y, bool lessInfo = false)
+        {
+            if (!lessInfo)
+            {
+                if (dungeon.IsCooledLava(x, y))
+                {
+                    return ("Cooled lava", CATEGORY.WaterTiles);
+                }
+                else if (StardewValley.Monsters.LavaLurk.IsLavaTile(dungeon, x, y))
+                {
+                    return ("Lava", CATEGORY.WaterTiles);
+                }
+            }
 
-			// Unimplemented locations are logged.
-			// Check if the location has already been logged
-			if (!loggedLocations.Contains(locationType))
-			{
-				// Log the message
-				MainClass.DebugLog($"Called GetNamedIslandLocationInfo with unimplemented IslandLocation of type {islandLocation.GetType()} and name {islandLocation.Name}");
+            return (null, null);
+        }
 
-				// Add the location to the HashSet to prevent logging it again
-				loggedLocations.Add(locationType);
-			}
+        /// <summary>
+        /// Retrieves information about interactables, NPCs, or other features at a given coordinate in a named IslandLocation.
+        /// </summary>
+        /// <param name="islandLocation">The named IslandLocation to search.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+        private static (string? name, CATEGORY? category) GetNamedIslandLocationInfo(IslandLocation islandLocation, int x, int y, bool lessInfo = false)
+        {
+            object locationType = islandLocation is not null and IslandLocation ? islandLocation.Name ?? "Undefined Island Location" : islandLocation!.GetType();
 
-			return (null, null);
-		}
+            // Implement specific logic for named  IslandLocations here, if necessary
 
-		/// <summary>
-		/// Retrieves the name of the IslandGemBird based on its item index value.
-		/// </summary>
-		/// <param name="bird">The IslandGemBird instance.</param>
-		/// <returns>A string representing the name of the IslandGemBird.</returns>
-		private static String GetGemBirdName(IslandGemBird bird)
-		{
-			// Use a switch expression to return the appropriate bird name based on the item index value
-			return bird.itemIndex.Value switch
-			{
-				60 => "Emerald Gem Bird",
-				62 => "Aquamarine Gem Bird",
-				64 => "Ruby Gem Bird",
-				66 => "Amethyst Gem Bird",
-				68 => "Topaz Gem Bird",
-				_ => "Gem Bird", // Default case for when the item index does not match any of the specified values
-			};
-		}
+            // Unimplemented locations are logged.
+            // Check if the location has already been logged
+            if (!loggedLocations.Contains(locationType))
+            {
+                // Log the message
+                MainClass.DebugLog($"Called GetNamedIslandLocationInfo with unimplemented IslandLocation of type {islandLocation.GetType()} and name {islandLocation.Name}");
+
+                // Add the location to the HashSet to prevent logging it again
+                loggedLocations.Add(locationType);
+            }
+
+            return (null, null);
+        }
+
+        /// <summary>
+        /// Retrieves the name of the IslandGemBird based on its item index value.
+        /// </summary>
+        /// <param name="bird">The IslandGemBird instance.</param>
+        /// <returns>A string representing the name of the IslandGemBird.</returns>
+        private static String GetGemBirdName(IslandGemBird bird)
+        {
+            // Use a switch expression to return the appropriate bird name based on the item index value
+            return bird.itemIndex.Value switch
+            {
+                60 => "Emerald Gem Bird",
+                62 => "Aquamarine Gem Bird",
+                64 => "Ruby Gem Bird",
+                66 => "Amethyst Gem Bird",
+                68 => "Topaz Gem Bird",
+                _ => "Gem Bird", // Default case for when the item index does not match any of the specified values
+            };
+        }
 
         /// <summary>
         /// Gets the parrot perch information at the specified tile coordinates in the given island location.
@@ -564,219 +588,225 @@ namespace stardew_access.Features
             {
                 string toSpeak = $"Parrot required nuts {foundPerch.requiredNuts.Value}";
 
-				// Return appropriate string based on the current state of the parrot perch
-				return foundPerch.currentState.Value switch
-				{
-					StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Idle => foundPerch.IsAvailable() ? toSpeak : "Empty parrot perch",
-					StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.StartBuilding => "Parrots started building request",
-					StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Building => "Parrots building request",
-					StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Complete => "Request Completed",
-					_ => toSpeak,
-				};
-			}
+                // Return appropriate string based on the current state of the parrot perch
+                return foundPerch.currentState.Value switch
+                {
+                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Idle => foundPerch.IsAvailable() ? toSpeak : "Empty parrot perch",
+                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.StartBuilding => "Parrots started building request",
+                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Building => "Parrots building request",
+                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Complete => "Request Completed",
+                    _ => toSpeak,
+                };
+            }
 
             // If no parrot perch was found, return null
             return null;
         }
 
-		/// <summary>
-		/// Retrieves information about interactables, NPCs, or other features at a given coordinate in an IslandLocation.
-		/// </summary>
-		/// <param name="islandLocation">The IslandLocation to search.</param>
-		/// <param name="x">The x-coordinate to search.</param>
-		/// <param name="y">The y-coordinate to search.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
-		private static (string? name, CATEGORY? category) GetIslandLocationInfo(IslandLocation islandLocation, int x, int y)
-		{
-			var nutTracker = Game1.player.team.collectedNutTracker;
+        /// <summary>
+        /// Retrieves information about interactables, NPCs, or other features at a given coordinate in an IslandLocation.
+        /// </summary>
+        /// <param name="islandLocation">The IslandLocation to search.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+        private static (string? name, CATEGORY? category) GetIslandLocationInfo(IslandLocation islandLocation, int x, int y, bool lessInfo = false)
+        {
+            var nutTracker = Game1.player.team.collectedNutTracker;
             string? parrot = GetParrotPerchAtTile(islandLocation, x, y);
-			if (islandLocation.IsBuriedNutLocation(new Point(x, y)) && !nutTracker.ContainsKey($"Buried_{islandLocation.Name}_{x}_{y}"))
-			{
-				return ("Diggable spot", CATEGORY.Interactables);
-			}
-			else if (islandLocation.locationGemBird.Value is IslandGemBird bird && ((int)bird.position.X / Game1.tileSize) == x && ((int)bird.position.Y / Game1.tileSize) == y)
-			{
-				return (GetGemBirdName(bird), CATEGORY.NPCs);
-			}
+            if (islandLocation.IsBuriedNutLocation(new Point(x, y)) && !nutTracker.ContainsKey($"Buried_{islandLocation.Name}_{x}_{y}"))
+            {
+                return ("Diggable spot", CATEGORY.Interactables);
+            }
+            else if (islandLocation.locationGemBird.Value is IslandGemBird bird && ((int)bird.position.X / Game1.tileSize) == x && ((int)bird.position.Y / Game1.tileSize) == y)
+            {
+                return (GetGemBirdName(bird), CATEGORY.NPCs);
+            }
             else if (parrot != null)
             {
                 return (parrot, CATEGORY.Buildings);
             }
 
-		return islandLocation switch
-		{
-			IslandNorth islandNorth => GetIslandNorthInfo(islandNorth, x, y),
-			IslandWest islandWest => GetIslandWestInfo(islandWest, x, y),
-			VolcanoDungeon dungeon => GetVolcanoDungeonInfo(dungeon, x, y),
-			_ => GetNamedIslandLocationInfo(islandLocation, x, y)
-		};
-		}
+            return islandLocation switch
+            {
+                IslandNorth islandNorth => GetIslandNorthInfo(islandNorth, x, y, lessInfo),
+                IslandWest islandWest => GetIslandWestInfo(islandWest, x, y, lessInfo),
+                VolcanoDungeon dungeon => GetVolcanoDungeonInfo(dungeon, x, y, lessInfo),
+                _ => GetNamedIslandLocationInfo(islandLocation, x, y, lessInfo)
+            };
+        }
 
-		/// <summary>
-		/// Retrieves the value of the "Action" property from the Buildings layer tile at the given coordinates.
-		/// </summary>
-		/// <param name="libraryMuseum">The LibraryMuseum containing the tile.</param>
-		/// <param name="x">The x-coordinate of the tile.</param>
-		/// <param name="y">The y-coordinate of the tile.</param>
-		/// <returns>The value of the "Action" property as a string, or null if the property is not found.</returns>
-		private static string? GetTileActionPropertyValue(LibraryMuseum libraryMuseum, int x, int y)
-		{
-			xTile.Tiles.Tile tile = libraryMuseum.map.GetLayer("Buildings").PickTile(new xTile.Dimensions.Location(x * 64, y * 64), Game1.viewport.Size);
-			return tile.Properties.TryGetValue("Action", out xTile.ObjectModel.PropertyValue? value) ? value.ToString() : null;
-		}
+        /// <summary>
+        /// Retrieves the value of the "Action" property from the Buildings layer tile at the given coordinates.
+        /// </summary>
+        /// <param name="libraryMuseum">The LibraryMuseum containing the tile.</param>
+        /// <param name="x">The x-coordinate of the tile.</param>
+        /// <param name="y">The y-coordinate of the tile.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>The value of the "Action" property as a string, or null if the property is not found.</returns>
+        private static string? GetTileActionPropertyValue(LibraryMuseum libraryMuseum, int x, int y, bool lessInfo = false)
+        {
+            xTile.Tiles.Tile tile = libraryMuseum.map.GetLayer("Buildings").PickTile(new xTile.Dimensions.Location(x * 64, y * 64), Game1.viewport.Size);
+            return tile.Properties.TryGetValue("Action", out xTile.ObjectModel.PropertyValue? value) ? value.ToString() : null;
+        }
 
-		/// <summary>
-		/// Retrieves information about interactables, NPCs, or other features at a given coordinate in a LibraryMuseum.
-		/// </summary>
-		/// <param name="libraryMuseum">The LibraryMuseum to search.</param>
-		/// <param name="x">The x-coordinate to search.</param>
-		/// <param name="y">The y-coordinate to search.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
-		private static (string? name, CATEGORY? category) GetLibraryMuseumInfo(LibraryMuseum libraryMuseum, int x, int y)
-		{
-			if (libraryMuseum.museumPieces.TryGetValue(new Vector2(x, y), out int museumPiece))
-			{
-				string displayName = Game1.objectInformation[museumPiece].Split('/')[0];
-				return ($"{displayName} showcase", CATEGORY.Interactables);
-			}
+        /// <summary>
+        /// Retrieves information about interactables, NPCs, or other features at a given coordinate in a LibraryMuseum.
+        /// </summary>
+        /// <param name="libraryMuseum">The LibraryMuseum to search.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+        private static (string? name, CATEGORY? category) GetLibraryMuseumInfo(LibraryMuseum libraryMuseum, int x, int y, bool lessInfo = false)
+        {
+            if (libraryMuseum.museumPieces.TryGetValue(new Vector2(x, y), out int museumPiece))
+            {
+                string displayName = Game1.objectInformation[museumPiece].Split('/')[0];
+                return ($"{displayName} showcase", CATEGORY.Interactables);
+            }
 
-			int booksFound = Game1.netWorldState.Value.LostBooksFound.Value;
-			string? action = libraryMuseum.doesTileHaveProperty(x, y, "Action", "Buildings");
-			if (action != null && action.Contains("Notes"))
-			{
-				string? actionPropertyValue = GetTileActionPropertyValue(libraryMuseum, x, y);
+            int booksFound = Game1.netWorldState.Value.LostBooksFound.Value;
+            string? action = libraryMuseum.doesTileHaveProperty(x, y, "Action", "Buildings");
+            if (action != null && action.Contains("Notes"))
+            {
+                string? actionPropertyValue = GetTileActionPropertyValue(libraryMuseum, x, y, lessInfo);
 
-				if (actionPropertyValue != null)
-				{
-					int which = Convert.ToInt32(actionPropertyValue.Split(' ')[1]);
-					if (booksFound >= which)
-					{
-						string message = Game1.content.LoadString("Strings\\Notes:" + which);
-						return ($"{message.Split('\n')[0]} Book", CATEGORY.Interactables);
-					}
-					return ($"Lost Book", CATEGORY.Others);
-				}
-			}
+                if (actionPropertyValue != null)
+                {
+                    int which = Convert.ToInt32(actionPropertyValue.Split(' ')[1]);
+                    if (booksFound >= which)
+                    {
+                        string message = Game1.content.LoadString("Strings\\Notes:" + which);
+                        return ($"{message.Split('\n')[0]} Book", CATEGORY.Interactables);
+                    }
+                    return ($"Lost Book", CATEGORY.Others);
+                }
+            }
 
-			return (null, null);
-		}
+            return (null, null);
+        }
 
-		/// <summary>
-		/// Retrieves information about interactables or other features at a given coordinate in a Town.
-		/// </summary>
-		/// <param name="town">The Town to search.</param>
-		/// <param name="x">The x-coordinate to search.</param>
-		/// <param name="y">The y-coordinate to search.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
-		private static (string? name, CATEGORY? category) GetTownInfo(Town town, int x, int y)
-		{
-			if (SpecialOrder.IsSpecialOrdersBoardUnlocked() && x == 62 && y == 93)
-			{
-				return ("Special quest board", CATEGORY.Interactables);
-			}
+        /// <summary>
+        /// Retrieves information about interactables or other features at a given coordinate in a Town.
+        /// </summary>
+        /// <param name="town">The Town to search.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+        private static (string? name, CATEGORY? category) GetTownInfo(Town town, int x, int y, bool lessInfo = false)
+        {
+            if (SpecialOrder.IsSpecialOrdersBoardUnlocked() && x == 62 && y == 93)
+            {
+                return ("Special quest board", CATEGORY.Interactables);
+            }
 
-			return (null, null);
-		}
+            return (null, null);
+        }
 
-		/// <summary>
-		/// Gets the feeding bench information for barns and coops.
-		/// </summary>
-		/// <param name="currentLocation">The current GameLocation instance.</param>
-		/// <param name="x">The x coordinate of the tile.</param>
-		/// <param name="y">The y coordinate of the tile.</param>
-		/// <returns>A tuple of (string? name, CATEGORY? category) for the feeding bench, or null if not applicable.</returns>
-		private static (string? name, CATEGORY? category)? GetFeedingBenchInfo(GameLocation currentLocation, int x, int y)
-		{
-			string locationName = currentLocation.Name;
+        /// <summary>
+        /// Gets the feeding bench information for barns and coops.
+        /// </summary>
+        /// <param name="currentLocation">The current GameLocation instance.</param>
+        /// <param name="x">The x coordinate of the tile.</param>
+        /// <param name="y">The y coordinate of the tile.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple of (string? name, CATEGORY? category) for the feeding bench, or null if not applicable.</returns>
+        private static (string? name, CATEGORY? category)? GetFeedingBenchInfo(GameLocation currentLocation, int x, int y, bool lessInfo = false)
+        {
+            string locationName = currentLocation.Name;
 
-			if (FeedingBenchBounds.TryGetValue(locationName, out var bounds) && x >= bounds.minX && x <= bounds.maxX && y == bounds.y)
-			{
-				(string? name, CATEGORY category) = TileInfo.getObjectAtTile(x, y, currentLocation, true);
-				return (name?.Contains("hay", StringComparison.OrdinalIgnoreCase) == true ? "Feeding Bench" : "Empty Feeding Bench", category);
-			}
+            if (FeedingBenchBounds.TryGetValue(locationName, out var bounds) && x >= bounds.minX && x <= bounds.maxX && y == bounds.y)
+            {
+                (string? name, CATEGORY category) = TileInfo.getObjectAtTile(currentLocation, x, y, true);
+                return (name?.Contains("hay", StringComparison.OrdinalIgnoreCase) == true ? "Feeding Bench" : "Empty Feeding Bench", category);
+            }
 
-			return null;
-		}
+            return null;
+        }
 
-		/// <summary>
-		/// Gets information about the current location by its name.
-		/// </summary>
-		/// <param name="currentLocation">The current GameLocation instance.</param>
-		/// <param name="x">The x coordinate of the tile.</param>
-		/// <param name="y">The y coordinate of the tile.</param>
-		/// <returns>A tuple of (string? name, CATEGORY? category) for the object in the location, or null if not applicable.</returns>
-		private static (string? name, CATEGORY? category) GetLocationByNameInfo(GameLocation currentLocation, int x, int y)
-		{
-            object locationType = currentLocation is not null and GameLocation ? currentLocation.Name ?? "Undefined GameLocation" : currentLocation!.GetType();			string locationName = currentLocation.Name ?? "";
-			if (locationName.Contains("coop", StringComparison.OrdinalIgnoreCase) || locationName.Contains("barn", StringComparison.OrdinalIgnoreCase))
-			{
-				var feedingBenchInfo = GetFeedingBenchInfo(currentLocation, x, y);
-				if (feedingBenchInfo.HasValue)
-				{
-					return feedingBenchInfo.Value;
-				} // else if something other than feeding benches in barns and coops...
-			} //else if something other than barns and coops...
+        /// <summary>
+        /// Gets information about the current location by its name.
+        /// </summary>
+        /// <param name="currentLocation">The current GameLocation instance.</param>
+        /// <param name="x">The x coordinate of the tile.</param>
+        /// <param name="y">The y coordinate of the tile.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple of (string? name, CATEGORY? category) for the object in the location, or null if not applicable.</returns>
+        private static (string? name, CATEGORY? category) GetLocationByNameInfo(GameLocation currentLocation, int x, int y, bool lessInfo = false)
+        {
+            object locationType = currentLocation is not null and GameLocation ? currentLocation.Name ?? "Undefined GameLocation" : currentLocation!.GetType();            string locationName = currentLocation.Name ?? "";
+            if (locationName.Contains("coop", StringComparison.OrdinalIgnoreCase) || locationName.Contains("barn", StringComparison.OrdinalIgnoreCase))
+            {
+                var feedingBenchInfo = GetFeedingBenchInfo(currentLocation, x, y);
+                if (feedingBenchInfo.HasValue)
+                {
+                    return feedingBenchInfo.Value;
+                } // else if something other than feeding benches in barns and coops...
+            } //else if something other than barns and coops...
 
-			// Unimplemented locations are logged.
-			// Check if the location has already been logged
-			if (!loggedLocations.Contains(locationType))
-			{
-				// Log the message
-				MainClass.DebugLog($"Called GetLocationByNameInfo with unimplemented GameLocation of type {currentLocation.GetType()} and name {currentLocation.Name}");
+            // Unimplemented locations are logged.
+            // Check if the location has already been logged
+            if (!loggedLocations.Contains(locationType))
+            {
+                // Log the message
+                MainClass.DebugLog($"Called GetLocationByNameInfo with unimplemented GameLocation of type {currentLocation.GetType()} and name {currentLocation.Name}");
 
-				// Add the location to the HashSet to prevent logging it again
-				loggedLocations.Add(locationType);
-			}
+                // Add the location to the HashSet to prevent logging it again
+                loggedLocations.Add(locationType);
+            }
 
-			return (null, null);
-		}
+            return (null, null);
+        }
 
-		/// <summary>
-		/// Retrieves the dynamic tile information for the given coordinates in the specified location.
-		/// </summary>
-		/// <param name="x">The x-coordinate of the tile.</param>
-		/// <param name="y">The y-coordinate of the tile.</param>
-		/// <param name="currentLocation">The current GameLocation instance.</param>
-		/// <param name="lessInfo">An optional boolean to return less detailed information. Defaults to false.</param>
-		/// <returns>A tuple containing the name and CATEGORY of the dynamic tile, or null values if not found.</returns>
-		public static (string? name, CATEGORY? category) GetDynamicTileAt(int x, int y, GameLocation currentLocation, bool lessInfo = false)
-		{
-			// Check for panning spots
-			if (currentLocation.orePanPoint.Value != Point.Zero && currentLocation.orePanPoint.Value == new Point(x, y))
-			{
-				return ("panning spot", CATEGORY.Interactables);
-			}
-			// Check if the current location has an event
-			else if (currentLocation.currentEvent is not null)
-			{
-				string eventName = currentLocation.currentEvent.FestivalName;
-				// Attempt to retrieve the nested dictionary for the event name from the EventInteractables dictionary
-				if (EventInteractables.TryGetValue(eventName, out var coordinateDictionary))
-				{
-					// Attempt to retrieve the interactable value from the nested dictionary using the coordinates (x, y) as the key
-					if (coordinateDictionary.TryGetValue((x, y), value: out var interactable))
-					{
-						// If the interactable value is found, return the corresponding category and interactable name
-						return (interactable, CATEGORY.Interactables);
-					}
-				}
-			}
+        /// <summary>
+        /// Retrieves the dynamic tile information for the given coordinates in the specified location.
+        /// </summary>
+        /// <param name="currentLocation">The current GameLocation instance.</param>
+        /// <param name="x">The x-coordinate of the tile.</param>
+        /// <param name="y">The y-coordinate of the tile.</param>
+        /// <param name="lessInfo">An optional boolean to return less detailed information. Defaults to false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the dynamic tile, or null values if not found.</returns>
+        public static (string? name, CATEGORY? category) GetDynamicTileAt(GameLocation currentLocation, int x, int y, bool lessInfo = false)
+        {
+            // Check for panning spots
+            if (currentLocation.orePanPoint.Value != Point.Zero && currentLocation.orePanPoint.Value == new Point(x, y))
+            {
+                return ("panning spot", CATEGORY.Interactables);
+            }
+            // Check if the current location has an event
+            else if (currentLocation.currentEvent is not null)
+            {
+                string eventName = currentLocation.currentEvent.FestivalName;
+                // Attempt to retrieve the nested dictionary for the event name from the EventInteractables dictionary
+                if (EventInteractables.TryGetValue(eventName, out var coordinateDictionary))
+                {
+                    // Attempt to retrieve the interactable value from the nested dictionary using the coordinates (x, y) as the key
+                    if (coordinateDictionary.TryGetValue((x, y), value: out var interactable))
+                    {
+                        // If the interactable value is found, return the corresponding category and interactable name
+                        return (interactable, CATEGORY.Interactables);
+                    }
+                }
+            }
 
-			// Retrieve dynamic tile information based on the current location type
-			return currentLocation switch
-			{
-				Beach beach => GetBeachInfo(beach, x, y),
-				BoatTunnel boatTunnel => GetBoatTunnelInfo(boatTunnel, x, y),
-				CommunityCenter communityCenter => GetCommunityCenterInfo(communityCenter, x, y),
-				Farm farm => GetFarmInfo(farm, x, y),
-				FarmHouse farmHouse => GetFarmHouseInfo(farmHouse, x, y),
-				Forest forest => GetForestInfo(forest, x, y),
-				IslandFarmHouse islandFarmHouse => GetIslandFarmHouseInfo(islandFarmHouse, x, y),
-				IslandLocation islandLocation => GetIslandLocationInfo(islandLocation, x, y),
-				LibraryMuseum libraryMuseum => GetLibraryMuseumInfo(libraryMuseum, x, y),
-				Town town => GetTownInfo(town, x, y),
-				_ => GetLocationByNameInfo(currentLocation, x, y)
-			};
-		}
-	}
+            // Retrieve dynamic tile information based on the current location type
+            return currentLocation switch
+            {
+                Beach beach => GetBeachInfo(beach, x, y, lessInfo),
+                BoatTunnel boatTunnel => GetBoatTunnelInfo(boatTunnel, x, y, lessInfo),
+                CommunityCenter communityCenter => GetCommunityCenterInfo(communityCenter, x, y, lessInfo),
+                Farm farm => GetFarmInfo(farm, x, y, lessInfo),
+                FarmHouse farmHouse => GetFarmHouseInfo(farmHouse, x, y, lessInfo),
+                Forest forest => GetForestInfo(forest, x, y, lessInfo),
+                IslandFarmHouse islandFarmHouse => GetIslandFarmHouseInfo(islandFarmHouse, x, y, lessInfo),
+                IslandLocation islandLocation => GetIslandLocationInfo(islandLocation, x, y, lessInfo),
+                LibraryMuseum libraryMuseum => GetLibraryMuseumInfo(libraryMuseum, x, y, lessInfo),
+                Town town => GetTownInfo(town, x, y, lessInfo),
+                _ => GetLocationByNameInfo(currentLocation, x, y, lessInfo)
+            };
+        }
+    }
 }
