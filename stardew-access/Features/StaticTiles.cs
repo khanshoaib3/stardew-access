@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Linq;
 using System.Collections.Generic;
 using StardewValley;
+using static stardew_access.Features.Utils;
 
 namespace stardew_access.Features
 {
@@ -18,10 +19,7 @@ namespace stardew_access.Features
         {
             get
             {
-                if (_instance == null)
-                {
-                    _instance = new StaticTiles();
-                }
+                _instance ??= new StaticTiles();
                 return _instance;
             }
         }
@@ -74,8 +72,8 @@ namespace stardew_access.Features
         /// </list>
         /// Additional lambda functions can be added as needed.
         /// </remarks>
-        private static readonly Dictionary<string, Func<string, string, bool>> conditionals = new Dictionary<string, Func<string, string, bool>>
-        {
+        private static readonly Dictionary<string, Func<string, string, bool>> conditionals = new()
+		{
             ["Farm"] = (conditionType, uniqueModId) =>
             {
                 if (string.IsNullOrEmpty(uniqueModId))
@@ -120,36 +118,6 @@ namespace stardew_access.Features
         {
             LoadTilesFiles();
             SetupTilesDicts();
-        }
-        
-        /// <summary>
-        /// Loads a JSON file from the specified file name in the assets folder.
-        /// </summary>
-        /// <param name="fileName">The name of the JSON file to load.</param>
-        /// <returns>A <see cref="JsonElement"/> containing the deserialized JSON data, or default if an error occurs.</returns>
-        private static JsonElement LoadJsonFile(string fileName)
-        {
-            string filePath = Path.Combine(MainClass.ModHelper!.DirectoryPath, "assets", fileName);
-
-            try
-            {
-                string json = File.ReadAllText(filePath);
-                return JsonSerializer.Deserialize<JsonElement>(json);
-            }
-            catch (FileNotFoundException ex)
-            {
-                MainClass.ErrorLog($"{fileName} file not found: {ex.Message}");
-            }
-            catch (JsonException ex)
-            {
-                MainClass.ErrorLog($"Error parsing {fileName}: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                MainClass.ErrorLog($"An error occurred while initializing {fileName}: {ex.Message}");
-            }
-
-            return default;
         }
 
         /// <summary>
@@ -497,10 +465,7 @@ namespace stardew_access.Features
         /// <returns>A tuple containing the tile's name and optionally its category. If the tile is not found, the name will be null and the category will be CATEGORY.Others if requested.</returns>
         private static (string? name, CATEGORY? category) GetTileInfoAt(int x, int y, string? currentLocationName = null, bool includeCategory = false)
         {
-            if (currentLocationName == null)
-            {
-                currentLocationName = Game1.currentLocation.Name;
-            }
+            currentLocationName ??= Game1.currentLocation.Name;
 
             if (customTilesDataDict != null && customTilesDataDict.TryGetValue(currentLocationName, out var customLocationDict))
             {

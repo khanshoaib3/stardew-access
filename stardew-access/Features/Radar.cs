@@ -8,9 +8,9 @@ namespace stardew_access.Features
 {
     public class Radar
     {
-        private List<Vector2> closed;
-        private List<Furniture> furnitures;
-        private List<NPC> npcs;
+        private readonly List<Vector2> closed;
+        private readonly List<Furniture> furnitures;
+        private readonly List<NPC> npcs;
         public List<string> exclusions;
         private List<string> temp_exclusions;
         public List<string> focus;
@@ -94,10 +94,10 @@ namespace stardew_access.Features
         public Dictionary<Vector2, (string, string)> SearchNearbyTiles(Vector2 center, int limit, bool playSound = true)
         {
             var currentLocation = Game1.currentLocation;
-            Dictionary<Vector2, (string, string)> detectedTiles = new Dictionary<Vector2, (string, string)>();
+            Dictionary<Vector2, (string, string)> detectedTiles = new();
 
-            Queue<Vector2> toSearch = new Queue<Vector2>();
-            HashSet<Vector2> searched = new HashSet<Vector2>();
+            Queue<Vector2> toSearch = new();
+            HashSet<Vector2> searched = new();
             int[] dirX = { -1, 0, 1, 0 };
             int[] dirY = { 0, 1, 0, -1 };
 
@@ -121,7 +121,7 @@ namespace stardew_access.Features
 
                 for (int i = 0; i < 4; i++)
                 {
-                    Vector2 dir = new Vector2(item.X + dirX[i], item.Y + dirY[i]);
+                    Vector2 dir = new(item.X + dirX[i], item.Y + dirY[i]);
 
                     if (isValid(dir, center, searched, limit))
                     {
@@ -144,12 +144,12 @@ namespace stardew_access.Features
             var watch = new Stopwatch();
             watch.Start();
             var currentLocation = Game1.currentLocation;
-            Dictionary<Vector2, (string, string)> detectedTiles = new Dictionary<Vector2, (string, string)>();
+            Dictionary<Vector2, (string, string)> detectedTiles = new();
             Vector2 position = Vector2.Zero;
             (bool, string? name, string category) tileInfo;
 
-            Queue<Vector2> toSearch = new Queue<Vector2>();
-            HashSet<Vector2> searched = new HashSet<Vector2>();
+            Queue<Vector2> toSearch = new();
+            HashSet<Vector2> searched = new();
             int[] dirX = { -1, 0, 1, 0 };
             int[] dirY = { 0, 1, 0, -1 };
             int count = 0;
@@ -160,8 +160,7 @@ namespace stardew_access.Features
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
             MainClass.DebugLog($"Search init duration: {elapsedMs}");
-            elapsedMs = 0;
-            watch.Reset();
+			watch.Reset();
             watch.Start();
             while (toSearch.Count > 0)
             {
@@ -177,7 +176,7 @@ namespace stardew_access.Features
 
                 for (int i = 0; i < 4; i++)
                 {
-                    Vector2 dir = new Vector2(item.X + dirX[i], item.Y + dirY[i]);
+                    Vector2 dir = new(item.X + dirX[i], item.Y + dirY[i]);
 
                     if (!searched.Contains(dir) && (TileInfo.isWarpPointAtTile((int)dir.X, (int)dir.Y, currentLocation) || currentLocation.isTileOnMap(dir)))
                     {
@@ -216,14 +215,13 @@ namespace stardew_access.Features
 
         public (bool, string? name, string category) CheckTile(Vector2 position, GameLocation currentLocation, bool lessInfo = false)
         {
-            (string? name, CATEGORY? category) tileDetail = TileInfo.getNameWithCategoryAtTile(position, currentLocation, lessInfo);
-            if (tileDetail.name == null)
+            (string? name, CATEGORY? category) = TileInfo.getNameWithCategoryAtTile(position, currentLocation, lessInfo);
+            if (name == null)
                 return (false, null, CATEGORY.Others.ToString());
 
-            if (tileDetail.category == null)
-                tileDetail.category = CATEGORY.Others;
+            category ??= CATEGORY.Others;
 
-            return (true, tileDetail.name, tileDetail.category.ToString());
+            return (true, name, category.ToString());
             
         }
 
@@ -257,13 +255,12 @@ namespace stardew_access.Features
                 }
                 else
                 {
-                    (string? name, CATEGORY? category) tileDetail = TileInfo.getNameWithCategoryAtTile(position, currentLocation);
-                    if (tileDetail.name != null)
+                    (string? name, CATEGORY? category) = TileInfo.getNameWithCategoryAtTile(position, currentLocation);
+                    if (name != null)
                     {
-                        if (tileDetail.category == null)
-                            tileDetail.category = CATEGORY.Others;
+                        category ??= CATEGORY.Others;
 
-                        PlaySoundAt(position, tileDetail.name, tileDetail.category, currentLocation);
+                        PlaySoundAt(position, name, category, currentLocation);
                     }
                 }
             }

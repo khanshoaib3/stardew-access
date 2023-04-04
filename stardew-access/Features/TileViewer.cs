@@ -173,7 +173,7 @@ namespace stardew_access.Features
             if (!tryMoveTileView(delta)) return;
             Vector2 position = this.GetTileCursorPosition();
             Vector2 tile = this.GetViewingTile();
-            String? name = TileInfo.getNameAtTile(tile);
+            String? name = TileInfo.GetNameAtTile(tile);
 
             // Prepend the player's name if the viewing tile is occupied by the player itself
             if (CurrentPlayer.PositionX == tile.X && CurrentPlayer.PositionY == tile.Y)

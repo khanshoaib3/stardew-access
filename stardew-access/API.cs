@@ -65,7 +65,7 @@ namespace stardew_access.ScreenReader
         /// <returns>Name of the object. Returns null if no object found.</returns>
         public string? GetNameAtTile(Vector2 tile)
         {
-            return TileInfo.getNameAtTile(tile, null);
+            return TileInfo.GetNameAtTile(tile, null);
         }
 
         /// <summary>Speaks the text via the loaded screen reader (if any).</summary>

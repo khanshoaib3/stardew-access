@@ -5,14 +5,15 @@ using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using System.Text;
 
 namespace stardew_access.Features
 {
     public class TileInfo
     {
-        public static string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom", "statue of endless fortune", "statue of perfection", "crab pot" };
-        private static readonly Dictionary<int, string> ResourceClumpNames = new Dictionary<int, string>
-        {
+		private static readonly string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom", "statue of endless fortune", "statue of perfection", "crab pot" };
+        private static readonly Dictionary<int, string> ResourceClumpNames = new()
+		{
             { 600, "Large Stump" },
             { 602, "Hollow Log" },
             { 622, "Meteorite" },
@@ -29,25 +30,24 @@ namespace stardew_access.Features
         ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>
         public static (string? name, string? categoryName) getNameWithCategoryNameAtTile(Vector2 tile, GameLocation? currentLocation)
         {
-            (string? name, CATEGORY? category) tileDetail = getNameWithCategoryAtTile(tile, currentLocation);
+            (string? name, CATEGORY? category) = getNameWithCategoryAtTile(tile, currentLocation);
 
-            if (tileDetail.category == null)
-                tileDetail.category = CATEGORY.Others;
+            category ??= CATEGORY.Others;
 
-            return (tileDetail.name, tileDetail.category.ToString());
+            return (name, category.ToString());
         }
 
         ///<summary>Returns the name of the object at tile</summary>
-        public static string? getNameAtTile(Vector2 tile, GameLocation? currentLocation = null)
+        public static string? GetNameAtTile(Vector2 tile, GameLocation? currentLocation = null)
         {
-            if (currentLocation is null) currentLocation = Game1.currentLocation;
+            currentLocation ??= Game1.currentLocation;
             return getNameWithCategoryAtTile(tile, currentLocation).name;
         }
 
         ///<summary>Returns the name of the object at tile alongwith it's category</summary>
         public static (string? name, CATEGORY? category) getNameWithCategoryAtTile(Vector2 tile, GameLocation? currentLocation, bool lessInfo = false)
         {
-            if (currentLocation is null) currentLocation = Game1.currentLocation;
+            currentLocation ??= Game1.currentLocation;
             int x = (int)tile.X;
             int y = (int)tile.Y;
             string? toReturn = null;
@@ -59,13 +59,12 @@ namespace stardew_access.Features
             var terrainFeature = currentLocation.terrainFeatures.FieldDict;
             string? door = getDoorAtTile(x, y, currentLocation);
             string? warp = getWarpPointAtTile(x, y, currentLocation);
-            (CATEGORY? category, string? name) dynamicTile = getDynamicTilesInfo(x, y, currentLocation, lessInfo);
+            (string? name, CATEGORY? category) dynamicTile = DynamicTiles.GetDynamicTileAt(x, y, currentLocation, lessInfo);
             string? junimoBundle = getJunimoBundleAt(x, y, currentLocation);
             string? resourceClump = getResourceClumpAtTile(x, y, currentLocation, lessInfo);
             string? farmAnimal = getFarmAnimalAt(currentLocation, x, y);
-            string? parrot = currentLocation is IslandLocation islandLocation ? getParrotPerchAtTile(x, y, islandLocation) : null;
             (string? name, CATEGORY category) staticTile = StaticTiles.GetStaticTileInfoAtWithCategory(x, y, currentLocation.Name);
-            string? bush = getBushAtTile(x, y, currentLocation, lessInfo);
+            string? bush = GetBushAtTile(x, y, currentLocation, lessInfo);
 
             if (currentLocation.isCharacterAtTile(tile) is NPC npc)
             {
@@ -89,16 +88,6 @@ namespace stardew_access.Features
             {
                 toReturn = dynamicTile.name;
                 category = dynamicTile.category;
-            }
-            else if (currentLocation is VolcanoDungeon && ((VolcanoDungeon)currentLocation).IsCooledLava(x, y) && !lessInfo)
-            {
-                toReturn = "Cooled lava";
-                category = CATEGORY.WaterTiles;
-            }
-            else if (currentLocation is VolcanoDungeon && StardewValley.Monsters.LavaLurk.IsLavaTile((VolcanoDungeon)currentLocation, x, y) && !lessInfo)
-            {
-                toReturn = "Lava";
-                category = CATEGORY.WaterTiles;
             }
             else if (currentLocation.isObjectAtTile(x, y))
             {
@@ -162,11 +151,6 @@ namespace stardew_access.Features
                 toReturn = "Elevator";
                 category = CATEGORY.Doors;
             }
-            else if (parrot != null)
-            {
-                toReturn = parrot;
-                category = CATEGORY.Buildings;
-            }
             else if (junimoBundle != null)
             {
                 toReturn = junimoBundle;
@@ -179,7 +163,7 @@ namespace stardew_access.Features
                 try
                 {
                     NetCollection<Debris> droppedItems = currentLocation.debris;
-                    int droppedItemsCount = droppedItems.Count();
+                    int droppedItemsCount = droppedItems.Count;
                     if (droppedItemsCount > 0)
                     {
                         for (int i = 0; i < droppedItemsCount; i++)
@@ -212,7 +196,7 @@ namespace stardew_access.Features
             return (toReturn, category);
         }
 
-        public static string? getBushAtTile(int x, int y, GameLocation currentLocation, bool lessInfo = false)
+        public static string? GetBushAtTile(int x, int y, GameLocation currentLocation, bool lessInfo = false)
         {
             string? toReturn = null;
             Bush? bush = (Bush)currentLocation.getLargeTerrainFeatureAt(x, y);
@@ -269,8 +253,8 @@ namespace stardew_access.Features
 
         public static string? getJunimoBundleAt(int x, int y, GameLocation currentLocation)
         {
-            string? name = null;
-            if (currentLocation is CommunityCenter communityCenter)
+			string? name;
+			if (currentLocation is CommunityCenter communityCenter)
             {
                 name = (x, y) switch
                 {
@@ -302,7 +286,7 @@ namespace stardew_access.Features
 
         public static bool isCollidingAtTile(int x, int y, GameLocation currentLocation)
         {
-            Rectangle rect = new Rectangle(x * 64 + 1, y * 64 + 1, 62, 62);
+            Rectangle rect = new(x * 64 + 1, y * 64 + 1, 62, 62);
 
             /* Reference
             // Check whether the position is a warp point, if so then return false, sometimes warp points are 1 tile off the map for example in coops and barns
@@ -335,7 +319,7 @@ namespace stardew_access.Features
         {
             if (currentLocation is null) return false;
 
-            int warpsCount = currentLocation.warps.Count();
+            int warpsCount = currentLocation.warps.Count;
             for (int i = 0; i < warpsCount; i++)
             {
                 if (currentLocation.warps[i].X == x && currentLocation.warps[i].Y == y) return true;
@@ -389,441 +373,132 @@ namespace stardew_access.Features
         }
 
         /// <summary>
-        /// 
+        /// Retrieves the name and category of the terrain feature at the given tile.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns>category: This is the category of the tile. Default to Furnitures.
-        /// <br/>name: This is the name of the tile. Default to null if the tile tile has nothing on it.</returns>
-        public static (CATEGORY? category, string? name) getDynamicTilesInfo(int x, int y, GameLocation currentLocation, bool lessInfo = false)
-        {
-            if (currentLocation.orePanPoint.Value != Point.Zero && currentLocation.orePanPoint.Value == new Point(x, y))
-            {
-                return (CATEGORY.Interactables, "panning spot");
-            }
-            else if (currentLocation is Farm farm)
-            {
-                if (farm.GetMainMailboxPosition().X == x && farm.GetMainMailboxPosition().Y == y)
-                    return (CATEGORY.Interactables, "Mail box");
-                else
-                {
-                    Building building = farm.getBuildingAt(new Vector2(x, y));
-                    if (building is not null)
-                    {
-                        string name = building.buildingType.Value;
-
-                        // Prepend fish name for fish ponds
-                        if (building is FishPond fishPond)
-                        {
-                            if (fishPond.fishType.Value >= 0)
-                            {
-                                name = $"{Game1.objectInformation[fishPond.fishType.Value].Split('/')[4]} {name}";
-                            }
-                        }
-
-                        // Detect doors, input slots, etc.
-                        if ((building.humanDoor.Value.X + building.tileX.Value) == x && (building.humanDoor.Value.Y + building.tileY.Value) == y)
-                            return (CATEGORY.Doors, name + " Door");
-                        else if ((building.animalDoor.Value.X + building.tileX.Value) == x && (building.animalDoor.Value.Y + building.tileY.Value) == y)
-                            return (CATEGORY.Doors, name + " Animal Door " + ((building.animalDoorOpen.Value) ? "Opened" : "Closed"));
-                        else if (building.tileX.Value == x && building.tileY.Value == y)
-                            return (CATEGORY.Buildings, name);
-                        else if (building is Mill && (building.tileX.Value + 1) == x && (building.tileY.Value + 1) == y)
-                            return (CATEGORY.Buildings, name + " input");
-                        else if (building is Mill && (building.tileX.Value + 3) == x && (building.tileY.Value + 1) == y)
-                            return (CATEGORY.Buildings, name + " output");
-                        else
-                            return (CATEGORY.Buildings, name);
-                    }
-                }
-            }
-            else if (currentLocation.currentEvent is not null)
-            {
-                string event_name = currentLocation.currentEvent.FestivalName;
-                if (event_name == "Egg Festival" && x == 21 && y == 55)
-                {
-                    return (CATEGORY.Interactables, "Egg Festival Shop");
-                }
-                else if (event_name == "Flower Dance" && x == 28 && y == 37)
-                {
-                    return (CATEGORY.Interactables, "Flower Dance Shop");
-                }
-                else if (event_name == "Luau" && x == 35 && y == 13)
-                {
-                    return (CATEGORY.Interactables, "Soup Pot");
-                }
-                else if (event_name == "Spirit's Eve" && x == 25 && y == 49)
-                {
-                    return (CATEGORY.Interactables, "Spirit's Eve Shop");
-                }
-                else if (event_name == "Stardew Valley Fair")
-                {
-                    if (x == 16 && y == 52)
-                        return (CATEGORY.Interactables, "Stardew Valley Fair Shop");
-                    else if (x == 23 && y == 62)
-                        return (CATEGORY.Interactables, "Slingshot Game");
-                    else if (x == 34 && y == 65)
-                        return (CATEGORY.Interactables, "Purchase Star Tokens");
-                    else if (x == 33 && y == 70)
-                        return (CATEGORY.Interactables, "The Wheel");
-                    else if (x == 23 && y == 70)
-                        return (CATEGORY.Interactables, "Fishing Challenge");
-                    else if (x == 47 && y == 87)
-                        return (CATEGORY.Interactables, "Fortune Teller");
-                    else if (x == 38 && y == 59)
-                        return (CATEGORY.Interactables, "Grange Display");
-                    else if (x == 30 && y == 56)
-                        return (CATEGORY.Interactables, "Strength Game");
-                    else if (x == 26 && y == 33)
-                        return (CATEGORY.Interactables, "Free Burgers");
-                }
-                else if (event_name == "Festival of Ice" && x == 55 && y == 31)
-                {
-                    return (CATEGORY.Interactables, "Travelling Cart");
-                }
-                else if (event_name == "Feast of the Winter Star" && x == 18 && y == 61)
-                {
-                    return (CATEGORY.Interactables, "Feast of the Winter Star Shop");
-                }
-
-            }
-            else if (currentLocation is Town)
-            {
-                if (SpecialOrder.IsSpecialOrdersBoardUnlocked() && x == 62 && y == 93)
-                    return (CATEGORY.Interactables, "Special quest board");
-            }
-            else if (currentLocation is FarmHouse farmHouse)
-            {
-                if (farmHouse.upgradeLevel >= 1)
-                    if (farmHouse.getKitchenStandingSpot().X == x && (farmHouse.getKitchenStandingSpot().Y - 1) == y)
-                        return (CATEGORY.Interactables, "Stove");
-                    else if ((farmHouse.getKitchenStandingSpot().X + 1) == x && (farmHouse.getKitchenStandingSpot().Y - 1) == y)
-                        return (CATEGORY.Others, "Sink");
-                    else if (farmHouse.fridgePosition.X == x && farmHouse.fridgePosition.Y == y)
-                        return (CATEGORY.Interactables, "Fridge");
-            }
-            else if (currentLocation is IslandFarmHouse islandFarmHouse)
-            {
-                if ((islandFarmHouse.fridgePosition.X - 2) == x && islandFarmHouse.fridgePosition.Y == y)
-                    return (CATEGORY.Interactables, "Stove");
-                else if ((islandFarmHouse.fridgePosition.X - 1) == x && islandFarmHouse.fridgePosition.Y == y)
-                    return (CATEGORY.Others, "Sink");
-                else if (islandFarmHouse.fridgePosition.X == x && islandFarmHouse.fridgePosition.Y == y)
-                    return (CATEGORY.Interactables, "Fridge");
-            }
-            else if (currentLocation is Forest forest)
-            {
-                if (forest.travelingMerchantDay && x == 27 && y == 11)
-                    return (CATEGORY.Interactables, "Travelling Cart");
-                else if (forest.log != null && x == 2 && y == 7)
-                    return (CATEGORY.Interactables, "Log");
-                else if (forest.log == null && x == 0 && y == 7)
-                    return (CATEGORY.Doors, "Secret Woods Entrance");
-            }
-            else if (currentLocation is Beach beach)
-            {
-                if (MainClass.ModHelper == null)
-                    return (null, null);
-
-                if (MainClass.ModHelper.Reflection.GetField<NPC>(beach, "oldMariner").GetValue() is NPC mariner && mariner.getTileLocation() == new Vector2(x, y))
-                {
-                    return (CATEGORY.NPCs, "Old Mariner");
-                }
-                else if (x == 58 && y == 13)
-                {
-                    if (!beach.bridgeFixed.Value)
-                        return (CATEGORY.Interactables, "Repair Bridge");
-                    else
-                        return (CATEGORY.Bridges, "Bridge");
-                }
-            }
-            else if (currentLocation is CommunityCenter communityCenter)
-            {
-                if (communityCenter.missedRewardsChestVisible.Value && x == 22 && y == 10)
-                    return (CATEGORY.Containers, "Missed Rewards Chest");
-            }
-            else if (currentLocation is BoatTunnel)
-            {
-                if (x == 4 && y == 9)
-                    return (CATEGORY.Interactables, ((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatFixed")) ? "Repair " : "") + "Ticket Machine");
-                else if (x == 6 && y == 8)
-                    return (((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatHull")) ? CATEGORY.Interactables : CATEGORY.Decor), ((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatHull")) ? "Repair " : "") + "Boat Hull");
-                else if (x == 8 && y == 9)
-                    return (((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatAnchor")) ? CATEGORY.Interactables : CATEGORY.Decor), ((!Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatAnchor")) ? "Repair " : "") + "Boat Anchor");
-            }
-            else if (currentLocation is IslandLocation islandLocation)
-            {
-                var nutTracker = Game1.player.team.collectedNutTracker;
-                if (islandLocation.IsBuriedNutLocation(new Point(x, y)) && !nutTracker.ContainsKey($"Buried_{islandLocation.Name}_{x}_{y}"))
-                {
-                    return (CATEGORY.Interactables, "Diggable spot");
-                }
-                else if (islandLocation.locationGemBird.Value is IslandGemBird bird && ((int)bird.position.X / Game1.tileSize) == x && ((int)bird.position.Y / Game1.tileSize) == y)
-                {
-                    return (CATEGORY.NPCs, GetGemBirdName(bird));
-                }
-                else if (currentLocation is IslandWest islandWest)
-                {
-                    if ((islandWest.shippingBinPosition.X == x || (islandWest.shippingBinPosition.X + 1) == x) && islandWest.shippingBinPosition.Y == y)
-                        return (CATEGORY.Interactables, "Shipping Bin");
-                }
-                else if (currentLocation is IslandNorth islandNorth)
-                {
-                    if (islandNorth.traderActivated.Value && x == 36 && y == 71)
-                        return (CATEGORY.Interactables, "Island Trader");
-                }
-            }
-            else if (currentLocation.Name.Equals("coop", StringComparison.OrdinalIgnoreCase))
-            {
-                if (x >= 6 && x <= 9 && y == 3)
-                {
-                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, currentLocation, true);
-                    if (bench.name is not null && bench.name.Contains("hay", StringComparison.OrdinalIgnoreCase))
-                        return (CATEGORY.Others, "Feeding Bench");
-                    else
-                        return (CATEGORY.Others, "Empty Feeding Bench");
-                }
-            }
-            else if (currentLocation.Name.Equals("coop2", StringComparison.OrdinalIgnoreCase) || currentLocation.Name.Equals("big coop", StringComparison.OrdinalIgnoreCase))
-            {
-                if (x >= 6 && x <= 13 && y == 3)
-                {
-                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, currentLocation, true);
-                    if (bench.name is not null && bench.name.Contains("hay", StringComparison.OrdinalIgnoreCase))
-                        return (CATEGORY.Others, "Feeding Bench");
-                    else
-                        return (CATEGORY.Others, "Empty Feeding Bench");
-                }
-            }
-            else if (currentLocation.Name.Equals("coop3", StringComparison.OrdinalIgnoreCase) || currentLocation.Name.Equals("deluxe coop", StringComparison.OrdinalIgnoreCase))
-            {
-                if (x >= 6 && x <= 17 && y == 3)
-                {
-                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, currentLocation, true);
-                    if (bench.name is not null && bench.name.Contains("hay", StringComparison.OrdinalIgnoreCase))
-                        return (CATEGORY.Others, "Feeding Bench");
-                    else
-                        return (CATEGORY.Others, "Empty Feeding Bench");
-                }
-            }
-            else if (currentLocation.Name.Equals("barn", StringComparison.OrdinalIgnoreCase))
-            {
-                if (x >= 8 && x <= 11 && y == 3)
-                {
-                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, currentLocation, true);
-                    if (bench.name != null && bench.name.Contains("hay", StringComparison.OrdinalIgnoreCase))
-                        return (CATEGORY.Others, "Feeding Bench");
-                    else
-                        return (CATEGORY.Others, "Empty Feeding Bench");
-                }
-            }
-            else if (currentLocation.Name.Equals("barn2", StringComparison.OrdinalIgnoreCase) || currentLocation.Name.Equals("big barn", StringComparison.OrdinalIgnoreCase))
-            {
-                if (x >= 8 && x <= 15 && y == 3)
-                {
-                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, currentLocation, true);
-                    if (bench.name is not null && bench.name.Contains("hay", StringComparison.OrdinalIgnoreCase))
-                        return (CATEGORY.Others, "Feeding Bench");
-                    else
-                        return (CATEGORY.Others, "Empty Feeding Bench");
-                }
-            }
-            else if (currentLocation.Name.Equals("barn3", StringComparison.OrdinalIgnoreCase) || currentLocation.Name.Equals("deluxe barn", StringComparison.OrdinalIgnoreCase))
-            {
-                if (x >= 8 && x <= 19 && y == 3)
-                {
-                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, currentLocation, true);
-                    if (bench.name is not null && bench.name.Contains("hay", StringComparison.OrdinalIgnoreCase))
-                        return (CATEGORY.Others, "Feeding Bench");
-                    else
-                        return (CATEGORY.Others, "Empty Feeding Bench");
-                }
-            }
-            else if (currentLocation is LibraryMuseum libraryMuseum)
-            {
-                foreach (KeyValuePair<Vector2, int> pair in libraryMuseum.museumPieces.Pairs)
-                {
-                    if (pair.Key.X == x && pair.Key.Y == y)
-                    {
-                        string displayName = Game1.objectInformation[pair.Value].Split('/')[0];
-                        return (CATEGORY.Interactables, $"{displayName} showcase");
-                    }
-                }
-
-                int booksFound = Game1.netWorldState.Value.LostBooksFound.Value;
-                for (int x1 = 0; x1 < libraryMuseum.map.Layers[0].LayerWidth; x1++)
-                {
-                    for (int y1 = 0; y1 < libraryMuseum.map.Layers[0].LayerHeight; y1++)
-                    {
-                        if (x != x1 || y != y1) continue;
-
-                        if (libraryMuseum.doesTileHaveProperty(x1, y1, "Action", "Buildings") != null && libraryMuseum.doesTileHaveProperty(x1, y1, "Action", "Buildings").Contains("Notes"))
-                        {
-                            int key = Convert.ToInt32(libraryMuseum.doesTileHaveProperty(x1, y1, "Action", "Buildings").Split(' ')[1]);
-                            xTile.Tiles.Tile tile = libraryMuseum.map.GetLayer("Buildings").PickTile(new xTile.Dimensions.Location(x * 64, y * 64), Game1.viewport.Size);
-                            string? action = null;
-                            try
-                            {
-                                tile.Properties.TryGetValue("Action", out xTile.ObjectModel.PropertyValue? value);
-                                if (value != null) action = value.ToString();
-                            }
-                            catch (System.Exception e)
-                            {
-                                MainClass.ErrorLog($"Cannot get action value at x:{x} y:{y} in LibraryMuseum");
-                                MainClass.ErrorLog(e.Message);
-                            }
-
-                            if (action != null)
-                            {
-                                string[] actionParams = action.Split(' ');
-
-                                try
-                                {
-                                    int which = Convert.ToInt32(actionParams[1]);
-                                    if (booksFound >= which)
-                                    {
-                                        string message = Game1.content.LoadString("Strings\\Notes:" + which);
-                                        return (CATEGORY.Interactables, $"{message.Split('\n')[0]} Book");
-                                    }
-                                }
-                                catch (System.Exception e)
-                                {
-                                    MainClass.ErrorLog(e.Message);
-                                }
-
-                                return (CATEGORY.Others, $"Lost Book");
-                            }
-                        }
-                    }
-                }
-            }
-            return (null, null);
-        }
-
+        /// <param name="terrain">A reference to the terrain feature to be checked.</param>
+        /// <returns>A tuple containing the name and category of the terrain feature at the tile.</returns>
         public static (string? name, CATEGORY category) getTerrainFeatureAtTile(Netcode.NetRef<TerrainFeature> terrain)
         {
-            string? toReturn = null;
-            CATEGORY category = CATEGORY.Others;
-
-            if (terrain.Get() is HoeDirt dirt)
+            // Get the terrain feature from the reference
+            var terrainFeature = terrain.Get();
+            
+            // Check if the terrain feature is HoeDirt
+            if (terrainFeature is HoeDirt dirt)
             {
-                toReturn = getHoeDirtDetail(dirt);
-                category = CATEGORY.Crops;
+                return (getHoeDirtDetail(dirt), CATEGORY.Crops);
             }
-            else if (terrain.Get() is CosmeticPlant)
+            // Check if the terrain feature is a CosmeticPlant
+            else if (terrainFeature is CosmeticPlant cosmeticPlant)
             {
-                category = CATEGORY.Furnitures;
-                CosmeticPlant cosmeticPlant = (CosmeticPlant)terrain.Get();
-                toReturn = cosmeticPlant.textureName().ToLower();
+                string toReturn = cosmeticPlant.textureName().ToLower();
 
-                if (toReturn.Contains("terrain"))
-                    toReturn.Replace("terrain", "");
+                toReturn = toReturn.Replace("terrain", "").Replace("feature", "");
 
-                if (toReturn.Contains("feature"))
-                    toReturn.Replace("feature", "");
+                return (toReturn, CATEGORY.Furnitures);
             }
-            else if (terrain.Get() is Flooring && MainClass.Config.ReadFlooring)
+            // Check if the terrain feature is Flooring
+            else if (terrainFeature is Flooring flooring && MainClass.Config.ReadFlooring)
             {
-                category = CATEGORY.Flooring;
-                Flooring flooring = (Flooring)terrain.Get();
                 bool isPathway = flooring.isPathway.Get();
                 bool isSteppingStone = flooring.isSteppingStone.Get();
+                string toReturn = isPathway ? "Pathway" : (isSteppingStone ? "Stepping Stone" : "Flooring");
 
-                toReturn = "Flooring";
-
-                if (isPathway)
-                    toReturn = "Pathway";
-
-                if (isSteppingStone)
-                    toReturn = "Stepping Stone";
+                return (toReturn, CATEGORY.Flooring);
             }
-            else if (terrain.Get() is FruitTree)
+            // Check if the terrain feature is a FruitTree
+            else if (terrainFeature is FruitTree fruitTree)
             {
-                category = CATEGORY.Trees;
-                toReturn = getFruitTree((FruitTree)terrain.Get());
+                return (getFruitTree(fruitTree), CATEGORY.Trees);
             }
-            else if (terrain.Get() is Grass)
+            // Check if the terrain feature is Grass
+            else if (terrainFeature is Grass)
             {
-                category = CATEGORY.Debris;
-                toReturn = "Grass";
+                return ("Grass", CATEGORY.Debris);
             }
-            else if (terrain.Get() is Tree)
+            // Check if the terrain feature is a Tree
+            else if (terrainFeature is Tree tree)
             {
-                category = CATEGORY.Trees;
-                toReturn = getTree((Tree)terrain.Get());
+                return (getTree(tree), CATEGORY.Trees);
             }
 
-            return (toReturn, category);
-
-
+            return (null, CATEGORY.Others);
         }
 
         /// <summary>
-        /// Returns the detail about the HoeDirt i.e. soil, plant, etc.
+        /// Retrieves a detailed description of HoeDirt, including its soil, plant, and other relevant information.
         /// </summary>
-        /// <param name="dirt">The HoeDirt to be checked</param>
-        /// <param name="ignoreIfEmpty">Ignores returning `soil` if empty</param>
-        /// <returns>The details about the given HoeDirt</returns>
+        /// <param name="dirt">The HoeDirt object to get details for.</param>
+        /// <param name="ignoreIfEmpty">If true, the method will return an empty string for empty soil; otherwise, it will return "Soil".</param>
+        /// <returns>A string representing the details of the provided HoeDirt object.</returns>
         public static string getHoeDirtDetail(HoeDirt dirt, bool ignoreIfEmpty = false)
         {
-            string detail;
+            // Use StringBuilder for efficient string manipulation
+            StringBuilder detail = new();
 
-            if (dirt.crop != null && !dirt.crop.forageCrop.Value)
+            // Calculate isWatered and isFertilized only once
+            bool isWatered = dirt.state.Value == HoeDirt.watered;
+            bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
+
+            // Check the watered status and append it to the detail string
+            if (isWatered && MainClass.Config.WateredToggle)
+                detail.Append("Watered ");
+            else if (!isWatered && !MainClass.Config.WateredToggle)
+                detail.Append("Unwatered ");
+
+            // Check if the dirt is fertilized and append it to the detail string
+            if (isFertilized)
+                detail.Append("Fertilized ");
+
+            // Check if the dirt has a crop
+            if (dirt.crop != null)
             {
-                string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest.Value].Split('/')[0];
-                detail = $"{cropName}";
-
-                bool isWatered = dirt.state.Value == HoeDirt.watered;
-                bool isHarvestable = dirt.readyForHarvest();
-                bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
-
-                if (isWatered && MainClass.Config.WateredToggle)
-                    detail = "Watered " + detail;
-                else if (!isWatered && !MainClass.Config.WateredToggle)
-                    detail = "Unwatered " + detail;
-
-                if (isFertilized)
-                    detail = "Fertilized " + detail;
-
-                if (isHarvestable)
-                    detail = "Harvestable " + detail;
-
-                if (dirt.crop.dead.Value)
-                    detail = "Dead " + detail;
-            }
-            else if (dirt.crop != null && dirt.crop.forageCrop.Value)
-            {
-                detail = dirt.crop.whichForageCrop.Value switch
+                // Handle forage crops
+                if (dirt.crop.forageCrop.Value)
                 {
-                    1 => "Spring onion",
-                    2 => "Ginger",
-                    _ => "Forageable crop"
-                };
+                    detail.Append(dirt.crop.whichForageCrop.Value switch
+                    {
+                        1 => "Spring onion",
+                        2 => "Ginger",
+                        _ => "Forageable crop"
+                    });
+                }
+                else // Handle non-forage crops
+                {
+                    // Append the crop name to the detail string
+                    string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest.Value].Split('/')[0];
+                    detail.Append(cropName);
+
+                    // Check if the crop is harvestable and prepend it to the detail string
+                    if (dirt.readyForHarvest())
+                        detail.Insert(0, "Harvestable ");
+
+                    // Check if the crop is dead and prepend it to the detail string
+                    if (dirt.crop.dead.Value)
+                        detail.Insert(0, "Dead ");
+                }
             }
-            else
+            else if (!ignoreIfEmpty) // If there's no crop and ignoreIfEmpty is false, append "Soil" to the detail string
             {
-                detail = (ignoreIfEmpty) ? "" : "Soil";
-                bool isWatered = dirt.state.Value == HoeDirt.watered;
-                bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
-
-                if (isWatered && MainClass.Config.WateredToggle)
-                    detail = "Watered " + detail;
-                else if (!isWatered && !MainClass.Config.WateredToggle)
-                    detail = "Unwatered " + detail;
-
-                if (isFertilized)
-                    detail = "Fertilized " + detail;
+                detail.Append("Soil");
             }
-            return detail;
+
+            return detail.ToString();
         }
 
+        /// <summary>
+        /// Retrieves the fruit tree's display name based on its growth stage and fruit index.
+        /// </summary>
+        /// <param name="fruitTree">The FruitTree object to get the name for.</param>
+        /// <returns>The fruit tree's display name.</returns>
         public static string getFruitTree(FruitTree fruitTree)
         {
             int stage = fruitTree.growthStage.Value;
             int fruitIndex = fruitTree.indexOfFruit.Get();
 
+            // Get the base name of the fruit tree from the object information
             string toReturn = Game1.objectInformation[fruitIndex].Split('/')[0];
 
+            // Append the growth stage description to the fruit tree name
             if (stage == 0)
                 toReturn = $"{toReturn} seed";
             else if (stage == 1)
@@ -835,21 +510,26 @@ namespace stardew_access.Features
             else if (stage >= 4)
                 toReturn = $"{toReturn} tree";
 
+            // If there are fruits on the tree, prepend "Harvestable" to the name
             if (fruitTree.fruitsOnTree.Value > 0)
                 toReturn = $"Harvestable {toReturn}";
 
             return toReturn;
         }
 
+        /// <summary>
+        /// Retrieves the tree's display name based on its type and growth stage.
+        /// </summary>
+        /// <param name="tree">The Tree object to get the name for.</param>
+        /// <returns>The tree's display name.</returns>
         public static string getTree(Tree tree)
         {
             int treeType = tree.treeType.Value;
             int treeStage = tree.growthStage.Value;
-            string treeName = "tree";
-            string seedName = "";
+			string seedName = "";
 
-            // Return with the name if it's one of the 3 special trees
-            switch (treeType)
+			// Handle special tree types and return their names
+			switch (treeType)
             {
                 case 4:
                 case 5:
@@ -860,34 +540,37 @@ namespace stardew_access.Features
                     return "Mushroom Tree";
             }
 
-
+            // Get the seed name for the tree type
             if (treeType <= 3)
                 seedName = Game1.objectInformation[308 + treeType].Split('/')[0];
             else if (treeType == 8)
                 seedName = Game1.objectInformation[292].Split('/')[0];
 
+            // Determine the tree name and growth stage description
             if (treeStage >= 1)
             {
-                switch (seedName.ToLower())
-                {
-                    case "mahogany seed":
-                        treeName = "Mahogany";
-                        break;
-                    case "acorn":
-                        treeName = "Oak";
-                        break;
-                    case "maple seed":
-                        treeName = "Maple";
-                        break;
-                    case "pine cone":
-                        treeName = "Pine";
-                        break;
-                    default:
-                        treeName = "Coconut";
-                        break;
-                }
+				string treeName;
+				switch (seedName.ToLower())
+				{
+					case "mahogany seed":
+						treeName = "Mahogany";
+						break;
+					case "acorn":
+						treeName = "Oak";
+						break;
+					case "maple seed":
+						treeName = "Maple";
+						break;
+					case "pine cone":
+						treeName = "Pine";
+						break;
+					default:
+						treeName = "Coconut";
+						break;
+				}
 
-                if (treeStage == 1)
+				// Append the growth stage description to the tree name
+				if (treeStage == 1)
                     treeName = $"{treeName} sprout";
                 else if (treeStage == 2)
                     treeName = $"{treeName} sapling";
@@ -899,6 +582,7 @@ namespace stardew_access.Features
                 return treeName;
             }
 
+            // Return the seed name if the tree is at stage 0
             return seedName;
         }
 
@@ -1262,7 +946,7 @@ namespace stardew_access.Features
         public static string? getDoorAtTile(int x, int y, GameLocation currentLocation)
         {
             // Create a Point object from the given tile coordinates
-            Point tilePoint = new Point(x, y);
+            Point tilePoint = new(x, y);
             
             // Access the doorList in the current location
             StardewValley.Network.NetPointDictionary<string, Netcode.NetString> doorList = currentLocation.doors;
@@ -1338,65 +1022,6 @@ namespace stardew_access.Features
 
             // No matching stump found
             return null;
-        }
-
-        /// <summary>
-        /// Gets the parrot perch information at the specified tile coordinates in the given island location.
-        /// </summary>
-        /// <param name="x">The x-coordinate of the tile to check.</param>
-        /// <param name="y">The y-coordinate of the tile to check.</param>
-        /// <param name="islandLocation">The IslandLocation where the parrot perch might be found.</param>
-        /// <returns>
-        /// A string containing the parrot perch information if a parrot perch is found at the specified tile;
-        /// null if no parrot perch is found.
-        /// </returns>
-        public static string? getParrotPerchAtTile(int x, int y, IslandLocation islandLocation)
-        {
-            // Use LINQ to find the first parrot perch at the specified tile (x, y) coordinates
-            var foundPerch = islandLocation.parrotUpgradePerches.FirstOrDefault(perch => perch.tilePosition.Value.Equals(new Point(x, y)));
-
-            // If a parrot perch was found at the specified tile coordinates
-            if (foundPerch != null)
-            {
-                string toSpeak = $"Parrot required nuts {foundPerch.requiredNuts.Value}";
-
-                // Return appropriate string based on the current state of the parrot perch
-                switch (foundPerch.currentState.Value)
-                {
-                    case StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Idle:
-                        return foundPerch.IsAvailable() ? toSpeak : "Empty parrot perch";
-                    case StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.StartBuilding:
-                        return "Parrots started building request";
-                    case StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Building:
-                        return "Parrots building request";
-                    case StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Complete:
-                        return "Request Completed";
-                    default:
-                        return toSpeak;
-                }
-            }
-
-            // If no parrot perch was found, return null
-            return null;
-        }
-
-        /// <summary>
-        /// Retrieves the name of the IslandGemBird based on its item index value.
-        /// </summary>
-        /// <param name="bird">The IslandGemBird instance.</param>
-        /// <returns>A string representing the name of the IslandGemBird.</returns>
-        public static String GetGemBirdName(IslandGemBird bird)
-        {
-            // Use a switch expression to return the appropriate bird name based on the item index value
-            return bird.itemIndex.Value switch
-            {
-                60 => "Emerald Gem Bird",
-                62 => "Aquamarine Gem Bird",
-                64 => "Ruby Gem Bird",
-                66 => "Amethyst Gem Bird",
-                68 => "Topaz Gem Bird",
-                _ => "Gem Bird", // Default case for when the item index does not match any of the specified values
-            };
         }
     }
 }

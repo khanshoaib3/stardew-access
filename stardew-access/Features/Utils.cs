@@ -1,3 +1,4 @@
+using System.Text.Json;
 namespace stardew_access.Features
 {
     /// <summary>
@@ -33,7 +34,7 @@ namespace stardew_access.Features
 
         public static IReadOnlyDictionary<string, CATEGORY> Categories => _categories;
 
-        private static readonly Dictionary<string, CATEGORY> _categories = new Dictionary<string, CATEGORY>(StringComparer.OrdinalIgnoreCase)
+        private static readonly Dictionary<string, CATEGORY> _categories = new(StringComparer.OrdinalIgnoreCase)
         {
             {"farmer", new CATEGORY("farmer")},
             {"animal", new CATEGORY("animal")},
@@ -122,11 +123,44 @@ namespace stardew_access.Features
         public static CATEGORY Machines => FromString("machine");
         public static CATEGORY Bridges => FromString("bridge");
         public static CATEGORY DroppedItems => FromString("dropped item");
-public static CATEGORY Others => FromString("other");
+        public static CATEGORY Others => FromString("other");
     }
     
-    public enum MachineState
+        public enum MachineState
     {
         Ready, Busy, Waiting
+    }
+
+    public static class Utils
+    {
+        /// <summary>
+        /// Loads a JSON file from the specified file name in the assets folder.
+        /// </summary>
+        /// <param name="fileName">The name of the JSON file to load.</param>
+        /// <returns>A <see cref="JsonElement"/> containing the deserialized JSON data, or default if an error occurs.</returns>
+        public static JsonElement LoadJsonFile(string fileName)
+        {
+            string filePath = Path.Combine(MainClass.ModHelper!.DirectoryPath, "assets", fileName);
+
+            try
+            {
+                string json = File.ReadAllText(filePath);
+                return JsonSerializer.Deserialize<JsonElement>(json);
+            }
+            catch (FileNotFoundException ex)
+            {
+                MainClass.ErrorLog($"{fileName} file not found: {ex.Message}");
+            }
+            catch (JsonException ex)
+            {
+                MainClass.ErrorLog($"Error parsing {fileName}: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                MainClass.ErrorLog($"An error occurred while initializing {fileName}: {ex.Message}");
+            }
+
+            return default;
+        }
     }
 }
