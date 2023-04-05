@@ -126,24 +126,24 @@ namespace stardew_access.Patches
         private static string getChangesToSpeak(CharacterCustomization __instance)
         {
             string toSpeak = "";
-            string currentPetName = getCurrentPetName();
-            string currentSkin = getCurrentSkin();
-            string currentHair = getCurrentHair();
-            string currentShirt = getCurrentShirt();
-            string currentPants = getCurrentPants();
-            string currentAccessory = getCurrentAccessory();
-            string currentEyeColor = getCurrentEyeColor();
-            string currentEyeColorHue = getCurrentEyeColorHue(__instance);
-            string currentEyeColorSaturation = getCurrentEyeColorSaturation(__instance);
-            string currentEyeColorValue = getCurrentEyeColorValue(__instance);
-            string currentHairColor = getCurrentHairColor();
-            string currentHairColorHue = getCurrentHairColorHue(__instance);
-            string currentHairColorSaturation = getCurrentHairColorSaturation(__instance);
-            string currentHairColorValue = getCurrentHairColorValue(__instance);
-            string currentPantsColor = getCurrentPantsColor();
-            string currentPantsColorHue = getCurrentPantsColorHue(__instance);
-            string currentPantsColorSaturation = getCurrentPantsColorSaturation(__instance);
-            string currentPantsColorValue = getCurrentPantsColorValue(__instance);
+            string currentPetName = GetCurrentPetName();
+            string currentSkin = GetCurrentSkin();
+            string currentHair = GetCurrentHair();
+            string currentShirt = GetCurrentShirt();
+            string currentPants = GetCurrentPants();
+            string currentAccessory = GetCurrentAccessory();
+            string currentEyeColor = GetCurrentEyeColor();
+            string currentEyeColorHue = GetCurrentEyeColorHue(__instance);
+            string currentEyeColorSaturation = GetCurrentEyeColorSaturation(__instance);
+            string currentEyeColorValue = GetCurrentEyeColorValue(__instance);
+            string currentHairColor = GetCurrentHairColor();
+            string currentHairColorHue = GetCurrentHairColorHue(__instance);
+            string currentHairColorSaturation = GetCurrentHairColorSaturation(__instance);
+            string currentHairColorValue = GetCurrentHairColorValue(__instance);
+            string currentPantsColor = GetCurrentPantsColor();
+            string currentPantsColorHue = GetCurrentPantsColorHue(__instance);
+            string currentPantsColorSaturation = GetCurrentPantsColorSaturation(__instance);
+            string currentPantsColorValue = GetCurrentPantsColorValue(__instance);
 
             if (characterDesignToggle)
             {
@@ -693,136 +693,7 @@ namespace stardew_access.Patches
         }
 
         // Most values (exception noted below) are 0 indexed internally but visually start from 1. Thus we increment before returning.
-        private static string getCurrentSkin()
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == "Skin"))
-                return $"Skin tone: {Game1.player.skin.Value + 1}";
-            return "";
-        }
-
-        private static string getCurrentHair()
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == "Hair"))
-                return $"hair style: {Game1.player.hair.Value + 1}";
-            return "";
-        }
-
-        private static string getCurrentShirt()
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == "Shirt"))
-                return $"Shirt: {Game1.player.shirt.Value + 1}";
-            return "";
-        }
-
-        private static string getCurrentPants()
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == "Pants Style"))
-                return $"Pants: {Game1.player.pants.Value + 1}";
-            return "";
-        }
-
-        private static string getCurrentAccessory()
-        {
-            // Internally accessory starts from -1 while displaying +1 on screen.
-            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == "Acc"))
-                return $"accessory: {Game1.player.accessory.Value + 2}";
-            return "";
-        }
-
-        private static string getCurrentEyeColor()
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 522 && currentComponent.myID <= 524)))
-                return $"Eye color: {Game1.player.newEyeColor.R}, {Game1.player.newEyeColor.G}, {Game1.player.newEyeColor.B}";
-            return "";
-        }
-
-        private static string getCurrentEyeColorHue(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(522, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 522 && currentComponent.myID <= 524)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentEyeColorSaturation(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(523, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 522 && currentComponent.myID <= 524)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentEyeColorValue(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(524, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 522 && currentComponent.myID <= 524)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentHairColor()
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 525 && currentComponent.myID <= 527)))
-                return $"Hair color: {Game1.player.hairstyleColor.R}, {Game1.player.hairstyleColor.G}, {Game1.player.hairstyleColor.B}";
-            return "";
-        }
-
-        private static string getCurrentHairColorHue(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(525, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 525 && currentComponent.myID <= 527)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentHairColorSaturation(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(526, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 525 && currentComponent.myID <= 527)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentHairColorValue(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(527, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 525 && currentComponent.myID <= 527)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentPantsColor()
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 528 && currentComponent.myID <= 530)))
-                return $"Pants color: {Game1.player.pantsColor.R}, {Game1.player.pantsColor.G}, {Game1.player.pantsColor.B}";
-            return "";
-        }
-
-        private static string getCurrentPantsColorHue(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(528, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 528 && currentComponent.myID <= 530)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentPantsColorSaturation(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(529, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 528 && currentComponent.myID <= 530)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentPantsColorValue(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(530, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 528 && currentComponent.myID <= 530)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentPetName()
+        private static string GetCurrentPetName()
         {
             if (currentComponent != null && currentComponent.name == "Pet")
             {
@@ -833,5 +704,56 @@ namespace stardew_access.Patches
                 return "";
             }
         }
+
+        private static string GetCurrentAttributeValue(string componentName, Func<int> getValue)
+        {
+            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == componentName))
+            {
+                return $"{componentName}: {getValue()}";
+            }
+            return "";
+        }
+
+        private static string GetCurrentSkin() => GetCurrentAttributeValue("Skin", () => Game1.player.skin.Value + 1);
+
+        private static string GetCurrentHair() => GetCurrentAttributeValue("Hair", () => Game1.player.hair.Value + 1);
+
+        private static string GetCurrentShirt() => GetCurrentAttributeValue("Shirt", () => Game1.player.shirt.Value + 1);
+
+        private static string GetCurrentPants() => GetCurrentAttributeValue("Pants Style", () => Game1.player.pants.Value + 1);
+
+        private static string GetCurrentAccessory() => GetCurrentAttributeValue("Acc", () => Game1.player.accessory.Value + 2);
+
+        private static string GetCurrentColorAttributeValue(string componentName, int minID, int maxID, Func<string> getValue)
+        {
+            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= minID && currentComponent.myID <= maxID)))
+            {
+                return $"{componentName}: {getValue()}";
+            }
+            return "";
+        }
+
+        private static string GetCurrentEyeColor() => GetCurrentColorAttributeValue("Eye color", 522, 524, () => $"{Game1.player.newEyeColor.R}, {Game1.player.newEyeColor.G}, {Game1.player.newEyeColor.B}");
+
+        private static string GetCurrentEyeColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Eye color hue", 522, 524, () => (getCurrentSliderBar(522, __instance)!.value!.ToString()));
+
+        private static string GetCurrentEyeColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Eye color saturation", 522, 524, () => (getCurrentSliderBar(523, __instance)!.value!.ToString()));
+
+        private static string GetCurrentEyeColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Eye color value", 522, 524, () => (getCurrentSliderBar(524, __instance)!.value!.ToString()));
+
+        private static string GetCurrentHairColor() => GetCurrentColorAttributeValue("Hair color", 525, 527, () => $"{Game1.player.hairstyleColor.R}, {Game1.player.hairstyleColor.G}, {Game1.player.hairstyleColor.B}");
+
+        private static string GetCurrentHairColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hair color hue", 525, 527, () => (getCurrentSliderBar(525, __instance)!.value!.ToString()));
+
+        private static string GetCurrentHairColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hair color saturation", 525, 527, () => (getCurrentSliderBar(526, __instance)!.value!.ToString()));
+
+        private static string GetCurrentHairColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hair color value", 525, 527, () => (getCurrentSliderBar(527, __instance)!.value!.ToString()));
+        private static string GetCurrentPantsColor() => GetCurrentColorAttributeValue("Pants color", 528, 530, () => $"{Game1.player.pantsColor.R}, {Game1.player.pantsColor.G}, {Game1.player.pantsColor.B}");
+
+        private static string GetCurrentPantsColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Pants color hue", 528, 530, () => (getCurrentSliderBar(528, __instance)!.value!.ToString()));
+
+        private static string GetCurrentPantsColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Pants color saturation", 528, 530, () => (getCurrentSliderBar(529, __instance)!.value!.ToString()));
+
+        private static string GetCurrentPantsColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Pants color value", 528, 530, () => (getCurrentSliderBar(530, __instance)!.value!.ToString()));
     }
 }
