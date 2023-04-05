@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
-    <PackageReference Include="newtonsoft.json" Version="13.0.2" />
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
     <Reference Include="./TolkDotNet.dll" />
   </ItemGroup>

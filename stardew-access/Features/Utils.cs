@@ -125,8 +125,8 @@ namespace stardew_access.Features
         public static CATEGORY DroppedItems => FromString("dropped item");
         public static CATEGORY Others => FromString("other");
     }
-    
-        public enum MachineState
+
+    public enum MachineState
     {
         Ready, Busy, Waiting
     }
