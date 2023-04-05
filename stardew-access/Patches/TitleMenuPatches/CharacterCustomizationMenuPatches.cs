@@ -1,5 +1,7 @@
+using System.Text.Json;
 using StardewValley;
 using StardewValley.Menus;
+using static stardew_access.Features.Utils;
 
 namespace stardew_access.Patches
 {
@@ -7,28 +9,69 @@ namespace stardew_access.Patches
     {
         private static bool isRunning = false;
         private static int saveGameIndex = -1;
-        public static string characterCreationMenuQueryKey = " ";
-        public static string prevPants = " ";
-        public static string prevShirt = " ";
-        public static string prevHair = " ";
-        public static string prevAccessory = " ";
-        public static string prevSkin = " ";
-        public static string prevEyeColor = " ";
-        public static string prevEyeColorHue = " ";
-        public static string prevEyeColorSaturation = " ";
-        public static string prevEyeColorValue = " ";
-        public static string prevHairColor = " ";
-        public static string prevHairColorHue = " ";
-        public static string prevHairColorSaturation = " ";
-        public static string prevHairColorValue = " ";
-        public static string prevPantsColor = " ";
-        public static string prevPantsColorHue = " ";
-        public static string prevPantsColorSaturation = " ";
-        public static string prevPantsColorValue = " ";
-        public static string prevPetName = " ";
-        public static bool characterDesignToggle = false;
-        public static bool characterDesignToggleShouldSpeak = true;
-        public static ClickableComponent? currentComponent = null;
+        private static string characterCreationMenuQueryKey = " ";
+        private static string prevPants = " ";
+        private static string prevShirt = " ";
+        private static string prevHair = " ";
+        private static string prevAccessory = " ";
+        private static string prevSkin = " ";
+        private static string prevEyeColor = " ";
+        private static string prevEyeColorHue = " ";
+        private static string prevEyeColorSaturation = " ";
+        private static string prevEyeColorValue = " ";
+        private static string prevHairColor = " ";
+        private static string prevHairColorHue = " ";
+        private static string prevHairColorSaturation = " ";
+        private static string prevHairColorValue = " ";
+        private static string prevPantsColor = " ";
+        private static string prevPantsColorHue = " ";
+        private static string prevPantsColorSaturation = " ";
+        private static string prevPantsColorValue = " ";
+        private static string prevPet = " ";
+        private static bool characterDesignToggle = false;
+        private static bool characterDesignToggleShouldSpeak = true;
+        private static ClickableComponent? currentComponent = null;
+        private static Dictionary<string, Dictionary<int, string>> descriptions
+        {
+            get
+            {
+                if (_descriptions == null)
+                {
+                    _descriptions = LoadDescriptionJson();
+                }
+                return _descriptions;
+            }
+        }
+        private static Dictionary<string, Dictionary<int, string>>? _descriptions;
+
+        private static Dictionary<string, Dictionary<int, string>> LoadDescriptionJson()
+        {
+            MainClass.DebugLog("Attempting to load json");
+            JsonElement jsonElement = LoadJsonFile("new-character-appearance-descriptions.json");
+
+            if (jsonElement.ValueKind == JsonValueKind.Undefined)
+            {
+                return new Dictionary<string, Dictionary<int, string>>();
+            }
+
+            Dictionary<string, Dictionary<int, string>> result = new Dictionary<string, Dictionary<int, string>>();
+
+            foreach (JsonProperty category in jsonElement.EnumerateObject())
+            {
+                Dictionary<int, string> innerDictionary = new Dictionary<int, string>();
+
+                foreach (JsonProperty item in category.Value.EnumerateObject())
+                {
+                    int index = int.Parse(item.Name);
+                    innerDictionary[index] = item.Value.GetString() ?? "";
+                }
+
+                result[category.Name] = innerDictionary;
+                MainClass.InfoLog($"Loaded key '{category.Name}' with {innerDictionary.Count} entries in the sub dictionary.");
+            }
+
+            return result;
+        }
 
         internal static void DrawPatch(CharacterCustomization __instance, bool ___skipIntro,
         ClickableComponent ___startingCabinsLabel, ClickableComponent ___difficultyModifierLabel, TextBox ___nameBox,
@@ -126,7 +169,7 @@ namespace stardew_access.Patches
         private static string getChangesToSpeak(CharacterCustomization __instance)
         {
             string toSpeak = "";
-            string currentPetName = GetCurrentPetName();
+            string currentPet = GetCurrentPet();
             string currentSkin = GetCurrentSkin();
             string currentHair = GetCurrentHair();
             string currentShirt = GetCurrentShirt();
@@ -339,11 +382,11 @@ namespace stardew_access.Patches
                 }
             }
 
-            if (prevPetName != currentPetName)
+            if (prevPet != currentPet)
             {
-                prevPetName = currentPetName;
-                if (currentPetName != "")
-                    toSpeak = $"{toSpeak} \n Current Pet: {currentPetName}";
+                prevPet = currentPet;
+                if (currentPet != "")
+                    toSpeak = $"{toSpeak} \n Current Pet: {currentPet}";
             }
             return toSpeak.Trim();
         }
@@ -693,36 +736,68 @@ namespace stardew_access.Patches
         }
 
         // Most values (exception noted below) are 0 indexed internally but visually start from 1. Thus we increment before returning.
-        private static string GetCurrentPetName()
+        private static string GetCurrentPet(bool lessInfo = false)
         {
             if (currentComponent != null && currentComponent.name == "Pet")
             {
-                return ((Game1.player.catPerson) ? "Cat" : "Dog") + " Breed: " + Game1.player.whichPetBreed;
-            }
-            else
-            {
-                return "";
-            }
-        }
+                int whichPetBreed = Game1.player.whichPetBreed + 1;
 
-        private static string GetCurrentAttributeValue(string componentName, Func<int> getValue)
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == componentName))
-            {
-                return $"{componentName}: {getValue()}";
+                if (!lessInfo)
+                {
+                    string petType = Game1.player.catPerson ? "Cat" : "Dog";
+                    if (descriptions.TryGetValue(petType, out var innerDict) && innerDict.TryGetValue(whichPetBreed, out var description))
+                    {
+                        return description;
+                    }
+                    else
+                    {
+                        MainClass.ErrorLog($"Warning: Description for {petType} with index {whichPetBreed} not found in the dictionary.");
+                    }
+                }
+
+                return $"{(Game1.player.catPerson ? "Cat" : "Dog")} #{whichPetBreed + 1}";
             }
             return "";
         }
 
-        private static string GetCurrentSkin() => GetCurrentAttributeValue("Skin", () => Game1.player.skin.Value + 1);
+        private static string GetCurrentAttributeValue(string componentName, Func<int> getValue, bool lessInfo = false)
+        {
+            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == componentName))
+            {
+                int index = getValue();
 
-        private static string GetCurrentHair() => GetCurrentAttributeValue("Hair", () => Game1.player.hair.Value + 1);
+                if (!lessInfo)
+                {
+                    if (descriptions.TryGetValue(componentName, out var innerDict))
+                    {
+                        if (innerDict.TryGetValue(index, out var description))
+                        {
+                            return description;
+                        }
+                        else
+                        {
+                            MainClass.ErrorLog($"Warning: Description for {componentName} with index {index} not found in the inner dictionary.");
+                        }
+                    }
+                    else
+                    {
+                        MainClass.ErrorLog($"Warning: Description for {componentName} not found in the outer dictionary.");
+                    }
+                }
+                return $"{componentName}: {index}";
+            }
+            return "";
+        }
 
-        private static string GetCurrentShirt() => GetCurrentAttributeValue("Shirt", () => Game1.player.shirt.Value + 1);
+        private static string GetCurrentSkin(bool lessInfo = false) => GetCurrentAttributeValue("Skin", () => Game1.player.skin.Value + 1, lessInfo);
 
-        private static string GetCurrentPants() => GetCurrentAttributeValue("Pants Style", () => Game1.player.pants.Value + 1);
+        private static string GetCurrentHair(bool lessInfo = false) => GetCurrentAttributeValue("Hair", () => Game1.player.hair.Value + 1, lessInfo);
 
-        private static string GetCurrentAccessory() => GetCurrentAttributeValue("Acc", () => Game1.player.accessory.Value + 2);
+        private static string GetCurrentShirt(bool lessInfo = false) => GetCurrentAttributeValue("Shirt", () => Game1.player.shirt.Value + 1, lessInfo);
+
+        private static string GetCurrentPants(bool lessInfo = false) => GetCurrentAttributeValue("Pants Style", () => Game1.player.pants.Value + 1, lessInfo);
+
+        private static string GetCurrentAccessory(bool lessInfo = false) => GetCurrentAttributeValue("Accessory", () => Game1.player.accessory.Value + 2, lessInfo);
 
         private static string GetCurrentColorAttributeValue(string componentName, int minID, int maxID, Func<string> getValue)
         {
