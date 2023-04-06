@@ -420,7 +420,7 @@ namespace stardew_access.Features
             var (modConditionalLocations, modLocations, vanillaConditionalLocations, vanillaLocations) = SortLocationsByType(json);
 
             // Create a merged dictionary to store all the location dictionaries
-            var mergedDict = new Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>();
+            var mergedDict = new Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>(StringComparer.OrdinalIgnoreCase);
 
             // Merge each category-specific dictionary into the merged dictionary. Prioritize conditional locations whose conditions are true and mod locations where the corresponding mod is loaded. Overwrite their default and vanilla versions, respectively.
             MergeDicts(mergedDict, modConditionalLocations);
@@ -436,7 +436,7 @@ namespace stardew_access.Features
         /// </summary>
         public static void SetupTilesDicts()
         {
-            if (staticTilesData.HasValue)
+            if (staticTilesData.HasValue && staticTilesData.Value.ValueKind != JsonValueKind.Undefined)
             {
                 staticTilesDataDict = BuildTilesDict(staticTilesData.Value);
             }
@@ -445,7 +445,7 @@ namespace stardew_access.Features
                 staticTilesDataDict = new Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>();
             }
             
-            if (customTilesData.HasValue)
+            if (customTilesData.HasValue && customTilesData.Value.ValueKind != JsonValueKind.Undefined)
             {
                 customTilesDataDict = BuildTilesDict(customTilesData.Value);
             }

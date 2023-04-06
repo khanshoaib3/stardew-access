@@ -141,8 +141,8 @@ namespace stardew_access.Features
         /// <returns>A dictionary with all the detected tiles along with the name of the object on it and it's category.</returns>
         public Dictionary<Vector2, (string, string)> SearchLocation()
         {
-            var watch = new Stopwatch();
-            watch.Start();
+            //var watch = new Stopwatch();
+            //watch.Start();
             var currentLocation = Game1.currentLocation;
             Dictionary<Vector2, (string, string)> detectedTiles = new();
             Vector2 position = Vector2.Zero;
@@ -157,11 +157,11 @@ namespace stardew_access.Features
             toSearch.Enqueue(Game1.player.getTileLocation());
             searched.Add(Game1.player.getTileLocation());
 
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
-            MainClass.DebugLog($"Search init duration: {elapsedMs}");
-            watch.Reset();
-            watch.Start();
+            //watch.Stop();
+            //var elapsedMs = watch.ElapsedMilliseconds;
+            //MainClass.DebugLog($"Search init duration: {elapsedMs}");
+            //watch.Reset();
+            //watch.Start();
             while (toSearch.Count > 0)
             {
                 Vector2 item = toSearch.Dequeue();
@@ -185,9 +185,9 @@ namespace stardew_access.Features
                     }
                 }
             }
-            watch.Stop();
-            elapsedMs = watch.ElapsedMilliseconds;
-            MainClass.DebugLog($"Search loop duration: {elapsedMs}; {count} iterations.");
+            //watch.Stop();
+            //elapsedMs = watch.ElapsedMilliseconds;
+            //MainClass.DebugLog($"Search loop duration: {elapsedMs}; {count} iterations.");
             searched.Clear();
             return detectedTiles;
         }
