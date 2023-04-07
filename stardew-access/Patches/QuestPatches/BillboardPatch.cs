@@ -18,7 +18,7 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    narrateCallendar(__instance);
+                    narrateCalendar(__instance);
                 }
             }
             catch (Exception e)
@@ -27,7 +27,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void narrateCallendar(Billboard __instance)
+        private static void narrateCalendar(Billboard __instance)
         {
             for (int i = 0; i < __instance.calendarDays.Count; i++)
             {
@@ -35,6 +35,7 @@ namespace stardew_access.Patches
                     continue;
                 
                 string toSpeak = $"Day {i + 1}";
+                string currentYearNMonth = $"of {Game1.CurrentSeasonDisplayName}, {Game1.content.LoadString("Strings\\UI:Billboard_Year", Game1.year)}";
 
                 if (__instance.calendarDays[i].name.Length > 0)
                 {
@@ -46,13 +47,16 @@ namespace stardew_access.Patches
                 }
 
                 if (Game1.dayOfMonth == i + 1)
-                    toSpeak += $", Current";
+                    toSpeak = $"Current {toSpeak}";
 
                 if (billboardQueryKey != toSpeak)
                 {
                     billboardQueryKey = toSpeak;
+                    if (i == 0) toSpeak = $"{toSpeak} {currentYearNMonth}";
                     MainClass.ScreenReader.Say(toSpeak, true);
                 }
+
+                return;
             }
         }
 

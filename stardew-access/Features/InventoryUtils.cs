@@ -10,21 +10,23 @@ namespace stardew_access.Features
         internal static int prevSlotIndex = -999;
 
         internal static bool narrateHoveredSlot(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y,
-                bool giveExtraDetails = false, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1,
+                bool? giveExtraDetails = null, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1,
                 bool handleHighlightedItem = false, String highlightedItemPrefix = "", String highlightedItemSuffix = "")
         {
             if (narrateHoveredSlotAndReturnIndex(inventoryMenu, inventory, actualInventory, x, y,
-                giveExtraDetails = false, hoverPrice = -1, extraItemToShowIndex = -1, extraItemToShowAmount = -1,
-                handleHighlightedItem = false, highlightedItemPrefix = "", highlightedItemSuffix = "") == -999)
+                giveExtraDetails, hoverPrice, extraItemToShowIndex, extraItemToShowAmount,
+                handleHighlightedItem, highlightedItemPrefix, highlightedItemSuffix) == -999)
                 return false;
 
             return true;
         }
 
         internal static int narrateHoveredSlotAndReturnIndex(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y,
-                bool giveExtraDetails = false, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1,
+                bool? giveExtraDetails = null, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1,
                 bool handleHighlightedItem = false, String highlightedItemPrefix = "", String highlightedItemSuffix = "")
         {
+            if (giveExtraDetails is null)
+                giveExtraDetails = !MainClass.Config.DisableInventoryVerbosity;
             for (int i = 0; i < inventory.Count; i++)
             {
                 if (!inventory[i].containsPoint(x, y)) continue;
@@ -45,27 +47,31 @@ namespace stardew_access.Features
                 string name = $"{namePrefix}{actualInventory[i].DisplayName}{nameSuffix}";
                 int stack = actualInventory[i].Stack;
                 string quality = getQualityFromItem(actualInventory[i]);
-                string healthNStamine = getHealthNStaminaFromItem(actualInventory[i]);
+                string healthNStamina = getHealthNStaminaFromItem(actualInventory[i]);
                 string buffs = getBuffsFromItem(actualInventory[i]);
                 string description = actualInventory[i].getDescription();
                 string price = getPrice(hoverPrice);
                 string requirements = getExtraItemInfo(extraItemToShowIndex, extraItemToShowAmount);
 
-                if (giveExtraDetails)
+                string details;
+                if (giveExtraDetails == true)
                 {
                     if (stack > 1)
-                        toSpeak = $"{stack} {name} {quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamine}, \n{buffs}";
+                        toSpeak = $"{stack} {name}"; // {quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamina}, \n{buffs}";
                     else
-                        toSpeak = $"{name} {quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamine}, \n{buffs}";
+                        toSpeak = $"{name}"; //{quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamina}, \n{buffs}";
+                    details = string.Join(",\n", new string[] { quality, requirements, price, description, healthNStamina, buffs }.Where(c => !string.IsNullOrEmpty(c)));
                 }
                 else
                 {
                     if (stack > 1)
-                        toSpeak = $"{stack} {name} {quality}, \n{requirements}, \n{price}";
+                        toSpeak = $"{stack} {name}"; //{quality}, \n{requirements}, \n{price}";
                     else
-                        toSpeak = $"{name} {quality}, \n{requirements}, \n{price}";
+                        toSpeak = $"{name}"; //{quality}, \n{requirements}, \n{price}";
+                    details = string.Join(",\n", new string[] { quality, requirements, price }.Where(c => !string.IsNullOrEmpty(c)));
                 }
-
+                if (!string.IsNullOrEmpty(details))
+                    toSpeak = $"{toSpeak}, {details}";
 
                 checkAndSpeak(toSpeak, i);
                 prevSlotIndex = i;

@@ -7,6 +7,7 @@ using stardew_access.Patches;
 using stardew_access.ScreenReader;
 using Microsoft.Xna.Framework;
 using StardewValley.Menus;
+using Microsoft.Xna.Framework.Input;
 
 namespace stardew_access
 {
@@ -20,7 +21,6 @@ namespace stardew_access
         private Harmony? harmony;
         private static IMonitor? monitor;
         private static Radar? radarFeature;
-        private static StaticTiles? sTiles;
         private static IScreenReader? screenReader;
         private static IModHelper? modHelper;
         private static TileViewer? tileViewer;
@@ -30,17 +30,6 @@ namespace stardew_access
         internal static ModConfig Config { get => config; set => config = value; }
         public static IModHelper? ModHelper { get => modHelper; }
 
-        public static StaticTiles STiles
-        {
-            get
-            {
-                if (sTiles == null)
-                    sTiles = new StaticTiles();
-
-                return sTiles;
-            }
-            set => sTiles = value;
-        }
         public static Radar RadarFeature
         {
             get
@@ -141,8 +130,15 @@ namespace stardew_access
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
+            helper.Events.GameLoop.DayStarted += this.onDayStarted;
             AppDomain.CurrentDomain.DomainUnload += OnExit;
             AppDomain.CurrentDomain.ProcessExit += OnExit;
+        }
+
+        /// <summary>Returns the Screen Reader class for other mods to use.</summary>
+        public override object GetApi()
+        {
+            return new API();
         }
 
         public void OnExit(object? sender, EventArgs? e)
@@ -153,10 +149,10 @@ namespace stardew_access
                 ScreenReader.CloseScreenReader();
         }
 
-        /// <summary>Returns the Screen Reader class for other mods to use.</summary>
-        public override object GetApi()
+        private void onDayStarted(object? sender, DayStartedEventArgs? e)
         {
-            return new API();
+            StaticTiles.LoadTilesFiles();
+            StaticTiles.SetupTilesDicts();
         }
 
         private void onUpdateTicked(object? sender, UpdateTickedEventArgs? e)
@@ -166,10 +162,8 @@ namespace stardew_access
 
             // Narrates currently selected inventory slot
             Other.narrateCurrentSlot();
-
             // Narrate current location's name
             Other.narrateCurrentLocation();
-
             //handle TileCursor update logic
             TileViewerFeature.update();
 
@@ -179,27 +173,44 @@ namespace stardew_access
             if (Config.ReadTile)
                 ReadTileFeature.update();
 
-            if (!RadarFeature.isRunning && Config.Radar)
-            {
-                RadarFeature.isRunning = true;
-                RadarFeature.Run();
-                Task.Delay(RadarFeature.delay).ContinueWith(_ => { RadarFeature.isRunning = false; });
-            }
+            RunRadarFeatureIfEnabled();
 
-            if (!isNarratingHudMessage)
-            {
-                isNarratingHudMessage = true;
-                Other.narrateHudMessages();
-                Task.Delay(300).ContinueWith(_ => { isNarratingHudMessage = false; });
-            }
+            RunHudMessageNarration();
 
-            if (Game1.player != null)
+            RefreshBuildListIfRequired();
+
+            async void RunRadarFeatureIfEnabled()
             {
-                if (Game1.timeOfDay >= 600 && prevDate != CurrentPlayer.Date)
+                if (!RadarFeature.isRunning && Config.Radar)
                 {
-                    prevDate = CurrentPlayer.Date;
-                    DebugLog("Refreshing buildlist...");
-                    CustomCommands.onBuildListCalled();
+                    RadarFeature.isRunning = true;
+                    RadarFeature.Run();
+                    await Task.Delay(RadarFeature.delay);
+                    RadarFeature.isRunning = false;
+                }
+            }
+
+            async void RunHudMessageNarration()
+            {
+                if (!isNarratingHudMessage)
+                {
+                    isNarratingHudMessage = true;
+                    Other.narrateHudMessages();
+                    await Task.Delay(300);
+                    isNarratingHudMessage = false;
+                }
+            }
+
+            void RefreshBuildListIfRequired()
+            {
+                if (Game1.player != null)
+                {
+                    if (Game1.timeOfDay >= 600 && prevDate != CurrentPlayer.Date)
+                    {
+                        prevDate = CurrentPlayer.Date;
+                        DebugLog("Refreshing buildlist...");
+                        CustomCommands.onBuildListCalled();
+                    }
                 }
             }
         }
@@ -209,49 +220,56 @@ namespace stardew_access
             if (e == null)
                 return;
 
-            #region Simulate left and right clicks
-            if (Game1.activeClickableMenu != null && !TextBoxPatch.isAnyTextBoxActive)
+            void SimulateMouseClicks(Action<int, int> leftClickHandler, Action<int, int> rightClickHandler)
             {
-                bool isCustomizingCharacter = Game1.activeClickableMenu is CharacterCustomization || (TitleMenu.subMenu != null && TitleMenu.subMenu is CharacterCustomization);
+                int mouseX = Game1.getMouseX(true);
+                int mouseY = Game1.getMouseY(true);
 
-                #region Mouse Click Simulation
                 if (Config.LeftClickMainKey.JustPressed() || Config.LeftClickAlternateKey.JustPressed())
                 {
-                    Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                    leftClickHandler(mouseX, mouseY);
                 }
-
-                if (Config.RightClickMainKey.JustPressed() || Config.RightClickAlternateKey.JustPressed())
+                else if (Config.RightClickMainKey.JustPressed() || Config.RightClickAlternateKey.JustPressed())
                 {
-                    Game1.activeClickableMenu.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                    rightClickHandler(mouseX, mouseY);
                 }
-                #endregion
             }
 
-            if (Game1.currentMinigame != null && !TextBoxPatch.isAnyTextBoxActive)
+            #region Simulate left and right clicks
+            if (!TextBoxPatch.isAnyTextBoxActive)
             {
-                #region Mouse Click Simulation
-                if (Config.LeftClickMainKey.JustPressed() || Config.LeftClickAlternateKey.JustPressed())
+                if (Game1.activeClickableMenu != null)
                 {
-                    Game1.currentMinigame.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                    SimulateMouseClicks(
+                        (x, y) => Game1.activeClickableMenu.receiveLeftClick(x, y),
+                        (x, y) => Game1.activeClickableMenu.receiveRightClick(x, y)
+                    );
                 }
-
-                if (Config.RightClickMainKey.JustPressed() || Config.RightClickAlternateKey.JustPressed())
+                else if (Game1.currentMinigame != null)
                 {
-                    Game1.currentMinigame.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                    SimulateMouseClicks(
+                        (x, y) => Game1.currentMinigame.receiveLeftClick(x, y),
+                        (x, y) => Game1.currentMinigame.receiveRightClick(x, y)
+                    );
                 }
-                #endregion
             }
             #endregion
 
             if (!Context.IsPlayerFree)
                 return;
 
-            // Stops the auto walk controller if any movement key(WASD) is pressed
-            if (TileViewerFeature.isAutoWalking &&
-            (e.Button.Equals(SButtonExtensions.ToSButton(Game1.options.moveUpButton[0]))
-            || e.Button.Equals(SButtonExtensions.ToSButton(Game1.options.moveDownButton[0]))
-            || e.Button.Equals(SButtonExtensions.ToSButton(Game1.options.moveLeftButton[0]))
-            || e.Button.Equals(SButtonExtensions.ToSButton(Game1.options.moveRightButton[0]))))
+            void Narrate(string message) => MainClass.ScreenReader.Say(message, true);
+
+            bool IsMovementKey(SButton button)
+            {
+                return button.Equals(SButtonExtensions.ToSButton(Game1.options.moveUpButton[0]))
+                    || button.Equals(SButtonExtensions.ToSButton(Game1.options.moveDownButton[0]))
+                    || button.Equals(SButtonExtensions.ToSButton(Game1.options.moveLeftButton[0]))
+                    || button.Equals(SButtonExtensions.ToSButton(Game1.options.moveRightButton[0]));
+            }
+
+            // Stops the auto walk   controller if any movement key(WASD) is pressed
+            if (TileViewerFeature.isAutoWalking && IsMovementKey(e.Button))
             {
                 TileViewerFeature.stopAutoWalking(wasForced: true);
             }
@@ -259,25 +277,17 @@ namespace stardew_access
             // Narrate Current Location
             if (Config.LocationKey.JustPressed())
             {
-                string toSpeak = $"{Game1.currentLocation.Name}";
-                MainClass.ScreenReader.Say(toSpeak, true);
+                Narrate(Game1.currentLocation.Name);
                 return;
             }
 
             // Narrate Position
             if (Config.PositionKey.JustPressed())
             {
-                string toSpeak;
-                if (Config.VerboseCoordinates)
-                {
-                    toSpeak = $"X: {CurrentPlayer.PositionX}, Y: {CurrentPlayer.PositionY}";
-                }
-                else
-                {
-                    toSpeak = $"{CurrentPlayer.PositionX}, {CurrentPlayer.PositionY}";
-                }
-
-                MainClass.ScreenReader.Say(toSpeak, true);
+                string toSpeak = Config.VerboseCoordinates
+                    ? $"X: {CurrentPlayer.PositionX}, Y: {CurrentPlayer.PositionY}"
+                    : $"{CurrentPlayer.PositionX}, {CurrentPlayer.PositionY}";
+                Narrate(toSpeak);
                 return;
             }
 
@@ -287,29 +297,25 @@ namespace stardew_access
                 if (ModHelper == null)
                     return;
 
-                string toSpeak;
-                if (Config.HealthNStaminaInPercentage)
-                    toSpeak = ModHelper.Translation.Get("manuallytriggered.healthnstamina.percent", new { health = CurrentPlayer.PercentHealth, stamina = CurrentPlayer.PercentStamina });
-                else
-                    toSpeak = ModHelper.Translation.Get("manuallytriggered.healthnstamina.normal", new { health = CurrentPlayer.CurrentHealth, stamina = CurrentPlayer.CurrentStamina });
+                string toSpeak = Config.HealthNStaminaInPercentage
+                    ? ModHelper.Translation.Get("manuallytriggered.healthnstamina.percent", new { health = CurrentPlayer.PercentHealth, stamina = CurrentPlayer.PercentStamina })
+                    : ModHelper.Translation.Get("manuallytriggered.healthnstamina.normal", new { health = CurrentPlayer.CurrentHealth, stamina = CurrentPlayer.CurrentStamina });
 
-                MainClass.ScreenReader.Say(toSpeak, true);
+                Narrate(toSpeak);
                 return;
             }
 
             // Narrate money at hand
             if (Config.MoneyKey.JustPressed())
             {
-                string toSpeak = $"You have {CurrentPlayer.Money}g";
-                MainClass.ScreenReader.Say(toSpeak, true);
+                Narrate($"You have {CurrentPlayer.Money}g");
                 return;
             }
 
             // Narrate time and season
             if (Config.TimeNSeasonKey.JustPressed())
             {
-                string toSpeak = $"Time is {CurrentPlayer.TimeOfDay} and it is {CurrentPlayer.Day} {CurrentPlayer.Date} of {CurrentPlayer.Season}";
-                MainClass.ScreenReader.Say(toSpeak, true);
+                Narrate($"Time is {CurrentPlayer.TimeOfDay} and it is {CurrentPlayer.Day} {CurrentPlayer.Date} of {CurrentPlayer.Season}");
                 return;
             }
 
@@ -331,28 +337,27 @@ namespace stardew_access
             TileViewerFeature.HandleInput();
         }
 
-        public static void ErrorLog(string message)
+        private static void LogMessage(string message, LogLevel logLevel)
         {
             if (monitor == null)
                 return;
 
-            monitor.Log(message, LogLevel.Error);
+            monitor.Log(message, logLevel);
+        }
+
+        public static void ErrorLog(string message)
+        {
+            LogMessage(message, LogLevel.Error);
         }
 
         public static void InfoLog(string message)
         {
-            if (monitor == null)
-                return;
-
-            monitor.Log(message, LogLevel.Info);
+            LogMessage(message, LogLevel.Info);
         }
 
         public static void DebugLog(string message)
         {
-            if (monitor == null)
-                return;
-
-            monitor.Log(message, LogLevel.Debug);
+            LogMessage(message, LogLevel.Debug);
         }
     }
 }
