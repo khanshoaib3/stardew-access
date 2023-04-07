@@ -5,7 +5,7 @@ namespace stardew_access.Patches
 {
     internal class FishingMiniGamePatch
     {
-        private static ICue? progressSound = null;
+        private static ICue? bobberSound = null;
 
         internal static void BobberBarPatch(BobberBar __instance, ref float ___difficulty, ref int ___motionType, float ___distanceFromCatching, float ___bobberPosition, float ___bobberBarPos, bool ___bobberInBar, int ___bobberBarHeight, bool ___fadeOut, bool ___fadeIn)
         {
@@ -35,9 +35,9 @@ namespace stardew_access.Patches
 
                 if (Game1.soundBank == null) return;
 
-                // handleProgressBarSound(___distanceFromCatching, ___fadeOut, ___fadeIn);
+                // handleProgressBarSound(___distanceFromCatching);
 
-                handleBobberTargetSound(___bobberPosition, ___bobberBarPos, ___bobberInBar, ___bobberBarHeight, ___fadeOut, ___fadeIn);
+                handleBobberTargetSound(___bobberPosition, ___bobberBarPos, ___bobberInBar, ___bobberBarHeight);
             }
             catch (System.Exception e)
             {
@@ -45,18 +45,18 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void handleBobberTargetSound(float bobberPosition, float bobberBarPos, bool bobberInBar, int ___bobberBarHeight, bool ___fadeOut, bool ___fadeIn)
+        private static void handleBobberTargetSound(float bobberPosition, float bobberBarPos, bool bobberInBar, int ___bobberBarHeight)
         {
-            if (progressSound == null)
+            if (bobberSound == null)
             {
-                progressSound = Game1.soundBank.GetCue("SinWave");
+                bobberSound = Game1.soundBank.GetCue("SinWave");
             }
 
             if (bobberInBar)
             {
-                if (progressSound.IsPlaying)
+                if (bobberSound.IsPlaying)
                 {
-                    progressSound.Stop(Microsoft.Xna.Framework.Audio.AudioStopOptions.Immediate);
+                    bobberSound.Stop(Microsoft.Xna.Framework.Audio.AudioStopOptions.Immediate);
                 }
                 return;
             }
@@ -67,7 +67,7 @@ namespace stardew_access.Patches
             {
                 int distanceFromBobber = (int)(bobberBarPos - bobberPosition + (___bobberBarHeight / 2));
                 float calculatedPitch = 1200f + distanceFromBobber * 4;
-                progressSound.SetVariable("Pitch", calculatedPitch);
+                bobberSound.SetVariable("Pitch", calculatedPitch);
                 shouldPlay = true;
             }
 
@@ -75,30 +75,30 @@ namespace stardew_access.Patches
             {
                 int distanceFromBobber = (int)(bobberPosition - bobberBarPos - (___bobberBarHeight / 2));
                 float calculatedPitch = 1200f - distanceFromBobber * 4;
-                progressSound.SetVariable("Pitch", calculatedPitch);
+                bobberSound.SetVariable("Pitch", calculatedPitch);
                 shouldPlay = true;
             }
 
-            if (shouldPlay && !progressSound.IsPlaying)
+            if (shouldPlay && !bobberSound.IsPlaying)
             {
-                progressSound.Play();
+                bobberSound.Play();
             }
 
-            if (!shouldPlay && progressSound.IsPlaying)
+            if (!shouldPlay && bobberSound.IsPlaying)
             {
-                progressSound.Stop(Microsoft.Xna.Framework.Audio.AudioStopOptions.Immediate);
+                bobberSound.Stop(Microsoft.Xna.Framework.Audio.AudioStopOptions.Immediate);
             }
         }
 
-        private static void handleProgressBarSound(float ___distanceFromCatching, bool ___fadeOut, bool ___fadeIn)
+        private static void handleProgressBarSound(float ___distanceFromCatching)
         {
         }
 
         private static void cleanup()
         {
-            if (progressSound != null && progressSound.IsPlaying)
+            if (bobberSound != null && bobberSound.IsPlaying)
             {
-                progressSound.Stop(Microsoft.Xna.Framework.Audio.AudioStopOptions.Immediate);
+                bobberSound.Stop(Microsoft.Xna.Framework.Audio.AudioStopOptions.Immediate);
             }
         }
     }
