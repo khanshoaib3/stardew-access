@@ -1,7 +1,5 @@
 using Microsoft.Xna.Framework;
-using Netcode;
 using StardewValley;
-using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
@@ -114,6 +112,26 @@ namespace stardew_access.Features
             if (warp != null || door != null)
             {
                 return (warp ?? door, CATEGORY.Doors);
+            }
+
+            if (isMineDownLadderAtTile(currentLocation, x, y))
+            {
+                return ("Ladder", CATEGORY.Doors);
+            }
+
+            if (isShaftAtTile(currentLocation, x, y))
+            {
+                return ("Shaft", CATEGORY.Doors);
+            }
+
+            if (isMineUpLadderAtTile(currentLocation, x, y))
+            {
+                return ("Up Ladder", CATEGORY.Doors);
+            }
+
+            if (isElevatorAtTile(currentLocation, x, y))
+            {
+                return ("Elevator", CATEGORY.Doors);
             }
 
             string? junimoBundle = GetJunimoBundleAt(currentLocation, x, y);
@@ -354,7 +372,7 @@ namespace stardew_access.Features
         {
             // Get the terrain feature from the reference
             var terrainFeature = terrain.Get();
-            
+
             // Check if the terrain feature is HoeDirt
             if (terrainFeature is HoeDirt dirt)
             {
@@ -803,7 +821,7 @@ namespace stardew_access.Features
         /// <returns>True if a mine down ladder is found at the specified tile, otherwise false.</returns>
         public static bool isMineDownLadderAtTile(GameLocation currentLocation, int x, int y)
         {
-            return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave" 
+            return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
                    ? CheckTileIndex(currentLocation, x, y, 173)
                    : false;
         }
@@ -861,7 +879,7 @@ namespace stardew_access.Features
         {
             // Create a Point object from the given tile coordinates
             Point tilePoint = new(x, y);
-            
+
             // Access the doorList in the current location
             StardewValley.Network.NetPointDictionary<string, Netcode.NetString> doorList = currentLocation.doors;
 

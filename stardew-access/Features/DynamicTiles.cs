@@ -1,13 +1,8 @@
 using Microsoft.Xna.Framework;
-using Netcode;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
-using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
 using static stardew_access.Features.Utils;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 
 namespace stardew_access.Features
@@ -16,101 +11,101 @@ namespace stardew_access.Features
     /// Provides methods to locate tiles of interest in various game locations that are conditional or unpredictable (I.E. not static).
     /// </summary>
     /// <remarks>
-        /// The DynamicTiles class currently supports the following location types:
-        /// - Beach
-        /// - BoatTunnel
-        /// - CommunityCenter
-        /// - Farm
-        /// - FarmHouse
-        /// - Forest
-        /// - IslandFarmHouse
-        /// - IslandLocation
-        /// - LibraryMuseum
-        /// - Town
-        ///
-        /// And the following Island LocationTypes:
-        /// - IslandNorth
-        /// - IslandWest
-        /// - VolcanoDungeon
-        ///
-        /// The class also supports the following named locations:
-        /// - Barn (and its upgraded versions)
-        /// - Coop (and its upgraded versions)
-        ///
-        /// The class does not yet support the following location types, but consider adding support in future updates:
-        /// - AbandonedJojaMart
-        /// - AdventureGuild
-        /// - BathHousePool
-        /// - BeachNightMarket
-        /// - BugLand
-        /// - BusStop
-        /// - Caldera
-        /// - Cellar
-        /// - Club
-        /// - Desert
-        /// - FarmCave
-        /// - FishShop
-        /// - JojaMart
-        /// - ManorHouse
-        /// - MermaidHouse
-        /// - Mine
-        /// - Mountain
-        /// - MovieTheater
-        /// - Railroad
-        /// - SeedShop
-        /// - Sewer
-        /// - Submarine
-        /// - Summit
-        /// - WizardHouse
-        /// - Woods
-        ///
-        /// The class does not yet support the following named locations, but consider adding support in future updates:
-        /// - "AnimalShop"
-        /// - "Backwoods"
-        /// - "BathHouse_Entry"
-        /// - "BathHouse_MensLocker"
-        /// - "BathHouse_WomensLocker"
-        /// - "Blacksmith"
-        /// - "ElliottHouse"
-        /// - "FarmGreenHouse"
-        /// - "Greenhouse"
-        /// - "HaleyHouse"
-        /// - "HarveyRoom"
-        /// - "Hospital"
-        /// - "JoshHouse"
-        /// - "LeahHouse"
-        /// - "LeoTreeHouse"
-        /// - "Saloon"
-        /// - "SamHouse"
-        /// - "SandyHouse"
-        /// - "ScienceHouse"
-        /// - "SebastianRoom"
-        /// - "SkullCave"
-        /// - "Sunroom"
-        /// - "Tent"
-        /// - "Trailer"
-        /// - "Trailer_Big"
-        /// - "Tunnel"
-        /// - "WitchHut"
-        /// - "WitchSwamp"
-        /// - "WitchWarpCave"
-        /// - "WizardHouseBasement"
-        ///
-        /// The class does not yet support the following IslandLocation location types, but consider adding support in future updates:
-        /// - IslandEast
-        /// - IslandFarmCave
-        /// - IslandFieldOffice
-        /// - IslandHut
-        /// - IslandShrine
-        /// - IslandSouth
-        /// - IslandSouthEast
-        /// - IslandSouthEastCave
-        /// - IslandWestCave1
-        ///
-        /// The class does not yet support the following IslandLocation named locations, but consider adding support in future updates:
-        /// - "CaptainRoom"
-        /// - "IslandNorthCave1"
-        /// - "QiNutRoom"
+    /// The DynamicTiles class currently supports the following location types:
+    /// - Beach
+    /// - BoatTunnel
+    /// - CommunityCenter
+    /// - Farm
+    /// - FarmHouse
+    /// - Forest
+    /// - IslandFarmHouse
+    /// - IslandLocation
+    /// - LibraryMuseum
+    /// - Town
+    ///
+    /// And the following Island LocationTypes:
+    /// - IslandNorth
+    /// - IslandWest
+    /// - VolcanoDungeon
+    ///
+    /// The class also supports the following named locations:
+    /// - Barn (and its upgraded versions)
+    /// - Coop (and its upgraded versions)
+    ///
+    /// The class does not yet support the following location types, but consider adding support in future updates:
+    /// - AbandonedJojaMart
+    /// - AdventureGuild
+    /// - BathHousePool
+    /// - BeachNightMarket
+    /// - BugLand
+    /// - BusStop
+    /// - Caldera
+    /// - Cellar
+    /// - Club
+    /// - Desert
+    /// - FarmCave
+    /// - FishShop
+    /// - JojaMart
+    /// - ManorHouse
+    /// - MermaidHouse
+    /// - Mine
+    /// - Mountain
+    /// - MovieTheater
+    /// - Railroad
+    /// - SeedShop
+    /// - Sewer
+    /// - Submarine
+    /// - Summit
+    /// - WizardHouse
+    /// - Woods
+    ///
+    /// The class does not yet support the following named locations, but consider adding support in future updates:
+    /// - "AnimalShop"
+    /// - "Backwoods"
+    /// - "BathHouse_Entry"
+    /// - "BathHouse_MensLocker"
+    /// - "BathHouse_WomensLocker"
+    /// - "Blacksmith"
+    /// - "ElliottHouse"
+    /// - "FarmGreenHouse"
+    /// - "Greenhouse"
+    /// - "HaleyHouse"
+    /// - "HarveyRoom"
+    /// - "Hospital"
+    /// - "JoshHouse"
+    /// - "LeahHouse"
+    /// - "LeoTreeHouse"
+    /// - "Saloon"
+    /// - "SamHouse"
+    /// - "SandyHouse"
+    /// - "ScienceHouse"
+    /// - "SebastianRoom"
+    /// - "SkullCave"
+    /// - "Sunroom"
+    /// - "Tent"
+    /// - "Trailer"
+    /// - "Trailer_Big"
+    /// - "Tunnel"
+    /// - "WitchHut"
+    /// - "WitchSwamp"
+    /// - "WitchWarpCave"
+    /// - "WizardHouseBasement"
+    ///
+    /// The class does not yet support the following IslandLocation location types, but consider adding support in future updates:
+    /// - IslandEast
+    /// - IslandFarmCave
+    /// - IslandFieldOffice
+    /// - IslandHut
+    /// - IslandShrine
+    /// - IslandSouth
+    /// - IslandSouthEast
+    /// - IslandSouthEastCave
+    /// - IslandWestCave1
+    ///
+    /// The class does not yet support the following IslandLocation named locations, but consider adding support in future updates:
+    /// - "CaptainRoom"
+    /// - "IslandNorthCave1"
+    /// - "QiNutRoom"
     /// </remarks>
     public class DynamicTiles
     {

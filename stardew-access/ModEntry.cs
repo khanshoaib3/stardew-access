@@ -6,8 +6,6 @@ using HarmonyLib;
 using stardew_access.Patches;
 using stardew_access.ScreenReader;
 using Microsoft.Xna.Framework;
-using StardewValley.Menus;
-using Microsoft.Xna.Framework.Input;
 
 namespace stardew_access
 {
