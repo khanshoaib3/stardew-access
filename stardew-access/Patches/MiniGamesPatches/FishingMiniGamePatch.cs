@@ -8,7 +8,7 @@ namespace stardew_access.Patches
         private static ICue? bobberSound = null;
         private static float previousDistanceFromCatching = 0f;
 
-        internal static void BobberBarPatch(BobberBar __instance, ref float ___difficulty, ref int ___motionType, float ___distanceFromCatching, float ___bobberPosition, float ___bobberBarPos, bool ___bobberInBar, int ___bobberBarHeight, bool ___fadeOut, bool ___fadeIn)
+        internal static void BobberBarPatch(BobberBar __instance, ref float ___difficulty, ref int ___motionType, float ___distanceFromCatching, float ___bobberPosition, float ___bobberBarPos, float ___bobberBarSpeed, bool ___bobberInBar, int ___bobberBarHeight, bool ___fadeOut, bool ___fadeIn)
         {
             try
             {
@@ -38,6 +38,8 @@ namespace stardew_access.Patches
 
                 handleProgressBarSound(___distanceFromCatching);
 
+                handleBobberBarCollisionSound(___bobberBarPos, ___bobberBarSpeed, ___bobberBarHeight);
+
                 handleBobberTargetSound(___bobberPosition, ___bobberBarPos, ___bobberInBar, ___bobberBarHeight);
             }
             catch (System.Exception e)
@@ -46,14 +48,14 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void handleBobberTargetSound(float bobberPosition, float bobberBarPos, bool bobberInBar, int ___bobberBarHeight)
+        private static void handleBobberTargetSound(float ___bobberPosition, float ___bobberBarPos, bool ___bobberInBar, int ___bobberBarHeight)
         {
             if (bobberSound == null)
             {
                 bobberSound = Game1.soundBank.GetCue("SinWave");
             }
 
-            if (bobberInBar)
+            if (___bobberInBar)
             {
                 if (bobberSound.IsPlaying)
                 {
@@ -64,17 +66,17 @@ namespace stardew_access.Patches
 
             bool shouldPlay = false;
 
-            if (bobberPosition < bobberBarPos)
+            if (___bobberPosition < ___bobberBarPos)
             {
-                int distanceFromBobber = (int)(bobberBarPos - bobberPosition + (___bobberBarHeight / 2));
+                int distanceFromBobber = (int)(___bobberBarPos - ___bobberPosition + (___bobberBarHeight / 2));
                 float calculatedPitch = 1200f + distanceFromBobber * 4;
                 bobberSound.SetVariable("Pitch", calculatedPitch);
                 shouldPlay = true;
             }
 
-            if (bobberPosition > bobberBarPos)
+            if (___bobberPosition > ___bobberBarPos)
             {
-                int distanceFromBobber = (int)(bobberPosition - bobberBarPos - (___bobberBarHeight / 2));
+                int distanceFromBobber = (int)(___bobberPosition - ___bobberBarPos - (___bobberBarHeight / 2));
                 float calculatedPitch = 1200f - distanceFromBobber * 4;
                 bobberSound.SetVariable("Pitch", calculatedPitch);
                 shouldPlay = true;
@@ -93,37 +95,62 @@ namespace stardew_access.Patches
 
         private static void handleProgressBarSound(float ___distanceFromCatching)
         {
-            if (___distanceFromCatching > previousDistanceFromCatching){
-                if (___distanceFromCatching >= 0.2f && previousDistanceFromCatching < 0.2f){
+            if (___distanceFromCatching > previousDistanceFromCatching)
+            {
+                if (___distanceFromCatching >= 0.2f && previousDistanceFromCatching < 0.2f)
+                {
                     Game1.playSound("bobber_progress");
                 }
-                else if (___distanceFromCatching >= 0.4f && previousDistanceFromCatching < 0.4f){
+                else if (___distanceFromCatching >= 0.4f && previousDistanceFromCatching < 0.4f)
+                {
                     Game1.playSound("bobber_progress");
                 }
-                else if (___distanceFromCatching >= 0.6f && previousDistanceFromCatching < 0.6f){
+                else if (___distanceFromCatching >= 0.6f && previousDistanceFromCatching < 0.6f)
+                {
                     Game1.playSound("bobber_progress");
                 }
-                else if (___distanceFromCatching >= 0.8f && previousDistanceFromCatching < 0.8f){
+                else if (___distanceFromCatching >= 0.8f && previousDistanceFromCatching < 0.8f)
+                {
                     Game1.playSound("bobber_progress");
                 }
 
                 previousDistanceFromCatching = ___distanceFromCatching;
             }
-            else if (___distanceFromCatching < previousDistanceFromCatching){
-                if (___distanceFromCatching <= 0.2f && previousDistanceFromCatching > 0.2f){
+            else if (___distanceFromCatching < previousDistanceFromCatching)
+            {
+                if (___distanceFromCatching <= 0.2f && previousDistanceFromCatching > 0.2f)
+                {
                     Game1.playSoundPitched("bobber_progress", -100);
                 }
-                else if (___distanceFromCatching <= 0.4f && previousDistanceFromCatching > 0.4f){
+                else if (___distanceFromCatching <= 0.4f && previousDistanceFromCatching > 0.4f)
+                {
                     Game1.playSoundPitched("bobber_progress", -100);
                 }
-                else if (___distanceFromCatching <= 0.6f && previousDistanceFromCatching > 0.6f){
+                else if (___distanceFromCatching <= 0.6f && previousDistanceFromCatching > 0.6f)
+                {
                     Game1.playSoundPitched("bobber_progress", -100);
                 }
-                else if (___distanceFromCatching <= 0.8f && previousDistanceFromCatching > 0.8f){
+                else if (___distanceFromCatching <= 0.8f && previousDistanceFromCatching > 0.8f)
+                {
                     Game1.playSoundPitched("bobber_progress", -100);
                 }
 
                 previousDistanceFromCatching = ___distanceFromCatching;
+            }
+        }
+
+        private static void handleBobberBarCollisionSound(float ___bobberBarPos, float ___bobberBarSpeed, int ___bobberBarHeight)
+        {
+            float estimatedBobberBarPos = ___bobberBarPos + ___bobberBarSpeed;
+            if (estimatedBobberBarPos + (float)___bobberBarHeight > 568f)
+            {
+                MainClass.DebugLog("Collided with bottom");
+                Game1.playSoundPitched("axchop", -100);
+            }
+            else if (estimatedBobberBarPos < 0f)
+            {
+                MainClass.DebugLog("Collided with top");
+                Game1.playSoundPitched("axchop", 1000);
             }
         }
 
