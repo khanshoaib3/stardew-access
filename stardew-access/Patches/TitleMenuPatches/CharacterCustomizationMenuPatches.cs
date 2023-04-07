@@ -1,5 +1,7 @@
+using System.Text.Json;
 using StardewValley;
 using StardewValley.Menus;
+using static stardew_access.Features.Utils;
 
 namespace stardew_access.Patches
 {
@@ -7,28 +9,69 @@ namespace stardew_access.Patches
     {
         private static bool isRunning = false;
         private static int saveGameIndex = -1;
-        public static string characterCreationMenuQueryKey = " ";
-        public static string prevPants = " ";
-        public static string prevShirt = " ";
-        public static string prevHair = " ";
-        public static string prevAccessory = " ";
-        public static string prevSkin = " ";
-        public static string prevEyeColor = " ";
-        public static string prevEyeColorHue = " ";
-        public static string prevEyeColorSaturation = " ";
-        public static string prevEyeColorValue = " ";
-        public static string prevHairColor = " ";
-        public static string prevHairColorHue = " ";
-        public static string prevHairColorSaturation = " ";
-        public static string prevHairColorValue = " ";
-        public static string prevPantsColor = " ";
-        public static string prevPantsColorHue = " ";
-        public static string prevPantsColorSaturation = " ";
-        public static string prevPantsColorValue = " ";
-        public static string prevPetName = " ";
-        public static bool characterDesignToggle = false;
-        public static bool characterDesignToggleShouldSpeak = true;
-        public static ClickableComponent? currentComponent = null;
+        private static string characterCreationMenuQueryKey = " ";
+        private static string prevPants = " ";
+        private static string prevShirt = " ";
+        private static string prevHair = " ";
+        private static string prevAccessory = " ";
+        private static string prevSkin = " ";
+        private static string prevEyeColor = " ";
+        private static string prevEyeColorHue = " ";
+        private static string prevEyeColorSaturation = " ";
+        private static string prevEyeColorValue = " ";
+        private static string prevHairColor = " ";
+        private static string prevHairColorHue = " ";
+        private static string prevHairColorSaturation = " ";
+        private static string prevHairColorValue = " ";
+        private static string prevPantsColor = " ";
+        private static string prevPantsColorHue = " ";
+        private static string prevPantsColorSaturation = " ";
+        private static string prevPantsColorValue = " ";
+        private static string prevPet = " ";
+        private static bool characterDesignToggle = false;
+        private static bool characterDesignToggleShouldSpeak = true;
+        private static ClickableComponent? currentComponent = null;
+        private static Dictionary<string, Dictionary<int, string>> descriptions
+        {
+            get
+            {
+                if (_descriptions == null)
+                {
+                    _descriptions = LoadDescriptionJson();
+                }
+                return _descriptions;
+            }
+        }
+        private static Dictionary<string, Dictionary<int, string>>? _descriptions;
+
+        private static Dictionary<string, Dictionary<int, string>> LoadDescriptionJson()
+        {
+            MainClass.DebugLog("Attempting to load json");
+            JsonElement jsonElement = LoadJsonFile("new-character-appearance-descriptions.json");
+
+            if (jsonElement.ValueKind == JsonValueKind.Undefined)
+            {
+                return new Dictionary<string, Dictionary<int, string>>();
+            }
+
+            Dictionary<string, Dictionary<int, string>> result = new Dictionary<string, Dictionary<int, string>>();
+
+            foreach (JsonProperty category in jsonElement.EnumerateObject())
+            {
+                Dictionary<int, string> innerDictionary = new Dictionary<int, string>();
+
+                foreach (JsonProperty item in category.Value.EnumerateObject())
+                {
+                    int index = int.Parse(item.Name);
+                    innerDictionary[index] = item.Value.GetString() ?? "";
+                }
+
+                result[category.Name] = innerDictionary;
+                MainClass.InfoLog($"Loaded key '{category.Name}' with {innerDictionary.Count} entries in the sub dictionary.");
+            }
+
+            return result;
+        }
 
         internal static void DrawPatch(CharacterCustomization __instance, bool ___skipIntro,
         ClickableComponent ___startingCabinsLabel, ClickableComponent ___difficultyModifierLabel, TextBox ___nameBox,
@@ -126,24 +169,24 @@ namespace stardew_access.Patches
         private static string getChangesToSpeak(CharacterCustomization __instance)
         {
             string toSpeak = "";
-            string currentPetName = getCurrentPetName();
-            string currentSkin = getCurrentSkin();
-            string currentHair = getCurrentHair();
-            string currentShirt = getCurrentShirt();
-            string currentPants = getCurrentPants();
-            string currentAccessory = getCurrentAccessory();
-            string currentEyeColor = getCurrentEyeColor();
-            string currentEyeColorHue = getCurrentEyeColorHue(__instance);
-            string currentEyeColorSaturation = getCurrentEyeColorSaturation(__instance);
-            string currentEyeColorValue = getCurrentEyeColorValue(__instance);
-            string currentHairColor = getCurrentHairColor();
-            string currentHairColorHue = getCurrentHairColorHue(__instance);
-            string currentHairColorSaturation = getCurrentHairColorSaturation(__instance);
-            string currentHairColorValue = getCurrentHairColorValue(__instance);
-            string currentPantsColor = getCurrentPantsColor();
-            string currentPantsColorHue = getCurrentPantsColorHue(__instance);
-            string currentPantsColorSaturation = getCurrentPantsColorSaturation(__instance);
-            string currentPantsColorValue = getCurrentPantsColorValue(__instance);
+            string currentPet = GetCurrentPet();
+            string currentSkin = GetCurrentSkin();
+            string currentHair = GetCurrentHair();
+            string currentShirt = GetCurrentShirt();
+            string currentPants = GetCurrentPants();
+            string currentAccessory = GetCurrentAccessory();
+            string currentEyeColor = GetCurrentEyeColor();
+            string currentEyeColorHue = GetCurrentEyeColorHue(__instance);
+            string currentEyeColorSaturation = GetCurrentEyeColorSaturation(__instance);
+            string currentEyeColorValue = GetCurrentEyeColorValue(__instance);
+            string currentHairColor = GetCurrentHairColor();
+            string currentHairColorHue = GetCurrentHairColorHue(__instance);
+            string currentHairColorSaturation = GetCurrentHairColorSaturation(__instance);
+            string currentHairColorValue = GetCurrentHairColorValue(__instance);
+            string currentPantsColor = GetCurrentPantsColor();
+            string currentPantsColorHue = GetCurrentPantsColorHue(__instance);
+            string currentPantsColorSaturation = GetCurrentPantsColorSaturation(__instance);
+            string currentPantsColorValue = GetCurrentPantsColorValue(__instance);
 
             if (characterDesignToggle)
             {
@@ -339,11 +382,11 @@ namespace stardew_access.Patches
                 }
             }
 
-            if (prevPetName != currentPetName)
+            if (prevPet != currentPet)
             {
-                prevPetName = currentPetName;
-                if (currentPetName != "")
-                    toSpeak = $"{toSpeak} \n Current Pet: {currentPetName}";
+                prevPet = currentPet;
+                if (currentPet != "")
+                    toSpeak = $"{toSpeak} \n Current Pet: {currentPet}";
             }
             return toSpeak.Trim();
         }
@@ -693,145 +736,99 @@ namespace stardew_access.Patches
         }
 
         // Most values (exception noted below) are 0 indexed internally but visually start from 1. Thus we increment before returning.
-        private static string getCurrentSkin()
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == "Skin"))
-                return $"Skin tone: {Game1.player.skin.Value + 1}";
-            return "";
-        }
-
-        private static string getCurrentHair()
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == "Hair"))
-                return $"hair style: {Game1.player.hair.Value + 1}";
-            return "";
-        }
-
-        private static string getCurrentShirt()
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == "Shirt"))
-                return $"Shirt: {Game1.player.shirt.Value + 1}";
-            return "";
-        }
-
-        private static string getCurrentPants()
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == "Pants Style"))
-                return $"Pants: {Game1.player.pants.Value + 1}";
-            return "";
-        }
-
-        private static string getCurrentAccessory()
-        {
-            // Internally accessory starts from -1 while displaying +1 on screen.
-            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == "Acc"))
-                return $"accessory: {Game1.player.accessory.Value + 2}";
-            return "";
-        }
-
-        private static string getCurrentEyeColor()
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 522 && currentComponent.myID <= 524)))
-                return $"Eye color: {Game1.player.newEyeColor.R}, {Game1.player.newEyeColor.G}, {Game1.player.newEyeColor.B}";
-            return "";
-        }
-
-        private static string getCurrentEyeColorHue(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(522, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 522 && currentComponent.myID <= 524)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentEyeColorSaturation(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(523, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 522 && currentComponent.myID <= 524)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentEyeColorValue(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(524, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 522 && currentComponent.myID <= 524)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentHairColor()
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 525 && currentComponent.myID <= 527)))
-                return $"Hair color: {Game1.player.hairstyleColor.R}, {Game1.player.hairstyleColor.G}, {Game1.player.hairstyleColor.B}";
-            return "";
-        }
-
-        private static string getCurrentHairColorHue(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(525, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 525 && currentComponent.myID <= 527)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentHairColorSaturation(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(526, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 525 && currentComponent.myID <= 527)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentHairColorValue(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(527, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 525 && currentComponent.myID <= 527)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentPantsColor()
-        {
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 528 && currentComponent.myID <= 530)))
-                return $"Pants color: {Game1.player.pantsColor.R}, {Game1.player.pantsColor.G}, {Game1.player.pantsColor.B}";
-            return "";
-        }
-
-        private static string getCurrentPantsColorHue(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(528, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 528 && currentComponent.myID <= 530)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentPantsColorSaturation(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(529, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 528 && currentComponent.myID <= 530)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentPantsColorValue(CharacterCustomization __instance)
-        {
-            SliderBar sb = getCurrentSliderBar(530, __instance)!;
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 528 && currentComponent.myID <= 530)))
-                return sb.value!.ToString();
-            return "";
-        }
-
-        private static string getCurrentPetName()
+        private static string GetCurrentPet(bool lessInfo = false)
         {
             if (currentComponent != null && currentComponent.name == "Pet")
             {
-                return ((Game1.player.catPerson) ? "Cat" : "Dog") + " Breed: " + Game1.player.whichPetBreed;
+                int whichPetBreed = Game1.player.whichPetBreed + 1;
+
+                if (!lessInfo)
+                {
+                    string petType = Game1.player.catPerson ? "Cat" : "Dog";
+                    if (descriptions.TryGetValue(petType, out var innerDict) && innerDict.TryGetValue(whichPetBreed, out var description))
+                    {
+                        return description;
+                    }
+                    else
+                    {
+                        MainClass.ErrorLog($"Warning: Description for {petType} with index {whichPetBreed} not found in the dictionary.");
+                    }
+                }
+
+                return $"{(Game1.player.catPerson ? "Cat" : "Dog")} #{whichPetBreed + 1}";
             }
-            else
-            {
-                return "";
-            }
+            return "";
         }
+
+        private static string GetCurrentAttributeValue(string componentName, Func<int> getValue, bool lessInfo = false)
+        {
+            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == componentName))
+            {
+                int index = getValue();
+
+                if (!lessInfo)
+                {
+                    if (descriptions.TryGetValue(componentName, out var innerDict))
+                    {
+                        if (innerDict.TryGetValue(index, out var description))
+                        {
+                            return description;
+                        }
+                        else
+                        {
+                            MainClass.ErrorLog($"Warning: Description for {componentName} with index {index} not found in the inner dictionary.");
+                        }
+                    }
+                    else
+                    {
+                        MainClass.ErrorLog($"Warning: Description for {componentName} not found in the outer dictionary.");
+                    }
+                }
+                return $"{componentName}: {index}";
+            }
+            return "";
+        }
+
+        private static string GetCurrentSkin(bool lessInfo = false) => GetCurrentAttributeValue("Skin", () => Game1.player.skin.Value + 1, lessInfo);
+
+        private static string GetCurrentHair(bool lessInfo = false) => GetCurrentAttributeValue("Hair", () => Game1.player.hair.Value + 1, lessInfo);
+
+        private static string GetCurrentShirt(bool lessInfo = false) => GetCurrentAttributeValue("Shirt", () => Game1.player.shirt.Value + 1, lessInfo);
+
+        private static string GetCurrentPants(bool lessInfo = false) => GetCurrentAttributeValue("Pants Style", () => Game1.player.pants.Value + 1, lessInfo);
+
+        private static string GetCurrentAccessory(bool lessInfo = false) => GetCurrentAttributeValue("Accessory", () => Game1.player.accessory.Value + 2, lessInfo);
+
+        private static string GetCurrentColorAttributeValue(string componentName, int minID, int maxID, Func<string> getValue)
+        {
+            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= minID && currentComponent.myID <= maxID)))
+            {
+                return $"{componentName}: {getValue()}";
+            }
+            return "";
+        }
+
+        private static string GetCurrentEyeColor() => GetCurrentColorAttributeValue("Eye color", 522, 524, () => $"{Game1.player.newEyeColor.R}, {Game1.player.newEyeColor.G}, {Game1.player.newEyeColor.B}");
+
+        private static string GetCurrentEyeColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Eye color hue", 522, 524, () => (getCurrentSliderBar(522, __instance)!.value!.ToString()));
+
+        private static string GetCurrentEyeColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Eye color saturation", 522, 524, () => (getCurrentSliderBar(523, __instance)!.value!.ToString()));
+
+        private static string GetCurrentEyeColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Eye color value", 522, 524, () => (getCurrentSliderBar(524, __instance)!.value!.ToString()));
+
+        private static string GetCurrentHairColor() => GetCurrentColorAttributeValue("Hair color", 525, 527, () => $"{Game1.player.hairstyleColor.R}, {Game1.player.hairstyleColor.G}, {Game1.player.hairstyleColor.B}");
+
+        private static string GetCurrentHairColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hair color hue", 525, 527, () => (getCurrentSliderBar(525, __instance)!.value!.ToString()));
+
+        private static string GetCurrentHairColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hair color saturation", 525, 527, () => (getCurrentSliderBar(526, __instance)!.value!.ToString()));
+
+        private static string GetCurrentHairColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hair color value", 525, 527, () => (getCurrentSliderBar(527, __instance)!.value!.ToString()));
+        private static string GetCurrentPantsColor() => GetCurrentColorAttributeValue("Pants color", 528, 530, () => $"{Game1.player.pantsColor.R}, {Game1.player.pantsColor.G}, {Game1.player.pantsColor.B}");
+
+        private static string GetCurrentPantsColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Pants color hue", 528, 530, () => (getCurrentSliderBar(528, __instance)!.value!.ToString()));
+
+        private static string GetCurrentPantsColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Pants color saturation", 528, 530, () => (getCurrentSliderBar(529, __instance)!.value!.ToString()));
+
+        private static string GetCurrentPantsColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Pants color value", 528, 530, () => (getCurrentSliderBar(530, __instance)!.value!.ToString()));
     }
 }

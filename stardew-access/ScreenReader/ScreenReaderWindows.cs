@@ -1,4 +1,5 @@
 ﻿using DavyKager;
+using System.IO;
 
 namespace stardew_access.ScreenReader
 {
@@ -15,6 +16,13 @@ namespace stardew_access.ScreenReader
 
         public void InitializeScreenReader()
         {
+            if (MainClass.ModHelper is not null)
+            {
+                // Set the path to load Tolk.dll from
+                string dllDirectory = Path.Combine(MainClass.ModHelper.DirectoryPath, "libraries", "windows");;
+                // Call SetDllDirectory to change the DLL search path
+                NativeMethods.SetDllDirectory(dllDirectory);
+            }
             MainClass.InfoLog("Initializing Tolk...");
             Tolk.TrySAPI(true);
             Tolk.Load();
