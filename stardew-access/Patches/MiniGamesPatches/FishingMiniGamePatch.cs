@@ -6,6 +6,7 @@ namespace stardew_access.Patches
     internal class FishingMiniGamePatch
     {
         private static ICue? bobberSound = null;
+        private static float previousDistanceFromCatching = 0f;
 
         internal static void BobberBarPatch(BobberBar __instance, ref float ___difficulty, ref int ___motionType, float ___distanceFromCatching, float ___bobberPosition, float ___bobberBarPos, bool ___bobberInBar, int ___bobberBarHeight, bool ___fadeOut, bool ___fadeIn)
         {
@@ -35,7 +36,7 @@ namespace stardew_access.Patches
 
                 if (Game1.soundBank == null) return;
 
-                // handleProgressBarSound(___distanceFromCatching);
+                handleProgressBarSound(___distanceFromCatching);
 
                 handleBobberTargetSound(___bobberPosition, ___bobberBarPos, ___bobberInBar, ___bobberBarHeight);
             }
@@ -92,6 +93,38 @@ namespace stardew_access.Patches
 
         private static void handleProgressBarSound(float ___distanceFromCatching)
         {
+            if (___distanceFromCatching > previousDistanceFromCatching){
+                if (___distanceFromCatching >= 0.2f && previousDistanceFromCatching < 0.2f){
+                    Game1.playSound("bobber_progress");
+                }
+                else if (___distanceFromCatching >= 0.4f && previousDistanceFromCatching < 0.4f){
+                    Game1.playSound("bobber_progress");
+                }
+                else if (___distanceFromCatching >= 0.6f && previousDistanceFromCatching < 0.6f){
+                    Game1.playSound("bobber_progress");
+                }
+                else if (___distanceFromCatching >= 0.8f && previousDistanceFromCatching < 0.8f){
+                    Game1.playSound("bobber_progress");
+                }
+
+                previousDistanceFromCatching = ___distanceFromCatching;
+            }
+            else if (___distanceFromCatching < previousDistanceFromCatching){
+                if (___distanceFromCatching <= 0.2f && previousDistanceFromCatching > 0.2f){
+                    Game1.playSoundPitched("bobber_progress", -100);
+                }
+                else if (___distanceFromCatching <= 0.4f && previousDistanceFromCatching > 0.4f){
+                    Game1.playSoundPitched("bobber_progress", -100);
+                }
+                else if (___distanceFromCatching <= 0.6f && previousDistanceFromCatching > 0.6f){
+                    Game1.playSoundPitched("bobber_progress", -100);
+                }
+                else if (___distanceFromCatching <= 0.8f && previousDistanceFromCatching > 0.8f){
+                    Game1.playSoundPitched("bobber_progress", -100);
+                }
+
+                previousDistanceFromCatching = ___distanceFromCatching;
+            }
         }
 
         private static void cleanup()
@@ -100,6 +133,8 @@ namespace stardew_access.Patches
             {
                 bobberSound.Stop(Microsoft.Xna.Framework.Audio.AudioStopOptions.Immediate);
             }
+
+            previousDistanceFromCatching = 0f;
         }
     }
 }
