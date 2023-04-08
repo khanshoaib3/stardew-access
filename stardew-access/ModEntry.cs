@@ -346,6 +346,20 @@ namespace stardew_access
             TileViewerFeature.HandleInput();
         }
 
+        public static string Translate(string translationKey)
+        {
+            if (ModHelper == null) return "null";
+
+            return ModHelper.Translation.Get(translationKey);
+        }
+
+        public static string Translate(string translationKey, object? tokens)
+        {
+            if (ModHelper == null) return "null";
+
+            return ModHelper.Translation.Get(translationKey, tokens);
+        }
+
         private static void LogMessage(string message, LogLevel logLevel)
         {
             if (monitor == null)
