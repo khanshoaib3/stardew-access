@@ -11,7 +11,9 @@ namespace stardew_access.Patches
         internal static FarmAnimal? animalBeingMoved = null;
         internal static bool isOnFarm = false;
 
-        internal static void DrawPatch(AnimalQueryMenu __instance, bool ___confirmingSell, FarmAnimal ___animal, TextBox ___textBox, string ___parentName, bool ___movingAnimal)
+        private static double loveLevel;
+
+        internal static void DrawPatch(AnimalQueryMenu __instance, bool ___confirmingSell, FarmAnimal ___animal, TextBox ___textBox, string ___parentName, bool ___movingAnimal, double ___loveLevel)
         {
             try
             {
@@ -22,6 +24,8 @@ namespace stardew_access.Patches
                 isOnFarm = ___movingAnimal;
                 animalQueryMenu = __instance;
                 animalBeingMoved = ___animal;
+
+                loveLevel = ___loveLevel;
 
                 narrateAnimalDetailsOnKeyPress(___animal, ___parentName);
 
@@ -44,6 +48,7 @@ namespace stardew_access.Patches
             int age = (___animal.GetDaysOwned() + 1) / 28 + 1;
             string ageText = (age <= 1) ? Game1.content.LoadString("Strings\\UI:AnimalQuery_Age1") : Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeN", age);
             string parent = "";
+
             if ((int)___animal.age.Value < (byte)___animal.ageWhenMature.Value)
             {
                 ageText += Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeBaby");
@@ -53,10 +58,26 @@ namespace stardew_access.Patches
                 parent = Game1.content.LoadString("Strings\\UI:AnimalQuery_Parent", ___parentName);
             }
 
+            // The loveLevel varies between 0 and 1
+            // 1 indicates 5 hearts and similarily 0 indicates 0 hearts
+            // the below code multiplies the loveLevel by 10 and 
+            // the numeric value of the resultent is divided by 2 to give the number of full hearts and
+            // if its decimal value is above 0.5, then that indicates half a heart
+            double heartCount = Math.Floor(loveLevel * 10);
+            double remainder = (loveLevel * 10) % 1;
+            heartCount /= 2;
+            if (remainder >= 0.5)
+            {
+                heartCount += 0.5;
+            }
+
+            MainClass.DebugLog($"Lovelevel: {loveLevel}");
+            string heart = MainClass.Translate("patch.animal_query_menu.heart", new { count = heartCount });
+
             isNarratingAnimalInfo = true;
             Task.Delay(200).ContinueWith(_ => { isNarratingAnimalInfo = false; }); // Adds delay
 
-            MainClass.ScreenReader.Say($"Name: {name} Type: {type} \n\t Age: {ageText} {parent}", true);
+            MainClass.ScreenReader.Say($"Name: {name} Type: {type} \n\t {ageText} {parent} \n\t {heart}", true);
         }
 
         private static void narrateHoveredButton(AnimalQueryMenu __instance, FarmAnimal ___animal, bool ___confirmingSell, int x, int y)
