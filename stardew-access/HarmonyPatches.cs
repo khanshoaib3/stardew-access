@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using stardew_access.Patches;
 using StardewValley;
+using StardewValley.Characters;
 using StardewValley.Menus;
 using StardewValley.Minigames;
 
@@ -305,6 +306,11 @@ namespace stardew_access
             harmony.Patch(
                     original: AccessTools.Method(typeof(Game1), nameof(Game1.closeTextEntry)),
                     prefix: new HarmonyMethod(typeof(Game1Patch), nameof(Game1Patch.CloseTextEntryPatch))
+                );
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(TrashBear), nameof(TrashBear.draw), new Type[] { typeof(SpriteBatch) }),
+                    prefix: new HarmonyMethod(typeof(TrashBearPatch), nameof(TrashBearPatch.DrawPatch))
                 );
         }
     }
