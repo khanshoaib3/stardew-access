@@ -309,8 +309,8 @@ namespace stardew_access
                 );
 
             harmony.Patch(
-                    original: AccessTools.Method(typeof(TrashBear), nameof(TrashBear.draw), new Type[] { typeof(SpriteBatch) }),
-                    prefix: new HarmonyMethod(typeof(TrashBearPatch), nameof(TrashBearPatch.DrawPatch))
+                    original: AccessTools.Method(typeof(TrashBear), nameof(TrashBear.checkAction)),
+                    postfix: new HarmonyMethod(typeof(TrashBearPatch), nameof(TrashBearPatch.CheckActionPatch))
                 );
         }
     }
