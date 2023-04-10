@@ -24,7 +24,7 @@ namespace stardew_access.Patches
 
                 if (___onFarm && ___namingAnimal)
                 {
-                    narrateNamingMenu(__instance, x, y);
+                    narrateNamingMenu(__instance, ___textBox, x, y);
                 }
                 else if (___onFarm && !___namingAnimal)
                 {
@@ -42,7 +42,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void narrateNamingMenu(PurchaseAnimalsMenu __instance, int x, int y)
+        private static void narrateNamingMenu(PurchaseAnimalsMenu __instance, TextBox ___textBox, int x, int y)
         {
             string toSpeak = "";
             if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
@@ -60,13 +60,13 @@ namespace stardew_access.Patches
             else if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
             {
                 toSpeak = "Name Text Box";
-                // string? value = ___textBox.Text;
-                // if (value != "" && value != null && value != "null")
-                //     toSpeak = $"{toSpeak}, Value: {value}";
+                string? name = ___textBox.Text;
+                if (name != null)
+                    toSpeak = $"{toSpeak}, Value: {name}";
             }
 
             if (purchaseAnimalMenuQuery == toSpeak) return;
-            
+
             purchaseAnimalMenuQuery = toSpeak;
 
             if (firstTimeInNamingMenu)
@@ -98,7 +98,7 @@ namespace stardew_access.Patches
             }
 
             if (purchaseAnimalMenuQuery == toSpeak) return;
-            
+
             purchaseAnimalMenuQuery = toSpeak;
             MainClass.ScreenReader.Say(toSpeak, true);
         }

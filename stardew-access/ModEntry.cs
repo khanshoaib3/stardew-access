@@ -13,7 +13,7 @@ namespace stardew_access
     {
         #region Global Vars & Properties
 
-        #pragma warning disable CS8603
+#pragma warning disable CS8603
         private static int prevDate = -99;
         private static ModConfig? config;
         private Harmony? harmony;
@@ -129,8 +129,19 @@ namespace stardew_access
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
             helper.Events.GameLoop.DayStarted += this.onDayStarted;
+            helper.Events.Display.MenuChanged += this.onMenuChanged;
             AppDomain.CurrentDomain.DomainUnload += OnExit;
             AppDomain.CurrentDomain.ProcessExit += OnExit;
+        }
+
+        private void onMenuChanged(object? sender, MenuChangedEventArgs e)
+        {
+            TextBoxPatch.activeTextBoxes = "";
+            if (e.OldMenu != null)
+            {
+                MainClass.DebugLog($"Switched from {e.OldMenu.GetType().ToString()} menu, performing cleanup...");
+                IClickableMenuPatch.Cleanup(e.OldMenu);
+            }
         }
 
         /// <summary>Returns the Screen Reader class for other mods to use.</summary>

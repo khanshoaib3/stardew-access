@@ -199,6 +199,7 @@ namespace stardew_access.Patches
         {
             try
             {
+                MainClass.DebugLog($"Closed {__instance.GetType().ToString()} menu, performing cleanup...");
                 Cleanup(__instance);
             }
             catch (Exception e)
@@ -209,114 +210,88 @@ namespace stardew_access.Patches
 
         internal static void Cleanup(IClickableMenu menu)
         {
-            if (menu is TitleMenu)
+            switch (menu)
             {
-                TitleMenuPatch.Cleanup();
-            }
-            else if (menu is CoopMenu)
-            {
-                CoopMenuPatch.Cleanup();
-            }
-            else if (menu is LoadGameMenu)
-            {
-                LoadGameMenuPatch.Cleanup();
-            }
-            else if (menu is AdvancedGameOptions)
-            {
-                AdvancedGameOptionsPatch.Cleanup();
-            }
-            else if (menu is LetterViewerMenu)
-            {
-                LetterViwerMenuPatch.Cleanup();
-            }
-            else if (menu is LevelUpMenu)
-            {
-                LevelUpMenuPatch.Cleanup();
-            }
-            else if (menu is Billboard)
-            {
-                BillboardPatch.Cleanup();
-            }
-            else if (menu is GameMenu)
-            {
-                GameMenuPatch.Cleanup();
-                ExitPagePatch.Cleanup();
-                OptionsPagePatch.Cleanup();
-                SocialPagePatch.Cleanup();
-                InventoryPagePatch.Cleanup();
-                CraftingPagePatch.Cleanup();
-            }
-            else if (menu is JunimoNoteMenu)
-            {
-                JunimoNoteMenuPatch.Cleanup();
-            }
-            else if (menu is ShopMenu)
-            {
-                ShopMenuPatch.Cleanup();
-            }
-            else if (menu is ItemGrabMenu)
-            {
-                ItemGrabMenuPatch.Cleanup();
-            }
-            else if (menu is GeodeMenu)
-            {
-                GeodeMenuPatch.Cleanup();
-            }
-            else if (menu is CarpenterMenu)
-            {
-                CarpenterMenuPatch.Cleanup();
-            }
-            else if (menu is PurchaseAnimalsMenu)
-            {
-                PurchaseAnimalsMenuPatch.Cleanup();
-            }
-            else if (menu is AnimalQueryMenu)
-            {
-                AnimalQueryMenuPatch.Cleanup();
-            }
-            else if (menu is DialogueBox)
-            {
-                DialogueBoxPatch.Cleanup();
-            }
-            else if (menu is JojaCDMenu)
-            {
-                JojaCDMenuPatch.Cleanup();
-            }
-            else if (menu is QuestLog)
-            {
-                QuestLogPatch.Cleaup();
-            }
-            else if (menu is TailoringMenu)
-            {
-                TailoringMenuPatch.Cleanup();
-            }
-            else if (menu is ForgeMenu)
-            {
-                ForgeMenuPatch.Cleanup();
-            }
-            else if (menu is ItemListMenu)
-            {
-                ItemListMenuPatch.Cleanup();
-            }
-            else if (menu is FieldOfficeMenu)
-            {
-                FieldOfficeMenuPatch.Cleanup();
-            }
-            else if (menu is MuseumMenu)
-            {
-                MuseumMenuPatch.Cleanup();
-            }
-            else if (menu is PondQueryMenu)
-            {
-                PondQueryMenuPatch.Cleanup();
-            }
-            else if (menu is GeodeMenu)
-            {
-                GeodeMenuPatch.Cleanup();
-            }
-            else if (menu is SpecialOrdersBoard)
-            {
-                SpecialOrdersBoardPatch.Cleanup();
+                case TitleMenu:
+                    TitleMenuPatch.Cleanup();
+                    break;
+                case CoopMenu:
+                    CoopMenuPatch.Cleanup();
+                    break;
+                case LoadGameMenu:
+                    LoadGameMenuPatch.Cleanup();
+                    break;
+                case AdvancedGameOptions:
+                    AdvancedGameOptionsPatch.Cleanup();
+                    break;
+                case LetterViewerMenu:
+                    LetterViwerMenuPatch.Cleanup();
+                    break;
+                case LevelUpMenu:
+                    LevelUpMenuPatch.Cleanup();
+                    break;
+                case Billboard:
+                    BillboardPatch.Cleanup();
+                    break;
+                case GameMenu:
+                    GameMenuPatch.Cleanup();
+                    ExitPagePatch.Cleanup();
+                    OptionsPagePatch.Cleanup();
+                    SocialPagePatch.Cleanup();
+                    InventoryPagePatch.Cleanup();
+                    CraftingPagePatch.Cleanup();
+                    break;
+                case JunimoNoteMenu:
+                    JunimoNoteMenuPatch.Cleanup();
+                    break;
+                case ShopMenu:
+                    ShopMenuPatch.Cleanup();
+                    break;
+                case ItemGrabMenu:
+                    ItemGrabMenuPatch.Cleanup();
+                    break;
+                case GeodeMenu:
+                    GeodeMenuPatch.Cleanup();
+                    break;
+                case CarpenterMenu:
+                    CarpenterMenuPatch.Cleanup();
+                    break;
+                case PurchaseAnimalsMenu:
+                    PurchaseAnimalsMenuPatch.Cleanup();
+                    break;
+                case AnimalQueryMenu:
+                    AnimalQueryMenuPatch.Cleanup();
+                    break;
+                case DialogueBox:
+                    DialogueBoxPatch.Cleanup();
+                    break;
+                case JojaCDMenu:
+                    JojaCDMenuPatch.Cleanup();
+                    break;
+                case QuestLog:
+                    QuestLogPatch.Cleaup();
+                    break;
+                case TailoringMenu:
+                    TailoringMenuPatch.Cleanup();
+                    break;
+                case ForgeMenu:
+                    ForgeMenuPatch.Cleanup();
+                    break;
+                case ItemListMenu:
+                    ItemListMenuPatch.Cleanup();
+                    break;
+                case FieldOfficeMenu:
+                    FieldOfficeMenuPatch.Cleanup();
+                    break;
+                case MuseumMenu:
+                    MuseumMenuPatch.Cleanup();
+                    break;
+                case PondQueryMenu:
+                    PondQueryMenuPatch.Cleanup();
+                    break;
+                case SpecialOrdersBoard:
+                    SpecialOrdersBoardPatch.Cleanup();
+                    break;
             }
 
             InventoryUtils.Cleanup();

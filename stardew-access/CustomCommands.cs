@@ -356,7 +356,7 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("buildsel", "Select the building index which you want to upgrade/demolish/paint", (string command, string[] args) =>
             {
-                if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu && Game1.activeClickableMenu is not AnimalQueryMenu) || !CarpenterMenuPatch.isOnFarm)
+                if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu && Game1.activeClickableMenu is not AnimalQueryMenu) || (!CarpenterMenuPatch.isOnFarm && !PurchaseAnimalsMenuPatch.isOnFarm && !AnimalQueryMenuPatch.isOnFarm))
                 {
                     MainClass.InfoLog($"Cannot select building.");
                     return;
