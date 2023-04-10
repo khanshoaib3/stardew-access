@@ -13,12 +13,18 @@ namespace stardew_access.Patches
         {
             try
             {
+                MainClass.DebugLog($"Closing {Game1.activeClickableMenu.GetType().ToString()} menu, performing cleanup...");
                 IClickableMenuPatch.Cleanup(Game1.activeClickableMenu);
             }
             catch (Exception e)
             {
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
+        }
+
+        internal static void CloseTextEntryPatch()
+        {
+            TextBoxPatch.activeTextBoxes = "";
         }
 
         internal static bool PlaySoundPatch(string cueName)

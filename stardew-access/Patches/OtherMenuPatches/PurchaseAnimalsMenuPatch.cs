@@ -66,7 +66,7 @@ namespace stardew_access.Patches
             }
 
             if (purchaseAnimalMenuQuery == toSpeak) return;
-            
+
             purchaseAnimalMenuQuery = toSpeak;
 
             if (firstTimeInNamingMenu)
@@ -98,19 +98,9 @@ namespace stardew_access.Patches
             }
 
             if (purchaseAnimalMenuQuery == toSpeak) return;
-            
+
             purchaseAnimalMenuQuery = toSpeak;
             MainClass.ScreenReader.Say(toSpeak, true);
-        }
-
-        internal static bool RecieveKeyPressPatch(PurchaseAnimalsMenu __instance, Microsoft.Xna.Framework.Input.Keys key)
-        {
-            if (TextBoxPatch.isAnyTextBoxActive && Game1.options.doesInputListContain(Game1.options.menuButton, key) && __instance.readyToClose())
-            {
-                return false;
-            }
-
-            return true;
         }
 
         internal static void Cleanup()
