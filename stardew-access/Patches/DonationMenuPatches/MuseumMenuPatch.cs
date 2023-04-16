@@ -10,7 +10,7 @@ namespace stardew_access.Patches
     {
         private static string museumQueryKey = "";
         private static bool isMoving = false;
-        private static (int x, int y)[] donationTiles =
+        private static readonly (int x, int y)[] donationTiles =
         {
             (26,5),(26,6),(26,7),(26,8),(26,9),(26,10),(26,11),
             (29,5),(30,5),(31,5),(32,5),(33,5),(34,5),(35,5),(36,5),
@@ -216,10 +216,10 @@ namespace stardew_access.Patches
                     {
                         if (arg.StartsWith("achievement:"))
                         {
-                            int key = Convert.ToInt32(arg.Substring("achievement:".Length));
+                            int key = Convert.ToInt32(arg["achievement:".Length..]);
                             return Game1.content.Load<Dictionary<int, string>>("Data\\Achievements")[key].Split('^')[0];
                         }
-                        return arg.StartsWith("object:") ? new StardewValley.Object(Convert.ToInt32(arg.Substring("object:".Length)), 1).DisplayName : arg;
+                        return arg.StartsWith("object:") ? new StardewValley.Object(Convert.ToInt32(arg["object:".Length..]), 1).DisplayName : arg;
                     }).ToArray();
                     ChatBox chatBox = Game1.chatBox;
                     LocalizedContentManager content = Game1.content;

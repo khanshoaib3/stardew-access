@@ -167,7 +167,7 @@ namespace stardew_access.Patches
                         }
                         try
                         {
-                            int count = int.Parse(buffName.Substring(0, buffName.IndexOf(' ')));
+                            int count = int.Parse(buffName[..buffName.IndexOf(' ')]);
                             if (count != 0)
                                 toSpeak = $"{toSpeak} {buffName}\n";
                         }

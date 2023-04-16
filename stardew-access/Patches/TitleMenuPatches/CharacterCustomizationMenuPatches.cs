@@ -2,6 +2,7 @@ using System.Text.Json;
 using StardewValley;
 using StardewValley.Menus;
 using static stardew_access.Features.Utils;
+using static stardew_access.Features.ColorMatcher;
 
 namespace stardew_access.Patches
 {
@@ -231,7 +232,7 @@ namespace stardew_access.Patches
                     {
                         prevEyeColorHue = currentEyeColorHue;
                         if (currentEyeColorHue != "")
-                            toSpeak = $"{toSpeak} \n Hue: {currentEyeColorHue}";
+                            toSpeak = $"{toSpeak} \n {currentEyeColorHue}%";
                     }
                     else
                     {
@@ -245,7 +246,7 @@ namespace stardew_access.Patches
                     {
                         prevEyeColorSaturation = currentEyeColorSaturation;
                         if (currentEyeColorSaturation != "")
-                            toSpeak = $"{toSpeak} \n Saturation: {currentEyeColorSaturation}";
+                            toSpeak = $"{toSpeak} \n {currentEyeColorSaturation}%";
                     }
                     else
                     {
@@ -259,7 +260,7 @@ namespace stardew_access.Patches
                     {
                         prevEyeColorValue = currentEyeColorValue;
                         if (currentEyeColorValue != "")
-                            toSpeak = $"{toSpeak} \n Value: {currentEyeColorValue}";
+                            toSpeak = $"{toSpeak} \n {currentEyeColorValue}%";
                     }
                     else
                     {
@@ -283,7 +284,7 @@ namespace stardew_access.Patches
                     {
                         prevHairColorHue = currentHairColorHue;
                         if (currentHairColorHue != "")
-                            toSpeak = $"{toSpeak} \n Hue: {currentHairColorHue}";
+                            toSpeak = $"{toSpeak} \n {currentHairColorHue}%";
                     }
                     else
                     {
@@ -297,7 +298,7 @@ namespace stardew_access.Patches
                     {
                         prevHairColorSaturation = currentHairColorSaturation;
                         if (currentHairColorSaturation != "")
-                            toSpeak = $"{toSpeak} \n Saturation: {currentHairColorSaturation}";
+                            toSpeak = $"{toSpeak} \n {currentHairColorSaturation}%";
                     }
                     else
                     {
@@ -311,7 +312,7 @@ namespace stardew_access.Patches
                     {
                         prevHairColorValue = currentHairColorValue;
                         if (currentHairColorValue != "")
-                            toSpeak = $"{toSpeak} \n Value: {currentHairColorValue}";
+                            toSpeak = $"{toSpeak} \n {currentHairColorValue}%";
                     }
                     else
                     {
@@ -335,7 +336,7 @@ namespace stardew_access.Patches
                     {
                         prevPantsColorHue = currentPantsColorHue;
                         if (currentPantsColorHue != "")
-                            toSpeak = $"{toSpeak} \n Hue: {currentPantsColorHue}";
+                            toSpeak = $"{toSpeak} \n {currentPantsColorHue}%";
                     }
                     else
                     {
@@ -349,7 +350,7 @@ namespace stardew_access.Patches
                     {
                         prevPantsColorSaturation = currentPantsColorSaturation;
                         if (currentPantsColorSaturation != "")
-                            toSpeak = $"{toSpeak} \n Saturation: {currentPantsColorSaturation}";
+                            toSpeak = $"{toSpeak} \n {currentPantsColorSaturation}%";
                     }
                     else
                     {
@@ -363,7 +364,7 @@ namespace stardew_access.Patches
                     {
                         prevPantsColorValue = currentPantsColorValue;
                         if (currentPantsColorValue != "")
-                            toSpeak = $"{toSpeak} \n Value: {currentPantsColorValue}";
+                            toSpeak = $"{toSpeak} \n {currentPantsColorValue}%";
                     }
                     else
                     {
@@ -808,27 +809,34 @@ namespace stardew_access.Patches
             return "";
         }
 
-        private static string GetCurrentEyeColor() => GetCurrentColorAttributeValue("Eye color", 522, 524, () => $"{Game1.player.newEyeColor.R}, {Game1.player.newEyeColor.G}, {Game1.player.newEyeColor.B}");
+        private static string GetCurrentEyeColor()
+        {
+            //var eyeColor = $"{Game1.player.newEyeColor.R}, {Game1.player.newEyeColor.G}, {Game1.player.newEyeColor.B}";
+            return GetCurrentColorAttributeValue("Eye color", 522, 524, () => GetNearestColorName(Game1.player.newEyeColor.R, Game1.player.newEyeColor.G, Game1.player.newEyeColor.B));
+        }
 
         private static string GetCurrentEyeColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Eye color hue", 522, 524, () => (getCurrentSliderBar(522, __instance)!.value!.ToString()));
-
         private static string GetCurrentEyeColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Eye color saturation", 522, 524, () => (getCurrentSliderBar(523, __instance)!.value!.ToString()));
-
         private static string GetCurrentEyeColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Eye color value", 522, 524, () => (getCurrentSliderBar(524, __instance)!.value!.ToString()));
 
-        private static string GetCurrentHairColor() => GetCurrentColorAttributeValue("Hair color", 525, 527, () => $"{Game1.player.hairstyleColor.R}, {Game1.player.hairstyleColor.G}, {Game1.player.hairstyleColor.B}");
+        private static string GetCurrentHairColor()
+        {
+            //var hairColor = $"{Game1.player.hairstyleColor.R}, {Game1.player.hairstyleColor.G}, {Game1.player.hairstyleColor.B}";
+            return GetCurrentColorAttributeValue("Hair color", 525, 527, () => GetNearestColorName(Game1.player.hairstyleColor.R, Game1.player.hairstyleColor.G, Game1.player.hairstyleColor.B));
+        }
 
         private static string GetCurrentHairColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hair color hue", 525, 527, () => (getCurrentSliderBar(525, __instance)!.value!.ToString()));
-
         private static string GetCurrentHairColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hair color saturation", 525, 527, () => (getCurrentSliderBar(526, __instance)!.value!.ToString()));
-
         private static string GetCurrentHairColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hair color value", 525, 527, () => (getCurrentSliderBar(527, __instance)!.value!.ToString()));
-        private static string GetCurrentPantsColor() => GetCurrentColorAttributeValue("Pants color", 528, 530, () => $"{Game1.player.pantsColor.R}, {Game1.player.pantsColor.G}, {Game1.player.pantsColor.B}");
+
+        private static string GetCurrentPantsColor()
+        {
+            //var pantsColor = $"{Game1.player.pantsColor.R}, {Game1.player.pantsColor.G}, {Game1.player.pantsColor.B}";
+            return GetCurrentColorAttributeValue("Pants color", 528, 530, () => GetNearestColorName(Game1.player.pantsColor.R, Game1.player.pantsColor.G, Game1.player.pantsColor.B));
+        }
 
         private static string GetCurrentPantsColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Pants color hue", 528, 530, () => (getCurrentSliderBar(528, __instance)!.value!.ToString()));
-
         private static string GetCurrentPantsColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Pants color saturation", 528, 530, () => (getCurrentSliderBar(529, __instance)!.value!.ToString()));
-
         private static string GetCurrentPantsColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Pants color value", 528, 530, () => (getCurrentSliderBar(530, __instance)!.value!.ToString()));
     }
 }
