@@ -226,6 +226,16 @@ namespace stardew_access.Patches
                         toSpeak = $"{toSpeak} \n {currentAccessory}";
                 }
 
+                if (prevEyeColor != currentEyeColor)
+                {
+                    if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 522 || currentComponent.myID <= 524)))
+                    {
+                        prevEyeColor = currentEyeColor;
+                        if (currentEyeColor != "")
+                            toSpeak = $"{toSpeak} \n {currentEyeColor}";
+                    }
+                }
+
                 if (prevEyeColorHue != currentEyeColorHue)
                 {
                     if (currentComponent != null && currentComponent.myID == 522)
@@ -268,13 +278,13 @@ namespace stardew_access.Patches
                     }
                 }
 
-                if (prevEyeColor != currentEyeColor)
+                if (prevHairColor != currentHairColor)
                 {
-                    if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 522 || currentComponent.myID <= 524)))
+                    if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 525 || currentComponent.myID <= 527)))
                     {
-                        prevEyeColor = currentEyeColor;
-                        if (currentEyeColor != "")
-                            toSpeak = $"{toSpeak} \n {currentEyeColor}";
+                        prevHairColor = currentHairColor;
+                        if (currentHairColor != "")
+                            toSpeak = $"{toSpeak} \n {currentHairColor}";
                     }
                 }
 
@@ -320,13 +330,13 @@ namespace stardew_access.Patches
                     }
                 }
 
-                if (prevHairColor != currentHairColor)
+                if (prevPantsColor != currentPantsColor)
                 {
-                    if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 525 || currentComponent.myID <= 527)))
+                    if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 528 || currentComponent.myID <= 530)))
                     {
-                        prevHairColor = currentHairColor;
-                        if (currentHairColor != "")
-                            toSpeak = $"{toSpeak} \n {currentHairColor}";
+                        prevPantsColor = currentPantsColor;
+                        if (currentPantsColor != "")
+                            toSpeak = $"{toSpeak} \n {currentPantsColor}";
                     }
                 }
 
@@ -369,16 +379,6 @@ namespace stardew_access.Patches
                     else
                     {
                         prevPantsColorValue = "";
-                    }
-                }
-
-                if (prevPantsColor != currentPantsColor)
-                {
-                    if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= 528 || currentComponent.myID <= 530)))
-                    {
-                        prevPantsColor = currentPantsColor;
-                        if (currentPantsColor != "")
-                            toSpeak = $"{toSpeak} \n {currentPantsColor}";
                     }
                 }
             }
@@ -763,7 +763,7 @@ namespace stardew_access.Patches
 
         private static string GetCurrentAttributeValue(string componentName, Func<int> getValue, bool lessInfo = false)
         {
-            if (currentComponent != null && (currentComponent.myID == 507 || currentComponent.name == componentName))
+            if (currentComponent != null && (currentComponent.myID == 507 || (!string.IsNullOrEmpty(currentComponent.name)  && componentName.StartsWith(currentComponent.name, StringComparison.OrdinalIgnoreCase))))
             {
                 int index = getValue();
 
@@ -811,32 +811,29 @@ namespace stardew_access.Patches
 
         private static string GetCurrentEyeColor()
         {
-            //var eyeColor = $"{Game1.player.newEyeColor.R}, {Game1.player.newEyeColor.G}, {Game1.player.newEyeColor.B}";
             return GetCurrentColorAttributeValue("Eye color", 522, 524, () => GetNearestColorName(Game1.player.newEyeColor.R, Game1.player.newEyeColor.G, Game1.player.newEyeColor.B));
         }
 
-        private static string GetCurrentEyeColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Eye color hue", 522, 524, () => (getCurrentSliderBar(522, __instance)!.value!.ToString()));
-        private static string GetCurrentEyeColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Eye color saturation", 522, 524, () => (getCurrentSliderBar(523, __instance)!.value!.ToString()));
-        private static string GetCurrentEyeColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Eye color value", 522, 524, () => (getCurrentSliderBar(524, __instance)!.value!.ToString()));
+        private static string GetCurrentEyeColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hue", 522, 524, () => (getCurrentSliderBar(522, __instance)!.value!.ToString()));
+        private static string GetCurrentEyeColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Saturation", 522, 524, () => (getCurrentSliderBar(523, __instance)!.value!.ToString()));
+        private static string GetCurrentEyeColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Value", 522, 524, () => (getCurrentSliderBar(524, __instance)!.value!.ToString()));
 
         private static string GetCurrentHairColor()
         {
-            //var hairColor = $"{Game1.player.hairstyleColor.R}, {Game1.player.hairstyleColor.G}, {Game1.player.hairstyleColor.B}";
             return GetCurrentColorAttributeValue("Hair color", 525, 527, () => GetNearestColorName(Game1.player.hairstyleColor.R, Game1.player.hairstyleColor.G, Game1.player.hairstyleColor.B));
         }
 
-        private static string GetCurrentHairColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hair color hue", 525, 527, () => (getCurrentSliderBar(525, __instance)!.value!.ToString()));
-        private static string GetCurrentHairColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hair color saturation", 525, 527, () => (getCurrentSliderBar(526, __instance)!.value!.ToString()));
-        private static string GetCurrentHairColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hair color value", 525, 527, () => (getCurrentSliderBar(527, __instance)!.value!.ToString()));
+        private static string GetCurrentHairColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hue", 525, 527, () => (getCurrentSliderBar(525, __instance)!.value!.ToString()));
+        private static string GetCurrentHairColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Saturation", 525, 527, () => (getCurrentSliderBar(526, __instance)!.value!.ToString()));
+        private static string GetCurrentHairColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Value", 525, 527, () => (getCurrentSliderBar(527, __instance)!.value!.ToString()));
 
         private static string GetCurrentPantsColor()
         {
-            //var pantsColor = $"{Game1.player.pantsColor.R}, {Game1.player.pantsColor.G}, {Game1.player.pantsColor.B}";
             return GetCurrentColorAttributeValue("Pants color", 528, 530, () => GetNearestColorName(Game1.player.pantsColor.R, Game1.player.pantsColor.G, Game1.player.pantsColor.B));
         }
 
-        private static string GetCurrentPantsColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Pants color hue", 528, 530, () => (getCurrentSliderBar(528, __instance)!.value!.ToString()));
-        private static string GetCurrentPantsColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Pants color saturation", 528, 530, () => (getCurrentSliderBar(529, __instance)!.value!.ToString()));
-        private static string GetCurrentPantsColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Pants color value", 528, 530, () => (getCurrentSliderBar(530, __instance)!.value!.ToString()));
+        private static string GetCurrentPantsColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hue", 528, 530, () => (getCurrentSliderBar(528, __instance)!.value!.ToString()));
+        private static string GetCurrentPantsColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Saturation", 528, 530, () => (getCurrentSliderBar(529, __instance)!.value!.ToString()));
+        private static string GetCurrentPantsColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Value", 528, 530, () => (getCurrentSliderBar(530, __instance)!.value!.ToString()));
     }
 }
