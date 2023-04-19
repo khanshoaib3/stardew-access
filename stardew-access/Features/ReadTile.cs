@@ -10,7 +10,7 @@ namespace stardew_access.Features
     public class ReadTile
     {
         private bool isBusy; // To pause execution of run method between fixed intervals
-        private int delay; // Length of each interval (in ms)
+        private readonly int delay; // Length of each interval (in ms)
         private bool shouldPause; // To pause the execution
         private Vector2 prevTile;
 
