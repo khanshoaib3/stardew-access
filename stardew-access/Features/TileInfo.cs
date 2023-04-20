@@ -786,7 +786,77 @@ namespace stardew_access.Features
                 {
                     case 76:
                         return ("Frozen geode", CATEGORY.MineItems);
-                    // ... (include other cases)
+                    case 77:
+                        return ("Magma geode", CATEGORY.MineItems);
+                    case 75:
+                        return ("Geode", CATEGORY.MineItems);
+                    case 819:
+                        return ("Omni geode node", CATEGORY.MineItems);
+                    case 32:
+                    case 34:
+                    case 36:
+                    case 38:
+                    case 40:
+                    case 42:
+                    case 48:
+                    case 50:
+                    case 52:
+                    case 54:
+                    case 56:
+                    case 58:
+                        return ("Coloured stone", CATEGORY.Debris);
+                    case 668:
+                    case 670:
+                    case 845:
+                    case 846:
+                    case 847:
+                        return ("Mine stone", CATEGORY.MineItems);
+                    case 818:
+                        return ("Clay stone", CATEGORY.Debris);
+                    case 816:
+                    case 817:
+                        return ("Fossil stone", CATEGORY.Debris);
+                    case 25:
+                        return ("Mussel Node", CATEGORY.MineItems);
+                    case 95:
+                        return ("Radioactive Node", CATEGORY.MineItems);
+                    case 843:
+                    case 844:
+                        return ("Cinder shard node", CATEGORY.MineItems);
+                    case 8:
+                    case 66:
+                        return ("Amethyst node", CATEGORY.MineItems);
+                    case 14:
+                    case 62:
+                        return ("Aquamarine node", CATEGORY.MineItems);
+                    case 2:
+                    case 72:
+                        return ("Diamond node", CATEGORY.MineItems);
+                    case 12:
+                    case 60:
+                        return ("Emerald node", CATEGORY.MineItems);
+                    case 44:
+                        return ("Gem node", CATEGORY.MineItems);
+                    case 6:
+                    case 70:
+                        return ("Jade node", CATEGORY.MineItems);
+                    case 46:
+                        return ("Mystic stone", CATEGORY.MineItems);
+                    case 74:
+                        return ("Prismatic node", CATEGORY.MineItems);
+                    case 4:
+                    case 64:
+                        return ("Ruby node", CATEGORY.MineItems);
+                    case 10:
+                    case 68:
+                        return ("Topaz node", CATEGORY.MineItems);
+                    case 751:
+                    case 849:
+                        return ("Copper node", CATEGORY.MineItems);
+                    case 764:
+                        return ("Gold node", CATEGORY.MineItems);
+                    case 765:
+                        return ("Iridium node", CATEGORY.MineItems);
                     case 290:
                     case 850:
                         return ("Iron node", CATEGORY.MineItems);

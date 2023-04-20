@@ -10,7 +10,7 @@ namespace stardew_access.Patches
             try
             {
                 if (__result) return; // The true `true` value of __result indicates the bear is interactable i.e. when giving the bear the wanted item
-                if (__instance.sprite.Value.CurrentAnimation != null) return;
+                if (__instance.Sprite.CurrentAnimation != null) return;
 
                 string itemName = Game1.objectInformation[___itemWantedIndex].Split('/')[4];
                 MainClass.ScreenReader.Say(MainClass.Translate("patch.trash_bear.wanted_item", new {trash_bear_name = __instance.displayName, item_name = itemName}), true);

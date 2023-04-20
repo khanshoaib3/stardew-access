@@ -154,7 +154,7 @@ namespace stardew_access.Features
                 }
                 try
                 {
-                    int count = int.Parse(buffName.Substring(0, buffName.IndexOf(' ')));
+                    int count = int.Parse(buffName[..buffName.IndexOf(' ')]);
                     if (count != 0)
                         toReturn += $"{buffName}\n";
                 }

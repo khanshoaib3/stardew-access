@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿  <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -12,9 +12,35 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="KdTree" Version="1.4.1" />
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
     <Reference Include="./TolkDotNet.dll" />
+    <Reference Include="./KdTreeLib.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="KdTreeLib.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="libraries\linux\libspeechdwrapper.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="libraries\windows\nvdaControllerClient64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="libraries\windows\SAAPI64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="libraries\windows\Tolk.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TolkDotNet.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
