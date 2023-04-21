@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="compiled-docs\*">
+      <Link>docs\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="KdTreeLib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
