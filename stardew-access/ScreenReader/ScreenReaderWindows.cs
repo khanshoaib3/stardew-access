@@ -1,12 +1,11 @@
 ﻿using DavyKager;
-using System.IO;
 
 namespace stardew_access.ScreenReader
 {
     public class ScreenReaderWindows : IScreenReader
     {
         private bool isLoaded = false;
-        public string prevText = "", prevTextTile = " ", prevChatText = "", prevMenuText = "";
+        public string prevText = "", prevTextTile = "", prevChatText = "", prevMenuText = "";
 
         public string PrevTextTile
         {
