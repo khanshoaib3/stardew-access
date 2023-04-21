@@ -22,6 +22,12 @@ namespace stardew_access.ScreenReader
 
                 ScreenReader = screenReaderLinux;
             }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+                ScreenReaderMac screenReaderMac = new ScreenReaderMac();
+                screenReaderMac.InitializeScreenReader();
+
+                ScreenReader = screenReaderMac;
+            }
             else
             {
                 ScreenReader.InitializeScreenReader();
