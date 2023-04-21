@@ -3,12 +3,7 @@
     https://github.com/Flameborn/libspeak
 */
 
-using System;
-using System.Diagnostics;
-using System.IO;
 using System.Runtime.InteropServices;
-using System.Threading;
-using static System.Net.Mime.MediaTypeNames;
 using System.Reflection;
 
 namespace stardew_access.ScreenReader
@@ -19,7 +14,7 @@ namespace stardew_access.ScreenReader
         private static IntPtr speaker;
         //Stuff for the runloop thread
         private CancellationTokenSource cts = new CancellationTokenSource();
-        private Thread rt;
+        private Thread? rt;
         //Speech queue for interrupt
         private static Queue<string> speechQueue = new Queue<string>();
         // DidFinishSpeaking callback for interrupt
@@ -48,7 +43,7 @@ namespace stardew_access.ScreenReader
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern Single get_volume();
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
-                private static extern void set_rate(Single rate);
+        private static extern void set_rate(Single rate);
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern Single get_rate();
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
@@ -90,11 +85,11 @@ namespace stardew_access.ScreenReader
         public delegate void dfs_callback();
 
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void register_will_speak_word_callback(IntPtr speaker, [MarshalAs(UnmanagedType.FunctionPtr)]wsw_callback cb);
+        private static extern void register_will_speak_word_callback(IntPtr speaker, [MarshalAs(UnmanagedType.FunctionPtr)] wsw_callback cb);
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void register_will_speak_phoneme_callback(IntPtr speaker, [MarshalAs(UnmanagedType.FunctionPtr)]wsp_callback cb);
-                [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void register_did_finish_speaking_callback(IntPtr speaker, [MarshalAs(UnmanagedType.FunctionPtr)]dfs_callback cb);
+        private static extern void register_will_speak_phoneme_callback(IntPtr speaker, [MarshalAs(UnmanagedType.FunctionPtr)] wsp_callback cb);
+        [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void register_did_finish_speaking_callback(IntPtr speaker, [MarshalAs(UnmanagedType.FunctionPtr)] dfs_callback cb);
 
         /////////////////
         // Recognizer OO
@@ -129,37 +124,39 @@ namespace stardew_access.ScreenReader
             set { prevTextTile = value; }
         }
 
-        public string prevText = "", prevTextTile = " ", prevChatText = "", prevMenuText = "";
+        public string prevText = "", prevTextTile = "", prevChatText = "", prevMenuText = "";
 
-        private static void SpeakLoop(object obj)
+        private static void SpeakLoop(object? obj)
         {
+            if (obj == null) return;
+
             CancellationToken ct = (CancellationToken)obj;
-            
+
             while (!ct.IsCancellationRequested)
             {
                 mainloop_speaker(speaker);
                 Thread.Sleep(20);
             }
-                    }
+        }
 
-            public void InitializeScreenReader()
+        public void InitializeScreenReader()
         {
-          // Set the path to load libspeak.dylib from via a resolver
-          NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), DllImportResolver);
+            // Set the path to load libspeak.dylib from via a resolver
+            NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), DllImportResolver);
 
             MainClass.InfoLog("Initializing screen reader");
             speaker = make_speaker();
             rt = new Thread(new ParameterizedThreadStart(SpeakLoop));
             rt.Start(cts.Token);
             register_did_finish_speaking_callback(speaker, fscb);
-						set_rate_with(speaker, MainClass.Config.MacSpeechRate);
+            set_rate_with(speaker, MainClass.Config.MacSpeechRate);
             Say("Mac screen reader ready", true);
-                    }
+        }
 
         public void CloseScreenReader()
         {
             cts.Cancel();
-            rt.Join();
+            if (rt != null) rt.Join();
             cts.Dispose();
             cleanup_with(speaker);
         }
@@ -170,10 +167,12 @@ namespace stardew_access.ScreenReader
             if (interrupt)
             {
                 speechQueue.Clear();
-                speak_with(speaker,text);
-            } else {
+                speak_with(speaker, text);
+            }
+            else
+            {
                 speechQueue.Enqueue(text);
-                                    }
+            }
         }
 
         public void SayWithChecker(string text, bool interrupt)
@@ -181,7 +180,7 @@ namespace stardew_access.ScreenReader
             if (text == null) return;
             if (text != prevText)
             {
-            MainClass.InfoLog($"{text}");
+                MainClass.InfoLog($"{text}");
                 Say(text, interrupt);
                 prevText = text;
             }
@@ -192,7 +191,7 @@ namespace stardew_access.ScreenReader
             if (text == null) return;
             if (text != prevMenuText)
             {
-            MainClass.InfoLog($"{text}");
+                MainClass.InfoLog($"{text}");
                 Say(text, interrupt);
                 prevMenuText = text;
             }
@@ -203,7 +202,7 @@ namespace stardew_access.ScreenReader
             if (text == null) return;
             if (text != prevChatText)
             {
-            MainClass.InfoLog($"{text}");
+                MainClass.InfoLog($"{text}");
                 Say(text, interrupt);
                 prevChatText = text;
             }
@@ -230,17 +229,12 @@ namespace stardew_access.ScreenReader
 
         private static IntPtr DllImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
-            if (libraryName == "libspeak")
-            {
-                if (MainClass.ModHelper is not null)
-                {
-                    string dylibPath = Path.Combine(MainClass.ModHelper.DirectoryPath, "libraries", "macos", "libspeak.dylib");;
-                    return NativeLibrary.Load(dylibPath, assembly, searchPath);
-                }
-            }
-
-            return IntPtr.Zero;
+            // libraryName is the name provided in DllImport i.e., [DllImport(libraryName)]
+            if (libraryName != "libspeak") return IntPtr.Zero;
+            if (MainClass.ModHelper is null) return IntPtr.Zero;
+            
+            string dylibPath = Path.Combine(MainClass.ModHelper.DirectoryPath, "libraries", "macos", "libspeak.dylib");
+            return NativeLibrary.Load(dylibPath, assembly, searchPath);
         }
-
     }
 }
