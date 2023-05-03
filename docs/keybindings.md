@@ -1,39 +1,38 @@
-## Keybindings
+# Keybindings
 
-_Note that the primary info key used in a few of the menus is default to "C" key._
+This page contains the list of all the keybindings added by the mod.
+All the keybinds listed here can be reconfigured using the mod's config file except escape key which is used to unselecting the active text box.
 
-**Table Of Contents:-**
-<!-- vim-markdown-toc GFM -->
+## Table Of Contents
 
-* [Global keys](#global-keys)
-* [Tile Viewer Keys](#tile-viewer-keys)
-* [Chat menu keys](#chat-menu-keys)
-* [New Game or Charachter Customization menu keys](#new-game-or-charachter-customization-menu-keys)
-* [Menus With Inventory keys](#menus-with-inventory-keys)
-* [Junimo Note or Community Center Menu keys](#junimo-note-or-community-center-menu-keys)
-* [Carpenter Menu keys](#carpenter-menu-keys)
-* [Animal info menu keys](#animal-info-menu-keys)
-* [Museum Menu keys](#museum-menu-keys)
-* [Fish Pond menu keys](#fish-pond-menu-keys)
-* [Quest menu keys](#quest-menu-keys)
+* [New Keybindings List](#new-keybindings-list)
+   * [Global Keys](#global-keys)
+   * [Tile Viewer Keys](#tile-viewer-keys)
+   * [Chat Menu keys](#chat-menu-keys)
+   * [New Game or Charachter Customization Menu Keys](#new-game-or-charachter-customization-menu-keys)
+   * [Menus With Inventory Keys](#menus-with-inventory-keys)
+   * [Junimo Note or Community Center Menu Keys](#junimo-note-or-community-center-menu-keys)
+   * [Primary Info Key](#primary-info-key)
 
-<!-- vim-markdown-toc -->
+## New Keybindings List
 
-### Global keys
+### Global Keys
 
-| Key                | Description                                                      |
-| ------------------ | ---------------------------------------------------------------- |
-| Left Ctrl + Enter  | Primary key to simulate mouse left click                         |
-| Left Shift + Enter | Primary key to simulate mouse right click                        |
-| [                  | Secondary key to simulate mouse left click                       |
-| ]                  | Secondary key to simulate mouse right click                      |
-| H                  | Narrate health and stamina.                                      |
-| Left alt + K       | Narrate current location name.                                   |
-| K                  | Narrate player position.                                         |
-| Q                  | Narrates the time of day, day and date and season                |
-| R                  | Narrates the money the player has currently.                     |
-| Left alt + J       | Manually trigger Read Tile for the tile player is _stanfing on_. |
-| J                  | Manually trigger Read Tile for the tile player is _looking at_.  |
+| Key                | Description                                                                                                                                          |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Left Ctrl + Enter  | Primary key to simulate mouse left click                                                                                                             |
+| Left Shift + Enter | Primary key to simulate mouse right click                                                                                                            |
+| [                  | Secondary key to simulate mouse left click                                                                                                           |
+| ]                  | Secondary key to simulate mouse right click                                                                                                          |
+| H                  | Narrate health and stamina.                                                                                                                          |
+| Left alt + K       | Narrate current location name.                                                                                                                       |
+| K                  | Narrate player position.                                                                                                                             |
+| Q                  | Narrates the time of day, day and date and season                                                                                                    |
+| R                  | Narrates the money the player has currently. <br /> If pressed when inventory page is opened, it will narrate the money along with other currencies. |
+| Left alt + J       | Manually trigger Read Tile for the tile player is _stanfing on_.                                                                                     |
+| J                  | Manually trigger Read Tile for the tile player is _looking at_.                                                                                      |
+| C                  | (Only in crafting page) Cycle through the available recipes in the current recipe lists                                                              |
+| Escape             | For escaping/unselecting from the active text box                                                                                                    |
 
 ### Tile Viewer Keys
 
@@ -50,30 +49,35 @@ _Note that the primary info key used in a few of the menus is default to "C" key
 | Left Shift + Arrow down  | Move the cursor down by precision i.e. pixel by pixel                                   |
 | Left Shift + Arrow left  | Move the cursor left by precision i.e. pixel by pixel                                   |
 
-### Chat menu keys
+### Chat Menu keys
 
 | Key       | Description                |
 | --------- | -------------------------- |
 | Page up   | Read previous chat message |
 | Page down | Read next chat message     |
 
-### New Game or Charachter Customization menu keys
+### New Game or Charachter Customization Menu Keys
 
-| Key             | Description                                                                            |
-| --------------- | -------------------------------------------------------------------------------------- |
-| Right Arrow Key | Next element.                                                                          |
-| Left Arrow Key  | Previous element.                                                                      |
-| Enter           | Select the entered value <br/>in a text box(name, farm name <br/>& fav thing text box) |
+| Key                  | Description                                                                            |
+| -------------------- | -------------------------------------------------------------------------------------- |
+| Right Arrow Key      | Go to next element.                                                                    |
+| Left Arrow Key       | Go to previous element.                                                                |
+| Up Arrow Key         | Increase the slider value by 1                                                         |
+| Page Up Key          | Increase the slider value by 10                                                        |
+| Down Arrow Key       | Decrease the slider value by 1                                                         |
+| Page Down Key        | Decrease the slider value by 10                                                        |
+| Left Control + Space | Toggle displaying character design options                                             |
 
-### Menus With Inventory keys
+### Menus With Inventory Keys
 
-| Key            | Description                                                                             |
-| -------------- | --------------------------------------------------------------------------------------- |
-| I              | Select the first item in chest inventory/crafting recipe/item to buy                    |
-| Left Shift + I | Select the first item in the player's inventory                                         |
-| C              | (Only in crafting page) Cycle through the available recipes in the current recipe lists |
+This includes menus like chests, shop menus, etc.
 
-### Junimo Note or Community Center Menu keys
+| Key            | Description                                                          |
+| -------------- | -------------------------------------------------------------------- |
+| I              | Select the first item in chest inventory/crafting recipe/item to buy |
+| Left Shift + I | Select the first item in the player's inventory                      |
+
+### Junimo Note or Community Center Menu Keys
 
 | Key                 | Description                                                  |
 | ------------------- | ------------------------------------------------------------ |
@@ -83,33 +87,15 @@ _Note that the primary info key used in a few of the menus is default to "C" key
 | P                   | Move the mouse cursor to purchase button                     |
 | Backspace           | Move the mouse cursor to back button                         |
 
-### Carpenter Menu keys
+### Primary Info Key
 
-| Key                 | Description                                |
-| ------------------- | ------------------------------------------ |
-| Primary info key(C) | Speak the info about the current blueprint |
+This key is used in multiple menus, here's the list of it's usage.
+It is by default `C` but can be changed from the mod's config file.
 
-### Animal info menu keys
-
-| Key                 | Description                                            |
-| ------------------- | ------------------------------------------------------ |
-| Primary info key(C) | For narrating animal details                           |
-| Escape              | For escaping/unselecting from the animal name text box |
-
-### Museum Menu keys
-
-| Key                 | Description                   |
-| ------------------- | ----------------------------- |
-| Primary info key(C) | Donate currently hovered item |
-
-### Fish Pond menu keys
-
-| Key                 | Description               |
-| ------------------- | ------------------------- |
-| Primary info key(C) | Speak the info about pond |
-
-### Quest menu keys
-
-| Key                 | Description              |
-| ------------------- | ------------------------ |
-| Primary info key(C) | Speak current quest info |
+| Menu             | Usage                                      |
+| ---------------- | ------------------------------------------ |
+| Carpenter Menu   | Speak the info about the current blueprint |
+| Animal Info Menu | Speak the animal's detail                  |
+| Museum Menu      | Donate currently hovered item              |
+| Fish Pond Menu   | Speak the info about pond                  |
+| Quest Menu       | Speak current quest info                   |
