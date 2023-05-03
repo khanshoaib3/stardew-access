@@ -1,11 +1,49 @@
-## Commands
+# Commands
+
+This page contains the list of all commands added by the mod.
+You can install the [Chat Commands](https://www.nexusmods.com/stardewvalley/mods/2092) mod which will enable entering the commands from the in-game chat box instead of using the terminal.
+For a list of commands added SMAPI, you can visit the page [here](https://stardewvalleywiki.com/Modding:Console_commands).
+
+## Table Of Contents
+
+* [Custom Commands List](#custom-commands-list)
+   * [Read tile related](#read-tile-related)
+   * [Building related](#building-related)
+   * [Other](#other)
+   * [Radar related](#radar-related)
+
+## Custom Commands List
 
 ### Read tile related
 
-| Command  | Description              |
-| -------- | ------------------------ |
-| readtile | Toggle Read Tile feature |
-| flooring | Toggle reading folooring |
+| Command  | Description                                    |
+| -------- | ---------------------------------------------- |
+| readtile | Toggle Read Tile feature                       |
+| flooring | Toggle reading folooring                       |
+| watered  | Toggle speaking watered or unwatered for crops |
+
+### Building related
+
+| Command   | Description                                                                                         | Special Syntax (If any)                  | Argument details (If any)                                                                                                         | Example      |
+| --------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| mark      | Marks the player's position for use in building cunstruction in Carpenter Menu                      | mark [Index:number]                      | Index: the index at which we want to save the position. From 0 to 9 only                                                          | mark 0       |
+| marklist  | List all marked positions                                                                           |                                          |                                                                                                                                   | marklist     |
+| buildlist | List all buildings for selection for upgrading/demolishing/painting                                 |                                          |                                                                                                                                   | buildlist    |
+| buildsel  | Select the building index which you want to upgrade, demolish and paint.                            | buildsel [Index:number]                  | Index: the index of the building we want to select, use buildlist command to list the buildings with their index                  | buildsel 3   |
+| buildsel  | Select the marked position index where we want to cunstruct the building.                           | buildsel [Index:number]                  | Index: the index of the marked position, use marklist command to list the marked positions with their index                       | buildsel 0   |
+| buildsel  | Select the building index along with a index of marked position where we want to move the building. | buildsel [Index1:number] [Index2:number] | Index1: the index of the building we want to select. Index2: the index of the marked position where we want to move the building. | buildsel 3 0 |
+
+### Other
+
+| Command    | Description                                                      |
+| ---------- | ---------------------------------------------------------------- |
+| snapmouse  | Toggle Snap Mouse Feature                                        |
+| hnspercent | Toggle between speaking in percentage or full health and stamina |
+| warning    | Toggle warnings feature                                          |
+| tts        | Toggles the screen reader/tts                                    |
+| refsr      | Refreshes screen reader                                          |
+| refst      | Refreshes static tiles json file                                 |
+| refmc      | Refreshes mod config json file                                   |
 
 ### Radar related
 
@@ -27,25 +65,3 @@
 | rflist   | List all the focus in the radar feature                        |
 | rfclear  | Remove all keys from the focus list in the radar featrure      |
 | rfcount  | Number of focus in the radar feature                           |
-
-### Building related
-
-| Command   | Description                                                                                         | Special Syntax (If any)                  | Argument details (If any)                                                                                                         | Example      |
-| --------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------ |
-| mark      | Marks the player's position for use in building cunstruction in Carpenter Menu                      | mark [Index:number]                      | Index: the index at which we want to save the position. From 0 to 9 only                                                          | mark 0       |
-| marklist  | List all marked positions                                                                           |                                          |                                                                                                                                   | marklist     |
-| buildlist | List all buildings for selection for upgrading/demolishing/painting                                 |                                          |                                                                                                                                   | buildlist    |
-| buildsel  | Select the building index which you want to upgrade, demolish and paint.                            | buildsel [Index:number]                  | Index: the index of the building we want to select, use buildlist command to list the buildings with their index                  | buildsel 3   |
-| buildsel  | Select the marked position index where we want to cunstruct the building.                           | buildsel [Index:number]                  | Index: the index of the marked position, use marklist command to list the marked positions with their index                       | buildsel 0   |
-| buildsel  | Select the building index along with a index of marked position where we want to move the building. | buildsel [Index1:number] [Index2:number] | Index1: the index of the building we want to select. Index2: the index of the marked position where we want to move the building. | buildsel 3 0 |
-
-Check the [guide](#TODO-add-this) on how to use these.
-
-### Other
-
-| Command   | Description                      |
-| --------- | -------------------------------- |
-| snapmouse | Toggle Snap Mouse Feature        |
-| refsr     | Refreshes screen reader          |
-| refst     | Refreshes static tiles json file |
-| refmc     | Refreshes mof config json file   |
