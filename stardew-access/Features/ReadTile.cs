@@ -86,7 +86,7 @@ namespace stardew_access.Features
                     if (!manuallyTriggered && prevTile != tile)
                     {
                         if (MainClass.ScreenReader != null)
-                            MainClass.ScreenReader.PrevTextTile = " ";
+                            MainClass.ScreenReader.PrevTextTile = "";
                     }
 
                     var currentLocation = Game1.currentLocation;

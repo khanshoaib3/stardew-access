@@ -3,6 +3,7 @@
     https://github.com/shoaib11120/libspeechdwrapper
 */
 
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace stardew_access.ScreenReader
@@ -21,16 +22,16 @@ namespace stardew_access.ScreenReader
 
     public class ScreenReaderLinux : IScreenReader
     {
-        [DllImport("libspeechdwrapper.so")]
+        [DllImport("libspeechdwrapper")]
         private static extern int Initialize();
 
-        [DllImport("libspeechdwrapper.so")]
+        [DllImport("libspeechdwrapper")]
         private static extern int Speak(GoString text, bool interrupt);
 
-        [DllImport("libspeechdwrapper.so")]
+        [DllImport("libspeechdwrapper")]
         private static extern int Close();
 
-        public string prevText = "", prevTextTile = " ", prevChatText = "", prevMenuText = "";
+        public string prevText = "", prevTextTile = "", prevChatText = "", prevMenuText = "";
         private bool initialized = false;
 
         public string PrevTextTile
@@ -42,6 +43,7 @@ namespace stardew_access.ScreenReader
         public void InitializeScreenReader()
         {
             MainClass.InfoLog("Initializing speech dispatcher...");
+            NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), DllImportResolver);
             int res = Initialize();
             if (res == 1)
             {
@@ -65,14 +67,9 @@ namespace stardew_access.ScreenReader
 
         public void Say(string text, bool interrupt)
         {
-            if (text == null)
-                return;
-
-            if (!initialized)
-                return;
-
-            if (!MainClass.Config.TTS)
-                return;
+            if (text == null) return;
+            if (!initialized) return;
+            if (!MainClass.Config.TTS) return;
 
             if (text.Contains('^')) text = text.Replace('^', '\n');
 
@@ -125,6 +122,16 @@ namespace stardew_access.ScreenReader
                 prevTextTile = query;
                 Say(text, interrupt);
             }
+        }
+
+        private static IntPtr DllImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
+        {
+            // libraryName is the name provided in DllImport i.e., [DllImport(libraryName)]
+            if (libraryName != "libspeechdwrapper") return IntPtr.Zero;
+            if (MainClass.ModHelper is null) return IntPtr.Zero;
+            
+            string libraryPath = Path.Combine(MainClass.ModHelper.DirectoryPath, "libraries", "linux", "libspeechdwrapper.so");
+            return NativeLibrary.Load(libraryPath, assembly, searchPath);
         }
     }
 }
