@@ -65,3 +65,12 @@ For a list of commands added SMAPI, you can visit the page [here](https://starde
 | rflist   | List all the focus in the radar feature                        |
 | rfclear  | Remove all keys from the focus list in the radar featrure      |
 | rfcount  | Number of focus in the radar feature                           |
+
+## Other Pages
+
+- [Readme](README.md)
+- [Setup](setup.md)
+- [Features](features.md)
+- [Keybindings](keybindings.md)
+- [Configs](config.md)
+- [Guides](guides.md)

@@ -52,3 +52,11 @@ We would like to change that and internationalize the entire mod hopefully.
 
 When Shift + enter, it brings up a menu with options to mark that tile just like using the `mark` command and an option to add the tile as a new entry to `custom-tiles.json`.
 
+## Other Pages
+
+- [Readme](README.md)
+- [Setup](setup.md)
+- [Keybindings](keybindings.md)
+- [Commands](commands.md)
+- [Configs](config.md)
+- [Guides](guides.md)

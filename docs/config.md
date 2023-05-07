@@ -192,3 +192,12 @@ This is the default value of the `config.json` file as per `v1.4.0`:
   "FixFishingMotionType": 999
 }
 ```
+
+## Other Pages
+
+- [Readme](README.md)
+- [Setup](setup.md)
+- [Features](features.md)
+- [Keybindings](keybindings.md)
+- [Commands](commands.md)
+- [Guides](guides.md)

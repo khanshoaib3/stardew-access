@@ -5,14 +5,14 @@ All the keybinds listed here can be reconfigured using the mod's config file exc
 
 ## Table Of Contents
 
-* [New Keybindings List](#new-keybindings-list)
-   * [Global Keys](#global-keys)
-   * [Tile Viewer Keys](#tile-viewer-keys)
-   * [Chat Menu keys](#chat-menu-keys)
-   * [New Game or Charachter Customization Menu Keys](#new-game-or-charachter-customization-menu-keys)
-   * [Menus With Inventory Keys](#menus-with-inventory-keys)
-   * [Junimo Note or Community Center Menu Keys](#junimo-note-or-community-center-menu-keys)
-   * [Primary Info Key](#primary-info-key)
+- [New Keybindings List](#new-keybindings-list)
+  - [Global Keys](#global-keys)
+  - [Tile Viewer Keys](#tile-viewer-keys)
+  - [Chat Menu keys](#chat-menu-keys)
+  - [New Game or Charachter Customization Menu Keys](#new-game-or-charachter-customization-menu-keys)
+  - [Menus With Inventory Keys](#menus-with-inventory-keys)
+  - [Junimo Note or Community Center Menu Keys](#junimo-note-or-community-center-menu-keys)
+  - [Primary Info Key](#primary-info-key)
 
 ## New Keybindings List
 
@@ -58,15 +58,15 @@ All the keybinds listed here can be reconfigured using the mod's config file exc
 
 ### New Game or Charachter Customization Menu Keys
 
-| Key                  | Description                                                                            |
-| -------------------- | -------------------------------------------------------------------------------------- |
-| Right Arrow Key      | Go to next element.                                                                    |
-| Left Arrow Key       | Go to previous element.                                                                |
-| Up Arrow Key         | Increase the slider value by 1                                                         |
-| Page Up Key          | Increase the slider value by 10                                                        |
-| Down Arrow Key       | Decrease the slider value by 1                                                         |
-| Page Down Key        | Decrease the slider value by 10                                                        |
-| Left Control + Space | Toggle displaying character design options                                             |
+| Key                  | Description                                |
+| -------------------- | ------------------------------------------ |
+| Right Arrow Key      | Go to next element.                        |
+| Left Arrow Key       | Go to previous element.                    |
+| Up Arrow Key         | Increase the slider value by 1             |
+| Page Up Key          | Increase the slider value by 10            |
+| Down Arrow Key       | Decrease the slider value by 1             |
+| Page Down Key        | Decrease the slider value by 10            |
+| Left Control + Space | Toggle displaying character design options |
 
 ### Menus With Inventory Keys
 
@@ -99,3 +99,12 @@ It is by default `C` but can be changed from the mod's config file.
 | Museum Menu      | Donate currently hovered item              |
 | Fish Pond Menu   | Speak the info about pond                  |
 | Quest Menu       | Speak current quest info                   |
+
+## Other Pages
+
+- [Readme](README.md)
+- [Setup](setup.md)
+- [Features](features.md)
+- [Commands](commands.md)
+- [Configs](config.md)
+- [Guides](guides.md)

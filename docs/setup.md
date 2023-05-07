@@ -5,24 +5,20 @@ First we need to setup SMAPI and then we can install the mod.
 
 ## Table of Contents
 
-<!-- vim-markdown-toc GFM -->
-
-* [SMAPI setup](#smapi-setup)
-   * [For Windows](#for-windows)
-      * [Xbox Setup](#xbox-setup)
-      * [Configuring the game client](#configuring-the-game-client)
-         * [For Steam](#for-steam)
-         * [For GOG Galaxy](#for-gog-galaxy)
-   * [For Linux](#for-linux)
-   * [For MacOS](#for-macos)
-* [Mod Installation](#mod-installation)
-* [Updating The Mod](#updating-the-mod)
-* [Other Mods](#other-mods)
-   * [Essential](#essential)
-   * [Recommend](#recommend)
-* [Other Pages](#other-pages)
-
-<!-- vim-markdown-toc -->
+- [SMAPI setup](#smapi-setup)
+  - [For Windows](#for-windows)
+    - [Xbox Setup](#xbox-setup)
+    - [Configuring the game client](#configuring-the-game-client)
+      - [For Steam](#for-steam)
+      - [For GOG Galaxy](#for-gog-galaxy)
+  - [For Linux](#for-linux)
+  - [For MacOS](#for-macos)
+- [Mod Installation](#mod-installation)
+- [Updating The Mod](#updating-the-mod)
+- [Other Mods](#other-mods)
+  - [Essential](#essential)
+  - [Recommend](#recommend)
+- [Other Pages](#other-pages)
 
 ## SMAPI setup
 
@@ -134,7 +130,9 @@ To update you just need to delete or move the mod folder from the `Mods` folder 
 
 ## Other Pages
 
-- [Home](/README.html)
-- [Mod Details](/mod-details)
-- [Guides](/guides)
-- [Useful Coords](/useful-coords)
+- [Readme](README.md)
+- [Setup](setup.md)
+- [Features](features.md)
+- [Commands](commands.md)
+- [Configs](config.md)
+- [Guides](guides.md)
