@@ -1,6 +1,7 @@
 # Mod Setup
 
-This page contains setup instructions for both [SMAPI](https://smapi.io/) and stardew access mod. First we need to setup SMAPI and then we can install the mod.
+This page contains setup instructions for both [SMAPI](https://smapi.io/) and stardew access mod.
+First we need to setup SMAPI and then we can install the mod.
 
 ## Table of Contents
 
@@ -27,7 +28,7 @@ This page contains setup instructions for both [SMAPI](https://smapi.io/) and st
 
 ### For Windows
 
-*Note: Follow the [Xbox Setup](#xbox-setup) if using the xbox/gamepass version of the game.*
+_Note: Follow the [Xbox Setup](#xbox-setup) if using the xbox/gamepass version of the game._
 
 1. Before installing SMAPI, run the game at least once.
 2. Download the [latest version of SMAPI](https://smapi.io/).
@@ -41,30 +42,32 @@ This page contains setup instructions for both [SMAPI](https://smapi.io/) and st
 1. Open the Stardew Valley section in the Xbox app.
 2. Click the `3 dots button` (should be next to the share button) then `Manage button`
 3. Click the `Files tab` and then `Browse button` to open your game folder
-4. Open the Stardew Valley > Content folder. You should see a lot of files with names like api-ms-win-core-*
+4. Open the Stardew Valley > Content folder. You should see a lot of files with names like api-ms-win-core-\*
 5. Copy the full path from the address bar at the top.
 
 **Run the SMAPI installer:**
 
 Run the SMAPI installer like usual, but:
+
 - Download the installer to somewhere that's not the game directory (like your downloads folder).
 - When it asks where to install, enter the path you copied from the previous step. (In cmd, you can either `right click` or `Ctrl V` to paste)
 
 **After you install SMAPI:**
 
 In your game folder:
+
 1. rename `Stardew Valley.exe` to another name such as `Stardew Valley original.exe`
 2. make a copy of `StardewModdingAPI.exe` and name the copy `Stardew Valley.exe`
-3. That's it! Now just launch the game through the Xbox app to play with mods. 
-   
-*Note that when the game updates, you'll need to redo the last two sections.*
+3. That's it! Now just launch the game through the Xbox app to play with mods.
+
+_Note that when the game updates, you'll need to redo the last two sections._
 
 #### Configuring the game client
 
 Configuring the game client is not a necessary step, only do this if you want the tracking and awards from the client.
 If you choose not to then you will have to launch the game through `StardewModdingAPI.exe`.
 
-*(Note that this gets automatically taken care of for the xbox version while installing SMAPI)*
+_(Note that this gets automatically taken care of for the xbox version while installing SMAPI)_
 
 ##### For Steam
 
@@ -73,10 +76,10 @@ If you choose not to then you will have to launch the game through `StardewModdi
    - `"{Stardew Valley Folder path}\StardewModdingAPI.exe" %command%`
    - Replace the `{Stardew Valley Folder path}` with the correct path.
    - Default for most users is: `"C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe" %command%`
- 
+
 ##### For GOG Galaxy
 
-1. Open Notepad and paste in the following: 
+1. Open Notepad and paste in the following:
    - `start "" "{Stardew Valley Folder path}\StardewModdingAPI.exe"`
    - Replace the `{Stardew Valley Folder path}` with the correct path.
    - Default for most users is: `start "" "C:\Program Files (x86)\GOG Galaxy\Games\Stardew Valley\StardewModdingAPI.exe"`
@@ -87,7 +90,6 @@ If you choose not to then you will have to launch the game through `StardewModdi
 6. Choose `start.bat` in the window that appears and click Open.
 7. Enable the `Default Executable` radio button under the File 2 section you just added, and click OK.
 
-
 ### For Linux
 
 1. On many Linux distributions, you may need to download and install an older version of libssl (1.1 or 1.x).
@@ -97,7 +99,7 @@ If you choose not to then you will have to launch the game through `StardewModdi
 2. Download the latest version of SMAPI.
 3. Extract the .zip file somewhere (Your downloads folder is fine).
 4. If you installed Steam through Flatpak, see these instructions:
-5. instructions for Flatpak 
+5. instructions for Flatpak
 6. Run the `install on Linux.sh` file, and follow the on-screen instructions.
    - (If the installer asks for your game install path, see how to find your game folder - [here](https://stardewvalleywiki.com/Modding:Player_Guide/Getting_Started#Find_your_game_folder).)
 
