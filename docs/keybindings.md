@@ -9,7 +9,7 @@ All the keybinds listed here can be reconfigured using the mod's config file exc
   - [Global Keys](#global-keys)
   - [Tile Viewer Keys](#tile-viewer-keys)
   - [Chat Menu keys](#chat-menu-keys)
-  - [New Game or Charachter Customization Menu Keys](#new-game-or-charachter-customization-menu-keys)
+  - [New Game or Character Customization Menu Keys](#new-game-or-character-customization-menu-keys)
   - [Menus With Inventory Keys](#menus-with-inventory-keys)
   - [Junimo Note or Community Center Menu Keys](#junimo-note-or-community-center-menu-keys)
   - [Primary Info Key](#primary-info-key)
@@ -19,36 +19,36 @@ All the keybinds listed here can be reconfigured using the mod's config file exc
 
 ### Global Keys
 
-| Key                | Description                                                                                                                                          |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Left Ctrl + Enter  | Primary key to simulate mouse left click                                                                                                             |
-| Left Shift + Enter | Primary key to simulate mouse right click                                                                                                            |
-| [                  | Secondary key to simulate mouse left click                                                                                                           |
-| ]                  | Secondary key to simulate mouse right click                                                                                                          |
-| H                  | Narrate health and stamina.                                                                                                                          |
-| Left alt + K       | Narrate current location name.                                                                                                                       |
-| K                  | Narrate player position.                                                                                                                             |
-| Q                  | Narrates the time of day, day and date and season                                                                                                    |
-| R                  | Narrates the money the player has currently. <br /> If pressed when inventory page is opened, it will narrate the money along with other currencies. |
-| Left alt + J       | Manually trigger Read Tile for the tile player is _stanfing on_.                                                                                     |
-| J                  | Manually trigger Read Tile for the tile player is _looking at_.                                                                                      |
-| C                  | (Only in crafting page) Cycle through the available recipes in the current recipe lists                                                              |
-| Escape             | For escaping/unselecting from the active text box                                                                                                    |
+| Key                  | Description                                                                                                                                          |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Left Control + Enter | Primary key to simulate mouse left click                                                                                                             |
+| Left Shift + Enter   | Primary key to simulate mouse right click                                                                                                            |
+| [                    | Secondary key to simulate mouse left click                                                                                                           |
+| ]                    | Secondary key to simulate mouse right click                                                                                                          |
+| H                    | Narrate health and stamina.                                                                                                                          |
+| Left alt + K         | Narrate current location name.                                                                                                                       |
+| K                    | Narrate player position.                                                                                                                             |
+| Q                    | Narrates the time of day, day and date and season                                                                                                    |
+| R                    | Narrates the money the player has currently. <br /> If pressed when inventory page is opened, it will narrate the money along with other currencies. |
+| Left alt + J         | Manually trigger Read Tile for the tile player is _standing on_.                                                                                     |
+| J                    | Manually trigger Read Tile for the tile player is _looking at_.                                                                                      |
+| C                    | (Only in crafting page) Cycle through the available recipes in the current recipe lists                                                              |
+| Escape               | For escaping/unselecting from the active text box                                                                                                    |
 
 ### Tile Viewer Keys
 
 | Key                      | Description                                                                             |
 | ------------------------ | --------------------------------------------------------------------------------------- |
-| L                        | Toggles realative cursor lock i.e. if enabled, the cursor will reset when player moves. |
+| L                        | Toggles relative cursor lock i.e., if enabled, the cursor will reset when player moves. |
 | Left Control + enter     | Auto walk to the tile                                                                   |
 | Arrow up                 | Move the cursor one tile up                                                             |
 | Arrow right              | Move the cursor one tile right                                                          |
 | Arrow down               | Move the cursor one tile down                                                           |
 | Arrow left               | Move the cursor one tile left                                                           |
-| Left Shift + Arrow up    | Move the cursor up by precision i.e. pixel by pixel                                     |
-| Left Shift + Arrow right | Move the cursor right by precision i.e. pixel by pixel                                  |
-| Left Shift + Arrow down  | Move the cursor down by precision i.e. pixel by pixel                                   |
-| Left Shift + Arrow left  | Move the cursor left by precision i.e. pixel by pixel                                   |
+| Left Shift + Arrow up    | Move the cursor up by precision i.e., pixel by pixel                                    |
+| Left Shift + Arrow right | Move the cursor right by precision i.e., pixel by pixel                                 |
+| Left Shift + Arrow down  | Move the cursor down by precision i.e., pixel by pixel                                  |
+| Left Shift + Arrow left  | Move the cursor left by precision i.e., pixel by pixel                                  |
 
 ### Chat Menu keys
 
@@ -57,7 +57,7 @@ All the keybinds listed here can be reconfigured using the mod's config file exc
 | Page up   | Read previous chat message |
 | Page down | Read next chat message     |
 
-### New Game or Charachter Customization Menu Keys
+### New Game or Character Customization Menu Keys
 
 | Key                  | Description                                |
 | -------------------- | ------------------------------------------ |
