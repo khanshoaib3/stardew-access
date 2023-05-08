@@ -6,11 +6,12 @@ For a list of commands added SMAPI, you can visit the page [here](https://starde
 
 ## Table Of Contents
 
-* [Custom Commands List](#custom-commands-list)
-   * [Read tile related](#read-tile-related)
-   * [Building related](#building-related)
-   * [Other](#other)
-   * [Radar related](#radar-related)
+- [Custom Commands List](#custom-commands-list)
+  - [Read tile related](#read-tile-related)
+  - [Building related](#building-related)
+  - [Other](#other)
+  - [Radar related](#radar-related)
+- [Other Pages](#other-pages)
 
 ## Custom Commands List
 

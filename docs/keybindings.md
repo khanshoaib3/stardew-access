@@ -13,6 +13,7 @@ All the keybinds listed here can be reconfigured using the mod's config file exc
   - [Menus With Inventory Keys](#menus-with-inventory-keys)
   - [Junimo Note or Community Center Menu Keys](#junimo-note-or-community-center-menu-keys)
   - [Primary Info Key](#primary-info-key)
+- [Other Pages](#other-pages)
 
 ## New Keybindings List
 

@@ -3,6 +3,19 @@
 This page contains details of all the features that are currently in the mod.
 If you have any suggestion on improvements on any of these features or about a new feature, you can join the discord server ([here](https://discord.gg/yQjjsDqWQX)) or post an issue ([here](https://github.com/khanshoaib3/stardew-access/issues)).
 
+## Table Of Contents
+
+- [Feature List](#feature-list)
+  - [Read Tile](#read-tile)
+  - [Tile Viewer](#tile-viewer)
+  - [Warning](#warning)
+  - [Others](#others)
+  - [Radar](#radar)
+- [Upcoming Features](#upcoming-features)
+  - [Translations](#translations)
+  - [Tile Viewer Menu](#tile-viewer-menu)
+- [Other Pages](#other-pages)
+
 ## Feature List
 
 ### Read Tile

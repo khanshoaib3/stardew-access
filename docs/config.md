@@ -6,19 +6,20 @@ For the list of button codes visit [this page](https://stardewvalleywiki.com/Mod
 
 ## Table Of Contents
 
-- [Config List](#config-list)
-  - [Mouse Sim Keys Config](#mouse-sim-keys-config)
-  - [Read Tile Configs](#read-tile-configs)
-  - [Tile Viewer Configs](#tile-viewer-configs)
-  - [Radar Configs](#radar-configs)
-  - [Menu Keys Configs](#menu-keys-configs)
-    - [Common Keys](#common-keys)
-    - [Character Creation Menu (New Game Menu) Keys](#character-creation-menu-new-game-menu-keys)
-    - [Junimo Note or Community Center Menu Keys](#junimo-note-or-community-center-menu-keys)
-    - [Chat Menu Configs](#chat-menu-configs)
-  - [Fishing Mini-Game Configs](#fishing-mini-game-configs)
-  - [Other Configs](#other-configs)
-- [Default Config](#default-config)
+* [Config List](#config-list)
+  * [Mouse Sim Keys Config](#mouse-sim-keys-config)
+  * [Read Tile Configs](#read-tile-configs)
+  * [Tile Viewer Configs](#tile-viewer-configs)
+  * [Radar Configs](#radar-configs)
+  * [Menu Keys Configs](#menu-keys-configs)
+    * [Common Keys](#common-keys)
+    * [Character Creation Menu (New Game Menu) Keys](#character-creation-menu-new-game-menu-keys)
+    * [Junimo Note or Community Center Menu Keys](#junimo-note-or-community-center-menu-keys)
+    * [Chat Menu Configs](#chat-menu-configs)
+  * [Fishing Mini-Game Configs](#fishing-mini-game-configs)
+  * [Other Configs](#other-configs)
+* [Default Config](#default-config)
+* [Other Pages](#other-pages)
 
 ## Config List
 
@@ -133,7 +134,7 @@ For the list of button codes visit [this page](https://stardewvalleywiki.com/Mod
 
 This is the default value of the `config.json` file as per `v1.4.0`:
 
-```json
+~~~json
 {
   "LeftClickMainKey": "LeftControl + Enter",
   "RightClickMainKey": "LeftShift + Enter",
@@ -191,7 +192,7 @@ This is the default value of the `config.json` file as per `v1.4.0`:
   "MaximumFishingDifficulty": 999,
   "FixFishingMotionType": 999
 }
-```
+~~~
 
 ## Other Pages
 
