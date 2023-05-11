@@ -31,7 +31,17 @@ When you're done with the configuration, go to the `ok` button and select it whi
 
 ### Saving The Progress
 
+To save the progress you have to sleep in the bed at the farm house and to do that, you have to walk into the bed which will open up a dialogue box asking to sleep.
+A thing to note is the you can't walk into the bed from the top or bottom as the headboard and footboard will block the path.
+You can also use `debug wh` or `debug warphome` command which will teleport you directly to the bed and then you can move one block to left and again move towards right to trigger the dialogue.
+
 ### Using The Tile Viewer Feature
+
+With this feature you can browse the map tile by tile without moving the player.
+Because the feature moves and snaps the mouse cursor to the tiles, it can also be used to place certain furnitures which might be difficult to place normally like a t.v., rug, calendar on the wall, etc.
+You can use the arrow keys on keyboard to use this feature and if you are using a controller you can also remap these to your controller's buttons from the `config.json`.
+While using this feature, you can also press `left control + enter` to auto move the player to the focused tile if possible, this can come in handy in places like mines.
+Look at the [keybindings](keybindings.md/#tile-viewer-keys) and [configs](config.md/#tile-viewer-configs) of this feature.
 
 ### Planting And Harvesting
 
