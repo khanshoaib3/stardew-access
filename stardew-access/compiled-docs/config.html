@@ -1,0 +1,529 @@
+<h1 id="config">Config</h1>
+
+<p>The mod can be configured by a <code>config.json</code> file that can be found in the mod’s folder (if you can’t find it than try running game once).
+The file is a json type so you can edit it using any text editor on your computer or you can use onlne json editors like <a href="https://jsoneditoronline.org/">Json Editor Online</a>.
+For the list of button codes visit <a href="https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Button_codes">this page</a>.</p>
+
+<h2 id="table-of-contents">Table Of Contents</h2>
+
+<ul>
+  <li><a href="#config-list">Config List</a>
+    <ul>
+      <li><a href="#mouse-sim-keys-config">Mouse Sim Keys Config</a></li>
+      <li><a href="#read-tile-configs">Read Tile Configs</a></li>
+      <li><a href="#tile-viewer-configs">Tile Viewer Configs</a></li>
+      <li><a href="#radar-configs">Radar Configs</a></li>
+      <li><a href="#menu-keys-configs">Menu Keys Configs</a>
+        <ul>
+          <li><a href="#common-keys">Common Keys</a></li>
+          <li><a href="#character-creation-menu-new-game-menu-keys">Character Creation Menu (New Game Menu) Keys</a></li>
+          <li><a href="#junimo-note-or-community-center-menu-keys">Junimo Note or Community Center Menu Keys</a></li>
+          <li><a href="#chat-menu-configs">Chat Menu Configs</a></li>
+        </ul>
+      </li>
+      <li><a href="#fishing-mini-game-configs">Fishing Mini-Game Configs</a></li>
+      <li><a href="#other-configs">Other Configs</a></li>
+    </ul>
+  </li>
+  <li><a href="#default-config">Default Config</a></li>
+  <li><a href="#other-pages">Other Pages</a></li>
+</ul>
+
+<h2 id="config-list">Config List</h2>
+
+<h3 id="mouse-sim-keys-config">Mouse Sim Keys Config</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Default Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LeftClickMainKey</td>
+      <td>LeftControl + Enter</td>
+      <td>Primary key to simulate mouse left click</td>
+    </tr>
+    <tr>
+      <td>RightClickMainKey</td>
+      <td>LeftShift + Enter</td>
+      <td>Primary key to simulate mouse right click</td>
+    </tr>
+    <tr>
+      <td>LeftClickAlternateKey</td>
+      <td>OemOpenBrackets</td>
+      <td>Secondary key to simulate mouse left click</td>
+    </tr>
+    <tr>
+      <td>RightClickAlternateKey</td>
+      <td>OemCloseBrackets</td>
+      <td>Secondary key to simulate mouse right click</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="read-tile-configs">Read Tile Configs</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Default Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ReadTile</td>
+      <td>true</td>
+      <td>Toggle <code>Read Tile</code> feature.</td>
+    </tr>
+    <tr>
+      <td>ReadTileKey</td>
+      <td>J</td>
+      <td>Speak the contents of the tile player is <em>looking at</em>.</td>
+    </tr>
+    <tr>
+      <td>ReadStandingTileKey</td>
+      <td>LeftAlt + J</td>
+      <td>Speak the contents of the tile player is <em>standing on</em>.</td>
+    </tr>
+    <tr>
+      <td>ReadFlooring</td>
+      <td>false</td>
+      <td>Toggle reading floorings.</td>
+    </tr>
+    <tr>
+      <td>WateredToggle</td>
+      <td>true</td>
+      <td>Toggle speaking watered or unwatered for crops.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="tile-viewer-configs">Tile Viewer Configs</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Default Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ToggleRelativeCursorLockKey</td>
+      <td>L</td>
+      <td>Toggles realative cursor lock i.e. if enabled, the cursor will reset when player moves.</td>
+    </tr>
+    <tr>
+      <td>AutoWalkToTileKey</td>
+      <td>LeftControl + Enter</td>
+      <td>Auto walk to the tile</td>
+    </tr>
+    <tr>
+      <td>TileCursorUpKey</td>
+      <td>Up</td>
+      <td>Move the cursor one tile up</td>
+    </tr>
+    <tr>
+      <td>TileCursorRightKey</td>
+      <td>Right</td>
+      <td>Move the cursor one tile right</td>
+    </tr>
+    <tr>
+      <td>TileCursorDownKey</td>
+      <td>Down</td>
+      <td>Move the cursor one tile down</td>
+    </tr>
+    <tr>
+      <td>TileCursorLeftKey</td>
+      <td>Left</td>
+      <td>Move the cursor one tile left</td>
+    </tr>
+    <tr>
+      <td>TileCursorPreciseUpKey</td>
+      <td>LeftShift + Up</td>
+      <td>Move the cursor up by precision i.e. pixel by pixel</td>
+    </tr>
+    <tr>
+      <td>TileCursorPreciseRightKey</td>
+      <td>LeftShift + Right</td>
+      <td>Move the cursor right by precision i.e. pixel by pixel</td>
+    </tr>
+    <tr>
+      <td>TileCursorPreciseDownKey</td>
+      <td>LeftShift + Down</td>
+      <td>Move the cursor down by precision i.e. pixel by pixel</td>
+    </tr>
+    <tr>
+      <td>TileCursorPreciseLeftKey</td>
+      <td>LeftShift + Left</td>
+      <td>Move the cursor left by precision i.e. pixel by pixel</td>
+    </tr>
+    <tr>
+      <td>LimitTileCursorToScreen</td>
+      <td>false</td>
+      <td>Toggle whether to prevent cursor from going out of screen.</td>
+    </tr>
+    <tr>
+      <td>TileCursorPreciseMovementDistance</td>
+      <td>8</td>
+      <td>Specifies the number of pixels the cursor should move when using precision movement i.e. with <em>left shift</em>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="radar-configs">Radar Configs</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Default Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Radar</td>
+      <td>false</td>
+      <td>Toggle Radar feature.</td>
+    </tr>
+    <tr>
+      <td>RadarStereoSound</td>
+      <td>true</td>
+      <td>Toggle whether to use stereo sound or mono</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="menu-keys-configs">Menu Keys Configs</h3>
+
+<h4 id="common-keys">Common Keys</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Default Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PrimaryInfoKey</td>
+      <td>C</td>
+      <td>Used to speak additional info on certain menus, <a href="keybindings.md#primary-info-key">see here</a></td>
+    </tr>
+    <tr>
+      <td>SnapToFirstInventorySlotKey</td>
+      <td>I</td>
+      <td>Snaps to the first slot in primary inventory i.e., player inventory, shop inventory, etc.</td>
+    </tr>
+    <tr>
+      <td>SnapToFirstSecondaryInventorySlotKey</td>
+      <td>LeftShift + I</td>
+      <td>Snaps to the first slot in secondary inventory i.e., chest inventory, selling inventory, etc.</td>
+    </tr>
+    <tr>
+      <td>CraftingMenuCycleThroughRecipiesKey</td>
+      <td>C</td>
+      <td>Cycle through the recipies in crafting menu.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="character-creation-menu-new-game-menu-keys">Character Creation Menu (New Game Menu) Keys</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Default Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CharacterCreationMenuNextKey</td>
+      <td>Right</td>
+      <td>Go to next element</td>
+    </tr>
+    <tr>
+      <td>CharacterCreationMenuPreviousKey</td>
+      <td>Left</td>
+      <td>Go to previous element</td>
+    </tr>
+    <tr>
+      <td>CharacterCreationMenuSliderIncreaseKey</td>
+      <td>Up</td>
+      <td>Increase the slider value by 1</td>
+    </tr>
+    <tr>
+      <td>CharacterCreationMenuSliderLargeIncreaseKey</td>
+      <td>PageUp</td>
+      <td>Increase the slider value by 10</td>
+    </tr>
+    <tr>
+      <td>CharacterCreationMenuSliderDecreaseKey</td>
+      <td>Down</td>
+      <td>Decrease the slider value by 1</td>
+    </tr>
+    <tr>
+      <td>CharacterCreationMenuSliderLargeDecreaseKey</td>
+      <td>PageDown</td>
+      <td>Decrease the slider value by 10</td>
+    </tr>
+    <tr>
+      <td>CharacterCreationMenuDesignToggleKey</td>
+      <td>LeftControl + Space</td>
+      <td>Toggle displaying character design options</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="junimo-note-or-community-center-menu-keys">Junimo Note or Community Center Menu Keys</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Default Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>BundleMenuIngredientsKey</td>
+      <td>I</td>
+      <td>Cycle through the ingredients in the current selected bundle</td>
+    </tr>
+    <tr>
+      <td>BundleMenuInventoryItemsKey</td>
+      <td>C</td>
+      <td>Cycle through the items in the player’s inventory</td>
+    </tr>
+    <tr>
+      <td>BundleMenuPurchaseButtonKey</td>
+      <td>P</td>
+      <td>Move the mouse cursor to purchase button</td>
+    </tr>
+    <tr>
+      <td>BundleMenuIngredientsInputSlotKey</td>
+      <td>V</td>
+      <td>Cycle through the ingredient input slots</td>
+    </tr>
+    <tr>
+      <td>BundleMenuBackButtonKey</td>
+      <td>Back</td>
+      <td>Move the mouse cursor to back button</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="chat-menu-configs">Chat Menu Configs</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Default Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ChatMenuNextKey</td>
+      <td>PageUp</td>
+      <td>Read previous chat message</td>
+    </tr>
+    <tr>
+      <td>ChatMenuPreviousKey</td>
+      <td>PageDown</td>
+      <td>Read next chat message</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="fishing-mini-game-configs">Fishing Mini-Game Configs</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Default Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>MaximumFishingDifficulty</td>
+      <td>999</td>
+      <td>Every fish have a difficulty value which varies from around 0 to 150. You can use this to limit the maximum difficulty any fish can have.</td>
+    </tr>
+    <tr>
+      <td>FixFishingMotionType</td>
+      <td>999</td>
+      <td>You can fix what motion type every fish has, by default every fish has a fixed motion type like for squid it’s sinker, walleye it’s smooth, etc. You can use a value between 0 to 4 to fix the motion. 0 indicates mixed motion type, 1 indicates art, 2 indicates smooth, 3 indicates sinker and 4 indicates floater.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="other-configs">Other Configs</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Default Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>HealthNStaminaKey</td>
+      <td>H</td>
+      <td>Narrate health and stamina.</td>
+    </tr>
+    <tr>
+      <td>HealthNStaminaInPercentage</td>
+      <td>true</td>
+      <td>Whether to speak health and stamina in percentage or the actual value</td>
+    </tr>
+    <tr>
+      <td>List PositionKey</td>
+      <td>K</td>
+      <td>Narrate player position.</td>
+    </tr>
+    <tr>
+      <td>List LocationKey</td>
+      <td>LeftAlt + K</td>
+      <td>Narrate current location name.</td>
+    </tr>
+    <tr>
+      <td>List MoneyKey</td>
+      <td>R</td>
+      <td>Narrate the money the player has currently.</td>
+    </tr>
+    <tr>
+      <td>List TimeNSeasonKey</td>
+      <td>Q</td>
+      <td>Narrate the time of day, day and date and season</td>
+    </tr>
+    <tr>
+      <td>VerboseCoordinates</td>
+      <td>true</td>
+      <td>Whether to speak ‘X:’ and ‘Y:’ along with co-ordinates or not</td>
+    </tr>
+    <tr>
+      <td>SnapMouse</td>
+      <td>true</td>
+      <td>Toggles the snap mouse feature</td>
+    </tr>
+    <tr>
+      <td>Warning</td>
+      <td>true</td>
+      <td>Toggles the warnings feature</td>
+    </tr>
+    <tr>
+      <td>TTS</td>
+      <td>true</td>
+      <td>Toggles the screen reader/tts.</td>
+    </tr>
+    <tr>
+      <td>TrackDroppedItems</td>
+      <td>true</td>
+      <td>Toggles detecting the dropped items.</td>
+    </tr>
+    <tr>
+      <td>DisableInventoryVerbosity</td>
+      <td>false</td>
+      <td>If enabled, does not speaks ‘not usable here’ and ‘donatable’ in inventories</td>
+    </tr>
+    <tr>
+      <td>MacSpeechRate</td>
+      <td>220</td>
+      <td>Sets speech rate for the Mac TTS.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="default-config">Default Config</h2>
+
+<p>This is the default value of the <code>config.json</code> file as per <code>v1.4.0</code>:</p>
+
+<pre><code class="language-json">{
+  "LeftClickMainKey": "LeftControl + Enter",
+  "RightClickMainKey": "LeftShift + Enter",
+  "LeftClickAlternateKey": "OemOpenBrackets",
+  "RightClickAlternateKey": "OemCloseBrackets",
+  "ChatMenuNextKey": "PageUp",
+  "ChatMenuPreviousKey": "PageDown",
+  "ReadTile": true,
+  "ReadTileKey": "J",
+  "ReadStandingTileKey": "LeftAlt + J",
+  "ReadFlooring": false,
+  "WateredToggle": true,
+  "TileCursorUpKey": "Up",
+  "TileCursorRightKey": "Right",
+  "TileCursorDownKey": "Down",
+  "TileCursorLeftKey": "Left",
+  "TileCursorPreciseUpKey": "LeftShift + Up",
+  "TileCursorPreciseRightKey": "LeftShift + Right",
+  "TileCursorPreciseDownKey": "LeftShift + Down",
+  "TileCursorPreciseLeftKey": "LeftShift + Left",
+  "ToggleRelativeCursorLockKey": "L",
+  "AutoWalkToTileKey": "LeftControl + Enter",
+  "LimitTileCursorToScreen": false,
+  "TileCursorPreciseMovementDistance": 8,
+  "Radar": false,
+  "RadarStereoSound": true,
+  "PrimaryInfoKey": "C",
+  "CharacterCreationMenuNextKey": "Right",
+  "CharacterCreationMenuPreviousKey": "Left",
+  "CharacterCreationMenuSliderIncreaseKey": "Up",
+  "CharacterCreationMenuSliderLargeIncreaseKey": "PageUp",
+  "CharacterCreationMenuSliderDecreaseKey": "Down",
+  "CharacterCreationMenuSliderLargeDecreaseKey": "PageDown",
+  "CharacterCreationMenuDesignToggleKey": "LeftControl + Space",
+  "BundleMenuIngredientsKey": "I",
+  "BundleMenuInventoryItemsKey": "C",
+  "BundleMenuPurchaseButtonKey": "P",
+  "BundleMenuIngredientsInputSlotKey": "V",
+  "BundleMenuBackButtonKey": "Back",
+  "SnapToFirstInventorySlotKey": "I",
+  "SnapToFirstSecondaryInventorySlotKey": "LeftShift + I",
+  "CraftingMenuCycleThroughRecipiesKey": "C",
+  "HealthNStaminaKey": "H",
+  "HealthNStaminaInPercentage": true,
+  "PositionKey": "K",
+  "LocationKey": "LeftAlt + K",
+  "MoneyKey": "R",
+  "TimeNSeasonKey": "Q",
+  "VerboseCoordinates": true,
+  "SnapMouse": true,
+  "Warning": true,
+  "TTS": true,
+  "TrackDroppedItems": true,
+  "DisableInventoryVerbosity": false,
+  "MacSpeechRate": 220
+  "MaximumFishingDifficulty": 999,
+  "FixFishingMotionType": 999
+}
+</code></pre>
+
+<h2 id="other-pages">Other Pages</h2>
+
+<ul>
+  <li><a href="README.html">Readme</a></li>
+  <li><a href="setup.html">Setup</a></li>
+  <li><a href="features.html">Features</a></li>
+  <li><a href="keybindings.html">Keybindings</a></li>
+  <li><a href="commands.html">Commands</a></li>
+  <li><a href="guides.html">Guides</a></li>
+</ul>
