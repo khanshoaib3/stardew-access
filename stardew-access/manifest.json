@@ -1,12 +1,13 @@
 {
   "Name": "Stardew Access",
-  "Author": "Mohammad Shoaib",
-  "Version": "1.3.5-beta5",
-  "Description": "An accessibility mod with screen reader support!",
+  "Author": "Mohammad Shoaib Khan",
+  "Version": "1.4.0",
+  "Description": "A mod that improves the accessibility of the game for visually impaired players.",
   "UniqueID": "shoaib.stardewaccess",
   "EntryDll": "stardew-access.dll",
   "MinimumApiVersion": "3.0.0",
   "UpdateKeys": [
-    "Github:khanshoaib3/stardew-access"
+    "Github:khanshoaib3/stardew-access",
+    "Nexus:16205"
   ]
 }
