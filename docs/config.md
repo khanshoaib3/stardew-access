@@ -72,7 +72,7 @@ For the list of button codes visit [this page](https://stardewvalleywiki.com/Mod
 
 | Name                                 | Default Value | Description                                                                                   |
 | ------------------------------------ | ------------- | --------------------------------------------------------------------------------------------- |
-| PrimaryInfoKey                       | C             | Used to speak additional info on certain menus, [see here](keybindings.md#primary-info-key) |
+| PrimaryInfoKey                       | C             | Used to speak additional info on certain menus, [see here](keybindings.md#primary-info-key)   |
 | SnapToFirstInventorySlotKey          | I             | Snaps to the first slot in primary inventory i.e., player inventory, shop inventory, etc.     |
 | SnapToFirstSecondaryInventorySlotKey | LeftShift + I | Snaps to the first slot in secondary inventory i.e., chest inventory, selling inventory, etc. |
 | CraftingMenuCycleThroughRecipiesKey  | C             | Cycle through the recipies in crafting menu.                                                  |
@@ -129,6 +129,7 @@ For the list of button codes visit [this page](https://stardewvalleywiki.com/Mod
 | TTS                        | true          | Toggles the screen reader/tts.                                               |
 | TrackDroppedItems          | true          | Toggles detecting the dropped items.                                         |
 | DisableInventoryVerbosity  | false         | If enabled, does not speaks 'not usable here' and 'donatable' in inventories |
+| MacSpeechRate              | 220           | Sets speech rate for the Mac TTS.                                            |
 
 ## Default Config
 
@@ -189,6 +190,7 @@ This is the default value of the `config.json` file as per `v1.4.0`:
   "TTS": true,
   "TrackDroppedItems": true,
   "DisableInventoryVerbosity": false,
+  "MacSpeechRate": 220
   "MaximumFishingDifficulty": 999,
   "FixFishingMotionType": 999
 }
@@ -196,9 +198,9 @@ This is the default value of the `config.json` file as per `v1.4.0`:
 
 ## Other Pages
 
-- [Readme](README.md)
-- [Setup](setup.md)
-- [Features](features.md)
-- [Keybindings](keybindings.md)
-- [Commands](commands.md)
-- [Guides](guides.md)
+- [Readme](README.html)
+- [Setup](setup.html)
+- [Features](features.html)
+- [Keybindings](keybindings.html)
+- [Commands](commands.html)
+- [Guides](guides.html)
