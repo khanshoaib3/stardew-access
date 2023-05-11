@@ -30,7 +30,7 @@ More on this in the guides page.
 ### Tile Viewer
 
 Allows browsing of the map and snapping mouse to tiles with the arrow keys.
-This Feature can be used to place items into the world like calender.
+This Feature can be used to place items into the world like calendar.
 We can press the `AutoWalkToTileKey` (default to left control + enter) to auto walk the player to that tile (if possible).
 
 ### Warning
@@ -64,6 +64,10 @@ We would like to change that and internationalize the entire mod hopefully.
 ### Tile Viewer Menu
 
 When Shift + enter, it brings up a menu with options to mark that tile just like using the `mark` command and an option to add the tile as a new entry to `custom-tiles.json`.
+
+### Accessible Tiles
+
+The [Accessible Tiles](https://github.com/Croutonic-Creations-Stardew/SDV-AccessibleTiles) mod will be merged into stardew access in the next update.
 
 ## Other Pages
 

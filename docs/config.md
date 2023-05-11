@@ -6,20 +6,20 @@ For the list of button codes visit [this page](https://stardewvalleywiki.com/Mod
 
 ## Table Of Contents
 
-* [Config List](#config-list)
-  * [Mouse Sim Keys Config](#mouse-sim-keys-config)
-  * [Read Tile Configs](#read-tile-configs)
-  * [Tile Viewer Configs](#tile-viewer-configs)
-  * [Radar Configs](#radar-configs)
-  * [Menu Keys Configs](#menu-keys-configs)
-    * [Common Keys](#common-keys)
-    * [Character Creation Menu (New Game Menu) Keys](#character-creation-menu-new-game-menu-keys)
-    * [Junimo Note or Community Center Menu Keys](#junimo-note-or-community-center-menu-keys)
-    * [Chat Menu Configs](#chat-menu-configs)
-  * [Fishing Mini-Game Configs](#fishing-mini-game-configs)
-  * [Other Configs](#other-configs)
-* [Default Config](#default-config)
-* [Other Pages](#other-pages)
+- [Config List](#config-list)
+  - [Mouse Sim Keys Config](#mouse-sim-keys-config)
+  - [Read Tile Configs](#read-tile-configs)
+  - [Tile Viewer Configs](#tile-viewer-configs)
+  - [Radar Configs](#radar-configs)
+  - [Menu Keys Configs](#menu-keys-configs)
+    - [Common Keys](#common-keys)
+    - [Character Creation Menu (New Game Menu) Keys](#character-creation-menu-new-game-menu-keys)
+    - [Junimo Note or Community Center Menu Keys](#junimo-note-or-community-center-menu-keys)
+    - [Chat Menu Configs](#chat-menu-configs)
+  - [Fishing Mini-Game Configs](#fishing-mini-game-configs)
+  - [Other Configs](#other-configs)
+- [Default Config](#default-config)
+- [Other Pages](#other-pages)
 
 ## Config List
 
@@ -72,7 +72,7 @@ For the list of button codes visit [this page](https://stardewvalleywiki.com/Mod
 
 | Name                                 | Default Value | Description                                                                                   |
 | ------------------------------------ | ------------- | --------------------------------------------------------------------------------------------- |
-| PrimaryInfoKey                       | C             | Used to speak additional info on certain menus, [see here](keybindings.md/#primary-info-key)  |
+| PrimaryInfoKey                       | C             | Used to speak additional info on certain menus, [see here](keybindings.md#primary-info-key) |
 | SnapToFirstInventorySlotKey          | I             | Snaps to the first slot in primary inventory i.e., player inventory, shop inventory, etc.     |
 | SnapToFirstSecondaryInventorySlotKey | LeftShift + I | Snaps to the first slot in secondary inventory i.e., chest inventory, selling inventory, etc. |
 | CraftingMenuCycleThroughRecipiesKey  | C             | Cycle through the recipies in crafting menu.                                                  |

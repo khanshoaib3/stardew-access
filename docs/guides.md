@@ -9,7 +9,7 @@ At the moment, the amount of guides is very few but hopefully this won't be the 
   - [Creating A New Game](#creating-a-new-game)
   - [Saving The Progress](#saving-the-progress)
   - [Using The Tile Viewer Feature](#using-the-tile-viewer-feature)
-  - [Constructing/Upgrading/Moving Buildings](#constructingupgradingmovingdemolishing-buildings)
+  - [Constructing/Upgrading/Moving/Demolishing Buildings](#constructingupgradingmovingdemolishing-buildings)
   - [Purchasing/Moving Farm Animals](#purchasingmoving-farm-animals)
 - [Other Pages](#other-pages)
 
@@ -21,7 +21,7 @@ This assumes that you have installed the game and the mod as well, go to the [se
 Once the game is loaded and you have entered the title screen, select the new game button to open the new game menu (also known as the character customization menu).
 You can use wasd keys to navigate through the menus and `Control + Enter` or `[` key to select a button or other UI elements.
 Once you're in the new game menu, use the left and right arrow keys to go to next or previous element and again, `Control + Enter` or `[` key to select it.
-Check the full list of keybindings in this menu [here](keybindings.md/#new-game-or-character-customization-menu-keys).
+Check the full list of keybindings in this menu [here](keybindings.md#new-game-or-character-customization-menu-keys).
 In case of a text box, first select the element with `[` or `Control + Enter` and then type the text you want and press `Escape` key to unselect the text box.
 And in case of a slider, use up and down arrow keys or page up and page down keys to change the value.
 By default, options related to character appearance are hidden, press `Left Control + Space` to make it visible and then you can edit the farmer's appearance.
@@ -41,7 +41,7 @@ With this feature you can browse the map tile by tile without moving the player.
 Because the feature moves and snaps the mouse cursor to the tiles, it can also be used to place certain furnitures which might be difficult to place normally like a t.v., rug, calendar on the wall, etc.
 You can use the arrow keys on keyboard to use this feature and if you are using a controller you can also remap these to your controller's buttons from the `config.json`.
 While using this feature, you can also press `left control + enter` to auto move the player to the focused tile if possible, this can come in handy in places like mines.
-Look at the [keybindings](keybindings.md/#tile-viewer-keys) and [configs](config.md/#tile-viewer-configs) of this feature.
+Look at the [keybindings](keybindings.md#tile-viewer-keys) and [configs](config.md#tile-viewer-configs) of this feature.
 
 <!-- ### Planting And Harvesting -->
 
@@ -64,6 +64,14 @@ If you want to construct/move the building, use the command `buildsel` followed 
 If you want to upgrade/demolish a building, you first have to find out the index of the building you want to upgrade/demolish by entering the `buildlist` command and then again enter the `buildsel` command followed by the index of the building.
 
 ### Purchasing/Moving Farm Animals
+
+The process is very similar to how we upgrade/demolish a building.
+To purchase the animal, go to Marnie's shop and select the `purchase farm animal` option and then select the animal you want to purchase.
+In case you want to move an animal to another building, interact with the animal which will open up a menu with the details about that animal, there you'll find the move option.
+
+Now that should've taken you back to the farm map.
+Here, you have to enter the command `buildsel` followed by the index of the building where you want to move the animal to.
+To get the index enter the `buildlist` command. And that's it, it should've moved the animal to the new building and if you were purchasing it, then it should open up a menu where you have to enter the name of the animal.
 
 ## Other Pages
 

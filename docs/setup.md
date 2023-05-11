@@ -131,8 +131,8 @@ To update you just need to delete or move the mod folder from the `Mods` folder 
 ## Other Pages
 
 - [Readme](README.md)
-- [Setup](setup.md)
 - [Features](features.md)
+- [Keybindings](keybindings.md)
 - [Commands](commands.md)
 - [Configs](config.md)
 - [Guides](guides.md)

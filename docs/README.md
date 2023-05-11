@@ -2,7 +2,7 @@
 
 Stardew Access is a [Stardew Valley](https://stardewvalley.net/) mod that focuses on making the game blind accessible for windows, linux and mac.
 The mod uses the [Tolk](https://github.com/ndarilek/tolk) library on windows, [libspeechdwrapper](https://github.com/khanshoaib3/libspeechdwrapper) on linux and [libspeak](https://github.com/Flameborn/libspeak) on mac for interacting with the active screen reader.
-The mod adds features like read tile, tile viewer, warnings, etc. to help the player gather information regarding the sorrounding and the player.
+The mod adds features like read tile, tile viewer, warnings, etc., to help the player gather information regarding the sorrounding and the player.
 It also patches the various menus and the fishing mini-game (more mini-games will be patched soon) to make them accessible.
 
 ## Other Pages
