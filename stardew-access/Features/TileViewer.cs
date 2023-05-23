@@ -264,6 +264,9 @@ namespace stardew_access.Features
 
         private static bool allowMouseSnap(Vector2 point)
         {
+            // Prevent snapping if any menu is open
+            if (Game1.activeClickableMenu != null) return false;
+
             // Utility.isOnScreen treats a vector as a pixel position, not a tile position
             if (!Utility.isOnScreen(point, 0)) return false;
 
