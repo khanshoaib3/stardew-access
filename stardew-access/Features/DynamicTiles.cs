@@ -698,6 +698,11 @@ namespace stardew_access.Features
                 return ("Special quest board", CATEGORY.Interactables);
             }
 
+	    if (Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater") && x == 98 && y == 51)
+            {
+                return ("Movie Ticket Machine", CATEGORY.Interactables);
+            }
+
             return (null, null);
         }
 
