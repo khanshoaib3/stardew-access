@@ -2,8 +2,8 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
-using static stardew_access.Features.Utils;
 using System.Text.Json;
+using static stardew_access.Utils.JsonLoader;
 
 namespace stardew_access.Features
 {
