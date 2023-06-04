@@ -14,5 +14,9 @@
     "readtile.sprinkler.pressurenozzle": "Pressurized {{value}}",
     "readtile.sprinkler.enricher": "Enriching {{value}}",
     "patch.animal_query_menu.heart": "Heart Count: {{count}}",
-    "patch.trash_bear.wanted_item": "{{trash_bear_name}} wants {{item_name}}!"
+    "patch.trash_bear.wanted_item": "{{trash_bear_name}} wants {{item_name}}!",
+    "building_operations.move_building.under_construction": "Cannot move building! Under construction.",
+    "building_operations.move_building.no_permission": "You don't have permission to move this building!",
+    "building_operations.move_building.cannot_move": "Cannot move building to {{x_position}}x {{y_position}}y",
+    "building_operations.move_building.building_moved": "{{building_name}} moved to {{x_position}}x {{y_position}}y"
 }

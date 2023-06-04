@@ -241,52 +241,49 @@ namespace stardew_access.Features
 
         public static string? Move(Building? buildingToMove, Vector2 position)
         {
-            string? response = null;
             // This code is taken from the game's code (CarpenterMenu.cs::829)
-            if (buildingToMove != null)
+            if (buildingToMove == null) return null;
+            
+            string? name = buildingToMove.nameOfIndoorsWithoutUnique;
+            name = (name == "null") ? buildingToMove.buildingType.Value : name;
+
+            if ((int)buildingToMove.daysOfConstructionLeft.Value > 0)
             {
-                string? name = buildingToMove.nameOfIndoorsWithoutUnique;
-                name = (name == "null") ? buildingToMove.buildingType.Value : name;
-
-                if ((int)buildingToMove.daysOfConstructionLeft.Value > 0)
-                {
-                    buildingToMove = null;
-                    return "Building under construction, cannot move";
-                }
-                if (CarpenterMenuPatch.carpenterMenu != null && !CarpenterMenuPatch.carpenterMenu.hasPermissionsToMove(buildingToMove))
-                {
-                    buildingToMove = null;
-                    return "You don't have permission to move this building";
-                }
-                Game1.playSound("axchop");
-
-                if (((Farm)Game1.getLocationFromName("Farm")).buildStructure(buildingToMove, position, Game1.player))
-                {
-                    if (buildingToMove is ShippingBin)
-                    {
-                        ((ShippingBin)buildingToMove).initLid();
-                    }
-                    if (buildingToMove is GreenhouseBuilding)
-                    {
-                        Game1.getFarm().greenhouseMoved.Value = true;
-                    }
-                    buildingToMove.performActionOnBuildingPlacement();
-                    buildingToMove = null;
-                    Game1.playSound("axchop");
-                    DelayedAction.playSoundAfterDelay("dirtyHit", 50);
-                    DelayedAction.playSoundAfterDelay("dirtyHit", 150);
-
-                    response = $"{buildingToMove} moved to {position.X}x {position.Y}y";
-                }
-                else
-                {
-                    Game1.playSound("cancel");
-                    response = $"Cannot move building to {position.X}x {position.Y}y";
-                }
-
+                buildingToMove = null;
+                return MainClass.Translate("building_operations.move_building.under_construction");
             }
+            if (CarpenterMenuPatch.carpenterMenu != null && !CarpenterMenuPatch.carpenterMenu.hasPermissionsToMove(buildingToMove))
+            {
+                buildingToMove = null;
+                return MainClass.Translate("building_operations.move_building.no_permission");
+            }
+            Game1.playSound("axchop");
 
-            return response;
+            if (buildingToMove != null && ((Farm)Game1.getLocationFromName("Farm")).buildStructure(buildingToMove, position, Game1.player))
+            {
+                if (buildingToMove is ShippingBin)
+                {
+                    ((ShippingBin)buildingToMove).initLid();
+                }
+                if (buildingToMove is GreenhouseBuilding)
+                {
+                    Game1.getFarm().greenhouseMoved.Value = true;
+                }
+                buildingToMove.performActionOnBuildingPlacement();
+                buildingToMove = null;
+                Game1.playSound("axchop");
+                DelayedAction.playSoundAfterDelay("dirtyHit", 50);
+                DelayedAction.playSoundAfterDelay("dirtyHit", 150);
+
+                return MainClass.Translate("building_operations.move_building.building_moved",
+                        new { building_name = name, x_position = position.X, y_position = position.Y });
+            }
+            else
+            {
+                Game1.playSound("cancel");
+                return MainClass.Translate("building_operations.move_building.cannot_move",
+                        new { x_position = position.X, y_position = position.Y });
+            }
         }
 
         public static void PurchaseAnimal(Building? selection)
