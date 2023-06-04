@@ -1,0 +1,3 @@
+[submodule "stardew-access/i18n"]
+	path = stardew-access/i18n
+	url = git@github.com:khanshoaib3/stardew-access-i18n.git
