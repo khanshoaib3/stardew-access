@@ -47,7 +47,7 @@ namespace stardew_access.Patches
             string type = ___animal.displayType;
             int age = (___animal.GetDaysOwned() + 1) / 28 + 1;
             string ageText = (age <= 1) ? Game1.content.LoadString("Strings\\UI:AnimalQuery_Age1") : Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeN", age);
-            string parent = "";
+            string parent = "null";
 
             if ((int)___animal.age.Value < (byte)___animal.ageWhenMature.Value)
             {
@@ -71,13 +71,12 @@ namespace stardew_access.Patches
                 heartCount += 0.5;
             }
 
-            MainClass.DebugLog($"Lovelevel: {loveLevel}");
-            string heart = MainClass.Translate("patch.animal_query_menu.heart", new { count = heartCount });
+            string toSpeak = MainClass.Translate("patch-animal_query_menu-heart", new { name = name, type = type, heart_count = heartCount, age = ageText, parent_name = parent });
 
             isNarratingAnimalInfo = true;
             Task.Delay(200).ContinueWith(_ => { isNarratingAnimalInfo = false; }); // Adds delay
 
-            MainClass.ScreenReader.Say($"Name: {name} Type: {type} \n\t {ageText} {parent} \n\t {heart}", true);
+            MainClass.ScreenReader.Say(toSpeak, true);
         }
 
         private static void narrateHoveredButton(AnimalQueryMenu __instance, FarmAnimal ___animal, bool ___confirmingSell, int x, int y)
