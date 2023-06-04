@@ -2,7 +2,7 @@ using System.Text.Json;
 using StardewValley;
 using StardewValley.Menus;
 using static stardew_access.Features.Utils;
-using static stardew_access.Features.ColorMatcher;
+using static stardew_access.Utils.ColorMatcher;
 
 namespace stardew_access.Patches
 {
