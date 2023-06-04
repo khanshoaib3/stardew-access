@@ -747,6 +747,11 @@ namespace stardew_access.Features
                 } // else if something other than feeding benches in barns and coops...
             } //else if something other than barns and coops...
 
+            if(locationName.Contains("witchhut", StringComparison.OrdinalIgnoreCase) && x == 4 && y == 11 && !Game1.player.mailReceived.Contains("hasPickedUpMagicInk"))
+            {
+                return ("Magic Ink", CATEGORY.Interactables);
+            }
+
             // Unimplemented locations are logged.
             // Check if the location has already been logged
             if (!loggedLocations.Contains(locationType))
