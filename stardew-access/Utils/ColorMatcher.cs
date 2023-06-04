@@ -1,8 +1,7 @@
 using System.Text.Json;
 using KdTree;
 using KdTree.Math;
-using stardew_access.Features;
-using static stardew_access.Features.Utils;
+using static stardew_access.Utils.JsonLoader;
 
 namespace stardew_access.Utils
 {

@@ -1,4 +1,6 @@
-using System.Text.Json;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace stardew_access.Features
 {
@@ -130,38 +132,5 @@ namespace stardew_access.Features
     public enum MachineState
     {
         Ready, Busy, Waiting
-    }
-
-    public static class Utils
-    {
-        /// <summary>
-        /// Loads a JSON file from the specified file name in the assets folder.
-        /// </summary>
-        /// <param name="fileName">The name of the JSON file to load.</param>
-        /// <returns>A <see cref="JsonElement"/> containing the deserialized JSON data, or default if an error occurs.</returns>
-        public static JsonElement LoadJsonFile(string fileName)
-        {
-            string filePath = Path.Combine(MainClass.ModHelper!.DirectoryPath, "assets", fileName);
-
-            try
-            {
-                string json = File.ReadAllText(filePath);
-                return JsonSerializer.Deserialize<JsonElement>(json);
-            }
-            catch (FileNotFoundException ex)
-            {
-                MainClass.ErrorLog($"{fileName} file not found: {ex.Message}");
-            }
-            catch (JsonException ex)
-            {
-                MainClass.ErrorLog($"Error parsing {fileName}: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                MainClass.ErrorLog($"An error occurred while initializing {fileName}: {ex.Message}");
-            }
-
-            return default;
-        }
     }
 }

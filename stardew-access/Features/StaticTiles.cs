@@ -1,6 +1,6 @@
-using System.Text.Json;
 using StardewValley;
-using static stardew_access.Features.Utils;
+using System.Text.Json;
+using static stardew_access.Utils.JsonLoader;
 
 namespace stardew_access.Features
 {
