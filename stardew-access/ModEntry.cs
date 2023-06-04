@@ -6,6 +6,7 @@ using HarmonyLib;
 using stardew_access.Patches;
 using stardew_access.ScreenReader;
 using Microsoft.Xna.Framework;
+using stardew_access.Integrations;
 
 namespace stardew_access
 {
@@ -24,6 +25,7 @@ namespace stardew_access
         private static TileViewer? tileViewer;
         private static Warnings? warnings;
         private static ReadTile? readTile;
+	private static IFluent<string> Fluent { get; set; } = null!;
 
         internal static ModConfig Config { get => config; set => config = value; }
         public static IModHelper? ModHelper { get => modHelper; }
@@ -113,7 +115,7 @@ namespace stardew_access
 
             harmony = new Harmony(ModManifest.UniqueID);
             HarmonyPatches.Initialize(harmony);
-
+            
             //Initialize marked locations
             for (int i = 0; i < BuildingOperations.marked.Length; i++)
             {
@@ -126,12 +128,22 @@ namespace stardew_access
             }
             #endregion
 
+	    helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
             helper.Events.GameLoop.DayStarted += this.onDayStarted;
             helper.Events.Display.MenuChanged += this.onMenuChanged;
             AppDomain.CurrentDomain.DomainUnload += OnExit;
             AppDomain.CurrentDomain.ProcessExit += OnExit;
+        }
+
+        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
+        {
+	    var fluentApi = modHelper!.ModRegistry.GetApi<IFluentApi>("Shockah.ProjectFluent");
+            if (fluentApi != null) 
+            {
+    	        Fluent = fluentApi.GetLocalizationsForCurrentLocale(ModManifest);
+            }
         }
 
         private void onMenuChanged(object? sender, MenuChangedEventArgs e)
@@ -348,16 +360,24 @@ namespace stardew_access
 
         public static string Translate(string translationKey)
         {
-            if (ModHelper == null) return "null";
+            if (Fluent != null)
+                return Fluent.Get(translationKey);
 
-            return ModHelper.Translation.Get(translationKey);
+            if (ModHelper != null)
+                return ModHelper.Translation.Get(translationKey);
+
+            return "null";
         }
 
         public static string Translate(string translationKey, object? tokens)
         {
-            if (ModHelper == null) return "null";
+            if (Fluent != null)
+                return Fluent.Get(translationKey, tokens);
 
-            return ModHelper.Translation.Get(translationKey, tokens);
+            if (ModHelper != null)
+                return ModHelper.Translation.Get(translationKey, tokens);
+
+            return "null";
         }
 
         private static void LogMessage(string message, LogLevel logLevel)
