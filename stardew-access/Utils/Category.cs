@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
+//using System;
+//using System.Collections.Generic;
+//using System.Drawing;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
     /// <summary>
     /// Represents categories that objects can belong to. This class provides predefined categories
@@ -127,10 +127,5 @@ namespace stardew_access.Features
         public static CATEGORY Bridges => FromString("bridge");
         public static CATEGORY DroppedItems => FromString("dropped item");
         public static CATEGORY Others => FromString("other");
-    }
-
-    public enum MachineState
-    {
-        Ready, Busy, Waiting
     }
 }
