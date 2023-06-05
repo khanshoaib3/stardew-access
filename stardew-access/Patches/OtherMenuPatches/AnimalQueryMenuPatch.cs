@@ -33,7 +33,7 @@ namespace stardew_access.Patches
             }
             catch (System.Exception e)
             {
-                MainClass.ErrorLog($"An error occured in AnimalQueryMenuPatch()->DrawPatch():\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occurred in AnimalQueryMenuPatch()->DrawPatch():\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -83,19 +83,19 @@ namespace stardew_access.Patches
         {
             string toSpeak = "";
             if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
-                toSpeak = "OK button";
+                toSpeak = MainClass.Translate("common-ui-ok_button");
             else if (__instance.sellButton != null && __instance.sellButton.containsPoint(x, y))
-                toSpeak = $"Sell for {___animal.getSellPrice()}g button";
+                toSpeak = MainClass.Translate("animal_query_menu-ui-selling_button", new {price = ___animal.getSellPrice()});
             else if (___confirmingSell && __instance.yesButton != null && __instance.yesButton.containsPoint(x, y))
-                toSpeak = "Confirm selling animal";
+                toSpeak = MainClass.Translate("animal_query_menu-ui-confirm_selling_button");
             else if (___confirmingSell && __instance.noButton != null && __instance.noButton.containsPoint(x, y))
-                toSpeak = "Cancel selling animal";
+                toSpeak = MainClass.Translate("animal_query_menu-ui-cancel_selling_button");
             else if (__instance.moveHomeButton != null && __instance.moveHomeButton.containsPoint(x, y))
-                toSpeak = "Change home building button";
+                toSpeak = MainClass.Translate("animal_query_menu-ui-move_home_button");
             else if (__instance.allowReproductionButton != null && __instance.allowReproductionButton.containsPoint(x, y))
-                toSpeak = ((___animal.allowReproduction.Value) ? "Enabled" : "Disabled") + " allow reproduction button";
+                toSpeak = MainClass.Translate("animal_query_menu-ui-allow_reproduction_button", new {checkbox_value = (___animal.allowReproduction.Value ? 1 : 0)});
             else if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
-                toSpeak = "Animal name text box";
+                toSpeak = MainClass.Translate("animal_query_menu-ui-text_box");
 
             if (animalQueryMenuQuery != toSpeak)
             {
