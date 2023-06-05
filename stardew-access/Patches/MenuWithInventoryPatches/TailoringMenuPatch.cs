@@ -39,7 +39,7 @@ namespace stardew_access.Patches
                 else
                 {
                     Item item = __instance.leftIngredientSpot.item;
-                    toSpeak = $"Cloth slot: {item.Stack} {item.DisplayName}";
+                    toSpeak = $"Cloth slot: {MainClass.Translate("common-util-pluralize_name", new {item_count = item.Stack, name = item.DisplayName})}";
                 }
             }
             else if (__instance.rightIngredientSpot != null && __instance.rightIngredientSpot.containsPoint(x, y))
@@ -51,7 +51,7 @@ namespace stardew_access.Patches
                 else
                 {
                     Item item = __instance.rightIngredientSpot.item;
-                    toSpeak = $"Ingredient slot: {item.Stack} {item.DisplayName}";
+                    toSpeak = $"Ingredient slot: {MainClass.Translate("common-util-pluralize_name", new {item_count = item.Stack, name = item.DisplayName})}";
                 }
             }
             else if (__instance.startTailoringButton != null && __instance.startTailoringButton.containsPoint(x, y))

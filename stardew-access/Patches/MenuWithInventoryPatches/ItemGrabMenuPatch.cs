@@ -134,10 +134,10 @@ namespace stardew_access.Patches
                 return false;
 
             Item lastShippedItem = Game1.getFarm().lastItemShipped;
-            string name = lastShippedItem.DisplayName;
             int count = lastShippedItem.Stack;
+            string name = MainClass.Translate("common-util-pluralize_name", new {item_count = count, name = lastShippedItem.DisplayName});
 
-            string toSpeak = $"Last Shipped: {count} {name}";
+            string toSpeak = $"Last Shipped: {name}";
 
             if (itemGrabMenuQueryKey != toSpeak)
             {

@@ -38,7 +38,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"An error occured in InventoryPagePatch()->DrawPatch():\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occurred in InventoryPagePatch()->DrawPatch():\n{e.Message}\n{e.StackTrace}");
             }
         }
 

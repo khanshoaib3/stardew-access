@@ -24,7 +24,7 @@ namespace stardew_access.Patches
             }
             catch (System.Exception e)
             {
-                MainClass.ErrorLog($"An error occured in forge menu patch:\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occurred in forge menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -42,7 +42,7 @@ namespace stardew_access.Patches
                 else
                 {
                     Item item = __instance.leftIngredientSpot.item;
-                    toSpeak = $"Weapon slot: {item.Stack} {item.DisplayName}";
+                    toSpeak = $"Weapon slot: {MainClass.Translate("common-util-pluralize_name", new {item_count = item.Stack, name = item.DisplayName})}";
                 }
             }
             else if (__instance.rightIngredientSpot != null && __instance.rightIngredientSpot.containsPoint(x, y))
@@ -54,7 +54,7 @@ namespace stardew_access.Patches
                 else
                 {
                     Item item = __instance.rightIngredientSpot.item;
-                    toSpeak = $"Gemstone slot: {item.Stack} {item.DisplayName}";
+                    toSpeak = $"Gemstone slot: {MainClass.Translate("common-util-pluralize_name", new {item_count = item.Stack, name = item.DisplayName})}";
                 }
             }
             else if (__instance.startTailoringButton != null && __instance.startTailoringButton.containsPoint(x, y))

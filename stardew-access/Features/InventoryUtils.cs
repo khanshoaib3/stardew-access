@@ -39,13 +39,13 @@ namespace stardew_access.Features
                     return i;
                 }
 
-                string toSpeak = "";
                 bool isHighlighted = inventoryMenu.highlightMethod(actualInventory[i]);
 
                 string namePrefix = handleHighlightedItemPrefix(isHighlighted, highlightedItemPrefix);
                 string nameSuffix = $"{handleHighlightedItemSuffix(isHighlighted, highlightedItemSuffix)}{handleUnHighlightedItem(isHighlighted, i)}";
-                string name = $"{namePrefix}{actualInventory[i].DisplayName}{nameSuffix}";
                 int stack = actualInventory[i].Stack;
+                string name = MainClass.Translate("common-util-pluralize_name", new {item_count = stack, name = actualInventory[i].DisplayName});
+                name = $"{namePrefix}{name}{nameSuffix}";
                 string quality = getQualityFromItem(actualInventory[i]);
                 string healthNStamina = getHealthNStaminaFromItem(actualInventory[i]);
                 string buffs = getBuffsFromItem(actualInventory[i]);
@@ -54,20 +54,21 @@ namespace stardew_access.Features
                 string requirements = getExtraItemInfo(extraItemToShowIndex, extraItemToShowAmount);
 
                 string details;
+                string toSpeak = name;
                 if (giveExtraDetails == true)
                 {
-                    if (stack > 1)
-                        toSpeak = $"{stack} {name}"; // {quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamina}, \n{buffs}";
-                    else
-                        toSpeak = $"{name}"; //{quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamina}, \n{buffs}";
+                    // if (stack > 1)
+                    //     toSpeak = $"{stack} {name}"; // {quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamina}, \n{buffs}";
+                    // else
+                    //     toSpeak = $"{name}"; //{quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamina}, \n{buffs}";
                     details = string.Join(",\n", new string[] { quality, requirements, price, description, healthNStamina, buffs }.Where(c => !string.IsNullOrEmpty(c)));
                 }
                 else
                 {
-                    if (stack > 1)
-                        toSpeak = $"{stack} {name}"; //{quality}, \n{requirements}, \n{price}";
-                    else
-                        toSpeak = $"{name}"; //{quality}, \n{requirements}, \n{price}";
+                    // if (stack > 1)
+                    //     toSpeak = $"{stack} {name}"; //{quality}, \n{requirements}, \n{price}";
+                    // else
+                    //     toSpeak = $"{name}"; //{quality}, \n{requirements}, \n{price}";
                     details = string.Join(",\n", new string[] { quality, requirements, price }.Where(c => !string.IsNullOrEmpty(c)));
                 }
                 if (!string.IsNullOrEmpty(details))
