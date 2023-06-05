@@ -46,12 +46,12 @@ namespace stardew_access.Patches
             string name = ___animal.displayName;
             string type = ___animal.displayType;
             int age = (___animal.GetDaysOwned() + 1) / 28 + 1;
-            string ageText = (age <= 1) ? Game1.content.LoadString("Strings\\UI:AnimalQuery_Age1") : Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeN", age);
+            string babyText = "";
             string parent = "null";
 
             if ((int)___animal.age.Value < (byte)___animal.ageWhenMature.Value)
             {
-                ageText += Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeBaby");
+                babyText = Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeBaby").Trim();
             }
             if (___parentName != null)
             {
@@ -71,7 +71,7 @@ namespace stardew_access.Patches
                 heartCount += 0.5;
             }
 
-            string toSpeak = MainClass.Translate("patch-animal_query_menu-heart", new { name = name, type = type, heart_count = heartCount, age = ageText, parent_name = parent });
+            string toSpeak = MainClass.Translate("animal_query_menu-animal_info", new { name = name, type = type, baby = babyText, heart_count = heartCount, age = age, parent_name = parent });
 
             isNarratingAnimalInfo = true;
             Task.Delay(200).ContinueWith(_ => { isNarratingAnimalInfo = false; }); // Adds delay
