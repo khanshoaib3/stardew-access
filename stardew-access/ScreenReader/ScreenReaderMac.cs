@@ -125,6 +125,7 @@ namespace stardew_access.ScreenReader
         }
 
         public string prevText = "", prevTextTile = "", prevChatText = "", prevMenuText = "";
+        private bool resolvedDll = false;
 
         private static void SpeakLoop(object? obj)
         {
@@ -141,8 +142,11 @@ namespace stardew_access.ScreenReader
 
         public void InitializeScreenReader()
         {
-            // Set the path to load libspeak.dylib from via a resolver
-            NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), DllImportResolver);
+            if (!resolvedDll) {
+                // Set the path to load libspeak.dylib from via a resolver
+                NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), DllImportResolver);
+                resolvedDll = true;
+            }
 
             MainClass.InfoLog("Initializing screen reader");
             speaker = make_speaker();

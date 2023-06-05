@@ -32,7 +32,7 @@ namespace stardew_access.ScreenReader
         private static extern int Close();
 
         public string prevText = "", prevTextTile = "", prevChatText = "", prevMenuText = "";
-        private bool initialized = false;
+        private bool initialized = false, resolvedDll = false;
 
         public string PrevTextTile
         {
@@ -43,7 +43,10 @@ namespace stardew_access.ScreenReader
         public void InitializeScreenReader()
         {
             MainClass.InfoLog("Initializing speech dispatcher...");
-            NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), DllImportResolver);
+            if (!resolvedDll) {
+                NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), DllImportResolver);
+                resolvedDll = true;
+            }
             int res = Initialize();
             if (res == 1)
             {
