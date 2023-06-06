@@ -1,7 +1,7 @@
 ﻿using StardewValley;
 using Microsoft.Xna.Framework;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
     internal class CurrentPlayer
     {
