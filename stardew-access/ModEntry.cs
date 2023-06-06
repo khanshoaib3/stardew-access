@@ -13,7 +13,7 @@ namespace stardew_access
     {
         #region Global Vars & Properties
 
-#pragma warning disable CS8603
+        #pragma warning disable CS8603
         private static int prevDate = -99;
         private static ModConfig? config;
         private Harmony? harmony;
@@ -170,9 +170,9 @@ namespace stardew_access
                 return;
 
             // Narrates currently selected inventory slot
-            Other.narrateCurrentSlot();
+            GameStateNarrator.narrateCurrentSlot();
             // Narrate current location's name
-            Other.narrateCurrentLocation();
+            GameStateNarrator.narrateCurrentLocation();
             //handle TileCursor update logic
             TileViewerFeature.update();
 
@@ -204,7 +204,7 @@ namespace stardew_access
                 if (!isNarratingHudMessage)
                 {
                     isNarratingHudMessage = true;
-                    Other.narrateHudMessages();
+                    GameStateNarrator.narrateHudMessages();
                     await Task.Delay(300);
                     isNarratingHudMessage = false;
                 }
