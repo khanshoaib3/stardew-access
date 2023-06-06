@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace stardew_access.Features
 {
-    internal class Other
+    internal class GameStateNarrator
     {
         private static Item? currentSlotItem;
         private static Item? previousSlotItem;
