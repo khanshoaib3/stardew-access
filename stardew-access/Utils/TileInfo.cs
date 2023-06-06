@@ -4,8 +4,9 @@ using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System.Text;
+using stardew_access.Features;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
     public class TileInfo
     {
