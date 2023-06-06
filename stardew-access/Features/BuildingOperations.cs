@@ -250,12 +250,12 @@ namespace stardew_access.Features
             if ((int)buildingToMove.daysOfConstructionLeft.Value > 0)
             {
                 buildingToMove = null;
-                return MainClass.Translate("building_operations.move_building.under_construction");
+                return MainClass.Translate("building_operations-move_building-under_construction");
             }
             if (CarpenterMenuPatch.carpenterMenu != null && !CarpenterMenuPatch.carpenterMenu.hasPermissionsToMove(buildingToMove))
             {
                 buildingToMove = null;
-                return MainClass.Translate("building_operations.move_building.no_permission");
+                return MainClass.Translate("building_operations-move_building-no_permission");
             }
             Game1.playSound("axchop");
 
@@ -275,13 +275,13 @@ namespace stardew_access.Features
                 DelayedAction.playSoundAfterDelay("dirtyHit", 50);
                 DelayedAction.playSoundAfterDelay("dirtyHit", 150);
 
-                return MainClass.Translate("building_operations.move_building.building_moved",
+                return MainClass.Translate("building_operations-move_building-building_moved",
                         new { building_name = name, x_position = position.X, y_position = position.Y });
             }
             else
             {
                 Game1.playSound("cancel");
-                return MainClass.Translate("building_operations.move_building.cannot_move",
+                return MainClass.Translate("building_operations-move_building-cannot_move",
                         new { x_position = position.X, y_position = position.Y });
             }
         }
