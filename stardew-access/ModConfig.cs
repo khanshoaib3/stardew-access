@@ -73,6 +73,14 @@ namespace stardew_access
         public KeybindList CraftingMenuCycleThroughRecipiesKey { get; set; } = KeybindList.Parse("C");
         #endregion
 
+        #region GridMovement
+        public Boolean GridMovementActive { get; set; } = true;
+        public KeybindList ToggleGridMovementKey { get; set; } = KeybindList.Parse("I");
+        public KeybindList GridMovementOverrideKey { get; set; } = KeybindList.Parse("LeftControl");
+        // this is an ObjectTracker key but is' needed temporarily here
+        public KeybindList OTCancelAutoWalking { get; set; } = KeybindList.Parse("Escape");
+        #endregion
+
         #region Others
         public KeybindList HealthNStaminaKey { get; set; } = KeybindList.Parse("H"); // Narrate health and stamina.
         public bool HealthNStaminaInPercentage { get; set; } = true;
