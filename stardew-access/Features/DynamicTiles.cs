@@ -358,7 +358,7 @@ namespace stardew_access.Features
 
             if (mainMailboxPos.X == x && mainMailboxPos.Y == y)
             {
-                return ("Mail box", CATEGORY.Interactables);
+                return (MainClass.Translate("tile_name-mail_box"), CATEGORY.Interactables);
             }
             else if (building is not null) // Check if there is a building at the current position
             {
@@ -385,15 +385,15 @@ namespace stardew_access.Features
 
                 if (kitchenX == x && kitchenY == y)
                 {
-                    return ("Stove", CATEGORY.Interactables);
+                    return (MainClass.Translate("tile_name-stove"), CATEGORY.Interactables);
                 }
                 else if (kitchenX + 1 == x && kitchenY == y)
                 {
-                    return ("Sink", CATEGORY.Others);
+                    return (MainClass.Translate("tile_name-sink"), CATEGORY.Others);
                 }
                 else if (farmHouse.fridgePosition.X == x && farmHouse.fridgePosition.Y == y)
                 {
-                    return ("Fridge", CATEGORY.Interactables);
+                    return (MainClass.Translate("tile_name-fridge"), CATEGORY.Interactables);
                 }
             }
 
@@ -412,15 +412,15 @@ namespace stardew_access.Features
         {
             if (forest.travelingMerchantDay && x == 27 && y == 11)
             {
-                return ("Travelling Cart", CATEGORY.Interactables);
+                return (MainClass.Translate("tile_name-traveling_cart"), CATEGORY.Interactables);
             }
             else if (forest.log != null && x == 2 && y == 7)
             {
-                return ("Log", CATEGORY.Interactables);
+                return (MainClass.Translate("item_name-log"), CATEGORY.Interactables);
             }
             else if (forest.log == null && x == 0 && y == 7)
             {
-                return ("Secret Woods Entrance", CATEGORY.Doors);
+                return (MainClass.Translate("entrance_name-secret_woods_entrance"), CATEGORY.Doors);
             }
 
             return (null, null);
@@ -440,15 +440,15 @@ namespace stardew_access.Features
             int fridgeY = islandFarmHouse.fridgePosition.Y;
             if (fridgeX - 2 == x && fridgeY == y)
             {
-                return ("Stove", CATEGORY.Interactables);
+                return (MainClass.Translate("tile_name-stove"), CATEGORY.Interactables);
             }
             else if (fridgeX - 1 == x && fridgeY == y)
             {
-                return ("Sink", CATEGORY.Others);
+                return (MainClass.Translate("tile_name-sink"), CATEGORY.Others);
             }
             else if (fridgeX == x && fridgeY == y)
             {
-                return ("Fridge", CATEGORY.Interactables);
+                return (MainClass.Translate("tile_name-fridge"), CATEGORY.Interactables);
             }
 
             return (null, null);
@@ -467,7 +467,7 @@ namespace stardew_access.Features
             // Check if the trader is activated and the coordinates match the trader's location
             if (islandNorth.traderActivated.Value && x == 36 && y == 71)
             {
-                return ("Island Trader", CATEGORY.Interactables);
+                return (MainClass.Translate("npc_name-island_trader"), CATEGORY.Interactables);
             }
 
             // Return (null, null) if no relevant object is found
