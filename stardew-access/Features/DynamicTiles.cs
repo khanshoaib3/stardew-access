@@ -216,11 +216,11 @@ namespace stardew_access.Features
             {
                 if (!beach.bridgeFixed.Value)
                 {
-                    return ("Repair Bridge", CATEGORY.Interactables);
+                    return (MainClass.Translate("prefix-repair", new { content = MainClass.Translate("tile_name-bridge") }), CATEGORY.Interactables);
                 }
                 else
                 {
-                    return ("Bridge", CATEGORY.Bridges);
+                    return (MainClass.Translate("tile_name-bridge"), CATEGORY.Bridges);
                 }
             }
 
@@ -253,15 +253,15 @@ namespace stardew_access.Features
 
                 string itemName = (x, y) switch
                 {
-                    (4, 9) => "Ticket Machine",
-                    (6, 8) => "Boat Hull",
-                    (8, 9) => "Boat Anchor",
+                    (4, 9) => MainClass.Translate("tile_name-ticket_machine"),
+                    (6, 8) => MainClass.Translate("tile_name-boat_hull"),
+                    (8, 9) => MainClass.Translate("tile_name-boat_anchor"),
                     _ => throw new InvalidOperationException("Unexpected (x, y) values"),
                 };
 
                 CATEGORY category = (x, y) == (4, 9) ? CATEGORY.Interactables : (!HasMail(mail) ? CATEGORY.Interactables : CATEGORY.Decor);
 
-                return ((!HasMail(mail) ? "Repair " : "") + itemName, category);
+                return ((!HasMail(mail) ? MainClass.Translate("prefix-repair", new { content = itemName }) : itemName), category);
             }
 
             return (null, null);
