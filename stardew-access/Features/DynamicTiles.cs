@@ -210,7 +210,7 @@ namespace stardew_access.Features
             }
             if (MainClass.ModHelper.Reflection.GetField<NPC>(beach, "oldMariner").GetValue() is NPC mariner && mariner.getTileLocation() == new Vector2(x, y))
             {
-                return ("Old Mariner", CATEGORY.NPCs);
+                return (MainClass.Translate("npc_name-old_mariner"), CATEGORY.NPCs);
             }
             else if (x == 58 && y == 13)
             {
@@ -279,7 +279,7 @@ namespace stardew_access.Features
         {
             if (communityCenter.missedRewardsChestVisible.Value && x == 22 && y == 10)
             {
-                return ("Missed Rewards Chest", CATEGORY.Containers);
+                return (MainClass.Translate("tile_name-missed_reward_chest"), CATEGORY.Containers);
             }
 
             return (null, null);
@@ -312,12 +312,12 @@ namespace stardew_access.Features
             // Check if the position matches the human door
             if (building.humanDoor.Value.X == offsetX && building.humanDoor.Value.Y == offsetY)
             {
-                return (name + " Door", CATEGORY.Doors);
+                return (MainClass.Translate("suffix-building_door", new {content = name}), CATEGORY.Buildings);
             }
             // Check if the position matches the animal door
             else if (building.animalDoor.Value.X == offsetX && building.animalDoor.Value.Y == offsetY)
             {
-                return (name + " Animal Door " + ((building.animalDoorOpen.Value) ? "Opened" : "Closed"), CATEGORY.Doors);
+                return (MainClass.Translate("suffix-building_animal_door", new {content = name, isOpen = (building.animalDoorOpen.Value) ? 1 : 0}), CATEGORY.Doors);
             }
             // Check if the position matches the building's top-left corner
             else if (offsetX == 0 && offsetY == 0)
@@ -330,12 +330,12 @@ namespace stardew_access.Features
                 // Check if the position matches the input
                 if (offsetX == 1 && offsetY == 1)
                 {
-                    return (name + " input", CATEGORY.Buildings);
+                    return (MainClass.Translate("suffix-mill_input", new {content = name}), CATEGORY.Buildings);
                 }
                 // Check if the position matches the output
                 else if (offsetX == 3 && offsetY == 1)
                 {
-                    return (name + " output", CATEGORY.Buildings);
+                    return (MainClass.Translate("suffix-mill_output", new {content = name}), CATEGORY.Buildings);
                 }
             }
 
