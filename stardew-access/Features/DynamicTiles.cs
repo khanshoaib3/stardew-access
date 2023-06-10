@@ -659,7 +659,8 @@ namespace stardew_access.Features
             if (libraryMuseum.museumPieces.TryGetValue(new Vector2(x, y), out int museumPiece))
             {
                 string displayName = Game1.objectInformation[museumPiece].Split('/')[0];
-                return ($"{displayName} showcase", CATEGORY.Interactables);
+                return (MainClass.Translate("tile-museum_piece_showcase-suffix", new {content = displayName}), CATEGORY.Interactables);
+
             }
 
             int booksFound = Game1.netWorldState.Value.LostBooksFound.Value;
@@ -674,9 +675,9 @@ namespace stardew_access.Features
                     if (booksFound >= which)
                     {
                         string message = Game1.content.LoadString("Strings\\Notes:" + which);
-                        return ($"{message.Split('\n')[0]} Book", CATEGORY.Interactables);
+                        return (MainClass.Translate("item-suffix-book", new {content = message.Split('\n')[0]}), CATEGORY.Interactables);
                     }
-                    return ($"Lost Book", CATEGORY.Others);
+                    return (MainClass.Translate("item-lost_book-name"), CATEGORY.Others);
                 }
             }
 
@@ -695,12 +696,12 @@ namespace stardew_access.Features
         {
             if (SpecialOrder.IsSpecialOrdersBoardUnlocked() && x == 62 && y == 93)
             {
-                return ("Special quest board", CATEGORY.Interactables);
+                return (MainClass.Translate("tile_name-special_quest_board"), CATEGORY.Interactables);
             }
 
 	    if (Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater") && x == 98 && y == 51)
             {
-                return ("Movie Ticket Machine", CATEGORY.Interactables);
+                return (MainClass.Translate("tile_name-movie_ticket_machine"), CATEGORY.Interactables);
             }
 
             return (null, null);
