@@ -22,7 +22,7 @@ namespace stardew_access.Utils
 
         public Boolean isAutoWalking = false;
 
-        private Vector2 PlayerFacingVector
+        private static Vector2 PlayerFacingVector
         {
             get
             {
@@ -42,7 +42,7 @@ namespace stardew_access.Utils
             }
         }
 
-        private Vector2 PlayerPosition
+        private static Vector2 PlayerPosition
         {
             get
             {
@@ -58,14 +58,14 @@ namespace stardew_access.Utils
         /// <returns>Vector2</returns>
         public Vector2 GetTileCursorPosition()
         {
-            Vector2 target = this.PlayerPosition;
+            Vector2 target = PlayerPosition;
             if (this.relativeOffsetLock)
             {
                 target += this.relativeOffsetLockPosition;
             }
             else
             {
-                target += this.PlayerFacingVector + this.ViewingOffset;
+                target += PlayerFacingVector + this.ViewingOffset;
             }
             return target;
         }
@@ -90,7 +90,7 @@ namespace stardew_access.Utils
                 this.relativeOffsetLock = !this.relativeOffsetLock;
                 if (this.relativeOffsetLock)
                 {
-                    this.relativeOffsetLockPosition = this.PlayerFacingVector + this.ViewingOffset;
+                    this.relativeOffsetLockPosition = PlayerFacingVector + this.ViewingOffset;
                 }
                 else
                 {
@@ -236,12 +236,12 @@ namespace stardew_access.Utils
         public void update()
         {
             //Reset the viewing cursor to the player when they turn or move. This will not reset the locked offset relative cursor position.
-            if (this.prevFacing != this.PlayerFacingVector || this.prevPlayerPosition != this.PlayerPosition)
+            if (this.prevFacing != PlayerFacingVector || this.prevPlayerPosition != PlayerPosition)
             {
                 this.ViewingOffset = Vector2.Zero;
             }
-            this.prevFacing = this.PlayerFacingVector;
-            this.prevPlayerPosition = this.PlayerPosition;
+            this.prevFacing = PlayerFacingVector;
+            this.prevPlayerPosition = PlayerPosition;
             if (MainClass.Config.SnapMouse)
                 this.SnapMouseToPlayer();
 
