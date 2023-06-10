@@ -56,7 +56,7 @@ namespace stardew_access
             get
             {
                 if (screenReader == null)
-                    screenReader = new ScreenReaderController().Initialize();
+                    screenReader = ScreenReaderController.Initialize();
 
                 return screenReader;
             }
@@ -110,7 +110,7 @@ namespace stardew_access
 
             Game1.options.setGamepadMode("force_on");
 
-            ScreenReader = new ScreenReaderController().Initialize();
+            ScreenReader = ScreenReaderController.Initialize();
             ScreenReader.Say("Initializing Stardew Access", true);
 
             CustomSoundEffects.Initialize();
