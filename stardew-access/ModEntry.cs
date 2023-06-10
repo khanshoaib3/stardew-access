@@ -163,8 +163,7 @@ namespace stardew_access
         {
             // This closes the connection with the screen reader, important for linux
             // Don't know if this ever gets called or not but, just in case if it does.
-            if (ScreenReader != null)
-                ScreenReader.CloseScreenReader();
+            ScreenReader?.CloseScreenReader();
         }
 
         private void onDayStarted(object? sender, DayStartedEventArgs? e)

@@ -178,8 +178,7 @@ namespace stardew_access.Utils
                 }
                 toPaint.color.Value = Color.White;
 
-                if (CarpenterMenuPatch.carpenterMenu != null)
-                    CarpenterMenuPatch.carpenterMenu.SetChildMenu(new StardewValley.Menus.BuildingPaintMenu(toPaint));
+                CarpenterMenuPatch.carpenterMenu?.SetChildMenu(new StardewValley.Menus.BuildingPaintMenu(toPaint));
             }
             /* TODO Add painting of farm house
             else if (farm_location.GetHouseRect().Contains(Utility.Vector2ToPoint(new Vector2(toPaint.tileX, toPaint.tileY))))
