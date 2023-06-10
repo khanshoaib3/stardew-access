@@ -612,7 +612,7 @@ namespace stardew_access.Features
             string? parrot = GetParrotPerchAtTile(islandLocation, x, y);
             if (islandLocation.IsBuriedNutLocation(new Point(x, y)) && !nutTracker.ContainsKey($"Buried_{islandLocation.Name}_{x}_{y}"))
             {
-                return ("Diggable spot", CATEGORY.Interactables);
+                return (MainClass.Translate("tile_name-diggable_spot"), CATEGORY.Interactables);
             }
             else if (islandLocation.locationGemBird.Value is IslandGemBird bird && ((int)bird.position.X / Game1.tileSize) == x && ((int)bird.position.Y / Game1.tileSize) == y)
             {
@@ -721,7 +721,7 @@ namespace stardew_access.Features
             if (FeedingBenchBounds.TryGetValue(locationName, out var bounds) && x >= bounds.minX && x <= bounds.maxX && y == bounds.y)
             {
                 (string? name, CATEGORY category) = TileInfo.getObjectAtTile(currentLocation, x, y, true);
-                return (name?.Contains("hay", StringComparison.OrdinalIgnoreCase) == true ? "Feeding Bench" : "Empty Feeding Bench", category);
+                return (MainClass.Translate( "tile_name-feeding_bench" + (name?.Contains("hay", StringComparison.OrdinalIgnoreCase) == true ? "" : "_empty")), category);
             }
 
             return null;
@@ -749,7 +749,7 @@ namespace stardew_access.Features
 
             if(locationName.Contains("witchhut", StringComparison.OrdinalIgnoreCase) && x == 4 && y == 11 && !Game1.player.mailReceived.Contains("hasPickedUpMagicInk"))
             {
-                return ("Magic Ink", CATEGORY.Interactables);
+                return (MainClass.Translate("item_name-magic_ink"), CATEGORY.Interactables);
             }
 
             // Unimplemented locations are logged.
@@ -779,7 +779,7 @@ namespace stardew_access.Features
             // Check for panning spots
             if (currentLocation.orePanPoint.Value != Point.Zero && currentLocation.orePanPoint.Value == new Point(x, y))
             {
-                return ("panning spot", CATEGORY.Interactables);
+                return (MainClass.Translate("tile_name-panning_spot"), CATEGORY.Interactables);
             }
             // Check if the current location has an event
             else if (currentLocation.currentEvent is not null)
