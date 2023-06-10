@@ -138,8 +138,10 @@ namespace stardew_access.Utils
 
         private void startAutoWalking()
         {
-            PathFindController controller = new PathFindController(Game1.player, Game1.currentLocation, this.GetViewingTile().ToPoint(), Game1.player.FacingDirection);
-            controller.allowPlayerPathingInEvent = true;
+            PathFindController controller = new PathFindController(Game1.player, Game1.currentLocation, this.GetViewingTile().ToPoint(), Game1.player.FacingDirection)
+            {
+                allowPlayerPathingInEvent = true
+            };
             if (controller.pathToEndPoint != null && controller.pathToEndPoint.Count > 0)
             {
                 Game1.player.controller = controller;
