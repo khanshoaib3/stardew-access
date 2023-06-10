@@ -6,7 +6,7 @@ namespace stardew_access.Patches
 {
     public class GrandpaStoryPatch
     {
-        public static string grandpaStoryQuery = " ";
+        internal static string grandpaStoryQuery = " ";
 
         internal static void DrawPatch(GrandpaStory __instance, StardewValley.Menus.LetterViewerMenu ___letterView, bool ___drawGrandpa, bool ___letterReceived, bool ___mouseActive, Queue<string> ___grandpaSpeech, int ___grandpaSpeechTimer, int ___totalMilliseconds, int ___scene, int ___parallaxPan)
         {

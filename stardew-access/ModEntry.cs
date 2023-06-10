@@ -47,9 +47,9 @@ namespace stardew_access
             set => radarFeature = value;
         }
 
-        public static string hudMessageQueryKey = "";
-        public static bool isNarratingHudMessage = false;
-        public static bool radarDebug = false;
+        internal static string hudMessageQueryKey = "";
+        internal static bool isNarratingHudMessage = false;
+        internal static bool radarDebug = false;
 
         public static IScreenReader ScreenReader
         {

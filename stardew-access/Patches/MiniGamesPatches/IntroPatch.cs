@@ -4,7 +4,7 @@ namespace stardew_access.Patches
 {
     public class IntroPatch
     {
-        public static string introQuery = " ";
+        internal static string introQuery = " ";
 
         internal static void DrawPatch(Intro __instance, int ___currentState)
         {
