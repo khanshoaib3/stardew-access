@@ -581,15 +581,15 @@ namespace stardew_access.Features
             // If a parrot perch was found at the specified tile coordinates
             if (foundPerch != null)
             {
-                string toSpeak = $"Parrot required nuts {foundPerch.requiredNuts.Value}";
+                string toSpeak = MainClass.Translate("building-parrot_perch-required_nuts", new {item_count = foundPerch.requiredNuts.Value});
 
                 // Return appropriate string based on the current state of the parrot perch
                 return foundPerch.currentState.Value switch
                 {
-                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Idle => foundPerch.IsAvailable() ? toSpeak : "Empty parrot perch",
-                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.StartBuilding => "Parrots started building request",
-                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Building => "Parrots building request",
-                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Complete => "Request Completed",
+                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Idle => foundPerch.IsAvailable() ? toSpeak : MainClass.Translate("building-parrot_perch-upgrade_state_idle"),
+                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.StartBuilding => MainClass.Translate("building-parrot_perch-upgrade_state_start_building"),
+                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Building => MainClass.Translate("building-parrot_perch-upgrade_state_building"),
+                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Complete => MainClass.Translate("building-parrot_perch-upgrade_state_complete"),
                     _ => toSpeak,
                 };
             }
