@@ -19,7 +19,7 @@ namespace stardew_access.Patches
                 
                 if (__instance.isProfessionChooser)
                 {
-                    if (___professionsToChoose.Count() == 0) return;
+                    if (___professionsToChoose.Count == 0) return;
                     
                     for (int j = 0; j < ___leftProfessionDescription.Count; j++)
                     {

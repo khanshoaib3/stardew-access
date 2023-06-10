@@ -146,7 +146,7 @@ namespace stardew_access
                 {
                     string? keyToAdd = null;
 
-                    for (int i = 0; i < args.Count(); i++) { keyToAdd += " " + args[i]; }
+                    for (int i = 0; i < args.Length; i++) { keyToAdd += " " + args[i]; }
 
                     if (keyToAdd != null)
                     {
@@ -171,7 +171,7 @@ namespace stardew_access
             {
                 string? keyToAdd = null;
 
-                for (int i = 0; i < args.Count(); i++) { keyToAdd += " " + args[i]; }
+                for (int i = 0; i < args.Length; i++) { keyToAdd += " " + args[i]; }
 
                 if (keyToAdd != null)
                 {
@@ -226,7 +226,7 @@ namespace stardew_access
                 {
                     string? keyToAdd = null;
 
-                    for (int i = 0; i < args.Count(); i++) { keyToAdd += " " + args[i]; }
+                    for (int i = 0; i < args.Length; i++) { keyToAdd += " " + args[i]; }
 
                     if (keyToAdd != null)
                     {
@@ -251,7 +251,7 @@ namespace stardew_access
             {
                 string? keyToAdd = null;
 
-                for (int i = 0; i < args.Count(); i++) { keyToAdd += " " + args[i]; }
+                for (int i = 0; i < args.Length; i++) { keyToAdd += " " + args[i]; }
 
                 if (keyToAdd != null)
                 {
