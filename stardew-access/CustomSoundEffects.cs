@@ -50,8 +50,10 @@ namespace stardew_access
                 {
                     KeyValuePair<String, TYPE> soundEffect = soundEffects.ElementAt(i);
 
-                    CueDefinition cueDefinition = new CueDefinition();
-                    cueDefinition.name = soundEffect.Key;
+                    CueDefinition cueDefinition = new CueDefinition
+                    {
+                        name = soundEffect.Key
+                    };
 
                     if (soundEffect.Value == TYPE.Sound)
                     {
