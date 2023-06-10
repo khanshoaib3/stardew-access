@@ -82,9 +82,8 @@ namespace stardew_access
                 {
                     delayInString = args[0];
 
-                    int delay;
 
-                    bool isParsable = int.TryParse(delayInString, out delay);
+                    bool isParsable = int.TryParse(delayInString, out int delay);
 
                     if (isParsable)
                     {
@@ -115,9 +114,8 @@ namespace stardew_access
                 {
                     rangeInString = args[0];
 
-                    int range;
 
-                    bool isParsable = int.TryParse(rangeInString, out range);
+                    bool isParsable = int.TryParse(rangeInString, out int range);
 
                     if (isParsable)
                     {
@@ -319,8 +317,7 @@ namespace stardew_access
                     return;
                 }
 
-                int index;
-                bool isParsable = int.TryParse(indexInString, out index);
+                bool isParsable = int.TryParse(indexInString, out int index);
 
                 if (!isParsable || !(index >= 0 && index <= 9))
                 {
@@ -369,8 +366,7 @@ namespace stardew_access
                     return;
                 }
 
-                int index;
-                bool isParsable = int.TryParse(indexInString, out index);
+                bool isParsable = int.TryParse(indexInString, out int index);
 
                 if (!isParsable)
                 {
