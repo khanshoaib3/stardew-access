@@ -156,7 +156,7 @@ namespace stardew_access.ScreenReader
         public void CloseScreenReader()
         {
             cts.Cancel();
-            if (rt != null) rt.Join();
+            rt?.Join();
             cts.Dispose();
             cleanup_with(speaker);
         }
