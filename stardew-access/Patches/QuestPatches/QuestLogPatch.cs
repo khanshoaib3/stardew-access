@@ -48,7 +48,7 @@ namespace stardew_access.Patches
             {
                 for (int i = 0; i < __instance.questLogButtons.Count; i++)
                 {
-                    if (___pages.Count() <= 0 || ___pages[___currentPage].Count() <= i)
+                    if (___pages.Count <= 0 || ___pages[___currentPage].Count <= i)
                         continue;
 
                     if (!__instance.questLogButtons[i].containsPoint(x, y))
