@@ -487,7 +487,7 @@ namespace stardew_access.Features
             // Check if the coordinates match the shipping bin's location
             if ((islandWest.shippingBinPosition.X == x || (islandWest.shippingBinPosition.X + 1) == x) && islandWest.shippingBinPosition.Y == y)
             {
-                return ("Shipping Bin", CATEGORY.Interactables);
+                return (MainClass.Translate("building_name-shipping_bin"), CATEGORY.Interactables);
             }
 
             // Return (null, null) if no relevant object is found
@@ -508,11 +508,11 @@ namespace stardew_access.Features
             {
                 if (dungeon.IsCooledLava(x, y))
                 {
-                    return ("Cooled lava", CATEGORY.WaterTiles);
+                    return (MainClass.Translate("tile_name-cooled_lava"), CATEGORY.WaterTiles);
                 }
                 else if (StardewValley.Monsters.LavaLurk.IsLavaTile(dungeon, x, y))
                 {
-                    return ("Lava", CATEGORY.WaterTiles);
+                    return (MainClass.Translate("tile_name-lava"), CATEGORY.WaterTiles);
                 }
             }
 
@@ -557,12 +557,12 @@ namespace stardew_access.Features
             // Use a switch expression to return the appropriate bird name based on the item index value
             return bird.itemIndex.Value switch
             {
-                60 => "Emerald Gem Bird",
-                62 => "Aquamarine Gem Bird",
-                64 => "Ruby Gem Bird",
-                66 => "Amethyst Gem Bird",
-                68 => "Topaz Gem Bird",
-                _ => "Gem Bird", // Default case for when the item index does not match any of the specified values
+                60 => MainClass.Translate("npc_name-emerald_gem_bird"),
+                62 => MainClass.Translate("npc_name-aquamarine_gem_bird"),
+                64 => MainClass.Translate("npc_name-ruby_gem_bird"),
+                66 => MainClass.Translate("npc_name-amethyst_gem_bird"),
+                68 => MainClass.Translate("npc_name-topaz_gem_bird"),
+                _ => MainClass.Translate("npc_name-gem_bird"), // Default case for when the item index does not match any of the specified values
             };
         }
 
