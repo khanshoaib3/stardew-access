@@ -69,8 +69,7 @@ namespace stardew_access.Utils
                         string toSpeak = lastMessage.Message;
                         string searchQuery = toSpeak;
 
-                        searchQuery = Regex.Replace(toSpeak, @"[\d+]", string.Empty);
-                        searchQuery.Trim();
+                        searchQuery = (Regex.Replace(toSpeak, @"[\d+]", string.Empty)).Trim();
 
                         if (MainClass.hudMessageQueryKey != searchQuery)
                         {

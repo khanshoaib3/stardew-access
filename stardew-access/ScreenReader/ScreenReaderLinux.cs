@@ -63,7 +63,7 @@ namespace stardew_access.ScreenReader
         {
             if (initialized)
             {
-                Close();
+                _ = Close();
                 initialized = false;
             }
         }
