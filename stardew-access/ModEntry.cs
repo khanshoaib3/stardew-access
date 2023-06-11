@@ -25,10 +25,17 @@ namespace stardew_access
         private static TileViewer? tileViewer;
         private static Warnings? warnings;
         private static ReadTile? readTile;
-	private static IFluent<string> Fluent { get; set; } = null!;
+        private static IFluent<string> Fluent { get; set; } = null!;
 
-        internal static ModConfig Config { get => config; set => config = value; }
-        public static IModHelper? ModHelper { get => modHelper; }
+        internal static ModConfig Config
+        {
+            get => config;
+            set => config = value;
+        }
+        public static IModHelper? ModHelper
+        {
+            get => modHelper;
+        }
 
         public static Radar RadarFeature
         {
@@ -55,7 +62,6 @@ namespace stardew_access
 
                 return screenReader;
             }
-
             set => screenReader = value;
         }
 
@@ -115,7 +121,7 @@ namespace stardew_access
 
             harmony = new Harmony(ModManifest.UniqueID);
             HarmonyPatches.Initialize(harmony);
-            
+
             //Initialize marked locations
             for (int i = 0; i < BuildingOperations.marked.Length; i++)
             {
@@ -128,7 +134,7 @@ namespace stardew_access
             }
             #endregion
 
-	    helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
             helper.Events.GameLoop.DayStarted += this.onDayStarted;
@@ -139,11 +145,29 @@ namespace stardew_access
 
         private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
         {
-	    var fluentApi = modHelper!.ModRegistry.GetApi<IFluentApi>("Shockah.ProjectFluent");
-            if (fluentApi != null) 
+            var fluentApi = modHelper!.ModRegistry.GetApi<IFluentApi>("Shockah.ProjectFluent");
+            if (fluentApi != null)
             {
-    	        Fluent = fluentApi.GetLocalizationsForCurrentLocale(ModManifest);
+                Fluent = fluentApi.GetLocalizationsForCurrentLocale(ModManifest);
+                // fluentApi.RegisterFunction(ModManifest, "TEST", EE);
             }
+            else
+            {
+                ErrorLog("Unable to initialize fluent api");
+            }
+        }
+
+        private IFluentFunctionValue EE(
+            IGameLocale locale,
+            IManifest mod,
+            IReadOnlyList<IFluentFunctionValue> positionalArguments,
+            IReadOnlyDictionary<string, IFluentFunctionValue> namedArguments
+        )
+        {
+            DebugLog("HERE");
+            if (positionalArguments.Count > 0) DebugLog($"Value: {positionalArguments[0]}");
+            var fluentApi = modHelper!.ModRegistry.GetApi<IFluentApi>("Shockah.ProjectFluent");
+            return fluentApi!.CreateIntValue(-1);
         }
 
         private void onMenuChanged(object? sender, MenuChangedEventArgs e)
@@ -151,7 +175,9 @@ namespace stardew_access
             TextBoxPatch.activeTextBoxes = "";
             if (e.OldMenu != null)
             {
-                MainClass.DebugLog($"Switched from {e.OldMenu.GetType().ToString()} menu, performing cleanup...");
+                MainClass.DebugLog(
+                    $"Switched from {e.OldMenu.GetType().ToString()} menu, performing cleanup..."
+                );
                 IClickableMenuPatch.Cleanup(e.OldMenu);
             }
         }
@@ -241,16 +267,25 @@ namespace stardew_access
             if (e == null)
                 return;
 
-            void SimulateMouseClicks(Action<int, int> leftClickHandler, Action<int, int> rightClickHandler)
+            void SimulateMouseClicks(
+                Action<int, int> leftClickHandler,
+                Action<int, int> rightClickHandler
+            )
             {
                 int mouseX = Game1.getMouseX(true);
                 int mouseY = Game1.getMouseY(true);
 
-                if (Config.LeftClickMainKey.JustPressed() || Config.LeftClickAlternateKey.JustPressed())
+                if (
+                    Config.LeftClickMainKey.JustPressed()
+                    || Config.LeftClickAlternateKey.JustPressed()
+                )
                 {
                     leftClickHandler(mouseX, mouseY);
                 }
-                else if (Config.RightClickMainKey.JustPressed() || Config.RightClickAlternateKey.JustPressed())
+                else if (
+                    Config.RightClickMainKey.JustPressed()
+                    || Config.RightClickAlternateKey.JustPressed()
+                )
                 {
                     rightClickHandler(mouseX, mouseY);
                 }
@@ -319,8 +354,22 @@ namespace stardew_access
                     return;
 
                 string toSpeak = Config.HealthNStaminaInPercentage
-                    ? ModHelper.Translation.Get("manuallytriggered.healthnstamina.percent", new { health = CurrentPlayer.PercentHealth, stamina = CurrentPlayer.PercentStamina })
-                    : ModHelper.Translation.Get("manuallytriggered.healthnstamina.normal", new { health = CurrentPlayer.CurrentHealth, stamina = CurrentPlayer.CurrentStamina });
+                    ? ModHelper.Translation.Get(
+                        "manuallytriggered.healthnstamina.percent",
+                        new
+                        {
+                            health = CurrentPlayer.PercentHealth,
+                            stamina = CurrentPlayer.PercentStamina
+                        }
+                    )
+                    : ModHelper.Translation.Get(
+                        "manuallytriggered.healthnstamina.normal",
+                        new
+                        {
+                            health = CurrentPlayer.CurrentHealth,
+                            stamina = CurrentPlayer.CurrentStamina
+                        }
+                    );
 
                 Narrate(toSpeak);
                 return;
@@ -336,7 +385,9 @@ namespace stardew_access
             // Narrate time and season
             if (Config.TimeNSeasonKey.JustPressed())
             {
-                Narrate($"Time is {CurrentPlayer.TimeOfDay} and it is {CurrentPlayer.Day} {CurrentPlayer.Date} of {CurrentPlayer.Season}");
+                Narrate(
+                    $"Time is {CurrentPlayer.TimeOfDay} and it is {CurrentPlayer.Day} {CurrentPlayer.Date} of {CurrentPlayer.Season}"
+                );
                 return;
             }
 
@@ -363,10 +414,9 @@ namespace stardew_access
             if (Fluent != null)
                 return Fluent.Get(translationKey);
 
-            if (ModHelper != null)
-                return ModHelper.Translation.Get(translationKey);
+            ErrorLog("Fluent not initialized!");
 
-            return "null";
+            return translationKey;
         }
 
         public static string Translate(string translationKey, object? tokens)
@@ -374,10 +424,9 @@ namespace stardew_access
             if (Fluent != null)
                 return Fluent.Get(translationKey, tokens);
 
-            if (ModHelper != null)
-                return ModHelper.Translation.Get(translationKey, tokens);
+            ErrorLog("Fluent not initialized!");
 
-            return "null";
+            return translationKey;
         }
 
         private static void LogMessage(string message, LogLevel logLevel)

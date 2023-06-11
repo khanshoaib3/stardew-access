@@ -34,7 +34,7 @@ namespace stardew_access.Features
                 if ((i + 1) > actualInventory.Count || actualInventory[i] == null)
                 {
                     // For empty slot
-                    checkAndSpeak("Empty Slot", i);
+                    checkAndSpeak(MainClass.Translate("menu-inventory-empty_slot-name"), i);
                     prevSlotIndex = i;
                     return i;
                 }
@@ -96,21 +96,7 @@ namespace stardew_access.Features
             if (item is not StardewValley.Object || ((StardewValley.Object)item).Quality <= 0)
                 return "";
 
-            int qualityIndex = ((StardewValley.Object)item).Quality;
-            if (qualityIndex == 1)
-            {
-                return "Silver quality";
-            }
-            else if (qualityIndex == 2 || qualityIndex == 3)
-            {
-                return "Gold quality";
-            }
-            else if (qualityIndex >= 4)
-            {
-                return "Iridium quality";
-            }
-
-            return "";
+            return MainClass.Translate("item-quality_type", new {quality_index = ((StardewValley.Object)item).Quality});
         }
 
         private static String getHealthNStaminaFromItem(Item item)
@@ -118,16 +104,9 @@ namespace stardew_access.Features
             if (item is not StardewValley.Object || ((StardewValley.Object)item).Edibility == -300)
                 return "";
 
-            String toReturn = "";
             int stamina_recovery = ((StardewValley.Object)item).staminaRecoveredOnConsumption();
-            toReturn += $"{stamina_recovery} Energy";
-
-            if (stamina_recovery < 0) return toReturn;
-
             int health_recovery = ((StardewValley.Object)item).healthRecoveredOnConsumption();
-            toReturn += $"\n\t{health_recovery} Health";
-
-            return toReturn;
+            return MainClass.Translate("item-stamina_and_health_recovery_on_consumption", new {stamina_amount = stamina_recovery, health_amount = health_recovery});
         }
 
         private static String getBuffsFromItem(Item item)

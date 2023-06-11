@@ -317,7 +317,7 @@ namespace stardew_access.Features
             // Check if the position matches the animal door
             else if (building.animalDoor.Value.X == offsetX && building.animalDoor.Value.Y == offsetY)
             {
-                return (MainClass.Translate("suffix-building_animal_door", new {content = name, isOpen = (building.animalDoorOpen.Value) ? 1 : 0}), CATEGORY.Doors);
+                return (MainClass.Translate("suffix-building_animal_door", new {content = name, is_open = (building.animalDoorOpen.Value) ? 1 : 0}), CATEGORY.Doors);
             }
             // Check if the position matches the building's top-left corner
             else if (offsetX == 0 && offsetY == 0)
