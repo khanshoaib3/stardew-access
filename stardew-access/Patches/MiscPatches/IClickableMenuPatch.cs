@@ -224,9 +224,6 @@ namespace stardew_access.Patches
                 case LoadGameMenu:
                     LoadGameMenuPatch.Cleanup();
                     break;
-                case AdvancedGameOptions:
-                    AdvancedGameOptionsPatch.Cleanup();
-                    break;
                 case LetterViewerMenu:
                     LetterViwerMenuPatch.Cleanup();
                     break;
