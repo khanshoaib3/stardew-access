@@ -540,25 +540,14 @@ namespace stardew_access.Utils
             // Determine the tree name and growth stage description
             if (treeStage >= 1)
             {
-                string treeName;
-                switch (seedName.ToLower())
+                string treeName = seedName.ToLower() switch
                 {
-                    case "mahogany seed":
-                        treeName = "Mahogany";
-                        break;
-                    case "acorn":
-                        treeName = "Oak";
-                        break;
-                    case "maple seed":
-                        treeName = "Maple";
-                        break;
-                    case "pine cone":
-                        treeName = "Pine";
-                        break;
-                    default:
-                        treeName = "Coconut";
-                        break;
-                }
+                    "mahogany seed" => "Mahogany",
+                    "acorn" => "Oak",
+                    "maple seed" => "Maple",
+                    "pine cone" => "Pine",
+                    _ => "Coconut",
+                };
 
                 // Append the growth stage description to the tree name
                 if (treeStage == 1)
