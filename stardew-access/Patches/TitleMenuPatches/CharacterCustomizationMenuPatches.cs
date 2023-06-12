@@ -666,40 +666,22 @@ namespace stardew_access.Patches
                 // Next group ids by slider type.
                 // Maps [522,525,528] -> 0, [523,526,529] -> 1, [524,527,530] -> 2
                 int whichSliderBar = (int)Math.Floor((float)id % 3f);
-                ColorPicker cp;
-                switch (whichColorPicker)
-                {
-                    default:
-                    case 0:
-                        // 522-524 == eye color
-                        cp = __instance.eyeColorPicker;
-                        break;
-                    case 1:
+                ColorPicker
                         // 525-527 == hair color
-                        cp = __instance.hairColorPicker;
-                        break;
-                    case 2:
-                        // 528-530 == pants color
-                        cp = __instance.pantsColorPicker;
-                        break;
-                }
-                SliderBar sb;
-                switch (whichSliderBar)
-                {
-                    default:
-                    case 0:
-                        // 522, 525, 528 == hue slider
-                        sb = cp.hueBar;
-                        break;
-                    case 1:
-                        // 523, 526, 529 == saturation slider
-                        sb = cp.saturationBar;
-                        break;
-                    case 2:
-                        // 524, 527, 530 == value slider
-                        sb = cp.valueBar;
-                        break;
-                }
+                        cp = whichColorPicker switch
+                        {
+                            1 => __instance.hairColorPicker,// 525-527 == hair color
+                            2 => __instance.pantsColorPicker,// 528-530 == pants color
+                            _ => __instance.eyeColorPicker,// 522-524 == eye color
+                        };
+                SliderBar
+                                                // 523, 526, 529 == saturation slider
+                                                sb = whichSliderBar switch
+                                                {
+                                                    1 => cp.saturationBar,// 523, 526, 529 == saturation slider
+                                                    2 => cp.valueBar,// 524, 527, 530 == value slider
+                                                    _ => cp.hueBar,// 522, 525, 528 == hue slider
+                                                };
                 return sb;
             }
             else

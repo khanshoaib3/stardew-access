@@ -26,19 +26,14 @@ namespace stardew_access.Utils
         {
             get
             {
-                switch (Game1.player.FacingDirection)
+                return Game1.player.FacingDirection switch
                 {
-                    case 0:
-                        return new Vector2(0, -Game1.tileSize);
-                    case 1:
-                        return new Vector2(Game1.tileSize, 0);
-                    case 2:
-                        return new Vector2(0, Game1.tileSize);
-                    case 3:
-                        return new Vector2(-Game1.tileSize, 0);
-                    default:
-                        return Vector2.Zero;
-                }
+                    0 => new Vector2(0, -Game1.tileSize),
+                    1 => new Vector2(Game1.tileSize, 0),
+                    2 => new Vector2(0, Game1.tileSize),
+                    3 => new Vector2(-Game1.tileSize, 0),
+                    _ => Vector2.Zero,
+                };
             }
         }
 
