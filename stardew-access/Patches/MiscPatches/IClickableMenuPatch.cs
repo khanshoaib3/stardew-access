@@ -235,7 +235,6 @@ namespace stardew_access.Patches
                     break;
                 case GameMenu:
                     GameMenuPatch.Cleanup();
-                    ExitPagePatch.Cleanup();
                     SocialPagePatch.Cleanup();
                     InventoryPagePatch.Cleanup();
                     CraftingPagePatch.Cleanup();
