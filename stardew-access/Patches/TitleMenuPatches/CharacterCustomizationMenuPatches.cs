@@ -36,10 +36,7 @@ namespace stardew_access.Patches
         {
             get
             {
-                if (_descriptions == null)
-                {
-                    _descriptions = LoadDescriptionJson();
-                }
+                _descriptions ??= LoadDescriptionJson();
                 return _descriptions;
             }
         }

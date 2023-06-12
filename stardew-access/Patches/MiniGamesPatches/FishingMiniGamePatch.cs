@@ -50,10 +50,7 @@ namespace stardew_access.Patches
 
         private static void handleBobberTargetSound(float ___bobberPosition, float ___bobberBarPos, bool ___bobberInBar, int ___bobberBarHeight)
         {
-            if (bobberSound == null)
-            {
-                bobberSound = Game1.soundBank.GetCue("SinWave");
-            }
+            bobberSound ??= Game1.soundBank.GetCue("SinWave");
 
             if (___bobberInBar)
             {
