@@ -39,8 +39,7 @@ namespace stardew_access
         {
             get
             {
-                if (radarFeature == null)
-                    radarFeature = new Radar();
+                radarFeature ??= new Radar();
 
                 return radarFeature;
             }
@@ -55,8 +54,7 @@ namespace stardew_access
         {
             get
             {
-                if (screenReader == null)
-                    screenReader = ScreenReaderController.Initialize();
+                screenReader ??= ScreenReaderController.Initialize();
 
                 return screenReader;
             }
@@ -67,8 +65,7 @@ namespace stardew_access
         {
             get
             {
-                if (tileViewer == null)
-                    tileViewer = new TileViewer();
+                tileViewer ??= new TileViewer();
                 return tileViewer;
             }
         }
@@ -77,8 +74,7 @@ namespace stardew_access
         {
             get
             {
-                if (readTile == null)
-                    readTile = new ReadTile();
+                readTile ??= new ReadTile();
                 return readTile;
             }
         }
@@ -87,8 +83,7 @@ namespace stardew_access
         {
             get
             {
-                if (warnings == null)
-                    warnings = new Warnings();
+                warnings ??= new Warnings();
 
                 return warnings;
             }

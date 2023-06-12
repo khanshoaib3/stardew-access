@@ -24,8 +24,7 @@ namespace stardew_access.Utils
                 bool? giveExtraDetails = null, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1,
                 bool handleHighlightedItem = false, String highlightedItemPrefix = "", String highlightedItemSuffix = "")
         {
-            if (giveExtraDetails is null)
-                giveExtraDetails = !MainClass.Config.DisableInventoryVerbosity;
+            giveExtraDetails ??= !MainClass.Config.DisableInventoryVerbosity;
             for (int i = 0; i < inventory.Count; i++)
             {
                 if (!inventory[i].containsPoint(x, y)) continue;
