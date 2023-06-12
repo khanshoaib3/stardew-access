@@ -238,7 +238,7 @@ namespace stardew_access.Utils
         private static (string? name, CATEGORY? category) GetBoatTunnelInfo(BoatTunnel boatTunnel, int x, int y, bool lessInfo = false)
         {
             // Check if the player has received the specified mail or not
-            bool HasMail(string mail) => Game1.MasterPlayer.hasOrWillReceiveMail(mail);
+            static bool HasMail(string mail) => Game1.MasterPlayer.hasOrWillReceiveMail(mail);
 
             // If the position matches one of the interactable elements in the boat tunnel
             if ((x, y) == (4, 9) || (x, y) == (6, 8) || (x, y) == (8, 9))
