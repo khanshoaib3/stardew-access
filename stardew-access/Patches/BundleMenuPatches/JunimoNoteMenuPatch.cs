@@ -142,7 +142,7 @@ namespace stardew_access.Patches
             if (___currentPageBundle.ingredients.Count < 0)
                 return;
 
-            currentIngredientListItem = currentIngredientListItem + (isLeftShiftPressed ? -1 : 1);
+            currentIngredientListItem += (isLeftShiftPressed ? -1 : 1);
             if (currentIngredientListItem >= ___currentPageBundle.ingredients.Count)
                 if (isLeftShiftPressed)
                     currentIngredientListItem = ___currentPageBundle.ingredients.Count - 1;
@@ -199,7 +199,7 @@ namespace stardew_access.Patches
             if (__instance.ingredientSlots.Count < 0)
                 return;
 
-            currentIngredientInputSlot = currentIngredientInputSlot + (isLeftShiftPressed ? -1 : 1);
+            currentIngredientInputSlot += (isLeftShiftPressed ? -1 : 1);
             if (currentIngredientInputSlot >= __instance.ingredientSlots.Count)
                 if (isLeftShiftPressed)
                     currentIngredientInputSlot = __instance.ingredientSlots.Count - 1;
@@ -235,7 +235,7 @@ namespace stardew_access.Patches
                 return;
 
             int prevSlotIndex = currentInventorySlot;
-            currentInventorySlot = currentInventorySlot + (isLeftShiftPressed ? -1 : 1);
+            currentInventorySlot += (isLeftShiftPressed ? -1 : 1);
             if (currentInventorySlot >= __instance.inventory.actualInventory.Count)
                 if (isLeftShiftPressed)
                     currentInventorySlot = __instance.inventory.actualInventory.Count - 1;
