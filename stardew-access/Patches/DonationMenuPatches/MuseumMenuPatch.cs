@@ -8,7 +8,6 @@ namespace stardew_access.Patches
 {
     internal class MuseumMenuPatch
     {
-        private static string museumQueryKey = "";
         private static bool isMoving = false;
         private static readonly (int x, int y)[] donationTiles =
         {
@@ -78,11 +77,7 @@ namespace stardew_access.Patches
             if (libraryMuseum.isTileSuitableForMuseumPiece(tileX, tileY))
                 toSpeak = $"slot {tileX}x {tileY}y";
 
-            if (museumQueryKey != toSpeak)
-            {
-                museumQueryKey = toSpeak;
-                MainClass.ScreenReader.Say(toSpeak, true);
-            }
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
         }
 
         private static void narratePlayerInventory(MuseumMenu __instance, int x, int y)
@@ -123,12 +118,8 @@ namespace stardew_access.Patches
                 return false;
             }
 
-            if (museumQueryKey != toSpeak)
-            {
-                museumQueryKey = toSpeak;
-                MainClass.ScreenReader.Say(toSpeak, true);
-                if (isDropItemButton) Game1.playSound("drop_item");
-            }
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            if (isDropItemButton) Game1.playSound("drop_item");
 
             return true;
         }
@@ -242,10 +233,5 @@ namespace stardew_access.Patches
             }
         }
         #endregion
-
-        internal static void Cleanup()
-        {
-            museumQueryKey = "";
-        }
     }
 }
