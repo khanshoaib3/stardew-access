@@ -5,7 +5,7 @@ using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Objects;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
     internal class BuildingOperations
     {

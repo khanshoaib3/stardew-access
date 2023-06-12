@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using stardew_access.Utils;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
     /// <summary>
     /// Reads the name and information about a tile.

@@ -2,9 +2,8 @@
 using xTile;
 using StardewValley;
 using StardewValley.Menus;
-using stardew_access.Utils;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
 
     /// <summary>

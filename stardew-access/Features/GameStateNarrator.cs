@@ -1,7 +1,7 @@
 ﻿using StardewValley;
 using System.Text.RegularExpressions;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
     internal class GameStateNarrator
     {
