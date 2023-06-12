@@ -238,11 +238,11 @@ namespace stardew_access.Utils
                     {
                         objectName = objectName.ToLower().Trim();
 
-                        if (obj is Furniture)
+                        if (obj is Furniture furniture)
                         {
-                            if (!furnitures.Contains((Furniture)obj))
+                            if (!furnitures.Contains(furniture))
                             {
-                                furnitures.Add((Furniture)obj);
+                                furnitures.Add(furniture);
                                 PlaySoundAt(position, objectName, category, currentLocation);
                             }
                         }

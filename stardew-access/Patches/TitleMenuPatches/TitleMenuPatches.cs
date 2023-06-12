@@ -52,7 +52,7 @@ namespace stardew_access.Patches
                 }
 
                 // Fix for back button not working using keyboard
-                if (TitleMenu.subMenu is CharacterCustomization && ((CharacterCustomization)TitleMenu.subMenu).backButton.containsPoint(x, y))
+                if (TitleMenu.subMenu is CharacterCustomization characterCustomization && characterCustomization.backButton.containsPoint(x, y))
                 {
                     // Perform Left Click
                     if (MainClass.Config.LeftClickMainKey.JustPressed())
