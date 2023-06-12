@@ -8,7 +8,7 @@ namespace stardew_access.Patches
     // These patches are global, i.e. work on every menus
     internal class IClickableMenuPatch
     {
-        private static readonly HashSet<Type> SkipMenuTypes = new HashSet<Type>
+        private static readonly HashSet<Type> SkipMenuTypes = new()
         {
             typeof(AnimalQueryMenu),
             typeof(Billboard),
@@ -32,7 +32,7 @@ namespace stardew_access.Patches
             typeof(TailoringMenu)
         };
 
-        private static readonly HashSet<Type> SkipGameMenuPageTypes = new HashSet<Type>
+        private static readonly HashSet<Type> SkipGameMenuPageTypes = new()
         {
             typeof(CraftingPage),
             typeof(ExitPage),
@@ -62,7 +62,7 @@ namespace stardew_access.Patches
                 }
                 #endregion
 
-                StringBuilder toSpeak = new StringBuilder();
+                StringBuilder toSpeak = new();
 
                 #region Add item count before title
                 if (hoveredItem != null && hoveredItem.HasBeenInInventory)

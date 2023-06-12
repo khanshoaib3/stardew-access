@@ -211,7 +211,7 @@ namespace stardew_access.Patches
             {
                 return null;
             }
-            List<Item> items = new List<Item>();
+            List<Item> items = new();
             for (int i = 0; i < materialContainers.Count; i++)
             {
                 items.AddRange(materialContainers[i].items);

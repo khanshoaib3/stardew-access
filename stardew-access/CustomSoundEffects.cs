@@ -18,7 +18,7 @@ namespace stardew_access
                 if (MainClass.ModHelper == null)
                     return;
 
-                Dictionary<String, TYPE> soundEffects = new Dictionary<String, TYPE>
+                Dictionary<String, TYPE> soundEffects = new()
                 {
                     { "drop_item", TYPE.Sound },
                     { "colliding", TYPE.Sound },
@@ -51,7 +51,7 @@ namespace stardew_access
                 {
                     KeyValuePair<String, TYPE> soundEffect = soundEffects.ElementAt(i);
 
-                    CueDefinition cueDefinition = new CueDefinition
+                    CueDefinition cueDefinition = new()
                     {
                         name = soundEffect.Key
                     };
