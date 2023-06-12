@@ -116,7 +116,7 @@ namespace stardew_access.Utils
                 int minutes = timeOfDay % 100;
                 int hours = timeOfDay / 100;
                 string amOrpm = hours / 12 == 1 ? "PM" : "AM";
-                hours = hours % 12;
+                hours %= 12;
                 if (hours == 0) hours = 12;
                 return $"{hours}:{minutes:00} {amOrpm}";
             }
