@@ -202,7 +202,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                MainClass.DebugLog($"Closed {__instance.GetType().ToString()} menu, performing cleanup...");
+                MainClass.DebugLog($"Closed {__instance.GetType()} menu, performing cleanup...");
                 Cleanup(__instance);
             }
             catch (Exception e)
