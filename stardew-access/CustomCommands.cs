@@ -436,7 +436,7 @@ namespace stardew_access
                 }
                 else
                 {
-                    if (CarpenterMenuPatch.isConstructing && !CarpenterMenuPatch.isUpgrading) { response = BuildingOperations.Contstruct(BuildingOperations.marked[index]); }
+                    if (CarpenterMenuPatch.isConstructing && !CarpenterMenuPatch.isUpgrading) { response = BuildingOperations.Construct(BuildingOperations.marked[index]); }
                     else if (CarpenterMenuPatch.isMoving) { response = BuildingOperations.Move(BuildingOperations.availableBuildings[index], BuildingOperations.marked[positionIndex]); }
                     else if (CarpenterMenuPatch.isDemolishing) { response = BuildingOperations.Demolish(BuildingOperations.availableBuildings[index]); }
                     else if (CarpenterMenuPatch.isUpgrading) { response = BuildingOperations.Upgrade(BuildingOperations.availableBuildings[index]); }

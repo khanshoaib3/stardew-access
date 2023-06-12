@@ -12,137 +12,98 @@ namespace stardew_access.Features
         internal static Building?[] availableBuildings = new Building[100];
         internal static Vector2[] marked = new Vector2[10];
 
+        private static string? CheckDemolishConditions(Building? toDemolish)
+        {
+            if (toDemolish == null)
+                return "No building to demolish.";
+
+            if (toDemolish.daysOfConstructionLeft.Value > 0 || toDemolish.daysUntilUpgrade.Value > 0)
+            {
+                return Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_DuringConstruction");
+            }
+
+            if (toDemolish.indoors.Value is AnimalHouse animalHouse && animalHouse.animalsThatLiveHere.Count > 0)
+            {
+                return Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_AnimalsHere");
+            }
+
+            if (toDemolish.indoors.Value?.farmers.Any() == true)
+            {
+                return Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere");
+            }
+
+            if (toDemolish.indoors.Value is Cabin cabin)
+            {
+                if (Game1.getAllFarmers().Any(farmer => farmer.currentLocation?.Name == cabin.GetCellarName()))
+                {
+                    return Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere");
+                }
+
+                if (cabin.farmhand.Value.isActive())
+                {
+                    return Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_FarmhandOnline");
+                }
+            }
+
+            return null;
+        }
+
+        private static void HandleDemolition(Building toDemolish)
+        {
+            Farm farm = (Farm)Game1.getLocationFromName("Farm");
+            toDemolish.BeforeDemolish();
+            Chest? chest = null;
+            if (toDemolish.indoors.Value is Cabin cabin)
+            {
+                List<Item> list = cabin.demolish();
+                if (list.Count > 0)
+                {
+                    chest = new Chest(playerChest: true);
+                    chest.fixLidFrame();
+                    chest.items.Set(list);
+                }
+            }
+            if (farm.destroyStructure(toDemolish))
+            {
+                Game1.flashAlpha = 1f;
+                toDemolish.showDestroyedAnimation(Game1.getFarm());
+                Game1.playSound("explosion");
+                Utility.spreadAnimalsAround(toDemolish, farm);
+                if (CarpenterMenuPatch.carpenterMenu != null)
+                    DelayedAction.functionAfterDelay(CarpenterMenuPatch.carpenterMenu.returnToCarpentryMenu, 1500);
+                if (chest != null)
+                {
+                    farm.objects[new Vector2((int)toDemolish.tileX.Value + (int)toDemolish.tilesWide.Value / 2, (int)toDemolish.tileY.Value + (int)toDemolish.tilesHigh.Value / 2)] = chest;
+                }
+            }
+        }
+
+        private static void HandleFailedDemolition()
+        {
+            if (CarpenterMenuPatch.carpenterMenu != null)
+                DelayedAction.functionAfterDelay(CarpenterMenuPatch.carpenterMenu.returnToCarpentryMenu, 1000);
+            MainClass.ScreenReader.Say("Building failed", true);
+        }
+
         public static string? Demolish(Building? toDemolish)
         {
             if (toDemolish == null)
+            {
                 return null;
-
-            string? response = null;
-            // This code is taken from the game's code (CarpenterMenu.cs::654)
-            Farm farm = (Farm)Game1.getLocationFromName("Farm");
-            Action buildingLockFailed = delegate
-            {
-                if (CarpenterMenuPatch.isDemolishing)
-                {
-                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_LockFailed");
-                }
-            };
-            Action continueDemolish = delegate
-            {
-                if (CarpenterMenuPatch.isDemolishing && toDemolish != null && farm.buildings.Contains(toDemolish))
-                {
-                    if ((int)toDemolish.daysOfConstructionLeft.Value > 0 || (int)toDemolish.daysUntilUpgrade.Value > 0)
-                    {
-                        response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_DuringConstruction");
-                    }
-                    else if (toDemolish.indoors.Value != null && toDemolish.indoors.Value is AnimalHouse && ((AnimalHouse)toDemolish.indoors.Value).animalsThatLiveHere.Count > 0)
-                    {
-                        response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_AnimalsHere");
-                    }
-                    else if (toDemolish.indoors.Value != null && toDemolish.indoors.Value.farmers.Any())
-                    {
-                        response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere");
-                    }
-                    else
-                    {
-                        if (toDemolish.indoors.Value != null && toDemolish.indoors.Value is Cabin)
-                        {
-                            foreach (Farmer current in Game1.getAllFarmers())
-                            {
-                                if (current.currentLocation != null && current.currentLocation.Name == ((Cabin)toDemolish.indoors.Value).GetCellarName())
-                                {
-                                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere");
-                                    return;
-                                }
-                            }
-                        }
-                        if (toDemolish.indoors.Value is Cabin && ((Cabin)toDemolish.indoors.Value).farmhand.Value.isActive())
-                        {
-                            response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_FarmhandOnline");
-                        }
-                        else
-                        {
-                            toDemolish.BeforeDemolish();
-                            Chest? chest = null;
-                            if (toDemolish.indoors.Value is Cabin)
-                            {
-                                List<Item> list = ((Cabin)toDemolish.indoors.Value).demolish();
-                                if (list.Count > 0)
-                                {
-                                    chest = new Chest(playerChest: true);
-                                    chest.fixLidFrame();
-                                    chest.items.Set(list);
-                                }
-                            }
-                            if (farm.destroyStructure(toDemolish))
-                            {
-                                _ = (int)toDemolish.tileY.Value;
-                                _ = (int)toDemolish.tilesHigh.Value;
-                                Game1.flashAlpha = 1f;
-                                toDemolish.showDestroyedAnimation(Game1.getFarm());
-                                Game1.playSound("explosion");
-                                Utility.spreadAnimalsAround(toDemolish, farm);
-                                if (CarpenterMenuPatch.carpenterMenu != null)
-                                    DelayedAction.functionAfterDelay(CarpenterMenuPatch.carpenterMenu.returnToCarpentryMenu, 1500);
-                                // freeze = true;
-                                if (chest != null)
-                                {
-                                    farm.objects[new Vector2((int)toDemolish.tileX.Value + (int)toDemolish.tilesWide.Value / 2, (int)toDemolish.tileY.Value + (int)toDemolish.tilesHigh.Value / 2)] = chest;
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-            if (toDemolish != null)
-            {
-                if (toDemolish.indoors.Value != null && toDemolish.indoors.Value is Cabin && !Game1.IsMasterGame)
-                {
-                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_LockFailed");
-                    toDemolish = null;
-                    return response;
-                }
-                if (CarpenterMenuPatch.carpenterMenu != null && !CarpenterMenuPatch.carpenterMenu.CanDemolishThis(toDemolish))
-                {
-                    toDemolish = null;
-                    return response;
-                }
-                if (CarpenterMenuPatch.carpenterMenu != null && !Game1.IsMasterGame && !CarpenterMenuPatch.carpenterMenu.hasPermissionsToDemolish(toDemolish))
-                {
-                    toDemolish = null;
-                    return response;
-                }
-            }
-            if (toDemolish != null && toDemolish.indoors.Value is Cabin)
-            {
-                Cabin cabin = (Cabin)toDemolish.indoors.Value;
-                if (cabin.farmhand.Value != null && (bool)cabin.farmhand.Value.isCustomized.Value)
-                {
-                    Game1.currentLocation.createQuestionDialogue(Game1.content.LoadString("Strings\\UI:Carpenter_DemolishCabinConfirm", cabin.farmhand.Value.Name), Game1.currentLocation.createYesNoResponses(), delegate (Farmer f, string answer)
-                    {
-                        if (answer == "Yes")
-                        {
-                            Game1.activeClickableMenu = CarpenterMenuPatch.carpenterMenu;
-                            Game1.player.team.demolishLock.RequestLock(continueDemolish, buildingLockFailed);
-                        }
-                        else
-                        {
-                            if (CarpenterMenuPatch.carpenterMenu != null)
-                                DelayedAction.functionAfterDelay(CarpenterMenuPatch.carpenterMenu.returnToCarpentryMenu, 1000);
-                        }
-                    });
-                    return response;
-                }
-            }
-            if (toDemolish != null)
-            {
-                Game1.player.team.demolishLock.RequestLock(continueDemolish, buildingLockFailed);
             }
 
-            return response;
+            string? demolishError = CheckDemolishConditions(toDemolish);
+            if (demolishError != null)
+            {
+                return demolishError;
+            }
+
+            Game1.player.team.demolishLock.RequestLock(() => HandleDemolition(toDemolish), HandleFailedDemolition);
+
+            return null;
         }
 
-        public static string? Contstruct(Vector2 position)
+        public static string? Construct(Vector2 position)
         {
             string? response = null;
             // This code is taken from the game's code (CarpenterMenu.cs::874)
@@ -241,52 +202,45 @@ namespace stardew_access.Features
 
         public static string? Move(Building? buildingToMove, Vector2 position)
         {
-            string? response = null;
-            // This code is taken from the game's code (CarpenterMenu.cs::829)
-            if (buildingToMove != null)
+            if (buildingToMove == null)
             {
-                string? name = buildingToMove.nameOfIndoorsWithoutUnique;
-                name = (name == "null") ? buildingToMove.buildingType.Value : name;
-
-                if ((int)buildingToMove.daysOfConstructionLeft.Value > 0)
-                {
-                    buildingToMove = null;
-                    return "Building under construction, cannot move";
-                }
-                if (CarpenterMenuPatch.carpenterMenu != null && !CarpenterMenuPatch.carpenterMenu.hasPermissionsToMove(buildingToMove))
-                {
-                    buildingToMove = null;
-                    return "You don't have permission to move this building";
-                }
-                Game1.playSound("axchop");
-
-                if (((Farm)Game1.getLocationFromName("Farm")).buildStructure(buildingToMove, position, Game1.player))
-                {
-                    if (buildingToMove is ShippingBin)
-                    {
-                        ((ShippingBin)buildingToMove).initLid();
-                    }
-                    if (buildingToMove is GreenhouseBuilding)
-                    {
-                        Game1.getFarm().greenhouseMoved.Value = true;
-                    }
-                    buildingToMove.performActionOnBuildingPlacement();
-                    buildingToMove = null;
-                    Game1.playSound("axchop");
-                    DelayedAction.playSoundAfterDelay("dirtyHit", 50);
-                    DelayedAction.playSoundAfterDelay("dirtyHit", 150);
-
-                    response = $"{buildingToMove} moved to {position.X}x {position.Y}y";
-                }
-                else
-                {
-                    Game1.playSound("cancel");
-                    response = $"Cannot move building to {position.X}x {position.Y}y";
-                }
-
+                return null;
             }
 
-            return response;
+            string name = buildingToMove.nameOfIndoorsWithoutUnique == "null" ? buildingToMove.buildingType.Value : buildingToMove.nameOfIndoorsWithoutUnique;
+
+            if (buildingToMove.daysOfConstructionLeft.Value > 0)
+            {
+                return "Building under construction, cannot move";
+            }
+            if (CarpenterMenuPatch.carpenterMenu != null && !CarpenterMenuPatch.carpenterMenu.hasPermissionsToMove(buildingToMove))
+            {
+                return "You don't have permission to move this building";
+            }
+            Game1.playSound("axchop");
+
+            if (!((Farm)Game1.getLocationFromName("Farm")).buildStructure(buildingToMove, position, Game1.player))
+            {
+                Game1.playSound("cancel");
+                return $"Cannot move building to {position.X}x {position.Y}y";
+            }
+
+            switch (buildingToMove)
+            {
+                case ShippingBin shippingBin:
+                    shippingBin.initLid();
+                    break;
+                case GreenhouseBuilding:
+                    Game1.getFarm().greenhouseMoved.Value = true;
+                    break;
+            }
+
+            buildingToMove.performActionOnBuildingPlacement();
+            Game1.playSound("axchop");
+            DelayedAction.playSoundAfterDelay("dirtyHit", 50);
+            DelayedAction.playSoundAfterDelay("dirtyHit", 150);
+
+            return $"{name} moved to {position.X}x {position.Y}y";
         }
 
         public static void PurchaseAnimal(Building? selection)
