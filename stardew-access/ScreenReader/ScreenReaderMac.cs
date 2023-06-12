@@ -13,13 +13,13 @@ namespace stardew_access.ScreenReader
         // The speaker instance
         private static IntPtr speaker;
         //Stuff for the runloop thread
-        private readonly CancellationTokenSource cts = new CancellationTokenSource();
+        private readonly CancellationTokenSource cts = new();
         private Thread? rt;
         //Speech queue for interrupt
-        private static readonly Queue<string> speechQueue = new Queue<string>();
+        private static readonly Queue<string> speechQueue = new();
 
         // DidFinishSpeaking callback for interrupt
-        readonly dfs_callback fscb = new dfs_callback(DoneSpeaking);
+        readonly dfs_callback fscb = new(DoneSpeaking);
 
         // Dylib imports
         ///////////

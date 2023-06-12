@@ -52,11 +52,11 @@ namespace stardew_access.Patches
                 return new Dictionary<string, Dictionary<int, string>>();
             }
 
-            Dictionary<string, Dictionary<int, string>> result = new Dictionary<string, Dictionary<int, string>>();
+            Dictionary<string, Dictionary<int, string>> result = new();
 
             foreach (JsonProperty category in jsonElement.EnumerateObject())
             {
-                Dictionary<int, string> innerDictionary = new Dictionary<int, string>();
+                Dictionary<int, string> innerDictionary = new();
 
                 foreach (JsonProperty item in category.Value.EnumerateObject())
                 {
