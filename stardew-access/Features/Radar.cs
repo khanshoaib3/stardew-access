@@ -1,9 +1,8 @@
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
-using stardew_access.Utils;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
     public class Radar
     {

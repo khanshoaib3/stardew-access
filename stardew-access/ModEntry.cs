@@ -2,7 +2,6 @@
 using StardewModdingAPI.Events;
 using StardewValley;
 using HarmonyLib;
-using stardew_access.Features;
 using stardew_access.Patches;
 using stardew_access.ScreenReader;
 using stardew_access.Utils;

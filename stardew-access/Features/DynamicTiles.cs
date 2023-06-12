@@ -4,9 +4,8 @@ using StardewValley.Buildings;
 using StardewValley.Locations;
 using System.Text.Json;
 using static stardew_access.Utils.JsonLoader;
-using stardew_access.Utils;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
     /// <summary>
     /// Provides methods to locate tiles of interest in various game locations that are conditional or unpredictable (I.E. not static).
