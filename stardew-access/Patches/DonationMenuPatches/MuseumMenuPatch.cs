@@ -126,11 +126,11 @@ namespace stardew_access.Patches
 
         private static void manuallyDonateItem(MuseumMenu __instance, int i)
         {
-            foreach (var tile in donationTiles)
+            foreach (var (x, y) in donationTiles)
             {
                 #region Manually donates the hovered item (https://github.com/veywrn/StardewValley/blob/3ff171b6e9e6839555d7881a391b624ccd820a83/StardewValley/Menus/MuseumMenu.cs#L206-L247)
-                int tileX = tile.x;
-                int tileY = tile.y;
+                int tileX = x;
+                int tileY = y;
 
                 if (((LibraryMuseum)Game1.currentLocation).isTileSuitableForMuseumPiece(tileX, tileY) && ((LibraryMuseum)Game1.currentLocation).isItemSuitableForDonation(__instance.inventory.actualInventory[i]))
                 {

@@ -92,15 +92,15 @@ namespace stardew_access.Utils
                     var currentLocation = Game1.currentLocation;
                     bool isColliding = TileInfo.IsCollidingAtTile(currentLocation, x, y);
 
-                    (string? name, string? category) info = TileInfo.getNameWithCategoryNameAtTile(tile, currentLocation);
+                    (string? name, string? category) = TileInfo.getNameWithCategoryNameAtTile(tile, currentLocation);
 
                     #region Narrate toSpeak
-                    if (info.name != null)
+                    if (name != null)
                         if (MainClass.ScreenReader != null)
                             if (manuallyTriggered)
-                                MainClass.ScreenReader.Say($"{info.name}, Category: {info.category}", true);
+                                MainClass.ScreenReader.Say($"{name}, Category: {category}", true);
                             else
-                                MainClass.ScreenReader.SayWithTileQuery(info.name, x, y, true);
+                                MainClass.ScreenReader.SayWithTileQuery(name, x, y, true);
                     #endregion
 
                     #region Play colliding sound effect

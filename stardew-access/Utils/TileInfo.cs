@@ -77,8 +77,8 @@ namespace stardew_access.Utils
 
             if (currentLocation.isObjectAtTile(x, y))
             {
-                (string? name, CATEGORY? category) obj = getObjectAtTile(currentLocation, x, y, lessInfo);
-                return (obj.name, obj.category);
+                (string? name, CATEGORY? category) = getObjectAtTile(currentLocation, x, y, lessInfo);
+                return (name, category);
             }
 
             if (currentLocation.isWaterTile(x, y) && !lessInfo && IsCollidingAtTile(currentLocation, x, y))
@@ -94,10 +94,10 @@ namespace stardew_access.Utils
 
             if (terrainFeature.TryGetValue(tile, out var tf))
             {
-                (string? name, CATEGORY category) terrain = getTerrainFeatureAtTile(tf);
-                if (terrain.name != null)
+                (string? name, CATEGORY category) = getTerrainFeatureAtTile(tf);
+                if (name != null)
                 {
-                    return (terrain.name, terrain.category);
+                    return (name, category);
                 }
             }
 
