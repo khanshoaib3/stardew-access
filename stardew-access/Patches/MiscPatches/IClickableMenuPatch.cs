@@ -282,9 +282,6 @@ namespace stardew_access.Patches
                 case FieldOfficeMenu:
                     FieldOfficeMenuPatch.Cleanup();
                     break;
-                case MuseumMenu:
-                    MuseumMenuPatch.Cleanup();
-                    break;
                 case PondQueryMenu:
                     PondQueryMenuPatch.Cleanup();
                     break;
