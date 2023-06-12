@@ -880,9 +880,8 @@ namespace stardew_access.Utils
         /// <returns>True if a mine down ladder is found at the specified tile, otherwise false.</returns>
         public static bool isMineDownLadderAtTile(GameLocation currentLocation, int x, int y)
         {
-            return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
-                   ? CheckTileIndex(currentLocation, x, y, 173)
-                   : false;
+            return (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
+&& CheckTileIndex(currentLocation, x, y, 173);
         }
 
         /// <summary>
@@ -894,9 +893,8 @@ namespace stardew_access.Utils
         /// <returns>True if a mine shaft is found at the specified tile, otherwise false.</returns>
         public static bool isShaftAtTile(GameLocation currentLocation, int x, int y)
         {
-            return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
-                   ? CheckTileIndex(currentLocation, x, y, 174)
-                   : false;
+            return (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
+&& CheckTileIndex(currentLocation, x, y, 174);
         }
 
         /// <summary>
@@ -908,9 +906,8 @@ namespace stardew_access.Utils
         /// <returns>True if a mine up ladder is found at the specified tile, otherwise false.</returns>
         public static bool isMineUpLadderAtTile(GameLocation currentLocation, int x, int y)
         {
-            return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
-                   ? CheckTileIndex(currentLocation, x, y, 115)
-                   : false;
+            return (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
+&& CheckTileIndex(currentLocation, x, y, 115);
         }
 
         /// <summary>
@@ -922,9 +919,8 @@ namespace stardew_access.Utils
         /// <returns>True if an elevator is found at the specified tile, otherwise false.</returns>
         public static bool isElevatorAtTile(GameLocation currentLocation, int x, int y)
         {
-            return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
-                   ? CheckTileIndex(currentLocation, x, y, 112)
-                   : false;
+            return (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
+&& CheckTileIndex(currentLocation, x, y, 112);
         }
 
         /// <summary>
