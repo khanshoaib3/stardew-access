@@ -34,7 +34,7 @@ namespace stardew_access.Features
                 if ((i + 1) > actualInventory.Count || actualInventory[i] == null)
                 {
                     // For empty slot
-                    checkAndSpeak(MainClass.Translate("menu-inventory-empty_slot-name"), i);
+                    checkAndSpeak(Translator.Instance.Translate("menu-inventory-empty_slot-name"), i);
                     prevSlotIndex = i;
                     return i;
                 }
@@ -44,7 +44,7 @@ namespace stardew_access.Features
                 string namePrefix = handleHighlightedItemPrefix(isHighlighted, highlightedItemPrefix);
                 string nameSuffix = $"{handleHighlightedItemSuffix(isHighlighted, highlightedItemSuffix)}{handleUnHighlightedItem(isHighlighted, i)}";
                 int stack = actualInventory[i].Stack;
-                string name = MainClass.Translate("common-util-pluralize_name", new {item_count = stack, name = actualInventory[i].DisplayName});
+                string name = Translator.Instance.Translate("common-util-pluralize_name", new {item_count = stack, name = actualInventory[i].DisplayName});
                 name = $"{namePrefix}{name}{nameSuffix}";
                 string quality = getQualityFromItem(actualInventory[i]);
                 string healthNStamina = getHealthNStaminaFromItem(actualInventory[i]);
@@ -96,7 +96,7 @@ namespace stardew_access.Features
             if (item is not StardewValley.Object || ((StardewValley.Object)item).Quality <= 0)
                 return "";
 
-            return MainClass.Translate("item-quality_type", new {quality_index = ((StardewValley.Object)item).Quality});
+            return Translator.Instance.Translate("item-quality_type", new {quality_index = ((StardewValley.Object)item).Quality});
         }
 
         private static String getHealthNStaminaFromItem(Item item)
@@ -106,7 +106,7 @@ namespace stardew_access.Features
 
             int stamina_recovery = ((StardewValley.Object)item).staminaRecoveredOnConsumption();
             int health_recovery = ((StardewValley.Object)item).healthRecoveredOnConsumption();
-            return MainClass.Translate("item-stamina_and_health_recovery_on_consumption", new {stamina_amount = stamina_recovery, health_amount = health_recovery});
+            return Translator.Instance.Translate("item-stamina_and_health_recovery_on_consumption", new {stamina_amount = stamina_recovery, health_amount = health_recovery});
         }
 
         private static String getBuffsFromItem(Item item)

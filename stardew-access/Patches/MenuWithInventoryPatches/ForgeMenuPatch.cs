@@ -42,7 +42,7 @@ namespace stardew_access.Patches
                 else
                 {
                     Item item = __instance.leftIngredientSpot.item;
-                    toSpeak = $"Weapon slot: {MainClass.Translate("common-util-pluralize_name", new {item_count = item.Stack, name = item.DisplayName})}";
+                    toSpeak = $"Weapon slot: {Translator.Instance.Translate("common-util-pluralize_name", new {item_count = item.Stack, name = item.DisplayName})}";
                 }
             }
             else if (__instance.rightIngredientSpot != null && __instance.rightIngredientSpot.containsPoint(x, y))
@@ -54,7 +54,7 @@ namespace stardew_access.Patches
                 else
                 {
                     Item item = __instance.rightIngredientSpot.item;
-                    toSpeak = $"Gemstone slot: {MainClass.Translate("common-util-pluralize_name", new {item_count = item.Stack, name = item.DisplayName})}";
+                    toSpeak = $"Gemstone slot: {Translator.Instance.Translate("common-util-pluralize_name", new {item_count = item.Stack, name = item.DisplayName})}";
                 }
             }
             else if (__instance.startTailoringButton != null && __instance.startTailoringButton.containsPoint(x, y))

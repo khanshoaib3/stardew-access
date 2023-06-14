@@ -6,7 +6,6 @@ using HarmonyLib;
 using stardew_access.Patches;
 using stardew_access.ScreenReader;
 using Microsoft.Xna.Framework;
-using stardew_access.Integrations;
 
 namespace stardew_access
 {
@@ -25,7 +24,6 @@ namespace stardew_access
         private static TileViewer? tileViewer;
         private static Warnings? warnings;
         private static ReadTile? readTile;
-        private static IFluent<string> Fluent { get; set; } = null!;
 
         internal static ModConfig Config
         {
@@ -145,30 +143,9 @@ namespace stardew_access
 
         private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
         {
-            var fluentApi = modHelper!.ModRegistry.GetApi<IFluentApi>("Shockah.ProjectFluent");
-            if (fluentApi != null)
-            {
-                Fluent = fluentApi.GetLocalizationsForCurrentLocale(ModManifest);
-                // fluentApi.RegisterFunction(ModManifest, "TEST", EE);
-            }
-            else
-            {
-                ErrorLog("Unable to initialize fluent api");
-            }
+            Translator.Instance.Initialize(ModManifest);
         }
 
-        private IFluentFunctionValue EE(
-            IGameLocale locale,
-            IManifest mod,
-            IReadOnlyList<IFluentFunctionValue> positionalArguments,
-            IReadOnlyDictionary<string, IFluentFunctionValue> namedArguments
-        )
-        {
-            DebugLog("HERE");
-            if (positionalArguments.Count > 0) DebugLog($"Value: {positionalArguments[0]}");
-            var fluentApi = modHelper!.ModRegistry.GetApi<IFluentApi>("Shockah.ProjectFluent");
-            return fluentApi!.CreateIntValue(-1);
-        }
 
         private void onMenuChanged(object? sender, MenuChangedEventArgs e)
         {
@@ -409,25 +386,6 @@ namespace stardew_access
             TileViewerFeature.HandleInput();
         }
 
-        public static string Translate(string translationKey)
-        {
-            if (Fluent != null)
-                return Fluent.Get(translationKey);
-
-            ErrorLog("Fluent not initialized!");
-
-            return translationKey;
-        }
-
-        public static string Translate(string translationKey, object? tokens)
-        {
-            if (Fluent != null)
-                return Fluent.Get(translationKey, tokens);
-
-            ErrorLog("Fluent not initialized!");
-
-            return translationKey;
-        }
 
         private static void LogMessage(string message, LogLevel logLevel)
         {

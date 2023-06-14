@@ -135,7 +135,7 @@ namespace stardew_access.Patches
 
             Item lastShippedItem = Game1.getFarm().lastItemShipped;
             int count = lastShippedItem.Stack;
-            string name = MainClass.Translate("common-util-pluralize_name", new {item_count = count, name = lastShippedItem.DisplayName});
+            string name = Translator.Instance.Translate("common-util-pluralize_name", new {item_count = count, name = lastShippedItem.DisplayName});
 
             string toSpeak = $"Last Shipped: {name}";
 

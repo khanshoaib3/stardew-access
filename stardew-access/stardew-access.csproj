@@ -8,15 +8,20 @@
     <LangVersion>preview</LangVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <!-- To generate dlls of nugget packages -->
-    <!-- <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies> -->
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
+    <CSFile Include="*.dll" Exclude="ProjectFluent.dll"/>
     <PackageReference Include="KdTree" Version="1.4.1" />
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
     <Reference Include="./TolkDotNet.dll" />
     <Reference Include="./KdTreeLib.dll" />
+    <Reference Include="ProjectFluent">
+      <HintPath>$(GamePath)\Mods\ProjectFluent\ProjectFluent.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

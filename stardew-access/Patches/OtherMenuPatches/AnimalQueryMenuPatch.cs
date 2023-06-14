@@ -71,7 +71,7 @@ namespace stardew_access.Patches
                 heartCount += 0.5;
             }
 
-            string toSpeak = MainClass.Translate("animal_query_menu-animal_info", new { name = name, type = type, baby = babyText, heart_count = heartCount, age = age, parent_name = parent });
+            string toSpeak = Translator.Instance.Translate("animal_query_menu-animal_info", new { name = name, type = type, baby = babyText, heart_count = heartCount, age = age, parent_name = parent });
 
             isNarratingAnimalInfo = true;
             Task.Delay(200).ContinueWith(_ => { isNarratingAnimalInfo = false; }); // Adds delay
@@ -83,19 +83,19 @@ namespace stardew_access.Patches
         {
             string toSpeak = "";
             if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
-                toSpeak = MainClass.Translate("common-ui-ok_button");
+                toSpeak = Translator.Instance.Translate("common-ui-ok_button");
             else if (__instance.sellButton != null && __instance.sellButton.containsPoint(x, y))
-                toSpeak = MainClass.Translate("animal_query_menu-ui-selling_button", new {price = ___animal.getSellPrice()});
+                toSpeak = Translator.Instance.Translate("animal_query_menu-ui-selling_button", new {price = ___animal.getSellPrice()});
             else if (___confirmingSell && __instance.yesButton != null && __instance.yesButton.containsPoint(x, y))
-                toSpeak = MainClass.Translate("animal_query_menu-ui-confirm_selling_button");
+                toSpeak = Translator.Instance.Translate("animal_query_menu-ui-confirm_selling_button");
             else if (___confirmingSell && __instance.noButton != null && __instance.noButton.containsPoint(x, y))
-                toSpeak = MainClass.Translate("animal_query_menu-ui-cancel_selling_button");
+                toSpeak = Translator.Instance.Translate("animal_query_menu-ui-cancel_selling_button");
             else if (__instance.moveHomeButton != null && __instance.moveHomeButton.containsPoint(x, y))
-                toSpeak = MainClass.Translate("animal_query_menu-ui-move_home_button");
+                toSpeak = Translator.Instance.Translate("animal_query_menu-ui-move_home_button");
             else if (__instance.allowReproductionButton != null && __instance.allowReproductionButton.containsPoint(x, y))
-                toSpeak = MainClass.Translate("animal_query_menu-ui-allow_reproduction_button", new {checkbox_value = (___animal.allowReproduction.Value ? 1 : 0)});
+                toSpeak = Translator.Instance.Translate("animal_query_menu-ui-allow_reproduction_button", new {checkbox_value = (___animal.allowReproduction.Value ? 1 : 0)});
             else if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
-                toSpeak = MainClass.Translate("animal_query_menu-ui-text_box");
+                toSpeak = Translator.Instance.Translate("animal_query_menu-ui-text_box");
 
             if (animalQueryMenuQuery != toSpeak)
             {

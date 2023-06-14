@@ -210,17 +210,17 @@ namespace stardew_access.Features
             }
             if (MainClass.ModHelper.Reflection.GetField<NPC>(beach, "oldMariner").GetValue() is NPC mariner && mariner.getTileLocation() == new Vector2(x, y))
             {
-                return (MainClass.Translate("npc_name-old_mariner"), CATEGORY.NPCs);
+                return (Translator.Instance.Translate("npc_name-old_mariner"), CATEGORY.NPCs);
             }
             else if (x == 58 && y == 13)
             {
                 if (!beach.bridgeFixed.Value)
                 {
-                    return (MainClass.Translate("prefix-repair", new { content = MainClass.Translate("tile_name-bridge") }), CATEGORY.Interactables);
+                    return (Translator.Instance.Translate("prefix-repair", new { content = Translator.Instance.Translate("tile_name-bridge") }), CATEGORY.Interactables);
                 }
                 else
                 {
-                    return (MainClass.Translate("tile_name-bridge"), CATEGORY.Bridges);
+                    return (Translator.Instance.Translate("tile_name-bridge"), CATEGORY.Bridges);
                 }
             }
 
@@ -253,15 +253,15 @@ namespace stardew_access.Features
 
                 string itemName = (x, y) switch
                 {
-                    (4, 9) => MainClass.Translate("tile_name-ticket_machine"),
-                    (6, 8) => MainClass.Translate("tile_name-boat_hull"),
-                    (8, 9) => MainClass.Translate("tile_name-boat_anchor"),
+                    (4, 9) => Translator.Instance.Translate("tile_name-ticket_machine"),
+                    (6, 8) => Translator.Instance.Translate("tile_name-boat_hull"),
+                    (8, 9) => Translator.Instance.Translate("tile_name-boat_anchor"),
                     _ => throw new InvalidOperationException("Unexpected (x, y) values"),
                 };
 
                 CATEGORY category = (x, y) == (4, 9) ? CATEGORY.Interactables : (!HasMail(mail) ? CATEGORY.Interactables : CATEGORY.Decor);
 
-                return ((!HasMail(mail) ? MainClass.Translate("prefix-repair", new { content = itemName }) : itemName), category);
+                return ((!HasMail(mail) ? Translator.Instance.Translate("prefix-repair", new { content = itemName }) : itemName), category);
             }
 
             return (null, null);
@@ -279,7 +279,7 @@ namespace stardew_access.Features
         {
             if (communityCenter.missedRewardsChestVisible.Value && x == 22 && y == 10)
             {
-                return (MainClass.Translate("tile_name-missed_reward_chest"), CATEGORY.Containers);
+                return (Translator.Instance.Translate("tile_name-missed_reward_chest"), CATEGORY.Containers);
             }
 
             return (null, null);
@@ -312,12 +312,12 @@ namespace stardew_access.Features
             // Check if the position matches the human door
             if (building.humanDoor.Value.X == offsetX && building.humanDoor.Value.Y == offsetY)
             {
-                return (MainClass.Translate("suffix-building_door", new {content = name}), CATEGORY.Buildings);
+                return (Translator.Instance.Translate("suffix-building_door", new {content = name}), CATEGORY.Buildings);
             }
             // Check if the position matches the animal door
             else if (building.animalDoor.Value.X == offsetX && building.animalDoor.Value.Y == offsetY)
             {
-                return (MainClass.Translate("suffix-building_animal_door", new {content = name, is_open = (building.animalDoorOpen.Value) ? 1 : 0}), CATEGORY.Doors);
+                return (Translator.Instance.Translate("suffix-building_animal_door", new {content = name, is_open = (building.animalDoorOpen.Value) ? 1 : 0}), CATEGORY.Doors);
             }
             // Check if the position matches the building's top-left corner
             else if (offsetX == 0 && offsetY == 0)
@@ -330,12 +330,12 @@ namespace stardew_access.Features
                 // Check if the position matches the input
                 if (offsetX == 1 && offsetY == 1)
                 {
-                    return (MainClass.Translate("suffix-mill_input", new {content = name}), CATEGORY.Buildings);
+                    return (Translator.Instance.Translate("suffix-mill_input", new {content = name}), CATEGORY.Buildings);
                 }
                 // Check if the position matches the output
                 else if (offsetX == 3 && offsetY == 1)
                 {
-                    return (MainClass.Translate("suffix-mill_output", new {content = name}), CATEGORY.Buildings);
+                    return (Translator.Instance.Translate("suffix-mill_output", new {content = name}), CATEGORY.Buildings);
                 }
             }
 
@@ -358,7 +358,7 @@ namespace stardew_access.Features
 
             if (mainMailboxPos.X == x && mainMailboxPos.Y == y)
             {
-                return (MainClass.Translate("tile_name-mail_box"), CATEGORY.Interactables);
+                return (Translator.Instance.Translate("tile_name-mail_box"), CATEGORY.Interactables);
             }
             else if (building is not null) // Check if there is a building at the current position
             {
@@ -385,15 +385,15 @@ namespace stardew_access.Features
 
                 if (kitchenX == x && kitchenY == y)
                 {
-                    return (MainClass.Translate("tile_name-stove"), CATEGORY.Interactables);
+                    return (Translator.Instance.Translate("tile_name-stove"), CATEGORY.Interactables);
                 }
                 else if (kitchenX + 1 == x && kitchenY == y)
                 {
-                    return (MainClass.Translate("tile_name-sink"), CATEGORY.Others);
+                    return (Translator.Instance.Translate("tile_name-sink"), CATEGORY.Others);
                 }
                 else if (farmHouse.fridgePosition.X == x && farmHouse.fridgePosition.Y == y)
                 {
-                    return (MainClass.Translate("tile_name-fridge"), CATEGORY.Interactables);
+                    return (Translator.Instance.Translate("tile_name-fridge"), CATEGORY.Interactables);
                 }
             }
 
@@ -412,15 +412,15 @@ namespace stardew_access.Features
         {
             if (forest.travelingMerchantDay && x == 27 && y == 11)
             {
-                return (MainClass.Translate("tile_name-traveling_cart"), CATEGORY.Interactables);
+                return (Translator.Instance.Translate("tile_name-traveling_cart"), CATEGORY.Interactables);
             }
             else if (forest.log != null && x == 2 && y == 7)
             {
-                return (MainClass.Translate("item_name-log"), CATEGORY.Interactables);
+                return (Translator.Instance.Translate("item_name-log"), CATEGORY.Interactables);
             }
             else if (forest.log == null && x == 0 && y == 7)
             {
-                return (MainClass.Translate("entrance_name-secret_woods_entrance"), CATEGORY.Doors);
+                return (Translator.Instance.Translate("entrance_name-secret_woods_entrance"), CATEGORY.Doors);
             }
 
             return (null, null);
@@ -440,15 +440,15 @@ namespace stardew_access.Features
             int fridgeY = islandFarmHouse.fridgePosition.Y;
             if (fridgeX - 2 == x && fridgeY == y)
             {
-                return (MainClass.Translate("tile_name-stove"), CATEGORY.Interactables);
+                return (Translator.Instance.Translate("tile_name-stove"), CATEGORY.Interactables);
             }
             else if (fridgeX - 1 == x && fridgeY == y)
             {
-                return (MainClass.Translate("tile_name-sink"), CATEGORY.Others);
+                return (Translator.Instance.Translate("tile_name-sink"), CATEGORY.Others);
             }
             else if (fridgeX == x && fridgeY == y)
             {
-                return (MainClass.Translate("tile_name-fridge"), CATEGORY.Interactables);
+                return (Translator.Instance.Translate("tile_name-fridge"), CATEGORY.Interactables);
             }
 
             return (null, null);
@@ -467,7 +467,7 @@ namespace stardew_access.Features
             // Check if the trader is activated and the coordinates match the trader's location
             if (islandNorth.traderActivated.Value && x == 36 && y == 71)
             {
-                return (MainClass.Translate("npc_name-island_trader"), CATEGORY.Interactables);
+                return (Translator.Instance.Translate("npc_name-island_trader"), CATEGORY.Interactables);
             }
 
             // Return (null, null) if no relevant object is found
@@ -487,7 +487,7 @@ namespace stardew_access.Features
             // Check if the coordinates match the shipping bin's location
             if ((islandWest.shippingBinPosition.X == x || (islandWest.shippingBinPosition.X + 1) == x) && islandWest.shippingBinPosition.Y == y)
             {
-                return (MainClass.Translate("building_name-shipping_bin"), CATEGORY.Interactables);
+                return (Translator.Instance.Translate("building_name-shipping_bin"), CATEGORY.Interactables);
             }
 
             // Return (null, null) if no relevant object is found
@@ -508,11 +508,11 @@ namespace stardew_access.Features
             {
                 if (dungeon.IsCooledLava(x, y))
                 {
-                    return (MainClass.Translate("tile_name-cooled_lava"), CATEGORY.WaterTiles);
+                    return (Translator.Instance.Translate("tile_name-cooled_lava"), CATEGORY.WaterTiles);
                 }
                 else if (StardewValley.Monsters.LavaLurk.IsLavaTile(dungeon, x, y))
                 {
-                    return (MainClass.Translate("tile_name-lava"), CATEGORY.WaterTiles);
+                    return (Translator.Instance.Translate("tile_name-lava"), CATEGORY.WaterTiles);
                 }
             }
 
@@ -557,12 +557,12 @@ namespace stardew_access.Features
             // Use a switch expression to return the appropriate bird name based on the item index value
             return bird.itemIndex.Value switch
             {
-                60 => MainClass.Translate("npc_name-emerald_gem_bird"),
-                62 => MainClass.Translate("npc_name-aquamarine_gem_bird"),
-                64 => MainClass.Translate("npc_name-ruby_gem_bird"),
-                66 => MainClass.Translate("npc_name-amethyst_gem_bird"),
-                68 => MainClass.Translate("npc_name-topaz_gem_bird"),
-                _ => MainClass.Translate("npc_name-gem_bird"), // Default case for when the item index does not match any of the specified values
+                60 => Translator.Instance.Translate("npc_name-emerald_gem_bird"),
+                62 => Translator.Instance.Translate("npc_name-aquamarine_gem_bird"),
+                64 => Translator.Instance.Translate("npc_name-ruby_gem_bird"),
+                66 => Translator.Instance.Translate("npc_name-amethyst_gem_bird"),
+                68 => Translator.Instance.Translate("npc_name-topaz_gem_bird"),
+                _ => Translator.Instance.Translate("npc_name-gem_bird"), // Default case for when the item index does not match any of the specified values
             };
         }
 
@@ -581,15 +581,15 @@ namespace stardew_access.Features
             // If a parrot perch was found at the specified tile coordinates
             if (foundPerch != null)
             {
-                string toSpeak = MainClass.Translate("building-parrot_perch-required_nuts", new {item_count = foundPerch.requiredNuts.Value});
+                string toSpeak = Translator.Instance.Translate("building-parrot_perch-required_nuts", new {item_count = foundPerch.requiredNuts.Value});
 
                 // Return appropriate string based on the current state of the parrot perch
                 return foundPerch.currentState.Value switch
                 {
-                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Idle => foundPerch.IsAvailable() ? toSpeak : MainClass.Translate("building-parrot_perch-upgrade_state_idle"),
-                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.StartBuilding => MainClass.Translate("building-parrot_perch-upgrade_state_start_building"),
-                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Building => MainClass.Translate("building-parrot_perch-upgrade_state_building"),
-                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Complete => MainClass.Translate("building-parrot_perch-upgrade_state_complete"),
+                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Idle => foundPerch.IsAvailable() ? toSpeak : Translator.Instance.Translate("building-parrot_perch-upgrade_state_idle"),
+                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.StartBuilding => Translator.Instance.Translate("building-parrot_perch-upgrade_state_start_building"),
+                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Building => Translator.Instance.Translate("building-parrot_perch-upgrade_state_building"),
+                    StardewValley.BellsAndWhistles.ParrotUpgradePerch.UpgradeState.Complete => Translator.Instance.Translate("building-parrot_perch-upgrade_state_complete"),
                     _ => toSpeak,
                 };
             }
@@ -612,7 +612,7 @@ namespace stardew_access.Features
             string? parrot = GetParrotPerchAtTile(islandLocation, x, y);
             if (islandLocation.IsBuriedNutLocation(new Point(x, y)) && !nutTracker.ContainsKey($"Buried_{islandLocation.Name}_{x}_{y}"))
             {
-                return (MainClass.Translate("tile_name-diggable_spot"), CATEGORY.Interactables);
+                return (Translator.Instance.Translate("tile_name-diggable_spot"), CATEGORY.Interactables);
             }
             else if (islandLocation.locationGemBird.Value is IslandGemBird bird && ((int)bird.position.X / Game1.tileSize) == x && ((int)bird.position.Y / Game1.tileSize) == y)
             {
@@ -659,7 +659,7 @@ namespace stardew_access.Features
             if (libraryMuseum.museumPieces.TryGetValue(new Vector2(x, y), out int museumPiece))
             {
                 string displayName = Game1.objectInformation[museumPiece].Split('/')[0];
-                return (MainClass.Translate("tile-museum_piece_showcase-suffix", new {content = displayName}), CATEGORY.Interactables);
+                return (Translator.Instance.Translate("tile-museum_piece_showcase-suffix", new {content = displayName}), CATEGORY.Interactables);
 
             }
 
@@ -675,9 +675,9 @@ namespace stardew_access.Features
                     if (booksFound >= which)
                     {
                         string message = Game1.content.LoadString("Strings\\Notes:" + which);
-                        return (MainClass.Translate("item-suffix-book", new {content = message.Split('\n')[0]}), CATEGORY.Interactables);
+                        return (Translator.Instance.Translate("item-suffix-book", new {content = message.Split('\n')[0]}), CATEGORY.Interactables);
                     }
-                    return (MainClass.Translate("item-lost_book-name"), CATEGORY.Others);
+                    return (Translator.Instance.Translate("item-lost_book-name"), CATEGORY.Others);
                 }
             }
 
@@ -696,12 +696,12 @@ namespace stardew_access.Features
         {
             if (SpecialOrder.IsSpecialOrdersBoardUnlocked() && x == 62 && y == 93)
             {
-                return (MainClass.Translate("tile_name-special_quest_board"), CATEGORY.Interactables);
+                return (Translator.Instance.Translate("tile_name-special_quest_board"), CATEGORY.Interactables);
             }
 
 	    if (Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater") && x == 98 && y == 51)
             {
-                return (MainClass.Translate("tile_name-movie_ticket_machine"), CATEGORY.Interactables);
+                return (Translator.Instance.Translate("tile_name-movie_ticket_machine"), CATEGORY.Interactables);
             }
 
             return (null, null);
@@ -722,7 +722,7 @@ namespace stardew_access.Features
             if (FeedingBenchBounds.TryGetValue(locationName, out var bounds) && x >= bounds.minX && x <= bounds.maxX && y == bounds.y)
             {
                 (string? name, CATEGORY category) = TileInfo.getObjectAtTile(currentLocation, x, y, true);
-                return (MainClass.Translate( "tile_name-feeding_bench" + (name?.Contains("hay", StringComparison.OrdinalIgnoreCase) == true ? "" : "_empty")), category);
+                return (Translator.Instance.Translate( "tile_name-feeding_bench" + (name?.Contains("hay", StringComparison.OrdinalIgnoreCase) == true ? "" : "_empty")), category);
             }
 
             return null;
@@ -750,7 +750,7 @@ namespace stardew_access.Features
 
             if(locationName.Contains("witchhut", StringComparison.OrdinalIgnoreCase) && x == 4 && y == 11 && !Game1.player.mailReceived.Contains("hasPickedUpMagicInk"))
             {
-                return (MainClass.Translate("item_name-magic_ink"), CATEGORY.Interactables);
+                return (Translator.Instance.Translate("item_name-magic_ink"), CATEGORY.Interactables);
             }
 
             // Unimplemented locations are logged.
@@ -780,7 +780,7 @@ namespace stardew_access.Features
             // Check for panning spots
             if (currentLocation.orePanPoint.Value != Point.Zero && currentLocation.orePanPoint.Value == new Point(x, y))
             {
-                return (MainClass.Translate("tile_name-panning_spot"), CATEGORY.Interactables);
+                return (Translator.Instance.Translate("tile_name-panning_spot"), CATEGORY.Interactables);
             }
             // Check if the current location has an event
             else if (currentLocation.currentEvent is not null)
