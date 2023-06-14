@@ -141,10 +141,7 @@ namespace stardew_access
             AppDomain.CurrentDomain.ProcessExit += OnExit;
         }
 
-        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
-        {
-            Translator.Instance.Initialize(ModManifest);
-        }
+        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) => Translator.Instance.Initialize(ModManifest);
 
 
         private void onMenuChanged(object? sender, MenuChangedEventArgs e)
@@ -160,10 +157,7 @@ namespace stardew_access
         }
 
         /// <summary>Returns the Screen Reader class for other mods to use.</summary>
-        public override object GetApi()
-        {
-            return new API();
-        }
+        public override object GetApi() => new API();
 
         public void OnExit(object? sender, EventArgs? e)
         {
