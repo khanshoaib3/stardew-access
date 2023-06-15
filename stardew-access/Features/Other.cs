@@ -11,7 +11,9 @@ namespace stardew_access.Features
         private static GameLocation? currentLocation;
         private static GameLocation? previousLocation;
 
-        // Narrates current slected slot name
+        /// <summary>
+        /// Narrates the currently selected slot item when changing the selected slot.
+        /// </summary>
         public static void narrateCurrentSlot()
         {
             currentSlotItem = Game1.player.CurrentItem;
@@ -23,10 +25,16 @@ namespace stardew_access.Features
                 return;
 
             previousSlotItem = currentSlotItem;
-            MainClass.ScreenReader.Say($"{currentSlotItem.DisplayName} Selected", true);
+            MainClass.ScreenReader.Say(
+                Translator.Instance.Translate( "feature-speak_selected_slot_item_name", new { slot_item_name = currentSlotItem.DisplayName }),
+                true
+            );
         }
 
-        // Narrates current location's name
+
+        /// <summary>
+        /// Narrates the current location name when moving to a new location.
+        /// </summary>
         public static void narrateCurrentLocation()
         {
             currentLocation = Game1.currentLocation;
@@ -39,8 +47,15 @@ namespace stardew_access.Features
 
             previousLocation = currentLocation;
             MainClass.ScreenReader.Say($"{currentLocation.Name} Entered", true);
+            MainClass.ScreenReader.Say(
+                Translator.Instance.Translate( "feature-speak_location_name", new { currentLocation.Name }),
+                true
+            );
         }
 
+        /// <summary>
+        /// Narrates the HUD messages.
+        /// </summary>
         public static void narrateHudMessages()
         {
             try
@@ -57,7 +72,6 @@ namespace stardew_access.Features
                         searchQuery = Regex.Replace(toSpeak, @"[\d+]", string.Empty);
                         searchQuery.Trim();
 
-
                         if (MainClass.hudMessageQueryKey != searchQuery)
                         {
                             MainClass.hudMessageQueryKey = searchQuery;
@@ -71,7 +85,6 @@ namespace stardew_access.Features
             {
                 MainClass.ErrorLog($"Unable to narrate hud messages:\n{e.Message}\n{e.StackTrace}");
             }
-
         }
     }
 }
