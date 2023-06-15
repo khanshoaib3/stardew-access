@@ -55,21 +55,14 @@ namespace stardew_access.Features
 
                 string details;
                 string toSpeak = name;
+                // TODO remove , from here and buffs
                 if (giveExtraDetails == true)
                 {
-                    // if (stack > 1)
-                    //     toSpeak = $"{stack} {name}"; // {quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamina}, \n{buffs}";
-                    // else
-                    //     toSpeak = $"{name}"; //{quality}, \n{requirements}, \n{price}, \n{description}, \n{healthNStamina}, \n{buffs}";
-                    details = string.Join(",\n", new string[] { quality, requirements, price, description, healthNStamina, buffs }.Where(c => !string.IsNullOrEmpty(c)));
+                    details = string.Join(", ", new string[] { quality, requirements, price, description, healthNStamina, buffs }.Where(c => !string.IsNullOrEmpty(c)));
                 }
                 else
                 {
-                    // if (stack > 1)
-                    //     toSpeak = $"{stack} {name}"; //{quality}, \n{requirements}, \n{price}";
-                    // else
-                    //     toSpeak = $"{name}"; //{quality}, \n{requirements}, \n{price}";
-                    details = string.Join(",\n", new string[] { quality, requirements, price }.Where(c => !string.IsNullOrEmpty(c)));
+                    details = string.Join(", ", new string[] { quality, requirements, price }.Where(c => !string.IsNullOrEmpty(c)));
                 }
                 if (!string.IsNullOrEmpty(details))
                     toSpeak = $"{toSpeak}, {details}";
@@ -136,7 +129,7 @@ namespace stardew_access.Features
                 {
                     int count = int.Parse(buffName[..buffName.IndexOf(' ')]);
                     if (count != 0)
-                        toReturn += $"{buffName}\n";
+                        toReturn += $"{buffName}, ";
                 }
                 catch (Exception) { }
             }
@@ -150,16 +143,20 @@ namespace stardew_access.Features
             string itemName = Game1.objectInformation[itemIndex].Split('/')[0];
 
             if (itemAmount != -1)
-                return $"Required: {itemAmount} {itemName}";
+                return Translator.Instance.Translate("item-required_item_info",
+                        new
+                        {
+                            name = Translator.Instance.Translate("common-util-pluralize_name", new {name = itemName, item_count = itemAmount})
+                        });
             else
-                return $"Required: {itemName}";
+                return Translator.Instance.Translate("item-required_item_info", new {name = itemName});
         }
 
         private static String getPrice(int price)
         {
             if (price == -1) return "";
             
-            return $"Sell Price: {price} g";
+            return Translator.Instance.Translate("item-sell_price_info", new {price = price});
         }
 
         private static String handleHighlightedItemPrefix(bool isHighlighted, String prefix)
@@ -186,7 +183,7 @@ namespace stardew_access.Features
                 Game1.playSound("invalid-selection");
 
             if (MainClass.Config.DisableInventoryVerbosity) return "";
-            return " not usable here";
+            return Translator.Instance.Translate("item-suffix-not_usable_here", new {content = ""});
         }
 
         internal static void Cleanup()
