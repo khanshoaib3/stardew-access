@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 using StardewValley;
-using stardew_access.Features;
+using stardew_access.Utils;
 using StardewValley.Locations;
 using StardewValley.Menus;
 
@@ -8,7 +8,6 @@ namespace stardew_access.Patches
 {
     internal class MuseumMenuPatch
     {
-        private static string museumQueryKey = "";
         private static bool isMoving = false;
         private static readonly (int x, int y)[] donationTiles =
         {
@@ -78,11 +77,7 @@ namespace stardew_access.Patches
             if (libraryMuseum.isTileSuitableForMuseumPiece(tileX, tileY))
                 toSpeak = $"slot {tileX}x {tileY}y";
 
-            if (museumQueryKey != toSpeak)
-            {
-                museumQueryKey = toSpeak;
-                MainClass.ScreenReader.Say(toSpeak, true);
-            }
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
         }
 
         private static void narratePlayerInventory(MuseumMenu __instance, int x, int y)
@@ -123,23 +118,19 @@ namespace stardew_access.Patches
                 return false;
             }
 
-            if (museumQueryKey != toSpeak)
-            {
-                museumQueryKey = toSpeak;
-                MainClass.ScreenReader.Say(toSpeak, true);
-                if (isDropItemButton) Game1.playSound("drop_item");
-            }
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            if (isDropItemButton) Game1.playSound("drop_item");
 
             return true;
         }
 
         private static void manuallyDonateItem(MuseumMenu __instance, int i)
         {
-            foreach (var tile in donationTiles)
+            foreach (var (x, y) in donationTiles)
             {
                 #region Manually donates the hovered item (https://github.com/veywrn/StardewValley/blob/3ff171b6e9e6839555d7881a391b624ccd820a83/StardewValley/Menus/MuseumMenu.cs#L206-L247)
-                int tileX = tile.x;
-                int tileY = tile.y;
+                int tileX = x;
+                int tileY = y;
 
                 if (((LibraryMuseum)Game1.currentLocation).isTileSuitableForMuseumPiece(tileX, tileY) && ((LibraryMuseum)Game1.currentLocation).isItemSuitableForDonation(__instance.inventory.actualInventory[i]))
                 {
@@ -242,10 +233,5 @@ namespace stardew_access.Patches
             }
         }
         #endregion
-
-        internal static void Cleanup()
-        {
-            museumQueryKey = "";
-        }
     }
 }

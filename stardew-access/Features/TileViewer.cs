@@ -3,7 +3,7 @@ using xTile;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
 
     /// <summary>
@@ -22,27 +22,22 @@ namespace stardew_access.Features
 
         public Boolean isAutoWalking = false;
 
-        private Vector2 PlayerFacingVector
+        private static Vector2 PlayerFacingVector
         {
             get
             {
-                switch (Game1.player.FacingDirection)
+                return Game1.player.FacingDirection switch
                 {
-                    case 0:
-                        return new Vector2(0, -Game1.tileSize);
-                    case 1:
-                        return new Vector2(Game1.tileSize, 0);
-                    case 2:
-                        return new Vector2(0, Game1.tileSize);
-                    case 3:
-                        return new Vector2(-Game1.tileSize, 0);
-                    default:
-                        return Vector2.Zero;
-                }
+                    0 => new Vector2(0, -Game1.tileSize),
+                    1 => new Vector2(Game1.tileSize, 0),
+                    2 => new Vector2(0, Game1.tileSize),
+                    3 => new Vector2(-Game1.tileSize, 0),
+                    _ => Vector2.Zero,
+                };
             }
         }
 
-        private Vector2 PlayerPosition
+        private static Vector2 PlayerPosition
         {
             get
             {
@@ -58,14 +53,14 @@ namespace stardew_access.Features
         /// <returns>Vector2</returns>
         public Vector2 GetTileCursorPosition()
         {
-            Vector2 target = this.PlayerPosition;
+            Vector2 target = PlayerPosition;
             if (this.relativeOffsetLock)
             {
                 target += this.relativeOffsetLockPosition;
             }
             else
             {
-                target += this.PlayerFacingVector + this.ViewingOffset;
+                target += PlayerFacingVector + this.ViewingOffset;
             }
             return target;
         }
@@ -90,7 +85,7 @@ namespace stardew_access.Features
                 this.relativeOffsetLock = !this.relativeOffsetLock;
                 if (this.relativeOffsetLock)
                 {
-                    this.relativeOffsetLockPosition = this.PlayerFacingVector + this.ViewingOffset;
+                    this.relativeOffsetLockPosition = PlayerFacingVector + this.ViewingOffset;
                 }
                 else
                 {
@@ -138,8 +133,10 @@ namespace stardew_access.Features
 
         private void startAutoWalking()
         {
-            PathFindController controller = new PathFindController(Game1.player, Game1.currentLocation, this.GetViewingTile().ToPoint(), Game1.player.FacingDirection);
-            controller.allowPlayerPathingInEvent = true;
+            PathFindController controller = new(Game1.player, Game1.currentLocation, this.GetViewingTile().ToPoint(), Game1.player.FacingDirection)
+            {
+                allowPlayerPathingInEvent = true
+            };
             if (controller.pathToEndPoint != null && controller.pathToEndPoint.Count > 0)
             {
                 Game1.player.controller = controller;
@@ -236,12 +233,12 @@ namespace stardew_access.Features
         public void update()
         {
             //Reset the viewing cursor to the player when they turn or move. This will not reset the locked offset relative cursor position.
-            if (this.prevFacing != this.PlayerFacingVector || this.prevPlayerPosition != this.PlayerPosition)
+            if (this.prevFacing != PlayerFacingVector || this.prevPlayerPosition != PlayerPosition)
             {
                 this.ViewingOffset = Vector2.Zero;
             }
-            this.prevFacing = this.PlayerFacingVector;
-            this.prevPlayerPosition = this.PlayerPosition;
+            this.prevFacing = PlayerFacingVector;
+            this.prevPlayerPosition = PlayerPosition;
             if (MainClass.Config.SnapMouse)
                 this.SnapMouseToPlayer();
 

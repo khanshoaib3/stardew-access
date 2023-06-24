@@ -1,5 +1,5 @@
 using StardewValley;
-using stardew_access.Features;
+using stardew_access.Utils;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
@@ -7,8 +7,6 @@ namespace stardew_access.Patches
 {
     internal class CraftingPagePatch
     {
-        internal static string hoveredItemQueryKey = "";
-        internal static string craftingPageQueryKey = "";
         internal static int currentSelectedCraftingRecipe = -1;
         internal static bool isSelectingRecipe = false;
 
@@ -30,11 +28,7 @@ namespace stardew_access.Patches
                     return;
                 }
 
-                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
-                {
-                    craftingPageQueryKey = "";
-                    return;
-                }
+                InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y);
             }
             catch (Exception e)
             {
@@ -93,13 +87,8 @@ namespace stardew_access.Patches
                 return false;
             }
 
-            if (toSpeak != null && craftingPageQueryKey != toSpeak)
-            {
-                craftingPageQueryKey = toSpeak;
-                hoveredItemQueryKey = "";
-                MainClass.ScreenReader.Say(toSpeak, true);
-                if (isDropItemButton) Game1.playSound("drop_item");
-            }
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            if (isDropItemButton) Game1.playSound("drop_item");
 
             return true;
         }
@@ -123,12 +112,7 @@ namespace stardew_access.Patches
 
                 string query = $"unknown recipe:{__instance.getCurrentlySnappedComponent().myID}";
 
-                if (craftingPageQueryKey != query)
-                {
-                    craftingPageQueryKey = query;
-                    hoveredItemQueryKey = "";
-                    MainClass.ScreenReader.Say("unknown recipe", true);
-                }
+                MainClass.ScreenReader.SayWithMenuChecker("unknown recipe", true);
                 return true;
             }
 
@@ -200,12 +184,7 @@ namespace stardew_access.Patches
 
             string toSpeak = $"{numberOfProduce} {name}, {craftable}, \n\t{ingredients}, \n\t{description} \n\t{buffs}";
 
-            if (craftingPageQueryKey != toSpeak)
-            {
-                craftingPageQueryKey = toSpeak;
-                hoveredItemQueryKey = "";
-                MainClass.ScreenReader.Say(toSpeak, true);
-            }
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
 
             return true;
         }
@@ -232,7 +211,7 @@ namespace stardew_access.Patches
             {
                 return null;
             }
-            List<Item> items = new List<Item>();
+            List<Item> items = new();
             for (int i = 0; i < materialContainers.Count; i++)
             {
                 items.AddRange(materialContainers[i].items);
@@ -242,8 +221,6 @@ namespace stardew_access.Patches
 
         internal static void Cleanup()
         {
-            hoveredItemQueryKey = "";
-            craftingPageQueryKey = "";
             currentSelectedCraftingRecipe = -1;
             isSelectingRecipe = false;
         }

@@ -5,8 +5,6 @@ namespace stardew_access.Patches
 {
     internal class ExitPagePatch
     {
-        internal static string exitPageQueryKey = "";
-
         internal static void DrawPatch(ExitPage __instance)
         {
             try
@@ -15,22 +13,14 @@ namespace stardew_access.Patches
                         __instance.exitToTitle.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
                     string toSpeak = "Exit to Title Button";
-                    if (exitPageQueryKey != toSpeak)
-                    {
-                        exitPageQueryKey = toSpeak;
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
+                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
                     return;
                 }
                 if (__instance.exitToDesktop.visible &&
                     __instance.exitToDesktop.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
                     string toSpeak = "Exit to Desktop Button";
-                    if (exitPageQueryKey != toSpeak)
-                    {
-                        exitPageQueryKey = toSpeak;
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
+                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
                     return;
                 }
             }
@@ -38,11 +28,6 @@ namespace stardew_access.Patches
             {
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
-        }
-
-        internal static void Cleanup()
-        {
-            exitPageQueryKey = "";
         }
     }
 }

@@ -5,7 +5,7 @@ using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System.Text;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
     public class TileInfo
     {
@@ -77,8 +77,8 @@ namespace stardew_access.Features
 
             if (currentLocation.isObjectAtTile(x, y))
             {
-                (string? name, CATEGORY? category) obj = getObjectAtTile(currentLocation, x, y, lessInfo);
-                return (obj.name, obj.category);
+                (string? name, CATEGORY? category) = getObjectAtTile(currentLocation, x, y, lessInfo);
+                return (name, category);
             }
 
             if (currentLocation.isWaterTile(x, y) && !lessInfo && IsCollidingAtTile(currentLocation, x, y))
@@ -94,10 +94,10 @@ namespace stardew_access.Features
 
             if (terrainFeature.TryGetValue(tile, out var tf))
             {
-                (string? name, CATEGORY category) terrain = getTerrainFeatureAtTile(tf);
-                if (terrain.name != null)
+                (string? name, CATEGORY category) = getTerrainFeatureAtTile(tf);
+                if (name != null)
                 {
-                    return (terrain.name, terrain.category);
+                    return (name, category);
                 }
             }
 
@@ -540,25 +540,14 @@ namespace stardew_access.Features
             // Determine the tree name and growth stage description
             if (treeStage >= 1)
             {
-                string treeName;
-                switch (seedName.ToLower())
+                string treeName = seedName.ToLower() switch
                 {
-                    case "mahogany seed":
-                        treeName = "Mahogany";
-                        break;
-                    case "acorn":
-                        treeName = "Oak";
-                        break;
-                    case "maple seed":
-                        treeName = "Maple";
-                        break;
-                    case "pine cone":
-                        treeName = "Pine";
-                        break;
-                    default:
-                        treeName = "Coconut";
-                        break;
-                }
+                    "mahogany seed" => "Mahogany",
+                    "acorn" => "Oak",
+                    "maple seed" => "Maple",
+                    "pine cone" => "Pine",
+                    _ => "Coconut",
+                };
 
                 // Append the growth stage description to the tree name
                 if (treeStage == 1)
@@ -891,9 +880,8 @@ namespace stardew_access.Features
         /// <returns>True if a mine down ladder is found at the specified tile, otherwise false.</returns>
         public static bool isMineDownLadderAtTile(GameLocation currentLocation, int x, int y)
         {
-            return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
-                   ? CheckTileIndex(currentLocation, x, y, 173)
-                   : false;
+            return (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
+&& CheckTileIndex(currentLocation, x, y, 173);
         }
 
         /// <summary>
@@ -905,9 +893,8 @@ namespace stardew_access.Features
         /// <returns>True if a mine shaft is found at the specified tile, otherwise false.</returns>
         public static bool isShaftAtTile(GameLocation currentLocation, int x, int y)
         {
-            return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
-                   ? CheckTileIndex(currentLocation, x, y, 174)
-                   : false;
+            return (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
+&& CheckTileIndex(currentLocation, x, y, 174);
         }
 
         /// <summary>
@@ -919,9 +906,8 @@ namespace stardew_access.Features
         /// <returns>True if a mine up ladder is found at the specified tile, otherwise false.</returns>
         public static bool isMineUpLadderAtTile(GameLocation currentLocation, int x, int y)
         {
-            return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
-                   ? CheckTileIndex(currentLocation, x, y, 115)
-                   : false;
+            return (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
+&& CheckTileIndex(currentLocation, x, y, 115);
         }
 
         /// <summary>
@@ -933,9 +919,8 @@ namespace stardew_access.Features
         /// <returns>True if an elevator is found at the specified tile, otherwise false.</returns>
         public static bool isElevatorAtTile(GameLocation currentLocation, int x, int y)
         {
-            return currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave"
-                   ? CheckTileIndex(currentLocation, x, y, 112)
-                   : false;
+            return (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
+&& CheckTileIndex(currentLocation, x, y, 112);
         }
 
         /// <summary>

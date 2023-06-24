@@ -1,5 +1,5 @@
 using StardewValley;
-using stardew_access.Features;
+using stardew_access.Utils;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
@@ -90,29 +90,19 @@ namespace stardew_access.Patches
 
         internal static int getPieceIndexForDonationItem(int itemIndex)
         {
-            switch (itemIndex)
+            return itemIndex switch
             {
-                case 820:
-                    return 5;
-                case 821:
-                    return 4;
-                case 822:
-                    return 3;
-                case 823:
-                    return 0;
-                case 824:
-                    return 1;
-                case 825:
-                    return 8;
-                case 826:
-                    return 7;
-                case 827:
-                    return 9;
-                case 828:
-                    return 10;
-                default:
-                    return -1;
-            }
+                820 => 5,
+                821 => 4,
+                822 => 3,
+                823 => 0,
+                824 => 1,
+                825 => 8,
+                826 => 7,
+                827 => 9,
+                828 => 10,
+                _ => -1,
+            };
         }
 
         internal static void Cleanup()

@@ -1,10 +1,10 @@
-﻿using stardew_access.Features;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using HarmonyLib;
 using stardew_access.Patches;
 using stardew_access.ScreenReader;
+using stardew_access.Utils;
 using Microsoft.Xna.Framework;
 
 namespace stardew_access
@@ -13,7 +13,7 @@ namespace stardew_access
     {
         #region Global Vars & Properties
 
-#pragma warning disable CS8603
+        #pragma warning disable CS8603
         private static int prevDate = -99;
         private static ModConfig? config;
         private Harmony? harmony;
@@ -39,24 +39,22 @@ namespace stardew_access
         {
             get
             {
-                if (radarFeature == null)
-                    radarFeature = new Radar();
+                radarFeature ??= new Radar();
 
                 return radarFeature;
             }
             set => radarFeature = value;
         }
 
-        public static string hudMessageQueryKey = "";
-        public static bool isNarratingHudMessage = false;
-        public static bool radarDebug = false;
+        internal static string hudMessageQueryKey = "";
+        internal static bool isNarratingHudMessage = false;
+        internal static bool radarDebug = false;
 
         public static IScreenReader ScreenReader
         {
             get
             {
-                if (screenReader == null)
-                    screenReader = new ScreenReaderController().Initialize();
+                screenReader ??= ScreenReaderController.Initialize();
 
                 return screenReader;
             }
@@ -67,8 +65,7 @@ namespace stardew_access
         {
             get
             {
-                if (tileViewer == null)
-                    tileViewer = new TileViewer();
+                tileViewer ??= new TileViewer();
                 return tileViewer;
             }
         }
@@ -77,8 +74,7 @@ namespace stardew_access
         {
             get
             {
-                if (readTile == null)
-                    readTile = new ReadTile();
+                readTile ??= new ReadTile();
                 return readTile;
             }
         }
@@ -87,8 +83,7 @@ namespace stardew_access
         {
             get
             {
-                if (warnings == null)
-                    warnings = new Warnings();
+                warnings ??= new Warnings();
 
                 return warnings;
             }
@@ -110,7 +105,7 @@ namespace stardew_access
 
             Game1.options.setGamepadMode("force_on");
 
-            ScreenReader = new ScreenReaderController().Initialize();
+            ScreenReader = ScreenReaderController.Initialize();
             ScreenReader.Say("Initializing Stardew Access", true);
 
             CustomSoundEffects.Initialize();
@@ -149,9 +144,7 @@ namespace stardew_access
             TextBoxPatch.activeTextBoxes = "";
             if (e.OldMenu != null)
             {
-                MainClass.DebugLog(
-                    $"Switched from {e.OldMenu.GetType().ToString()} menu, performing cleanup..."
-                );
+                MainClass.DebugLog($"Switched from {e.OldMenu.GetType().ToString()} menu, performing cleanup...");
                 IClickableMenuPatch.Cleanup(e.OldMenu);
             }
         }
@@ -163,8 +156,7 @@ namespace stardew_access
         {
             // This closes the connection with the screen reader, important for linux
             // Don't know if this ever gets called or not but, just in case if it does.
-            if (ScreenReader != null)
-                ScreenReader.CloseScreenReader();
+            ScreenReader?.CloseScreenReader();
         }
 
         private void onDayStarted(object? sender, DayStartedEventArgs? e)
@@ -179,9 +171,9 @@ namespace stardew_access
                 return;
 
             // Narrates currently selected inventory slot
-            Other.narrateCurrentSlot();
+            GameStateNarrator.narrateCurrentSlot();
             // Narrate current location's name
-            Other.narrateCurrentLocation();
+            GameStateNarrator.narrateCurrentLocation();
             //handle TileCursor update logic
             TileViewerFeature.update();
 
@@ -213,7 +205,7 @@ namespace stardew_access
                 if (!isNarratingHudMessage)
                 {
                     isNarratingHudMessage = true;
-                    Other.narrateHudMessages();
+                    GameStateNarrator.narrateHudMessages();
                     await Task.Delay(300);
                     isNarratingHudMessage = false;
                 }

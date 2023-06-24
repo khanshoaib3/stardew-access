@@ -1,9 +1,9 @@
 ﻿using StardewValley;
 using System.Text.RegularExpressions;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
-    internal class Other
+    internal class GameStateNarrator
     {
         private static Item? currentSlotItem;
         private static Item? previousSlotItem;
@@ -69,8 +69,7 @@ namespace stardew_access.Features
                         string toSpeak = lastMessage.Message;
                         string searchQuery = toSpeak;
 
-                        searchQuery = Regex.Replace(toSpeak, @"[\d+]", string.Empty);
-                        searchQuery.Trim();
+                        searchQuery = (Regex.Replace(toSpeak, @"[\d+]", string.Empty)).Trim();
 
                         if (MainClass.hudMessageQueryKey != searchQuery)
                         {

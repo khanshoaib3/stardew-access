@@ -13,12 +13,13 @@ namespace stardew_access.ScreenReader
         // The speaker instance
         private static IntPtr speaker;
         //Stuff for the runloop thread
-        private CancellationTokenSource cts = new CancellationTokenSource();
+        private readonly CancellationTokenSource cts = new();
         private Thread? rt;
         //Speech queue for interrupt
-        private static Queue<string> speechQueue = new Queue<string>();
+        private static readonly Queue<string> speechQueue = new();
+
         // DidFinishSpeaking callback for interrupt
-        dfs_callback fscb = new dfs_callback(DoneSpeaking);
+        readonly dfs_callback fscb = new(DoneSpeaking);
 
         // Dylib imports
         ///////////
@@ -26,7 +27,7 @@ namespace stardew_access.ScreenReader
         //
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern void init_speaker();
-        [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void speak(string text);
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern void set_voice(Int32 index);
@@ -36,7 +37,7 @@ namespace stardew_access.ScreenReader
         private static extern void set_language(Int32 index);
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern UInt32 available_languages_count();
-        [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void get_voice_name(UInt32 idx, String pszOut);
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern void set_volume(Single volume);
@@ -60,7 +61,7 @@ namespace stardew_access.ScreenReader
         //
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr make_speaker();
-        [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void speak_with(IntPtr speaker, String text);
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern void set_voice_with(IntPtr speaker, Int32 index);
@@ -100,7 +101,7 @@ namespace stardew_access.ScreenReader
         private static extern void start_listening(IntPtr listener);
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern void stop_listening(IntPtr listener);
-        [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void add_command(IntPtr listener, String command);
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern void cleanup_listener(IntPtr listener);
@@ -160,7 +161,7 @@ namespace stardew_access.ScreenReader
         public void CloseScreenReader()
         {
             cts.Cancel();
-            if (rt != null) rt.Join();
+            rt?.Join();
             cts.Dispose();
             cleanup_with(speaker);
         }

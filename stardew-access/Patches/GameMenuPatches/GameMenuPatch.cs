@@ -5,8 +5,6 @@ namespace stardew_access.Patches
 {
     internal class GameMenuPatch
     {
-        internal static string gameMenuQueryKey = "";
-
         internal static void DrawPatch(GameMenu __instance)
         {
             try
@@ -23,26 +21,14 @@ namespace stardew_access.Patches
                         continue;
 
                     string toSpeak = $"{GameMenu.getLabelOfTabFromIndex(i)} Tab" + ((i == __instance.currentTab) ? " Active" : "");
-                    if (gameMenuQueryKey != toSpeak)
-                    {
-                        gameMenuQueryKey = toSpeak;
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
+                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
                     return;
                 }
-
-                // If not hovering on any tab button
-                Cleanup();
             }
             catch (Exception e)
             {
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
-        }
-
-        internal static void Cleanup()
-        {
-            gameMenuQueryKey = "";
         }
     }
 }

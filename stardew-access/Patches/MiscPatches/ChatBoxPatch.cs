@@ -38,7 +38,7 @@ namespace stardew_access.Patches
                 else if (___messages.Count > 0)
                 {
                     #region To narrate latest chat message
-                    ___messages[___messages.Count - 1].message.ForEach(message =>
+                    ___messages[^1].message.ForEach(message =>
                     {
                         toSpeak += $"{message.message}, ";
                     });

@@ -5,8 +5,6 @@ namespace stardew_access.Patches
 {
     internal class AdvancedGameOptionsPatch
     {
-        public static string advancedGameOptionsQueryKey = " ";
-
         internal static void DrawPatch(AdvancedGameOptions __instance)
         {
             try
@@ -17,11 +15,7 @@ namespace stardew_access.Patches
                 if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
                 {
                     string toSpeak = "OK Button";
-                    if (advancedGameOptionsQueryKey != toSpeak)
-                    {
-                        advancedGameOptionsQueryKey = toSpeak;
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
+                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
                     return;
                 }
 
@@ -35,39 +29,39 @@ namespace stardew_access.Patches
                     OptionsElement optionsElement = __instance.options[currentItemIndex + i];
                     string toSpeak = optionsElement.label;
 
-                    if (optionsElement is OptionsButton)
-                        toSpeak = $" {toSpeak} Button";
-                    else if (optionsElement is OptionsCheckbox)
-                        toSpeak = (((OptionsCheckbox)optionsElement).isChecked ? "Enabled" : "Disabled") + $" {toSpeak} Checkbox";
-                    else if (optionsElement is OptionsDropDown)
-                        toSpeak = $"{toSpeak} Dropdown, option {((OptionsDropDown)optionsElement).dropDownDisplayOptions[((OptionsDropDown)optionsElement).selectedOption]} selected";
-                    else if (optionsElement is OptionsSlider)
-                        toSpeak = $"{((OptionsSlider)optionsElement).value}% {toSpeak} Slider";
-                    else if (optionsElement is OptionsPlusMinus)
-                        toSpeak = $"{((OptionsPlusMinus)optionsElement).displayOptions[((OptionsPlusMinus)optionsElement).selected]} selected of {toSpeak}";
-                    else if (optionsElement is OptionsInputListener)
+                    switch (optionsElement)
                     {
-                        string buttons = "";
-                        ((OptionsInputListener)optionsElement).buttonNames.ForEach(name => { buttons += $", {name}"; });
-                        toSpeak = $"{toSpeak} is bound to {buttons}. Left click to change.";
+                        case OptionsButton _:
+                            toSpeak = $" {toSpeak} Button";
+                            break;
+                        case OptionsCheckbox checkbox:
+                            toSpeak = $"{(checkbox.isChecked ? "Enabled" : "Disabled")} {toSpeak} Checkbox";
+                            break;
+                        case OptionsDropDown dropdown:
+                            toSpeak = $"{toSpeak} Dropdown, option {dropdown.dropDownDisplayOptions[dropdown.selectedOption]} selected";
+                            break;
+                        case OptionsSlider slider:
+                            toSpeak = $"{slider.value}% {toSpeak} Slider";
+                            break;
+                        case OptionsPlusMinus plusMinus:
+                            toSpeak = $"{plusMinus.displayOptions[plusMinus.selected]} selected of {toSpeak}";
+                            break;
+                        case OptionsInputListener inputListener:
+                            string buttons = "";
+                            inputListener.buttonNames.ForEach(name => { buttons += $", {name}"; });
+                            toSpeak = $"{toSpeak} is bound to {buttons}. Left click to change.";
+                            break;
+                        case OptionsTextEntry _:
+                            toSpeak = $"Seed text box";
+                            break;
+                        default:
+                            if (toSpeak.Contains(":"))
+                                toSpeak = toSpeak.Replace(":", "");
+                            toSpeak = $"{toSpeak} Options:";
+                            break;
                     }
-                    else if (optionsElement is OptionsTextEntry)
-                    {
-                        toSpeak = $"Seed text box";
-                    }
-                    else
-                    {
-                        if (toSpeak.Contains(":"))
-                            toSpeak = toSpeak.Replace(":", "");
 
-                        toSpeak = $"{toSpeak} Options:";
-                    }
-
-                    if (advancedGameOptionsQueryKey != toSpeak)
-                    {
-                        advancedGameOptionsQueryKey = toSpeak;
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
+                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
                     return;
                 }
             }
@@ -75,11 +69,6 @@ namespace stardew_access.Patches
             {
                 MainClass.ErrorLog($"An error occured in advanced game menu patch:\n{e.Message}\n{e.StackTrace}");
             }
-        }
-
-        internal static void Cleanup()
-        {
-            advancedGameOptionsQueryKey = "";
         }
     }
 }

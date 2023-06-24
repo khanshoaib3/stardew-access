@@ -63,7 +63,7 @@ namespace stardew_access.ScreenReader
         {
             if (initialized)
             {
-                Close();
+                _ = Close();
                 initialized = false;
             }
         }
@@ -76,7 +76,7 @@ namespace stardew_access.ScreenReader
 
             if (text.Contains('^')) text = text.Replace('^', '\n');
 
-            GoString str = new GoString(text, text.Length);
+            GoString str = new(text, text.Length);
             int re = Speak(str, interrupt);
 
             if (re == 1)

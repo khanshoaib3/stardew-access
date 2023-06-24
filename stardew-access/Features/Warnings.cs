@@ -1,4 +1,4 @@
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
     /// <summary>
     /// Warns the player when their health or stamina/energy is low. Also warns when its past midnight.

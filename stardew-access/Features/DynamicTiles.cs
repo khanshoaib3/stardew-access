@@ -2,10 +2,10 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
-using static stardew_access.Features.Utils;
 using System.Text.Json;
+using static stardew_access.Utils.JsonLoader;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
     /// <summary>
     /// Provides methods to locate tiles of interest in various game locations that are conditional or unpredictable (I.E. not static).
@@ -238,7 +238,7 @@ namespace stardew_access.Features
         private static (string? name, CATEGORY? category) GetBoatTunnelInfo(BoatTunnel boatTunnel, int x, int y, bool lessInfo = false)
         {
             // Check if the player has received the specified mail or not
-            bool HasMail(string mail) => Game1.MasterPlayer.hasOrWillReceiveMail(mail);
+            static bool HasMail(string mail) => Game1.MasterPlayer.hasOrWillReceiveMail(mail);
 
             // If the position matches one of the interactable elements in the boat tunnel
             if ((x, y) == (4, 9) || (x, y) == (6, 8) || (x, y) == (8, 9))
