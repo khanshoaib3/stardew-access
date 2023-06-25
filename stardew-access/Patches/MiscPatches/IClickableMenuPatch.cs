@@ -266,7 +266,7 @@ namespace stardew_access.Patches
                     JojaCDMenuPatch.Cleanup();
                     break;
                 case QuestLog:
-                    QuestLogPatch.Cleaup();
+                    QuestLogPatch.Cleanup();
                     break;
                 case TailoringMenu:
                     TailoringMenuPatch.Cleanup();

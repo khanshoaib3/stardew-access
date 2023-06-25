@@ -55,9 +55,9 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
-                narrateMuseumInventory(__instance, x, y);
+                NarrateMuseumInventory(__instance, x, y);
 
-                narratePlayerInventory(__instance, x, y);
+                NarratePlayerInventory(__instance, x, y);
             }
             catch (Exception e)
             {
@@ -65,7 +65,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void narrateMuseumInventory(MuseumMenu __instance, int x, int y)
+        private static void NarrateMuseumInventory(MuseumMenu __instance, int x, int y)
         {
             if (__instance.heldItem == null) return;
 
@@ -80,13 +80,13 @@ namespace stardew_access.Patches
             MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
         }
 
-        private static void narratePlayerInventory(MuseumMenu __instance, int x, int y)
+        private static void NarratePlayerInventory(MuseumMenu __instance, int x, int y)
         {
             if (__instance.heldItem != null) return;
 
-            if (narrateHoveredButtons(__instance, x, y)) return;
+            if (NarrateHoveredButtons(__instance, x, y)) return;
 
-            int hoveredItemIndex = InventoryUtils.narrateHoveredSlotAndReturnIndex(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y,
+            int hoveredItemIndex = InventoryUtils.NarrateHoveredSlotAndReturnIndex(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y,
                     handleHighlightedItem: true, highlightedItemPrefix: "Donatable ");
             if (hoveredItemIndex != -9999)
             {
@@ -94,12 +94,12 @@ namespace stardew_access.Patches
 
                 if (isPrimaryInfoKeyPressed && hoveredItemIndex >= 0 && hoveredItemIndex < __instance.inventory.actualInventory.Count && __instance.inventory.actualInventory[hoveredItemIndex] != null)
                 {
-                    manuallyDonateItem(__instance, hoveredItemIndex);
+                    ManuallyDonateItem(__instance, hoveredItemIndex);
                 }
             }
         }
 
-        private static bool narrateHoveredButtons(MuseumMenu __instance, int x, int y)
+        private static bool NarrateHoveredButtons(MuseumMenu __instance, int x, int y)
         {
             string toSpeak = "";
             bool isDropItemButton = false;
@@ -124,7 +124,7 @@ namespace stardew_access.Patches
             return true;
         }
 
-        private static void manuallyDonateItem(MuseumMenu __instance, int i)
+        private static void ManuallyDonateItem(MuseumMenu __instance, int i)
         {
             foreach (var (x, y) in donationTiles)
             {
@@ -157,13 +157,13 @@ namespace stardew_access.Patches
                     switch (pieces)
                     {
                         case 95:
-                            globalChatInfoMessage("MuseumComplete", Game1.player.farmName.Value);
+                            GlobalChatInfoMessage("MuseumComplete", Game1.player.farmName.Value);
                             break;
                         case 40:
-                            globalChatInfoMessage("Museum40", Game1.player.farmName.Value);
+                            GlobalChatInfoMessage("Museum40", Game1.player.farmName.Value);
                             break;
                         default:
-                            globalChatInfoMessage("donation", Game1.player.Name, "object:" + objectID);
+                            GlobalChatInfoMessage("donation", Game1.player.Name, "object:" + objectID);
                             break;
                     }
                     break;
@@ -173,16 +173,16 @@ namespace stardew_access.Patches
         }
 
         #region These methods are taken from the game's source code, https://github.com/veywrn/StardewValley/blob/3ff171b6e9e6839555d7881a391b624ccd820a83/StardewValley/Multiplayer.cs#L1331-L1395
-        internal static void globalChatInfoMessage(string messageKey, params string[] args)
+        internal static void GlobalChatInfoMessage(string messageKey, params string[] args)
         {
             if (Game1.IsMultiplayer || Game1.multiplayerMode != 0)
             {
-                receiveChatInfoMessage(Game1.player, messageKey, args);
-                sendChatInfoMessage(messageKey, args);
+                ReceiveChatInfoMessage(Game1.player, messageKey, args);
+                SendChatInfoMessage(messageKey, args);
             }
         }
 
-        internal static void sendChatInfoMessage(string messageKey, params string[] args)
+        internal static void SendChatInfoMessage(string messageKey, params string[] args)
         {
             if (Game1.IsClient)
             {
@@ -197,7 +197,7 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void receiveChatInfoMessage(Farmer sourceFarmer, string messageKey, string[] args)
+        internal static void ReceiveChatInfoMessage(Farmer sourceFarmer, string messageKey, string[] args)
         {
             if (Game1.chatBox != null)
             {

@@ -17,17 +17,17 @@ namespace stardew_access.Utils
             prevHour = 6;
         }
 
-        public void update()
+        public void Update()
         {
-            this.checkForHealth();
-            this.checkForStamina();
-            this.checkForTimeOfDay();
+            this.CheckForHealth();
+            this.CheckForStamina();
+            this.CheckForTimeOfDay();
         }
 
         /// <summary>
         /// Warns when its past 12:00 am and 1:00 am
         /// </summary>
-        private void checkForTimeOfDay()
+        private void CheckForTimeOfDay()
         {
             if (MainClass.ModHelper == null)
                 return;
@@ -39,7 +39,7 @@ namespace stardew_access.Utils
             {
                 MainClass.ScreenReader.Say(toSpeak, true);
                 // Pause the read tile feature to prevent interruption in warning message
-                MainClass.ReadTileFeature.pauseUntil();
+                MainClass.ReadTileFeature.PauseUntil();
             }
 
             prevHour = hours;
@@ -48,7 +48,7 @@ namespace stardew_access.Utils
         /// <summary>
         /// Warns when stamina reaches below 50, 25 and 10.
         /// </summary>
-        public void checkForStamina()
+        public void CheckForStamina()
         {
             if (MainClass.ModHelper == null)
                 return;
@@ -60,7 +60,7 @@ namespace stardew_access.Utils
             {
                 MainClass.ScreenReader.Say(toSpeak, true);
                 // Pause the read tile feature to prevent interruption in warning message
-                MainClass.ReadTileFeature.pauseUntil();
+                MainClass.ReadTileFeature.PauseUntil();
             }
 
             prevStamina = stamina;
@@ -69,7 +69,7 @@ namespace stardew_access.Utils
         /// <summary>
         /// Warns when health reaches below 50, 25 and 10.
         /// </summary>
-        public void checkForHealth()
+        public void CheckForHealth()
         {
             if (MainClass.ModHelper == null)
                 return;
@@ -81,7 +81,7 @@ namespace stardew_access.Utils
             {
                 MainClass.ScreenReader.Say(toSpeak, true);
                 // Pause the read tile feature to prevent interruption in warning message
-                MainClass.ReadTileFeature.pauseUntil();
+                MainClass.ReadTileFeature.PauseUntil();
             }
 
             prevHealth = health;

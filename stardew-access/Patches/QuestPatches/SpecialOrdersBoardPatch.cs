@@ -15,7 +15,7 @@ namespace stardew_access.Patches
 
                 if (__instance.acceptLeftQuestButton.visible && __instance.acceptLeftQuestButton.containsPoint(x, y))
                 {
-                    string toSpeak = getSpecialOrderDetails(__instance.leftOrder);
+                    string toSpeak = GetSpecialOrderDetails(__instance.leftOrder);
 
                     toSpeak = $"Left Quest:\n\t{toSpeak}\n\tPress left click to accept this quest.";
 
@@ -25,7 +25,7 @@ namespace stardew_access.Patches
 
                 if (__instance.acceptRightQuestButton.visible && __instance.acceptRightQuestButton.containsPoint(x, y))
                 {
-                    string toSpeak = getSpecialOrderDetails(__instance.rightOrder);
+                    string toSpeak = GetSpecialOrderDetails(__instance.rightOrder);
 
                     toSpeak = $"Right Quest:\n\t{toSpeak}\n\tPress left click to accept this quest.";
 
@@ -39,7 +39,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static string getSpecialOrderDetails(SpecialOrder order)
+        private static string GetSpecialOrderDetails(SpecialOrder order)
         {
             int daysLeft = order.GetDaysLeft();
             string description = order.GetDescription();

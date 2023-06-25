@@ -25,7 +25,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                if (TextBoxPatch.isAnyTextBoxActive)
+                if (TextBoxPatch.IsAnyTextBoxActive)
                     return;
 
                 int x = Game1.getMouseX(true),
@@ -37,9 +37,9 @@ namespace stardew_access.Patches
 
                 loveLevel = ___loveLevel;
 
-                narrateAnimalDetailsOnKeyPress(___animal, ___parentName);
+                NarrateAnimalDetailsOnKeyPress(___animal, ___parentName);
 
-                narrateHoveredButton(__instance, ___animal, ___confirmingSell, x, y);
+                NarrateHoveredButton(__instance, ___animal, ___confirmingSell, x, y);
             }
             catch (System.Exception e)
             {
@@ -49,7 +49,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void narrateAnimalDetailsOnKeyPress( FarmAnimal ___animal, string ___parentName)
+        private static void NarrateAnimalDetailsOnKeyPress( FarmAnimal ___animal, string ___parentName)
         {
             bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
             if (!isPrimaryInfoKeyPressed | isNarratingAnimalInfo)
@@ -94,7 +94,7 @@ namespace stardew_access.Patches
             MainClass.ScreenReader.Say(toSpeak, true);
         }
 
-        private static void narrateHoveredButton(
+        private static void NarrateHoveredButton(
             AnimalQueryMenu __instance,
             FarmAnimal ___animal,
             bool ___confirmingSell,

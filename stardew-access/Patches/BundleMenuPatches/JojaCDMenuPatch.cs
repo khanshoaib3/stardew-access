@@ -22,11 +22,11 @@ namespace stardew_access.Patches
 
                     if (c.name.Equals("complete"))
                     {
-                        toSpeak = $"Completed {getNameFromIndex(i)}";
+                        toSpeak = $"Completed {GetNameFromIndex(i)}";
                     }
                     else
                     {
-                        toSpeak = $"{getNameFromIndex(i)} Cost: {__instance.getPriceFromButtonNumber(i)}g Description: {__instance.getDescriptionFromButtonNumber(i)}";
+                        toSpeak = $"{GetNameFromIndex(i)} Cost: {__instance.getPriceFromButtonNumber(i)}g Description: {__instance.getDescriptionFromButtonNumber(i)}";
                     }
 
                     break;
@@ -44,7 +44,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static string getNameFromIndex(int i)
+        private static string GetNameFromIndex(int i)
         {
             string name = i switch
             {

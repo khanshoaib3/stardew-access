@@ -14,7 +14,7 @@ namespace stardew_access.Patches
             {
                 if (___distanceFromCatching <= 0f)
                 {
-                    cleanup();
+                    Cleanup();
                     return;
                 }
 
@@ -36,11 +36,11 @@ namespace stardew_access.Patches
 
                 if (Game1.soundBank == null) return;
 
-                handleProgressBarSound(___distanceFromCatching);
+                HandleProgressBarSound(___distanceFromCatching);
 
-                handleBobberBarCollisionSound(___bobberBarPos, ___bobberBarSpeed, ___bobberBarHeight);
+                HandleBobberBarCollisionSound(___bobberBarPos, ___bobberBarSpeed, ___bobberBarHeight);
 
-                handleBobberTargetSound(___bobberPosition, ___bobberBarPos, ___bobberInBar, ___bobberBarHeight);
+                HandleBobberTargetSound(___bobberPosition, ___bobberBarPos, ___bobberInBar, ___bobberBarHeight);
             }
             catch (System.Exception e)
             {
@@ -48,7 +48,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void handleBobberTargetSound(float ___bobberPosition, float ___bobberBarPos, bool ___bobberInBar, int ___bobberBarHeight)
+        private static void HandleBobberTargetSound(float ___bobberPosition, float ___bobberBarPos, bool ___bobberInBar, int ___bobberBarHeight)
         {
             bobberSound ??= Game1.soundBank.GetCue("SinWave");
 
@@ -90,7 +90,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void handleProgressBarSound(float ___distanceFromCatching)
+        private static void HandleProgressBarSound(float ___distanceFromCatching)
         {
             if (___distanceFromCatching > previousDistanceFromCatching)
             {
@@ -136,7 +136,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void handleBobberBarCollisionSound(float ___bobberBarPos, float ___bobberBarSpeed, int ___bobberBarHeight)
+        private static void HandleBobberBarCollisionSound(float ___bobberBarPos, float ___bobberBarSpeed, int ___bobberBarHeight)
         {
             float estimatedBobberBarPos = ___bobberBarPos + ___bobberBarSpeed;
             if (estimatedBobberBarPos + (float)___bobberBarHeight > 568f)
@@ -151,7 +151,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void cleanup()
+        private static void Cleanup()
         {
             if (bobberSound != null && bobberSound.IsPlaying)
             {

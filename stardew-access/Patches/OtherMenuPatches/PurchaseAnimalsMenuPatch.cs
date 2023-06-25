@@ -15,7 +15,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                if (TextBoxPatch.isAnyTextBoxActive) return;
+                if (TextBoxPatch.IsAnyTextBoxActive) return;
 
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 purchaseAnimalsMenu = __instance;
@@ -24,7 +24,7 @@ namespace stardew_access.Patches
 
                 if (___onFarm && ___namingAnimal)
                 {
-                    narrateNamingMenu(__instance, ___textBox, x, y);
+                    NarrateNamingMenu(__instance, ___textBox, x, y);
                 }
                 else if (___onFarm && !___namingAnimal)
                 {
@@ -33,7 +33,7 @@ namespace stardew_access.Patches
                 else if (!___onFarm && !___namingAnimal)
                 {
                     firstTimeInNamingMenu = true;
-                    narratePurchasingMenu(__instance);
+                    NarratePurchasingMenu(__instance);
                 }
             }
             catch (Exception e)
@@ -42,7 +42,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void narrateNamingMenu(PurchaseAnimalsMenu __instance, TextBox ___textBox, int x, int y)
+        private static void NarrateNamingMenu(PurchaseAnimalsMenu __instance, TextBox ___textBox, int x, int y)
         {
             string toSpeak = "";
             if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
@@ -78,7 +78,7 @@ namespace stardew_access.Patches
             MainClass.ScreenReader.Say(toSpeak, true);
         }
 
-        private static void narratePurchasingMenu(PurchaseAnimalsMenu __instance)
+        private static void NarratePurchasingMenu(PurchaseAnimalsMenu __instance)
         {
             if (__instance.hovered == null)
                 return;

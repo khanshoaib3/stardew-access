@@ -14,7 +14,7 @@ namespace stardew_access.Patches
                 if (!__instance.IsActive())
                     return;
 
-                narrateLetterContent(__instance);
+                NarrateLetterContent(__instance);
             }
             catch (Exception e)
             {
@@ -22,7 +22,7 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void narrateLetterContent(LetterViewerMenu __instance)
+        internal static void NarrateLetterContent(LetterViewerMenu __instance)
         {
             int x = Game1.getMousePosition().X, y = Game1.getMousePosition().Y;
             #region Texts in the letter
