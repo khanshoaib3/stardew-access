@@ -129,9 +129,9 @@ namespace stardew_access
 
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
-            helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
-            helper.Events.GameLoop.DayStarted += this.onDayStarted;
-            helper.Events.Display.MenuChanged += this.onMenuChanged;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+            helper.Events.Display.MenuChanged += this.OnMenuChanged;
             AppDomain.CurrentDomain.DomainUnload += OnExit;
             AppDomain.CurrentDomain.ProcessExit += OnExit;
         }
@@ -139,12 +139,12 @@ namespace stardew_access
         private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) => Translator.Instance.Initialize(ModManifest);
 
 
-        private void onMenuChanged(object? sender, MenuChangedEventArgs e)
+        private void OnMenuChanged(object? sender, MenuChangedEventArgs e)
         {
             TextBoxPatch.activeTextBoxes = "";
             if (e.OldMenu != null)
             {
-                MainClass.DebugLog($"Switched from {e.OldMenu.GetType().ToString()} menu, performing cleanup...");
+                MainClass.DebugLog($"Switched from {e.OldMenu.GetType()} menu, performing cleanup...");
                 IClickableMenuPatch.Cleanup(e.OldMenu);
             }
         }
@@ -159,29 +159,29 @@ namespace stardew_access
             ScreenReader?.CloseScreenReader();
         }
 
-        private void onDayStarted(object? sender, DayStartedEventArgs? e)
+        private void OnDayStarted(object? sender, DayStartedEventArgs? e)
         {
             StaticTiles.LoadTilesFiles();
             StaticTiles.SetupTilesDicts();
         }
 
-        private void onUpdateTicked(object? sender, UpdateTickedEventArgs? e)
+        private void OnUpdateTicked(object? sender, UpdateTickedEventArgs? e)
         {
             if (!Context.IsPlayerFree)
                 return;
 
             // Narrates currently selected inventory slot
-            GameStateNarrator.narrateCurrentSlot();
+            GameStateNarrator.NarrateCurrentSlot();
             // Narrate current location's name
-            GameStateNarrator.narrateCurrentLocation();
+            GameStateNarrator.NarrateCurrentLocation();
             //handle TileCursor update logic
-            TileViewerFeature.update();
+            TileViewerFeature.Update();
 
             if (Config.Warning)
-                WarningsFeature.update();
+                WarningsFeature.Update();
 
             if (Config.ReadTile)
-                ReadTileFeature.update();
+                ReadTileFeature.Update();
 
             RunRadarFeatureIfEnabled();
 
@@ -205,7 +205,7 @@ namespace stardew_access
                 if (!isNarratingHudMessage)
                 {
                     isNarratingHudMessage = true;
-                    GameStateNarrator.narrateHudMessages();
+                    GameStateNarrator.NarrateHudMessages();
                     await Task.Delay(300);
                     isNarratingHudMessage = false;
                 }
@@ -219,7 +219,7 @@ namespace stardew_access
                     {
                         prevDate = CurrentPlayer.Date;
                         DebugLog("Refreshing buildlist...");
-                        CustomCommands.onBuildListCalled();
+                        CustomCommands.OnBuildListCalled();
                     }
                 }
             }
@@ -255,7 +255,7 @@ namespace stardew_access
             }
 
             #region Simulate left and right clicks
-            if (!TextBoxPatch.isAnyTextBoxActive)
+            if (!TextBoxPatch.IsAnyTextBoxActive)
             {
                 if (Game1.activeClickableMenu != null)
                 {
@@ -290,7 +290,7 @@ namespace stardew_access
             // Stops the auto walk   controller if any movement key(WASD) is pressed
             if (TileViewerFeature.isAutoWalking && IsMovementKey(e.Button))
             {
-                TileViewerFeature.stopAutoWalking(wasForced: true);
+                TileViewerFeature.StopAutoWalking(wasForced: true);
             }
 
             // Narrate Current Location
@@ -357,14 +357,14 @@ namespace stardew_access
             // Manual read tile at player's position
             if (Config.ReadStandingTileKey.JustPressed())
             {
-                ReadTileFeature.run(manuallyTriggered: true, playersPosition: true);
+                ReadTileFeature.Run(manuallyTriggered: true, playersPosition: true);
                 return;
             }
 
             // Manual read tile at looking tile
             if (Config.ReadTileKey.JustPressed())
             {
-                ReadTileFeature.run(manuallyTriggered: true);
+                ReadTileFeature.Run(manuallyTriggered: true);
                 return;
             }
 

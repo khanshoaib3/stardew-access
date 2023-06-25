@@ -17,12 +17,12 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
-                if (narrateJunimoArea(__instance, ___specificBundlePage, ___whichArea, x, y))
+                if (NarrateJunimoArea(__instance, ___specificBundlePage, ___whichArea, x, y))
                 {
                     return;
                 }
 
-                narrateBundlePage(__instance, ___specificBundlePage, ___currentPageBundle, x, y);
+                NarrateBundlePage(__instance, ___specificBundlePage, ___currentPageBundle, x, y);
             }
             catch (Exception e)
             {
@@ -30,7 +30,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static bool narrateJunimoArea(JunimoNoteMenu __instance, bool ___specificBundlePage, int ___whichArea, int x, int y)
+        private static bool NarrateJunimoArea(JunimoNoteMenu __instance, bool ___specificBundlePage, int ___whichArea, int x, int y)
         {
             if (___specificBundlePage)
                 return false;
@@ -94,7 +94,7 @@ namespace stardew_access.Patches
             return false;
         }
 
-        private static void narrateBundlePage(JunimoNoteMenu __instance, bool ___specificBundlePage, Bundle ___currentPageBundle, int x, int y)
+        private static void NarrateBundlePage(JunimoNoteMenu __instance, bool ___specificBundlePage, Bundle ___currentPageBundle, int x, int y)
         {
             if (!___specificBundlePage)
                 return;
@@ -109,19 +109,19 @@ namespace stardew_access.Patches
             if (isIPressed && !isUsingCustomKeyBinds)
             {
                 isUsingCustomKeyBinds = true;
-                cycleThroughIngredientList(__instance, ___currentPageBundle, isLeftShiftPressed);
+                CycleThroughIngredientList(__instance, ___currentPageBundle, isLeftShiftPressed);
                 Task.Delay(200).ContinueWith(_ => { isUsingCustomKeyBinds = false; });
             }
             else if (isVPressed && !isUsingCustomKeyBinds)
             {
                 isUsingCustomKeyBinds = true;
-                cycleThroughInputSlots(__instance, ___currentPageBundle, isLeftShiftPressed);
+                CycleThroughInputSlots(__instance, ___currentPageBundle, isLeftShiftPressed);
                 Task.Delay(200).ContinueWith(_ => { isUsingCustomKeyBinds = false; });
             }
             else if (isCPressed && !isUsingCustomKeyBinds)
             {
                 isUsingCustomKeyBinds = true;
-                cycleThroughInventorySlots(__instance, ___currentPageBundle, isLeftShiftPressed);
+                CycleThroughInventorySlots(__instance, ___currentPageBundle, isLeftShiftPressed);
                 Task.Delay(200).ContinueWith(_ => { isUsingCustomKeyBinds = false; });
             }
             else if (isBackPressed && __instance.backButton != null && !__instance.backButton.containsPoint(x, y))
@@ -137,7 +137,7 @@ namespace stardew_access.Patches
             return;
         }
 
-        private static void cycleThroughIngredientList(JunimoNoteMenu __instance, Bundle ___currentPageBundle, bool isLeftShiftPressed = false)
+        private static void CycleThroughIngredientList(JunimoNoteMenu __instance, Bundle ___currentPageBundle, bool isLeftShiftPressed = false)
         {
             if (___currentPageBundle.ingredients.Count < 0)
                 return;
@@ -194,7 +194,7 @@ namespace stardew_access.Patches
             MainClass.ScreenReader.Say(toSpeak, true);
         }
 
-        private static void cycleThroughInputSlots(JunimoNoteMenu __instance, Bundle ___currentPageBundle, bool isLeftShiftPressed = false)
+        private static void CycleThroughInputSlots(JunimoNoteMenu __instance, Bundle ___currentPageBundle, bool isLeftShiftPressed = false)
         {
             if (__instance.ingredientSlots.Count < 0)
                 return;
@@ -229,7 +229,7 @@ namespace stardew_access.Patches
             MainClass.ScreenReader.Say(toSpeak, true);
         }
 
-        private static void cycleThroughInventorySlots(JunimoNoteMenu __instance, Bundle ___currentPageBundle, bool isLeftShiftPressed = false)
+        private static void CycleThroughInventorySlots(JunimoNoteMenu __instance, Bundle ___currentPageBundle, bool isLeftShiftPressed = false)
         {
             if (__instance.inventory == null || __instance.inventory.actualInventory.Count < 0)
                 return;

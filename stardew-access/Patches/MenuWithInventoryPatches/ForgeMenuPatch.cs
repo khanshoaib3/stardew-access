@@ -14,9 +14,9 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
-                if (narrateHoveredButton(__instance, x, y)) return;
+                if (NarrateHoveredButton(__instance, x, y)) return;
 
-                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                 {
                     Cleanup();
                 }
@@ -28,7 +28,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static bool narrateHoveredButton(ForgeMenu __instance, int x, int y)
+        private static bool NarrateHoveredButton(ForgeMenu __instance, int x, int y)
         {
             string toSpeak = "";
             bool isDropItemButton = false;

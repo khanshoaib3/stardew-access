@@ -14,7 +14,7 @@ namespace stardew_access.Utils
         /// <summary>
         /// Narrates the currently selected slot item when changing the selected slot.
         /// </summary>
-        public static void narrateCurrentSlot()
+        public static void NarrateCurrentSlot()
         {
             currentSlotItem = Game1.player.CurrentItem;
 
@@ -35,7 +35,7 @@ namespace stardew_access.Utils
         /// <summary>
         /// Narrates the current location name when moving to a new location.
         /// </summary>
-        public static void narrateCurrentLocation()
+        public static void NarrateCurrentLocation()
         {
             currentLocation = Game1.currentLocation;
 
@@ -56,7 +56,7 @@ namespace stardew_access.Utils
         /// <summary>
         /// Narrates the HUD messages.
         /// </summary>
-        public static void narrateHudMessages()
+        public static void NarrateHudMessages()
         {
             try
             {

@@ -19,11 +19,11 @@ namespace stardew_access.Patches
 
                 if (___questPage == -1)
                 {
-                    narrateQuestList(__instance, ___pages, ___currentPage, x, y);
+                    NarrateQuestList(__instance, ___pages, ___currentPage, x, y);
                 }
                 else
                 {
-                    narrateIndividualQuest(__instance, ___currentPage, ____shownQuest, ____objectiveText, x, y);
+                    NarrateIndividualQuest(__instance, ___currentPage, ____shownQuest, ____objectiveText, x, y);
                 }
             }
             catch (Exception e)
@@ -32,7 +32,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void narrateQuestList(QuestLog __instance, List<List<IQuest>> ___pages, int ___currentPage, int x, int y)
+        private static void NarrateQuestList(QuestLog __instance, List<List<IQuest>> ___pages, int ___currentPage, int x, int y)
         {
             string toSpeak = "";
 
@@ -73,7 +73,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void narrateIndividualQuest(QuestLog __instance, int ___currentPage, IQuest ____shownQuest, List<string> ____objectiveText, int x, int y)
+        private static void NarrateIndividualQuest(QuestLog __instance, int ___currentPage, IQuest ____shownQuest, List<string> ____objectiveText, int x, int y)
         {
             bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
             bool containsReward = __instance.HasReward() || __instance.HasMoneyReward();
@@ -154,7 +154,7 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void Cleaup()
+        internal static void Cleanup()
         {
             questLogQuery = "";
             isNarratingQuestInfo = false;

@@ -17,7 +17,7 @@ namespace stardew_access.Patches
 
                 if (___letterView != null)
                 {
-                    LetterViwerMenuPatch.narrateLetterContent(___letterView);
+                    LetterViwerMenuPatch.NarrateLetterContent(___letterView);
                 }
 
                 if (MainClass.ModHelper == null)
@@ -50,13 +50,13 @@ namespace stardew_access.Patches
                 {
                     if (___grandpaSpeechTimer > 3000)
                     {
-                        if (clickableGrandpaLetterRect(___parallaxPan, ___grandpaSpeechTimer).Contains(x, y))
+                        if (ClickableGrandpaLetterRect(___parallaxPan, ___grandpaSpeechTimer).Contains(x, y))
                         {
                             toSpeak = MainClass.ModHelper.Translation.Get("grandpastory.letteropen");
                         }
                         else if (___letterView == null)
                         {
-                            Point pos = clickableGrandpaLetterRect(___parallaxPan, ___grandpaSpeechTimer).Center;
+                            Point pos = ClickableGrandpaLetterRect(___parallaxPan, ___grandpaSpeechTimer).Center;
                             Game1.setMousePositionRaw((int)((float)pos.X * Game1.options.zoomLevel), (int)((float)pos.Y * Game1.options.zoomLevel));
                             return;
                         }
@@ -80,7 +80,7 @@ namespace stardew_access.Patches
         }
 
         // This method is taken from the game's source code
-        private static Rectangle clickableGrandpaLetterRect(int ___parallaxPan, int ___grandpaSpeechTimer)
+        private static Rectangle ClickableGrandpaLetterRect(int ___parallaxPan, int ___grandpaSpeechTimer)
         {
             return new Rectangle((int)Utility.getTopLeftPositionForCenteringOnScreen(Game1.viewport, 1294, 730).X + (286 - ___parallaxPan) * 4, (int)Utility.getTopLeftPositionForCenteringOnScreen(Game1.viewport, 1294, 730).Y + 218 + Math.Max(0, Math.Min(60, (___grandpaSpeechTimer - 5000) / 8)), 524, 344);
         }

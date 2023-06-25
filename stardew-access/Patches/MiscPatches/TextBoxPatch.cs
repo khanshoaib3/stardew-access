@@ -4,7 +4,7 @@ namespace stardew_access.Patches
     {
         internal static string textBoxQuery = "";
         internal static string activeTextBoxes = "";
-        internal static bool isAnyTextBoxActive => activeTextBoxes != "";
+        internal static bool IsAnyTextBoxActive => activeTextBoxes != "";
 
         internal static void DrawPatch(StardewValley.Menus.TextBox __instance)
         {

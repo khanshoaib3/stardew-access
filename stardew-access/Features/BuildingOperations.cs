@@ -111,7 +111,7 @@ namespace stardew_access.Utils
             {
                 if (CarpenterMenuPatch.isOnFarm && Game1.locationRequest == null)
                 {
-                    if (tryToBuild(position))
+                    if (TryToBuild(position))
                     {
                         if (CarpenterMenuPatch.carpenterMenu != null)
                         {
@@ -131,7 +131,7 @@ namespace stardew_access.Utils
             return response;
         }
 
-        public static bool tryToBuild(Vector2 position)
+        public static bool TryToBuild(Vector2 position)
         {
             if (CarpenterMenuPatch.carpenterMenu == null)
                 return false;

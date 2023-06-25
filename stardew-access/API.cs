@@ -55,7 +55,7 @@ namespace stardew_access
         /// <returns>Name of the object as the first item (name) and category as the second item (category). Returns null if no object found.</returns>
         public static (string? name, string? category) GetNameWithCategoryNameAtTile(Vector2 tile)
         {
-            return TileInfo.getNameWithCategoryNameAtTile(tile, null);
+            return TileInfo.GetNameWithCategoryNameAtTile(tile, null);
         }
 
         /// <summary>

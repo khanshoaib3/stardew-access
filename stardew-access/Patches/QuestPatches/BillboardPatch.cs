@@ -14,11 +14,11 @@ namespace stardew_access.Patches
             {
                 if (___dailyQuestBoard)
                 {
-                    narrateDailyQuestBoard(__instance);
+                    NarrateDailyQuestBoard(__instance);
                 }
                 else
                 {
-                    narrateCalendar(__instance);
+                    NarrateCalendar(__instance);
                 }
             }
             catch (Exception e)
@@ -27,7 +27,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void narrateCalendar(Billboard __instance)
+        private static void NarrateCalendar(Billboard __instance)
         {
             for (int i = 0; i < __instance.calendarDays.Count; i++)
             {
@@ -60,7 +60,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void narrateDailyQuestBoard(Billboard __instance)
+        private static void NarrateDailyQuestBoard(Billboard __instance)
         {
             if (Game1.questOfTheDay == null || Game1.questOfTheDay.currentObjective == null || Game1.questOfTheDay.currentObjective.Length == 0)
             {

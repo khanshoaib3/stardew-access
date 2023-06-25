@@ -721,7 +721,7 @@ namespace stardew_access.Utils
 
             if (FeedingBenchBounds.TryGetValue(locationName, out var bounds) && x >= bounds.minX && x <= bounds.maxX && y == bounds.y)
             {
-                (string? name, CATEGORY category) = TileInfo.getObjectAtTile(currentLocation, x, y, true);
+                (string? name, CATEGORY category) = TileInfo.GetObjectAtTile(currentLocation, x, y, true);
                 return (Translator.Instance.Translate( "tile_name-feeding_bench" + (name?.Contains("hay", StringComparison.OrdinalIgnoreCase) == true ? "" : "_empty")), category);
             }
 

@@ -29,7 +29,7 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                    if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                         return;
 
                     for (int i = 0; i < __instance.pieceHolders.Count; i++)
@@ -58,7 +58,7 @@ namespace stardew_access.Patches
 
                         if (!MainClass.Config.DisableInventoryVerbosity && __instance.heldItem != null && __instance.pieceHolders[i].item == null)
                         {
-                            int highlight = getPieceIndexForDonationItem(__instance.heldItem.ParentSheetIndex);
+                            int highlight = GetPieceIndexForDonationItem(__instance.heldItem.ParentSheetIndex);
                             if (highlight != -1 && highlight == i)
                                 toSpeak += "Donatable ";
                         }
@@ -88,7 +88,7 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static int getPieceIndexForDonationItem(int itemIndex)
+        internal static int GetPieceIndexForDonationItem(int itemIndex)
         {
             return itemIndex switch
             {

@@ -348,7 +348,7 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("buildlist", "List all buildings for selection for upgrading/demolishing/painting", (string command, string[] args) =>
             {
-                onBuildListCalled();
+                OnBuildListCalled();
             });
 
             helper.ConsoleCommands.Add("buildsel", "Select the building index which you want to upgrade/demolish/paint", (string command, string[] args) =>
@@ -503,7 +503,7 @@ namespace stardew_access
             #endregion
         }
 
-        internal static void onBuildListCalled()
+        internal static void OnBuildListCalled()
         {
             string toPrint = "";
             Farm farm = (Farm)Game1.getLocationFromName("Farm");

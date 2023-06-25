@@ -26,24 +26,24 @@ namespace stardew_access.Patches
                     __instance.inventory.inventory[0].snapMouseCursorToCenter();
                 }
 
-                if (narrateHoveredButton(__instance, x, y))
+                if (NarrateHoveredButton(__instance, x, y))
                 {
                     InventoryUtils.Cleanup();
                     return;
                 }
-                if (narrateLastShippedItem(__instance, x, y))
+                if (NarrateLastShippedItem(__instance, x, y))
                 {
                     InventoryUtils.Cleanup();
                     return;
                 }
 
-                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
                     itemGrabMenuQueryKey = "";
                     return;
                 }
 
-                if (InventoryUtils.narrateHoveredSlot(__instance.ItemsToGrabMenu, __instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
+                if (InventoryUtils.NarrateHoveredSlot(__instance.ItemsToGrabMenu, __instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
                 {
                     itemGrabMenuQueryKey = "";
                     return;
@@ -55,7 +55,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static bool narrateHoveredButton(ItemGrabMenu __instance, int x, int y)
+        private static bool NarrateHoveredButton(ItemGrabMenu __instance, int x, int y)
         {
             string toSpeak = "";
             bool isDropItemButton = false;
@@ -128,7 +128,7 @@ namespace stardew_access.Patches
             return true;
         }
 
-        private static bool narrateLastShippedItem(ItemGrabMenu __instance, int x, int y)
+        private static bool NarrateLastShippedItem(ItemGrabMenu __instance, int x, int y)
         {
             if (!__instance.shippingBin || Game1.getFarm().lastItemShipped == null || !__instance.lastShippedHolder.containsPoint(x, y))
                 return false;
@@ -149,7 +149,7 @@ namespace stardew_access.Patches
         }
 
         // TODO Add color names
-        private static string getChestColorName(int i)
+        private static string GetChestColorName(int i)
         {
             string toReturn = "";
             switch (i)

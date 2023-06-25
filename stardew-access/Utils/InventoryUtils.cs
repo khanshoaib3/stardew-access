@@ -8,11 +8,11 @@ namespace stardew_access.Utils
         internal static string hoveredItemQueryKey = "";
         internal static int prevSlotIndex = -999;
 
-        internal static bool narrateHoveredSlot(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y,
+        internal static bool NarrateHoveredSlot(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y,
                 bool? giveExtraDetails = null, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1,
                 bool handleHighlightedItem = false, String highlightedItemPrefix = "", String highlightedItemSuffix = "")
         {
-            if (narrateHoveredSlotAndReturnIndex(inventoryMenu, inventory, actualInventory, x, y,
+            if (NarrateHoveredSlotAndReturnIndex(inventoryMenu, inventory, actualInventory, x, y,
                 giveExtraDetails, hoverPrice, extraItemToShowIndex, extraItemToShowAmount,
                 handleHighlightedItem, highlightedItemPrefix, highlightedItemSuffix) == -999)
                 return false;
@@ -20,7 +20,7 @@ namespace stardew_access.Utils
             return true;
         }
 
-        internal static int narrateHoveredSlotAndReturnIndex(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y,
+        internal static int NarrateHoveredSlotAndReturnIndex(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y,
                 bool? giveExtraDetails = null, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1,
                 bool handleHighlightedItem = false, String highlightedItemPrefix = "", String highlightedItemSuffix = "")
         {
@@ -32,24 +32,24 @@ namespace stardew_access.Utils
                 if ((i + 1) > actualInventory.Count || actualInventory[i] == null)
                 {
                     // For empty slot
-                    checkAndSpeak(Translator.Instance.Translate("menu-inventory-empty_slot-name"), i);
+                    CheckAndSpeak(Translator.Instance.Translate("menu-inventory-empty_slot-name"), i);
                     prevSlotIndex = i;
                     return i;
                 }
 
                 bool isHighlighted = inventoryMenu.highlightMethod(actualInventory[i]);
 
-                string namePrefix = handleHighlightedItemPrefix(isHighlighted, highlightedItemPrefix);
-                string nameSuffix = $"{handleHighlightedItemSuffix(isHighlighted, highlightedItemSuffix)}{handleUnHighlightedItem(isHighlighted, i)}";
+                string namePrefix = HandleHighlightedItemPrefix(isHighlighted, highlightedItemPrefix);
+                string nameSuffix = $"{HandleHighlightedItemSuffix(isHighlighted, highlightedItemSuffix)}{HandleUnHighlightedItem(isHighlighted, i)}";
                 int stack = actualInventory[i].Stack;
                 string name = Translator.Instance.Translate("common-util-pluralize_name", new {item_count = stack, name = actualInventory[i].DisplayName});
                 name = $"{namePrefix}{name}{nameSuffix}";
-                string quality = getQualityFromItem(actualInventory[i]);
-                string healthNStamina = getHealthNStaminaFromItem(actualInventory[i]);
-                string buffs = getBuffsFromItem(actualInventory[i]);
+                string quality = GetQualityFromItem(actualInventory[i]);
+                string healthNStamina = GetHealthNStaminaFromItem(actualInventory[i]);
+                string buffs = GetBuffsFromItem(actualInventory[i]);
                 string description = actualInventory[i].getDescription();
-                string price = getPrice(hoverPrice);
-                string requirements = getExtraItemInfo(extraItemToShowIndex, extraItemToShowAmount);
+                string price = GetPrice(hoverPrice);
+                string requirements = GetExtraItemInfo(extraItemToShowIndex, extraItemToShowAmount);
 
                 string details;
                 string toSpeak = name;
@@ -65,7 +65,7 @@ namespace stardew_access.Utils
                 if (!string.IsNullOrEmpty(details))
                     toSpeak = $"{toSpeak}, {details}";
 
-                checkAndSpeak(toSpeak, i);
+                CheckAndSpeak(toSpeak, i);
                 prevSlotIndex = i;
                 return i;
             }
@@ -74,7 +74,7 @@ namespace stardew_access.Utils
             return -999;
         }
         
-        private static void checkAndSpeak(String toSpeak, int hoveredInventoryIndex)
+        private static void CheckAndSpeak(String toSpeak, int hoveredInventoryIndex)
         {
             if (hoveredItemQueryKey == $"{toSpeak}:{hoveredInventoryIndex}") return;
             
@@ -82,7 +82,7 @@ namespace stardew_access.Utils
             MainClass.ScreenReader.Say(toSpeak, true);
         }
 
-        private static String getQualityFromItem(Item item)
+        private static String GetQualityFromItem(Item item)
         {
             if (item is not StardewValley.Object || ((StardewValley.Object)item).Quality <= 0)
                 return "";
@@ -90,7 +90,7 @@ namespace stardew_access.Utils
             return Translator.Instance.Translate("item-quality_type", new {quality_index = ((StardewValley.Object)item).Quality});
         }
 
-        private static String getHealthNStaminaFromItem(Item item)
+        private static String GetHealthNStaminaFromItem(Item item)
         {
             if (item is not StardewValley.Object || ((StardewValley.Object)item).Edibility == -300)
                 return "";
@@ -100,7 +100,7 @@ namespace stardew_access.Utils
             return Translator.Instance.Translate("item-stamina_and_health_recovery_on_consumption", new {stamina_amount = stamina_recovery, health_amount = health_recovery});
         }
 
-        private static String getBuffsFromItem(Item item)
+        private static String GetBuffsFromItem(Item item)
         {
             if (item == null) return "";
             if (item is not StardewValley.Object) return "";
@@ -134,7 +134,7 @@ namespace stardew_access.Utils
             return toReturn;
         }
 
-        private static String getExtraItemInfo(int itemIndex, int itemAmount)
+        private static String GetExtraItemInfo(int itemIndex, int itemAmount)
         {
             if (itemIndex == -1) return "";
 
@@ -150,14 +150,14 @@ namespace stardew_access.Utils
                 return Translator.Instance.Translate("item-required_item_info", new {name = itemName});
         }
 
-        private static String getPrice(int price)
+        private static String GetPrice(int price)
         {
             if (price == -1) return "";
             
-            return Translator.Instance.Translate("item-sell_price_info", new {price = price});
+            return Translator.Instance.Translate("item-sell_price_info", new { price });
         }
 
-        private static String handleHighlightedItemPrefix(bool isHighlighted, String prefix)
+        private static String HandleHighlightedItemPrefix(bool isHighlighted, String prefix)
         {
             if (MainClass.Config.DisableInventoryVerbosity) return "";
             if (!isHighlighted) return "";
@@ -165,7 +165,7 @@ namespace stardew_access.Utils
             return prefix;
         }
 
-        private static String handleHighlightedItemSuffix(bool isHighlighted, String suffix)
+        private static String HandleHighlightedItemSuffix(bool isHighlighted, String suffix)
         {
             if (MainClass.Config.DisableInventoryVerbosity) return "";
             if (!isHighlighted) return "";
@@ -173,7 +173,7 @@ namespace stardew_access.Utils
             return suffix;
         }
 
-        private static String handleUnHighlightedItem(bool isHighlighted, int hoveredInventoryIndex)
+        private static String HandleUnHighlightedItem(bool isHighlighted, int hoveredInventoryIndex)
         {
             if (isHighlighted) return "";
             

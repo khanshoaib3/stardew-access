@@ -26,15 +26,15 @@ namespace stardew_access.Patches
                     __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
                 }
 
-                if (narrateHoveredButton(__instance, x, y)) return;
+                if (NarrateHoveredButton(__instance, x, y)) return;
 
-                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, hoverPrice: __instance.hoverPrice))
+                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, hoverPrice: __instance.hoverPrice))
                 {
                     shopMenuQueryKey = "";
                     return;
                 }
 
-                narrateHoveredSellingItem(__instance);
+                NarrateHoveredSellingItem(__instance);
             }
             catch (Exception e)
             {
@@ -42,7 +42,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static bool narrateHoveredButton(ShopMenu __instance, int x, int y)
+        private static bool NarrateHoveredButton(ShopMenu __instance, int x, int y)
         {
             string toSpeak = "";
             bool isDropItemButton = false;
@@ -75,7 +75,7 @@ namespace stardew_access.Patches
             return true;
         }
 
-        private static void narrateHoveredSellingItem(ShopMenu __instance)
+        private static void NarrateHoveredSellingItem(ShopMenu __instance)
         {
             if (__instance.hoveredItem == null) return;
 
