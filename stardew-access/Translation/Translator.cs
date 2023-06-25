@@ -34,9 +34,9 @@ namespace stardew_access
             if (fluentApi != null)
             {
                 Fluent = fluentApi.GetLocalizationsForCurrentLocale(modManifest);
-                foreach ( var customFunction in new CustomFluentFunctions(modManifest, fluentApi).GetAll())
+                foreach ( var (mod, name, function) in new CustomFluentFunctions(modManifest, fluentApi).GetAll())
                 {
-                    fluentApi.RegisterFunction( customFunction.mod, customFunction.name, customFunction.function);
+                    fluentApi.RegisterFunction( mod, name, function);
                 }
             }
             else
