@@ -80,11 +80,11 @@ namespace stardew_access.Patches
 
             string toSpeak = Translator.Instance.Translate( "animal_query_menu-animal_info",
                 new {
-                    name = name,
-                    type = type,
+                    name,
+                    type,
                     is_baby = ___animal.isBaby() ? 1 : 0,
                     heart_count = heartCount,
-                    age = age,
+                    age,
                     parent_name = parent
                 }
             );

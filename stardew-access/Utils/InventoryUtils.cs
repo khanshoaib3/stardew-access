@@ -154,7 +154,7 @@ namespace stardew_access.Utils
         {
             if (price == -1) return "";
             
-            return Translator.Instance.Translate("item-sell_price_info", new {price = price});
+            return Translator.Instance.Translate("item-sell_price_info", new { price });
         }
 
         private static String handleHighlightedItemPrefix(bool isHighlighted, String prefix)
