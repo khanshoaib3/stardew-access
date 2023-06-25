@@ -14,10 +14,7 @@ namespace stardew_access
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new Translator();
-                }
+                instance ??= new Translator();
 
                 return instance;
             }
