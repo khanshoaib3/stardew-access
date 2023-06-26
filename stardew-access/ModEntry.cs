@@ -13,7 +13,6 @@ namespace stardew_access
     {
         #region Global Vars & Properties
 
-        #pragma warning disable CS8603
         private static int prevDate = -99;
         private static ModConfig? config;
         private Harmony? harmony;
@@ -27,7 +26,7 @@ namespace stardew_access
 
         internal static ModConfig Config
         {
-            get => config;
+            get => config ?? throw new InvalidOperationException("Config has not been initialized.");
             set => config = value;
         }
         public static IModHelper? ModHelper
