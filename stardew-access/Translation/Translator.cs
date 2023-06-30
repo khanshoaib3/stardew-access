@@ -45,7 +45,14 @@ namespace stardew_access
         public string Translate(string translationKey)
         {
             if (Fluent != null)
+            {
+                if (!Fluent.ContainsKey(translationKey))
+                {
+                    MainClass.DebugLog($"No translation available for key: {translationKey}");
+                    return translationKey;
+                }
                 return Fluent.Get(translationKey);
+            }
 
             MainClass.ErrorLog("Fluent not initialized!");
 
@@ -55,7 +62,14 @@ namespace stardew_access
         public string Translate(string translationKey, object? tokens)
         {
             if (Fluent != null)
+            {
+                if (!Fluent.ContainsKey(translationKey))
+                {
+                    MainClass.DebugLog($"No translation available for key: {translationKey}");
+                    return translationKey;
+                }
                 return Fluent.Get(translationKey, tokens);
+            }
 
             MainClass.ErrorLog("Fluent not initialized!");
 

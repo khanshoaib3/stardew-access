@@ -98,7 +98,7 @@ namespace stardew_access.Utils
                     if (name != null)
                         if (MainClass.ScreenReader != null)
                             if (manuallyTriggered)
-                                MainClass.ScreenReader.Say($"{name}, Category: {category}", true);
+                                MainClass.ScreenReader.Say(Translator.Instance.Translate("feature-read_tile-manually_triggered_info", new {tile_name = name, tile_category = category}), true);
                             else
                                 MainClass.ScreenReader.SayWithTileQuery(name, x, y, true);
                     #endregion

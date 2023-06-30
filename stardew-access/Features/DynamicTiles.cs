@@ -508,11 +508,11 @@ namespace stardew_access.Utils
             {
                 if (dungeon.IsCooledLava(x, y))
                 {
-                    return (Translator.Instance.Translate("tile_name-cooled_lava"), CATEGORY.WaterTiles);
+                    return (Translator.Instance.Translate("tile-cooled_lava-name"), CATEGORY.WaterTiles);
                 }
                 else if (StardewValley.Monsters.LavaLurk.IsLavaTile(dungeon, x, y))
                 {
-                    return (Translator.Instance.Translate("tile_name-lava"), CATEGORY.WaterTiles);
+                    return (Translator.Instance.Translate("tile-lava-name"), CATEGORY.WaterTiles);
                 }
             }
 

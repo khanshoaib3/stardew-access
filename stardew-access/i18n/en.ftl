@@ -43,25 +43,51 @@ suffix-building_animal_door = {$content } Animal Door {$is_open ->
 suffix-mill_input = {$content} Input
 suffix-mill_output = {$content} Output
 
+# Tiles
+
 tile_name-bridge = Bridge
-tile_name-ticket_machine = Ticket Machine
-tile_name-movie_ticket_machine = Movie Ticket Machine
 tile_name-boat_hull = Boat Hull
 tile_name-boat_anchor = Boat Anchor
-tile_name-missed_reward_chest = Missed Reward Chest
-tile_name-mail_box = Mail Box
-tile_name-stove = Stove
-tile_name-sink = Sink
-tile_name-fridge = Fridge
-tile_name-traveling_cart = Traveling Cart
-tile_name-cooled_lava = Cooled Lava
-tile_name-lava = Lava
 tile_name-diggable_spot = Diggable Spot
 tile_name-panning_spot = Panning Spot
+tile-resource_clump-large_stump-name = Large Stump
+tile-resource_clump-hollow_log-name = Hollow Log
+tile-resource_clump-meteorite-name = Meteorite
+tile-resource_clump-boulder-name = Boulder
+tile-resource_clump-mine_rock-name = Mine Rock
+tile-resource_clump-giant_cauliflower-name = Giant Cauliflower
+tile-resource_clump-giant_melon-name = Giant Melon
+tile-resource_clump-giant_pumpkin-name = Giant Pumpkin
+tile-water-name = Water
+tile-cooled_lava-name = Cooled Lava
+tile-lava-name = Lava
+tile-grass-name = Grass
+
+## Interactable Tiles
+
+tile_name-ticket_machine = Ticket Machine
+tile_name-movie_ticket_machine = Movie Ticket Machine
+tile_name-missed_reward_chest = Missed Reward Chest
+tile_name-traveling_cart = Traveling Cart
 tile_name-feeding_bench = Feeding Bench
 tile_name-feeding_bench_empty = Empty Feeding Bench
 tile_name-special_quest_board = Special Quest Board
 tile-museum_piece_showcase-suffix = {$content} Showcase
+tile_name-fridge = Fridge
+tile_name-mail_box = Mail Box
+tile_name-stove = Stove
+tile_name-sink = Sink
+
+## Entrances
+
+tile-mine_ladder-name = Ladder
+tile-mine_up_ladder-name = Up Ladder
+tile-mine_shaft-name = Shaft
+tile-mine_elevator-name = Elevator
+
+#---------------------------------#
+
+# Items
 
 item_name-log = Log
 item_name-magic_ink = Magic Ink
@@ -88,6 +114,10 @@ item-stamina_and_health_recovery_on_consumption = {SIGNOFNUMBER($stamina_amount)
 	}
 item-required_item_info = Requires {$name}
 item-sell_price_info = Sell Price: {$price}g
+item-dropped_item-info = Dropped Item: {$item_count ->
+		[1] 1 {$item_name}
+		*[other] {$item_count} {$item_name}s
+	}
 
 building_name-shipping_bin = Shipping Bin
 building-parrot_perch-required_nuts = Parrots require {$item_count ->
@@ -103,6 +133,7 @@ entrance_name-secret_woods_entrance = Secret Woods Entrance
 
 feature-speak_selected_slot_item_name = {$slot_item_name} Selected
 feature-speak_location_name = {$location_name} Entered
+feature-read_tile-manually_triggered_info = {$tile_name}, Category: {$tile_category}
 
 npc_name-old_mariner = Old Mariner
 npc_name-island_trader = Island Trader
@@ -113,6 +144,7 @@ npc_name-amethyst_gem_bird = Amethyst Gem Bird
 npc_name-topaz_gem_bird = Topaz Gem Bird
 npc_name-gem_bird_common = Gem Bird
 
+common-unknown = Unknown
 
 # Common UI elements
 common-ui-ok_button = OK button
