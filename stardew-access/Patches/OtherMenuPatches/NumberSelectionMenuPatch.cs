@@ -57,8 +57,7 @@ namespace stardew_access.Patches
                     toSpeak = $"{toSpeak} {hoveredButton}";
                 }
 
-                if (toSpeak != "")
-                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
             }
             catch (Exception e)
             {

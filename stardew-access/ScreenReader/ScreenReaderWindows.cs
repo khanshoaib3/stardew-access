@@ -51,14 +51,9 @@ namespace stardew_access.ScreenReader
 
         public void Say(string text, bool interrupt)
         {
-            if (text == null)
-                return;
-
-            if (!isLoaded)
-                return;
-
-            if (!MainClass.Config.TTS)
-                return;
+            if (string.IsNullOrWhiteSpace(text)) return;
+            if (!isLoaded) return;
+            if (!MainClass.Config.TTS) return;
 
             if (text.Contains('^')) text = text.Replace('^', '\n');
 

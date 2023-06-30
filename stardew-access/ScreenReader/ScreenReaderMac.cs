@@ -168,7 +168,7 @@ namespace stardew_access.ScreenReader
 
         public void Say(string text, bool interrupt)
         {
-            if (text == null) return;
+            if (string.IsNullOrWhiteSpace(text)) return;
             if (interrupt)
             {
                 speechQueue.Clear();
