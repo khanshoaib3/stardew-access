@@ -30,6 +30,12 @@ animal_query_menu-ui-allow_reproduction_button =
 	} allow pregnancy button
 
 menu-inventory-empty_slot-name = Empty Slot
+menu-number_selection-button-left_button = Decrease value button
+menu-number_selection-button-right_button = Increase value button
+menu-number_selection-value_and_price_info = {$value} {$price ->
+		[0] {EMPTYSTRING()}
+		*[other] Price: {$price}
+	}
 
 
 # FIXME update naming convention
@@ -149,6 +155,7 @@ common-unknown = Unknown
 
 # Common UI elements
 common-ui-ok_button = OK button
+common-ui-cancel_button = Cancel button
 
 # The $name will be in the respective language i.e., it will be in french for french translation and so on. So use the language specific name in the square brackets except for the one with '*', that can have any value. Variants with '*' are marked as default.
 # TODO add this to more places

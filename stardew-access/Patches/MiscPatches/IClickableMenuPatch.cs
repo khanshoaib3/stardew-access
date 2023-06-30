@@ -286,6 +286,9 @@ namespace stardew_access.Patches
                 case SpecialOrdersBoard:
                     SpecialOrdersBoardPatch.Cleanup();
                     break;
+                case NumberSelectionMenu:
+                    NumberSelectionMenuPatch.Cleanup();
+                    break;
             }
 
             InventoryUtils.Cleanup();
