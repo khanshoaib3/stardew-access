@@ -704,6 +704,11 @@ namespace stardew_access.Utils
                 return (Translator.Instance.Translate("tile_name-movie_ticket_machine"), CATEGORY.Interactables);
             }
 
+            if (Game1.CurrentEvent.isFestival && x == 0 && y == 54)
+            {
+                return (Translator.Instance.Translate("tile-town_festival_exit-name"), CATEGORY.Doors);
+            }
+
             return (null, null);
         }
 

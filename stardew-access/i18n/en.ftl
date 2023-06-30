@@ -84,6 +84,7 @@ tile-mine_ladder-name = Ladder
 tile-mine_up_ladder-name = Up Ladder
 tile-mine_shaft-name = Shaft
 tile-mine_elevator-name = Elevator
+tile-town_festival_exit-name = Exit Festival
 
 #---------------------------------#
 
