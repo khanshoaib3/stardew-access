@@ -81,7 +81,8 @@ namespace stardew_access.Utils
                 y = (int)tile.Y;
                 #endregion
 
-                if (Context.IsPlayerFree)
+                // The event with id 13 is the Haley's six heart event, the one at the beach requiring the player to find the bracelet
+                if (Context.IsPlayerFree || (Game1.CurrentEvent is not null && Game1.CurrentEvent.id == 13))
                 {
                     if (!manuallyTriggered && prevTile != tile)
                     {

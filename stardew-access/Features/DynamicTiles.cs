@@ -224,6 +224,11 @@ namespace stardew_access.Utils
                 }
             }
 
+            if (Game1.CurrentEvent is not null && Game1.CurrentEvent.id == 13 && x == 53 && y == 8)
+            {
+                return (Translator.Instance.Translate("item-haley_bracelet-name"), CATEGORY.DroppedItems);
+            }
+
             return (null, null);
         }
 
@@ -753,7 +758,7 @@ namespace stardew_access.Utils
                 } // else if something other than feeding benches in barns and coops...
             } //else if something other than barns and coops...
 
-            if(locationName.Contains("witchhut", StringComparison.OrdinalIgnoreCase) && x == 4 && y == 11 && !Game1.player.mailReceived.Contains("hasPickedUpMagicInk"))
+            if (locationName.Contains("witchhut", StringComparison.OrdinalIgnoreCase) && x == 4 && y == 11 && !Game1.player.mailReceived.Contains("hasPickedUpMagicInk"))
             {
                 return (Translator.Instance.Translate("item_name-magic_ink"), CATEGORY.Interactables);
             }

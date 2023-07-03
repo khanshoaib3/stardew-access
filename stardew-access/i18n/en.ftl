@@ -98,6 +98,7 @@ tile-town_festival_exit-name = Exit Festival
 
 item_name-log = Log
 item_name-magic_ink = Magic Ink
+item-haley_bracelet-name = Haley's Bracelet
 item-lost_book-name = Lost Book
 item-suffix-book = {$content} Book
 item-suffix-not_usable_here = {$content} not usable here
