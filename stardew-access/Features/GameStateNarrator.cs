@@ -46,7 +46,6 @@ namespace stardew_access.Utils
                 return;
 
             previousLocation = currentLocation;
-            MainClass.ScreenReader.Say($"{currentLocation.Name} Entered", true);
             MainClass.ScreenReader.Say(
                 Translator.Instance.Translate( "feature-speak_location_name", new { location_name = currentLocation.Name }),
                 true

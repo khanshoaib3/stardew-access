@@ -155,6 +155,24 @@ npc_name-amethyst_gem_bird = Amethyst Gem Bird
 npc_name-topaz_gem_bird = Topaz Gem Bird
 npc_name-gem_bird_common = Gem Bird
 
+# Event Tiles
+
+event_tile-egg_festival_shop-name = Egg Festival Shop
+event_tile-flower_dance_shop-name = Flower Dance Shop
+event_tile-soup_pot-name = Soup Pot
+event_tile-spirits_eve_shop-name = Spirit's Eve Shop
+event_tile-stardew_valley_fair_shop-name = Stardew Valley Fair Shop
+event_tile-slingshot_game-name = Slingshot Game
+event_tile-purchase_star_tokens-name = Purchase Star Tokens
+event_tile-the_wheel-name = The Wheel
+event_tile-fishing_challenge-name = Fishing Challenge
+event_tile-fortune_teller-name = Fortune Teller
+event_tile-grange_display-name = Grange Display
+event_tile-strength_game-name = Strength Game
+event_tile-free_burgers-name = Free Burgers
+event_tile-travelling_cart-name = Travelling Cart
+event_tile-feast_of_the_winter_star_shop-name = Feast of the Winter Star Shop
+
 common-unknown = Unknown
 
 # Common UI elements
