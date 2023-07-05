@@ -49,8 +49,7 @@ namespace stardew_access.Utils
             if (toReturn.name == null)
                 return (null, CATEGORY.Others);
 
-            // TODO add disableTranslationNotFound param to Translate()
-            return (Translator.Instance.Translate(toReturn.name), toReturn.category);
+            return (Translator.Instance.Translate(toReturn.name, true), toReturn.category);
         }
 
         public static (string? name, CATEGORY? category) getTranslationKeyWithCategoryAtTile(Vector2 tile, GameLocation? currentLocation, bool lessInfo = false)

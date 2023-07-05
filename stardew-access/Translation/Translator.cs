@@ -42,13 +42,14 @@ namespace stardew_access
             }
         }
 
-        public string Translate(string translationKey)
+        public string Translate(string translationKey, bool disableWarning = false)
         {
             if (Fluent != null)
             {
                 if (!Fluent.ContainsKey(translationKey))
                 {
-                    MainClass.DebugLog($"No translation available for key: {translationKey}");
+                    if (!disableWarning)
+                        MainClass.DebugLog($"No translation available for key: {translationKey}");
                     return translationKey;
                 }
                 return Fluent.Get(translationKey);
@@ -59,13 +60,14 @@ namespace stardew_access
             return translationKey;
         }
 
-        public string Translate(string translationKey, object? tokens)
+        public string Translate(string translationKey, object? tokens, bool disableWarning = false)
         {
             if (Fluent != null)
             {
                 if (!Fluent.ContainsKey(translationKey))
                 {
-                    MainClass.DebugLog($"No translation available for key: {translationKey}");
+                    if (!disableWarning)
+                        MainClass.DebugLog($"No translation available for key: {translationKey}");
                     return translationKey;
                 }
                 return Fluent.Get(translationKey, tokens);
