@@ -11,7 +11,8 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                int x = Game1.getMouseX(true),
+                    y = Game1.getMouseY(true); // Mouse x and y position
                 string toSpeak = "";
 
                 for (int i = 0; i < __instance.checkboxes.Count; i++)
@@ -22,11 +23,31 @@ namespace stardew_access.Patches
 
                     if (c.name.Equals("complete"))
                     {
-                        toSpeak = $"Completed {GetNameFromIndex(i)}";
+                        toSpeak = Translator.Instance.Translate(
+                            "menu-joja_cd_menu-project_completed-prefix",
+                            new
+                            {
+                                name = Translator.Instance.Translate(
+                                    "menu-joja_cd_menu-project_name",
+                                    new { project_index = i }
+                                ),
+                            }
+                        );
                     }
                     else
                     {
-                        toSpeak = $"{GetNameFromIndex(i)} Cost: {__instance.getPriceFromButtonNumber(i)}g Description: {__instance.getDescriptionFromButtonNumber(i)}";
+                        toSpeak = Translator.Instance.Translate(
+                            "menu-joja_cd_menu-project_info",
+                            new
+                            {
+                                name = Translator.Instance.Translate(
+                                    "menu-joja_cd_menu-project_name",
+                                    new { project_index = i }
+                                ),
+                                price = __instance.getPriceFromButtonNumber(i),
+                                description = __instance.getDescriptionFromButtonNumber(i)
+                            }
+                        );
                     }
 
                     break;

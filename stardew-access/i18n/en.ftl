@@ -3,7 +3,22 @@ building_operations-move_building-no_permission = You don't have permission to m
 building_operations-move_building-cannot_move = Cannot move building to {$x_position}x {$y_position}y
 building_operations-move_building-building_moved = {$building_name} moved to {$x_position}x {$y_position}y
 
-# Related to animal query menu
+# Menus
+
+## JoJa CD Menu
+
+menu-joja_cd_menu-project_info = {$name}, Cost: {$price}g, Description: {$description}
+menu-joja_cd_menu-project_name = {$project_index ->
+    [0] Bus
+    [1] Minecarts
+    [2] Bridge
+    [3] Greenhouse
+    [4] Panning
+    *[other] Unknown
+  } Project
+menu-joja_cd_menu-project_completed-prefix = Completed {$name}
+
+## Animal Query Menu (TODO organise this!)
 animal_query_menu-animal_info =
   {$name}, {$is_baby ->
     [0] {$type}

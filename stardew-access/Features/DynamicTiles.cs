@@ -709,7 +709,7 @@ namespace stardew_access.Utils
                 return ("tile_name-movie_ticket_machine", CATEGORY.Interactables);
             }
 
-            if (Game1.CurrentEvent.isFestival && x == 0 && y == 54)
+            if (Game1.CurrentEvent is not null && Game1.CurrentEvent.isFestival && x == 0 && y == 54)
             {
                 return ("tile-town_festival_exit-name", CATEGORY.Doors);
             }
