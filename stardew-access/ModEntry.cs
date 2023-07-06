@@ -318,16 +318,16 @@ namespace stardew_access
                     return;
 
                 string toSpeak = Config.HealthNStaminaInPercentage
-                    ? ModHelper.Translation.Get(
-                        "manuallytriggered.healthnstamina.percent",
+                    ? Translator.Instance.Translate(
+                        "feature-speak_health_n_stamina-in_percentage_format",
                         new
                         {
                             health = CurrentPlayer.PercentHealth,
                             stamina = CurrentPlayer.PercentStamina
                         }
                     )
-                    : ModHelper.Translation.Get(
-                        "manuallytriggered.healthnstamina.normal",
+                    : Translator.Instance.Translate(
+                        "feature-speak_health_n_stamina-in_normal_format",
                         new
                         {
                             health = CurrentPlayer.CurrentHealth,

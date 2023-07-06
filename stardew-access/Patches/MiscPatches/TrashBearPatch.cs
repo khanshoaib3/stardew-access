@@ -13,7 +13,7 @@ namespace stardew_access.Patches
                 if (__instance.Sprite.CurrentAnimation != null) return;
 
                 string itemName = Game1.objectInformation[___itemWantedIndex].Split('/')[4];
-                MainClass.ScreenReader.Say(Translator.Instance.Translate("patch.trash_bear.wanted_item", new {trash_bear_name = __instance.displayName, item_name = itemName}), true);
+                MainClass.ScreenReader.Say(Translator.Instance.Translate("patch-trash_bear-wanted_item", new {trash_bear_name = __instance.displayName, item_name = itemName}), true);
             }
             catch (Exception e)
             {

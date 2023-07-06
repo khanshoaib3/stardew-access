@@ -33,7 +33,7 @@ namespace stardew_access.Utils
                 return;
 
             int hours = StardewValley.Game1.timeOfDay / 100;
-            string toSpeak = MainClass.ModHelper.Translation.Get("warnings.time", new { value = CurrentPlayer.TimeOfDay });
+            string toSpeak = Translator.Instance.Translate("feature-warnings-time", new { value = CurrentPlayer.TimeOfDay });
 
             if (hours < 1 && prevHour > 2 || hours >= 1 && prevHour < 1)
             {
@@ -54,7 +54,7 @@ namespace stardew_access.Utils
                 return;
 
             int stamina = CurrentPlayer.PercentStamina;
-            string toSpeak = MainClass.ModHelper.Translation.Get("warnings.stamina", new { value = stamina });
+            string toSpeak = Translator.Instance.Translate("feature-warnings-stamina", new { value = stamina });
 
             if ((stamina <= 50 && prevStamina > 50) || (stamina <= 25 && prevStamina > 25) || (stamina <= 10 && prevStamina > 10))
             {
@@ -75,7 +75,7 @@ namespace stardew_access.Utils
                 return;
 
             int health = CurrentPlayer.PercentHealth;
-            string toSpeak = MainClass.ModHelper.Translation.Get("warnings.health", new { value = health });
+            string toSpeak = Translator.Instance.Translate("feature-warnings-health", new { value = health });
 
             if ((health <= 50 && prevHealth > 50) || (health <= 25 && prevHealth > 25) || (health <= 10 && prevHealth > 10))
             {

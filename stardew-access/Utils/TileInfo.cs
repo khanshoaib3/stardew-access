@@ -631,11 +631,11 @@ namespace stardew_access.Utils
                 {
                     if (heldObjectName.Contains("pressure nozzle", StringComparison.OrdinalIgnoreCase))
                     {
-                        toReturn.name = MainClass.ModHelper.Translation.Get("readtile.sprinkler.pressurenozzle", new { value = toReturn.name });
+                        toReturn.name = Translator.Instance.Translate("tile-sprinkler-pressure_nozzle-prefix", new { content = toReturn.name });
                     }
                     else if (heldObjectName.Contains("enricher", StringComparison.OrdinalIgnoreCase))
                     {
-                        toReturn.name = MainClass.ModHelper.Translation.Get("readtile.sprinkler.enricher", new { value = toReturn.name });
+                        toReturn.name = Translator.Instance.Translate("tile-sprinkler-enricher-prefix", new { content = toReturn.name });
                     }
                     else
                     {
