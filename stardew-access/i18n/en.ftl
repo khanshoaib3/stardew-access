@@ -103,6 +103,7 @@ tile_name-fridge = Fridge
 tile_name-mail_box = Mail Box
 tile_name-stove = Stove
 tile_name-sink = Sink
+tile-railroad-witch_statue-name = Witch Statue
 
 ## Entrances
 

@@ -718,6 +718,24 @@ namespace stardew_access.Utils
         }
 
         /// <summary>
+        /// Retrieves information about interactables or other features at a given coordinate in Railroad.
+        /// </summary>
+        /// <param name="town">Railroad instance for reference.</param>
+        /// <param name="x">The x-coordinate to search.</param>
+        /// <param name="y">The y-coordinate to search.</param>
+        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+        /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+        private static (string? translationKeyOrName, CATEGORY? category) GetRailroadInfo(Railroad railroad, int x, int y, bool lessInfo = false)
+        {
+	    if (!railroad.witchStatueGone && !Game1.MasterPlayer.mailReceived.Contains("witchStatueGone") && x == 54 && y == 35)
+            {
+                return ("tile-railroad-witch_statue-name", CATEGORY.Interactables);
+            }
+
+            return (null, null);
+        }
+
+        /// <summary>
         /// Gets the feeding bench information for barns and coops.
         /// </summary>
         /// <param name="currentLocation">The current GameLocation instance.</param>
@@ -834,6 +852,7 @@ namespace stardew_access.Utils
                 IslandLocation islandLocation => GetIslandLocationInfo(islandLocation, x, y, lessInfo),
                 LibraryMuseum libraryMuseum => GetLibraryMuseumInfo(libraryMuseum, x, y, lessInfo),
                 Town town => GetTownInfo(town, x, y, lessInfo),
+                Railroad railroad => GetRailroadInfo(railroad, x, y, lessInfo),
                 _ => GetLocationByNameInfo(currentLocation, x, y, lessInfo)
             };
         }
