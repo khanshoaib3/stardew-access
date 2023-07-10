@@ -727,7 +727,7 @@ namespace stardew_access.Utils
         /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
         private static (string? translationKeyOrName, CATEGORY? category) GetRailroadInfo(Railroad railroad, int x, int y, bool lessInfo = false)
         {
-	    if (!railroad.witchStatueGone && !Game1.MasterPlayer.mailReceived.Contains("witchStatueGone") && x == 54 && y == 35)
+	    if (!railroad.witchStatueGone.Get() && !Game1.MasterPlayer.mailReceived.Contains("witchStatueGone") && x == 54 && y == 35)
             {
                 return ("tile-railroad-witch_statue-name", CATEGORY.Interactables);
             }

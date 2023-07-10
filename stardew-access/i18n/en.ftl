@@ -5,10 +5,16 @@ building_operations-move_building-building_moved = {$building_name} moved to {$x
 
 # Menus
 
-## JoJa CD Menu
+## Bundle Menus
 
-menu-joja_cd_menu-project_info = {$name}, Cost: {$price}g, Description: {$description}
-menu-joja_cd_menu-project_name = {$project_index ->
+### Common
+
+menu-bundle-completed-prefix = Completed {$content}
+
+### JoJa CD Menu
+
+menu-joja_cd-project_info = {$name}, Cost: {$price}g, Description: {$description}
+menu-joja_cd-project_name = {$project_index ->
     [0] Bus
     [1] Minecarts
     [2] Bridge
@@ -16,7 +22,18 @@ menu-joja_cd_menu-project_name = {$project_index ->
     [4] Panning
     *[other] Unknown
   } Project
-menu-joja_cd_menu-project_completed-prefix = Completed {$name}
+
+### Junimo Note Menu
+
+menu-junimo_note-scrambled_text = Scrambled text
+menu-junimo_note-current_area_info = Area {$area_name}, {$completion_reward}
+menu-junimo_note-bundle_open_button = {$bundle_name} bundle
+menu-junimo_note-input_slot = Input Slot {$index}
+menu-junimo_note-collect_rewards = Collect rewards
+menu-junimo_note-next_area_button = Next area button
+menu-junimo_note-previous_area_button = Previous area button
+menu-junimo_note-back_button = Back button
+menu-junimo_note-purchase_button = Purchase button
 
 ## Animal Query Menu (TODO organise this!)
 animal_query_menu-animal_info =
@@ -44,7 +61,13 @@ animal_query_menu-ui-allow_reproduction_button =
     *[1] Enabled
   } allow pregnancy button
 
+## Inventory Menu
+
 menu-inventory-empty_slot-name = Empty Slot
+menu-inventory-not_usable-suffix = , not usable here
+
+## Number Selection Menu
+
 menu-number_selection-button-left_button = Decrease value button
 menu-number_selection-button-right_button = Increase value button
 menu-number_selection-value_and_price_info = {$value} {$price ->

@@ -29,7 +29,9 @@ namespace stardew_access.Patches
             typeof(QuestLog),
             typeof(ReadyCheckDialog),
             typeof(ShopMenu),
-            typeof(TailoringMenu)
+            typeof(TailoringMenu),
+            typeof(SpecialOrdersBoard),
+            typeof(NumberSelectionMenu)
         };
 
         private static readonly HashSet<Type> SkipGameMenuPageTypes = new()
@@ -62,6 +64,7 @@ namespace stardew_access.Patches
                 }
                 #endregion
 
+                // TODO Use InventoryUtils.cs
                 StringBuilder toSpeak = new();
 
                 #region Add item count before title
@@ -261,9 +264,6 @@ namespace stardew_access.Patches
                     break;
                 case DialogueBox:
                     DialogueBoxPatch.Cleanup();
-                    break;
-                case JojaCDMenu:
-                    JojaCDMenuPatch.Cleanup();
                     break;
                 case QuestLog:
                     QuestLogPatch.Cleanup();

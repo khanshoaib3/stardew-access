@@ -5,8 +5,6 @@ namespace stardew_access.Patches
 {
     internal class JojaCDMenuPatch
     {
-        internal static string jojaCDMenuQuery = "";
-
         internal static void DrawPatch(JojaCDMenu __instance)
         {
             try
@@ -24,11 +22,11 @@ namespace stardew_access.Patches
                     if (c.name.Equals("complete"))
                     {
                         toSpeak = Translator.Instance.Translate(
-                            "menu-joja_cd_menu-project_completed-prefix",
+                            "menu-bundle-completed-prefix",
                             new
                             {
-                                name = Translator.Instance.Translate(
-                                    "menu-joja_cd_menu-project_name",
+                                content = Translator.Instance.Translate(
+                                    "menu-joja_cd-project_name",
                                     new { project_index = i }
                                 ),
                             }
@@ -37,11 +35,11 @@ namespace stardew_access.Patches
                     else
                     {
                         toSpeak = Translator.Instance.Translate(
-                            "menu-joja_cd_menu-project_info",
+                            "menu-joja_cd-project_info",
                             new
                             {
                                 name = Translator.Instance.Translate(
-                                    "menu-joja_cd_menu-project_name",
+                                    "menu-joja_cd-project_name",
                                     new { project_index = i }
                                 ),
                                 price = __instance.getPriceFromButtonNumber(i),
@@ -53,39 +51,13 @@ namespace stardew_access.Patches
                     break;
                 }
 
-                if (jojaCDMenuQuery != toSpeak)
-                {
-                    jojaCDMenuQuery = toSpeak;
-                    MainClass.ScreenReader.Say(toSpeak, true);
-                }
+
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
             }
             catch (System.Exception e)
             {
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
-        }
-
-        private static string GetNameFromIndex(int i)
-        {
-            string name = i switch
-            {
-                0 => "Bus",
-                1 => "Minecarts",
-                2 => "Bridge",
-                3 => "Greenhouse",
-                4 => "Panning",
-                _ => "",
-            };
-
-            if (name != "")
-                return $"{name} Project";
-            else
-                return "unkown";
-        }
-
-        internal static void Cleanup()
-        {
-            jojaCDMenuQuery = "";
         }
     }
 }
