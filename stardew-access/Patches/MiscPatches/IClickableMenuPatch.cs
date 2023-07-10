@@ -233,9 +233,6 @@ namespace stardew_access.Patches
                 case LevelUpMenu:
                     LevelUpMenuPatch.Cleanup();
                     break;
-                case Billboard:
-                    BillboardPatch.Cleanup();
-                    break;
                 case GameMenu:
                     SocialPagePatch.Cleanup();
                     InventoryPagePatch.Cleanup();
@@ -291,6 +288,9 @@ namespace stardew_access.Patches
                     break;
             }
 
+            MainClass.ScreenReader.PrevMenuQueryText = "";
+            MainClass.ScreenReader.MenuPrefixText = "";
+            MainClass.ScreenReader.MenuSuffixText = "";
             InventoryUtils.Cleanup();
             TextBoxPatch.activeTextBoxes = "";
         }

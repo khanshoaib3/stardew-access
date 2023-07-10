@@ -6,8 +6,6 @@ namespace stardew_access.Patches
 {
     internal class BillboardPatch
     {
-        private static string billboardQueryKey = "";
-
         internal static void DrawPatch(Billboard __instance, bool ___dailyQuestBoard)
         {
             try
@@ -49,12 +47,8 @@ namespace stardew_access.Patches
                 if (Game1.dayOfMonth == i + 1)
                     toSpeak = $"Current {toSpeak}";
 
-                if (billboardQueryKey != toSpeak)
-                {
-                    billboardQueryKey = toSpeak;
-                    if (i == 0) toSpeak = $"{toSpeak} {currentYearNMonth}";
-                    MainClass.ScreenReader.Say(toSpeak, true);
-                }
+                if (i == 0) toSpeak = $"{toSpeak} {currentYearNMonth}";
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
 
                 return;
             }
@@ -66,11 +60,7 @@ namespace stardew_access.Patches
             {
                 // No quests
                 string toSpeak = "No quests for today!";
-                if (billboardQueryKey != toSpeak)
-                {
-                    billboardQueryKey = toSpeak;
-                    MainClass.ScreenReader.Say(toSpeak, true);
-                }
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
             }
             else
             {
@@ -78,25 +68,15 @@ namespace stardew_access.Patches
                 string description = Game1.parseText(Game1.questOfTheDay.questDescription, font, 640);
                 string toSpeak = description;
 
-                if (billboardQueryKey != toSpeak)
+                // Snap to accept quest button
+                if (__instance.acceptQuestButton.visible)
                 {
-                    billboardQueryKey = toSpeak;
-
-                    // Snap to accept quest button
-                    if (__instance.acceptQuestButton.visible)
-                    {
-                        toSpeak += "\t\n Left click to accept quest.";
-                        __instance.acceptQuestButton.snapMouseCursorToCenter();
-                    }
-
-                    MainClass.ScreenReader.Say(toSpeak, true);
+                    toSpeak += "\t\n Left click to accept quest.";
+                    __instance.acceptQuestButton.snapMouseCursorToCenter();
                 }
-            }
-        }
 
-        internal static void Cleanup()
-        {
-            billboardQueryKey = "";
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            }
         }
     }
 }
