@@ -8,6 +8,24 @@ namespace stardew_access
         // Note to future self, don't make these static, it won't give errors in sv access but it will in other mods if they try to use the stardew access api.
         public API() { }
 
+        public string PrevMenuQueryText
+        {
+            get => MainClass.ScreenReader.PrevMenuQueryText;
+            set => MainClass.ScreenReader.PrevMenuQueryText = value;
+        }
+
+        public string MenuPrefixText
+        {
+            get => MainClass.ScreenReader.MenuPrefixText;
+            set => MainClass.ScreenReader.MenuPrefixText = value;
+        }
+
+        public string MenuSuffixText
+        {
+            get => MainClass.ScreenReader.MenuSuffixText;
+            set => MainClass.ScreenReader.MenuSuffixText = value;
+        }
+
         /// <summary>
         /// Search the area using Breadth First Search algorithm(BFS).
         /// </summary>

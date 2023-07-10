@@ -117,12 +117,31 @@ namespace stardew_access.ScreenReader
 
 
 
-
+        private string menuPrefixText = "";
+        private string menuSuffixText = "";
 
         public string PrevTextTile
         {
-            get { return prevTextTile; }
-            set { prevTextTile = value; }
+            get => prevTextTile;
+            set => prevTextTile = value;
+        }
+
+        public string PrevMenuQueryText
+        {
+            get => prevMenuText;
+            set => prevMenuText = value;
+        }
+
+        public string MenuPrefixText
+        {
+            get => menuPrefixText;
+            set => menuPrefixText = value;
+        }
+
+        public string MenuSuffixText
+        {
+            get => menuSuffixText;
+            set => menuSuffixText = value;
         }
 
         public string prevText = "", prevTextTile = "", prevChatText = "", prevMenuText = "";
@@ -193,13 +212,15 @@ namespace stardew_access.ScreenReader
 
         public void SayWithMenuChecker(string text, bool interrupt)
         {
-            if (text == null) return;
-            if (text != prevMenuText)
-            {
-                MainClass.InfoLog($"{text}");
-                Say(text, interrupt);
-                prevMenuText = text;
-            }
+            if (string.IsNullOrWhiteSpace(text))
+                return;
+            if (prevMenuText == $"{MenuPrefixText}{text}{MenuSuffixText}")
+                return;
+
+            prevMenuText = text;
+            Say($"{MenuPrefixText}{text}{MenuSuffixText}", interrupt);
+            MenuPrefixText = "";
+            MenuSuffixText = "";
         }
 
         public void SayWithChatChecker(string text, bool interrupt)
