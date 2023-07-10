@@ -5,6 +5,7 @@ namespace stardew_access
 {
     public class API
     {
+        // Note to future self, don't make these static, it won't give errors in sv access but it will in other mods if they try to use the stardew access api.
         public API() { }
 
         /// <summary>
@@ -13,7 +14,7 @@ namespace stardew_access
         /// <param name="center">The starting point.</param>
         /// <param name="limit">The limiting factor or simply radius of the search area.</param>
         /// <returns>A dictionary with all the detected tiles along with the name of the object on it and it's category.</returns>
-        public static Dictionary<Vector2, (string name, string category)> SearchNearbyTiles(
+        public Dictionary<Vector2, (string name, string category)> SearchNearbyTiles(
             Vector2 center,
             int limit
         )
@@ -34,7 +35,7 @@ namespace stardew_access
         /// Search the entire location using Breadth First Search algorithm(BFS).
         /// </summary>
         /// <returns>A dictionary with all the detected tiles along with the name of the object on it and it's category.</returns>
-        public static Dictionary<Vector2, (string name, string category)> SearchLocation()
+        public Dictionary<Vector2, (string name, string category)> SearchLocation()
         {
             /*
             * How to use the Dictionary to get the name and category of a tile:-
@@ -53,7 +54,7 @@ namespace stardew_access
         /// </summary>
         /// <param name="tile">The tile where we want to check the name and category of object if any</param>
         /// <returns>Name of the object as the first item (name) and category as the second item (category). Returns null if no object found.</returns>
-        public static (string? name, string? category) GetNameWithCategoryNameAtTile(Vector2 tile)
+        public (string? name, string? category) GetNameWithCategoryNameAtTile(Vector2 tile)
         {
             return TileInfo.GetNameWithCategoryNameAtTile(tile, null);
         }
@@ -63,7 +64,7 @@ namespace stardew_access
         /// </summary>
         /// <param name="tile">The tile where we want to check the name and category of object if any</param>
         /// <returns>Name of the object. Returns null if no object found.</returns>
-        public static string? GetNameAtTile(Vector2 tile)
+        public string? GetNameAtTile(Vector2 tile)
         {
             return TileInfo.GetNameAtTile(tile, null);
         }
@@ -71,7 +72,7 @@ namespace stardew_access
         /// <summary>Speaks the text via the loaded screen reader (if any).</summary>
         /// <param name="text">The text to be narrated.</param>
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        public static void Say(String text, Boolean interrupt)
+        public void Say(String text, Boolean interrupt)
         {
             if (MainClass.ScreenReader == null)
                 return;
@@ -83,7 +84,7 @@ namespace stardew_access
         /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.</summary>
         /// <param name="text">The text to be narrated.</param>
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        public static void SayWithChecker(String text, Boolean interrupt)
+        public void SayWithChecker(String text, Boolean interrupt)
         {
             if (MainClass.ScreenReader == null)
                 return;
@@ -96,7 +97,7 @@ namespace stardew_access
         /// <br/><br/>Use this when narrating hovered component in menus to avoid interference.</summary>
         /// <param name="text">The text to be narrated.</param>
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        public static void SayWithMenuChecker(String text, Boolean interrupt)
+        public void SayWithMenuChecker(String text, Boolean interrupt)
         {
             if (MainClass.ScreenReader == null)
                 return;
@@ -109,7 +110,7 @@ namespace stardew_access
         /// <br/><br/>Use this when narrating chat messages to avoid interference.</summary>
         /// <param name="text">The text to be narrated.</param>
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        public static void SayWithChatChecker(String text, Boolean interrupt)
+        public void SayWithChatChecker(String text, Boolean interrupt)
         {
             if (MainClass.ScreenReader == null)
                 return;
@@ -124,7 +125,7 @@ namespace stardew_access
         /// <param name="x">The X location of tile.</param>
         /// <param name="y">The Y location of tile.</param>
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        public static void SayWithTileQuery(String text, int x, int y, Boolean interrupt)
+        public void SayWithTileQuery(String text, int x, int y, Boolean interrupt)
         {
             if (MainClass.ScreenReader == null)
                 return;
