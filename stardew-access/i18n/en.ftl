@@ -93,10 +93,9 @@ tile_name-movie_ticket_machine = Movie Ticket Machine
 tile_name-missed_reward_chest = Missed Reward Chest
 tile_name-traveling_cart = Traveling Cart
 tile_name-feeding_bench = {$is_empty ->
-    [1] {EMPTYSTRING()}
-    *[0] Empty
+    [1] Empty
+    *[0] {EMPTYSTRING()}
   } Feeding Bench
-tile_name-feeding_bench_empty = Empty Feeding Bench
 tile_name-special_quest_board = Special Quest Board
 tile-museum_piece_showcase-suffix = {$content} Showcase
 tile_name-fridge = Fridge

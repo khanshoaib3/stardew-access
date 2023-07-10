@@ -44,36 +44,42 @@ namespace stardew_access
 
         public string Translate(string translationKey, bool disableWarning = false)
         {
-            if (Fluent != null)
+            if (Fluent == null)
             {
-                if (!Fluent.ContainsKey(translationKey))
-                {
-                    if (!disableWarning)
-                        MainClass.DebugLog($"No translation available for key: {translationKey}");
-                    return translationKey;
-                }
+                MainClass.ErrorLog("Fluent not initialized!");
+                return translationKey;
+            }
+
+            if (Fluent.ContainsKey(translationKey))
+            {
                 return Fluent.Get(translationKey);
             }
 
-            MainClass.ErrorLog("Fluent not initialized!");
+            if (!disableWarning)
+            {
+                MainClass.DebugLog($"No translation available for key: {translationKey}");
+            }
 
             return translationKey;
         }
 
         public string Translate(string translationKey, object? tokens, bool disableWarning = false)
         {
-            if (Fluent != null)
+            if (Fluent == null)
             {
-                if (!Fluent.ContainsKey(translationKey))
-                {
-                    if (!disableWarning)
-                        MainClass.DebugLog($"No translation available for key: {translationKey}");
-                    return translationKey;
-                }
+                MainClass.ErrorLog("Fluent not initialized!");
+                return translationKey;
+            }
+
+            if (Fluent.ContainsKey(translationKey))
+            {
                 return Fluent.Get(translationKey, tokens);
             }
 
-            MainClass.ErrorLog("Fluent not initialized!");
+            if (!disableWarning)
+            {
+                MainClass.DebugLog($"No translation available for key: {translationKey}");
+            }
 
             return translationKey;
         }
