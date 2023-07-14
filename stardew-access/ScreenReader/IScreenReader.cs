@@ -27,6 +27,18 @@ namespace stardew_access.ScreenReader
             set;
         }
 
+        public string MenuPrefixNoQueryText
+        {
+            get;
+            set;
+        }
+
+        public string MenuSuffixNoQueryText
+        {
+            get;
+            set;
+        }
+
         /// <summary>Initializes the screen reader.</summary>
         public void InitializeScreenReader();
 
