@@ -45,14 +45,14 @@ namespace stardew_access.Utils
         ///<summary>Returns the name of the object at tile alongwith it's category</summary>
         public static (string? name, CATEGORY? category) GetNameWithCategoryAtTile(Vector2 tile, GameLocation? currentLocation, bool lessInfo = false)
         {
-            var toReturn = getTranslationKeyWithCategoryAtTile(tile, currentLocation, lessInfo);
-            if (toReturn.name == null)
+            var (name, category) = GetTranslationKeyWithCategoryAtTile(tile, currentLocation, lessInfo);
+            if (name == null)
                 return (null, CATEGORY.Others);
 
-            return (Translator.Instance.Translate(toReturn.name, true), toReturn.category);
+            return (Translator.Instance.Translate(name, true), category);
         }
 
-        public static (string? name, CATEGORY? category) getTranslationKeyWithCategoryAtTile(Vector2 tile, GameLocation? currentLocation, bool lessInfo = false)
+        public static (string? name, CATEGORY? category) GetTranslationKeyWithCategoryAtTile(Vector2 tile, GameLocation? currentLocation, bool lessInfo = false)
         {
             currentLocation ??= Game1.currentLocation;
             int x = (int)tile.X;
