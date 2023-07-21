@@ -1,5 +1,6 @@
 using StardewValley;
 using System.Text.Json;
+using stardew_access.Translation;
 using static stardew_access.Utils.JsonLoader;
 
 namespace stardew_access.Utils

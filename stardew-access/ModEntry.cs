@@ -5,6 +5,7 @@ using HarmonyLib;
 using   stardew_access.Features;
 using stardew_access.Patches;
 using stardew_access.ScreenReader;
+using stardew_access.Translation;
 using stardew_access.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;

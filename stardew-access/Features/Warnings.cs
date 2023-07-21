@@ -1,3 +1,5 @@
+using stardew_access.Translation;
+
 namespace stardew_access.Utils
 {
     /// <summary>

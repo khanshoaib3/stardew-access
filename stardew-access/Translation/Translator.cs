@@ -1,7 +1,7 @@
 using Shockah.ProjectFluent;
 using StardewModdingAPI;
 
-namespace stardew_access
+namespace stardew_access.Translation
 {
     internal class Translator
     {

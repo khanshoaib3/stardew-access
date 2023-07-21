@@ -1,5 +1,6 @@
 using StardewValley;
 using StardewValley.Characters;
+using stardew_access.Translation;
 
 namespace stardew_access.Patches
 {

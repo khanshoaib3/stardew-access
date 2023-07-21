@@ -3,6 +3,7 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using stardew_access.Translation;
 using System.Text;
 
 namespace stardew_access.Utils
