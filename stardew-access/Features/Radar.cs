@@ -5,7 +5,7 @@ using StardewValley.Objects;
 
 namespace stardew_access.Features
 {
-    public class Radar
+    internal class Radar
     {
         private readonly List<Vector2> closed;
         private readonly List<Furniture> furnitures;

@@ -27,18 +27,19 @@ namespace stardew_access
         private static Warnings? warnings;
         private static ReadTile? readTile;
         private static GridMovement? gridMovement;
+        private static ObjectTracker? objectTracker;
 
         internal static ModConfig Config
         {
             get => config ?? throw new InvalidOperationException("Config has not been initialized.");
             set => config = value;
         }
-        public static IModHelper? ModHelper
+        internal static IModHelper? ModHelper
         {
             get => modHelper;
         }
 
-        public static Radar RadarFeature
+        internal static Radar RadarFeature
         {
             get
             {
@@ -53,7 +54,7 @@ namespace stardew_access
         internal static bool isNarratingHudMessage = false;
         internal static bool radarDebug = false;
 
-        public static IScreenReader ScreenReader
+        internal static IScreenReader ScreenReader
         {
             get
             {
@@ -64,7 +65,7 @@ namespace stardew_access
             set => screenReader = value;
         }
 
-        public static TileViewer TileViewerFeature
+        internal static TileViewer TileViewerFeature
         {
             get
             {
@@ -73,7 +74,7 @@ namespace stardew_access
             }
         }
 
-        public static ReadTile ReadTileFeature
+        internal static ReadTile ReadTileFeature
         {
             get
             {
@@ -82,7 +83,7 @@ namespace stardew_access
             }
         }
 
-        public static Warnings WarningsFeature
+        internal static Warnings WarningsFeature
         {
             get
             {
@@ -92,7 +93,7 @@ namespace stardew_access
             }
         }
 
-        public static GridMovement GridMovementFeature
+        internal static GridMovement GridMovementFeature
         {
             get
             {
@@ -102,6 +103,17 @@ namespace stardew_access
         }
         internal static int? LastGridMovementDirection = null;
         internal static InputButton? LastGridMovementButtonPressed = null;
+
+        internal static ObjectTracker ObjectTrackerFeature
+        {
+            get
+            {
+                objectTracker ??= new ObjectTracker();
+                return objectTracker;
+            }
+        }
+        internal static Boolean IsUsingPathfinding = false;
+
         #endregion
 
         /*********
@@ -168,11 +180,13 @@ namespace stardew_access
         {
             StaticTiles.LoadTilesFiles();
             StaticTiles.SetupTilesDicts();
+            ObjectTrackerFeature.GetLocationObjects();
         }
 
-        private void OnUpdateTicked(object? sender, UpdateTickedEventArgs? e)
+        private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
             // The event with id 13 is the Haley's six heart event, the one at the beach requiring the player to find the bracelet
+            // *** Exiting here will cause GridMovement and ObjectTracker functionality to not work during this event, making the bracelet impossible to track ***
             if (!Context.IsPlayerFree && !(Game1.CurrentEvent is not null && Game1.CurrentEvent.id == 13))
                 return;
 
@@ -196,6 +210,7 @@ namespace stardew_access
             RefreshBuildListIfRequired();
 
             RunGridMovementFeatureIfEnabled();
+            RunObjectTrackerFeatureIfEnabled();
 
             async void RunRadarFeatureIfEnabled()
             {
@@ -247,6 +262,15 @@ namespace stardew_access
                     }
                 }
             }
+            
+            void RunObjectTrackerFeatureIfEnabled()
+            {
+                if (e.IsMultipleOf(15) && Config != null && Config.OTAutoRefreshing)
+                {
+                    MainClass.DebugLog("Running ObjectTrackerFeature.Tick()");
+                    ObjectTrackerFeature.Tick();
+                }
+            }
         }
 
         private void OnMenuChanged(object? sender, MenuChangedEventArgs e)
@@ -259,7 +283,7 @@ namespace stardew_access
             }
         }
 
-        private void OnButtonPressed(object? sender, ButtonPressedEventArgs? e)
+        private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
         {
             #if DEBUG
             DebugLog($"OnButtonPressed");
@@ -270,14 +294,6 @@ namespace stardew_access
                 DebugLog("Canceling OTAutoWalking.");
                 #endif
                 Game1.player.controller.endBehaviorFunction(Game1.player, Game1.currentLocation);
-            }
-
-            if (e == null)
-            {
-                #if DEBUG
-                DebugLog("Returning due to 'e' being null");
-                #endif
-                return;
             }
 
             if (Config is null)
@@ -494,16 +510,15 @@ namespace stardew_access
                 Config!.GridMovementActive = !Config!.GridMovementActive;
                 string output = "Grid Movement Status: " + (Config!.GridMovementActive ? "Active" : "Inactive");
                 MainClass.ScreenReader.Say(output, true);
+                return;
             } 
+            ObjectTrackerFeature?.HandleKeys(sender, e);
         }
 
-        private void OnPlayerWarped(object? sender, WarpedEventArgs? e)
+        private void OnPlayerWarped(object? sender, WarpedEventArgs e)
         {
-            if (GridMovementFeature is not null)
-            {
-                if (e is null) return;
-                GridMovementFeature!.PlayerWarped(sender, e);
-            }
+            GridMovementFeature?.PlayerWarped(sender, e);
+            ObjectTrackerFeature?.GetLocationObjects(resetFocus: true);
         }
 
 

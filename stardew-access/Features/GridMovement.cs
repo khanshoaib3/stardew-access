@@ -13,7 +13,7 @@ using static stardew_access.Utils.MovementHelpers;
 
 namespace stardew_access.Features
 {
-	public class GridMovement
+	internal class GridMovement
 	{
 		private const int TimerInterval = 1000;
 		public Boolean is_warping = false;

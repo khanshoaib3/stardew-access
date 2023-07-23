@@ -6,7 +6,7 @@ namespace stardew_access.Features
     /// <summary>
     /// Warns the player when their health or stamina/energy is low. Also warns when its past midnight.
     /// </summary>
-    public class Warnings
+    internal class Warnings
     {
         // Store the previously checked value
         private int prevStamina;
