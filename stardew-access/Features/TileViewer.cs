@@ -1,9 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using xTile;
+using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace stardew_access.Utils
+namespace stardew_access.Features
 {
 
     /// <summary>
