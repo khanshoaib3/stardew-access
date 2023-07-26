@@ -26,7 +26,7 @@ menu-joja_cd-project_name = {$project_index ->
 ### Junimo Note Menu
 
 menu-junimo_note-scrambled_text = Scrambled text
-menu-junimo_note-current_area_info = Area {$area_name}, {$completion_reward}
+menu-junimo_note-current_area_info-prefix = Area: {$area_name}, Reward: {$completion_reward}, 
 menu-junimo_note-bundle_open_button = {$bundle_name} bundle
 menu-junimo_note-input_slot = Input Slot {$index}
 menu-junimo_note-collect_rewards = Collect rewards

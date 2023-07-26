@@ -7,8 +7,7 @@ namespace stardew_access.Patches
 {
     internal class JunimoNoteMenuPatch
     {
-        internal static string junimoNoteMenuQuery = "";
-        internal static string currentJunimoArea = "";
+        internal static bool firstTimeInMenu = true;
         internal static bool isUsingCustomKeyBinds = false;
         internal static int currentIngredientListItem = -1,
             currentIngredientInputSlot = -1,
@@ -63,20 +62,15 @@ namespace stardew_access.Patches
             if (__instance.scrambledText)
             {
                 string scrambledText = Translator.Instance.Translate("menu-junimo_note-scrambled_text");
-                if (junimoNoteMenuQuery != scrambledText)
-                {
-                    junimoNoteMenuQuery = scrambledText;
-                    MainClass.ScreenReader.Say(scrambledText, true);
-                }
+                MainClass.ScreenReader.SayWithMenuChecker(scrambledText, true);
                 return true;
             }
 
-            string prefix = "";
-            if (currentJunimoArea != areaName)
+            if (firstTimeInMenu)
             {
-                currentJunimoArea = areaName;
-                prefix = Translator.Instance.Translate(
-                    "menu-junimo_note-current_area_info",
+                firstTimeInMenu = false;
+                MainClass.ScreenReader.MenuPrefixNoQueryText = Translator.Instance.Translate(
+                    "menu-junimo_note-current_area_info-prefix",
                     new { area_name = areaName, completion_reward = reward }
                 );
             }
@@ -113,14 +107,9 @@ namespace stardew_access.Patches
                 }
             }
 
-            if (junimoNoteMenuQuery != toSpeak)
-            {
-                junimoNoteMenuQuery = toSpeak;
-                MainClass.ScreenReader.Say(prefix + ", " + toSpeak, true);
-                return true;
-            }
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
 
-            return false;
+            return !string.IsNullOrWhiteSpace(toSpeak);
         }
 
         private static void NarrateBundlePage(
@@ -315,10 +304,10 @@ namespace stardew_access.Patches
 
         internal static void Cleanup()
         {
-            JunimoNoteMenuPatch.currentIngredientListItem = -1;
-            JunimoNoteMenuPatch.currentIngredientInputSlot = -1;
-            JunimoNoteMenuPatch.currentInventorySlot = -1;
-            JunimoNoteMenuPatch.junimoNoteMenuQuery = "";
+            currentIngredientListItem = -1;
+            currentIngredientInputSlot = -1;
+            currentInventorySlot = -1;
+            firstTimeInMenu = true;
         }
     }
 }
