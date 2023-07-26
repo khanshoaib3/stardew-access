@@ -26,6 +26,18 @@ namespace stardew_access
             set => MainClass.ScreenReader.MenuSuffixText = value;
         }
 
+        public string MenuPrefixNoQueryText
+        {
+            get => MainClass.ScreenReader.MenuPrefixNoQueryText;
+            set => MainClass.ScreenReader.MenuPrefixNoQueryText = value;
+        }
+
+        public string MenuSuffixNoQueryText
+        {
+            get => MainClass.ScreenReader.MenuSuffixNoQueryText;
+            set => MainClass.ScreenReader.MenuSuffixNoQueryText = value;
+        }
+
         /// <summary>
         /// Search the area using Breadth First Search algorithm(BFS).
         /// </summary>
