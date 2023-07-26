@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 
 namespace stardew_access.ScreenReader
 {
-
     public struct GoString
     {
         public string msg;
         public long len;
+
         public GoString(string msg, long len)
         {
             this.msg = msg;
@@ -32,18 +32,58 @@ namespace stardew_access.ScreenReader
         private static extern int Close();
 
         public string prevText = "", prevTextTile = "", prevChatText = "", prevMenuText = "";
-        private bool initialized = false;
+        private bool initialized = false, resolvedDll = false;
+        private string menuPrefixText = "";
+        private string prevMenuPrefixText = "";
+        private string menuSuffixText = "";
+        private string prevMenuSuffixText = "";
+        private string menuPrefixNoQueryText = "";
+        private string menuSuffixNoQueryText = "";
 
         public string PrevTextTile
         {
-            get { return prevTextTile; }
-            set { prevTextTile = value; }
+            get => prevTextTile;
+            set => prevTextTile = value;
+        }
+
+        public string PrevMenuQueryText
+        {
+            get => prevMenuText;
+            set => prevMenuText = value;
+        }
+
+        public string MenuPrefixText
+        {
+            get => menuPrefixText;
+            set => menuPrefixText = value;
+        }
+
+        public string MenuSuffixText
+        {
+            get => menuSuffixText;
+            set => menuSuffixText = value;
+        }
+
+        public string MenuPrefixNoQueryText
+        {
+            get => menuPrefixNoQueryText;
+            set => menuPrefixNoQueryText = value;
+        }
+
+        public string MenuSuffixNoQueryText
+        {
+            get => menuSuffixNoQueryText;
+            set => menuSuffixNoQueryText = value;
         }
 
         public void InitializeScreenReader()
         {
             MainClass.InfoLog("Initializing speech dispatcher...");
-            NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), DllImportResolver);
+            if (!resolvedDll)
+            {
+                NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), DllImportResolver);
+                resolvedDll = true;
+            }
             int res = Initialize();
             if (res == 1)
             {
@@ -60,20 +100,20 @@ namespace stardew_access.ScreenReader
         {
             if (initialized)
             {
-                Close();
+                _ = Close();
                 initialized = false;
             }
         }
 
         public void Say(string text, bool interrupt)
         {
-            if (text == null) return;
+            if (string.IsNullOrWhiteSpace(text)) return;
             if (!initialized) return;
             if (!MainClass.Config.TTS) return;
 
             if (text.Contains('^')) text = text.Replace('^', '\n');
 
-            GoString str = new GoString(text, text.Length);
+            GoString str = new(text, text.Length);
             int re = Speak(str, interrupt);
 
             if (re == 1)
@@ -97,11 +137,18 @@ namespace stardew_access.ScreenReader
 
         public void SayWithMenuChecker(string text, bool interrupt)
         {
-            if (prevMenuText != text)
-            {
-                prevMenuText = text;
-                Say(text, interrupt);
-            }
+            if (string.IsNullOrWhiteSpace(text))
+                return;
+
+            if (prevMenuText == text && prevMenuSuffixText == MenuSuffixText && prevMenuPrefixText == MenuPrefixText)
+                return;
+
+            prevMenuText = text;
+            prevMenuSuffixText = MenuSuffixText;
+            prevMenuPrefixText = MenuPrefixText;
+            Say($"{MenuPrefixNoQueryText}{MenuPrefixText}{text}{MenuSuffixText}{MenuSuffixNoQueryText}", interrupt);
+            MenuPrefixNoQueryText = "";
+            MenuSuffixNoQueryText = "";
         }
 
         public void SayWithChatChecker(string text, bool interrupt)
@@ -129,7 +176,7 @@ namespace stardew_access.ScreenReader
             // libraryName is the name provided in DllImport i.e., [DllImport(libraryName)]
             if (libraryName != "libspeechdwrapper") return IntPtr.Zero;
             if (MainClass.ModHelper is null) return IntPtr.Zero;
-            
+
             string libraryPath = Path.Combine(MainClass.ModHelper.DirectoryPath, "libraries", "linux", "libspeechdwrapper.so");
             return NativeLibrary.Load(libraryPath, assembly, searchPath);
         }

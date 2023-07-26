@@ -3,7 +3,7 @@ using xTile;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
 
     /// <summary>
@@ -22,27 +22,22 @@ namespace stardew_access.Features
 
         public Boolean isAutoWalking = false;
 
-        private Vector2 PlayerFacingVector
+        private static Vector2 PlayerFacingVector
         {
             get
             {
-                switch (Game1.player.FacingDirection)
+                return Game1.player.FacingDirection switch
                 {
-                    case 0:
-                        return new Vector2(0, -Game1.tileSize);
-                    case 1:
-                        return new Vector2(Game1.tileSize, 0);
-                    case 2:
-                        return new Vector2(0, Game1.tileSize);
-                    case 3:
-                        return new Vector2(-Game1.tileSize, 0);
-                    default:
-                        return Vector2.Zero;
-                }
+                    0 => new Vector2(0, -Game1.tileSize),
+                    1 => new Vector2(Game1.tileSize, 0),
+                    2 => new Vector2(0, Game1.tileSize),
+                    3 => new Vector2(-Game1.tileSize, 0),
+                    _ => Vector2.Zero,
+                };
             }
         }
 
-        private Vector2 PlayerPosition
+        private static Vector2 PlayerPosition
         {
             get
             {
@@ -58,14 +53,14 @@ namespace stardew_access.Features
         /// <returns>Vector2</returns>
         public Vector2 GetTileCursorPosition()
         {
-            Vector2 target = this.PlayerPosition;
+            Vector2 target = PlayerPosition;
             if (this.relativeOffsetLock)
             {
                 target += this.relativeOffsetLockPosition;
             }
             else
             {
-                target += this.PlayerFacingVector + this.ViewingOffset;
+                target += PlayerFacingVector + this.ViewingOffset;
             }
             return target;
         }
@@ -90,7 +85,7 @@ namespace stardew_access.Features
                 this.relativeOffsetLock = !this.relativeOffsetLock;
                 if (this.relativeOffsetLock)
                 {
-                    this.relativeOffsetLockPosition = this.PlayerFacingVector + this.ViewingOffset;
+                    this.relativeOffsetLockPosition = PlayerFacingVector + this.ViewingOffset;
                 }
                 else
                 {
@@ -100,52 +95,54 @@ namespace stardew_access.Features
             }
             else if (MainClass.Config.TileCursorPreciseUpKey.JustPressed())
             {
-                this.cursorMoveInput(new Vector2(0, -MainClass.Config.TileCursorPreciseMovementDistance), true);
+                this.CursorMoveInput(new Vector2(0, -MainClass.Config.TileCursorPreciseMovementDistance), true);
             }
             else if (MainClass.Config.TileCursorPreciseRightKey.JustPressed())
             {
-                this.cursorMoveInput(new Vector2(MainClass.Config.TileCursorPreciseMovementDistance, 0), true);
+                this.CursorMoveInput(new Vector2(MainClass.Config.TileCursorPreciseMovementDistance, 0), true);
             }
             else if (MainClass.Config.TileCursorPreciseDownKey.JustPressed())
             {
-                this.cursorMoveInput(new Vector2(0, MainClass.Config.TileCursorPreciseMovementDistance), true);
+                this.CursorMoveInput(new Vector2(0, MainClass.Config.TileCursorPreciseMovementDistance), true);
             }
             else if (MainClass.Config.TileCursorPreciseLeftKey.JustPressed())
             {
-                this.cursorMoveInput(new Vector2(-MainClass.Config.TileCursorPreciseMovementDistance, 0), true);
+                this.CursorMoveInput(new Vector2(-MainClass.Config.TileCursorPreciseMovementDistance, 0), true);
             }
             else if (MainClass.Config.TileCursorUpKey.JustPressed())
             {
-                this.cursorMoveInput(new Vector2(0, -Game1.tileSize));
+                this.CursorMoveInput(new Vector2(0, -Game1.tileSize));
             }
             else if (MainClass.Config.TileCursorRightKey.JustPressed())
             {
-                this.cursorMoveInput(new Vector2(Game1.tileSize, 0));
+                this.CursorMoveInput(new Vector2(Game1.tileSize, 0));
             }
             else if (MainClass.Config.TileCursorDownKey.JustPressed())
             {
-                this.cursorMoveInput(new Vector2(0, Game1.tileSize));
+                this.CursorMoveInput(new Vector2(0, Game1.tileSize));
             }
             else if (MainClass.Config.TileCursorLeftKey.JustPressed())
             {
-                this.cursorMoveInput(new Vector2(-Game1.tileSize, 0));
+                this.CursorMoveInput(new Vector2(-Game1.tileSize, 0));
             }
             else if (MainClass.Config.AutoWalkToTileKey.JustPressed() && StardewModdingAPI.Context.IsPlayerFree)
             {
-                this.startAutoWalking();
+                this.StartAutoWalking();
             }
         }
 
-        private void startAutoWalking()
+        private void StartAutoWalking()
         {
-            PathFindController controller = new PathFindController(Game1.player, Game1.currentLocation, this.GetViewingTile().ToPoint(), Game1.player.FacingDirection);
-            controller.allowPlayerPathingInEvent = true;
+            PathFindController controller = new(Game1.player, Game1.currentLocation, this.GetViewingTile().ToPoint(), Game1.player.FacingDirection)
+            {
+                allowPlayerPathingInEvent = true
+            };
             if (controller.pathToEndPoint != null && controller.pathToEndPoint.Count > 0)
             {
                 Game1.player.controller = controller;
                 this.isAutoWalking = true;
                 this.finalTile = this.GetViewingTile();
-                MainClass.ReadTileFeature.pause();
+                MainClass.ReadTileFeature.Pause();
                 MainClass.ScreenReader.Say($"Moving to {this.finalTile.X}x {this.finalTile.Y}y", true);
             }
             else
@@ -158,19 +155,19 @@ namespace stardew_access.Features
         /// Stop the auto walk controller and reset variables 
         /// </summary>
         /// <param name="wasForced">Narrates a message if set to true.</param>
-        public void stopAutoWalking(bool wasForced = false)
+        public void StopAutoWalking(bool wasForced = false)
         {
             this.finalTile = Vector2.Zero;
             this.isAutoWalking = false;
             Game1.player.controller = null;
-            MainClass.ReadTileFeature.resume();
+            MainClass.ReadTileFeature.Resume();
             if (wasForced)
                 MainClass.ScreenReader.Say("Stopped moving", true);
         }
 
-        private void cursorMoveInput(Vector2 delta, Boolean precise = false)
+        private void CursorMoveInput(Vector2 delta, Boolean precise = false)
         {
-            if (!tryMoveTileView(delta)) return;
+            if (!TryMoveTileView(delta)) return;
             Vector2 position = this.GetTileCursorPosition();
             Vector2 tile = this.GetViewingTile();
             String? name = TileInfo.GetNameAtTile(tile);
@@ -203,10 +200,10 @@ namespace stardew_access.Features
             }
         }
 
-        private bool tryMoveTileView(Vector2 delta)
+        private bool TryMoveTileView(Vector2 delta)
         {
             Vector2 dest = this.GetTileCursorPosition() + delta;
-            if (!isPositionOnMap(dest)) return false;
+            if (!IsPositionOnMap(dest)) return false;
             if ((MainClass.Config.LimitTileCursorToScreen && Utility.isOnScreen(dest, 0)) || !MainClass.Config.LimitTileCursorToScreen)
             {
                 if (this.relativeOffsetLock)
@@ -225,7 +222,7 @@ namespace stardew_access.Features
         private void SnapMouseToPlayer()
         {
             Vector2 cursorPosition = this.GetTileCursorPosition();
-            if (allowMouseSnap(cursorPosition))
+            if (AllowMouseSnap(cursorPosition))
                 // Must account for viewport here
                 Game1.setMousePosition((int)cursorPosition.X - Game1.viewport.X, (int)cursorPosition.Y - Game1.viewport.Y);
         }
@@ -233,15 +230,15 @@ namespace stardew_access.Features
         /// <summary>
         /// Handle tile viewer logic.
         /// </summary>
-        public void update()
+        public void Update()
         {
             //Reset the viewing cursor to the player when they turn or move. This will not reset the locked offset relative cursor position.
-            if (this.prevFacing != this.PlayerFacingVector || this.prevPlayerPosition != this.PlayerPosition)
+            if (this.prevFacing != PlayerFacingVector || this.prevPlayerPosition != PlayerPosition)
             {
                 this.ViewingOffset = Vector2.Zero;
             }
-            this.prevFacing = this.PlayerFacingVector;
-            this.prevPlayerPosition = this.PlayerPosition;
+            this.prevFacing = PlayerFacingVector;
+            this.prevPlayerPosition = PlayerPosition;
             if (MainClass.Config.SnapMouse)
                 this.SnapMouseToPlayer();
 
@@ -256,13 +253,13 @@ namespace stardew_access.Features
                 if (this.finalTile != Vector2.Zero && this.finalTile == CurrentPlayer.Position)
                 {
                     MainClass.ScreenReader.Say("Reached destination", true);
-                    this.stopAutoWalking();
+                    this.StopAutoWalking();
                 }
             }
 
         }
 
-        private static bool allowMouseSnap(Vector2 point)
+        private static bool AllowMouseSnap(Vector2 point)
         {
             // Prevent snapping if any menu is open
             if (Game1.activeClickableMenu != null) return false;
@@ -279,11 +276,11 @@ namespace stardew_access.Features
             return true;
         }
 
-        private static bool isPositionOnMap(Vector2 position)
+        private static bool IsPositionOnMap(Vector2 position)
         {
             var currentLocation = Game1.currentLocation;
             // Check whether the position is a warp point, if so then return true, sometimes warp points are 1 tile off the map for example in coops and barns
-            if (TileInfo.isWarpPointAtTile(currentLocation, (int)(position.X / Game1.tileSize), (int)(position.Y / Game1.tileSize))) return true;
+            if (TileInfo.IsWarpPointAtTile(currentLocation, (int)(position.X / Game1.tileSize), (int)(position.Y / Game1.tileSize))) return true;
 
             //position does not take viewport into account since the entire map needs to be checked.
             Map map = currentLocation.map;

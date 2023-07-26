@@ -17,11 +17,11 @@ namespace stardew_access.Patches
                     if (i >= ___sprites.Count)
                         continue;
 
-                    if (__instance.names[i] is string && narrateNPCDetails(__instance, i, ___kidsNames, x, y))
+                    if (__instance.names[i] is string && NarrateNPCDetails(__instance, i, ___kidsNames, x, y))
                     {
                         return;
                     }
-                    else if (__instance.names[i] is long && narrateFarmerDetails(__instance, i, ___sprites, x, y))
+                    else if (__instance.names[i] is long && NarrateFarmerDetails(__instance, i, ___sprites, x, y))
                     {
                         return;
                     }
@@ -33,7 +33,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static bool narrateNPCDetails(SocialPage __instance, int i, List<string> ___kidsNames, int x, int y)
+        private static bool NarrateNPCDetails(SocialPage __instance, int i, List<string> ___kidsNames, int x, int y)
         {
             if (!__instance.characterSlots[i].bounds.Contains(x, y))
                 return false;
@@ -114,7 +114,7 @@ namespace stardew_access.Patches
             return true;
         }
 
-        private static bool narrateFarmerDetails(SocialPage __instance, int i, List<ClickableTextureComponent> ___sprites, int x, int y)
+        private static bool NarrateFarmerDetails(SocialPage __instance, int i, List<ClickableTextureComponent> ___sprites, int x, int y)
         {
             long farmerID = (long)__instance.names[i];
             Farmer farmer = Game1.getFarmerMaybeOffline(farmerID);

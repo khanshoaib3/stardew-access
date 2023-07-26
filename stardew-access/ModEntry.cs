@@ -1,10 +1,10 @@
-﻿using stardew_access.Features;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using HarmonyLib;
 using stardew_access.Patches;
 using stardew_access.ScreenReader;
+using stardew_access.Utils;
 using Microsoft.Xna.Framework;
 
 namespace stardew_access
@@ -13,7 +13,7 @@ namespace stardew_access
     {
         #region Global Vars & Properties
 
-#pragma warning disable CS8603
+        #pragma warning disable CS8603
         private static int prevDate = -99;
         private static ModConfig? config;
         private Harmony? harmony;
@@ -25,35 +25,39 @@ namespace stardew_access
         private static Warnings? warnings;
         private static ReadTile? readTile;
 
-        internal static ModConfig Config { get => config; set => config = value; }
-        public static IModHelper? ModHelper { get => modHelper; }
+        internal static ModConfig Config
+        {
+            get => config;
+            set => config = value;
+        }
+        public static IModHelper? ModHelper
+        {
+            get => modHelper;
+        }
 
         public static Radar RadarFeature
         {
             get
             {
-                if (radarFeature == null)
-                    radarFeature = new Radar();
+                radarFeature ??= new Radar();
 
                 return radarFeature;
             }
             set => radarFeature = value;
         }
 
-        public static string hudMessageQueryKey = "";
-        public static bool isNarratingHudMessage = false;
-        public static bool radarDebug = false;
+        internal static string hudMessageQueryKey = "";
+        internal static bool isNarratingHudMessage = false;
+        internal static bool radarDebug = false;
 
         public static IScreenReader ScreenReader
         {
             get
             {
-                if (screenReader == null)
-                    screenReader = new ScreenReaderController().Initialize();
+                screenReader ??= ScreenReaderController.Initialize();
 
                 return screenReader;
             }
-
             set => screenReader = value;
         }
 
@@ -61,8 +65,7 @@ namespace stardew_access
         {
             get
             {
-                if (tileViewer == null)
-                    tileViewer = new TileViewer();
+                tileViewer ??= new TileViewer();
                 return tileViewer;
             }
         }
@@ -71,8 +74,7 @@ namespace stardew_access
         {
             get
             {
-                if (readTile == null)
-                    readTile = new ReadTile();
+                readTile ??= new ReadTile();
                 return readTile;
             }
         }
@@ -81,8 +83,7 @@ namespace stardew_access
         {
             get
             {
-                if (warnings == null)
-                    warnings = new Warnings();
+                warnings ??= new Warnings();
 
                 return warnings;
             }
@@ -104,7 +105,7 @@ namespace stardew_access
 
             Game1.options.setGamepadMode("force_on");
 
-            ScreenReader = new ScreenReaderController().Initialize();
+            ScreenReader = ScreenReaderController.Initialize();
             ScreenReader.Say("Initializing Stardew Access", true);
 
             CustomSoundEffects.Initialize();
@@ -126,61 +127,62 @@ namespace stardew_access
             }
             #endregion
 
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
-            helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
-            helper.Events.GameLoop.DayStarted += this.onDayStarted;
-            helper.Events.Display.MenuChanged += this.onMenuChanged;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+            helper.Events.Display.MenuChanged += this.OnMenuChanged;
             AppDomain.CurrentDomain.DomainUnload += OnExit;
             AppDomain.CurrentDomain.ProcessExit += OnExit;
         }
 
-        private void onMenuChanged(object? sender, MenuChangedEventArgs e)
+        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) => Translator.Instance.Initialize(ModManifest);
+
+
+        private void OnMenuChanged(object? sender, MenuChangedEventArgs e)
         {
             TextBoxPatch.activeTextBoxes = "";
             if (e.OldMenu != null)
             {
-                MainClass.DebugLog($"Switched from {e.OldMenu.GetType().ToString()} menu, performing cleanup...");
+                MainClass.DebugLog($"Switched from {e.OldMenu.GetType()} menu, performing cleanup...");
                 IClickableMenuPatch.Cleanup(e.OldMenu);
             }
         }
 
         /// <summary>Returns the Screen Reader class for other mods to use.</summary>
-        public override object GetApi()
-        {
-            return new API();
-        }
+        public override object GetApi() => new API();
 
         public void OnExit(object? sender, EventArgs? e)
         {
             // This closes the connection with the screen reader, important for linux
             // Don't know if this ever gets called or not but, just in case if it does.
-            if (ScreenReader != null)
-                ScreenReader.CloseScreenReader();
+            ScreenReader?.CloseScreenReader();
         }
 
-        private void onDayStarted(object? sender, DayStartedEventArgs? e)
+        private void OnDayStarted(object? sender, DayStartedEventArgs? e)
         {
             StaticTiles.LoadTilesFiles();
             StaticTiles.SetupTilesDicts();
         }
 
-        private void onUpdateTicked(object? sender, UpdateTickedEventArgs? e)
+        private void OnUpdateTicked(object? sender, UpdateTickedEventArgs? e)
         {
-            if (!Context.IsPlayerFree)
+            // The event with id 13 is the Haley's six heart event, the one at the beach requiring the player to find the bracelet
+            if (!Context.IsPlayerFree && !(Game1.CurrentEvent is not null && Game1.CurrentEvent.id == 13))
                 return;
 
             // Narrates currently selected inventory slot
-            Other.narrateCurrentSlot();
+            GameStateNarrator.NarrateCurrentSlot();
             // Narrate current location's name
-            Other.narrateCurrentLocation();
+            GameStateNarrator.NarrateCurrentLocation();
             //handle TileCursor update logic
-            TileViewerFeature.update();
+            TileViewerFeature.Update();
 
             if (Config.Warning)
-                WarningsFeature.update();
+                WarningsFeature.Update();
 
             if (Config.ReadTile)
-                ReadTileFeature.update();
+                ReadTileFeature.Update();
 
             RunRadarFeatureIfEnabled();
 
@@ -204,7 +206,7 @@ namespace stardew_access
                 if (!isNarratingHudMessage)
                 {
                     isNarratingHudMessage = true;
-                    Other.narrateHudMessages();
+                    GameStateNarrator.NarrateHudMessages();
                     await Task.Delay(300);
                     isNarratingHudMessage = false;
                 }
@@ -218,7 +220,7 @@ namespace stardew_access
                     {
                         prevDate = CurrentPlayer.Date;
                         DebugLog("Refreshing buildlist...");
-                        CustomCommands.onBuildListCalled();
+                        CustomCommands.OnBuildListCalled();
                     }
                 }
             }
@@ -229,23 +231,32 @@ namespace stardew_access
             if (e == null)
                 return;
 
-            void SimulateMouseClicks(Action<int, int> leftClickHandler, Action<int, int> rightClickHandler)
+            void SimulateMouseClicks(
+                Action<int, int> leftClickHandler,
+                Action<int, int> rightClickHandler
+            )
             {
                 int mouseX = Game1.getMouseX(true);
                 int mouseY = Game1.getMouseY(true);
 
-                if (Config.LeftClickMainKey.JustPressed() || Config.LeftClickAlternateKey.JustPressed())
+                if (
+                    Config.LeftClickMainKey.JustPressed()
+                    || Config.LeftClickAlternateKey.JustPressed()
+                )
                 {
                     leftClickHandler(mouseX, mouseY);
                 }
-                else if (Config.RightClickMainKey.JustPressed() || Config.RightClickAlternateKey.JustPressed())
+                else if (
+                    Config.RightClickMainKey.JustPressed()
+                    || Config.RightClickAlternateKey.JustPressed()
+                )
                 {
                     rightClickHandler(mouseX, mouseY);
                 }
             }
 
             #region Simulate left and right clicks
-            if (!TextBoxPatch.isAnyTextBoxActive)
+            if (!TextBoxPatch.IsAnyTextBoxActive)
             {
                 if (Game1.activeClickableMenu != null)
                 {
@@ -280,7 +291,7 @@ namespace stardew_access
             // Stops the auto walk   controller if any movement key(WASD) is pressed
             if (TileViewerFeature.isAutoWalking && IsMovementKey(e.Button))
             {
-                TileViewerFeature.stopAutoWalking(wasForced: true);
+                TileViewerFeature.StopAutoWalking(wasForced: true);
             }
 
             // Narrate Current Location
@@ -307,8 +318,22 @@ namespace stardew_access
                     return;
 
                 string toSpeak = Config.HealthNStaminaInPercentage
-                    ? ModHelper.Translation.Get("manuallytriggered.healthnstamina.percent", new { health = CurrentPlayer.PercentHealth, stamina = CurrentPlayer.PercentStamina })
-                    : ModHelper.Translation.Get("manuallytriggered.healthnstamina.normal", new { health = CurrentPlayer.CurrentHealth, stamina = CurrentPlayer.CurrentStamina });
+                    ? Translator.Instance.Translate(
+                        "feature-speak_health_n_stamina-in_percentage_format",
+                        new
+                        {
+                            health = CurrentPlayer.PercentHealth,
+                            stamina = CurrentPlayer.PercentStamina
+                        }
+                    )
+                    : Translator.Instance.Translate(
+                        "feature-speak_health_n_stamina-in_normal_format",
+                        new
+                        {
+                            health = CurrentPlayer.CurrentHealth,
+                            stamina = CurrentPlayer.CurrentStamina
+                        }
+                    );
 
                 Narrate(toSpeak);
                 return;
@@ -324,21 +349,23 @@ namespace stardew_access
             // Narrate time and season
             if (Config.TimeNSeasonKey.JustPressed())
             {
-                Narrate($"Time is {CurrentPlayer.TimeOfDay} and it is {CurrentPlayer.Day} {CurrentPlayer.Date} of {CurrentPlayer.Season}");
+                Narrate(
+                    $"Time is {CurrentPlayer.TimeOfDay} and it is {CurrentPlayer.Day} {CurrentPlayer.Date} of {CurrentPlayer.Season}"
+                );
                 return;
             }
 
             // Manual read tile at player's position
             if (Config.ReadStandingTileKey.JustPressed())
             {
-                ReadTileFeature.run(manuallyTriggered: true, playersPosition: true);
+                ReadTileFeature.Run(manuallyTriggered: true, playersPosition: true);
                 return;
             }
 
             // Manual read tile at looking tile
             if (Config.ReadTileKey.JustPressed())
             {
-                ReadTileFeature.run(manuallyTriggered: true);
+                ReadTileFeature.Run(manuallyTriggered: true);
                 return;
             }
 
@@ -346,19 +373,6 @@ namespace stardew_access
             TileViewerFeature.HandleInput();
         }
 
-        public static string Translate(string translationKey)
-        {
-            if (ModHelper == null) return "null";
-
-            return ModHelper.Translation.Get(translationKey);
-        }
-
-        public static string Translate(string translationKey, object? tokens)
-        {
-            if (ModHelper == null) return "null";
-
-            return ModHelper.Translation.Get(translationKey, tokens);
-        }
 
         private static void LogMessage(string message, LogLevel logLevel)
         {

@@ -1,102 +1,102 @@
-using stardew_access.Features;
+using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
+using System.Text;
 
 namespace stardew_access.Patches
 {
     // These patches are global, i.e. work on every menus
     internal class IClickableMenuPatch
     {
+        private static readonly HashSet<Type> SkipMenuTypes = new()
+        {
+            typeof(AnimalQueryMenu),
+            typeof(Billboard),
+            typeof(CarpenterMenu),
+            typeof(ConfirmationDialog),
+            typeof(CraftingPage),
+            typeof(FieldOfficeMenu),
+            typeof(ForgeMenu),
+            typeof(GeodeMenu),
+            typeof(ItemGrabMenu),
+            typeof(ItemListMenu),
+            typeof(JojaCDMenu),
+            typeof(JunimoNoteMenu),
+            typeof(LetterViewerMenu),
+            typeof(MuseumMenu),
+            typeof(PondQueryMenu),
+            typeof(PurchaseAnimalsMenu),
+            typeof(QuestLog),
+            typeof(ReadyCheckDialog),
+            typeof(ShopMenu),
+            typeof(TailoringMenu),
+            typeof(SpecialOrdersBoard),
+            typeof(NumberSelectionMenu)
+        };
+
+        private static readonly HashSet<Type> SkipGameMenuPageTypes = new()
+        {
+            typeof(CraftingPage),
+            typeof(ExitPage),
+            typeof(InventoryPage),
+            typeof(OptionsPage),
+            typeof(SocialPage)
+        };
+
         internal static void DrawHoverTextPatch(string? text, int moneyAmountToDisplayAtBottom = -1, string? boldTitleText = null, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1, string[]? buffIconsToDisplay = null, Item? hoveredItem = null, CraftingRecipe? craftingIngredients = null)
         {
             try
             {
                 #region Skip narrating hover text for certain menus
-                if (Game1.activeClickableMenu is TitleMenu && !(((TitleMenu)Game1.activeClickableMenu).GetChildMenu() is CharacterCustomization))
+                if (Game1.activeClickableMenu != null && SkipMenuTypes.Contains(Game1.activeClickableMenu.GetType()))
+                {
                     return;
-                else if (Game1.activeClickableMenu is LetterViewerMenu || Game1.activeClickableMenu is QuestLog)
+                }
+
+                if (Game1.activeClickableMenu is TitleMenu titleMenu && titleMenu.GetChildMenu() is not CharacterCustomization)
+                {
                     return;
-                else if (Game1.activeClickableMenu is Billboard)
+                }
+
+                if (Game1.activeClickableMenu is GameMenu gameMenu && SkipGameMenuPageTypes.Contains(gameMenu.GetCurrentPage().GetType()))
+                {
                     return;
-                else if (Game1.activeClickableMenu is GeodeMenu)
-                    return;
-                else if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is InventoryPage)
-                    return;
-                else if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is CraftingPage)
-                    return;
-                else if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is OptionsPage)
-                    return;
-                else if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is ExitPage)
-                    return;
-                else if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is SocialPage)
-                    return;
-                else if (Game1.activeClickableMenu is ItemGrabMenu)
-                    return;
-                else if (Game1.activeClickableMenu is ShopMenu)
-                    return;
-                else if (Game1.activeClickableMenu is ConfirmationDialog)
-                    return;
-                else if (Game1.activeClickableMenu is JunimoNoteMenu)
-                    return;
-                else if (Game1.activeClickableMenu is CarpenterMenu)
-                    return;
-                else if (Game1.activeClickableMenu is PurchaseAnimalsMenu)
-                    return;
-                else if (Game1.activeClickableMenu is CraftingPage)
-                    return;
-                else if (Game1.activeClickableMenu is AnimalQueryMenu)
-                    return;
-                else if (Game1.activeClickableMenu is ConfirmationDialog)
-                    return;
-                else if (Game1.activeClickableMenu is ReadyCheckDialog)
-                    return;
-                else if (Game1.activeClickableMenu is JojaCDMenu)
-                    return;
-                else if (Game1.activeClickableMenu is TailoringMenu)
-                    return;
-                else if (Game1.activeClickableMenu is PondQueryMenu)
-                    return;
-                else if (Game1.activeClickableMenu is ForgeMenu)
-                    return;
-                else if (Game1.activeClickableMenu is ItemListMenu)
-                    return;
-                else if (Game1.activeClickableMenu is FieldOfficeMenu)
-                    return;
-                else if (Game1.activeClickableMenu is MuseumMenu)
-                    return;
+                }
                 #endregion
 
-                string toSpeak = " ";
+                // TODO Use InventoryUtils.cs
+                StringBuilder toSpeak = new();
 
                 #region Add item count before title
                 if (hoveredItem != null && hoveredItem.HasBeenInInventory)
                 {
                     int count = hoveredItem.Stack;
                     if (count > 1)
-                        toSpeak = $"{toSpeak} {count} ";
+                        toSpeak.AppendFormat(" {0} ", count);
                 }
                 #endregion
 
                 #region Add title if any
                 if (boldTitleText != null)
-                    toSpeak = $"{toSpeak} {boldTitleText}\n";
+                    toSpeak.AppendLine($" {boldTitleText}");
                 #endregion
 
                 #region Add quality of item
-                if (hoveredItem is StardewValley.Object && ((StardewValley.Object)hoveredItem).Quality > 0)
+                if (hoveredItem is StardewValley.Object obj && obj.Quality > 0)
                 {
-                    int quality = ((StardewValley.Object)hoveredItem).Quality;
-                    if (quality == 1)
+                    switch (obj.Quality)
                     {
-                        toSpeak = $"{toSpeak} Silver quality";
-                    }
-                    else if (quality == 2 || quality == 3)
-                    {
-                        toSpeak = $"{toSpeak} Gold quality";
-                    }
-                    else if (quality >= 4)
-                    {
-                        toSpeak = $"{toSpeak} Iridium quality";
+                        case 1:
+                            toSpeak.Append(" Silver quality");
+                            break;
+                        case 2:
+                        case 3:
+                            toSpeak.Append(" Gold quality");
+                            break;
+                        // outer if conditional excluded values <= 0, so default is same as >= 4
+                        default:
+                            toSpeak.Append(" Iridium quality");
+                            break;
                     }
                 }
                 #endregion
@@ -107,50 +107,50 @@ namespace stardew_access.Patches
                     string itemName = Game1.objectInformation[extraItemToShowIndex].Split('/')[0];
 
                     if (extraItemToShowAmount != -1)
-                        toSpeak = $"{toSpeak} Required: {extraItemToShowAmount} {itemName}";
+                        toSpeak.AppendFormat(" Required: {0} {1}", extraItemToShowAmount, itemName);
                     else
-                        toSpeak = $"{toSpeak} Required: {itemName}";
+                        toSpeak.AppendFormat(" Required: {0}", itemName);
                 }
                 #endregion
 
                 #region Add money
                 if (moneyAmountToDisplayAtBottom != -1)
-                    toSpeak = $"{toSpeak} \nCost: {moneyAmountToDisplayAtBottom}g\n";
+                    toSpeak.AppendLine($"Cost: {moneyAmountToDisplayAtBottom}g");
                 #endregion
 
                 #region Add the base text
                 if (text == "???")
-                    toSpeak = "unknown";
+                    toSpeak.Clear().Append("unknown");
                 else
-                    toSpeak = $"{toSpeak} {text}";
+                    toSpeak.Append($" {text}");
                 #endregion
 
                 #region Add crafting ingredients
                 if (craftingIngredients != null)
                 {
-                    toSpeak = $"{toSpeak} \n{craftingIngredients.description}";
-                    toSpeak = $"{toSpeak} \nIngredients\n";
+                    toSpeak.AppendLine(craftingIngredients.description);
+                    toSpeak.AppendLine("Ingredients");
 
-                    craftingIngredients.recipeList.ToList().ForEach(recipe =>
+                    foreach (var recipe in craftingIngredients.recipeList)
                     {
                         int count = recipe.Value;
                         int item = recipe.Key;
                         string name = craftingIngredients.getNameFromIndex(item);
 
-                        toSpeak = $"{toSpeak} ,{count} {name}";
-                    });
+                        toSpeak.AppendFormat(",{0} {1}", count, name);
+                    }
                 }
                 #endregion
 
                 #region Add health & stamina
-                if (hoveredItem is StardewValley.Object && ((StardewValley.Object)hoveredItem).Edibility != -300)
+                if (hoveredItem is StardewValley.Object edibleObj && edibleObj.Edibility != -300)
                 {
-                    int stamina_recovery = ((StardewValley.Object)hoveredItem).staminaRecoveredOnConsumption();
-                    toSpeak = $"{toSpeak} {stamina_recovery} Energy\n";
+                    int stamina_recovery = edibleObj.staminaRecoveredOnConsumption();
+                    toSpeak.AppendLine($" {stamina_recovery} Energy");
                     if (stamina_recovery >= 0)
                     {
-                        int health_recovery = ((StardewValley.Object)hoveredItem).healthRecoveredOnConsumption();
-                        toSpeak = $"{toSpeak} {health_recovery} Health";
+                        int health_recovery = edibleObj.healthRecoveredOnConsumption();
+                        toSpeak.Append($" {health_recovery} Health");
                     }
                 }
                 #endregion
@@ -160,16 +160,22 @@ namespace stardew_access.Patches
                 {
                     for (int i = 0; i < buffIconsToDisplay.Length; i++)
                     {
-                        string buffName = ((Convert.ToInt32(buffIconsToDisplay[i]) > 0) ? "+" : "") + buffIconsToDisplay[i] + " ";
+                        if (Convert.ToInt32(buffIconsToDisplay[i]) > 0)
+                        {
+                            toSpeak.Append('+');
+                        }
+                        toSpeak.Append(buffIconsToDisplay[i]).Append(' ');
                         if (i <= 11)
                         {
-                            buffName = Game1.content.LoadString("Strings\\UI:ItemHover_Buff" + i, buffName);
+                            toSpeak.Append(Game1.content.LoadString("Strings\\UI:ItemHover_Buff" + i, buffIconsToDisplay[i]));
                         }
                         try
                         {
-                            int count = int.Parse(buffName[..buffName.IndexOf(' ')]);
+                            int count = int.Parse(buffIconsToDisplay[i]);
                             if (count != 0)
-                                toSpeak = $"{toSpeak} {buffName}\n";
+                            {
+                                toSpeak.AppendLine();
+                            }
                         }
                         catch (Exception) { }
                     }
@@ -180,7 +186,7 @@ namespace stardew_access.Patches
                 // To prevent it from getting conflicted by two hover texts at the same time, two seperate methods are used.
                 // For example, sometimes `Welcome to Pierre's` and the items in seeds shop get conflicted causing it to speak infinitely.
 
-                if (toSpeak.ToString() != " ")
+                if (toSpeak.Length > 0)
                 {
                     if (StardewModdingAPI.Context.IsPlayerFree)
                         MainClass.ScreenReader.SayWithChecker(toSpeak.ToString(), true); // Normal Checker
@@ -199,7 +205,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                MainClass.DebugLog($"Closed {__instance.GetType().ToString()} menu, performing cleanup...");
+                MainClass.DebugLog($"Closed {__instance.GetType()} menu, performing cleanup...");
                 Cleanup(__instance);
             }
             catch (Exception e)
@@ -221,22 +227,13 @@ namespace stardew_access.Patches
                 case LoadGameMenu:
                     LoadGameMenuPatch.Cleanup();
                     break;
-                case AdvancedGameOptions:
-                    AdvancedGameOptionsPatch.Cleanup();
-                    break;
                 case LetterViewerMenu:
                     LetterViwerMenuPatch.Cleanup();
                     break;
                 case LevelUpMenu:
                     LevelUpMenuPatch.Cleanup();
                     break;
-                case Billboard:
-                    BillboardPatch.Cleanup();
-                    break;
                 case GameMenu:
-                    GameMenuPatch.Cleanup();
-                    ExitPagePatch.Cleanup();
-                    OptionsPagePatch.Cleanup();
                     SocialPagePatch.Cleanup();
                     InventoryPagePatch.Cleanup();
                     CraftingPagePatch.Cleanup();
@@ -265,11 +262,8 @@ namespace stardew_access.Patches
                 case DialogueBox:
                     DialogueBoxPatch.Cleanup();
                     break;
-                case JojaCDMenu:
-                    JojaCDMenuPatch.Cleanup();
-                    break;
                 case QuestLog:
-                    QuestLogPatch.Cleaup();
+                    QuestLogPatch.Cleanup();
                     break;
                 case TailoringMenu:
                     TailoringMenuPatch.Cleanup();
@@ -283,17 +277,20 @@ namespace stardew_access.Patches
                 case FieldOfficeMenu:
                     FieldOfficeMenuPatch.Cleanup();
                     break;
-                case MuseumMenu:
-                    MuseumMenuPatch.Cleanup();
-                    break;
                 case PondQueryMenu:
                     PondQueryMenuPatch.Cleanup();
                     break;
                 case SpecialOrdersBoard:
                     SpecialOrdersBoardPatch.Cleanup();
                     break;
+                case NumberSelectionMenu:
+                    NumberSelectionMenuPatch.Cleanup();
+                    break;
             }
 
+            MainClass.ScreenReader.PrevMenuQueryText = "";
+            MainClass.ScreenReader.MenuPrefixText = "";
+            MainClass.ScreenReader.MenuSuffixText = "";
             InventoryUtils.Cleanup();
             TextBoxPatch.activeTextBoxes = "";
         }

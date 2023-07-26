@@ -1,12 +1,11 @@
 using StardewValley;
 using StardewValley.Menus;
+using System.Text;
 
 namespace stardew_access.Patches
 {
     internal class OptionsPagePatch
     {
-        internal static string optionsPageQueryKey = "";
-
         internal static void DrawPatch(OptionsPage __instance)
         {
             try
@@ -21,35 +20,36 @@ namespace stardew_access.Patches
                     OptionsElement optionsElement = __instance.options[currentItemIndex + i];
                     string toSpeak = optionsElement.label;
 
-                    if (optionsElement is OptionsButton)
-                        toSpeak = $" {toSpeak} Button";
-                    else if (optionsElement is OptionsCheckbox)
-                        toSpeak = (((OptionsCheckbox)optionsElement).isChecked ? "Enabled" : "Disabled") + $" {toSpeak} Checkbox";
-                    else if (optionsElement is OptionsDropDown)
-                        toSpeak = $"{toSpeak} Dropdown, option {((OptionsDropDown)optionsElement).dropDownDisplayOptions[((OptionsDropDown)optionsElement).selectedOption]} selected";
-                    else if (optionsElement is OptionsSlider)
-                        toSpeak = $"{((OptionsSlider)optionsElement).value}% {toSpeak} Slider";
-                    else if (optionsElement is OptionsPlusMinus)
-                        toSpeak = $"{((OptionsPlusMinus)optionsElement).displayOptions[((OptionsPlusMinus)optionsElement).selected]} selected of {toSpeak}";
-                    else if (optionsElement is OptionsInputListener)
+                    switch (optionsElement)
                     {
-                        string buttons = "";
-                        ((OptionsInputListener)optionsElement).buttonNames.ForEach(name => { buttons += $", {name}"; });
-                        toSpeak = $"{toSpeak} is bound to {buttons}. Left click to change.";
+                        case OptionsButton:
+                            toSpeak = $" {toSpeak} Button";
+                            break;
+                        case OptionsCheckbox checkbox:
+                            toSpeak = $"{(checkbox.isChecked ? "Enabled" : "Disabled")} {toSpeak} Checkbox";
+                            break;
+                        case OptionsDropDown dropdown:
+                            toSpeak = $"{toSpeak} Dropdown, option {dropdown.dropDownDisplayOptions[dropdown.selectedOption]} selected";
+                            break;
+                        case OptionsSlider slider:
+                            toSpeak = $"{slider.value}% {toSpeak} Slider";
+                            break;
+                        case OptionsPlusMinus plusMinus:
+                            toSpeak = $"{plusMinus.displayOptions[plusMinus.selected]} selected of {toSpeak}";
+                            break;
+                        case OptionsInputListener listener:
+                            var buttons = new StringBuilder();
+                            listener.buttonNames.ForEach(name => buttons.Append($", {name}"));
+                            toSpeak = $"{toSpeak} is bound to {buttons}. Left click to change.";
+                            break;
+                        default:
+                            if (toSpeak.Contains(":"))
+                                toSpeak = toSpeak.Replace(":", "");
+                            toSpeak = $"{toSpeak} Options:";
+                            break;
                     }
-                    else
-                    {
-                        if (toSpeak.Contains(":"))
-                            toSpeak = toSpeak.Replace(":", "");
 
-                        toSpeak = $"{toSpeak} Options:";
-                    }
-
-                    if (optionsPageQueryKey != toSpeak)
-                    {
-                        optionsPageQueryKey = toSpeak;
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                    }
+                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
                     return;
                 }
             }
@@ -57,11 +57,6 @@ namespace stardew_access.Patches
             {
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
-        }
-
-        internal static void Cleanup()
-        {
-            optionsPageQueryKey = "";
         }
     }
 }

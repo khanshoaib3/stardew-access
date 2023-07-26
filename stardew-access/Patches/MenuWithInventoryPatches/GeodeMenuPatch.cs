@@ -1,4 +1,4 @@
-using stardew_access.Features;
+using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -14,10 +14,10 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
-                if (narrateRecievedTreasure(__instance)) return;
-                if (narrateHoveredButton(__instance, x, y)) return;
+                if (NarrateRecievedTreasure(__instance)) return;
+                if (NarrateHoveredButton(__instance, x, y)) return;
 
-                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                     geodeMenuQueryKey = "";
             }
             catch (Exception e)
@@ -26,7 +26,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static bool narrateRecievedTreasure(GeodeMenu __instance)
+        private static bool NarrateRecievedTreasure(GeodeMenu __instance)
         {
             // Narrates the treasure recieved on breaking the geode
             if (__instance.geodeTreasure == null) return false;
@@ -44,7 +44,7 @@ namespace stardew_access.Patches
             return true;
         }
 
-        private static bool narrateHoveredButton(GeodeMenu __instance, int x, int y)
+        private static bool NarrateHoveredButton(GeodeMenu __instance, int x, int y)
         {
             string toSpeak = "";
             bool isDropItemButton = false;

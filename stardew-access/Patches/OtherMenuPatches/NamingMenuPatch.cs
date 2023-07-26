@@ -17,7 +17,7 @@ namespace stardew_access.Patches
                     ___textBox.Selected = false;
                 }
 
-                if (TextBoxPatch.isAnyTextBoxActive) return;
+                if (TextBoxPatch.IsAnyTextBoxActive) return;
 
                 string toSpeak = "";
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position

@@ -1,5 +1,5 @@
 using StardewValley;
-using stardew_access.Features;
+using stardew_access.Utils;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
@@ -7,8 +7,6 @@ namespace stardew_access.Patches
 {
     internal class CraftingPagePatch
     {
-        internal static string hoveredItemQueryKey = "";
-        internal static string craftingPageQueryKey = "";
         internal static int currentSelectedCraftingRecipe = -1;
         internal static bool isSelectingRecipe = false;
 
@@ -18,23 +16,19 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
-                handleKeyBinds(__instance, ___currentCraftingPage);
+                HandleKeyBinds(__instance, ___currentCraftingPage);
 
-                if (narrateMenuButtons(__instance, x, y))
+                if (NarrateMenuButtons(__instance, x, y))
                 {
                     return;
                 }
 
-                if (narrateHoveredRecipe(__instance, ___currentCraftingPage, ___hoverRecipe, x, y))
+                if (NarrateHoveredRecipe(__instance, ___currentCraftingPage, ___hoverRecipe, x, y))
                 {
                     return;
                 }
 
-                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
-                {
-                    craftingPageQueryKey = "";
-                    return;
-                }
+                InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y);
             }
             catch (Exception e)
             {
@@ -42,7 +36,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void handleKeyBinds(CraftingPage __instance, int ___currentCraftingPage)
+        private static void HandleKeyBinds(CraftingPage __instance, int ___currentCraftingPage)
         {
             if (MainClass.Config.SnapToFirstSecondaryInventorySlotKey.JustPressed() && __instance.pagesOfCraftingRecipes[___currentCraftingPage].Count > 0)
             {
@@ -61,12 +55,12 @@ namespace stardew_access.Patches
             else if (MainClass.Config.CraftingMenuCycleThroughRecipiesKey.JustPressed() && !isSelectingRecipe)
             {
                 isSelectingRecipe = true;
-                CycleThroughRecipies(__instance.pagesOfCraftingRecipes, ___currentCraftingPage, __instance);
+                CycleThroughRecipes(__instance.pagesOfCraftingRecipes, ___currentCraftingPage, __instance);
                 Task.Delay(200).ContinueWith(_ => { isSelectingRecipe = false; });
             }
         }
 
-        private static bool narrateMenuButtons(CraftingPage __instance, int x, int y)
+        private static bool NarrateMenuButtons(CraftingPage __instance, int x, int y)
         {
             string? toSpeak = null;
             bool isDropItemButton = false;
@@ -93,18 +87,13 @@ namespace stardew_access.Patches
                 return false;
             }
 
-            if (toSpeak != null && craftingPageQueryKey != toSpeak)
-            {
-                craftingPageQueryKey = toSpeak;
-                hoveredItemQueryKey = "";
-                MainClass.ScreenReader.Say(toSpeak, true);
-                if (isDropItemButton) Game1.playSound("drop_item");
-            }
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            if (isDropItemButton) Game1.playSound("drop_item");
 
             return true;
         }
 
-        private static bool narrateHoveredRecipe(CraftingPage __instance, int ___currentCraftingPage, CraftingRecipe ___hoverRecipe, int x, int y)
+        private static bool NarrateHoveredRecipe(CraftingPage __instance, int ___currentCraftingPage, CraftingRecipe ___hoverRecipe, int x, int y)
         {
             if (___hoverRecipe == null)
             {
@@ -123,12 +112,7 @@ namespace stardew_access.Patches
 
                 string query = $"unknown recipe:{__instance.getCurrentlySnappedComponent().myID}";
 
-                if (craftingPageQueryKey != query)
-                {
-                    craftingPageQueryKey = query;
-                    hoveredItemQueryKey = "";
-                    MainClass.ScreenReader.Say("unknown recipe", true);
-                }
+                MainClass.ScreenReader.SayWithMenuChecker("unknown recipe", true);
                 return true;
             }
 
@@ -140,7 +124,7 @@ namespace stardew_access.Patches
             string craftable = "";
 
             description = $"Description:\n{___hoverRecipe.description}";
-            craftable = ___hoverRecipe.doesFarmerHaveIngredientsInInventory(getContainerContents(__instance._materialContainers)) ? "Craftable" : "Not Craftable";
+            craftable = ___hoverRecipe.doesFarmerHaveIngredientsInInventory(GetContainerContents(__instance._materialContainers)) ? "Craftable" : "Not Craftable";
 
             #region Crafting ingredients
             ingredients = "Ingredients:\n";
@@ -200,17 +184,12 @@ namespace stardew_access.Patches
 
             string toSpeak = $"{numberOfProduce} {name}, {craftable}, \n\t{ingredients}, \n\t{description} \n\t{buffs}";
 
-            if (craftingPageQueryKey != toSpeak)
-            {
-                craftingPageQueryKey = toSpeak;
-                hoveredItemQueryKey = "";
-                MainClass.ScreenReader.Say(toSpeak, true);
-            }
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
 
             return true;
         }
 
-        private static void CycleThroughRecipies(List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes, int ___currentCraftingPage, CraftingPage __instance)
+        private static void CycleThroughRecipes(List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes, int ___currentCraftingPage, CraftingPage __instance)
         {
             currentSelectedCraftingRecipe++;
             if (currentSelectedCraftingRecipe < 0 || currentSelectedCraftingRecipe >= pagesOfCraftingRecipes[0].Count)
@@ -221,18 +200,18 @@ namespace stardew_access.Patches
 
             // Skip if recipe is not unlocked/unknown
             if (pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(currentSelectedCraftingRecipe).Key.hoverText.Equals("ghosted"))
-                CycleThroughRecipies(pagesOfCraftingRecipes, ___currentCraftingPage, __instance);
+                CycleThroughRecipes(pagesOfCraftingRecipes, ___currentCraftingPage, __instance);
         }
 
         // This method is used to get the inventory items to check if the player has enough ingredients for a recipe
         // Taken from CraftingPage.cs -> 169 line
-        internal static IList<Item>? getContainerContents(List<Chest> materialContainers)
+        internal static IList<Item>? GetContainerContents(List<Chest> materialContainers)
         {
             if (materialContainers == null)
             {
                 return null;
             }
-            List<Item> items = new List<Item>();
+            List<Item> items = new();
             for (int i = 0; i < materialContainers.Count; i++)
             {
                 items.AddRange(materialContainers[i].items);
@@ -242,8 +221,6 @@ namespace stardew_access.Patches
 
         internal static void Cleanup()
         {
-            hoveredItemQueryKey = "";
-            craftingPageQueryKey = "";
             currentSelectedCraftingRecipe = -1;
             isSelectingRecipe = false;
         }

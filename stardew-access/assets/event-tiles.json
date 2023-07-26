@@ -1,31 +1,31 @@
 {
   "Egg Festival": {
-    "21,55": "Egg Festival Shop"
+    "21,55": "event_tile-egg_festival_shop-name"
   },
   "Flower Dance": {
-    "28,37": "Flower Dance Shop"
+    "28,37": "event_tile-flower_dance_shop-name"
   },
   "Luau": {
-    "35,13": "Soup Pot"
+    "35,13": "event_tile-soup_pot-name"
   },
   "Spirit's Eve": {
-    "25,49": "Spirit's Eve Shop"
+   "25,49": "event_tile-spirits_eve_shop-name"
   },
   "Stardew Valley Fair": {
-    "16,52": "Stardew Valley Fair Shop",
-    "23,62": "Slingshot Game",
-    "34,65": "Purchase Star Tokens",
-    "33,70": "The Wheel",
-    "23,70": "Fishing Challenge",
-    "47,87": "Fortune Teller",
-    "38,59": "Grange Display",
-    "30,56": "Strength Game",
-    "26,33": "Free Burgers"
+    "16,52": "event_tile-stardew_valley_fair_shop-name",
+    "23,62": "event_tile-slingshot_game-name",
+    "34,65": "event_tile-purchase_star_tokens-name",
+    "33,70": "event_tile-the_wheel-name",
+    "23,70": "event_tile-fishing_challenge-name",
+    "47,87": "event_tile-fortune_teller-name",
+    "38,59": "event_tile-grange_display-name",
+    "30,56": "event_tile-strength_game-name",
+    "26,33": "event_tile-free_burgers-name"
   },
   "Festival of Ice": {
-    "55,31": "Travelling Cart"
+    "55,31": "event_tile-travelling_cart-name"
   },
   "Feast of the Winter Star": {
-    "18,61": "Feast of the Winter Star Shop"
+    "18,61": "event_tile-feast_of_the_winter_star_shop-name"
   }
 }

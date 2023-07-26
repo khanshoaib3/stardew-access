@@ -19,11 +19,11 @@ namespace stardew_access.Patches
 
                 if (___questPage == -1)
                 {
-                    narrateQuestList(__instance, ___pages, ___currentPage, x, y);
+                    NarrateQuestList(__instance, ___pages, ___currentPage, x, y);
                 }
                 else
                 {
-                    narrateIndividualQuest(__instance, ___currentPage, ____shownQuest, ____objectiveText, x, y);
+                    NarrateIndividualQuest(__instance, ___currentPage, ____shownQuest, ____objectiveText, x, y);
                 }
             }
             catch (Exception e)
@@ -32,7 +32,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void narrateQuestList(QuestLog __instance, List<List<IQuest>> ___pages, int ___currentPage, int x, int y)
+        private static void NarrateQuestList(QuestLog __instance, List<List<IQuest>> ___pages, int ___currentPage, int x, int y)
         {
             string toSpeak = "";
 
@@ -48,7 +48,7 @@ namespace stardew_access.Patches
             {
                 for (int i = 0; i < __instance.questLogButtons.Count; i++)
                 {
-                    if (___pages.Count() <= 0 || ___pages[___currentPage].Count() <= i)
+                    if (___pages.Count <= 0 || ___pages[___currentPage].Count <= i)
                         continue;
 
                     if (!__instance.questLogButtons[i].containsPoint(x, y))
@@ -73,7 +73,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void narrateIndividualQuest(QuestLog __instance, int ___currentPage, IQuest ____shownQuest, List<string> ____objectiveText, int x, int y)
+        private static void NarrateIndividualQuest(QuestLog __instance, int ___currentPage, IQuest ____shownQuest, List<string> ____objectiveText, int x, int y)
         {
             bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
             bool containsReward = __instance.HasReward() || __instance.HasMoneyReward();
@@ -106,9 +106,9 @@ namespace stardew_access.Patches
                     for (int j = 0; j < ____objectiveText.Count; j++)
                     {
                         string parsed_text = Game1.parseText(____objectiveText[j], width: __instance.width - 192, whichFont: Game1.dialogueFont);
-                        if (____shownQuest != null && ____shownQuest is SpecialOrder)
+                        if (____shownQuest != null && ____shownQuest is SpecialOrder order)
                         {
-                            OrderObjective order_objective = ((SpecialOrder)____shownQuest).objectives[j];
+                            OrderObjective order_objective = order.objectives[j];
                             if (order_objective.GetMaxCount() > 1 && order_objective.ShouldShowProgress())
                                 parsed_text += "\n\t" + order_objective.GetCount() + " of " + order_objective.GetMaxCount() + " completed";
                         }
@@ -154,7 +154,7 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void Cleaup()
+        internal static void Cleanup()
         {
             questLogQuery = "";
             isNarratingQuestInfo = false;

@@ -6,19 +6,17 @@ namespace stardew_access.Patches
 {
     internal class BillboardPatch
     {
-        private static string billboardQueryKey = "";
-
         internal static void DrawPatch(Billboard __instance, bool ___dailyQuestBoard)
         {
             try
             {
                 if (___dailyQuestBoard)
                 {
-                    narrateDailyQuestBoard(__instance);
+                    NarrateDailyQuestBoard(__instance);
                 }
                 else
                 {
-                    narrateCalendar(__instance);
+                    NarrateCalendar(__instance);
                 }
             }
             catch (Exception e)
@@ -27,7 +25,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void narrateCalendar(Billboard __instance)
+        private static void NarrateCalendar(Billboard __instance)
         {
             for (int i = 0; i < __instance.calendarDays.Count; i++)
             {
@@ -49,28 +47,20 @@ namespace stardew_access.Patches
                 if (Game1.dayOfMonth == i + 1)
                     toSpeak = $"Current {toSpeak}";
 
-                if (billboardQueryKey != toSpeak)
-                {
-                    billboardQueryKey = toSpeak;
-                    if (i == 0) toSpeak = $"{toSpeak} {currentYearNMonth}";
-                    MainClass.ScreenReader.Say(toSpeak, true);
-                }
+                if (i == 0) toSpeak = $"{toSpeak} {currentYearNMonth}";
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
 
                 return;
             }
         }
 
-        private static void narrateDailyQuestBoard(Billboard __instance)
+        private static void NarrateDailyQuestBoard(Billboard __instance)
         {
             if (Game1.questOfTheDay == null || Game1.questOfTheDay.currentObjective == null || Game1.questOfTheDay.currentObjective.Length == 0)
             {
                 // No quests
                 string toSpeak = "No quests for today!";
-                if (billboardQueryKey != toSpeak)
-                {
-                    billboardQueryKey = toSpeak;
-                    MainClass.ScreenReader.Say(toSpeak, true);
-                }
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
             }
             else
             {
@@ -78,25 +68,15 @@ namespace stardew_access.Patches
                 string description = Game1.parseText(Game1.questOfTheDay.questDescription, font, 640);
                 string toSpeak = description;
 
-                if (billboardQueryKey != toSpeak)
+                // Snap to accept quest button
+                if (__instance.acceptQuestButton.visible)
                 {
-                    billboardQueryKey = toSpeak;
-
-                    // Snap to accept quest button
-                    if (__instance.acceptQuestButton.visible)
-                    {
-                        toSpeak += "\t\n Left click to accept quest.";
-                        __instance.acceptQuestButton.snapMouseCursorToCenter();
-                    }
-
-                    MainClass.ScreenReader.Say(toSpeak, true);
+                    toSpeak += "\t\n Left click to accept quest.";
+                    __instance.acceptQuestButton.snapMouseCursorToCenter();
                 }
-            }
-        }
 
-        internal static void Cleanup()
-        {
-            billboardQueryKey = "";
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            }
         }
     }
 }

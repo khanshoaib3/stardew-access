@@ -4,7 +4,7 @@ namespace stardew_access.Patches
 {
     public class IntroPatch
     {
-        public static string introQuery = " ";
+        internal static string introQuery = " ";
 
         internal static void DrawPatch(Intro __instance, int ___currentState)
         {
@@ -17,11 +17,11 @@ namespace stardew_access.Patches
 
                 if (___currentState == 3)
                 {
-                    toSpeak = MainClass.ModHelper.Translation.Get("intro.scene3");
+                    toSpeak = Translator.Instance.Translate("intro-scene3");
                 }
                 else if (___currentState == 4)
                 {
-                    toSpeak = MainClass.ModHelper.Translation.Get("intro.scene4");
+                    toSpeak = Translator.Instance.Translate("intro-scene4");
                 }
 
                 if (toSpeak != " " && introQuery != toSpeak)

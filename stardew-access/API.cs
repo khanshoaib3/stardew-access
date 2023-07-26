@@ -1,11 +1,42 @@
 using Microsoft.Xna.Framework;
-using stardew_access.Features;
+using stardew_access.Utils;
 
 namespace stardew_access
 {
     public class API
     {
+        // Note to future self, don't make these static, it won't give errors in sv access but it will in other mods if they try to use the stardew access api.
         public API() { }
+
+        public string PrevMenuQueryText
+        {
+            get => MainClass.ScreenReader.PrevMenuQueryText;
+            set => MainClass.ScreenReader.PrevMenuQueryText = value;
+        }
+
+        public string MenuPrefixText
+        {
+            get => MainClass.ScreenReader.MenuPrefixText;
+            set => MainClass.ScreenReader.MenuPrefixText = value;
+        }
+
+        public string MenuSuffixText
+        {
+            get => MainClass.ScreenReader.MenuSuffixText;
+            set => MainClass.ScreenReader.MenuSuffixText = value;
+        }
+
+        public string MenuPrefixNoQueryText
+        {
+            get => MainClass.ScreenReader.MenuPrefixNoQueryText;
+            set => MainClass.ScreenReader.MenuPrefixNoQueryText = value;
+        }
+
+        public string MenuSuffixNoQueryText
+        {
+            get => MainClass.ScreenReader.MenuSuffixNoQueryText;
+            set => MainClass.ScreenReader.MenuSuffixNoQueryText = value;
+        }
 
         /// <summary>
         /// Search the area using Breadth First Search algorithm(BFS).
@@ -45,7 +76,7 @@ namespace stardew_access
             * Here detectedTiles is the Dictionary returned by this method
             */
 
-            return new Radar().SearchLocation();
+            return Radar.SearchLocation();
         }
 
         /// <summary>
@@ -55,7 +86,7 @@ namespace stardew_access
         /// <returns>Name of the object as the first item (name) and category as the second item (category). Returns null if no object found.</returns>
         public (string? name, string? category) GetNameWithCategoryNameAtTile(Vector2 tile)
         {
-            return TileInfo.getNameWithCategoryNameAtTile(tile, null);
+            return TileInfo.GetNameWithCategoryNameAtTile(tile, null);
         }
 
         /// <summary>

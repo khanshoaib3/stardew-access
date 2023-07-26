@@ -13,13 +13,23 @@ namespace stardew_access.Patches
 
         private static double loveLevel;
 
-        internal static void DrawPatch(AnimalQueryMenu __instance, bool ___confirmingSell, FarmAnimal ___animal, TextBox ___textBox, string ___parentName, bool ___movingAnimal, double ___loveLevel)
+        internal static void DrawPatch(
+            AnimalQueryMenu __instance,
+            bool ___confirmingSell,
+            FarmAnimal ___animal,
+            TextBox ___textBox,
+            string ___parentName,
+            bool ___movingAnimal,
+            double ___loveLevel
+        )
         {
             try
             {
-                if (TextBoxPatch.isAnyTextBoxActive) return;
+                if (TextBoxPatch.IsAnyTextBoxActive)
+                    return;
 
-                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                int x = Game1.getMouseX(true),
+                    y = Game1.getMouseY(true); // Mouse x and y position
 
                 isOnFarm = ___movingAnimal;
                 animalQueryMenu = __instance;
@@ -27,17 +37,19 @@ namespace stardew_access.Patches
 
                 loveLevel = ___loveLevel;
 
-                narrateAnimalDetailsOnKeyPress(___animal, ___parentName);
+                NarrateAnimalDetailsOnKeyPress(___animal, ___parentName);
 
-                narrateHoveredButton(__instance, ___animal, ___confirmingSell, x, y);
+                NarrateHoveredButton(__instance, ___animal, ___confirmingSell, x, y);
             }
             catch (System.Exception e)
             {
-                MainClass.ErrorLog($"An error occured in AnimalQueryMenuPatch()->DrawPatch():\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog(
+                    $"An error occurred in AnimalQueryMenuPatch()->DrawPatch():\n{e.Message}\n{e.StackTrace}"
+                );
             }
         }
 
-        private static void narrateAnimalDetailsOnKeyPress(FarmAnimal ___animal, string ___parentName)
+        private static void NarrateAnimalDetailsOnKeyPress( FarmAnimal ___animal, string ___parentName)
         {
             bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
             if (!isPrimaryInfoKeyPressed | isNarratingAnimalInfo)
@@ -46,13 +58,8 @@ namespace stardew_access.Patches
             string name = ___animal.displayName;
             string type = ___animal.displayType;
             int age = (___animal.GetDaysOwned() + 1) / 28 + 1;
-            string ageText = (age <= 1) ? Game1.content.LoadString("Strings\\UI:AnimalQuery_Age1") : Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeN", age);
-            string parent = "";
+            string parent = "null";
 
-            if ((int)___animal.age.Value < (byte)___animal.ageWhenMature.Value)
-            {
-                ageText += Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeBaby");
-            }
             if (___parentName != null)
             {
                 parent = Game1.content.LoadString("Strings\\UI:AnimalQuery_Parent", ___parentName);
@@ -60,7 +67,7 @@ namespace stardew_access.Patches
 
             // The loveLevel varies between 0 and 1
             // 1 indicates 5 hearts and similarily 0 indicates 0 hearts
-            // the below code multiplies the loveLevel by 10 and 
+            // the below code multiplies the loveLevel by 10 and
             // the numeric value of the resultent is divided by 2 to give the number of full hearts and
             // if its decimal value is above 0.5, then that indicates half a heart
             double heartCount = Math.Floor(loveLevel * 10);
@@ -71,32 +78,47 @@ namespace stardew_access.Patches
                 heartCount += 0.5;
             }
 
-            MainClass.DebugLog($"Lovelevel: {loveLevel}");
-            string heart = MainClass.Translate("patch.animal_query_menu.heart", new { count = heartCount });
+            string toSpeak = Translator.Instance.Translate( "animal_query_menu-animal_info",
+                new {
+                    name,
+                    type,
+                    is_baby = ___animal.isBaby() ? 1 : 0,
+                    heart_count = heartCount,
+                    age,
+                    parent_name = parent
+                }
+            );
 
             isNarratingAnimalInfo = true;
-            Task.Delay(200).ContinueWith(_ => { isNarratingAnimalInfo = false; }); // Adds delay
-
-            MainClass.ScreenReader.Say($"Name: {name} Type: {type} \n\t {ageText} {parent} \n\t {heart}", true);
+            Task.Delay(200) .ContinueWith(_ => { isNarratingAnimalInfo = false; }); // Adds delay
+            MainClass.ScreenReader.Say(toSpeak, true);
         }
 
-        private static void narrateHoveredButton(AnimalQueryMenu __instance, FarmAnimal ___animal, bool ___confirmingSell, int x, int y)
+        private static void NarrateHoveredButton(
+            AnimalQueryMenu __instance,
+            FarmAnimal ___animal,
+            bool ___confirmingSell,
+            int x,
+            int y
+        )
         {
             string toSpeak = "";
             if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
-                toSpeak = "OK button";
+                toSpeak = Translator.Instance.Translate("common-ui-ok_button");
             else if (__instance.sellButton != null && __instance.sellButton.containsPoint(x, y))
-                toSpeak = $"Sell for {___animal.getSellPrice()}g button";
-            else if (___confirmingSell && __instance.yesButton != null && __instance.yesButton.containsPoint(x, y))
-                toSpeak = "Confirm selling animal";
-            else if (___confirmingSell && __instance.noButton != null && __instance.noButton.containsPoint(x, y))
-                toSpeak = "Cancel selling animal";
-            else if (__instance.moveHomeButton != null && __instance.moveHomeButton.containsPoint(x, y))
-                toSpeak = "Change home building button";
-            else if (__instance.allowReproductionButton != null && __instance.allowReproductionButton.containsPoint(x, y))
-                toSpeak = ((___animal.allowReproduction.Value) ? "Enabled" : "Disabled") + " allow reproduction button";
+                toSpeak = Translator.Instance.Translate( "animal_query_menu-ui-selling_button", new { price = ___animal.getSellPrice() });
+            else if ( ___confirmingSell && __instance.yesButton != null && __instance.yesButton.containsPoint(x, y))
+                toSpeak = Translator.Instance.Translate( "animal_query_menu-ui-confirm_selling_button");
+            else if ( ___confirmingSell && __instance.noButton != null && __instance.noButton.containsPoint(x, y))
+                toSpeak = Translator.Instance.Translate( "animal_query_menu-ui-cancel_selling_button");
+            else if ( __instance.moveHomeButton != null && __instance.moveHomeButton.containsPoint(x, y))
+                toSpeak = Translator.Instance.Translate("animal_query_menu-ui-move_home_button");
+            else if ( __instance.allowReproductionButton != null && __instance.allowReproductionButton.containsPoint(x, y))
+                toSpeak = Translator.Instance.Translate( "animal_query_menu-ui-allow_reproduction_button",
+                    new { checkbox_value = (___animal.allowReproduction.Value ? 1 : 0) }
+                );
             else if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
-                toSpeak = "Animal name text box";
+                toSpeak = Translator.Instance.Translate("animal_query_menu-ui-text_box");
 
             if (animalQueryMenuQuery != toSpeak)
             {

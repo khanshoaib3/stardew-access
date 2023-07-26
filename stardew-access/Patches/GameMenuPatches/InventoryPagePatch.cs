@@ -1,4 +1,4 @@
-using stardew_access.Features;
+using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -15,19 +15,19 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
-                handleKeyBinds();
+                HandleKeyBinds();
 
-                if (narrateHoveredButton(__instance, x, y))
+                if (NarrateHoveredButton(__instance, x, y))
                 {
                     return;
                 }
 
-                if (narrateHoveredEquipmentSlot(__instance, x, y))
+                if (NarrateHoveredEquipmentSlot(__instance, x, y))
                 {
                     return;
                 }
 
-                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
                     inventoryPageQueryKey = "";
                     return;
@@ -38,11 +38,11 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"An error occured in InventoryPagePatch()->DrawPatch():\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occurred in InventoryPagePatch()->DrawPatch():\n{e.Message}\n{e.StackTrace}");
             }
         }
 
-        private static void handleKeyBinds()
+        private static void HandleKeyBinds()
         {
             if (!MainClass.Config.MoneyKey.JustPressed())
                 return;
@@ -72,7 +72,7 @@ namespace stardew_access.Patches
             MainClass.ScreenReader.Say(toSpeak, true);
         }
 
-        private static bool narrateHoveredButton(InventoryPage __instance, int x, int y)
+        private static bool NarrateHoveredButton(InventoryPage __instance, int x, int y)
         {
             string? toSpeak = null;
             bool isDropItemButton = false;
@@ -114,14 +114,14 @@ namespace stardew_access.Patches
             return true;
         }
 
-        private static bool narrateHoveredEquipmentSlot(InventoryPage __instance, int mouseX, int mouseY)
+        private static bool NarrateHoveredEquipmentSlot(InventoryPage __instance, int mouseX, int mouseY)
         {
             for (int i = 0; i < __instance.equipmentIcons.Count; i++)
             {
                 if (!__instance.equipmentIcons[i].containsPoint(mouseX, mouseY))
                     continue;
 
-                string toSpeak = getNameAndDescriptionOfItem(__instance.equipmentIcons[i].name);
+                string toSpeak = GetNameAndDescriptionOfItem(__instance.equipmentIcons[i].name);
 
                 if (inventoryPageQueryKey != toSpeak)
                 {
@@ -136,7 +136,7 @@ namespace stardew_access.Patches
             return false;
         }
 
-        private static string getNameAndDescriptionOfItem(string slotName) => slotName switch
+        private static string GetNameAndDescriptionOfItem(string slotName) => slotName switch
         {
             "Hat" => (Game1.player.hat.Value != null) ? $"{Game1.player.hat.Value.DisplayName}, {Game1.player.hat.Value.getDescription()}" : "Hat slot",
             "Left Ring" => (Game1.player.leftRing.Value != null) ? $"{Game1.player.leftRing.Value.DisplayName}, {Game1.player.leftRing.Value.getDescription()}" : "Left Ring slot",

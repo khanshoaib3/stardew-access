@@ -2,7 +2,7 @@
 using StardewModdingAPI;
 using StardewValley;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
     /// <summary>
     /// Reads the name and information about a tile.
@@ -20,7 +20,7 @@ namespace stardew_access.Features
             delay = 100;
         }
 
-        public void update()
+        public void Update()
         {
             if (this.isBusy)
                 return;
@@ -29,7 +29,7 @@ namespace stardew_access.Features
                 return;
 
             this.isBusy = true;
-            this.run();
+            this.Run();
             Task.Delay(delay).ContinueWith(_ => { this.isBusy = false; });
         }
 
@@ -37,7 +37,7 @@ namespace stardew_access.Features
         /// Pauses the feature for the provided time.
         /// </summary>
         /// <param name="time">The amount of time we want to pause the execution (in ms).<br/>Default is 2500 (2.5s).</param>
-        public void pauseUntil(int time = 2500)
+        public void PauseUntil(int time = 2500)
         {
             this.shouldPause = true;
             Task.Delay(time).ContinueWith(_ => { this.shouldPause = false; });
@@ -46,7 +46,7 @@ namespace stardew_access.Features
         /// <summary>
         /// Pauses the feature
         /// </summary>
-        public void pause()
+        public void Pause()
         {
             this.shouldPause = true;
         }
@@ -54,12 +54,12 @@ namespace stardew_access.Features
         /// <summary>
         /// Resumes the feature
         /// </summary>
-        public void resume()
+        public void Resume()
         {
             this.shouldPause = false;
         }
 
-        public void run(bool manuallyTriggered = false, bool playersPosition = false)
+        public void Run(bool manuallyTriggered = false, bool playersPosition = false)
         {
             try
             {
@@ -81,7 +81,8 @@ namespace stardew_access.Features
                 y = (int)tile.Y;
                 #endregion
 
-                if (Context.IsPlayerFree)
+                // The event with id 13 is the Haley's six heart event, the one at the beach requiring the player to find the bracelet
+                if (Context.IsPlayerFree || (Game1.CurrentEvent is not null && Game1.CurrentEvent.id == 13))
                 {
                     if (!manuallyTriggered && prevTile != tile)
                     {
@@ -92,15 +93,15 @@ namespace stardew_access.Features
                     var currentLocation = Game1.currentLocation;
                     bool isColliding = TileInfo.IsCollidingAtTile(currentLocation, x, y);
 
-                    (string? name, string? category) info = TileInfo.getNameWithCategoryNameAtTile(tile, currentLocation);
+                    (string? name, string? category) = TileInfo.GetNameWithCategoryNameAtTile(tile, currentLocation);
 
                     #region Narrate toSpeak
-                    if (info.name != null)
+                    if (name != null)
                         if (MainClass.ScreenReader != null)
                             if (manuallyTriggered)
-                                MainClass.ScreenReader.Say($"{info.name}, Category: {info.category}", true);
+                                MainClass.ScreenReader.Say(Translator.Instance.Translate("feature-read_tile-manually_triggered_info", new {tile_name = name, tile_category = category}), true);
                             else
-                                MainClass.ScreenReader.SayWithTileQuery(info.name, x, y, true);
+                                MainClass.ScreenReader.SayWithTileQuery(name, x, y, true);
                     #endregion
 
                     #region Play colliding sound effect

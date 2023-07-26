@@ -1,8 +1,8 @@
-using System.Text.Json;
 using StardewValley;
 using StardewValley.Menus;
-using static stardew_access.Features.Utils;
-using static stardew_access.Features.ColorMatcher;
+using System.Text.Json;
+using static stardew_access.Utils.JsonLoader;
+using static stardew_access.Utils.ColorMatcher;
 
 namespace stardew_access.Patches
 {
@@ -32,14 +32,11 @@ namespace stardew_access.Patches
         private static bool characterDesignToggle = false;
         private static bool characterDesignToggleShouldSpeak = true;
         private static ClickableComponent? currentComponent = null;
-        private static Dictionary<string, Dictionary<int, string>> descriptions
+        private static Dictionary<string, Dictionary<int, string>> Descriptions
         {
             get
             {
-                if (_descriptions == null)
-                {
-                    _descriptions = LoadDescriptionJson();
-                }
+                _descriptions ??= LoadDescriptionJson();
                 return _descriptions;
             }
         }
@@ -55,11 +52,11 @@ namespace stardew_access.Patches
                 return new Dictionary<string, Dictionary<int, string>>();
             }
 
-            Dictionary<string, Dictionary<int, string>> result = new Dictionary<string, Dictionary<int, string>>();
+            Dictionary<string, Dictionary<int, string>> result = new();
 
             foreach (JsonProperty category in jsonElement.EnumerateObject())
             {
-                Dictionary<int, string> innerDictionary = new Dictionary<int, string>();
+                Dictionary<int, string> innerDictionary = new();
 
                 foreach (JsonProperty item in category.Value.EnumerateObject())
                 {
@@ -80,7 +77,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                if (TextBoxPatch.isAnyTextBoxActive) return;
+                if (TextBoxPatch.IsAnyTextBoxActive) return;
 
                 bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
                 string toSpeak = "";
@@ -151,7 +148,7 @@ namespace stardew_access.Patches
                     toSpeak = $"Character design controls {displayState}. \n {toSpeak}";
                 }
 
-                changesToSpeak = getChangesToSpeak(__instance);
+                changesToSpeak = GetChangesToSpeak(__instance);
                 if (changesToSpeak != "")
                     toSpeak = $"{toSpeak} \n {changesToSpeak}";
 
@@ -167,7 +164,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static string getChangesToSpeak(CharacterCustomization __instance)
+        private static string GetChangesToSpeak(CharacterCustomization __instance)
         {
             string toSpeak = "";
             string currentPet = GetCurrentPet();
@@ -550,7 +547,7 @@ namespace stardew_access.Patches
             {
                 for (int i = 0; i < __instance.farmTypeButtons.Count; i++)
                 {
-                    buttons.Add(__instance.farmTypeButtons[i], ((i == Game1.whichFarm) ? "Selected " : "") + getFarmHoverText(__instance.farmTypeButtons[i]));
+                    buttons.Add(__instance.farmTypeButtons[i], ((i == Game1.whichFarm) ? "Selected " : "") + GetFarmHoverText(__instance.farmTypeButtons[i]));
                 }
             }
 
@@ -628,7 +625,7 @@ namespace stardew_access.Patches
             return toSpeak.Trim();
         }
 
-        private static string getFarmHoverText(ClickableTextureComponent farm)
+        private static string GetFarmHoverText(ClickableTextureComponent farm)
         {
             string hoverTitle = " ", hoverText = " ";
             if (!farm.name.Contains("Gray"))
@@ -655,7 +652,7 @@ namespace stardew_access.Patches
             return $"{hoverTitle}: {hoverText}";
         }
 
-        private static SliderBar? getCurrentSliderBar(int id, CharacterCustomization __instance)
+        private static SliderBar? GetCurrentSliderBar(int id, CharacterCustomization __instance)
         {
             if (id >= 522 && id <= 530)
             {
@@ -666,40 +663,22 @@ namespace stardew_access.Patches
                 // Next group ids by slider type.
                 // Maps [522,525,528] -> 0, [523,526,529] -> 1, [524,527,530] -> 2
                 int whichSliderBar = (int)Math.Floor((float)id % 3f);
-                ColorPicker cp;
-                switch (whichColorPicker)
-                {
-                    default:
-                    case 0:
-                        // 522-524 == eye color
-                        cp = __instance.eyeColorPicker;
-                        break;
-                    case 1:
+                ColorPicker
                         // 525-527 == hair color
-                        cp = __instance.hairColorPicker;
-                        break;
-                    case 2:
-                        // 528-530 == pants color
-                        cp = __instance.pantsColorPicker;
-                        break;
-                }
-                SliderBar sb;
-                switch (whichSliderBar)
-                {
-                    default:
-                    case 0:
-                        // 522, 525, 528 == hue slider
-                        sb = cp.hueBar;
-                        break;
-                    case 1:
-                        // 523, 526, 529 == saturation slider
-                        sb = cp.saturationBar;
-                        break;
-                    case 2:
-                        // 524, 527, 530 == value slider
-                        sb = cp.valueBar;
-                        break;
-                }
+                        cp = whichColorPicker switch
+                        {
+                            1 => __instance.hairColorPicker,// 525-527 == hair color
+                            2 => __instance.pantsColorPicker,// 528-530 == pants color
+                            _ => __instance.eyeColorPicker,// 522-524 == eye color
+                        };
+                SliderBar
+                                                // 523, 526, 529 == saturation slider
+                                                sb = whichSliderBar switch
+                                                {
+                                                    1 => cp.saturationBar,// 523, 526, 529 == saturation slider
+                                                    2 => cp.valueBar,// 524, 527, 530 == value slider
+                                                    _ => cp.hueBar,// 522, 525, 528 == hue slider
+                                                };
                 return sb;
             }
             else
@@ -712,7 +691,7 @@ namespace stardew_access.Patches
         {
             if (currentComponent != null && currentComponent.myID >= 522 && currentComponent.myID <= 530)
             {
-                SliderBar sb = getCurrentSliderBar(currentComponent.myID, __instance)!;
+                SliderBar sb = GetCurrentSliderBar(currentComponent.myID, __instance)!;
                 if (sb != null)
                 {
                     double step = ((double)sb.bounds.Width / 100d); // size of 1% change in slider value
@@ -746,7 +725,7 @@ namespace stardew_access.Patches
                 if (!lessInfo)
                 {
                     string petType = Game1.player.catPerson ? "Cat" : "Dog";
-                    if (descriptions.TryGetValue(petType, out var innerDict) && innerDict.TryGetValue(whichPetBreed, out var description))
+                    if (Descriptions.TryGetValue(petType, out var innerDict) && innerDict.TryGetValue(whichPetBreed, out var description))
                     {
                         return description;
                     }
@@ -769,7 +748,7 @@ namespace stardew_access.Patches
 
                 if (!lessInfo)
                 {
-                    if (descriptions.TryGetValue(componentName, out var innerDict))
+                    if (Descriptions.TryGetValue(componentName, out var innerDict))
                     {
                         if (innerDict.TryGetValue(index, out var description))
                         {
@@ -814,26 +793,26 @@ namespace stardew_access.Patches
             return GetCurrentColorAttributeValue("Eye color", 522, 524, () => GetNearestColorName(Game1.player.newEyeColor.R, Game1.player.newEyeColor.G, Game1.player.newEyeColor.B));
         }
 
-        private static string GetCurrentEyeColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hue", 522, 524, () => (getCurrentSliderBar(522, __instance)!.value!.ToString()));
-        private static string GetCurrentEyeColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Saturation", 522, 524, () => (getCurrentSliderBar(523, __instance)!.value!.ToString()));
-        private static string GetCurrentEyeColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Value", 522, 524, () => (getCurrentSliderBar(524, __instance)!.value!.ToString()));
+        private static string GetCurrentEyeColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hue", 522, 524, () => (GetCurrentSliderBar(522, __instance)!.value!.ToString()));
+        private static string GetCurrentEyeColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Saturation", 522, 524, () => (GetCurrentSliderBar(523, __instance)!.value!.ToString()));
+        private static string GetCurrentEyeColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Value", 522, 524, () => (GetCurrentSliderBar(524, __instance)!.value!.ToString()));
 
         private static string GetCurrentHairColor()
         {
             return GetCurrentColorAttributeValue("Hair color", 525, 527, () => GetNearestColorName(Game1.player.hairstyleColor.R, Game1.player.hairstyleColor.G, Game1.player.hairstyleColor.B));
         }
 
-        private static string GetCurrentHairColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hue", 525, 527, () => (getCurrentSliderBar(525, __instance)!.value!.ToString()));
-        private static string GetCurrentHairColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Saturation", 525, 527, () => (getCurrentSliderBar(526, __instance)!.value!.ToString()));
-        private static string GetCurrentHairColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Value", 525, 527, () => (getCurrentSliderBar(527, __instance)!.value!.ToString()));
+        private static string GetCurrentHairColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hue", 525, 527, () => (GetCurrentSliderBar(525, __instance)!.value!.ToString()));
+        private static string GetCurrentHairColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Saturation", 525, 527, () => (GetCurrentSliderBar(526, __instance)!.value!.ToString()));
+        private static string GetCurrentHairColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Value", 525, 527, () => (GetCurrentSliderBar(527, __instance)!.value!.ToString()));
 
         private static string GetCurrentPantsColor()
         {
             return GetCurrentColorAttributeValue("Pants color", 528, 530, () => GetNearestColorName(Game1.player.pantsColor.R, Game1.player.pantsColor.G, Game1.player.pantsColor.B));
         }
 
-        private static string GetCurrentPantsColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hue", 528, 530, () => (getCurrentSliderBar(528, __instance)!.value!.ToString()));
-        private static string GetCurrentPantsColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Saturation", 528, 530, () => (getCurrentSliderBar(529, __instance)!.value!.ToString()));
-        private static string GetCurrentPantsColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Value", 528, 530, () => (getCurrentSliderBar(530, __instance)!.value!.ToString()));
+        private static string GetCurrentPantsColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hue", 528, 530, () => (GetCurrentSliderBar(528, __instance)!.value!.ToString()));
+        private static string GetCurrentPantsColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Saturation", 528, 530, () => (GetCurrentSliderBar(529, __instance)!.value!.ToString()));
+        private static string GetCurrentPantsColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Value", 528, 530, () => (GetCurrentSliderBar(530, __instance)!.value!.ToString()));
     }
 }

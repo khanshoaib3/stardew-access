@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
 
-namespace stardew_access.Features
+namespace stardew_access.Utils
 {
     public class Radar
     {
@@ -121,7 +121,7 @@ namespace stardew_access.Features
                 {
                     Vector2 dir = new(item.X + dirX[i], item.Y + dirY[i]);
 
-                    if (isValid(dir, center, searched, limit))
+                    if (IsValid(dir, center, searched, limit))
                     {
                         toSearch.Enqueue(dir);
                         searched.Add(dir);
@@ -137,7 +137,7 @@ namespace stardew_access.Features
         /// Search the entire location using Breadth First Search algorithm(BFS).
         /// </summary>
         /// <returns>A dictionary with all the detected tiles along with the name of the object on it and it's category.</returns>
-        public Dictionary<Vector2, (string, string)> SearchLocation()
+        public static Dictionary<Vector2, (string, string)> SearchLocation()
         {
             //var watch = new Stopwatch();
             //watch.Start();
@@ -176,7 +176,7 @@ namespace stardew_access.Features
                 {
                     Vector2 dir = new(item.X + dirX[i], item.Y + dirY[i]);
 
-                    if (!searched.Contains(dir) && (TileInfo.isWarpPointAtTile(currentLocation, (int)dir.X, (int)dir.Y) || currentLocation.isTileOnMap(dir)))
+                    if (!searched.Contains(dir) && (TileInfo.IsWarpPointAtTile(currentLocation, (int)dir.X, (int)dir.Y) || currentLocation.isTileOnMap(dir)))
                     {
                         toSearch.Enqueue(dir);
                         searched.Add(dir);
@@ -198,7 +198,7 @@ namespace stardew_access.Features
         /// <param name="searched">The list of searched items.</param>
         /// <param name="limit">The radius of search</param>
         /// <returns>Returns true if the tile is valid for search.</returns>
-        public bool isValid(Vector2 item, Vector2 center, HashSet<Vector2> searched, int limit)
+        public static bool IsValid(Vector2 item, Vector2 center, HashSet<Vector2> searched, int limit)
         {
             if (Math.Abs(item.X - center.X) > limit)
                 return false;
@@ -211,9 +211,9 @@ namespace stardew_access.Features
             return true;
         }
 
-        public (bool, string? name, string category) CheckTile(Vector2 position, GameLocation currentLocation, bool lessInfo = false)
+        public static (bool, string? name, string category) CheckTile(Vector2 position, GameLocation currentLocation, bool lessInfo = false)
         {
-            (string? name, CATEGORY? category) = TileInfo.getNameWithCategoryAtTile(position, currentLocation, lessInfo);
+            (string? name, CATEGORY? category) = TileInfo.GetNameWithCategoryAtTile(position, currentLocation, lessInfo);
             if (name == null)
                 return (false, null, CATEGORY.Others.ToString());
 
@@ -229,7 +229,7 @@ namespace stardew_access.Features
             {
                 if (currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
                 {
-                    (string? name, CATEGORY category) objDetails = TileInfo.getObjectAtTile(currentLocation, (int)position.X, (int)position.Y);
+                    (string? name, CATEGORY category) objDetails = TileInfo.GetObjectAtTile(currentLocation, (int)position.X, (int)position.Y);
                     string? objectName = objDetails.name;
                     CATEGORY category = objDetails.category;
                     StardewValley.Object obj = currentLocation.getObjectAtTile((int)position.X, (int)position.Y);
@@ -238,11 +238,11 @@ namespace stardew_access.Features
                     {
                         objectName = objectName.ToLower().Trim();
 
-                        if (obj is Furniture)
+                        if (obj is Furniture furniture)
                         {
-                            if (!furnitures.Contains((Furniture)obj))
+                            if (!furnitures.Contains(furniture))
                             {
-                                furnitures.Add((Furniture)obj);
+                                furnitures.Add(furniture);
                                 PlaySoundAt(position, objectName, category, currentLocation);
                             }
                         }
@@ -253,7 +253,7 @@ namespace stardew_access.Features
                 }
                 else
                 {
-                    (string? name, CATEGORY? category) = TileInfo.getNameWithCategoryAtTile(position, currentLocation);
+                    (string? name, CATEGORY? category) = TileInfo.GetNameWithCategoryAtTile(position, currentLocation);
                     if (name != null)
                     {
                         category ??= CATEGORY.Others;

@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# IDE0059: Unnecessary assignment of a value
+dotnet_diagnostic.IDE0059.severity = silent
+
+# IDE0051: Remove unused private members
+dotnet_diagnostic.IDE0051.severity = silent
+
+# IDE0060: Remove unused parameter
+dotnet_diagnostic.IDE0060.severity = silent
