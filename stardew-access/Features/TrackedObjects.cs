@@ -20,7 +20,7 @@ namespace stardew_access.Features.Tracker
             return Objects;
         }
 
-        public void FindObjectsInArea(bool sortAlphabetically = false)
+        public void FindObjectsInArea(bool sortByProximity = true)
         {
 
             TTStardewAccess StardewAccessObjects = new();
@@ -38,7 +38,8 @@ namespace stardew_access.Features.Tracker
                 this.AddObjects(AnimalObjects.GetObjects());
             }
 
-            if (sortAlphabetically) {
+            if (!sortByProximity) {
+                MainClass.DebugLog("Sorting alphabetically");
                 foreach (var cat in Objects) {
                     var ordered = cat.Value.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
                     cat.Value.Clear();

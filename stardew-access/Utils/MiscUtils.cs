@@ -5,7 +5,7 @@ namespace stardew_access.Utils
 	public static class MiscUtils
 	{
 		public delegate void OnMismatchAction();
-		public static (T, bool) Cycle<T>(IList<T> list, ref int index, bool back = false, bool wrapAround = false)
+		public static (T, bool) Cycle<T>(IList<T> list, ref int index, bool back = false, bool? wrapAround = false)
 		{
 			if (list.Count == 0)
 			{
@@ -19,7 +19,7 @@ namespace stardew_access.Utils
 				index--;
 				if (index < 0)
 				{
-					if (wrapAround) index = list.Count - 1;
+					if (wrapAround == true) index = list.Count - 1;
 					else index = 0;
 					edgeOfList = true;
 				}
@@ -29,7 +29,7 @@ namespace stardew_access.Utils
 				index++;
 				if (index >= list.Count)
 				{
-					if (wrapAround) index = 0;
+					if (wrapAround == true) index = 0;
 					else index = list.Count - 1;
 					edgeOfList = true;
 				}

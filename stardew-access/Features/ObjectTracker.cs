@@ -17,7 +17,7 @@ namespace stardew_access.Features
 {
     internal class ObjectTracker
     {
-        private  bool sortByProxy = true;
+        private  bool sortByProximity;
         private  TrackedObjects? trackedObjects;
         private  Pathfinder? pathfinder;
         internal string? SelectedCategory;
@@ -29,6 +29,7 @@ namespace stardew_access.Features
 
         public ObjectTracker()
         {
+            sortByProximity = MainClass.Config.OTSortByProximity;
             updateActions = new List<Action>
             {
                 () => UpdateAndRunIfChanged(ref objectCounts[0], Game1.currentLocation.debris.Count, () => { MainClass.DebugLog("Debris count has changed."); countHasChanged = true; }),
@@ -210,7 +211,7 @@ namespace stardew_access.Features
         internal void GetLocationObjects(bool resetFocus = true)
         {
             TrackedObjects tObjects = new();
-            tObjects.FindObjectsInArea(!sortByProxy);
+            tObjects.FindObjectsInArea(sortByProximity);
             trackedObjects = tObjects;
 
             var objects = trackedObjects.GetObjects();
@@ -292,23 +293,28 @@ namespace stardew_access.Features
 
             if (cycleUpCategoryPressed)
             {
-                Cycle(cycleCategories: true, back: true);
+                Cycle(cycleCategories: true, back: true, wrapAround: MainClass.Config?.OTWrapLists ?? false);
             }
             else if (cycleDownCategoryPressed)
             {
-                Cycle(cycleCategories: true);
+                Cycle(cycleCategories: true, wrapAround: MainClass.Config?.OTWrapLists ?? false);
             }
             else if (cycleUpObjectPressed)
             {
-                Cycle(cycleCategories: false, back: true);
+                Cycle(cycleCategories: false, back: true, wrapAround: MainClass.Config?.OTWrapLists ?? false);
             }
             else if (cycleDownObjectPressed)
             {
-                Cycle(cycleCategories: false);
+                Cycle(cycleCategories: false, wrapAround: MainClass.Config?.OTWrapLists ?? false);
             }
 
             if (readSelectedObjectPressed || moveToSelectedObjectPressed || readSelectedObjectTileLocationPressed || switchSortingModePressed)
             {
+                if (switchSortingModePressed)
+                {
+                    sortByProximity = !sortByProximity;
+                    MainClass.ScreenReader.Say("Sort By Proximity: " + (sortByProximity ? "Enabled" : "Disabled"), true);
+                }
                 GetLocationObjects(resetFocus: false);
                 if (readSelectedObjectPressed)
                 {
@@ -322,13 +328,9 @@ namespace stardew_access.Features
                 {
                     ReadCurrentlySelectedObject(readTileOnly: true);
                 }
-                if (switchSortingModePressed)
-                {
-                    sortByProxy = !sortByProxy;
-                    MainClass.ScreenReader.Say("Sort By Proximity: " + (sortByProxy ? "Enabled" : "Disabled"), true);
-                }
             }
         }
+
         private void MoveToCurrentlySelectedObject()
         {
             MainClass.DebugLog("Attempt pathfinding.");

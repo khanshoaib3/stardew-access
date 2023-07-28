@@ -267,7 +267,6 @@ namespace stardew_access
             {
                 if (e.IsMultipleOf(15) && Config != null && Config.OTAutoRefreshing)
                 {
-                    MainClass.DebugLog("Running ObjectTrackerFeature.Tick()");
                     ObjectTrackerFeature.Tick();
                 }
             }
@@ -285,9 +284,6 @@ namespace stardew_access
 
         private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
         {
-            #if DEBUG
-            DebugLog($"OnButtonPressed");
-            #endif
             if (Game1.player.controller is not null && Config!.OTCancelAutoWalking.JustPressed())
             {
                 #if DEBUG
@@ -307,9 +303,6 @@ namespace stardew_access
             #region Simulate left and right clicks
             if (!TextBoxPatch.IsAnyTextBoxActive)
             {
-                #if DEBUG
-                DebugLog("TextBoxPatch.IsAnyTextBoxActive is false");
-                #endif
                 if (Game1.activeClickableMenu != null)
                 {
                     SimulateMouseClicks(
