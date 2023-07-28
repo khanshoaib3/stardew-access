@@ -29,7 +29,9 @@ namespace stardew_access.Patches
             typeof(QuestLog),
             typeof(ReadyCheckDialog),
             typeof(ShopMenu),
-            typeof(TailoringMenu)
+            typeof(TailoringMenu),
+            typeof(SpecialOrdersBoard),
+            typeof(NumberSelectionMenu)
         };
 
         private static readonly HashSet<Type> SkipGameMenuPageTypes = new()
@@ -62,6 +64,7 @@ namespace stardew_access.Patches
                 }
                 #endregion
 
+                // TODO Use InventoryUtils.cs
                 StringBuilder toSpeak = new();
 
                 #region Add item count before title
@@ -230,9 +233,6 @@ namespace stardew_access.Patches
                 case LevelUpMenu:
                     LevelUpMenuPatch.Cleanup();
                     break;
-                case Billboard:
-                    BillboardPatch.Cleanup();
-                    break;
                 case GameMenu:
                     SocialPagePatch.Cleanup();
                     InventoryPagePatch.Cleanup();
@@ -262,9 +262,6 @@ namespace stardew_access.Patches
                 case DialogueBox:
                     DialogueBoxPatch.Cleanup();
                     break;
-                case JojaCDMenu:
-                    JojaCDMenuPatch.Cleanup();
-                    break;
                 case QuestLog:
                     QuestLogPatch.Cleanup();
                     break;
@@ -286,8 +283,14 @@ namespace stardew_access.Patches
                 case SpecialOrdersBoard:
                     SpecialOrdersBoardPatch.Cleanup();
                     break;
+                case NumberSelectionMenu:
+                    NumberSelectionMenuPatch.Cleanup();
+                    break;
             }
 
+            MainClass.ScreenReader.PrevMenuQueryText = "";
+            MainClass.ScreenReader.MenuPrefixText = "";
+            MainClass.ScreenReader.MenuSuffixText = "";
             InventoryUtils.Cleanup();
             TextBoxPatch.activeTextBoxes = "";
         }

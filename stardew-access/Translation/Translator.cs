@@ -1,32 +1,30 @@
 using Shockah.ProjectFluent;
 using StardewModdingAPI;
 
-namespace stardew_access
+namespace stardew_access.Translation
 {
     internal class Translator
     {
         private static Translator? instance = null;
-        private IFluent<string> Fluent { get; set; } = null!;
-
+        private IFluent<string>? Fluent { get; set; }
+        private static readonly object instanceLock = new   ();
         private Translator() { }
 
         public static Translator Instance
         {
             get
             {
-                instance ??= new Translator();
-
-                return instance;
+                lock (instanceLock)
+                {
+                    instance ??= new Translator();
+                    return instance;
+                }
             }
         }
 
         public void Initialize(IManifest modManifest)
         {
-            IFluentApi? fluentApi = null;
-            if (MainClass.ModHelper != null)
-            {
-                fluentApi = MainClass.ModHelper.ModRegistry.GetApi<IFluentApi>("Shockah.ProjectFluent");
-            }
+            IFluentApi? fluentApi = MainClass.ModHelper?.ModRegistry.GetApi<IFluentApi>("Shockah.ProjectFluent");
 
             if (fluentApi != null)
             {
@@ -42,22 +40,44 @@ namespace stardew_access
             }
         }
 
-        public string Translate(string translationKey)
+        public string Translate(string translationKey, bool disableWarning = false)
         {
-            if (Fluent != null)
-                return Fluent.Get(translationKey);
+            if (Fluent == null)
+            {
+                MainClass.ErrorLog("Fluent not initialized!");
+                return translationKey;
+            }
 
-            MainClass.ErrorLog("Fluent not initialized!");
+            if (Fluent.ContainsKey(translationKey))
+            {
+                return Fluent.Get(translationKey);
+            }
+
+            if (!disableWarning)
+            {
+                MainClass.DebugLog($"No translation available for key: {translationKey}");
+            }
 
             return translationKey;
         }
 
-        public string Translate(string translationKey, object? tokens)
+        public string Translate(string translationKey, object? tokens, bool disableWarning = false)
         {
-            if (Fluent != null)
-                return Fluent.Get(translationKey, tokens);
+            if (Fluent == null)
+            {
+                MainClass.ErrorLog("Fluent not initialized!");
+                return translationKey;
+            }
 
-            MainClass.ErrorLog("Fluent not initialized!");
+            if (Fluent.ContainsKey(translationKey))
+            {
+                return Fluent.Get(translationKey, tokens);
+            }
+
+            if (!disableWarning)
+            {
+                MainClass.DebugLog($"No translation available for key: {translationKey}");
+            }
 
             return translationKey;
         }

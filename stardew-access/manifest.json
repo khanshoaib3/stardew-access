@@ -9,5 +9,12 @@
   "UpdateKeys": [
     "Github:khanshoaib3/stardew-access",
     "Nexus:16205"
+  ],
+    "Dependencies": [
+    {
+      "UniqueID": "Shockah.ProjectFluent",
+      "MinimumVersion": "1.1.0",
+      "IsRequired": false
+    }
   ]
 }

@@ -1,15 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using xTile;
+using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace stardew_access.Utils
+namespace stardew_access.Features
 {
 
     /// <summary>
     /// Allows browsing of the map and snapping mouse to tiles with the arrow keys
     /// </summary>
-    public class TileViewer
+    internal class TileViewer
     {
 
         //None of these positions take viewport into account; other functions are responsible later

@@ -1,5 +1,6 @@
 using StardewValley;
 using StardewValley.Menus;
+using stardew_access.Translation;
 
 namespace stardew_access.Utils
 {
@@ -74,23 +75,23 @@ namespace stardew_access.Utils
             return -999;
         }
         
-        private static void CheckAndSpeak(String toSpeak, int hoveredInventoryIndex)
+        internal static String GetQualityFromItem(Item item)
         {
-            if (hoveredItemQueryKey == $"{toSpeak}:{hoveredInventoryIndex}") return;
-            
-            hoveredItemQueryKey = $"{toSpeak}:{hoveredInventoryIndex}";
-            MainClass.ScreenReader.Say(toSpeak, true);
-        }
-
-        private static String GetQualityFromItem(Item item)
-        {
-            if (item is not StardewValley.Object || ((StardewValley.Object)item).Quality <= 0)
+            if (item is not StardewValley.Object)
                 return "";
 
-            return Translator.Instance.Translate("item-quality_type", new {quality_index = ((StardewValley.Object)item).Quality});
+            return GetQualityFromIndex(((StardewValley.Object)item).Quality);
+        }
+        
+        internal static String GetQualityFromIndex(int qualityIndex)
+        {
+            if (qualityIndex <= 0)
+                return "";
+
+            return Translator.Instance.Translate("item-quality_type", new {quality_index = qualityIndex});
         }
 
-        private static String GetHealthNStaminaFromItem(Item item)
+        internal static String GetHealthNStaminaFromItem(Item item)
         {
             if (item is not StardewValley.Object || ((StardewValley.Object)item).Edibility == -300)
                 return "";
@@ -100,7 +101,7 @@ namespace stardew_access.Utils
             return Translator.Instance.Translate("item-stamina_and_health_recovery_on_consumption", new {stamina_amount = stamina_recovery, health_amount = health_recovery});
         }
 
-        private static String GetBuffsFromItem(Item item)
+        internal static String GetBuffsFromItem(Item item)
         {
             if (item == null) return "";
             if (item is not StardewValley.Object) return "";
@@ -134,7 +135,7 @@ namespace stardew_access.Utils
             return toReturn;
         }
 
-        private static String GetExtraItemInfo(int itemIndex, int itemAmount)
+        internal static String GetExtraItemInfo(int itemIndex, int itemAmount)
         {
             if (itemIndex == -1) return "";
 
@@ -150,14 +151,14 @@ namespace stardew_access.Utils
                 return Translator.Instance.Translate("item-required_item_info", new {name = itemName});
         }
 
-        private static String GetPrice(int price)
+        internal static String GetPrice(int price)
         {
             if (price == -1) return "";
             
             return Translator.Instance.Translate("item-sell_price_info", new { price });
         }
 
-        private static String HandleHighlightedItemPrefix(bool isHighlighted, String prefix)
+        internal static String HandleHighlightedItemPrefix(bool isHighlighted, String prefix)
         {
             if (MainClass.Config.DisableInventoryVerbosity) return "";
             if (!isHighlighted) return "";
@@ -165,7 +166,7 @@ namespace stardew_access.Utils
             return prefix;
         }
 
-        private static String HandleHighlightedItemSuffix(bool isHighlighted, String suffix)
+        internal static String HandleHighlightedItemSuffix(bool isHighlighted, String suffix)
         {
             if (MainClass.Config.DisableInventoryVerbosity) return "";
             if (!isHighlighted) return "";
@@ -173,7 +174,7 @@ namespace stardew_access.Utils
             return suffix;
         }
 
-        private static String HandleUnHighlightedItem(bool isHighlighted, int hoveredInventoryIndex)
+        internal static String HandleUnHighlightedItem(bool isHighlighted, int hoveredInventoryIndex)
         {
             if (isHighlighted) return "";
             
@@ -188,6 +189,14 @@ namespace stardew_access.Utils
         {
             hoveredItemQueryKey = "";
             prevSlotIndex = -999;
+        }
+
+        private static void CheckAndSpeak(String toSpeak, int hoveredInventoryIndex)
+        {
+            if (hoveredItemQueryKey == $"{toSpeak}:{hoveredInventoryIndex}") return;
+            
+            hoveredItemQueryKey = $"{toSpeak}:{hoveredInventoryIndex}";
+            MainClass.ScreenReader.Say(toSpeak, true);
         }
     }
 }

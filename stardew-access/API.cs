@@ -1,11 +1,43 @@
 using Microsoft.Xna.Framework;
+using stardew_access.Features;
 using stardew_access.Utils;
 
 namespace stardew_access
 {
     public class API
     {
+        // Note to future self, don't make these static, it won't give errors in sv access but it will in other mods if they try to use the stardew access api.
         public API() { }
+
+        public static string PrevMenuQueryText
+        {
+            get => MainClass.ScreenReader.PrevMenuQueryText;
+            set => MainClass.ScreenReader.PrevMenuQueryText = value;
+        }
+
+        public static string MenuPrefixText
+        {
+            get => MainClass.ScreenReader.MenuPrefixText;
+            set => MainClass.ScreenReader.MenuPrefixText = value;
+        }
+
+        public static string MenuSuffixText
+        {
+            get => MainClass.ScreenReader.MenuSuffixText;
+            set => MainClass.ScreenReader.MenuSuffixText = value;
+        }
+
+        public static string MenuPrefixNoQueryText
+        {
+            get => MainClass.ScreenReader.MenuPrefixNoQueryText;
+            set => MainClass.ScreenReader.MenuPrefixNoQueryText = value;
+        }
+
+        public static string MenuSuffixNoQueryText
+        {
+            get => MainClass.ScreenReader.MenuSuffixNoQueryText;
+            set => MainClass.ScreenReader.MenuSuffixNoQueryText = value;
+        }
 
         /// <summary>
         /// Search the area using Breadth First Search algorithm(BFS).

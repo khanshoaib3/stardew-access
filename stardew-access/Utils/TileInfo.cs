@@ -3,6 +3,7 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using stardew_access.Translation;
 using System.Text;
 
 namespace stardew_access.Utils
@@ -10,19 +11,19 @@ namespace stardew_access.Utils
     public class TileInfo
     {
         private static readonly string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom", "statue of endless fortune", "statue of perfection", "crab pot" };
-        private static readonly Dictionary<int, string> ResourceClumpNames = new()
+        private static readonly Dictionary<int, string> ResourceClumpNameTranslationKeys = new()
         {
-            { 600, "Large Stump" },
-            { 602, "Hollow Log" },
-            { 622, "Meteorite" },
-            { 672, "Boulder" },
-            { 752, "Mine Rock" },
-            { 754, "Mine Rock" },
-            { 756, "Mine Rock" },
-            { 758, "Mine Rock" },
-            { 190, "Giant Cauliflower" },
-            { 254, "Giant Melon" },
-            { 276, "Giant Pumpkin" }
+            { 600, "tile-resource_clump-large_stump-name" },
+            { 602, "tile-resource_clump-hollow_log-name" },
+            { 622, "tile-resource_clump-meteorite-name" },
+            { 672, "tile-resource_clump-boulder-name" },
+            { 752, "tile-resource_clump-mine_rock-name" },
+            { 754, "tile-resource_clump-mine_rock-name" },
+            { 756, "tile-resource_clump-mine_rock-name" },
+            { 758, "tile-resource_clump-mine_rock-name" },
+            { 190, "tile-resource_clump-giant_cauliflower-name" },
+            { 254, "tile-resource_clump-giant_melon-name" },
+            { 276, "tile-resource_clump-giant_pumpkin-name" }
         };
 
         ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>
@@ -44,6 +45,15 @@ namespace stardew_access.Utils
 
         ///<summary>Returns the name of the object at tile alongwith it's category</summary>
         public static (string? name, CATEGORY? category) GetNameWithCategoryAtTile(Vector2 tile, GameLocation? currentLocation, bool lessInfo = false)
+        {
+            var (name, category) = GetTranslationKeyWithCategoryAtTile(tile, currentLocation, lessInfo);
+            if (name == null)
+                return (null, CATEGORY.Others);
+
+            return (Translator.Instance.Translate(name, true), category);
+        }
+
+        public static (string? name, CATEGORY? category) GetTranslationKeyWithCategoryAtTile(Vector2 tile, GameLocation? currentLocation, bool lessInfo = false)
         {
             currentLocation ??= Game1.currentLocation;
             int x = (int)tile.X;
@@ -83,7 +93,7 @@ namespace stardew_access.Utils
 
             if (currentLocation.isWaterTile(x, y) && !lessInfo && IsCollidingAtTile(currentLocation, x, y))
             {
-                return ("Water", CATEGORY.WaterTiles);
+                return ("tile-water-name", CATEGORY.WaterTiles);
             }
 
             string? resourceClump = GetResourceClumpAtTile(currentLocation, x, y, lessInfo);
@@ -116,22 +126,22 @@ namespace stardew_access.Utils
 
             if (IsMineDownLadderAtTile(currentLocation, x, y))
             {
-                return ("Ladder", CATEGORY.Doors);
-            }
-
-            if (IsShaftAtTile(currentLocation, x, y))
-            {
-                return ("Shaft", CATEGORY.Doors);
+                return ("tile-mine_ladder-name", CATEGORY.Doors);
             }
 
             if (IsMineUpLadderAtTile(currentLocation, x, y))
             {
-                return ("Up Ladder", CATEGORY.Doors);
+                return ("tile-mine_up_ladder-name", CATEGORY.Doors);
+            }
+
+            if (IsShaftAtTile(currentLocation, x, y))
+            {
+                return ("tile-mine_shaft-name", CATEGORY.Doors);
             }
 
             if (IsElevatorAtTile(currentLocation, x, y))
             {
-                return ("Elevator", CATEGORY.Doors);
+                return ("tile-mine_elevator-name", CATEGORY.Doors);
             }
 
             string? junimoBundle = GetJunimoBundleAt(currentLocation, x, y);
@@ -153,7 +163,7 @@ namespace stardew_access.Utils
 
                         string name = item.item.DisplayName;
                         int count = item.item.Stack;
-                        return ($"Dropped Item: {count} {name}", CATEGORY.DroppedItems);
+                        return (Translator.Instance.Translate("item-dropped_item-info", new {item_count = count, item_name = name}), CATEGORY.DroppedItems);
                     }
                 }
                 catch (Exception e)
@@ -355,6 +365,7 @@ namespace stardew_access.Utils
                 int age = foundAnimal.age.Value;
                 string type = foundAnimal.displayType;
 
+                // TODO better age info
                 // Return a formatted string with the farm animal's name, type, and age
                 return $"{name}, {type}, age {age}";
             }
@@ -404,7 +415,7 @@ namespace stardew_access.Utils
             // Check if the terrain feature is Grass
             else if (terrainFeature is Grass)
             {
-                return ("Grass", CATEGORY.Debris);
+                return ("tile-grass-name", CATEGORY.Debris);
             }
             // Check if the terrain feature is a Tree
             else if (terrainFeature is Tree tree)
@@ -621,11 +632,11 @@ namespace stardew_access.Utils
                 {
                     if (heldObjectName.Contains("pressure nozzle", StringComparison.OrdinalIgnoreCase))
                     {
-                        toReturn.name = MainClass.ModHelper.Translation.Get("readtile.sprinkler.pressurenozzle", new { value = toReturn.name });
+                        toReturn.name = Translator.Instance.Translate("tile-sprinkler-pressure_nozzle-prefix", new { content = toReturn.name });
                     }
                     else if (heldObjectName.Contains("enricher", StringComparison.OrdinalIgnoreCase))
                     {
-                        toReturn.name = MainClass.ModHelper.Translation.Get("readtile.sprinkler.enricher", new { value = toReturn.name });
+                        toReturn.name = Translator.Instance.Translate("tile-sprinkler-enricher-prefix", new { content = toReturn.name });
                     }
                     else
                     {
@@ -972,7 +983,9 @@ namespace stardew_access.Utils
                 if (resourceClump.occupiesTile(x, y) && (!lessInfo || (resourceClump.tile.X == x && resourceClump.tile.Y == y)))
                 {
                     // Get the resource clump name if available, otherwise use "Unknown"
-                    return ResourceClumpNames.TryGetValue(resourceClump.parentSheetIndex.Value, out string? resourceName) ? resourceName : "Unknown";
+                    return ResourceClumpNameTranslationKeys.TryGetValue(resourceClump.parentSheetIndex.Value, out string? translationKey)
+                            ? translationKey
+                            : "common-unknown";
                 }
             }
 
@@ -997,7 +1010,7 @@ namespace stardew_access.Utils
                 if (stump.occupiesTile(x, y) && (!lessInfo || (stump.tile.X == x && stump.tile.Y == y)))
                 {
                     // Return stump information
-                    return "Large Stump";
+                    return "tile-resource_clump-large_stump-name";
                 }
             }
 

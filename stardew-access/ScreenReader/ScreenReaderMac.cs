@@ -117,12 +117,47 @@ namespace stardew_access.ScreenReader
 
 
 
-
+        private string menuPrefixText = "";
+        private string prevMenuPrefixText = "";
+        private string menuSuffixText = "";
+        private string prevMenuSuffixText = "";
+        private string menuPrefixNoQueryText = "";
+        private string menuSuffixNoQueryText = "";
 
         public string PrevTextTile
         {
-            get { return prevTextTile; }
-            set { prevTextTile = value; }
+            get => prevTextTile;
+            set => prevTextTile = value;
+        }
+
+        public string PrevMenuQueryText
+        {
+            get => prevMenuText;
+            set => prevMenuText = value;
+        }
+
+        public string MenuPrefixText
+        {
+            get => menuPrefixText;
+            set => menuPrefixText = value;
+        }
+
+        public string MenuSuffixText
+        {
+            get => menuSuffixText;
+            set => menuSuffixText = value;
+        }
+
+        public string MenuPrefixNoQueryText
+        {
+            get => menuPrefixNoQueryText;
+            set => menuPrefixNoQueryText = value;
+        }
+
+        public string MenuSuffixNoQueryText
+        {
+            get => menuSuffixNoQueryText;
+            set => menuSuffixNoQueryText = value;
         }
 
         public string prevText = "", prevTextTile = "", prevChatText = "", prevMenuText = "";
@@ -168,7 +203,7 @@ namespace stardew_access.ScreenReader
 
         public void Say(string text, bool interrupt)
         {
-            if (text == null) return;
+            if (string.IsNullOrWhiteSpace(text)) return;
             if (interrupt)
             {
                 speechQueue.Clear();
@@ -193,13 +228,18 @@ namespace stardew_access.ScreenReader
 
         public void SayWithMenuChecker(string text, bool interrupt)
         {
-            if (text == null) return;
-            if (text != prevMenuText)
-            {
-                MainClass.InfoLog($"{text}");
-                Say(text, interrupt);
-                prevMenuText = text;
-            }
+            if (string.IsNullOrWhiteSpace(text))
+                return;
+
+            if (prevMenuText == text && prevMenuSuffixText == MenuSuffixText && prevMenuPrefixText == MenuPrefixText)
+                return;
+
+            prevMenuText = text;
+            prevMenuSuffixText = MenuSuffixText;
+            prevMenuPrefixText = MenuPrefixText;
+            Say($"{MenuPrefixNoQueryText}{MenuPrefixText}{text}{MenuSuffixText}{MenuSuffixNoQueryText}", interrupt);
+            MenuPrefixNoQueryText = "";
+            MenuSuffixNoQueryText = "";
         }
 
         public void SayWithChatChecker(string text, bool interrupt)

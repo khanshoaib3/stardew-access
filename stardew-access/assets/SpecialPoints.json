@@ -1,0 +1,328 @@
+{
+  "ArchaeologyHouse": [
+    {
+      "name": "Box for Bone Fragments",
+      "xPos": 6,
+      "yPos": 9
+    }
+  ],
+  "Beach": [
+    {
+      "name": "Haley's Bracelet",
+      "extraChecksHook": 2,
+      "xPos": 53,
+      "yPos": 8
+    },
+    {
+      "name": "Willy's Barrel",
+      "xPos": 37,
+      "yPos": 33
+    },
+    {
+      "name": "west pier",
+      "category_override": "fishing",
+      "xPos": 11,
+      "yPos": 40
+    },
+    {
+      "name": "east pier",
+      "category_override": "fishing",
+      "xPos": 87,
+      "yPos": 41
+    }
+  ],
+  "BugLand": [
+    {
+      "name": "dark pool",
+      "category_override": "fishing",
+      "xPos": 10,
+      "yPos": 50
+    }
+  ],
+  "Desert": [
+    {
+      "name": "pond",
+      "category_override": "fishing",
+      "xPos": 9,
+      "yPos": 11
+    }
+  ],
+  "Farm": [
+    {
+      "name": "lumber pile",
+      "requiresQuest": 5,
+      "xPos": 60,
+      "yPos": 14
+    }
+  ],
+  "Forest": [
+    {
+      "name": "pond",
+      "category_override": "fishing",
+      "xPos": 95,
+      "yPos": 51
+    },
+    {
+      "name": "river",
+      "category_override": "fishing",
+      "xPos": 106,
+      "yPos": 37
+    },
+    {
+      "name": "sewage pipe",
+      "category_override": "fishing",
+      "xPos": 94,
+      "yPos": 103
+    }
+  ],
+  "IslandSouth": [
+    {
+      "name": "south coast",
+      "category_override": "fishing",
+      "xPos": 21,
+      "yPos": 45
+    }
+  ],
+  "JoshHouse": [
+    {
+      "name": "Evelyn's Stove",
+      "xPos": 3,
+      "yPos": 16
+    }
+  ],
+  "Mountain": [
+    {
+      "name": "lake",
+      "category_override": "fishing",
+      "xPos": 61,
+      "yPos": 37
+    }
+  ],
+  "Railroad": [
+    {
+      "name": "Recycle Bin",
+      "xPos": 28,
+      "yPos": 36
+    },
+    {
+      "name": "Empty Crate",
+      "xPos": 45,
+      "yPos": 40
+    },
+    {
+      "name": "Witch's Cave",
+      "category_override": "entrance",
+      "xPos": 54,
+      "yPos": 35
+    }
+  ],
+  "Saloon": [
+    {
+      "name": "Gus's Fridge",
+      "xPos": 18,
+      "yPos": 16
+    }
+  ],
+  "SandyHouse": [
+    {
+      "name": "Shop Counter",
+      "category_override": "interactable",
+      "xPos": 2,
+      "yPos": 6
+    },
+    {
+      "name": "Casino",
+      "category_override": "entrance",
+      "xPos": 17,
+      "yPos": 1
+    }
+  ],
+  "ScienceHouse": [
+    {
+      "name": "Robin's Woodpile",
+      "xPos": 11,
+      "yPos": 19
+    }
+  ],
+  "SeedShop": [
+    {
+      "name": "Vegetable Bin",
+      "xPos": 19,
+      "yPos": 28
+    }
+  ],
+  "Sewer": [
+    {
+      "name": "sewage pool",
+      "category_override": "fishing",
+      "xPos": 17,
+      "yPos": 29
+    }
+  ],
+  "SkullCave": [
+    {
+      "name": "Skull Cavern door",
+      "category_override": "door",
+      "xPos": 3,
+      "yPos": 3
+    }
+  ],
+  "Submarine": [
+    {
+      "name": "deep ocean",
+      "category_override": "fishing",
+      "xPos": 8,
+      "yPos": 11
+    }
+  ],
+  "Town": [
+    {
+      "name": "Shadow Guy's Hiding Bush",
+      "category_override": "bush",
+      "extraChecksHook": 1,
+      "xPos": 28,
+      "yPos": 13
+    },
+    {
+      "name": "bridge over river",
+      "category_override": "fishing",
+      "xPos": 94,
+      "yPos": 10
+    },
+    {
+      "name": "Stardew Saloon",
+      "category_override": "trash cans",
+      "xPos": 47,
+      "yPos": 70
+    },
+    {
+      "name": "1 River Road",
+      "category_override": "trash cans",
+      "xPos": 52,
+      "yPos": 63
+    },
+    {
+      "name": "Mayor's Manor",
+      "category_override": "trash cans",
+      "xPos": 56,
+      "yPos": 86
+    },
+    {
+      "name": "1 Willow Lane",
+      "category_override": "trash cans",
+      "xPos": 13,
+      "yPos": 86
+    },
+    {
+      "name": "2 Willow Lane",
+      "category_override": "trash cans",
+      "xPos": 19,
+      "yPos": 89
+    },
+    {
+      "name": "Blacksmith",
+      "category_override": "trash cans",
+      "xPos": 97,
+      "yPos": 80
+    },
+    {
+      "name": "Museum",
+      "category_override": "trash cans",
+      "xPos": 108,
+      "yPos": 91
+    },
+    {
+      "name": "Joja Mart",
+      "category_override": "trash cans",
+      "xPos": 110,
+      "yPos": 56
+    }
+  ],
+  "Tunnel": [
+    {
+      "name": "Lock Box",
+      "xPos": 17,
+      "yPos": 6
+    }
+  ],
+  "UndergroundMine20": [
+    {
+      "name": "dark pool",
+      "xPos": 27,
+      "yPos": 13
+    }
+  ],
+  "UndergroundMine60": [
+    {
+      "name": "icy pool",
+      "xPos": 27,
+      "yPos": 13
+    }
+  ],
+  "UndergroundMine100": [
+    {
+      "name": "lava pool",
+      "category_override": "fishing",
+      "xPos": 27,
+      "yPos": 13
+    }
+  ],
+  "WitchHut": [
+    {
+      "name": "Dark Shrine of Memory",
+      "category_override": "shrine",
+      "xPos": 7,
+      "yPos": 5
+    },
+    {
+      "name": "Dark Shrine of Night Terrors",
+      "category_override": "shrine",
+      "xPos": 12,
+      "yPos": 6
+    },
+    {
+      "name": "Dark Shrine of Selfishness",
+      "category_override": "shrine",
+      "xPos": 2,
+      "yPos": 6
+    },
+    {
+      "name": "Teleportation Rune",
+      "category_override": "entrances",
+      "xPos": 11,
+      "yPos": 11
+    },
+    {
+      "name": "Magic Ink",
+      "requiresQuest": 28,
+      "xPos": 4,
+      "yPos": 12
+    }
+  ],
+  "WitchSwamp": [
+    {
+      "name": "Teleportation Rune",
+      "xPos": 20,
+      "yPos": 42
+    },
+    {
+      "name": "Witch's Hut",
+      "xPos": 20,
+      "yPos": 20
+    }
+  ],
+  "WitchWarpCave": [
+    {
+      "name": "Teleportation Rune",
+      "xPos": 4,
+      "yPos": 5
+    }
+  ],
+  "Woods": [
+    {
+      "name": "fishing spot",
+      "xPos": 12,
+      "yPos": 26
+    }
+  ]
+}

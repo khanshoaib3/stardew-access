@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Minigames;
+using stardew_access.Translation;
 
 namespace stardew_access.Patches
 {
@@ -25,7 +26,7 @@ namespace stardew_access.Patches
 
                 if (___scene == 0)
                 {
-                    toSpeak = MainClass.ModHelper.Translation.Get("grandpastory.scene0");
+                    toSpeak = Translator.Instance.Translate("grandpastory-scene0");
                 }
                 else if (___drawGrandpa)
                 {
@@ -40,11 +41,11 @@ namespace stardew_access.Patches
                 }
                 else if (___scene == 4)
                 {
-                    toSpeak = MainClass.ModHelper.Translation.Get("grandpastory.scene4");
+                    toSpeak = Translator.Instance.Translate("grandpastory-scene4");
                 }
                 else if (___scene == 5)
                 {
-                    toSpeak = MainClass.ModHelper.Translation.Get("grandpastory.scene5");
+                    toSpeak = Translator.Instance.Translate("grandpastory-scene5");
                 }
                 else if (___scene == 6)
                 {
@@ -52,7 +53,7 @@ namespace stardew_access.Patches
                     {
                         if (ClickableGrandpaLetterRect(___parallaxPan, ___grandpaSpeechTimer).Contains(x, y))
                         {
-                            toSpeak = MainClass.ModHelper.Translation.Get("grandpastory.letteropen");
+                            toSpeak = Translator.Instance.Translate("grandpastory-letteropen");
                         }
                         else if (___letterView == null)
                         {
@@ -63,7 +64,7 @@ namespace stardew_access.Patches
                     }
                     else
                     {
-                        toSpeak = MainClass.ModHelper.Translation.Get("grandpastory.scene6");
+                        toSpeak = Translator.Instance.Translate("grandpastory-scene6");
                     }
                 }
 

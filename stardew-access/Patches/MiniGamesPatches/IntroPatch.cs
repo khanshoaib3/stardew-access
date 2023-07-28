@@ -1,4 +1,5 @@
 using StardewValley.Minigames;
+using stardew_access.Translation;
 
 namespace stardew_access.Patches
 {
@@ -17,11 +18,11 @@ namespace stardew_access.Patches
 
                 if (___currentState == 3)
                 {
-                    toSpeak = MainClass.ModHelper.Translation.Get("intro.scene3");
+                    toSpeak = Translator.Instance.Translate("intro-scene3");
                 }
                 else if (___currentState == 4)
                 {
-                    toSpeak = MainClass.ModHelper.Translation.Get("intro.scene4");
+                    toSpeak = Translator.Instance.Translate("intro-scene4");
                 }
 
                 if (toSpeak != " " && introQuery != toSpeak)
