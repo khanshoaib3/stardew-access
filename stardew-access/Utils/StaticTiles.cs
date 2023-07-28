@@ -25,12 +25,12 @@ namespace stardew_access.Utils
         /// <summary>
         /// A nullable JsonElement containing static tile data.
         /// </summary>
-        private static JsonElement? staticTilesData;
+        private static JsonElement staticTilesData = default;
 
         /// <summary>
         /// A nullable JsonElement containing custom tile data.
         /// </summary>
-        private static JsonElement? customTilesData;
+        private static JsonElement customTilesData = default;
 
         /// <summary>
         /// A dictionary that maps location names to tile data dictionaries for static tiles.
@@ -125,8 +125,17 @@ namespace stardew_access.Utils
         {
             if (MainClass.ModHelper is null) return;
 
-            staticTilesData = LoadJsonFile(StaticTilesFileName);
-            customTilesData = LoadJsonFile(CustomTilesFileName);
+            bool loaded = TryLoadJsonFile(StaticTilesFileName, out staticTilesData);
+            if (!loaded)
+            {
+                Log.Error($"Unable to load {StaticTilesFileName}.");
+            }
+            bool loaded_user = TryLoadJsonFile(CustomTilesFileName, out customTilesData);
+            if (!loaded_user)
+            {
+                Log.Warn($"Unable to load {CustomTilesFileName}.");
+            }
+
         }
 
         /// <summary>
@@ -434,18 +443,18 @@ namespace stardew_access.Utils
         /// </summary>
         public static void SetupTilesDicts()
         {
-            if (staticTilesData.HasValue && staticTilesData.Value.ValueKind != JsonValueKind.Undefined)
+            if (staticTilesData.ValueKind != JsonValueKind.Undefined)
             {
-                staticTilesDataDict = BuildTilesDict(staticTilesData.Value);
+                staticTilesDataDict = BuildTilesDict(staticTilesData);
             }
             else
             {
                 staticTilesDataDict = new Dictionary<string, Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)>>();
             }
             
-            if (customTilesData.HasValue && customTilesData.Value.ValueKind != JsonValueKind.Undefined)
+            if (customTilesData.ValueKind != JsonValueKind.Undefined)
             {
-                customTilesDataDict = BuildTilesDict(customTilesData.Value);
+                customTilesDataDict = BuildTilesDict(customTilesData);
             }
             else
             {

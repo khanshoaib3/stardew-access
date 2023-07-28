@@ -164,9 +164,9 @@ namespace stardew_access.Utils
         /// </returns>
         private static Dictionary<string, Dictionary<(int x, int y), string>> LoadEventTiles()
         {
-            JsonElement json = LoadJsonFile("event-tiles.json");
+            bool loaded = TryLoadJsonFile("event-tiles.json", out JsonElement json);
 
-            if (json.ValueKind == JsonValueKind.Undefined)
+            if (!loaded || json.ValueKind == JsonValueKind.Undefined)
             {
                 // If the JSON couldn't be loaded or parsed, return an empty dictionary
                 return new Dictionary<string, Dictionary<(int x, int y), string>>();

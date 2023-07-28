@@ -22,8 +22,8 @@ namespace stardew_access.Features.Tracker
 		{
 			// Load the JSON file using JsonLoader
 			string specialPointsFile = "SpecialPoints.json";
-			JsonElement specialPointsJson = LoadJsonFile(specialPointsFile);
-			if (specialPointsJson.ValueKind == JsonValueKind.Null)
+			bool loaded = TryLoadJsonFile(specialPointsFile, out JsonElement specialPointsJson);
+			if (!loaded || specialPointsJson.ValueKind == JsonValueKind.Null)
 			{
 				Log.Error($"Unable to load {specialPointsFile}.");
 				return;

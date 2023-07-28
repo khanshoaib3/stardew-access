@@ -45,9 +45,9 @@ namespace stardew_access.Patches
         private static Dictionary<string, Dictionary<int, string>> LoadDescriptionJson()
         {
             Log.Debug("Attempting to load json");
-            JsonElement jsonElement = LoadJsonFile("new-character-appearance-descriptions.json");
+            bool loaded = TryLoadJsonFile("new-character-appearance-descriptions.json", out JsonElement jsonElement);
 
-            if (jsonElement.ValueKind == JsonValueKind.Undefined)
+            if (!loaded || jsonElement.ValueKind == JsonValueKind.Undefined)
             {
                 return new Dictionary<string, Dictionary<int, string>>();
             }

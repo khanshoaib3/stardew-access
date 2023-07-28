@@ -104,8 +104,13 @@ namespace stardew_access.Utils
         {
             var colorCodeToName = new Dictionary<string, string>();
 
-            JsonElement colorJson = LoadJsonFile(ColorsFileName);
+            bool loaded = TryLoadJsonFile(ColorsFileName, out JsonElement colorJson);
 
+            if (!loaded || colorJson.ValueKind == JsonValueKind.Undefined)
+            {
+                Log.Warn($"Unable to load assets/{ColorsFileName}.");
+                return colorCodeToName;
+            }
             foreach (var colorCode in colorJson.EnumerateObject())
             {
                 if (colorCode.Value.ValueKind == JsonValueKind.String)
