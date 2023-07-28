@@ -337,7 +337,7 @@ namespace stardew_access.Features
             if (closestTile != null)
             {
                 MainClass.ScreenReader.Say($"Moving to {closestTile.Value.X}-{closestTile.Value.Y}.", true);
-                pathfinder = new(1000, RetryPathfinding, StopPathfinding);
+                pathfinder = new(RetryPathfinding, StopPathfinding);
                 pathfinder.StartPathfinding(player, Game1.currentLocation, closestTile.Value.ToPoint());
             }
             else

@@ -21,7 +21,7 @@ namespace stardew_access.Utils
 		private readonly int CheckPointTimeout;
 		private readonly int MSBetweenCheckingPathfindingController;
 
-		public Pathfinder(int minMillisecondsBetweenSteps, Func<int, int, Vector2?, bool> retryAction, Action<Vector2?> stopAction, int maxRetryAttempts = 5, int defaultDirection = -1, int checkPointTimeout = 500, int msBetweenCheckingPathfindingController = 1000)
+		public Pathfinder(Func<int, int, Vector2?, bool> retryAction, Action<Vector2?> stopAction, int minMillisecondsBetweenSteps = 300, int maxRetryAttempts = 5, int defaultDirection = -1, int checkPointTimeout = 500, int msBetweenCheckingPathfindingController = 1000)
 		{
 			this.retryAction = retryAction;
 			this.stopAction = stopAction;

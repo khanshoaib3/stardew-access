@@ -290,6 +290,7 @@ namespace stardew_access
                 DebugLog("Canceling OTAutoWalking.");
                 #endif
                 Game1.player.controller.endBehaviorFunction(Game1.player, Game1.currentLocation);
+                Helper.Input.Suppress(e.Button);
             }
 
             if (Config is null)

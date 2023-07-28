@@ -20,7 +20,7 @@ namespace stardew_access.Features
 		public Boolean is_moving = false;
 
 		//stop player from moving too fast
-		public int minMillisecondsBetweenSteps = 210;
+		public int minMillisecondsBetweenSteps = 300;
 		readonly System.Timers.Timer timer = new();
 
 		// Define a dictionary that maps the direction to the corresponding vector
