@@ -4,6 +4,7 @@ using stardew_access.Utils;
 using static stardew_access.Utils.MiscUtils;
 using static stardew_access.Utils.MovementHelpers;
 using static stardew_access.Utils.NPCUtils;
+using static stardew_access.Utils.StringUtils;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System;
@@ -127,29 +128,6 @@ namespace stardew_access.Features
                 : null;
         }
 
-        private string ReplacePlaceholders(string s, Vector2 playerTile, Vector2 sObjectTile, string direction, string distance)
-        {
-            var replacements = new Dictionary<string, string>
-            {
-                { "{object}", SelectedObject ?? "No Object" },
-                { "{objectX}", $"{sObjectTile.X}" },
-                { "{objectY}", $"{sObjectTile.Y}" },
-                { "{playerX}", $"{playerTile.X}" },
-                { "{playerY}", $"{playerTile.Y}" },
-                { "{direction}", direction },
-                { "{distance}", distance }
-            };
-
-            var result = new StringBuilder(s.ToLower());
-
-            foreach (var replacement in replacements)
-            {
-                result.Replace(replacement.Key, replacement.Value);
-            }
-
-            return result.ToString();
-        }
-
         private void ReadCurrentlySelectedObject(bool readTileOnly = false)
         {
             if (!IsValidSelection())
@@ -166,7 +144,16 @@ namespace stardew_access.Features
                 {
                     string direction = GetDirection(playerTile, sObjectTile.Value);
                     string distance = GetDistance(playerTile, sObjectTile).ToString();
-                    MainClass.ScreenReader.Say(ReplacePlaceholders(readTileOnly ? MainClass.Config.OTReadSelectedObjectTileText : MainClass.Config.OTReadSelectedObjectText, playerTile, sObjectTile.Value, direction, distance), true);
+                    MainClass.ScreenReader.Say((readTileOnly ? MainClass.Config.OTReadSelectedObjectTileText : MainClass.Config.OTReadSelectedObjectText).FormatWith(new Dictionary<string, object>
+                    {
+                        { "object", SelectedObject ?? "No selected object"},
+                        { "objectX", sObjectTile?.X.ToString() ?? "0" },
+                        { "objectY", sObjectTile?.Y.ToString() ?? "0" },
+                        { "playerX", playerTile.X.ToString() },
+                        { "playerY", playerTile.Y.ToString() },
+                        { "direction", direction },
+                        { "distance", distance }
+                    }), true);
                 }
             }
         }
