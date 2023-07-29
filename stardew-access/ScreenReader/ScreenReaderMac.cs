@@ -203,7 +203,14 @@ namespace stardew_access.ScreenReader
 
         public void Say(string text, bool interrupt)
         {
+            if (text == null) return;
             if (string.IsNullOrWhiteSpace(text)) return;
+            if (!MainClass.Config.TTS) return;
+
+            #if DEBUG
+            MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
+            #endif
+
             if (interrupt)
             {
                 speechQueue.Clear();
@@ -220,7 +227,6 @@ namespace stardew_access.ScreenReader
             if (text == null) return;
             if (text != prevText)
             {
-                MainClass.InfoLog($"{text}");
                 Say(text, interrupt);
                 prevText = text;
             }
@@ -247,7 +253,6 @@ namespace stardew_access.ScreenReader
             if (text == null) return;
             if (text != prevChatText)
             {
-                MainClass.InfoLog($"{text}");
                 Say(text, interrupt);
                 prevChatText = text;
             }
