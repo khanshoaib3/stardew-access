@@ -1,4 +1,4 @@
-﻿using StardewValley;
+using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
@@ -20,7 +20,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}");
+                Log.Error($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}");
             }
         }
 

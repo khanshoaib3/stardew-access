@@ -1,4 +1,4 @@
-﻿using StardewModdingAPI;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using HarmonyLib;
@@ -19,7 +19,6 @@ namespace stardew_access
         private static int prevDate = -99;
         private static ModConfig? config;
         private Harmony? harmony;
-        private static IMonitor? monitor;
         private static Radar? radarFeature;
         private static IScreenReader? screenReader;
         private static IModHelper? modHelper;
@@ -126,7 +125,7 @@ namespace stardew_access
             #region Initializations
             Config = helper.ReadConfig<ModConfig>();
 
-            monitor = base.Monitor; // Inititalize monitor
+            Log.Init(base.Monitor); // Initialize monitor
             modHelper = helper;
 
             Game1.options.setGamepadMode("force_on");
@@ -241,7 +240,7 @@ namespace stardew_access
                     if (Game1.timeOfDay >= 600 && prevDate != CurrentPlayer.Date)
                     {
                         prevDate = CurrentPlayer.Date;
-                        DebugLog("Refreshing buildlist...");
+                        Log.Debug("Refreshing buildlist...");
                         CustomCommands.OnBuildListCalled();
                     }
                 }
@@ -277,7 +276,7 @@ namespace stardew_access
             TextBoxPatch.activeTextBoxes = "";
             if (e.OldMenu != null)
             {
-                MainClass.DebugLog($"Switched from {e.OldMenu.GetType()} menu, performing cleanup...");
+                Log.Debug($"Switched from {e.OldMenu.GetType()} menu, performing cleanup...");
                 IClickableMenuPatch.Cleanup(e.OldMenu);
             }
         }
@@ -287,7 +286,7 @@ namespace stardew_access
             if (Game1.player.controller is not null && Config!.OTCancelAutoWalking.JustPressed())
             {
                 #if DEBUG
-                DebugLog("Canceling OTAutoWalking.");
+                Log.Debug("Canceling OTAutoWalking.");
                 #endif
                 Game1.player.controller.endBehaviorFunction(Game1.player, Game1.currentLocation);
                 Helper.Input.Suppress(e.Button);
@@ -296,7 +295,7 @@ namespace stardew_access
             if (Config is null)
             {
                 #if DEBUG
-                DebugLog("Returning due to 'Config' being null");
+                Log.Debug("Returning due to 'Config' being null");
                 #endif
                 return;
             }
@@ -325,7 +324,7 @@ namespace stardew_access
             if (Game1.activeClickableMenu != null)
             {
                 #if DEBUG
-                DebugLog("Returning due to 'Game1.activeClickableMenu' not being null AKA in a menu");
+                Log.Debug("Returning due to 'Game1.activeClickableMenu' not being null AKA in a menu");
                 #endif
                 return;
             }
@@ -400,14 +399,14 @@ namespace stardew_access
             {
                 Helper.Input.Suppress(e.Button);
                 #if DEBUG
-                DebugLog("Returning due to Game1.player.controller not being null or GridMovementFeature.is_warping being true");
+                Log.Debug("Returning due to Game1.player.controller not being null or GridMovementFeature.is_warping being true");
                 #endif
                 return;
             }
             if (!Context.CanPlayerMove)
             {
                 #if DEBUG
-                DebugLog("Returning due to 'Context.CanPlayerMove' being false");
+                Log.Debug("Returning due to 'Context.CanPlayerMove' being false");
                 #endif
                 return;
             }
@@ -422,14 +421,14 @@ namespace stardew_access
                 if (Config.LeftClickMainKey.JustPressed() || Config.LeftClickAlternateKey.JustPressed())
                 {
                     #if DEBUG
-                    DebugLog("Simulating left mouse click");
+                    Log.Debug("Simulating left mouse click");
                     #endif
                     leftClickHandler(mouseX, mouseY);
                 }
                 else if (Config.RightClickMainKey.JustPressed() || Config.RightClickAlternateKey.JustPressed())
                 {
                     #if DEBUG
-                    DebugLog("Simulating right mouse click");
+                    Log.Debug("Simulating right mouse click");
                     #endif
                     rightClickHandler(mouseX, mouseY);
                 }
@@ -450,7 +449,7 @@ namespace stardew_access
                 if (Config!.GridMovementOverrideKey.IsDown())
                 {
                     #if DEBUG
-                    DebugLog("Returning due to 'Config.GridMovementOverrideKey.IsDown()' being true");
+                    Log.Debug("Returning due to 'Config.GridMovementOverrideKey.IsDown()' being true");
                     #endif
                     return;
                 }
@@ -458,7 +457,7 @@ namespace stardew_access
                 if (!Config!.GridMovementActive)
                 {
                     #if DEBUG
-                    DebugLog("Returning due to 'Config.GridMovementActive' being false");
+                    Log.Debug("Returning due to 'Config.GridMovementActive' being false");
                     #endif
                     return;
                 }
@@ -466,7 +465,7 @@ namespace stardew_access
                 if (GridMovementFeature == null)
                 {
                     #if DEBUG
-                    DebugLog("Returning due to 'gridMovement' being null");
+                    Log.Debug("Returning due to 'gridMovement' being null");
                     #endif
                     return;
                 }
@@ -515,30 +514,5 @@ namespace stardew_access
             ObjectTrackerFeature?.GetLocationObjects(resetFocus: true);
         }
 
-
-        private static void LogMessage(string message, LogLevel logLevel)
-        {
-            if (monitor == null)
-                return;
-
-            monitor.Log(message, logLevel);
-        }
-
-        public static void ErrorLog(string message)
-        {
-            LogMessage(message, LogLevel.Error);
-        }
-
-        public static void InfoLog(string message)
-        {
-            LogMessage(message, LogLevel.Info);
-        }
-
-        public static void DebugLog(string message)
-        {
-            #if DEBUG
-            LogMessage(message, LogLevel.Debug);
-            #endif
-        }
     }
 }

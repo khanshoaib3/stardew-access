@@ -97,7 +97,7 @@ namespace stardew_access.Utils
                 {
                     // Branch for mod locations
                     // Log an error message and return false, as mod locations are not yet supported for the Farm conditional
-                    MainClass.ErrorLog("Mod locations are not yet supported for the Farm conditional.");
+                    Log.Error("Mod locations are not yet supported for the Farm conditional.");
                     return false;
                 }
             },
@@ -153,7 +153,7 @@ namespace stardew_access.Utils
             // Check if the conditionName already exists in the dictionary
             if (conditionals.ContainsKey(conditionName))
             {
-                MainClass.ErrorLog($"A conditional with the name '{conditionName}' already exists.");
+                Log.Error($"A conditional with the name '{conditionName}' already exists.");
                 return false;
             }
 
@@ -181,7 +181,7 @@ namespace stardew_access.Utils
                 // Error handling: Check if "x" and "y" properties exist in the JSON object
                 if (!item.Value.TryGetProperty("x", out var xElement) || !item.Value.TryGetProperty("y", out var yElement))
                 {
-                    MainClass.ErrorLog($"Missing x or y property for {name}");
+                    Log.Error($"Missing x or y property for {name}");
                     continue;
                 }
 
@@ -191,7 +191,7 @@ namespace stardew_access.Utils
                 // Error handling: Ensure that x and y arrays are not empty
                 if (xValues.Length == 0 || yValues.Length == 0)
                 {
-                    MainClass.ErrorLog($"Empty x or y array for {name}");
+                    Log.Error($"Empty x or y array for {name}");
                     continue;
                 }
 
@@ -303,7 +303,7 @@ namespace stardew_access.Utils
             {
                 if (property.Value.ValueKind != JsonValueKind.Object)
                 {
-                    MainClass.ErrorLog($"Invalid value type for {property.Name}");
+                    Log.Error($"Invalid value type for {property.Name}");
                     continue;
                 }
 
@@ -341,7 +341,7 @@ namespace stardew_access.Utils
                         }
                         else
                         {
-                            MainClass.ErrorLog($"Unknown conditional name: {conditionalName}");
+                            Log.Error($"Unknown conditional name: {conditionalName}");
                             continue;
                         }
                     }
@@ -355,7 +355,7 @@ namespace stardew_access.Utils
                 }
                 else
                 {
-                    MainClass.ErrorLog($"Unknown location category for {propertyName}");
+                    Log.Error($"Unknown location category for {propertyName}");
                 }
             }
 

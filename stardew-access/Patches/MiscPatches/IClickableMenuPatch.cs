@@ -197,7 +197,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}");
+                Log.Error($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}");
             }
         }
 
@@ -205,12 +205,12 @@ namespace stardew_access.Patches
         {
             try
             {
-                MainClass.DebugLog($"Closed {__instance.GetType()} menu, performing cleanup...");
+                Log.Debug($"Closed {__instance.GetType()} menu, performing cleanup...");
                 Cleanup(__instance);
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 

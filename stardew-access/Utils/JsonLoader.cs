@@ -25,15 +25,15 @@ namespace stardew_access.Utils
             }
             catch (FileNotFoundException ex)
             {
-                MainClass.ErrorLog($"{fileName} file not found: {ex.Message}");
+                Log.Error($"{fileName} file not found: {ex.Message}");
             }
             catch (JsonException ex)
             {
-                MainClass.ErrorLog($"Error parsing {fileName}: {ex.Message}");
+                Log.Error($"Error parsing {fileName}: {ex.Message}");
             }
             catch (Exception ex)
             {
-                MainClass.ErrorLog($"An error occurred while initializing {fileName}: {ex.Message}");
+                Log.Error($"An error occurred while initializing {fileName}: {ex.Message}");
             }
 
             return default;
@@ -57,15 +57,15 @@ namespace stardew_access.Utils
             }
             catch (IOException ex)
             {
-                MainClass.ErrorLog($"Error writing to {fileName}: {ex.Message}");
+                Log.Error($"Error writing to {fileName}: {ex.Message}");
             }
             catch (JsonException ex)
             {
-                MainClass.ErrorLog($"Error serializing data for {fileName}: {ex.Message}");
+                Log.Error($"Error serializing data for {fileName}: {ex.Message}");
             }
             catch (Exception ex)
             {
-                MainClass.ErrorLog($"An error occurred while saving {fileName}: {ex.Message}");
+                Log.Error($"An error occurred while saving {fileName}: {ex.Message}");
             }
 
             return false;

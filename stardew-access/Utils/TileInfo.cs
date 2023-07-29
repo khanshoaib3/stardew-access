@@ -169,7 +169,7 @@ namespace stardew_access.Utils
                 }
                 catch (Exception e)
                 {
-                    MainClass.ErrorLog($"An error occurred while detecting dropped items:\n{e.Message}");
+                    Log.Error($"An error occurred while detecting dropped items:\n{e.Message}");
                 }
             }
 

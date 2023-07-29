@@ -1,4 +1,4 @@
-﻿using StardewModdingAPI.Utilities;
+using StardewModdingAPI.Utilities;
 
 namespace stardew_access
 {

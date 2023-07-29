@@ -1,4 +1,4 @@
-﻿using DavyKager;
+using DavyKager;
 
 namespace stardew_access.ScreenReader
 {
@@ -58,20 +58,20 @@ namespace stardew_access.ScreenReader
                 // Call SetDllDirectory to change the DLL search path
                 NativeMethods.SetDllDirectory(dllDirectory);
             }
-            MainClass.InfoLog("Initializing Tolk...");
+            Log.Info("Initializing Tolk...");
             Tolk.TrySAPI(true);
             Tolk.Load();
 
-            MainClass.InfoLog("Querying for the active screen reader driver...");
+            Log.Info("Querying for the active screen reader driver...");
             string name = Tolk.DetectScreenReader();
             if (name != null)
             {
-                MainClass.InfoLog($"The active screen reader driver is: {name}");
+                Log.Info($"The active screen reader driver is: {name}");
                 isLoaded = true;
             }
             else
             {
-                MainClass.ErrorLog("None of the supported screen readers is running");
+                Log.Error("None of the supported screen readers is running");
                 isLoaded = false;
             }
         }
@@ -95,12 +95,12 @@ namespace stardew_access.ScreenReader
 
             if (!Tolk.Output(text, interrupt))
             {
-                MainClass.ErrorLog($"Failed to output text: {text}");
+                Log.Error($"Failed to output text: {text}");
             }
             #if DEBUG
             else
             {
-                MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
+                Log.Verbose($"Speaking(interrupt: {interrupt}) = {text}");
             }
             #endif
 

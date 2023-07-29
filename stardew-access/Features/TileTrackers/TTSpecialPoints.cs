@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ namespace stardew_access.Features.Tracker
 			JsonElement specialPointsJson = LoadJsonFile(specialPointsFile);
 			if (specialPointsJson.ValueKind == JsonValueKind.Null)
 			{
-				MainClass.ErrorLog($"Unable to load {specialPointsFile}.");
+				Log.Error($"Unable to load {specialPointsFile}.");
 				return;
 			}
 

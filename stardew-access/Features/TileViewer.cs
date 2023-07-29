@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using xTile;
 using stardew_access.Utils;
 using StardewValley;

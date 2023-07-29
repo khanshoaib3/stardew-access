@@ -44,7 +44,7 @@ namespace stardew_access.Patches
             }
             catch (System.Exception e)
             {
-                MainClass.ErrorLog(
+                Log.Error(
                     $"An error occurred in AnimalQueryMenuPatch()->DrawPatch():\n{e.Message}\n{e.StackTrace}"
                 );
             }

@@ -36,7 +36,7 @@ namespace stardew_access.Translation
             }
             else
             {
-                MainClass.ErrorLog("Unable to initialize fluent api");
+                Log.Error("Unable to initialize fluent api", true);
             }
         }
 
@@ -44,7 +44,7 @@ namespace stardew_access.Translation
         {
             if (Fluent == null)
             {
-                MainClass.ErrorLog("Fluent not initialized!");
+                Log.Error("Fluent not initialized!", true);
                 return translationKey;
             }
 
@@ -55,7 +55,7 @@ namespace stardew_access.Translation
 
             if (!disableWarning)
             {
-                MainClass.DebugLog($"No translation available for key: {translationKey}");
+                Log.Debug($"No translation available for key: {translationKey}", true);
             }
 
             return translationKey;
@@ -65,7 +65,7 @@ namespace stardew_access.Translation
         {
             if (Fluent == null)
             {
-                MainClass.ErrorLog("Fluent not initialized!");
+                Log.Error("Fluent not initialized!", true);
                 return translationKey;
             }
 
@@ -76,7 +76,7 @@ namespace stardew_access.Translation
 
             if (!disableWarning)
             {
-                MainClass.DebugLog($"No translation available for key: {translationKey}");
+                Log.Debug($"No translation available for key: {translationKey}", true);
             }
 
             return translationKey;

@@ -190,7 +190,7 @@ namespace stardew_access.ScreenReader
                 resolvedDll = true;
             }
 
-            MainClass.InfoLog("Initializing screen reader");
+            Log.Info("Initializing screen reader");
             speaker = make_speaker();
             rt = new Thread(new ParameterizedThreadStart(SpeakLoop));
             rt.Start(cts.Token);
@@ -213,7 +213,7 @@ namespace stardew_access.ScreenReader
             if (!MainClass.Config.TTS) return;
 
             #if DEBUG
-            MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
+            Log.Verbose($"Speaking(interrupt: {interrupt}) = {text}");
             #endif
 
             if (interrupt)
