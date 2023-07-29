@@ -316,6 +316,11 @@ namespace stardew_access.Features
                     ReadCurrentlySelectedObject(readTileOnly: true);
                 }
             }
+
+            if (pathfinder != null && pathfinder.IsActive && MiscUtils.IsAnyMovementKeyActive())
+            {
+                pathfinder.StopPathfinding();
+            }
         }
 
         private void MoveToCurrentlySelectedObject()
