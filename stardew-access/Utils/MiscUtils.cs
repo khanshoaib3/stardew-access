@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using StardewValley;
 
 namespace stardew_access.Utils
 {
@@ -45,6 +46,39 @@ namespace stardew_access.Utils
 				storedValue = currentValue;
 				action();
 			}
+		}
+
+		
+		/// <summary>
+		/// Checks whether any player movement key is pressed be it from a keyboard or a gamepad/controller.
+		/// </summary>
+		/// <returns>true if a key is pressed otherwise false.</returns>
+		public static bool IsAnyMovementKeyActive()
+		{
+			if (Game1.isGamePadThumbstickInMotion())
+				return true;
+
+			List<InputButton[]> keys = new();
+			keys.Add(Game1.options.moveUpButton);
+			keys.Add(Game1.options.moveRightButton);
+			keys.Add(Game1.options.moveDownButton);
+			keys.Add(Game1.options.moveLeftButton);
+
+			foreach (InputButton[] ibs in keys)
+			{
+				if (Game1.isOneOfTheseKeysDown(Game1.input.GetKeyboardState(), ibs))
+					return true;
+			}
+
+			return false;
+		}
+
+		public static bool IsUseToolKeyActive()
+		{
+			if (Game1.isOneOfTheseKeysDown(Game1.input.GetKeyboardState(), Game1.options.useToolButton))
+				return true;
+
+			return false;
 		}
 	}
 }

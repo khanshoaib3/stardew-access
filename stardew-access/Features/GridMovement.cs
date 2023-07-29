@@ -25,7 +25,7 @@ namespace stardew_access.Features
 
 		// Define a dictionary that maps the direction to the corresponding vector
 		private readonly Dictionary<int, Vector2> directionVectors = new()
-        {
+		{
 			{ 0, new Vector2(0, -1) },
 			{ 1, new Vector2(1, 0) },
 			{ 2, new Vector2(0, 1) },
@@ -83,8 +83,10 @@ namespace stardew_access.Features
 			if(warp != null)
 			{
 				HandleWarpInteraction(warp, location, tileLocation);
-			} else {
-                HandlePlayerMovement(tileLocation, direction);
+			}
+			else 
+			{
+				HandlePlayerMovement(tileLocation, direction);
 			}
 			CenterPlayer();
 		}

@@ -20,6 +20,7 @@ namespace stardew_access.Utils
 		private readonly int DefaultDirection;
 		private readonly int CheckPointTimeout;
 		private readonly int MSBetweenCheckingPathfindingController;
+		public bool IsActive;
 
 		public Pathfinder(Func<int, int, Vector2?, bool> retryAction, Action<Vector2?> stopAction, int minMillisecondsBetweenSteps = 300, int maxRetryAttempts = 5, int defaultDirection = -1, int checkPointTimeout = 500, int msBetweenCheckingPathfindingController = 1000)
 		{
@@ -76,6 +77,7 @@ namespace stardew_access.Utils
 							if (pathfindingRetryAttempts > MaxRetryAttempts)
 							{
 								pathfindingRetryAttempts = 0;
+								IsActive = false;
 								MainClass.ScreenReader.Say("Pathfinding forcibly stopped. Target Lost.", true);
 
 								player.controller.endBehaviorFunction(player, location);
@@ -103,6 +105,7 @@ namespace stardew_access.Utils
 			direction ??= DefaultDirection;
 			lock (pathfindingLock)
 			{
+				IsActive = true;
 				LastTargetedTile = targetTile.ToVector2();
 				StopTimers();
 				StartTimers();
@@ -118,6 +121,7 @@ namespace stardew_access.Utils
 		{
 			lock (pathfindingLock)
 			{
+				IsActive = false;
 				Farmer player = Game1.player;
 				StopTimers();
 
