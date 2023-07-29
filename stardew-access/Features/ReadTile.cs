@@ -1,13 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
+using stardew_access.Utils;
+using stardew_access.Translation;
 using StardewModdingAPI;
 using StardewValley;
 
-namespace stardew_access.Utils
+namespace stardew_access.Features
 {
     /// <summary>
     /// Reads the name and information about a tile.
     /// </summary>
-    public class ReadTile
+    internal class ReadTile
     {
         private bool isBusy; // To pause execution of run method between fixed intervals
         private readonly int delay; // Length of each interval (in ms)

@@ -1,10 +1,11 @@
 using Microsoft.Xna.Framework;
+using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Objects;
 
-namespace stardew_access.Utils
+namespace stardew_access.Features
 {
-    public class Radar
+    internal class Radar
     {
         private readonly List<Vector2> closed;
         private readonly List<Furniture> furnitures;

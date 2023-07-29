@@ -116,14 +116,16 @@ namespace stardew_access.ScreenReader
             GoString str = new(text, text.Length);
             int re = Speak(str, interrupt);
 
-            if (re == 1)
-            {
-                MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
-            }
-            else
+            if (re != 1)
             {
                 MainClass.ErrorLog($"Failed to output text: {text}");
             }
+            #if DEBUG
+            else
+            {
+                MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
+            }
+            #endif
         }
 
         public void SayWithChecker(string text, bool interrupt)

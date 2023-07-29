@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using stardew_access.Patches;
+using stardew_access.Translation;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;

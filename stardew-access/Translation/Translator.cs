@@ -1,32 +1,30 @@
 using Shockah.ProjectFluent;
 using StardewModdingAPI;
 
-namespace stardew_access
+namespace stardew_access.Translation
 {
     internal class Translator
     {
         private static Translator? instance = null;
-        private IFluent<string> Fluent { get; set; } = null!;
-
+        private IFluent<string>? Fluent { get; set; }
+        private static readonly object instanceLock = new   ();
         private Translator() { }
 
         public static Translator Instance
         {
             get
             {
-                instance ??= new Translator();
-
-                return instance;
+                lock (instanceLock)
+                {
+                    instance ??= new Translator();
+                    return instance;
+                }
             }
         }
 
         public void Initialize(IManifest modManifest)
         {
-            IFluentApi? fluentApi = null;
-            if (MainClass.ModHelper != null)
-            {
-                fluentApi = MainClass.ModHelper.ModRegistry.GetApi<IFluentApi>("Shockah.ProjectFluent");
-            }
+            IFluentApi? fluentApi = MainClass.ModHelper?.ModRegistry.GetApi<IFluentApi>("Shockah.ProjectFluent");
 
             if (fluentApi != null)
             {

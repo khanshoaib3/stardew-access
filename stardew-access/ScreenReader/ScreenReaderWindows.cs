@@ -93,14 +93,17 @@ namespace stardew_access.ScreenReader
 
             if (text.Contains('^')) text = text.Replace('^', '\n');
 
-            if (Tolk.Output(text, interrupt))
-            {
-                MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
-            }
-            else
+            if (!Tolk.Output(text, interrupt))
             {
                 MainClass.ErrorLog($"Failed to output text: {text}");
             }
+            #if DEBUG
+            else
+            {
+                MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
+            }
+            #endif
+
         }
 
         public void SayWithChecker(string text, bool interrupt)

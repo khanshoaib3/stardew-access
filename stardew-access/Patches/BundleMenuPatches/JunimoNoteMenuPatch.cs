@@ -2,6 +2,7 @@ using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using stardew_access.Translation;
 
 namespace stardew_access.Patches
 {

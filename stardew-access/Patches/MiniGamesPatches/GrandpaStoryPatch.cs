@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Minigames;
+using stardew_access.Translation;
 
 namespace stardew_access.Patches
 {
