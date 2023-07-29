@@ -72,5 +72,13 @@ namespace stardew_access.Utils
 
 			return false;
 		}
+
+		public static bool IsUseToolKeyActive()
+		{
+			if (Game1.isOneOfTheseKeysDown(Game1.input.GetKeyboardState(), Game1.options.useToolButton))
+				return true;
+
+			return false;
+		}
 	}
 }

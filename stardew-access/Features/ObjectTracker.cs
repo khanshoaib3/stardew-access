@@ -317,9 +317,17 @@ namespace stardew_access.Features
                 }
             }
 
-            if (pathfinder != null && pathfinder.IsActive && MiscUtils.IsAnyMovementKeyActive())
+            if (pathfinder != null && pathfinder.IsActive)
             {
-                pathfinder.StopPathfinding();
+                if (MiscUtils.IsAnyMovementKeyActive())
+                {
+                    pathfinder.StopPathfinding();
+                }
+                else if (MiscUtils.IsUseToolKeyActive())
+                {
+                    pathfinder.StopPathfinding();
+                    Game1.pressUseToolButton();
+                }
             }
         }
 
