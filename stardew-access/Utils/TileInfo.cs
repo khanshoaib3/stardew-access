@@ -5,6 +5,7 @@ using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using stardew_access.Translation;
 using System.Text;
+using StardewValley.Menus;
 
 namespace stardew_access.Utils
 {
@@ -603,7 +604,10 @@ namespace stardew_access.Utils
             // Check the object type and assign the appropriate name and category
             if (obj is Chest chest)
             {
-                toReturn = (chest.DisplayName, CATEGORY.Containers);
+                DiscreteColorPicker dummyColorPicker = new DiscreteColorPicker(0, 0);
+                int colorIndex = dummyColorPicker.getSelectionFromColor(chest.playerChoiceColor.Get());
+                string chestColor = colorIndex == 0 ? "" : Translator.Instance.Translate("common-chest_colors", new {index = colorIndex});
+                toReturn = ($"{chestColor} {chest.DisplayName}", CATEGORY.Containers);
             }
             else if (obj is IndoorPot indoorPot)
             {
