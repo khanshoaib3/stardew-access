@@ -232,7 +232,7 @@ patch-trash_bear-wanted_item = {$trash_bear_name} wants {$item_name}!
 
 common-chest_colors =
   {$index ->
-   [0] Brown (default)
+   [0] Chest color: Brown (default)
    [1] Blue
    [2] Light Blue
    [3] Teal

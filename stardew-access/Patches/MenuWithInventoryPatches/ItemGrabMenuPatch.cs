@@ -103,6 +103,8 @@ namespace stardew_access.Patches
                             continue;
 
                         toSpeak = Translator.Instance.Translate("common-chest_colors", new {index = i});
+                        if (i == __instance.chestColorPicker.colorSelection)
+                            toSpeak = $"{toSpeak} Selected";
                         goto SayWithChecker;
                     }
                 }
