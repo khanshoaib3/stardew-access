@@ -230,6 +230,32 @@ intro-scene4 = Stardew valley 0.5 miles away
 patch-trash_bear-wanted_item = {$trash_bear_name} wants {$item_name}!
 
 
+common-chest_colors =
+  {$index ->
+   [0] Brown (default)
+   [1] Blue
+   [2] Light Blue
+   [3] Teal
+   [4] Aqua
+   [5] Green
+   [6] Lime Green
+   [7] Yellow
+   [8] Light Orange
+   [9] Orange
+   [10] Red
+   [11] Dark Red
+   [12] Light Pink
+   [13] Pink
+   [14] Magenta
+   [15] Purple
+   [16] Dark Purple
+   [17] Dark Grey
+   [18] Medium Grey
+   [19] Light Grey
+   [20] White
+   *[other] Unknown
+  }
+
 common-unknown = Unknown
 
 # Common UI elements

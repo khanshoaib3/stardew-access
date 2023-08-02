@@ -96,29 +96,21 @@ namespace stardew_access.Patches
             }
             else
             {
+                if (__instance.discreteColorPickerCC.Count > 0) {
+                    for (int i = 0; i < __instance.discreteColorPickerCC.Count; i++)
+                    {
+                        if (!__instance.discreteColorPickerCC[i].containsPoint(x, y))
+                            continue;
+
+                        toSpeak = Translator.Instance.Translate("common-chest_colors", new {index = i});
+                        goto SayWithChecker;
+                    }
+                }
+
                 return false;
             }
 
-            // FIXME
-            /*if (__instance.discreteColorPickerCC.Count > 0) {
-                for (int i = 0; i < __instance.discreteColorPickerCC.Count; i++)
-                {
-                    if (__instance.discreteColorPickerCC[i].containsPoint(x, y))
-                    {
-                        MainClass.monitor.Log(i.ToString(), LogLevel.Debug);
-                        string toSpeak = getChestColorName(i);
-                        if (itemGrabMenuQueryKey != toSpeak)
-                        {
-                            itemGrabMenuQueryKey = toSpeak;
-                            hoveredItemQueryKey = "";
-                            ScreenReader.say(toSpeak, true);
-                            Game1.playSound("sa_drop_item");
-                        }
-                        return;
-                    }
-                }
-            }*/
-
+            SayWithChecker:
             if (itemGrabMenuQueryKey == toSpeak) return true;
 
             itemGrabMenuQueryKey = toSpeak;
@@ -147,79 +139,6 @@ namespace stardew_access.Patches
                 MainClass.ScreenReader.Say(toSpeak, true);
             }
             return true;
-        }
-
-        // TODO Add color names
-        private static string GetChestColorName(int i)
-        {
-            string toReturn = "";
-            switch (i)
-            {
-                case 0:
-                    toReturn = "Default chest color";
-                    break;
-                case 1:
-                    toReturn = "Default chest color";
-                    break;
-                case 2:
-                    toReturn = "Default chest color";
-                    break;
-                case 3:
-                    toReturn = "Default chest color";
-                    break;
-                case 4:
-                    toReturn = "Default chest color";
-                    break;
-                case 5:
-                    toReturn = "Default chest color";
-                    break;
-                case 6:
-                    toReturn = "Default chest color";
-                    break;
-                case 7:
-                    toReturn = "Default chest color";
-                    break;
-                case 8:
-                    toReturn = "Default chest color";
-                    break;
-                case 9:
-                    toReturn = "Default chest color";
-                    break;
-                case 10:
-                    toReturn = "Default chest color";
-                    break;
-                case 11:
-                    toReturn = "Default chest color";
-                    break;
-                case 12:
-                    toReturn = "Default chest color";
-                    break;
-                case 13:
-                    toReturn = "Default chest color";
-                    break;
-                case 14:
-                    toReturn = "Default chest color";
-                    break;
-                case 15:
-                    toReturn = "Default chest color";
-                    break;
-                case 16:
-                    toReturn = "Default chest color";
-                    break;
-                case 17:
-                    toReturn = "Default chest color";
-                    break;
-                case 18:
-                    toReturn = "Default chest color";
-                    break;
-                case 19:
-                    toReturn = "Default chest color";
-                    break;
-                case 20:
-                    toReturn = "Default chest color";
-                    break;
-            }
-            return toReturn;
         }
 
         internal static void Cleanup()
