@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using StardewValley;
 
 namespace stardew_access.Utils
