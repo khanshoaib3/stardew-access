@@ -17,6 +17,7 @@ namespace stardew_access
         #region Global Vars & Properties
 
         private static int prevDate = -99;
+        private static bool FirstRun = true;
         private static ModConfig? config;
         private Harmony? harmony;
         private static Radar? radarFeature;
@@ -123,13 +124,17 @@ namespace stardew_access
         public override void Entry(IModHelper helper)
         {
             #region Initializations
-            Config = helper.ReadConfig<ModConfig>();
-
             Log.Init(base.Monitor); // Initialize monitor
+            #if DEBUG
+            Log.Verbose("Initializing Stardew-Access");
+            #endif
+
+            Config = helper.ReadConfig<ModConfig>();
             modHelper = helper;
 
             Game1.options.setGamepadMode("force_on");
 
+            CustomFluentFunctions.RegisterLanguageHelper("en", typeof(EnglishHelper));
             ScreenReader = ScreenReaderController.Initialize();
             ScreenReader.Say("Initializing Stardew Access", true);
 
@@ -156,6 +161,7 @@ namespace stardew_access
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.Input.ButtonsChanged += OnButtonsChanged;
             helper.Events.Player.Warped += OnPlayerWarped;
+            helper.Events.Display.WindowResized += OnFirstWindowResized;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
             helper.Events.Display.MenuChanged += OnMenuChanged;
@@ -268,6 +274,18 @@ namespace stardew_access
                 {
                     ObjectTrackerFeature.Tick();
                 }
+            }
+        }
+
+        private void OnFirstWindowResized(object? sender, WindowResizedEventArgs e)
+        { 
+            if (FirstRun)
+            {
+                Log.Trace("First WindowResized.");
+                Translator.Instance.CustomFunctions!.LoadLanguageHelper();
+                FirstRun = false;
+                ModHelper!.Events.Display.WindowResized -= OnFirstWindowResized;
+                Log.Trace("Removed OnFirstWindowResized");
             }
         }
 

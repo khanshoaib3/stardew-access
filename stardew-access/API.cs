@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using stardew_access.Features;
+using stardew_access.Translation;
 using stardew_access.Utils;
 
 namespace stardew_access
@@ -163,6 +164,22 @@ namespace stardew_access
                 return;
 
             MainClass.ScreenReader.SayWithTileQuery(text, x, y, interrupt);
+        }
+
+        /// <summary>
+        /// Registers a language helper to be used for a specific locale.
+        /// </summary>
+        /// <param name="locale">The locale for which the helper should be used (e.g., "en", "fr", "es-es").</param>
+        /// <param name="helper">An instance of the language helper class implementing <see cref="ILanguageHelper"/>.</param>
+        /// <remarks>
+        /// The provided helper class should ideally derive from <see cref="LanguageHelperBase"/> for optimal compatibility, though this is not strictly required as long as it implements <see cref="ILanguageHelper"/>.
+        /// </remarks>
+        public void RegisterLanguageHelper(string locale, Type helperType)
+        {
+            #if DEBUG
+            Log.Trace($"Registered language helper for locale '{locale}': Type: {helperType.Name}");
+            #endif
+            CustomFluentFunctions.RegisterLanguageHelper(locale, helperType);
         }
         #pragma warning restore CA1822 // Mark members as static
     }
