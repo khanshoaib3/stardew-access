@@ -3,10 +3,12 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using stardew_access.Translation;
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace stardew_access.Patches
 {
-    internal class JunimoNoteMenuPatch
+    internal class JunimoNoteMenuPatch : IPatch
     {
         internal static bool firstTimeInMenu = true;
         internal static bool isUsingCustomKeyBinds = false;
@@ -14,7 +16,15 @@ namespace stardew_access.Patches
             currentIngredientInputSlot = -1,
             currentInventorySlot = -1;
 
-        internal static void DrawPatch(
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(JunimoNoteMenuPatch), nameof(JunimoNoteMenuPatch.DrawPatch))
+            );
+        }
+
+        private static void DrawPatch(
             JunimoNoteMenu __instance,
             bool ___specificBundlePage,
             int ___whichArea,

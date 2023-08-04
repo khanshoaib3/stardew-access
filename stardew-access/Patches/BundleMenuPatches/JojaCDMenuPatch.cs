@@ -1,11 +1,21 @@
 using StardewValley;
 using StardewValley.Menus;
 using stardew_access.Translation;
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace stardew_access.Patches
 {
-    internal class JojaCDMenuPatch
+    internal class JojaCDMenuPatch : IPatch
     {
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(JojaCDMenu), nameof(JojaCDMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(JojaCDMenuPatch), nameof(JojaCDMenuPatch.DrawPatch))
+            );
+        }
+
         internal static void DrawPatch(JojaCDMenu __instance)
         {
             try
