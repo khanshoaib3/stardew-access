@@ -1,3 +1,5 @@
+# TODO don't use `-name` in future and remove it from the keys that already use it, only use `-prefix` or `-postfix`.
+
 building_operations-move_building-under_construction = Cannot move building! Under construction.
 building_operations-move_building-no_permission = You don't have permission to move this building!
 building_operations-move_building-cannot_move = Cannot move building to {$x_position}x {$y_position}y
@@ -34,6 +36,26 @@ menu-junimo_note-next_area_button = Next area button
 menu-junimo_note-previous_area_button = Previous area button
 menu-junimo_note-back_button = Back button
 menu-junimo_note-purchase_button = Purchase button
+
+## Field Office Menu
+
+# TODO maybe make a range function
+menu-field_office-incomplete_slot_names = {$slot_index ->
+   [0] Center skeleton
+   [1] Center skeleton
+   [2] Center skeleton
+   [3] Center skeleton
+   [4] Center skeleton
+   [5] Center skeleton
+   [6] Snake
+   [7] Snake
+   [8] Snake
+   [9] Bat
+   [10] Frog
+   *[other] Donation
+  } slot
+menu-field_office-completed_slot_info = Slot {$slot_index} finished: {$item_name_in_slot}
+menu-field_office-donatable_item_in_inventory-prefix = Donatable {$content}
 
 ## Animal Query Menu (TODO organise this!)
 animal_query_menu-animal_info =
@@ -261,6 +283,8 @@ common-unknown = Unknown
 # Common UI elements
 common-ui-ok_button = OK button
 common-ui-cancel_button = Cancel button
+common-ui-drop_item_button = Drop item button
+common-ui-trashcan_button = Trashcan
 
 # The $name will be in the respective language i.e., it will be in french for french translation and so on. So use the language specific name in the square brackets except for the one with '*', that can have any value. Variants with '*' are marked as default.
 # TODO add this to more places

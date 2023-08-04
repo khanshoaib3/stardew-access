@@ -1,6 +1,7 @@
 using StardewValley;
 using stardew_access.Utils;
 using StardewValley.Menus;
+using stardew_access.Translation;
 
 namespace stardew_access.Patches
 {
@@ -17,20 +18,23 @@ namespace stardew_access.Patches
 
                 if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
                 {
-                    toSpeak = "Trashcan";
+                    toSpeak = Translator.Instance.Translate("common-ui-trashcan_button");
                 }
                 else if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
                 {
-                    toSpeak = "ok button";
+                    toSpeak = Translator.Instance.Translate("common-ui-ok_button");
                 }
                 else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
                 {
-                    toSpeak = "drop item";
+                    toSpeak = Translator.Instance.Translate("common-ui-drop_item_button");
                 }
                 else
                 {
                     if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                    {
+                        fieldOfficeMenuQuery = "";
                         return;
+                    }
 
                     for (int i = 0; i < __instance.pieceHolders.Count; i++)
                     {
@@ -38,34 +42,22 @@ namespace stardew_access.Patches
                             continue;
 
                         if (__instance.pieceHolders[i].item == null)
-                            toSpeak = i switch
-                            {
-                                0 => "Center skeleton slot",
-                                1 => "Center skeleton slot",
-                                2 => "Center skeleton slot",
-                                3 => "Center skeleton slot",
-                                4 => "Center skeleton slot",
-                                5 => "Center skeleton slot",
-                                6 => "Snake slot",
-                                7 => "Snake slot",
-                                8 => "Snake slot",
-                                9 => "Bat slot",
-                                10 => "Frog slot",
-                                _ => "Donation slot"
-                            };
+                            toSpeak = Translator.Instance.Translate("menu-field_office-incomplete_slot_names", new {slot_index = i});
                         else
-                            toSpeak = $"Slot {i + 1} finished: {__instance.pieceHolders[i].item.DisplayName}";
+                            toSpeak = Translator.Instance.Translate("menu-field_office-completed_slot_info", new {slot_index = i + 1, item_name_in_slot = __instance.pieceHolders[i].item.DisplayName});
 
                         if (!MainClass.Config.DisableInventoryVerbosity && __instance.heldItem != null && __instance.pieceHolders[i].item == null)
                         {
                             int highlight = GetPieceIndexForDonationItem(__instance.heldItem.ParentSheetIndex);
                             if (highlight != -1 && highlight == i)
-                                toSpeak += "Donatable ";
+                                toSpeak = Translator.Instance.Translate("menu-field_office-donatable_item_in_inventory-prefix", new {content = toSpeak});
                         }
 
                         if (fieldOfficeMenuQuery != $"{toSpeak}:{i}")
                         {
                             fieldOfficeMenuQuery = $"{toSpeak}:{i}";
+                            InventoryUtils.hoveredItemQueryKey = "";
+                            // TODO Maybe add custom query possibility
                             MainClass.ScreenReader.Say(toSpeak, true);
                         }
 
@@ -76,6 +68,7 @@ namespace stardew_access.Patches
                 if (fieldOfficeMenuQuery != toSpeak)
                 {
                     fieldOfficeMenuQuery = toSpeak;
+                    InventoryUtils.hoveredItemQueryKey = "";
                     MainClass.ScreenReader.Say(toSpeak, true);
 
                     if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
