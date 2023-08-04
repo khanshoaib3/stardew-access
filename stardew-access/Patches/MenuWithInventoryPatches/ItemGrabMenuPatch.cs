@@ -94,9 +94,9 @@ namespace stardew_access.Patches
                 toSpeak = "Drop Item";
                 isDropItemButton = true;
             }
-            else if (__instance.discreteColorPickerCC != null)
+            else
             {
-                for (int i = 0; i < __instance.discreteColorPickerCC.Count; i++)
+                for (int i = 0; __instance.discreteColorPickerCC != null && i < __instance.discreteColorPickerCC.Count; i++)
                 {
                     if (!__instance.discreteColorPickerCC[i].containsPoint(x, y))
                         continue;
@@ -106,11 +106,8 @@ namespace stardew_access.Patches
                         toSpeak = $"{toSpeak} Selected";
                     goto SayWithChecker;
                 }
+		
                 return false;
-            }
-            else
-            {
-							                return false;
             }
 
             SayWithChecker:
