@@ -1,12 +1,21 @@
+using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class BillboardPatch
+    internal class BillboardPatch : IPatch
     {
-        internal static void DrawPatch(Billboard __instance, bool ___dailyQuestBoard)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                 original: AccessTools.Method(typeof(Billboard), nameof(Billboard.draw), new Type[] { typeof(SpriteBatch) }),
+                 postfix: new HarmonyMethod(typeof(BillboardPatch), nameof(BillboardPatch.DrawPatch))
+            );
+        }
+
+        private static void DrawPatch(Billboard __instance, bool ___dailyQuestBoard)
         {
             try
             {

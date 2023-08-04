@@ -139,6 +139,7 @@ namespace stardew_access
             CustomCommands.Initialize();
 
             harmony = new Harmony(ModManifest.UniqueID);
+            new BillboardPatch().Apply(harmony);
             HarmonyPatches.Initialize(harmony);
 
             //Initialize marked locations

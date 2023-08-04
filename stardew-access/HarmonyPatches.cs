@@ -210,10 +210,6 @@ namespace stardew_access
                 postfix: new HarmonyMethod(typeof(QuestLogPatch), nameof(QuestLogPatch.DrawPatch))
             );
 
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Billboard), nameof(Billboard.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(BillboardPatch), nameof(BillboardPatch.DrawPatch))
-            );
             #endregion
 
             #region Chat Menu Patches
