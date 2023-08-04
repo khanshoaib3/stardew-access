@@ -94,20 +94,21 @@ namespace stardew_access.Patches
                 toSpeak = "Drop Item";
                 isDropItemButton = true;
             }
+            else if (__instance.discreteColorPickerCC != null)
+            {
+                for (int i = 0; i < __instance.discreteColorPickerCC.Count; i++)
+                {
+                    if (!__instance.discreteColorPickerCC[i].containsPoint(x, y))
+                        continue;
+
+                    toSpeak = Translator.Instance.Translate("common-chest_colors", new {index = i});
+                    if (i == __instance.chestColorPicker.colorSelection)
+                        toSpeak = $"{toSpeak} Selected";
+                    goto SayWithChecker;
+                }
+            }
             else
             {
-                if (__instance.discreteColorPickerCC.Count > 0) {
-                    for (int i = 0; i < __instance.discreteColorPickerCC.Count; i++)
-                    {
-                        if (!__instance.discreteColorPickerCC[i].containsPoint(x, y))
-                            continue;
-
-                        toSpeak = Translator.Instance.Translate("common-chest_colors", new {index = i});
-                        if (i == __instance.chestColorPicker.colorSelection)
-                            toSpeak = $"{toSpeak} Selected";
-                        goto SayWithChecker;
-                    }
-                }
 
                 return false;
             }
