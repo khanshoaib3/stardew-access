@@ -106,11 +106,11 @@ namespace stardew_access.Patches
                         toSpeak = $"{toSpeak} Selected";
                     goto SayWithChecker;
                 }
+                return false;
             }
             else
             {
-
-                return false;
+							                return false;
             }
 
             SayWithChecker:
