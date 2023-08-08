@@ -9,8 +9,6 @@ namespace stardew_access.Patches
 {
     internal class FieldOfficeMenuPatch : IPatch
     {
-        private static string fieldOfficeMenuQuery = "";
-
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
@@ -42,7 +40,6 @@ namespace stardew_access.Patches
                 {
                     if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                     {
-                        fieldOfficeMenuQuery = "";
                         return;
                     }
 
@@ -99,11 +96,6 @@ namespace stardew_access.Patches
                 828 => 10,
                 _ => -1,
             };
-        }
-
-        internal static void Cleanup()
-        {
-            fieldOfficeMenuQuery = "";
         }
     }
 }
