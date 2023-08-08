@@ -37,7 +37,11 @@ menu-junimo_note-previous_area_button = Previous area button
 menu-junimo_note-back_button = Back button
 menu-junimo_note-purchase_button = Purchase button
 
-## Field Office Menu
+## Donation Menus
+
+menu-donation_common-donatable_item_in_inventory-prefix = Donatable {$content}
+
+### Field Office Menu
 
 # TODO maybe make a range function
 menu-field_office-incomplete_slot_names = {$slot_index ->
@@ -55,7 +59,10 @@ menu-field_office-incomplete_slot_names = {$slot_index ->
    *[other] Donation
   } slot
 menu-field_office-completed_slot_info = Slot {$slot_index} finished: {$item_name_in_slot}
-menu-field_office-donatable_item_in_inventory-prefix = Donatable {$content}
+
+### Museum Menu
+
+menu-museum-slot_info = Slot {$x_position}x {$y_position}y
 
 ## Animal Query Menu (TODO organise this!)
 animal_query_menu-animal_info =

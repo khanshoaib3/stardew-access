@@ -3,10 +3,14 @@ using StardewValley;
 using stardew_access.Utils;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using stardew_access.Translation;
+using HarmonyLib;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace stardew_access.Patches
 {
-    internal class MuseumMenuPatch
+    internal class MuseumMenuPatch : IPatch
     {
         private static bool isMoving = false;
         private static readonly (int x, int y)[] donationTiles =
@@ -27,7 +31,20 @@ namespace stardew_access.Patches
             (42,16),(43,16),(44,16),(45,16),(46,16),(47,16),
         };
 
-        internal static bool RecieveKeyPressPatch()
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MuseumMenuPatch), nameof(MuseumMenuPatch.DrawPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.receiveKeyPress), new Type[] { typeof(Keys) }),
+                prefix: new HarmonyMethod(typeof(MuseumMenuPatch), nameof(MuseumMenuPatch.RecieveKeyPressPatch))
+            );
+        }
+
+        private static bool RecieveKeyPressPatch()
         {
             try
             {
@@ -49,7 +66,7 @@ namespace stardew_access.Patches
             return true;
         }
 
-        internal static void DrawPatch(MuseumMenu __instance, bool ___holdingMuseumPiece)
+        private static void DrawPatch(MuseumMenu __instance, bool ___holdingMuseumPiece)
         {
             try
             {
@@ -75,7 +92,7 @@ namespace stardew_access.Patches
             LibraryMuseum libraryMuseum = (LibraryMuseum)Game1.currentLocation;
 
             if (libraryMuseum.isTileSuitableForMuseumPiece(tileX, tileY))
-                toSpeak = $"slot {tileX}x {tileY}y";
+                toSpeak = Translator.Instance.Translate("menu-museum-slot_info", new {x_position = tileX, y_position = tileY});
 
             MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
         }
@@ -86,8 +103,9 @@ namespace stardew_access.Patches
 
             if (NarrateHoveredButtons(__instance, x, y)) return;
 
+            string highlightedItemPrefix = Translator.Instance.Translate("menu-donation_common-donatable_item_in_inventory-prefix", new {content = ""});
             int hoveredItemIndex = InventoryUtils.NarrateHoveredSlotAndReturnIndex(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y,
-                    handleHighlightedItem: true, highlightedItemPrefix: "Donatable ");
+                    handleHighlightedItem: true, highlightedItemPrefix: highlightedItemPrefix);
             if (hoveredItemIndex != -9999)
             {
                 bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed(); // For donating hovered item
@@ -106,11 +124,11 @@ namespace stardew_access.Patches
 
             if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
             {
-                toSpeak = "Ok button";
+                toSpeak = Translator.Instance.Translate("common-ui-ok_button");
             }
             else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
             {
-                toSpeak = "Drop Item";
+                toSpeak = Translator.Instance.Translate("common-ui-drop_item_button");
                 isDropItemButton = true;
             }
             else

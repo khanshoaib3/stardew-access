@@ -57,7 +57,7 @@ namespace stardew_access.Patches
                         {
                             int highlight = GetPieceIndexForDonationItem(__instance.heldItem.ParentSheetIndex);
                             if (highlight != -1 && highlight == i)
-                                toSpeak = Translator.Instance.Translate("menu-field_office-donatable_item_in_inventory-prefix", new {content = toSpeak});
+                                toSpeak = Translator.Instance.Translate("menu-donation_common-donatable_item_in_inventory-prefix", new {content = toSpeak});
                         }
 
                         if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, $"{toSpeak}:{i}"))

@@ -238,19 +238,6 @@ namespace stardew_access
 
             #endregion
 
-            #region Donation Menus
-            harmony.Patch(
-                original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MuseumMenuPatch), nameof(MuseumMenuPatch.DrawPatch))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.receiveKeyPress), new Type[] { typeof(Keys) }),
-                prefix: new HarmonyMethod(typeof(MuseumMenuPatch), nameof(MuseumMenuPatch.RecieveKeyPressPatch))
-            );
-
-            #endregion
-
             #region Mini Games
             harmony.Patch(
                         original: AccessTools.Method(typeof(Intro), nameof(Intro.draw), new Type[] { typeof(SpriteBatch) }),
