@@ -63,13 +63,14 @@ namespace stardew_access.Patches
                                 toSpeak = Translator.Instance.Translate("menu-field_office-donatable_item_in_inventory-prefix", new {content = toSpeak});
                         }
 
-                        if (fieldOfficeMenuQuery != $"{toSpeak}:{i}")
-                        {
-                            fieldOfficeMenuQuery = $"{toSpeak}:{i}";
-                            InventoryUtils.hoveredItemQueryKey = "";
-                            // TODO Maybe add custom query possibility
-                            MainClass.ScreenReader.Say(toSpeak, true);
-                        }
+                        MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, $"{toSpeak}:{i}");
+                        // if (fieldOfficeMenuQuery != $"{toSpeak}:{i}")
+                        // {
+                        //     fieldOfficeMenuQuery = $"{toSpeak}:{i}";
+                        //     InventoryUtils.hoveredItemQueryKey = "";
+                        //     // TODO Maybe add custom query possibility
+                        //     MainClass.ScreenReader.Say(toSpeak, true);
+                        // }
 
                         return;
                     }

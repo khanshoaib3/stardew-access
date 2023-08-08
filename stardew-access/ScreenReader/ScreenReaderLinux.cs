@@ -128,24 +128,31 @@ namespace stardew_access.ScreenReader
             #endif
         }
 
-        public void SayWithChecker(string text, bool interrupt)
+        public void SayWithChecker(string text, bool interrupt, string? customQuery = null)
         {
-            if (prevText != text)
-            {
-                prevText = text;
-                Say(text, interrupt);
-            }
+            customQuery ??= text;
+
+            if (string.IsNullOrWhiteSpace(customQuery))
+                return;
+
+            if (prevText == customQuery)
+                return;
+
+            prevText = customQuery;
+            Say(text, interrupt);
         }
 
-        public void SayWithMenuChecker(string text, bool interrupt)
+        public void SayWithMenuChecker(string text, bool interrupt, string? customQuery = null)
         {
-            if (string.IsNullOrWhiteSpace(text))
+            customQuery ??= text;
+
+            if (string.IsNullOrWhiteSpace(customQuery))
                 return;
 
-            if (prevMenuText == text && prevMenuSuffixText == MenuSuffixText && prevMenuPrefixText == MenuPrefixText)
+            if (prevMenuText == customQuery && prevMenuSuffixText == MenuSuffixText && prevMenuPrefixText == MenuPrefixText)
                 return;
 
-            prevMenuText = text;
+            prevMenuText = customQuery;
             prevMenuSuffixText = MenuSuffixText;
             prevMenuPrefixText = MenuPrefixText;
             Say($"{MenuPrefixNoQueryText}{MenuPrefixText}{text}{MenuSuffixText}{MenuSuffixNoQueryText}", interrupt);

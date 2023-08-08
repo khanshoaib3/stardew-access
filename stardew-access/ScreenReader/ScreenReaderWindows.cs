@@ -106,16 +106,19 @@ namespace stardew_access.ScreenReader
 
         }
 
-        public void SayWithChecker(string text, bool interrupt)
+        public void SayWithChecker(string text, bool interrupt, string? customQuery = null)
         {
-            if (prevText != text)
-            {
-                prevText = text;
-                Say(text, interrupt);
-            }
+            if (string.IsNullOrWhiteSpace(text))
+                return;
+
+            if (prevText == text)
+                return;
+
+            prevText = text;
+            Say(text, interrupt);
         }
 
-        public void SayWithMenuChecker(string text, bool interrupt)
+        public void SayWithMenuChecker(string text, bool interrupt, string? customQuery = null)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return;
