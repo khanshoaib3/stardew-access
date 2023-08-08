@@ -10,6 +10,7 @@ namespace stardew_access.Patches
             {
                 new JojaCDMenuPatch(),
                 new JunimoNoteMenuPatch(),
+                new FieldOfficeMenuPatch(),
                 new BillboardPatch(),
             };
 

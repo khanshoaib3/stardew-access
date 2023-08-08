@@ -249,10 +249,6 @@ namespace stardew_access
                 prefix: new HarmonyMethod(typeof(MuseumMenuPatch), nameof(MuseumMenuPatch.RecieveKeyPressPatch))
             );
 
-            harmony.Patch(
-                original: AccessTools.Method(typeof(FieldOfficeMenu), nameof(FieldOfficeMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(FieldOfficeMenuPatch), nameof(FieldOfficeMenuPatch.DrawPatch))
-            );
             #endregion
 
             #region Mini Games

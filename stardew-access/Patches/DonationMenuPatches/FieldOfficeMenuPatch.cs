@@ -2,19 +2,29 @@ using StardewValley;
 using stardew_access.Utils;
 using StardewValley.Menus;
 using stardew_access.Translation;
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace stardew_access.Patches
 {
-    internal class FieldOfficeMenuPatch
+    internal class FieldOfficeMenuPatch : IPatch
     {
         private static string fieldOfficeMenuQuery = "";
 
-        internal static void DrawPatch(FieldOfficeMenu __instance)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(FieldOfficeMenu), nameof(FieldOfficeMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(FieldOfficeMenuPatch), nameof(FieldOfficeMenuPatch.DrawPatch))
+            );
+        }
+
+        private static void DrawPatch(FieldOfficeMenu __instance)
         {
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                string toSpeak = " ";
+                string toSpeak = "";
 
                 if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
                 {
