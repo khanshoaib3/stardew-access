@@ -42,24 +42,26 @@ namespace stardew_access.ScreenReader
             }
         }
 
-        public override void Say(string text, bool interrupt)
+        public override bool Say(string text, bool interrupt)
         {
-            if (string.IsNullOrWhiteSpace(text)) return;
-            if (!isLoaded) return;
-            if (!MainClass.Config.TTS) return;
+            if (string.IsNullOrWhiteSpace(text)) return false;
+            if (!isLoaded) return false;
+            if (!MainClass.Config.TTS) return false;
 
             if (text.Contains('^')) text = text.Replace('^', '\n');
 
             if (!Tolk.Output(text, interrupt))
             {
                 MainClass.ErrorLog($"Failed to output text: {text}");
+                return false;
             }
-            #if DEBUG
             else
             {
+                #if DEBUG
                 MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
+                #endif
+                return true;
             }
-            #endif
         }
     }
 }

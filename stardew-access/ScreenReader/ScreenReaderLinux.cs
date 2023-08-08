@@ -62,11 +62,11 @@ namespace stardew_access.ScreenReader
             }
         }
 
-        public override void Say(string text, bool interrupt)
+        public override bool Say(string text, bool interrupt)
         {
-            if (string.IsNullOrWhiteSpace(text)) return;
-            if (!initialized) return;
-            if (!MainClass.Config.TTS) return;
+            if (string.IsNullOrWhiteSpace(text)) return false;
+            if (!initialized) return false;
+            if (!MainClass.Config.TTS) return false;
 
             if (text.Contains('^')) text = text.Replace('^', '\n');
 
@@ -76,13 +76,15 @@ namespace stardew_access.ScreenReader
             if (re != 1)
             {
                 MainClass.ErrorLog($"Failed to output text: {text}");
+                return false;
             }
-            #if DEBUG
             else
             {
+                #if DEBUG
                 MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
+                #endif
+                return true;
             }
-            #endif
         }
 
         private static IntPtr DllImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)

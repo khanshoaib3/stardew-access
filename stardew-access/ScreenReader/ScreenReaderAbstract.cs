@@ -50,58 +50,60 @@ namespace stardew_access.ScreenReader
 
         public abstract void CloseScreenReader();
 
-        public abstract void Say(string text, bool interrupt);
+        public abstract bool Say(string text, bool interrupt);
 
-        public void SayWithChecker(string text, bool interrupt, string? customQuery = null)
+        public bool SayWithChecker(string text, bool interrupt, string? customQuery = null)
         {
             customQuery ??= text;
 
             if (string.IsNullOrWhiteSpace(customQuery))
-                return;
+                return false;
 
             if (prevText == customQuery)
-                return;
+                return false;
 
             prevText = customQuery;
-            Say(text, interrupt);
+            return Say(text, interrupt);
         }
 
-        public void SayWithMenuChecker(string text, bool interrupt, string? customQuery = null)
+        public bool SayWithMenuChecker(string text, bool interrupt, string? customQuery = null)
         {
             customQuery ??= text;
 
             if (string.IsNullOrWhiteSpace(customQuery))
-                return;
+                return false;
 
             if (prevMenuText == customQuery && prevMenuSuffixText == MenuSuffixText && prevMenuPrefixText == MenuPrefixText)
-                return;
+                return false;
 
             prevMenuText = customQuery;
             prevMenuSuffixText = MenuSuffixText;
             prevMenuPrefixText = MenuPrefixText;
-            Say($"{MenuPrefixNoQueryText}{MenuPrefixText}{text}{MenuSuffixText}{MenuSuffixNoQueryText}", interrupt);
+            bool re = Say($"{MenuPrefixNoQueryText}{MenuPrefixText}{text}{MenuSuffixText}{MenuSuffixNoQueryText}", interrupt);
             MenuPrefixNoQueryText = "";
             MenuSuffixNoQueryText = "";
+
+            return re;
         }
 
-        public void SayWithChatChecker(string text, bool interrupt)
+        public bool SayWithChatChecker(string text, bool interrupt)
         {
-            if (prevChatText != text)
-            {
-                prevChatText = text;
-                Say(text, interrupt);
-            }
+            if (prevChatText == text)
+                return false;
+            
+            prevChatText = text;
+            return Say(text, interrupt);
         }
 
-        public void SayWithTileQuery(string text, int x, int y, bool interrupt)
+        public bool SayWithTileQuery(string text, int x, int y, bool interrupt)
         {
             string query = $"{text} x:{x} y:{y}";
 
-            if (prevTextTile != query)
-            {
-                prevTextTile = query;
-                Say(text, interrupt);
-            }
+            if (prevTextTile == query)
+                return false;
+            
+            prevTextTile = query;
+            return Say(text, interrupt);
         }
     }
 }

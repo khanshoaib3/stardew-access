@@ -157,11 +157,11 @@ namespace stardew_access.ScreenReader
             cleanup_with(speaker);
         }
 
-        public override void Say(string text, bool interrupt)
+        public override bool Say(string text, bool interrupt)
         {
-            if (text == null) return;
-            if (string.IsNullOrWhiteSpace(text)) return;
-            if (!MainClass.Config.TTS) return;
+            if (text == null) return false;
+            if (string.IsNullOrWhiteSpace(text)) return false;
+            if (!MainClass.Config.TTS) return false;
 
             #if DEBUG
             MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
@@ -176,6 +176,8 @@ namespace stardew_access.ScreenReader
             {
                 speechQueue.Enqueue(text);
             }
+
+            return true;
         }
 
         private static void DoneSpeaking()

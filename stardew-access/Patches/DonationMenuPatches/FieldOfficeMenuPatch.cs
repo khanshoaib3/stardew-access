@@ -63,24 +63,16 @@ namespace stardew_access.Patches
                                 toSpeak = Translator.Instance.Translate("menu-field_office-donatable_item_in_inventory-prefix", new {content = toSpeak});
                         }
 
-                        MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, $"{toSpeak}:{i}");
-                        // if (fieldOfficeMenuQuery != $"{toSpeak}:{i}")
-                        // {
-                        //     fieldOfficeMenuQuery = $"{toSpeak}:{i}";
-                        //     InventoryUtils.hoveredItemQueryKey = "";
-                        //     // TODO Maybe add custom query possibility
-                        //     MainClass.ScreenReader.Say(toSpeak, true);
-                        // }
+                        if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, $"{toSpeak}:{i}"))
+                            InventoryUtils.hoveredItemQueryKey = "";
 
                         return;
                     }
                 }
 
-                if (fieldOfficeMenuQuery != toSpeak)
+                if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true))
                 {
-                    fieldOfficeMenuQuery = toSpeak;
                     InventoryUtils.hoveredItemQueryKey = "";
-                    MainClass.ScreenReader.Say(toSpeak, true);
 
                     if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
                         Game1.playSound("drop_item");
