@@ -20,7 +20,7 @@ namespace stardew_access.ScreenReader
         }
     }
 
-    public class ScreenReaderLinux : IScreenReader
+    public class ScreenReaderLinux : ScreenReaderAbstract
     {
         [DllImport("libspeechdwrapper")]
         private static extern int Initialize();
@@ -31,52 +31,9 @@ namespace stardew_access.ScreenReader
         [DllImport("libspeechdwrapper")]
         private static extern int Close();
 
-        public string prevText = "", prevTextTile = "", prevChatText = "", prevMenuText = "";
         private bool initialized = false, resolvedDll = false;
-        private string menuPrefixText = "";
-        private string prevMenuPrefixText = "";
-        private string menuSuffixText = "";
-        private string prevMenuSuffixText = "";
-        private string menuPrefixNoQueryText = "";
-        private string menuSuffixNoQueryText = "";
 
-        public string PrevTextTile
-        {
-            get => prevTextTile;
-            set => prevTextTile = value;
-        }
-
-        public string PrevMenuQueryText
-        {
-            get => prevMenuText;
-            set => prevMenuText = value;
-        }
-
-        public string MenuPrefixText
-        {
-            get => menuPrefixText;
-            set => menuPrefixText = value;
-        }
-
-        public string MenuSuffixText
-        {
-            get => menuSuffixText;
-            set => menuSuffixText = value;
-        }
-
-        public string MenuPrefixNoQueryText
-        {
-            get => menuPrefixNoQueryText;
-            set => menuPrefixNoQueryText = value;
-        }
-
-        public string MenuSuffixNoQueryText
-        {
-            get => menuSuffixNoQueryText;
-            set => menuSuffixNoQueryText = value;
-        }
-
-        public void InitializeScreenReader()
+        public override void InitializeScreenReader()
         {
             MainClass.InfoLog("Initializing speech dispatcher...");
             if (!resolvedDll)
@@ -96,7 +53,7 @@ namespace stardew_access.ScreenReader
             }
         }
 
-        public void CloseScreenReader()
+        public override void CloseScreenReader()
         {
             if (initialized)
             {
@@ -105,7 +62,7 @@ namespace stardew_access.ScreenReader
             }
         }
 
-        public void Say(string text, bool interrupt)
+        public override void Say(string text, bool interrupt)
         {
             if (string.IsNullOrWhiteSpace(text)) return;
             if (!initialized) return;
@@ -126,58 +83,6 @@ namespace stardew_access.ScreenReader
                 MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
             }
             #endif
-        }
-
-        public void SayWithChecker(string text, bool interrupt, string? customQuery = null)
-        {
-            customQuery ??= text;
-
-            if (string.IsNullOrWhiteSpace(customQuery))
-                return;
-
-            if (prevText == customQuery)
-                return;
-
-            prevText = customQuery;
-            Say(text, interrupt);
-        }
-
-        public void SayWithMenuChecker(string text, bool interrupt, string? customQuery = null)
-        {
-            customQuery ??= text;
-
-            if (string.IsNullOrWhiteSpace(customQuery))
-                return;
-
-            if (prevMenuText == customQuery && prevMenuSuffixText == MenuSuffixText && prevMenuPrefixText == MenuPrefixText)
-                return;
-
-            prevMenuText = customQuery;
-            prevMenuSuffixText = MenuSuffixText;
-            prevMenuPrefixText = MenuPrefixText;
-            Say($"{MenuPrefixNoQueryText}{MenuPrefixText}{text}{MenuSuffixText}{MenuSuffixNoQueryText}", interrupt);
-            MenuPrefixNoQueryText = "";
-            MenuSuffixNoQueryText = "";
-        }
-
-        public void SayWithChatChecker(string text, bool interrupt)
-        {
-            if (prevChatText != text)
-            {
-                prevChatText = text;
-                Say(text, interrupt);
-            }
-        }
-
-        public void SayWithTileQuery(string text, int x, int y, bool interrupt)
-        {
-            string query = $"{text} x:{x} y:{y}";
-
-            if (prevTextTile != query)
-            {
-                prevTextTile = query;
-                Say(text, interrupt);
-            }
         }
 
         private static IntPtr DllImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
