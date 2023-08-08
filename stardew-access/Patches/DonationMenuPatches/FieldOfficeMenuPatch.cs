@@ -9,8 +9,6 @@ namespace stardew_access.Patches
 {
     internal class FieldOfficeMenuPatch : IPatch
     {
-        private static string fieldOfficeMenuQuery = "";
-
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
@@ -42,7 +40,6 @@ namespace stardew_access.Patches
                 {
                     if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                     {
-                        fieldOfficeMenuQuery = "";
                         return;
                     }
 
@@ -63,23 +60,16 @@ namespace stardew_access.Patches
                                 toSpeak = Translator.Instance.Translate("menu-field_office-donatable_item_in_inventory-prefix", new {content = toSpeak});
                         }
 
-                        if (fieldOfficeMenuQuery != $"{toSpeak}:{i}")
-                        {
-                            fieldOfficeMenuQuery = $"{toSpeak}:{i}";
+                        if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, $"{toSpeak}:{i}"))
                             InventoryUtils.hoveredItemQueryKey = "";
-                            // TODO Maybe add custom query possibility
-                            MainClass.ScreenReader.Say(toSpeak, true);
-                        }
 
                         return;
                     }
                 }
 
-                if (fieldOfficeMenuQuery != toSpeak)
+                if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true))
                 {
-                    fieldOfficeMenuQuery = toSpeak;
                     InventoryUtils.hoveredItemQueryKey = "";
-                    MainClass.ScreenReader.Say(toSpeak, true);
 
                     if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
                         Game1.playSound("drop_item");
@@ -106,11 +96,6 @@ namespace stardew_access.Patches
                 828 => 10,
                 _ => -1,
             };
-        }
-
-        internal static void Cleanup()
-        {
-            fieldOfficeMenuQuery = "";
         }
     }
 }

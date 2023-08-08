@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace stardew_access.ScreenReader
 {
-    public class ScreenReaderMac : IScreenReader
+    public class ScreenReaderMac : ScreenReaderAbstract
     {
         // The speaker instance
         private static IntPtr speaker;
@@ -117,50 +117,7 @@ namespace stardew_access.ScreenReader
 
 
 
-        private string menuPrefixText = "";
-        private string prevMenuPrefixText = "";
-        private string menuSuffixText = "";
-        private string prevMenuSuffixText = "";
-        private string menuPrefixNoQueryText = "";
-        private string menuSuffixNoQueryText = "";
 
-        public string PrevTextTile
-        {
-            get => prevTextTile;
-            set => prevTextTile = value;
-        }
-
-        public string PrevMenuQueryText
-        {
-            get => prevMenuText;
-            set => prevMenuText = value;
-        }
-
-        public string MenuPrefixText
-        {
-            get => menuPrefixText;
-            set => menuPrefixText = value;
-        }
-
-        public string MenuSuffixText
-        {
-            get => menuSuffixText;
-            set => menuSuffixText = value;
-        }
-
-        public string MenuPrefixNoQueryText
-        {
-            get => menuPrefixNoQueryText;
-            set => menuPrefixNoQueryText = value;
-        }
-
-        public string MenuSuffixNoQueryText
-        {
-            get => menuSuffixNoQueryText;
-            set => menuSuffixNoQueryText = value;
-        }
-
-        public string prevText = "", prevTextTile = "", prevChatText = "", prevMenuText = "";
         private bool resolvedDll = false;
 
         private static void SpeakLoop(object? obj)
@@ -176,7 +133,7 @@ namespace stardew_access.ScreenReader
             }
         }
 
-        public void InitializeScreenReader()
+        public override void InitializeScreenReader()
         {
             if (!resolvedDll) {
                 // Set the path to load libspeak.dylib from via a resolver
@@ -192,7 +149,7 @@ namespace stardew_access.ScreenReader
             set_rate_with(speaker, MainClass.Config.MacSpeechRate);
         }
 
-        public void CloseScreenReader()
+        public override void CloseScreenReader()
         {
             cts.Cancel();
             rt?.Join();
@@ -200,11 +157,11 @@ namespace stardew_access.ScreenReader
             cleanup_with(speaker);
         }
 
-        public void Say(string text, bool interrupt)
+        public override bool Say(string text, bool interrupt)
         {
-            if (text == null) return;
-            if (string.IsNullOrWhiteSpace(text)) return;
-            if (!MainClass.Config.TTS) return;
+            if (text == null) return false;
+            if (string.IsNullOrWhiteSpace(text)) return false;
+            if (!MainClass.Config.TTS) return false;
 
             #if DEBUG
             MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
@@ -219,53 +176,8 @@ namespace stardew_access.ScreenReader
             {
                 speechQueue.Enqueue(text);
             }
-        }
 
-        public void SayWithChecker(string text, bool interrupt)
-        {
-            if (text == null) return;
-            if (text != prevText)
-            {
-                Say(text, interrupt);
-                prevText = text;
-            }
-        }
-
-        public void SayWithMenuChecker(string text, bool interrupt)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-                return;
-
-            if (prevMenuText == text && prevMenuSuffixText == MenuSuffixText && prevMenuPrefixText == MenuPrefixText)
-                return;
-
-            prevMenuText = text;
-            prevMenuSuffixText = MenuSuffixText;
-            prevMenuPrefixText = MenuPrefixText;
-            Say($"{MenuPrefixNoQueryText}{MenuPrefixText}{text}{MenuSuffixText}{MenuSuffixNoQueryText}", interrupt);
-            MenuPrefixNoQueryText = "";
-            MenuSuffixNoQueryText = "";
-        }
-
-        public void SayWithChatChecker(string text, bool interrupt)
-        {
-            if (text == null) return;
-            if (text != prevChatText)
-            {
-                Say(text, interrupt);
-                prevChatText = text;
-            }
-        }
-
-        public void SayWithTileQuery(string text, int x, int y, bool interrupt)
-        {
-            string query = $"{text} x:{x} y:{y}";
-
-            if (prevTextTile != query)
-            {
-                prevTextTile = query;
-                Say(text, interrupt);
-            }
+            return true;
         }
 
         private static void DoneSpeaking()
