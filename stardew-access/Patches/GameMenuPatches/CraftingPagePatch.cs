@@ -2,13 +2,24 @@ using StardewValley;
 using stardew_access.Utils;
 using StardewValley.Menus;
 using StardewValley.Objects;
+using stardew_access.Translation;
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace stardew_access.Patches
 {
-    internal class CraftingPagePatch
+    internal class CraftingPagePatch : IPatch
     {
         internal static int currentSelectedCraftingRecipe = -1;
         internal static bool isSelectingRecipe = false;
+
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(CraftingPage), nameof(CraftingPage.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(CraftingPagePatch), nameof(CraftingPagePatch.DrawPatch))
+            );
+        }
 
         internal static void DrawPatch(CraftingPage __instance, CraftingRecipe ___hoverRecipe, int ___currentCraftingPage)
         {
@@ -32,7 +43,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occurred in crafting page patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -67,19 +78,19 @@ namespace stardew_access.Patches
 
             if (__instance.upButton != null && __instance.upButton.containsPoint(x, y))
             {
-                toSpeak = "Previous Recipe List";
+                toSpeak = Translator.Instance.Translate("menu-crafting_page-previous_recipe_list_button");
             }
             else if (__instance.downButton != null && __instance.downButton.containsPoint(x, y))
             {
-                toSpeak = "Next Recipe List";
+                toSpeak = Translator.Instance.Translate("menu-crafting_page-next_recipe_list_button");
             }
             else if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
             {
-                toSpeak = "Trash Can";
+                toSpeak = Translator.Instance.Translate("common-ui-trashcan_button");
             }
             else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
             {
-                toSpeak = "Drop Item";
+                toSpeak = Translator.Instance.Translate("common-ui-drop_item_button");
                 isDropItemButton = true;
             }
             else
@@ -110,79 +121,27 @@ namespace stardew_access.Patches
                 if (!isRecipeInFocus)
                     return false;
 
-                string query = $"unknown recipe:{__instance.getCurrentlySnappedComponent().myID}";
-
-                MainClass.ScreenReader.SayWithMenuChecker("unknown recipe", true);
+                MainClass.ScreenReader.SayWithMenuChecker(Translator.Instance.Translate("menu-crafting_page-unknown_recipe"), true);
                 return true;
             }
 
+            Item producesItem = ___hoverRecipe.createItem();
             string name = ___hoverRecipe.DisplayName;
             int numberOfProduce = ___hoverRecipe.numberProducedPerCraft;
-            string description = "";
-            string ingredients = "";
-            string buffs = "";
-            string craftable = "";
+            string description = ___hoverRecipe.description;
+            string ingredients = InventoryUtils.GetIngredientsFromRecipe(___hoverRecipe);
+            string buffs = $"{InventoryUtils.GetHealthNStaminaFromItem(producesItem)}, {InventoryUtils.GetBuffsFromItem(producesItem)}";
+            int isCraftable = ___hoverRecipe.doesFarmerHaveIngredientsInInventory(GetContainerContents(__instance._materialContainers)) ? 1 : 0;
 
-            description = $"Description:\n{___hoverRecipe.description}";
-            craftable = ___hoverRecipe.doesFarmerHaveIngredientsInInventory(GetContainerContents(__instance._materialContainers)) ? "Craftable" : "Not Craftable";
-
-            #region Crafting ingredients
-            ingredients = "Ingredients:\n";
-            for (int i = 0; i < ___hoverRecipe.recipeList.Count; i++)
-            {
-                int recipeCount = ___hoverRecipe.recipeList.ElementAt(i).Value;
-                int recipeItem = ___hoverRecipe.recipeList.ElementAt(i).Key;
-                string recipeName = ___hoverRecipe.getNameFromIndex(recipeItem);
-
-                ingredients += $" ,{recipeCount} {recipeName}";
-            }
-            #endregion
-
-            #region Health & stamina and buff items (effects like +1 walking speed)
-            Item producesItem = ___hoverRecipe.createItem();
-            if (producesItem is StardewValley.Object producesItemObject)
-            {
-                if (producesItemObject.Edibility != -300)
-                {
-                    int stamina_recovery = producesItemObject.staminaRecoveredOnConsumption();
-                    buffs += $"{stamina_recovery} Energy";
-                    if (stamina_recovery >= 0)
-                    {
-                        int health_recovery = producesItemObject.healthRecoveredOnConsumption();
-                        buffs += $"\n{health_recovery} Health";
-                    }
-                }
-                // These variables are taken from the game's code itself (IClickableMenu.cs -> 1016 line)
-                bool edibleItem = producesItem != null && (int)producesItemObject.Edibility != -300;
-                string[]? buffIconsToDisplay = (producesItem != null && edibleItem && Game1.objectInformation[producesItemObject.ParentSheetIndex].Split('/').Length > 7)
-                    ? producesItem.ModifyItemBuffs(Game1.objectInformation[producesItemObject.ParentSheetIndex].Split('/')[7].Split(' '))
-                    : null;
-
-                if (buffIconsToDisplay != null)
-                {
-                    for (int j = 0; j < buffIconsToDisplay.Length; j++)
-                    {
-                        string buffName = ((Convert.ToInt32(buffIconsToDisplay[j]) > 0) ? "+" : "") + buffIconsToDisplay[j] + " ";
-                        if (j <= 11)
-                        {
-                            buffName = Game1.content.LoadString("Strings\\UI:ItemHover_Buff" + j, buffName);
-                        }
-                        try
-                        {
-                            int count = int.Parse(buffName[..buffName.IndexOf(' ')]);
-                            if (count != 0)
-                                buffs += $"{buffName}\n";
-                        }
-                        catch (Exception) { }
-                    }
-
-                    buffs = $"Buffs and boosts:\n {buffs}";
-                }
-            }
-            #endregion
-
-
-            string toSpeak = $"{numberOfProduce} {name}, {craftable}, \n\t{ingredients}, \n\t{description} \n\t{buffs}";
+            string toSpeak = Translator.Instance.Translate("menu-cragting_page-recipe_info",
+                new {
+                    produce_count = numberOfProduce,
+                    name = name,
+                    is_craftable = isCraftable,
+                    ingredients = ingredients,
+                    description = description,
+                    buffs = buffs
+                });
 
             MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
 

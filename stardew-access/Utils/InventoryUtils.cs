@@ -151,6 +151,23 @@ namespace stardew_access.Utils
                 return Translator.Instance.Translate("item-required_item_info", new {name = itemName});
         }
 
+        internal static String GetIngredientsFromRecipe(CraftingRecipe recipe)
+        {
+            if (recipe is null) return "";
+
+            List<string> ingredientList = new();
+            for (int i = 0; i < recipe.recipeList.Count; i++)
+            {
+                int recipeCount = recipe.recipeList.ElementAt(i).Value;
+                int recipeItem = recipe.recipeList.ElementAt(i).Key;
+                string recipeName = recipe.getNameFromIndex(recipeItem);
+
+                ingredientList.Add($"{recipeCount} {recipeName}");
+            }
+
+            return string.Join(", ", ingredientList);
+        }
+
         internal static String GetPrice(int price)
         {
             if (price == -1) return "";

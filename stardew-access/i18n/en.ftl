@@ -64,6 +64,18 @@ menu-field_office-completed_slot_info = Slot {$slot_index} finished: {$item_name
 
 menu-museum-slot_info = Slot {$x_position}x {$y_position}y
 
+## Game Menus
+
+### Crafting Page
+
+menu-cragting_page-recipe_info = {$produce_count} {$name}, {$is_craftable ->
+    [0] not craftable
+    *[1] craftable
+  }, Ingredients: {$ingredients}, Description: {$description}, {$buffs}
+menu-crafting_page-unknown_recipe = Unknown recipe
+menu-crafting_page-previous_recipe_list_button = Previous recipe list button
+menu-crafting_page-next_recipe_list_button = Next recipe list button
+
 ## Animal Query Menu (TODO organise this!)
 animal_query_menu-animal_info =
   {$name}, {$is_baby ->

@@ -12,6 +12,7 @@ namespace stardew_access.Patches
                 new JunimoNoteMenuPatch(),
                 new FieldOfficeMenuPatch(),
                 new MuseumMenuPatch(),
+                new CraftingPagePatch(),
                 new BillboardPatch(),
             };
 
