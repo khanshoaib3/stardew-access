@@ -1,8 +1,20 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using StardewValley.Menus;
+
 namespace stardew_access.Patches
 {
-    internal class CollectionsPagePatch
+    internal class CollectionsPagePatch : IPatch
     {
-        internal static void DrawPatch(StardewValley.Menus.CollectionsPage __instance)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(CollectionsPage), nameof(CollectionsPage.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(CollectionsPagePatch), nameof(CollectionsPagePatch.DrawPatch))
+            );
+        }
+
+        internal static void DrawPatch(CollectionsPage __instance)
         {
             try
             {
@@ -14,7 +26,7 @@ namespace stardew_access.Patches
             }
             catch (System.Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occurred in collections page patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
     }

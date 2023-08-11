@@ -76,6 +76,11 @@ menu-crafting_page-unknown_recipe = Unknown recipe
 menu-crafting_page-previous_recipe_list_button = Previous recipe list button
 menu-crafting_page-next_recipe_list_button = Next recipe list button
 
+## Exit page
+
+menu-exit_page-exit_to_title_button = Exit to title button
+menu-exit_page-exit_to_desktop_button = Exit to desktop button
+
 ## Animal Query Menu (TODO organise this!)
 animal_query_menu-animal_info =
   {$name}, {$is_baby ->
