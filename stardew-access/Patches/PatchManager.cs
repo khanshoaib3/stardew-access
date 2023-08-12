@@ -21,6 +21,7 @@ namespace stardew_access.Patches
                 new GameMenuPatch(),
                 new InventoryPagePatch(),
                 new OptionsPagePatch(),
+                new SocialPagePatch(),
                 new BillboardPatch(),
             };
 

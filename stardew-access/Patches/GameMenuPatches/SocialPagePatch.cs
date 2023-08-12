@@ -1,13 +1,22 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Translation;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class SocialPagePatch
+    internal class SocialPagePatch : IPatch
     {
-        internal static string socialPageQuery = "";
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SocialPage), nameof(SocialPage.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(SocialPagePatch), nameof(SocialPagePatch.DrawPatch))
+            );
+        }
 
-        internal static void DrawPatch(SocialPage __instance, List<ClickableTextureComponent> ___sprites, int ___slotPosition, List<string> ___kidsNames)
+        private static void DrawPatch(SocialPage __instance, List<ClickableTextureComponent> ___sprites, int ___slotPosition, List<string> ___kidsNames)
         {
             try
             {
@@ -29,7 +38,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occurred in social page patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -55,62 +64,43 @@ namespace stardew_access.Patches
             ___kidsNames.Add("Evelyn");
             ___kidsNames.Add("Demetrius");
 
-            string toSpeak = $"{name}";
-
-            if (!hasTalked)
-            {
-                toSpeak = $"{toSpeak}, not talked yet";
-            }
-
-
+            string relationshipStatus = "null";
             if (datable | housemate)
             {
-                string text2 = (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.pt) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635") : ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635").Split('/').First() : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635").Split('/').Last());
+                relationshipStatus = (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.pt) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635") : ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635").Split('/').First() : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11635").Split('/').Last());
                 if (housemate)
                 {
-                    text2 = Game1.content.LoadString("Strings\\StringsFromCSFiles:Housemate");
+                    relationshipStatus = Game1.content.LoadString("Strings\\StringsFromCSFiles:Housemate");
                 }
                 else if (spouse)
                 {
-                    text2 = ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11636") : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11637"));
+                    relationshipStatus = ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11636") : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11637"));
                 }
                 else if (__instance.isMarriedToAnyone(name))
                 {
-                    text2 = ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\UI:SocialPage_MarriedToOtherPlayer_MaleNPC") : Game1.content.LoadString("Strings\\UI:SocialPage_MarriedToOtherPlayer_FemaleNPC"));
+                    relationshipStatus = ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\UI:SocialPage_MarriedToOtherPlayer_MaleNPC") : Game1.content.LoadString("Strings\\UI:SocialPage_MarriedToOtherPlayer_FemaleNPC"));
                 }
                 else if (!Game1.player.isMarried() && friendship.IsDating())
                 {
-                    text2 = ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11639") : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11640"));
+                    relationshipStatus = ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11639") : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11640"));
                 }
                 else if (__instance.getFriendship(name).IsDivorced())
                 {
-                    text2 = ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11642") : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11643"));
+                    relationshipStatus = ((__instance.getGender(name) == 0) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11642") : Game1.content.LoadString("Strings\\StringsFromCSFiles:SocialPage.cs.11643"));
                 }
-
-                toSpeak = $"{toSpeak}, {text2}";
             }
 
-            if (!__instance.getFriendship(name).IsMarried() && ___kidsNames.Contains(name))
-            {
-                toSpeak = $"{toSpeak}, married";
-            }
+            string toSpeak = Translator.Instance.Translate("menu-social_page-npc_info" ,
+                    new
+                    {
+                        name = name,
+                        has_talked = hasTalked ? 1 : 0,
+                        relationship_status = relationshipStatus,
+                        heart_level = heartLevel,
+                        gifts_this_week = giftsThisWeek
+                    });
 
-            if (spouse)
-            {
-                toSpeak = $"{toSpeak}, spouse";
-            }
-            else if (friendship.IsDating())
-            {
-                toSpeak = $"{toSpeak}, dating";
-            }
-
-            toSpeak = $"{toSpeak}, {heartLevel} hearts, {giftsThisWeek} gifts given this week.";
-
-            if (socialPageQuery != toSpeak)
-            {
-                socialPageQuery = toSpeak;
-                MainClass.ScreenReader.Say(toSpeak, true);
-            }
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
             return true;
         }
 
@@ -150,17 +140,8 @@ namespace stardew_access.Patches
 
             toSpeak = $"{farmer.displayName}, {text2}";
 
-            if (socialPageQuery != toSpeak)
-            {
-                socialPageQuery = toSpeak;
-                MainClass.ScreenReader.Say(toSpeak, true);
-            }
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
             return true;
-        }
-
-        internal static void Cleanup()
-        {
-            socialPageQuery = "";
         }
     }
 }

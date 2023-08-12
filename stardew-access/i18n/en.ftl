@@ -106,6 +106,22 @@ menu-options_page-plus_minus_button_info = {$selected_option} selected of {$labe
 menu-options_page-input_listener_info = {$label} is bound to {$buttons_list}. Left click to change.
 menu-options_page-heading_info = {$label} Options:
 
+## Social Page
+
+menu-social_page-npc_info = {$name}{$has_talked ->
+    [0] , not talked yet
+    *[1] {EMPTYSTRING()}
+  }{$relationship_status ->
+    [null] {EMPTYSTRING()}
+    *[other] , {$relationship_status}
+  }, {$heart_level} {$heart_level ->
+    [1] heart
+    *[other] hearts
+  }, {$gifts_this_week} {$gifts_this_week ->
+    [1] gift
+    *[other] gifts
+  } given this week.
+
 
 ### Crafting Page
 
