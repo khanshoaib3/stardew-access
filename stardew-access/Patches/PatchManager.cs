@@ -20,6 +20,7 @@ namespace stardew_access.Patches
                 new ExitPagePatch(),
                 new GameMenuPatch(),
                 new InventoryPagePatch(),
+                new OptionsPagePatch(),
                 new BillboardPatch(),
             };
 

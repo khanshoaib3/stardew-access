@@ -1,12 +1,23 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Translation;
 using StardewValley;
 using StardewValley.Menus;
 using System.Text;
 
 namespace stardew_access.Patches
 {
-    internal class OptionsPagePatch
+    internal class OptionsPagePatch :IPatch
     {
-        internal static void DrawPatch(OptionsPage __instance)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(OptionsPage), nameof(OptionsPage.draw), new Type[] { typeof(SpriteBatch) }),
+                    postfix: new HarmonyMethod(typeof(OptionsPagePatch), nameof(OptionsPagePatch.DrawPatch))
+            );
+        }
+
+        private static void DrawPatch(OptionsPage __instance)
         {
             try
             {
@@ -18,44 +29,70 @@ namespace stardew_access.Patches
                         continue;
 
                     OptionsElement optionsElement = __instance.options[currentItemIndex + i];
-                    string toSpeak = optionsElement.label;
+                    string translationKey = optionsElement.label;
+                    string label = optionsElement.label;
+                    if (label.Contains(":"))
+                        label = label.Replace(":", "");
+                    object? tokens = new {label = label};
 
                     switch (optionsElement)
                     {
                         case OptionsButton:
-                            toSpeak = $" {toSpeak} Button";
+                            translationKey = "menu-options_page-button_info";
                             break;
                         case OptionsCheckbox checkbox:
-                            toSpeak = $"{(checkbox.isChecked ? "Enabled" : "Disabled")} {toSpeak} Checkbox";
+                            translationKey = "menu-options_page-checkbox_info";
+                            tokens = new
+                            {
+                                label = label,
+                                is_checked = checkbox.isChecked ? 1 : 0
+                            };
                             break;
                         case OptionsDropDown dropdown:
-                            toSpeak = $"{toSpeak} Dropdown, option {dropdown.dropDownDisplayOptions[dropdown.selectedOption]} selected";
+                            translationKey = "menu-options_page-dropdown_info";
+                            tokens = new
+                            {
+                                label = label,
+                                selected_option = dropdown.dropDownDisplayOptions[dropdown.selectedOption]
+                            };
                             break;
                         case OptionsSlider slider:
-                            toSpeak = $"{slider.value}% {toSpeak} Slider";
+                            translationKey = "menu-options_page-slider_info";
+                            tokens = new
+                            {
+                                label = label,
+                                slider_value = slider.value
+                            };
                             break;
                         case OptionsPlusMinus plusMinus:
-                            toSpeak = $"{plusMinus.displayOptions[plusMinus.selected]} selected of {toSpeak}";
+                            translationKey = "menu-options_page-plus_minus_button_info";
+                            tokens = new
+                            {
+                                label = label,
+                                selected_option = plusMinus.displayOptions[plusMinus.selected]
+                            };
                             break;
                         case OptionsInputListener listener:
-                            var buttons = new StringBuilder();
-                            listener.buttonNames.ForEach(name => buttons.Append($", {name}"));
-                            toSpeak = $"{toSpeak} is bound to {buttons}. Left click to change.";
+                            string buttons = string.Join(", ", listener.buttonNames);
+                            translationKey = "menu-options_page-input_listener_info";
+                            tokens = new
+                            {
+                                label = label,
+                                buttons_list = buttons
+                            };
                             break;
                         default:
-                            if (toSpeak.Contains(":"))
-                                toSpeak = toSpeak.Replace(":", "");
-                            toSpeak = $"{toSpeak} Options:";
+                            translationKey = "menu-options_page-heading_info";
                             break;
                     }
 
-                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithMenuChecker(Translator.Instance.Translate(translationKey, tokens), true);
                     return;
                 }
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occurred in options page patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
     }

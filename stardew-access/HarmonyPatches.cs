@@ -65,11 +65,6 @@ namespace stardew_access
 
             #region Game Menu Patches
             harmony.Patch(
-                    original: AccessTools.Method(typeof(OptionsPage), nameof(OptionsPage.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(OptionsPagePatch), nameof(OptionsPagePatch.DrawPatch))
-            );
-
-            harmony.Patch(
                 original: AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(ItemGrabMenuPatch), nameof(ItemGrabMenuPatch.DrawPatch))
             );

@@ -93,6 +93,19 @@ menu-inventory_page-boots_slot = Boots Slot
 menu-inventory_page-shirt_slot = Shirt Slot
 menu-inventory_page-pants_slot = Pants Slot
 
+## Options Page
+
+menu-options_page-button_info = {$label} button
+menu-options_page-checkbox_info = {$is_checked ->
+    [0] Disabled
+    *[1] Enabled
+  } {$label} checkbox
+menu-options_page-dropdown_info = {$label} dropdown, option {$selected_option} selected
+menu-options_page-slider_info = {$slider_value}% {$label} slider
+menu-options_page-plus_minus_button_info = {$selected_option} selected of {$label}
+menu-options_page-input_listener_info = {$label} is bound to {$buttons_list}. Left click to change.
+menu-options_page-heading_info = {$label} Options:
+
 
 ### Crafting Page
 
