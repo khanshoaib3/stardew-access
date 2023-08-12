@@ -71,6 +71,29 @@ menu-game_menu-tab_names = {$tab_name} Tab {$is_active ->
     *[1] Active
   }
 
+## Inventory Page
+
+menu-inventory_page-money_info_key = {$farm_name}, {$current_funds}, {$total_earnings}{SIGNOFNUMBER($festival_score) ->
+    [positive] , Festival score: {$festival_score}
+    *[other] {EMPTYSTRING()}
+  }{SIGNOFNUMBER($golden_walnut_count) ->
+    [positive] , Golden walnut: {$golden_walnut_count}
+    *[other] {EMPTYSTRING()}
+  }{SIGNOFNUMBER($qi_gem_count) ->
+    [positive] , Qi gems: {$qi_gem_count}
+    *[other] {EMPTYSTRING()}
+  }{SIGNOFNUMBER($qi_club_coins) ->
+    [positive] , Qi club coins: {$qi_club_coins}
+    *[other] {EMPTYSTRING()}
+  }
+menu-inventory_page-hat_slot = Hat Slot
+menu-inventory_page-left_ring_slot = Left Ring Slot
+menu-inventory_page-right_ring_slot = Right Ring Slot
+menu-inventory_page-boots_slot = Boots Slot
+menu-inventory_page-shirt_slot = Shirt Slot
+menu-inventory_page-pants_slot = Pants Slot
+
+
 ### Crafting Page
 
 menu-cragting_page-recipe_info = {$produce_count} {$name}, {$is_craftable ->
@@ -314,6 +337,8 @@ common-ui-ok_button = OK button
 common-ui-cancel_button = Cancel button
 common-ui-drop_item_button = Drop item button
 common-ui-trashcan_button = Trashcan
+common-ui-organize_inventory_button = Organize inventory button
+common-ui-community_center_button = Community center button
 
 # The $name will be in the respective language i.e., it will be in french for french translation and so on. So use the language specific name in the square brackets except for the one with '*', that can have any value. Variants with '*' are marked as default.
 # TODO add this to more places

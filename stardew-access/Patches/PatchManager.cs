@@ -19,6 +19,7 @@ namespace stardew_access.Patches
                 new CraftingPagePatch(),
                 new ExitPagePatch(),
                 new GameMenuPatch(),
+                new InventoryPagePatch(),
                 new BillboardPatch(),
             };
 
