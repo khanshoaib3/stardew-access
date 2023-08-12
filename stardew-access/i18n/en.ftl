@@ -66,6 +66,11 @@ menu-museum-slot_info = Slot {$x_position}x {$y_position}y
 
 ## Game Menus
 
+menu-game_menu-tab_names = {$tab_name} Tab {$is_active ->
+    [0] {EMPTYSTRING()}
+    *[1] Active
+  }
+
 ### Crafting Page
 
 menu-cragting_page-recipe_info = {$produce_count} {$name}, {$is_craftable ->

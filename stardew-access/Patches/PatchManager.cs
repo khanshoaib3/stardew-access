@@ -8,13 +8,17 @@ namespace stardew_access.Patches
         {
             List<IPatch> allPatches = new List<IPatch>()
             {
+                // Bundle Menu Patches
                 new JojaCDMenuPatch(),
                 new JunimoNoteMenuPatch(),
+                // Donation Menu Patches
                 new FieldOfficeMenuPatch(),
                 new MuseumMenuPatch(),
+                // Game Menu Patches
                 new CollectionsPagePatch(),
                 new CraftingPagePatch(),
                 new ExitPagePatch(),
+                new GameMenuPatch(),
                 new BillboardPatch(),
             };
 

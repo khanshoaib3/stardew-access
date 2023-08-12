@@ -98,8 +98,8 @@ namespace stardew_access.Patches
                 return false;
             }
 
-            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
-            if (isDropItemButton) Game1.playSound("drop_item");
+            if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true))
+                if (isDropItemButton) Game1.playSound("drop_item");
 
             return true;
         }
