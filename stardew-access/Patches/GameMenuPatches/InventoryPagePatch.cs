@@ -9,7 +9,6 @@ namespace stardew_access.Patches
 {
     internal class InventoryPagePatch : IPatch
     {
-        internal static string inventoryPageQueryKey = "";
         internal static string hoveredItemQueryKey = "";
 
         public void Apply(Harmony harmony)
@@ -40,7 +39,7 @@ namespace stardew_access.Patches
 
                 if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
-                    inventoryPageQueryKey = "";
+                    MainClass.ScreenReader.PrevMenuQueryText = "";
                     return;
                 }
 
@@ -108,11 +107,9 @@ namespace stardew_access.Patches
                 return false;
             }
 
-            if (toSpeak != null && inventoryPageQueryKey != toSpeak)
+            if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true))
             {
-                inventoryPageQueryKey = toSpeak;
                 hoveredItemQueryKey = "";
-                MainClass.ScreenReader.Say(toSpeak, true);
                 if (isDropItemButton) Game1.playSound("drop_item");
             }
 
@@ -128,12 +125,8 @@ namespace stardew_access.Patches
 
                 string toSpeak = Translator.Instance.Translate(GetNameAndDescriptionOfItem(__instance.equipmentIcons[i].name), true);
 
-                if (inventoryPageQueryKey != toSpeak)
-                {
-                    inventoryPageQueryKey = toSpeak;
+                if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true))
                     hoveredItemQueryKey = "";
-                    MainClass.ScreenReader.Say(toSpeak, true);
-                }
 
                 return true;
             }
@@ -155,7 +148,6 @@ namespace stardew_access.Patches
         internal static void Cleanup()
         {
             InventoryUtils.Cleanup();
-            inventoryPageQueryKey = "";
             hoveredItemQueryKey = "";
         }
     }
