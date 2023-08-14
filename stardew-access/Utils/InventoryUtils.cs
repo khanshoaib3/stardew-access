@@ -6,7 +6,6 @@ namespace stardew_access.Utils
 {
     internal class InventoryUtils
     {
-        internal static string hoveredItemQueryKey = "";
         internal static int prevSlotIndex = -999;
 
         internal static bool NarrateHoveredSlot(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y,
@@ -204,16 +203,12 @@ namespace stardew_access.Utils
 
         internal static void Cleanup()
         {
-            hoveredItemQueryKey = "";
             prevSlotIndex = -999;
         }
 
         private static void CheckAndSpeak(String toSpeak, int hoveredInventoryIndex)
         {
-            if (hoveredItemQueryKey == $"{toSpeak}:{hoveredInventoryIndex}") return;
-            
-            hoveredItemQueryKey = $"{toSpeak}:{hoveredInventoryIndex}";
-            MainClass.ScreenReader.Say(toSpeak, true);
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, $"{toSpeak}:{hoveredInventoryIndex}");
         }
     }
 }

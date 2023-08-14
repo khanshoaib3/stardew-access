@@ -60,20 +60,14 @@ namespace stardew_access.Patches
                                 toSpeak = Translator.Instance.Translate("menu-donation_common-donatable_item_in_inventory-prefix", new {content = toSpeak});
                         }
 
-                        if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, $"{toSpeak}:{i}"))
-                            InventoryUtils.hoveredItemQueryKey = "";
-
+                        MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, $"{toSpeak}:{i}");
                         return;
                     }
                 }
 
                 if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true))
-                {
-                    InventoryUtils.hoveredItemQueryKey = "";
-
                     if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
                         Game1.playSound("drop_item");
-                }
             }
             catch (System.Exception e)
             {

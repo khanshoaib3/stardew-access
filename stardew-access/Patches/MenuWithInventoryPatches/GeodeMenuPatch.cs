@@ -26,8 +26,7 @@ namespace stardew_access.Patches
                 if (NarrateReceivedTreasure(__instance)) return;
                 if (NarrateHoveredButton(__instance, x, y)) return;
 
-                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
-                    MainClass.ScreenReader.PrevMenuQueryText = "";
+                InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y);
             }
             catch (Exception e)
             {

@@ -234,7 +234,6 @@ namespace stardew_access.Patches
                     LevelUpMenuPatch.Cleanup();
                     break;
                 case GameMenu:
-                    InventoryPagePatch.Cleanup();
                     CraftingPagePatch.Cleanup();
                     break;
                 case JunimoNoteMenu:

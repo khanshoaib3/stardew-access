@@ -106,7 +106,7 @@ namespace stardew_access.Patches
             string highlightedItemPrefix = Translator.Instance.Translate("menu-donation_common-donatable_item_in_inventory-prefix", new {content = ""});
             int hoveredItemIndex = InventoryUtils.NarrateHoveredSlotAndReturnIndex(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y,
                     handleHighlightedItem: true, highlightedItemPrefix: highlightedItemPrefix);
-            if (hoveredItemIndex != -9999)
+            if (hoveredItemIndex != -999)
             {
                 bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed(); // For donating hovered item
 

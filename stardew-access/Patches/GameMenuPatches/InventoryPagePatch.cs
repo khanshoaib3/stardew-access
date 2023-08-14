@@ -9,8 +9,6 @@ namespace stardew_access.Patches
 {
     internal class InventoryPagePatch : IPatch
     {
-        internal static string hoveredItemQueryKey = "";
-
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
@@ -39,12 +37,8 @@ namespace stardew_access.Patches
 
                 if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
-                    MainClass.ScreenReader.PrevMenuQueryText = "";
                     return;
                 }
-
-                // If no slot or button is hovered
-                Cleanup();
             }
             catch (Exception e)
             {
@@ -108,10 +102,7 @@ namespace stardew_access.Patches
             }
 
             if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true))
-            {
-                hoveredItemQueryKey = "";
                 if (isDropItemButton) Game1.playSound("drop_item");
-            }
 
             return true;
         }
@@ -125,8 +116,7 @@ namespace stardew_access.Patches
 
                 string toSpeak = Translator.Instance.Translate(GetNameAndDescriptionOfItem(__instance.equipmentIcons[i].name), true);
 
-                if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true))
-                    hoveredItemQueryKey = "";
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
 
                 return true;
             }
@@ -144,11 +134,5 @@ namespace stardew_access.Patches
             "Pants" => (Game1.player.pantsItem.Value != null) ? $"{Game1.player.pantsItem.Value.DisplayName}, {Game1.player.pantsItem.Value.getDescription()}" : "menu-inventory_page-pants_slot",
             _ => "common-unknown"
         };
-
-        internal static void Cleanup()
-        {
-            InventoryUtils.Cleanup();
-            hoveredItemQueryKey = "";
-        }
     }
 }
