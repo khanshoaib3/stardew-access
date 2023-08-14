@@ -63,13 +63,6 @@ namespace stardew_access
             );
             #endregion
 
-            #region Game Menu Patches
-            harmony.Patch(
-                original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(ShopMenuPatch), nameof(ShopMenuPatch.DrawPatch))
-            );
-            #endregion
-
             #region Menu Patches
             harmony.Patch(
                     original: AccessTools.Method(typeof(LetterViewerMenu), nameof(LetterViewerMenu.draw), new Type[] { typeof(SpriteBatch) }),

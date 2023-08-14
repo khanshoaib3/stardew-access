@@ -26,6 +26,7 @@ namespace stardew_access.Patches
                 new ForgeMenuPatch(),
                 new GeodeMenuPatch(),
                 new ItemGrabMenuPatch(),
+                new ShopMenuPatch(),
                 new BillboardPatch(),
             };
 

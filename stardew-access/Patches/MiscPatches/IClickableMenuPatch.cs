@@ -239,9 +239,6 @@ namespace stardew_access.Patches
                 case JunimoNoteMenu:
                     JunimoNoteMenuPatch.Cleanup();
                     break;
-                case ShopMenu:
-                    ShopMenuPatch.Cleanup();
-                    break;
                 case CarpenterMenu:
                     CarpenterMenuPatch.Cleanup();
                     break;

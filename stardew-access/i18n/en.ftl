@@ -187,6 +187,10 @@ menu-item_grab-chest_colors =
    *[other] Unknown
   }
 
+### Shop menu
+
+menu-shop-buy_price_info = Buy price: {$price}g
+
 ## Animal Query Menu (TODO organise this!)
 animal_query_menu-animal_info =
   {$name}, {$is_baby ->
@@ -392,6 +396,8 @@ common-ui-drop_item_button = Drop item button
 common-ui-trashcan_button = Trashcan
 common-ui-organize_inventory_button = Organize inventory button
 common-ui-community_center_button = Community center button
+common-ui-scroll_up_button = Scroll up button
+common-ui-scroll_down_button = Scroll down button
 common-ui-equipment_slots = {$slot_name ->
     [hat] Hat
     [left_ring] Left ring
