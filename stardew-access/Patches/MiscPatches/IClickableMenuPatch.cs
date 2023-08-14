@@ -246,9 +246,6 @@ namespace stardew_access.Patches
                 case ItemGrabMenu:
                     ItemGrabMenuPatch.Cleanup();
                     break;
-                case GeodeMenu:
-                    GeodeMenuPatch.Cleanup();
-                    break;
                 case CarpenterMenu:
                     CarpenterMenuPatch.Cleanup();
                     break;
@@ -266,9 +263,6 @@ namespace stardew_access.Patches
                     break;
                 case TailoringMenu:
                     TailoringMenuPatch.Cleanup();
-                    break;
-                case ForgeMenu:
-                    ForgeMenuPatch.Cleanup();
                     break;
                 case ItemListMenu:
                     ItemListMenuPatch.Cleanup();

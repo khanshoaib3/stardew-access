@@ -133,10 +133,30 @@ menu-crafting_page-unknown_recipe = Unknown recipe
 menu-crafting_page-previous_recipe_list_button = Previous recipe list button
 menu-crafting_page-next_recipe_list_button = Next recipe list button
 
-## Exit page
+### Exit Page
 
 menu-exit_page-exit_to_title_button = Exit to title button
 menu-exit_page-exit_to_desktop_button = Exit to desktop button
+
+## Menus With Inventory
+
+### Forge Menu
+
+menu-forge-start_forging_button = Start forging button
+menu-forge-unforge_button = Unforge button
+menu-forge-weapon_input_slot = {$is_empty ->
+    [0] Weapon slot: {$item_name}
+    *[1] Input weapon, tool or ring here
+  }
+menu-forge-gemstone_input_slot = {$is_empty ->
+    [0] Gemstone slot: {$item_name}
+    *[1] Input gemstone or ring here
+  }
+
+### Geode Menu
+
+menu-geode-geode_input_slot = Place geode here
+menu-geode-received_treasure_info = Received {$treasure_name}
 
 ## Animal Query Menu (TODO organise this!)
 animal_query_menu-animal_info =
@@ -368,6 +388,14 @@ common-ui-drop_item_button = Drop item button
 common-ui-trashcan_button = Trashcan
 common-ui-organize_inventory_button = Organize inventory button
 common-ui-community_center_button = Community center button
+common-ui-ring_slot = {$left_or_right ->
+    [left] Left
+    [right] Right
+    *[other] {EMPTYSTRING()}
+  } ring slot{$is_empty ->
+    [0] : {$item_name}
+    *[1] {EMPTYSTRING()}
+  }
 
 # The $name will be in the respective language i.e., it will be in french for french translation and so on. So use the language specific name in the square brackets except for the one with '*', that can have any value. Variants with '*' are marked as default.
 # TODO add this to more places

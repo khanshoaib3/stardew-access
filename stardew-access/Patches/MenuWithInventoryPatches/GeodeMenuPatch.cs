@@ -1,88 +1,90 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class GeodeMenuPatch
+    internal class GeodeMenuPatch : IPatch
     {
-        private static string geodeMenuQueryKey = "";
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GeodeMenu), nameof(GeodeMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(GeodeMenuPatch), nameof(GeodeMenuPatch.DrawPatch))
+            );
+        }
 
-        internal static void DrawPatch(GeodeMenu __instance)
+        private static void DrawPatch(GeodeMenu __instance)
         {
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
-                if (NarrateRecievedTreasure(__instance)) return;
+                if (NarrateReceivedTreasure(__instance)) return;
                 if (NarrateHoveredButton(__instance, x, y)) return;
 
                 if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
-                    geodeMenuQueryKey = "";
+                    MainClass.ScreenReader.PrevMenuQueryText = "";
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occurred in geode menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
-        private static bool NarrateRecievedTreasure(GeodeMenu __instance)
+        private static bool NarrateReceivedTreasure(GeodeMenu __instance)
         {
-            // Narrates the treasure recieved on breaking the geode
+            // Narrates the treasure received on breaking the geode
             if (__instance.geodeTreasure == null) return false;
 
-            string name = __instance.geodeTreasure.DisplayName;
-            int stack = __instance.geodeTreasure.Stack;
+            string pluralizedName = Translator.Instance.Translate("common-util-pluralize_name",
+                            new
+                            {
+                                item_count = __instance.geodeTreasure.Stack,
+                                name = __instance.geodeTreasure.DisplayName
+                            });
 
-            string toSpeak = $"Recieved {stack} {name}";
-
-            if (geodeMenuQueryKey != toSpeak)
-            {
-                geodeMenuQueryKey = toSpeak;
-                MainClass.ScreenReader.Say(toSpeak, true);
-            }
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker(
+                "menu-geode-received_treasure_info",
+                true,
+                new { treasure_name = pluralizedName });
             return true;
         }
 
         private static bool NarrateHoveredButton(GeodeMenu __instance, int x, int y)
         {
-            string toSpeak = "";
+            string translationKey = "";
             bool isDropItemButton = false;
 
             if (__instance.geodeSpot != null && __instance.geodeSpot.containsPoint(x, y))
             {
-                toSpeak = "Place geode here";
+                translationKey = "menu-geode-geode_input_slot";
             }
             else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
             {
-                toSpeak = "Drop item here";
+                translationKey = "common-ui-drop_item_button";
                 isDropItemButton = true;
             }
             else if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
             {
-                toSpeak = "Trash can";
+                translationKey = "common-ui-trashcan_button";
             }
             else if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
             {
-                toSpeak = "Ok button";
+                translationKey = "common-ui-ok_button";
             }
             else
             {
                 return false;
             }
 
-            if (geodeMenuQueryKey == toSpeak) return true;
-
-            geodeMenuQueryKey = toSpeak;
-            MainClass.ScreenReader.Say(toSpeak, true);
-            if (isDropItemButton) Game1.playSound("drop_item");
+            if (MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true))
+                if (isDropItemButton) Game1.playSound("drop_item");
 
             return true;
-        }
-
-        internal static void Cleanup()
-        {
-            geodeMenuQueryKey = "";
         }
     }
 }
