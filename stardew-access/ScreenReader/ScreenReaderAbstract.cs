@@ -1,3 +1,5 @@
+using stardew_access.Translation;
+
 namespace stardew_access.ScreenReader
 {
     public abstract class ScreenReaderAbstract : IScreenReader
@@ -52,6 +54,11 @@ namespace stardew_access.ScreenReader
 
         public abstract bool Say(string text, bool interrupt);
 
+        public bool TranslateAndSay(string translationKey, bool interrupt, object? translationTokens = null, bool disableTranslationWarnings = false)
+        {
+            return Say(Translator.Instance.Translate(translationKey, translationTokens, disableTranslationWarnings), interrupt);
+        }
+
         public bool SayWithChecker(string text, bool interrupt, string? customQuery = null)
         {
             customQuery ??= text;
@@ -64,6 +71,11 @@ namespace stardew_access.ScreenReader
 
             prevText = customQuery;
             return Say(text, interrupt);
+        }
+
+        public bool TranslateAndSayWithChecker(string translationKey, bool interrupt, object? translationTokens = null, string? customQuery = null, bool disableTranslationWarnings = false)
+        {
+            return SayWithChecker(Translator.Instance.Translate(translationKey, translationTokens, disableTranslationWarnings), interrupt, customQuery);
         }
 
         public bool SayWithMenuChecker(string text, bool interrupt, string? customQuery = null)
@@ -84,6 +96,11 @@ namespace stardew_access.ScreenReader
             MenuSuffixNoQueryText = "";
 
             return re;
+        }
+
+        public bool TranslateAndSayWithMenuChecker(string translationKey, bool interrupt, object? translationTokens = null, string? customQuery = null, bool disableTranslationWarnings = false)
+        {
+            return SayWithMenuChecker(Translator.Instance.Translate(translationKey, translationTokens, disableTranslationWarnings), interrupt, customQuery);
         }
 
         public bool SayWithChatChecker(string text, bool interrupt)

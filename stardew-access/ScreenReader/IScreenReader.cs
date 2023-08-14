@@ -50,6 +50,16 @@ namespace stardew_access.ScreenReader
         /// <returns>true if the text was spoken otherwise false.</returns>
         public bool Say(string text, bool interrupt);
 
+        /// <summary>
+        /// Speaks the translated text via the loaded screen reader (if any).
+        /// </summary>
+        /// <param name="translationKey">The key used to look up the translation of the text to be narrated.</param>
+        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
+        /// <param name="translationTokens">Optional tokens to be used for formatting the translation.</param>
+        /// <param name="disableTranslationWarnings">Whether to disable translation not found warning or not.</param>
+        /// <returns>true if the text was spoken otherwise, false.</returns>
+        public bool TranslateAndSay(string translationKey, bool interrupt, object? translationTokens = null, bool disableTranslationWarnings = false);
+
         /// <summary>Speaks the text via the loaded screen reader (if any).
         /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.</summary>
         /// <param name="text">The text to be narrated.</param>
@@ -57,6 +67,18 @@ namespace stardew_access.ScreenReader
         /// <param name="customQuery">If set, uses this instead of <paramref name="text"/> as query to check whether to speak the text or not.</param>
         /// <returns>true if the text was spoken otherwise false.</returns>
         public bool SayWithChecker(string text, bool interrupt, string? customQuery = null);
+
+        /// <summary>
+        /// Speaks the translated text via the loaded screen reader (if any).
+        /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
+        /// </summary>
+        /// <param name="translationKey">The key used to look up the translation of the text to be narrated.</param>
+        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
+        /// <param name="translationTokens">Optional tokens to be used for formatting the translation.</param>
+        /// <param name="customQuery">If set, uses this instead of the translated text as a query to check whether to speak the text or not.</param>
+        /// <param name="disableTranslationWarnings">Whether to disable translation warnings or not.</param>
+        /// <returns>true if the text was spoken otherwise, false.</returns>
+        public bool TranslateAndSayWithChecker(string translationKey, bool interrupt, object? translationTokens = null, string? customQuery = null, bool disableTranslationWarnings = false);
 
         /// <summary>Speaks the text via the loaded screen reader (if any).
         /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
@@ -66,6 +88,20 @@ namespace stardew_access.ScreenReader
         /// <param name="customQuery">If set, uses this instead of <paramref name="text"/> as query to check whether to speak the text or not.</param>
         /// <returns>true if the text was spoken otherwise false.</returns>
         public bool SayWithMenuChecker(string text, bool interrupt, string? customQuery = null);
+
+        /// <summary>
+        /// Speaks the translated text via the loaded screen reader (if any).
+        /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
+        /// <br/><br/>Use this method when narrating
+        /// hovered components in menus to avoid interference.
+        /// </summary>
+        /// <param name="translationKey">The key used to look up the translation of the text to be narrated.</param>
+        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
+        /// <param name="translationTokens">Optional tokens to be used for formatting the translation.</param>
+        /// <param name="customQuery">If set, uses this instead of the translated text as a query to check whether to speak the text or not.</param>
+        /// <param name="disableTranslationWarnings">Whether to disable translation warnings or not.</param>
+        /// <returns>true if the text was spoken otherwise, false.</returns>
+        public bool TranslateAndSayWithMenuChecker(string translationKey, bool interrupt, object? translationTokens = null, string? customQuery = null, bool disableTranslationWarnings = false);
 
         /// <summary>Speaks the text via the loaded screen reader (if any).
         /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
