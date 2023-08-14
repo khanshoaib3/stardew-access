@@ -1,3 +1,5 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
@@ -5,12 +7,17 @@ using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class ItemGrabMenuPatch
+    internal class ItemGrabMenuPatch : IPatch
     {
-        internal static string itemGrabMenuQueryKey = "";
-        internal static string hoveredItemQueryKey = "";
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(ItemGrabMenuPatch), nameof(ItemGrabMenuPatch.DrawPatch))
+            );
+        }
 
-        internal static void DrawPatch(ItemGrabMenu __instance)
+        private static void DrawPatch(ItemGrabMenu __instance)
         {
             try
             {
@@ -29,69 +36,69 @@ namespace stardew_access.Patches
 
                 if (NarrateHoveredButton(__instance, x, y))
                 {
-                    InventoryUtils.Cleanup();
                     return;
                 }
                 if (NarrateLastShippedItem(__instance, x, y))
                 {
-                    InventoryUtils.Cleanup();
                     return;
                 }
 
+                // Player inventory
                 if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
                 {
-                    itemGrabMenuQueryKey = "";
                     return;
                 }
 
-                if (InventoryUtils.NarrateHoveredSlot(__instance.ItemsToGrabMenu, __instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true))
-                {
-                    itemGrabMenuQueryKey = "";
-                    return;
-                }
+                // Other inventory
+                InventoryUtils.NarrateHoveredSlot(__instance.ItemsToGrabMenu, __instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true);
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occurred in item grab menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
         private static bool NarrateHoveredButton(ItemGrabMenu __instance, int x, int y)
         {
-            string toSpeak = "";
+            string translationKey = "";
+            object? translationTokens = null;
             bool isDropItemButton = false;
 
             if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
             {
-                toSpeak = "Ok Button";
+                translationKey = "common-ui-ok_button";
             }
             else if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
             {
-                toSpeak = "Trash Can";
+                translationKey = "common-ui-trashcan_button";
             }
             else if (__instance.organizeButton != null && __instance.organizeButton.containsPoint(x, y))
             {
-                toSpeak = "Organize Button";
+                translationKey = "common-ui-organize_inventory_button";
             }
             else if (__instance.fillStacksButton != null && __instance.fillStacksButton.containsPoint(x, y))
             {
-                toSpeak = "Add to existing stacks button";
+                translationKey = "menu-item_grab-add_to_existing_stack_button";
             }
             else if (__instance.specialButton != null && __instance.specialButton.containsPoint(x, y))
             {
-                toSpeak = "Special Button";
+                translationKey = "menu-item_grab-special_button";
             }
             else if (__instance.colorPickerToggleButton != null && __instance.colorPickerToggleButton.containsPoint(x, y))
             {
-                toSpeak = "Color Picker: " + (__instance.chestColorPicker.visible ? "Enabled" : "Disabled");
+                translationKey = "menu-item_grab-color_picker_button";
+                translationTokens = new
+                {
+                    is_enabled = __instance.chestColorPicker.visible ? 1 : 0
+                };
             }
             else if (__instance.junimoNoteIcon != null && __instance.junimoNoteIcon.containsPoint(x, y))
             {
-                toSpeak = "Community Center Button";
+                translationKey = "common-ui-community_center_button";
             }
             else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
             {
-                toSpeak = "Drop Item";
+                translationKey = "common-ui-drop_item_button";
                 isDropItemButton = true;
             }
             else
@@ -101,22 +108,17 @@ namespace stardew_access.Patches
                     if (!__instance.discreteColorPickerCC[i].containsPoint(x, y))
                         continue;
 
-                    toSpeak = Translator.Instance.Translate("common-chest_colors", new {index = i});
+                    string toSpeak = Translator.Instance.Translate("menu-item_grab-chest_colors", new {index = i});
                     if (i == __instance.chestColorPicker.colorSelection)
                         toSpeak = $"{toSpeak} Selected";
-                    goto SayWithChecker;
+                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
                 }
 		
                 return false;
             }
 
-            SayWithChecker:
-            if (itemGrabMenuQueryKey == toSpeak) return true;
-
-            itemGrabMenuQueryKey = toSpeak;
-            hoveredItemQueryKey = "";
-            MainClass.ScreenReader.Say(toSpeak, true);
-            if (isDropItemButton) Game1.playSound("drop_item");
+            if (MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens))
+                if (isDropItemButton) Game1.playSound("drop_item");
 
             return true;
         }
@@ -128,23 +130,15 @@ namespace stardew_access.Patches
 
             Item lastShippedItem = Game1.getFarm().lastItemShipped;
             int count = lastShippedItem.Stack;
-            string name = Translator.Instance.Translate("common-util-pluralize_name", new {item_count = count, name = lastShippedItem.DisplayName});
+            string pluralizedName = Translator.Instance.Translate(
+                "common-util-pluralize_name",
+                new { item_count = count, name = lastShippedItem.DisplayName });
 
-            string toSpeak = $"Last Shipped: {name}";
-
-            if (itemGrabMenuQueryKey != toSpeak)
-            {
-                itemGrabMenuQueryKey = toSpeak;
-                hoveredItemQueryKey = "";
-                MainClass.ScreenReader.Say(toSpeak, true);
-            }
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker(
+                "menu-item_grab-last_shipped_info",
+                true,
+                new { shipped_item_name = pluralizedName });
             return true;
-        }
-
-        internal static void Cleanup()
-        {
-            hoveredItemQueryKey = "";
-            itemGrabMenuQueryKey = "";
         }
     }
 }

@@ -158,6 +158,41 @@ menu-forge-gemstone_input_slot = {$is_empty ->
 menu-geode-geode_input_slot = Place geode here
 menu-geode-received_treasure_info = Received {$treasure_name}
 
+### Item Grab Menu
+
+menu-item_grab-last_shipped_info = Last shipped: {$shipped_item_name}
+menu-item_grab-add_to_existing_stack_button = Add to existing stacks button
+menu-item_grab-special_button = Special button
+menu-item_grab-color_picker_button = Color picker: {$is_enabled ->
+    [0] Disabled
+    *[1] Enabled
+  }
+menu-item_grab-chest_colors =
+  {$index ->
+   [0] Chest color: Brown (default)
+   [1] Blue
+   [2] Light Blue
+   [3] Teal
+   [4] Aqua
+   [5] Green
+   [6] Lime Green
+   [7] Yellow
+   [8] Light Orange
+   [9] Orange
+   [10] Red
+   [11] Dark Red
+   [12] Light Pink
+   [13] Pink
+   [14] Magenta
+   [15] Purple
+   [16] Dark Purple
+   [17] Dark Grey
+   [18] Medium Grey
+   [19] Light Grey
+   [20] White
+   *[other] Unknown
+  }
+
 ## Animal Query Menu (TODO organise this!)
 animal_query_menu-animal_info =
   {$name}, {$is_baby ->
@@ -353,31 +388,6 @@ intro-scene4 = Stardew valley 0.5 miles away
 patch-trash_bear-wanted_item = {$trash_bear_name} wants {$item_name}!
 
 
-common-chest_colors =
-  {$index ->
-   [0] Chest color: Brown (default)
-   [1] Blue
-   [2] Light Blue
-   [3] Teal
-   [4] Aqua
-   [5] Green
-   [6] Lime Green
-   [7] Yellow
-   [8] Light Orange
-   [9] Orange
-   [10] Red
-   [11] Dark Red
-   [12] Light Pink
-   [13] Pink
-   [14] Magenta
-   [15] Purple
-   [16] Dark Purple
-   [17] Dark Grey
-   [18] Medium Grey
-   [19] Light Grey
-   [20] White
-   *[other] Unknown
-  }
 
 common-unknown = Unknown
 

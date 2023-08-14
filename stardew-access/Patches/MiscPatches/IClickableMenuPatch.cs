@@ -242,9 +242,6 @@ namespace stardew_access.Patches
                 case ShopMenu:
                     ShopMenuPatch.Cleanup();
                     break;
-                case ItemGrabMenu:
-                    ItemGrabMenuPatch.Cleanup();
-                    break;
                 case CarpenterMenu:
                     CarpenterMenuPatch.Cleanup();
                     break;

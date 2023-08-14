@@ -25,6 +25,7 @@ namespace stardew_access.Patches
                 // Menus With Inventory
                 new ForgeMenuPatch(),
                 new GeodeMenuPatch(),
+                new ItemGrabMenuPatch(),
                 new BillboardPatch(),
             };
 
