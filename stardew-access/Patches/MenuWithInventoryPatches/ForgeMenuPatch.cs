@@ -93,34 +93,36 @@ namespace stardew_access.Patches
             }
             else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[0].containsPoint(x, y))
             {
-                translationKey = "common-ui-ring_slot";
+                translationKey = "common-ui-equipment_slots";
                 Item? item = Game1.player.leftRing.Value;
                 translationTokens = new
                 {
-                    left_or_right = "left",
+                    slot_name = "left_ring",
                     is_empty = (item == null) ? 1 : 0,
                     item_name = (item == null) ? "" : Translator.Instance.Translate( "common-util-pluralize_name",
                             new
                             {
                                 item_count = item.Stack,
                                 name = item.DisplayName
-                            })
+                            }),
+                    item_description = ""
                 };
             }
             else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[1].containsPoint(x, y))
             {
-                translationKey = "common-ui-ring_slot";
+                translationKey = "common-ui-equipment_slots";
                 Item? item = Game1.player.rightRing.Value;
                 translationTokens = new
                 {
-                    left_or_right = "right",
+                    slot_name = "right_ring",
                     is_empty = (item == null) ? 1 : 0,
                     item_name = (item == null) ? "" : Translator.Instance.Translate( "common-util-pluralize_name",
                             new
                             {
                                 item_count = item.Stack,
                                 name = item.DisplayName
-                            })
+                            }),
+                    item_description = ""
                 };
             }
             else

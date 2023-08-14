@@ -86,12 +86,6 @@ menu-inventory_page-money_info_key = {$farm_name}, {$current_funds}, {$total_ear
     [positive] , Qi club coins: {$qi_club_coins}
     *[other] {EMPTYSTRING()}
   }
-menu-inventory_page-hat_slot = Hat Slot
-menu-inventory_page-left_ring_slot = Left Ring Slot
-menu-inventory_page-right_ring_slot = Right Ring Slot
-menu-inventory_page-boots_slot = Boots Slot
-menu-inventory_page-shirt_slot = Shirt Slot
-menu-inventory_page-pants_slot = Pants Slot
 
 ## Options Page
 
@@ -398,12 +392,16 @@ common-ui-drop_item_button = Drop item button
 common-ui-trashcan_button = Trashcan
 common-ui-organize_inventory_button = Organize inventory button
 common-ui-community_center_button = Community center button
-common-ui-ring_slot = {$left_or_right ->
-    [left] Left
-    [right] Right
+common-ui-equipment_slots = {$slot_name ->
+    [hat] Hat
+    [left_ring] Left ring
+    [right_ring] Right ring
+    [boots] Boots
+    [shirt] Shirt
+    [pants] Pants
     *[other] {EMPTYSTRING()}
-  } ring slot{$is_empty ->
-    [0] : {$item_name}
+  } slot{$is_empty ->
+    [0] : {$item_name}, {$item_description}
     *[1] {EMPTYSTRING()}
   }
 

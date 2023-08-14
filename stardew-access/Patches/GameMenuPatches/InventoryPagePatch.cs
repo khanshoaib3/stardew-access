@@ -114,7 +114,7 @@ namespace stardew_access.Patches
                 if (!__instance.equipmentIcons[i].containsPoint(mouseX, mouseY))
                     continue;
 
-                string toSpeak = Translator.Instance.Translate(GetNameAndDescriptionOfItem(__instance.equipmentIcons[i].name), true);
+                string toSpeak = Translator.Instance.Translate(GetNameAndDescriptionOfItem(__instance.equipmentIcons[i].name.ToLower().Replace(" ", "_")), true);
 
                 MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
 
@@ -124,15 +124,28 @@ namespace stardew_access.Patches
             return false;
         }
 
-        private static string GetNameAndDescriptionOfItem(string slotName) => slotName switch
+        private static string GetNameAndDescriptionOfItem(string slotName)
         {
-            "Hat" => (Game1.player.hat.Value != null) ? $"{Game1.player.hat.Value.DisplayName}, {Game1.player.hat.Value.getDescription()}" : "menu-inventory_page-hat_slot",
-            "Left Ring" => (Game1.player.leftRing.Value != null) ? $"{Game1.player.leftRing.Value.DisplayName}, {Game1.player.leftRing.Value.getDescription()}" : "menu-inventory_page-left_ring_slot",
-            "Right Ring" => (Game1.player.rightRing.Value != null) ? $"{Game1.player.rightRing.Value.DisplayName}, {Game1.player.rightRing.Value.getDescription()}" : "menu-inventory_page-right_ring_slot",
-            "Boots" => (Game1.player.boots.Value != null) ? $"{Game1.player.boots.Value.DisplayName}, {Game1.player.boots.Value.getDescription()}" : "menu-inventory_page-boots_slot",
-            "Shirt" => (Game1.player.shirtItem.Value != null) ? $"{Game1.player.shirtItem.Value.DisplayName}, {Game1.player.shirtItem.Value.getDescription()}" : "menu-inventory_page-shirt_slot",
-            "Pants" => (Game1.player.pantsItem.Value != null) ? $"{Game1.player.pantsItem.Value.DisplayName}, {Game1.player.pantsItem.Value.getDescription()}" : "menu-inventory_page-pants_slot",
-            _ => "common-unknown"
-        };
+            Item? item = slotName switch
+            {
+                "hat" => Game1.player.hat.Value,
+                "left_ring" => Game1.player.leftRing.Value,
+                "right_ring" => Game1.player.rightRing.Value,
+                "boots" => Game1.player.boots.Value,
+                "shirt" => Game1.player.shirtItem.Value,
+                "pants" => Game1.player.pantsItem.Value,
+                _ => null
+            };
+
+            return Translator.Instance.Translate(
+                "common-ui-equipment_slots",
+                new
+                {
+                    slot_name = slotName,
+                    is_empty = (item == null) ? 1 : 0,
+                    item_name = (item == null) ? "" : item.DisplayName,
+                    item_description = (item == null) ? "" : item.getDescription()
+                });
+        }
     }
 }
