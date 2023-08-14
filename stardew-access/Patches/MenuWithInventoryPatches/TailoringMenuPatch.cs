@@ -1,3 +1,5 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
@@ -5,9 +7,15 @@ using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class TailoringMenuPatch
+    internal class TailoringMenuPatch : IPatch
     {
-        internal static string tailoringMenuQuery = "";
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(TailoringMenu), nameof(TailoringMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(TailoringMenuPatch), nameof(TailoringMenuPatch.DrawPatch))
+            );
+        }
 
         internal static void DrawPatch(TailoringMenu __instance)
         {
@@ -18,99 +26,126 @@ namespace stardew_access.Patches
                 if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                     return;
 
-
+                NarrateHoveredButton(__instance, x, y);
             }
             catch (System.Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occurred in tailoring menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
         private static bool NarrateHoveredButton(TailoringMenu __instance, int x, int y)
         {
-            string toSpeak = "";
+            string translationKey = "";
+            object? translationTokens = null;
             bool isDropItemButton = false;
 
             if (__instance.leftIngredientSpot != null && __instance.leftIngredientSpot.containsPoint(x, y))
             {
-                if (__instance.leftIngredientSpot.item == null)
+                translationKey = "menu-tailoring-cloth_input_slot";
+                Item? item = __instance.leftIngredientSpot.item;
+                translationTokens = new
                 {
-                    toSpeak = "Input cloth here";
-                }
-                else
-                {
-                    Item item = __instance.leftIngredientSpot.item;
-                    toSpeak = $"Cloth slot: {Translator.Instance.Translate("common-util-pluralize_name", new {item_count = item.Stack, name = item.DisplayName})}";
-                }
+                    is_empty = (item == null) ? 1 : 0,
+                    item_name = (item == null) ? "" : Translator.Instance.Translate("common-util-pluralize_name",
+                            new
+                            {
+                                item_count = item.Stack,
+                                name = item.DisplayName
+                            })
+                };
             }
             else if (__instance.rightIngredientSpot != null && __instance.rightIngredientSpot.containsPoint(x, y))
             {
-                if (__instance.rightIngredientSpot.item == null)
+                translationKey = "menu-tailoring-spool_slot";
+                Item? item = __instance.rightIngredientSpot.item;
+                translationTokens = new
                 {
-                    toSpeak = "Input ingredient here";
-                }
-                else
-                {
-                    Item item = __instance.rightIngredientSpot.item;
-                    toSpeak = $"Ingredient slot: {Translator.Instance.Translate("common-util-pluralize_name", new {item_count = item.Stack, name = item.DisplayName})}";
-                }
+                    is_empty = (item == null) ? 1 : 0,
+                    item_name = (item == null) ? "" : Translator.Instance.Translate("common-util-pluralize_name",
+                            new
+                            {
+                                item_count = item.Stack,
+                                name = item.DisplayName
+                            })
+                };
             }
             else if (__instance.startTailoringButton != null && __instance.startTailoringButton.containsPoint(x, y))
             {
-                toSpeak = "Star tailoring button";
+                translationKey = "menu-tailoring-start_tailoring_button";
             }
             else if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
             {
-                toSpeak = "Trashcan";
+                translationKey = "common-ui-trashcan_button";
             }
             else if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
             {
-                toSpeak = "ok button";
+                translationKey = "common-ui-ok_button";
             }
             else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
             {
-                toSpeak = "drop item";
+                translationKey = "common-ui-drop_item_button";
                 isDropItemButton = true;
             }
             else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[0].containsPoint(x, y))
             {
-                toSpeak = "Hat Slot";
-
-                if (Game1.player.hat.Value != null)
-                    toSpeak = $"{toSpeak}: {Game1.player.hat.Value.DisplayName}";
+                translationKey = "common-ui-equipment_slots";
+                Item? item = Game1.player.hat.Value;
+                translationTokens = new
+                {
+                    slot_name = "hat",
+                    is_empty = (item == null) ? 1 : 0,
+                    item_name = (item == null) ? "" : Translator.Instance.Translate( "common-util-pluralize_name",
+                            new
+                            {
+                                item_count = item.Stack,
+                                name = item.DisplayName
+                            }),
+                    item_description = ""
+                };
             }
             else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[1].containsPoint(x, y))
             {
-                toSpeak = "Shirt Slot";
-
-                if (Game1.player.shirtItem.Value != null)
-                    toSpeak = $"{toSpeak}: {Game1.player.shirtItem.Value.DisplayName}";
+                translationKey = "common-ui-equipment_slots";
+                Item? item = Game1.player.shirtItem.Value;
+                translationTokens = new
+                {
+                    slot_name = "shirt",
+                    is_empty = (item == null) ? 1 : 0,
+                    item_name = (item == null) ? "" : Translator.Instance.Translate( "common-util-pluralize_name",
+                            new
+                            {
+                                item_count = item.Stack,
+                                name = item.DisplayName
+                            }),
+                    item_description = ""
+                };
             }
             else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[2].containsPoint(x, y))
             {
-                toSpeak = "Pants Slot";
-
-                if (Game1.player.pantsItem.Value != null)
-                    toSpeak = $"{toSpeak}: {Game1.player.pantsItem.Value.DisplayName}";
+                translationKey = "common-ui-equipment_slots";
+                Item? item = Game1.player.pantsItem.Value;
+                translationTokens = new
+                {
+                    slot_name = "pants",
+                    is_empty = (item == null) ? 1 : 0,
+                    item_name = (item == null) ? "" : Translator.Instance.Translate( "common-util-pluralize_name",
+                            new
+                            {
+                                item_count = item.Stack,
+                                name = item.DisplayName
+                            }),
+                    item_description = ""
+                };
             }
             else {
                 return false;
             }
 
-            if (tailoringMenuQuery != toSpeak)
-            {
-                tailoringMenuQuery = toSpeak;
-                MainClass.ScreenReader.Say(toSpeak, true);
-
+            if (MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens))
                 if (isDropItemButton) Game1.playSound("drop_item");
-            }
 
             return true;
-        }
-
-        internal static void Cleanup()
-        {
-            tailoringMenuQuery = "";
         }
     }
 }

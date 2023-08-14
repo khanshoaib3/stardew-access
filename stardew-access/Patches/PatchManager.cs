@@ -27,6 +27,8 @@ namespace stardew_access.Patches
                 new GeodeMenuPatch(),
                 new ItemGrabMenuPatch(),
                 new ShopMenuPatch(),
+                new TailoringMenuPatch(),
+                // Quest Patches
                 new BillboardPatch(),
             };
 

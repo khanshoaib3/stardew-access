@@ -140,11 +140,11 @@ menu-forge-start_forging_button = Start forging button
 menu-forge-unforge_button = Unforge button
 menu-forge-weapon_input_slot = {$is_empty ->
     [0] Weapon slot: {$item_name}
-    *[1] Input weapon, tool or ring here
+    *[1] Place weapon, tool or ring here
   }
 menu-forge-gemstone_input_slot = {$is_empty ->
     [0] Gemstone slot: {$item_name}
-    *[1] Input gemstone or ring here
+    *[1] Place gemstone or ring here
   }
 
 ### Geode Menu
@@ -190,6 +190,18 @@ menu-item_grab-chest_colors =
 ### Shop menu
 
 menu-shop-buy_price_info = Buy price: {$price}g
+
+### Tailoring Menu
+
+menu-tailoring-start_tailoring_button = Start tailoring button
+menu-tailoring-cloth_input_slot = {$is_empty ->
+    [0] Cloth slot: {$item_name}
+    *[1] Place cloth or dyeable clothing here
+  }
+menu-tailoring-spool_slot = {$is_empty ->
+    [0] Spool: {$item_name}
+    *[1] Place materials here
+  }
 
 ## Animal Query Menu (TODO organise this!)
 animal_query_menu-animal_info =
