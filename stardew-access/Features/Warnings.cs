@@ -36,11 +36,14 @@ namespace stardew_access.Features
                 return;
 
             int hours = StardewValley.Game1.timeOfDay / 100;
-            string toSpeak = Translator.Instance.Translate("feature-warnings-time", new { value = CurrentPlayer.TimeOfDay });
+            var timeOfDay = CurrentPlayer.TimeOfDay;
 
             if (hours < 1 && prevHour > 2 || hours >= 1 && prevHour < 1)
             {
-                MainClass.ScreenReader.Say(toSpeak, true);
+                MainClass.ScreenReader.Say(
+                    Translator.Instance.Translate("feature-warnings-time", new { value = timeOfDay }),
+                    true
+                );
                 // Pause the read tile feature to prevent interruption in warning message
                 MainClass.ReadTileFeature.PauseUntil();
             }
@@ -57,11 +60,16 @@ namespace stardew_access.Features
                 return;
 
             int stamina = CurrentPlayer.PercentStamina;
-            string toSpeak = Translator.Instance.Translate("feature-warnings-stamina", new { value = stamina });
+
+            if (stamina == prevStamina)
+                return; // Return early if stamina hasn't changed
 
             if ((stamina <= 50 && prevStamina > 50) || (stamina <= 25 && prevStamina > 25) || (stamina <= 10 && prevStamina > 10))
             {
-                MainClass.ScreenReader.Say(toSpeak, true);
+                MainClass.ScreenReader.Say(
+                    Translator.Instance.Translate("feature-warnings-stamina", new { value = stamina }),
+                    true
+                );
                 // Pause the read tile feature to prevent interruption in warning message
                 MainClass.ReadTileFeature.PauseUntil();
             }
@@ -78,11 +86,16 @@ namespace stardew_access.Features
                 return;
 
             int health = CurrentPlayer.PercentHealth;
-            string toSpeak = Translator.Instance.Translate("feature-warnings-health", new { value = health });
+
+            if (health == prevHealth)
+                return; // Return early if health hasn't changed
 
             if ((health <= 50 && prevHealth > 50) || (health <= 25 && prevHealth > 25) || (health <= 10 && prevHealth > 10))
             {
-                MainClass.ScreenReader.Say(toSpeak, true);
+                MainClass.ScreenReader.Say(
+                    Translator.Instance.Translate("feature-warnings-health", new { value = health }),
+                    true
+                );
                 // Pause the read tile feature to prevent interruption in warning message
                 MainClass.ReadTileFeature.PauseUntil();
             }

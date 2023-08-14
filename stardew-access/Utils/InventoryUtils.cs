@@ -8,6 +8,12 @@ namespace stardew_access.Utils
     {
         internal static string hoveredItemQueryKey = "";
         internal static int prevSlotIndex = -999;
+        private static int prevStack = 0;
+        private static string prevName = "";
+        private static string prevTranslatedName = "";
+        private static int prev_stamina_recovery = 0;
+        private static int prev_health_recovery = 0;
+        private static string prev_stamina_and_health_recovery_on_consumption = "";
 
         internal static bool NarrateHoveredSlot(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y,
                 bool? giveExtraDetails = null, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1,
@@ -43,7 +49,26 @@ namespace stardew_access.Utils
                 string namePrefix = HandleHighlightedItemPrefix(isHighlighted, highlightedItemPrefix);
                 string nameSuffix = $"{HandleHighlightedItemSuffix(isHighlighted, highlightedItemSuffix)}{HandleUnHighlightedItem(isHighlighted, i)}";
                 int stack = actualInventory[i].Stack;
-                string name = Translator.Instance.Translate("common-util-pluralize_name", new {item_count = stack, name = actualInventory[i].DisplayName});
+                string name = actualInventory[i].DisplayName;
+                if (stack == prevStack && name == prevName)
+                {
+                    #if DEBUG
+                    Log.Trace($"Returning cached translation \"{prevTranslatedName}\" for stack \"{stack}\" and name \"{name}\"", true);
+                    #endif
+                    name = prevTranslatedName;
+                } else {
+                    prevStack = stack;
+                    prevName = name;
+                    name = Translator.Instance.Translate("common-util-pluralize_name", new Dictionary<string, object>
+                    {
+                        {"item_count", stack},
+                        {"name", name}
+                    });
+                    prevTranslatedName = name;
+                    #if DEBUG
+                    Log.Verbose("Updated inventory translation cache");
+                    #endif
+                }
                 name = $"{namePrefix}{name}{nameSuffix}";
                 string quality = GetQualityFromItem(actualInventory[i]);
                 string healthNStamina = GetHealthNStaminaFromItem(actualInventory[i]);
@@ -98,7 +123,13 @@ namespace stardew_access.Utils
 
             int stamina_recovery = ((StardewValley.Object)item).staminaRecoveredOnConsumption();
             int health_recovery = ((StardewValley.Object)item).healthRecoveredOnConsumption();
-            return Translator.Instance.Translate("item-stamina_and_health_recovery_on_consumption", new {stamina_amount = stamina_recovery, health_amount = health_recovery});
+            if (stamina_recovery != prev_stamina_recovery || health_recovery != prev_health_recovery || string.IsNullOrEmpty(prev_stamina_and_health_recovery_on_consumption))
+            {
+                prev_stamina_recovery = stamina_recovery;
+                prev_health_recovery = health_recovery;
+                prev_stamina_and_health_recovery_on_consumption = Translator.Instance.Translate("item-stamina_and_health_recovery_on_consumption", new {stamina_amount = stamina_recovery, health_amount = health_recovery});
+            }
+            return prev_stamina_and_health_recovery_on_consumption;
         }
 
         internal static String GetBuffsFromItem(Item item)
