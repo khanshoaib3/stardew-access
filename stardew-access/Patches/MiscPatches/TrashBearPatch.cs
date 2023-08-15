@@ -1,12 +1,21 @@
 using StardewValley;
 using StardewValley.Characters;
 using stardew_access.Translation;
+using HarmonyLib;
 
 namespace stardew_access.Patches
 {
-    internal class TrashBearPatch
+    internal class TrashBearPatch : IPatch
     {
-        internal static void CheckActionPatch(TrashBear __instance, bool __result, int ___itemWantedIndex, int ___showWantBubbleTimer)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(TrashBear), nameof(TrashBear.checkAction)),
+                    postfix: new HarmonyMethod(typeof(TrashBearPatch), nameof(TrashBearPatch.CheckActionPatch))
+            );
+        }
+
+        private static void CheckActionPatch(TrashBear __instance, bool __result, int ___itemWantedIndex, int ___showWantBubbleTimer)
         {
             try
             {

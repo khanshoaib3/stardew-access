@@ -1,10 +1,19 @@
+using HarmonyLib;
 using StardewValley;
 
 namespace stardew_access.Patches
 {
-    internal class NPCPatch
+    internal class NPCPatch : IPatch
     {
-        internal static void DrawAboveAlwaysFrontLayerPatch(NPC __instance, string ___textAboveHead, int ___textAboveHeadTimer)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(NPC), nameof(NPC.drawAboveAlwaysFrontLayer)),
+                postfix: new HarmonyMethod(typeof(NPCPatch), nameof(NPCPatch.DrawAboveAlwaysFrontLayerPatch))
+            );
+        }
+
+        private static void DrawAboveAlwaysFrontLayerPatch(NPC __instance, string ___textAboveHead, int ___textAboveHeadTimer)
         {
             try
             {

@@ -33,6 +33,11 @@ namespace stardew_access.Patches
                 new DialogueBoxPatch(),
                 new Game1Patch(),
                 new IClickableMenuPatch(),
+                new InstanceGamePatch(),
+                new NPCPatch(),
+                new TextBoxPatch(),
+                new TextEntryMenuPatch(),
+                new TrashBearPatch(),
                 // Quest Patches
                 new BillboardPatch(),
             };

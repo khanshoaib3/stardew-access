@@ -13,13 +13,6 @@ namespace stardew_access
     {
         internal static void Initialize(Harmony harmony)
         {
-            #region Dialogue Patches
-            harmony.Patch(
-                original: AccessTools.Method(typeof(NPC), nameof(NPC.drawAboveAlwaysFrontLayer)),
-                postfix: new HarmonyMethod(typeof(NPCPatch), nameof(NPCPatch.DrawAboveAlwaysFrontLayerPatch))
-            );
-            #endregion
-
             #region Title Menu Patches
             harmony.Patch(
                     original: AccessTools.Method(typeof(TitleMenu), nameof(TitleMenu.draw), new Type[] { typeof(SpriteBatch) }),
@@ -158,31 +151,6 @@ namespace stardew_access
                     );
 
             #endregion
-
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(InstanceGame), nameof(InstanceGame.Exit)),
-                    prefix: new HarmonyMethod(typeof(InstanceGamePatch), nameof(InstanceGamePatch.ExitPatch))
-                );
-
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(TextBox), nameof(TextBox.Draw)),
-                    prefix: new HarmonyMethod(typeof(TextBoxPatch), nameof(TextBoxPatch.DrawPatch))
-                );
-
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(TextEntryMenu), nameof(TextEntryMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                    prefix: new HarmonyMethod(typeof(TextEntryMenuPatch), nameof(TextEntryMenuPatch.DrawPatch))
-                );
-
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(TextEntryMenu), nameof(TextEntryMenu.Close)),
-                    prefix: new HarmonyMethod(typeof(TextEntryMenuPatch), nameof(TextEntryMenuPatch.ClosePatch))
-                );
-
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(TrashBear), nameof(TrashBear.checkAction)),
-                    postfix: new HarmonyMethod(typeof(TrashBearPatch), nameof(TrashBearPatch.CheckActionPatch))
-                );
         }
     }
 }

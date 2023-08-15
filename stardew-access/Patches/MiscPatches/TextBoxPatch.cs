@@ -1,10 +1,21 @@
+using HarmonyLib;
+using StardewValley.Menus;
+
 namespace stardew_access.Patches
 {
-    internal class TextBoxPatch
+    internal class TextBoxPatch : IPatch
     {
         internal static string textBoxQuery = "";
         internal static string activeTextBoxes = "";
         internal static bool IsAnyTextBoxActive => activeTextBoxes != "";
+
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(TextBox), nameof(TextBox.Draw)),
+                    prefix: new HarmonyMethod(typeof(TextBoxPatch), nameof(TextBoxPatch.DrawPatch))
+                );
+        }
 
         internal static void DrawPatch(StardewValley.Menus.TextBox __instance)
         {
