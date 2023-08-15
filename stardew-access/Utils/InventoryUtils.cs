@@ -8,21 +8,47 @@ namespace stardew_access.Utils
     {
         internal static int prevSlotIndex = -999;
 
-        internal static bool NarrateHoveredSlot(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y,
-                bool? giveExtraDetails = null, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1,
-                bool handleHighlightedItem = false, String highlightedItemPrefix = "", String highlightedItemSuffix = "")
+        internal static bool NarrateHoveredSlot(InventoryMenu inventoryMenu,
+                                                List<ClickableComponent> inventory,
+                                                IList<Item> actualInventory,
+                                                int x,
+                                                int y,
+                                                bool? giveExtraDetails = null,
+                                                int hoverPrice = -1,
+                                                int extraItemToShowIndex = -1,
+                                                int extraItemToShowAmount = -1,
+                                                String highlightedItemPrefix = "",
+                                                String highlightedItemSuffix = "")
         {
-            if (NarrateHoveredSlotAndReturnIndex(inventoryMenu, inventory, actualInventory, x, y,
-                giveExtraDetails, hoverPrice, extraItemToShowIndex, extraItemToShowAmount,
-                handleHighlightedItem, highlightedItemPrefix, highlightedItemSuffix) == -999)
+            if (NarrateHoveredSlotAndReturnIndex(inventoryMenu,
+                                                 inventory,
+                                                 actualInventory,
+                                                 x,
+                                                 y,
+                                                 giveExtraDetails,
+                                                 hoverPrice,
+                                                 extraItemToShowIndex,
+                                                 extraItemToShowAmount,
+                                                 highlightedItemPrefix,
+                                                 highlightedItemSuffix) == -999)
+            {
                 return false;
+            }
 
             return true;
         }
 
-        internal static int NarrateHoveredSlotAndReturnIndex(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y,
-                bool? giveExtraDetails = null, int hoverPrice = -1, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1,
-                bool handleHighlightedItem = false, String highlightedItemPrefix = "", String highlightedItemSuffix = "")
+        internal static int NarrateHoveredSlotAndReturnIndex(InventoryMenu inventoryMenu,
+                                                             List<ClickableComponent> inventory,
+                                                             IList<Item> actualInventory,
+                                                             int x,
+                                                             int y,
+                                                             bool? giveExtraDetails = null,
+                                                             int hoverPrice = -1,
+                                                             int extraItemToShowIndex = -1,
+                                                             int extraItemToShowAmount = -1,
+                                                             String highlightedItemPrefix = "",
+                                                             String highlightedItemSuffix = "")
         {
             giveExtraDetails ??= !MainClass.Config.DisableInventoryVerbosity;
             for (int i = 0; i < inventory.Count; i++)
@@ -39,39 +65,65 @@ namespace stardew_access.Utils
 
                 bool isHighlighted = inventoryMenu.highlightMethod(actualInventory[i]);
 
-                string namePrefix = HandleHighlightedItemPrefix(isHighlighted, highlightedItemPrefix);
-                string nameSuffix = $"{HandleHighlightedItemSuffix(isHighlighted, highlightedItemSuffix)}{HandleUnHighlightedItem(isHighlighted, i)}";
-                int stack = actualInventory[i].Stack;
-                string name = Translator.Instance.Translate("common-util-pluralize_name", new {item_count = stack, name = actualInventory[i].DisplayName});
-                name = $"{namePrefix}{name}{nameSuffix}";
-                string quality = GetQualityFromItem(actualInventory[i]);
-                string healthNStamina = GetHealthNStaminaFromItem(actualInventory[i]);
-                string buffs = GetBuffsFromItem(actualInventory[i]);
-                string description = actualInventory[i].getDescription();
-                string price = GetPrice(hoverPrice);
-                string requirements = GetExtraItemInfo(extraItemToShowIndex, extraItemToShowAmount);
+                string itemDetails = GetItemDetails(actualInventory[i],
+                                                    i,
+                                                    isHighlighted,
+                                                    (bool)giveExtraDetails, // giveExtraDetails is already converted to bool because of first statement in this method.
+                                                    hoverPrice,
+                                                    extraItemToShowIndex,
+                                                    extraItemToShowAmount,
+                                                    highlightedItemPrefix,
+                                                    highlightedItemSuffix);
 
-                string details;
-                string toSpeak = name;
-                // TODO remove , from here and buffs
-                if (giveExtraDetails == true)
-                {
-                    details = string.Join(", ", new string[] { quality, requirements, price, description, healthNStamina, buffs }.Where(c => !string.IsNullOrEmpty(c)));
-                }
-                else
-                {
-                    details = string.Join(", ", new string[] { quality, requirements, price }.Where(c => !string.IsNullOrEmpty(c)));
-                }
-                if (!string.IsNullOrEmpty(details))
-                    toSpeak = $"{toSpeak}, {details}";
-
-                CheckAndSpeak(toSpeak, i);
+                CheckAndSpeak(itemDetails, i);
                 prevSlotIndex = i;
                 return i;
             }
 
             // If no slot is hovered
             return -999;
+        }
+
+        internal static String GetItemDetails(Item item,
+                                              int indexInInventory = -999,
+                                              bool? isHighlighted = null,
+                                              bool giveExtraDetails = false,
+                                              int hoverPrice = -1,
+                                              int extraItemToShowIndex = -1,
+                                              int extraItemToShowAmount = -1,
+                                              String highlightedItemPrefix = "",
+                                              String highlightedItemSuffix = "",
+                                              String[]? customBuffs = null)
+        {
+            string namePrefix = HandleHighlightedItemPrefix(isHighlighted, highlightedItemPrefix);
+            string nameSuffix = $"{HandleHighlightedItemSuffix(isHighlighted, highlightedItemSuffix)}{HandleUnHighlightedItem(isHighlighted, indexInInventory)}";
+            int stack = item.Stack;
+            string name = Translator.Instance.Translate("common-util-pluralize_name", new {item_count = stack, name = item.DisplayName});
+            name = $"{namePrefix}{name}{nameSuffix}";
+            string quality = GetQualityFromItem(item);
+            string healthNStamina = GetHealthNStaminaFromItem(item);
+            string buffs = (customBuffs is not null)
+                ? string.Join(", ", customBuffs)
+                : buffs = GetBuffsFromItem(item);
+            string description = item.getDescription();
+            string price = GetPrice(hoverPrice);
+            string requirements = GetExtraItemInfo(extraItemToShowIndex, extraItemToShowAmount);
+
+            string details;
+            string toReturn = name;
+            // TODO remove , from here and buffs
+            if (giveExtraDetails)
+            {
+                details = string.Join(", ", new string[] { quality, requirements, price, description, healthNStamina, buffs }.Where(c => !string.IsNullOrEmpty(c)));
+            }
+            else
+            {
+                details = string.Join(", ", new string[] { quality, requirements, price }.Where(c => !string.IsNullOrEmpty(c)));
+            }
+            if (!string.IsNullOrEmpty(details))
+                toReturn = $"{toReturn}, {details}";
+
+            return toReturn;
         }
         
         internal static String GetQualityFromItem(Item item)
@@ -174,25 +226,28 @@ namespace stardew_access.Utils
             return Translator.Instance.Translate("item-sell_price_info", new { price });
         }
 
-        internal static String HandleHighlightedItemPrefix(bool isHighlighted, String prefix)
+        internal static String HandleHighlightedItemPrefix(bool? isHighlighted, String prefix)
         {
+            if (isHighlighted == null) return "";
             if (MainClass.Config.DisableInventoryVerbosity) return "";
-            if (!isHighlighted) return "";
+            if (isHighlighted == false) return "";
 
             return prefix;
         }
 
-        internal static String HandleHighlightedItemSuffix(bool isHighlighted, String suffix)
+        internal static String HandleHighlightedItemSuffix(bool? isHighlighted, String suffix)
         {
+            if (isHighlighted == null) return "";
             if (MainClass.Config.DisableInventoryVerbosity) return "";
-            if (!isHighlighted) return "";
+            if (isHighlighted == false) return "";
 
             return suffix;
         }
 
-        internal static String HandleUnHighlightedItem(bool isHighlighted, int hoveredInventoryIndex)
+        internal static String HandleUnHighlightedItem(bool? isHighlighted, int hoveredInventoryIndex)
         {
-            if (isHighlighted) return "";
+            if (isHighlighted == null) return "";
+            if (isHighlighted == true) return "";
             
             if (prevSlotIndex != hoveredInventoryIndex)
                 Game1.playSound("invalid-selection");

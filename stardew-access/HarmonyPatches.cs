@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using stardew_access.Patches;
 using StardewValley;
 using StardewValley.Characters;
@@ -15,11 +14,6 @@ namespace stardew_access
         internal static void Initialize(Harmony harmony)
         {
             #region Dialogue Patches
-            harmony.Patch(
-                original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.drawHoverText), new Type[] { typeof(SpriteBatch), typeof(string), typeof(SpriteFont), typeof(int), typeof(int), typeof(int), typeof(string), typeof(int), typeof(string[]), typeof(Item), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(float), typeof(CraftingRecipe), typeof(IList<Item>) }),
-                postfix: new HarmonyMethod(typeof(IClickableMenuPatch), nameof(IClickableMenuPatch.DrawHoverTextPatch))
-            );
-
             harmony.Patch(
                 original: AccessTools.Method(typeof(NPC), nameof(NPC.drawAboveAlwaysFrontLayer)),
                 postfix: new HarmonyMethod(typeof(NPCPatch), nameof(NPCPatch.DrawAboveAlwaysFrontLayerPatch))
@@ -128,18 +122,6 @@ namespace stardew_access
 
             #endregion
 
-            #region On Menu CLose Patch
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.exitThisMenu)),
-                    postfix: new HarmonyMethod(typeof(IClickableMenuPatch), nameof(IClickableMenuPatch.ExitThisMenuPatch))
-                );
-
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(Game1), nameof(Game1.exitActiveMenu)),
-                    prefix: new HarmonyMethod(typeof(Game1Patch), nameof(Game1Patch.ExitActiveMenuPatch))
-                );
-            #endregion
-
             #region Animal and Building Menu
 
             harmony.Patch(
@@ -178,11 +160,6 @@ namespace stardew_access
             #endregion
 
             harmony.Patch(
-                    original: AccessTools.Method(typeof(Game1), nameof(Game1.playSound)),
-                    prefix: new HarmonyMethod(typeof(Game1Patch), nameof(Game1Patch.PlaySoundPatch))
-                );
-
-            harmony.Patch(
                     original: AccessTools.Method(typeof(InstanceGame), nameof(InstanceGame.Exit)),
                     prefix: new HarmonyMethod(typeof(InstanceGamePatch), nameof(InstanceGamePatch.ExitPatch))
                 );
@@ -200,11 +177,6 @@ namespace stardew_access
             harmony.Patch(
                     original: AccessTools.Method(typeof(TextEntryMenu), nameof(TextEntryMenu.Close)),
                     prefix: new HarmonyMethod(typeof(TextEntryMenuPatch), nameof(TextEntryMenuPatch.ClosePatch))
-                );
-
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(Game1), nameof(Game1.closeTextEntry)),
-                    prefix: new HarmonyMethod(typeof(Game1Patch), nameof(Game1Patch.CloseTextEntryPatch))
                 );
 
             harmony.Patch(

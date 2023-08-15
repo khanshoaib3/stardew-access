@@ -31,6 +31,8 @@ namespace stardew_access.Patches
                 // Misc Patches
                 new ChatBoxPatch(),
                 new DialogueBoxPatch(),
+                new Game1Patch(),
+                new IClickableMenuPatch(),
                 // Quest Patches
                 new BillboardPatch(),
             };

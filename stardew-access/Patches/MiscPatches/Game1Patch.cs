@@ -1,15 +1,30 @@
-using Microsoft.Xna.Framework;
-using stardew_access.Utils;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 
 namespace stardew_access.Patches
 {
-    internal class Game1Patch
+    internal class Game1Patch : IPatch
     {
-        private static Vector2? prevTile = null;
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(Game1), nameof(Game1.closeTextEntry)),
+                    prefix: new HarmonyMethod(typeof(Game1Patch), nameof(Game1Patch.CloseTextEntryPatch))
+            );
 
-        internal static void ExitActiveMenuPatch()
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(Game1), nameof(Game1.exitActiveMenu)),
+                    prefix: new HarmonyMethod(typeof(Game1Patch), nameof(Game1Patch.ExitActiveMenuPatch))
+            );
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(Game1), nameof(Game1.playSound)),
+                    prefix: new HarmonyMethod(typeof(Game1Patch), nameof(Game1Patch.PlaySoundPatch))
+            );
+        }
+
+        private static void ExitActiveMenuPatch()
         {
             try
             {
@@ -18,16 +33,19 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occurred in exit active menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
-        internal static void CloseTextEntryPatch()
+        private static void CloseTextEntryPatch()
         {
             TextBoxPatch.activeTextBoxes = "";
         }
 
-        internal static bool PlaySoundPatch(string cueName)
+        /// <summary>
+        /// Stops the footstep sounds if the player is not moving.
+        /// </summary>
+        private static bool PlaySoundPatch(string cueName)
         {
             try
             {
@@ -36,24 +54,10 @@ namespace stardew_access.Patches
 
                 if (!Game1.player.isMoving())
                     return true;
-
-                if (cueName == "grassyStep" || cueName == "sandyStep" || cueName == "snowyStep" || cueName == "stoneStep" || cueName == "thudStep" || cueName == "woodyStep")
-                {
-                    Vector2 nextTile = CurrentPlayer.FacingTile;
-                    if (TileInfo.IsCollidingAtTile(Game1.currentLocation, (int)nextTile.X, (int)nextTile.Y))
-                    {
-                        if (prevTile != nextTile)
-                        {
-                            prevTile = nextTile;
-                            //Game1.playSound("colliding");
-                        }
-                        return false;
-                    }
-                }
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occurred in play sound patch:\n{e.Message}\n{e.StackTrace}");
             }
 
             return true;
