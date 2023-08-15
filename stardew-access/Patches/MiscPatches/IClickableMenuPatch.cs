@@ -109,7 +109,6 @@ namespace stardew_access.Patches
                     else if (!string.IsNullOrEmpty(text))
                         toSpeak += text;
                 }
-                MainClass.DebugLog(moneyAmountToDisplayAtBottom.ToString());
 
                 // To prevent it from getting conflicted by two hover texts at the same time, two separate methods are used.
                 // For example, sometimes `Welcome to Pierre's` and the items in seeds shop get conflicted causing it to speak infinitely.

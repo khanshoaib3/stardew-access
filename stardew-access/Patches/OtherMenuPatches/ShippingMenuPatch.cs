@@ -31,8 +31,9 @@ namespace stardew_access.Patches
                     {
                         if (__instance.categories[i].containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                         {
-                            toSpeak = $"Money recieved from {__instance.getCategoryName(i)}: {___categoryTotals[i]}g.";
+                            toSpeak = $"Money received from {__instance.getCategoryName(i)}: {___categoryTotals[i]}g.";
                             MainClass.ScreenReader.SayWithChecker(toSpeak, true);
+                            break;
                         }
                     }
                 }

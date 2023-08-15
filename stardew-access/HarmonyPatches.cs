@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using stardew_access.Patches;
-using StardewValley;
-using StardewValley.Characters;
 using StardewValley.Menus;
 using StardewValley.Minigames;
 
