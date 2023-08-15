@@ -71,7 +71,7 @@ menu-game_menu-tab_names = {$tab_name} Tab {$is_active ->
     *[1] Active
   }
 
-## Inventory Page
+### Inventory Page
 
 menu-inventory_page-money_info_key = {$farm_name}, {$current_funds}, {$total_earnings}{SIGNOFNUMBER($festival_score) ->
     [positive] , Festival score: {$festival_score}
@@ -87,7 +87,7 @@ menu-inventory_page-money_info_key = {$farm_name}, {$current_funds}, {$total_ear
     *[other] {EMPTYSTRING()}
   }
 
-## Options Page
+### Options Page
 
 menu-options_page-button_info = {$label} button
 menu-options_page-checkbox_info = {$is_checked ->
@@ -100,7 +100,7 @@ menu-options_page-plus_minus_button_info = {$selected_option} selected of {$labe
 menu-options_page-input_listener_info = {$label} is bound to {$buttons_list}. Left click to change.
 menu-options_page-heading_info = {$label} Options:
 
-## Social Page
+### Social Page
 
 menu-social_page-npc_info = {$name}{$has_talked ->
     [0] , not talked yet
@@ -202,6 +202,15 @@ menu-tailoring-spool_slot = {$is_empty ->
     [0] Spool: {$item_name}
     *[1] Place materials here
   }
+
+## Misc Patches
+
+### Dialogue Box
+
+menu-dialogue_box-npc_dialogue_format = {$is_appearing_first_time ->
+    [0] {EMPTYSTRING()}
+    *[1] {$npc_name} said,
+  } {$dialogue}
 
 ## Animal Query Menu (TODO organise this!)
 animal_query_menu-animal_info =

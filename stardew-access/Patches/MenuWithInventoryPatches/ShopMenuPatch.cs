@@ -82,10 +82,7 @@ namespace stardew_access.Patches
         {
             if (__instance.hoveredItem == null) return;
 
-            string name = Translator.Instance.Translate(
-                "common-util-pluralize_name",
-                new { item_count = __instance.hoveredItem.Stack, name = __instance.hoveredItem.DisplayName });
-
+            string name = __instance.hoveredItem.DisplayName;
             string price = Translator.Instance.Translate("menu-shop-buy_price_info", new { price = __instance.hoverPrice });
             string description = __instance.hoveredItem.getDescription();
 

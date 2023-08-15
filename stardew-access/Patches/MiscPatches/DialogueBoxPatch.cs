@@ -1,14 +1,29 @@
-﻿using StardewValley;
+﻿using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Translation;
+using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class DialogueBoxPatch
+    internal class DialogueBoxPatch : IPatch
     {
-        private static string currentDialogue = "";
         private static bool isDialogueAppearingFirstTime = true;
 
-        internal static void DrawPatch(DialogueBox __instance)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.draw), new Type[] { typeof(SpriteBatch) }),
+                    postfix: new HarmonyMethod(typeof(DialogueBoxPatch), nameof(DialogueBoxPatch.DrawPatch))
+            );
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.receiveLeftClick)),
+                    postfix: new HarmonyMethod(typeof(DialogueBoxPatch), nameof(DialogueBoxPatch.RecieveLeftClickPatch))
+            );
+        }
+
+        private static void DrawPatch(DialogueBox __instance)
         {
             try
             {
@@ -20,14 +35,16 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}");
+                MainClass.ErrorLog($"An error occurred in dialogue box patch:\n{e.StackTrace}\n{e.Message}");
             }
         }
 
-        internal static void RecieveLeftClickPatch()
+        private static void RecieveLeftClickPatch()
         {
+            // TODO see if there are any bugs reported if the cleanup is not performed
+
             // CLears the currentDialogue string on closing dialog
-            Cleanup();
+            // Cleanup();
         }
 
         private static bool NarrateCharacterDialogue(DialogueBox __instance)
@@ -36,18 +53,24 @@ namespace stardew_access.Patches
 
             // For Normal Character dialogues
             Dialogue dialogue = __instance.characterDialogue;
-            string speakerName = dialogue.speaker.displayName;
             string dialogueText = "";
             string responseText = "";
             bool hasResponses = dialogue.isCurrentDialogueAQuestion();
 
-            dialogueText = $"{speakerName} said {__instance.getCurrentString()}";
+            dialogueText = Translator.Instance.Translate(
+                "menu-dialogue_box-npc_dialogue_format",
+                new
+                {
+                    is_appearing_first_time = isDialogueAppearingFirstTime ? 1 : 0,
+                    npc_name = dialogue.speaker.displayName,
+                    dialogue = __instance.getCurrentString()
+                });
 
             if (hasResponses)
             {
                 responseText = GetCurrentResponseText(__instance);
 
-                CheckAndSpeak(isDialogueAppearingFirstTime ? $"{dialogueText} \n\t {responseText}" : responseText, responseText);
+                CheckAndSpeak(isDialogueAppearingFirstTime ? $"{dialogueText}\n{responseText}" : responseText, responseText);
                 if (isDialogueAppearingFirstTime) isDialogueAppearingFirstTime = false;
             }
             else
@@ -74,7 +97,7 @@ namespace stardew_access.Patches
 
             responseText = GetCurrentResponseText(__instance);
 
-            CheckAndSpeak(isDialogueAppearingFirstTime ? $"{questionText} \n\t {responseText}" : responseText, responseText);
+            CheckAndSpeak(isDialogueAppearingFirstTime ? $"{questionText}\n{responseText}" : responseText, responseText);
             if (isDialogueAppearingFirstTime) isDialogueAppearingFirstTime = false;
 
             return true;
@@ -105,23 +128,16 @@ namespace stardew_access.Patches
 
         private static void CheckAndSpeak(string toSpeak)
         {
-            if (currentDialogue == toSpeak) return;
-            currentDialogue = toSpeak;
-
-            MainClass.ScreenReader.Say(toSpeak, true);
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
         }
 
         private static void CheckAndSpeak(string toSpeak, string checkQuery)
         {
-            if (currentDialogue == checkQuery) return;
-            currentDialogue = checkQuery;
-
-            MainClass.ScreenReader.Say(toSpeak, true);
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, checkQuery);
         }
 
         internal static void Cleanup()
         {
-            currentDialogue = "";
             isDialogueAppearingFirstTime = true;
         }
     }

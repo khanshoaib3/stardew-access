@@ -28,6 +28,9 @@ namespace stardew_access.Patches
                 new ItemGrabMenuPatch(),
                 new ShopMenuPatch(),
                 new TailoringMenuPatch(),
+                // Misc Patches
+                new ChatBoxPatch(),
+                new DialogueBoxPatch(),
                 // Quest Patches
                 new BillboardPatch(),
             };
