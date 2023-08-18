@@ -7,8 +7,9 @@ namespace stardew_access
     public class API
     {
         // Note to future self, don't make these static, it won't give errors in sv access but it will in other mods if they try to use the stardew access api.
+        //Setting Pragma to disable warning CA1822 prompting to make fields static.
         public API() { }
-
+        #pragma warning disable CA1822 // Mark members as static
         public string PrevMenuQueryText
         {
             get => MainClass.ScreenReader.PrevMenuQueryText;
@@ -163,5 +164,6 @@ namespace stardew_access
 
             MainClass.ScreenReader.SayWithTileQuery(text, x, y, interrupt);
         }
+        #pragma warning restore CA1822 // Mark members as static
     }
 }

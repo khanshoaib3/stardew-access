@@ -604,7 +604,7 @@ namespace stardew_access.Utils
             // Check the object type and assign the appropriate name and category
             if (obj is Chest chest)
             {
-                DiscreteColorPicker dummyColorPicker = new DiscreteColorPicker(0, 0);
+                DiscreteColorPicker dummyColorPicker = new(0, 0);
                 int colorIndex = dummyColorPicker.getSelectionFromColor(chest.playerChoiceColor.Get());
                 string chestColor = colorIndex == 0 ? "" : Translator.Instance.Translate("common-chest_colors", new {index = colorIndex});
                 toReturn = ($"{chestColor} {chest.DisplayName}", CATEGORY.Containers);

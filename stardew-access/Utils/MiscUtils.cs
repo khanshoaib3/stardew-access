@@ -59,13 +59,15 @@ namespace stardew_access.Utils
 			if (Game1.isGamePadThumbstickInMotion())
 				return true;
 
-			List<InputButton[]> keys = new();
-			keys.Add(Game1.options.moveUpButton);
-			keys.Add(Game1.options.moveRightButton);
-			keys.Add(Game1.options.moveDownButton);
-			keys.Add(Game1.options.moveLeftButton);
+            List<InputButton[]> keys = new()
+            {
+                Game1.options.moveUpButton,
+                Game1.options.moveRightButton,
+                Game1.options.moveDownButton,
+                Game1.options.moveLeftButton
+            };
 
-			foreach (InputButton[] ibs in keys)
+            foreach (InputButton[] ibs in keys)
 			{
 				if (Game1.isOneOfTheseKeysDown(Game1.input.GetKeyboardState(), ibs))
 					return true;
