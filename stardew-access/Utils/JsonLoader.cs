@@ -73,6 +73,22 @@ namespace stardew_access.Utils
             return false;
         }
 
+        public static bool TryLoadJsonDictionary<T>(string fileName, out Dictionary<int, T> result, string subdir = DefaultDir)
+        {
+            bool loaded = TryLoadJsonFile(fileName, out JsonDocument document, subdir);
+            if (loaded && document != null)
+            {
+                var tempResult = JsonSerializer.Deserialize<Dictionary<string, T>>(document.RootElement.GetRawText()) ?? new Dictionary<string, T>();
+                result = tempResult.ToDictionary(kvp => int.Parse(kvp.Key), kvp => kvp.Value);
+                return true;
+            }
+
+            #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+            result = default;
+            #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            return false;
+        }
+
         public static bool TryLoadJsonDictionary<T>(string fileName, out Dictionary<string, T> result, string subdir = DefaultDir)
         {
             bool loaded = TryLoadJsonFile(fileName, out JsonDocument document, subdir);
