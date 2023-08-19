@@ -213,7 +213,7 @@ menu-dialogue_box-npc_dialogue_format = {$is_appearing_first_time ->
   } {$dialogue}
 
 ## Animal Query Menu (TODO organise this!)
-animal_query_menu-animal_info =
+menu-animal_query-animal_info =
   {$name}, {$is_baby ->
     [0] {$type}
     *[1] Baby {$type}
@@ -227,12 +227,12 @@ animal_query_menu-animal_info =
     [null] {EMPTYSTRING()}
     *[other] Parent: {$parent_name}.
   }
-animal_query_menu-ui-confirm_selling_button = Confirm selling animal button
-animal_query_menu-ui-cancel_selling_button = Cancel selling animal button
-animal_query_menu-ui-selling_button = Sell for {$price}g button
-animal_query_menu-ui-move_home_button = Change home building button
-animal_query_menu-ui-text_box = Animal name text box
-animal_query_menu-ui-allow_reproduction_button =
+menu-animal_query-confirm_selling_button = Confirm selling animal button
+menu-animal_query-cancel_selling_button = Cancel selling animal button
+menu-animal_query-selling_button = Sell for {$price}g button
+menu-animal_query-move_home_button = Change home building button
+menu-animal_query-text_box = Animal name text box
+menu-animal_query-allow_reproduction_button =
   {$checkbox_value ->
     [0] Disabled
     *[1] Enabled

@@ -38,6 +38,8 @@ namespace stardew_access.Patches
                 new TextBoxPatch(),
                 new TextEntryMenuPatch(),
                 new TrashBearPatch(),
+                // Other Menu Patches
+                new AnimalQueryMenuPatch(),
                 // Quest Patches
                 new BillboardPatch(),
             };
