@@ -264,7 +264,11 @@ namespace stardew_access.Features
             }
 
             suffixText = suffixText.Length > 0 ? ", " + suffixText : string.Empty;
-            MainClass.ScreenReader.Say($"{SelectedCategory ?? "No Category"}, {SelectedObject ?? "No Object"}" + suffixText, true);
+            string spokenText = cycleCategories
+                ? $"{SelectedCategory ?? "No Category"}, {SelectedObject ?? "No Object"}" + suffixText
+                : $"{SelectedObject ?? "No Object"}" + suffixText;
+
+            MainClass.ScreenReader.Say(spokenText, true);
         }
 
         internal void HandleKeys(object? sender, ButtonsChangedEventArgs e)
