@@ -52,7 +52,7 @@ namespace stardew_access.Patches
                 }
                 catch (Exception e)
                 {
-                    MainClass.ErrorLog($"An error occurred while applying {patch.GetType().FullName} patch:\n{e.Message}\n{e.StackTrace}");
+                    Log.Error($"An error occurred while applying {patch.GetType().FullName} patch:\n{e.Message}\n{e.StackTrace}");
                 }
             }
         }
