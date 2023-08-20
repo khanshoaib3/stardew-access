@@ -164,9 +164,9 @@ namespace stardew_access.Utils
         /// </returns>
         private static Dictionary<string, Dictionary<(int x, int y), string>> LoadEventTiles()
         {
-            JsonElement json = LoadJsonFile("event-tiles.json");
+            bool loaded = TryLoadJsonFile("event-tiles.json", out JsonElement json);
 
-            if (json.ValueKind == JsonValueKind.Undefined)
+            if (!loaded || json.ValueKind == JsonValueKind.Undefined)
             {
                 // If the JSON couldn't be loaded or parsed, return an empty dictionary
                 return new Dictionary<string, Dictionary<(int x, int y), string>>();
@@ -544,7 +544,7 @@ namespace stardew_access.Utils
             if (!loggedLocations.Contains(locationType))
             {
                 // Log the message
-                MainClass.DebugLog($"Called GetNamedIslandLocationInfo with unimplemented IslandLocation of type {islandLocation.GetType()} and name {islandLocation.Name}");
+                Log.Debug($"Called GetNamedIslandLocationInfo with unimplemented IslandLocation of type {islandLocation.GetType()} and name {islandLocation.Name}");
 
                 // Add the location to the HashSet to prevent logging it again
                 loggedLocations.Add(locationType);
@@ -787,7 +787,7 @@ namespace stardew_access.Utils
             if (!loggedLocations.Contains(locationType))
             {
                 // Log the message
-                MainClass.DebugLog($"Called GetLocationByNameInfo with unimplemented GameLocation of type {currentLocation.GetType()} and name {currentLocation.Name}");
+                Log.Debug($"Called GetLocationByNameInfo with unimplemented GameLocation of type {currentLocation.GetType()} and name {currentLocation.Name}");
 
                 // Add the location to the HashSet to prevent logging it again
                 loggedLocations.Add(locationType);

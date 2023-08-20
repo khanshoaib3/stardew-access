@@ -1,4 +1,4 @@
-﻿using stardew_access.Utils;
+using stardew_access.Utils;
 using static stardew_access.Utils.MovementHelpers;
 using StardewValley;
 using System;

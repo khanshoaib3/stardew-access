@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Audio;
 using StardewValley;
 
 namespace stardew_access
@@ -79,7 +79,7 @@ namespace stardew_access
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to initialize custom sounds:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"Unable to initialize custom sounds:\n{e.Message}\n{e.StackTrace}");
             }
         }
     }

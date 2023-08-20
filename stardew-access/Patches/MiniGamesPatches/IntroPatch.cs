@@ -34,7 +34,7 @@ namespace stardew_access.Patches
             }
             catch (System.Exception e)
             {
-                MainClass.ErrorLog($"An error occured in intro minigame patch:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occured in intro minigame patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
     }

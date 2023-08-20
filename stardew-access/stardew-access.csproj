@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <CSFile Include="*.dll" Exclude="ProjectFluent.dll"/>
+    <CSFile Include="*.dll" Exclude="ProjectFluent.dll" />
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
@@ -58,6 +58,10 @@
     <None Update="TolkDotNet.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="assets\translation\" />
   </ItemGroup>
 
 </Project>

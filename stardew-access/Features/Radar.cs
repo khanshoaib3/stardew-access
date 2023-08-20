@@ -69,7 +69,7 @@ namespace stardew_access.Features
         public void Run()
         {
             if (MainClass.radarDebug)
-                MainClass.DebugLog($"\n\nRead Tile started");
+                Log.Debug($"\n\nRead Tile started");
 
             Vector2 currPosition = Game1.player.getTileLocation();
 
@@ -80,7 +80,7 @@ namespace stardew_access.Features
             SearchNearbyTiles(currPosition, range);
 
             if (MainClass.radarDebug)
-                MainClass.DebugLog($"\nRead Tile stopped\n\n");
+                Log.Debug($"\nRead Tile stopped\n\n");
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace stardew_access.Features
 
             //watch.Stop();
             //var elapsedMs = watch.ElapsedMilliseconds;
-            //MainClass.DebugLog($"Search init duration: {elapsedMs}");
+            //Log.Debug($"Search init duration: {elapsedMs}");
             //watch.Reset();
             //watch.Start();
             while (toSearch.Count > 0)
@@ -186,7 +186,7 @@ namespace stardew_access.Features
             }
             //watch.Stop();
             //elapsedMs = watch.ElapsedMilliseconds;
-            //MainClass.DebugLog($"Search loop duration: {elapsedMs}; {count} iterations.");
+            //Log.Debug($"Search loop duration: {elapsedMs}; {count} iterations.");
             searched.Clear();
             return detectedTiles;
         }
@@ -265,7 +265,7 @@ namespace stardew_access.Features
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"{e.Message}\n{e.StackTrace}\n{e.Source}");
+                Log.Error($"{e.Message}\n{e.StackTrace}\n{e.Source}");
             }
         }
 
@@ -317,7 +317,7 @@ namespace stardew_access.Features
             #endregion
 
             if (MainClass.radarDebug)
-                MainClass.ErrorLog($"{radarFocus}\tObject:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}");
+                Log.Error($"{radarFocus}\tObject:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}");
 
             int px = (int)Game1.player.getTileX(); // Player's X postion
             int py = (int)Game1.player.getTileY(); // Player's Y postion

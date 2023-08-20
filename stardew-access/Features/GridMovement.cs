@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System;
@@ -66,7 +66,7 @@ namespace stardew_access.Features
 			is_moving = true;
 			timer.Start();
 
-			MainClass.DebugLog($"Move Direction: {direction}");
+			Log.Debug($"Move Direction: {direction}");
 
 			Vector2 tileLocation = player.getTileLocation();
 
@@ -76,7 +76,7 @@ namespace stardew_access.Features
 				tileLocation = Vector2.Add(tileLocation, directionVectors[direction]);
 			}
 
-			MainClass.DebugLog($"Move To: {tileLocation}");
+			Log.Debug($"Move To: {tileLocation}");
 
 			Rectangle position = new((int)tileLocation.X * Game1.tileSize, (int)tileLocation.Y * Game1.tileSize, Game1.tileSize, Game1.tileSize);
 			Warp warp = location.isCollidingWithWarpOrDoor(position, Game1.player);
@@ -120,12 +120,12 @@ namespace stardew_access.Features
 			if (TileInfo.GetDoorAtTile(location, (int)tileLocation.X, (int)tileLocation.Y) is not null)
 			{
 				// Manually check for door and pressActionButton() method instead of warping (warping also works when the door is locked, for example it warps to the Pierre's shop before it's opening time)
-				MainClass.DebugLog("Collides with Door");
+				Log.Debug("Collides with Door");
 				Game1.pressActionButton(Game1.GetKeyboardState(), Game1.input.GetMouseState(), Game1.input.GetGamePadState());
 			}
 			else
 			{
-				MainClass.DebugLog("Collides with Warp");
+				Log.Debug("Collides with Warp");
 
 				if (location.checkAction(new Location((int)tileLocation.X * Game1.tileSize, (int)tileLocation.Y * Game1.tileSize), Game1.viewport, Game1.player))
 				{
@@ -160,7 +160,7 @@ namespace stardew_access.Features
 				this.is_warping = false;
 
 				if(failWarp) {
-					MainClass.DebugLog("Failed to walk through entrance.");
+					Log.Debug("Failed to walk through entrance.");
 				} else {
 					Game1.playSound("doorClose");
 				}
