@@ -55,7 +55,7 @@ namespace stardew_access.Utils
 			}
 			catch (Exception ex)
 			{
-				MainClass.ErrorLog($"Unhandled exception {ex} in FootstepTimer_Elapsed.");
+				Log.Error($"Unhandled exception {ex} in FootstepTimer_Elapsed.");
 			}
 		}
 
@@ -72,7 +72,7 @@ namespace stardew_access.Utils
 						if (pathfindingRetryAttempts < MaxRetryAttempts)
 						{
 							pathfindingRetryAttempts++;
-							MainClass.DebugLog($"Attempting to restart pathfinding; attempt {pathfindingRetryAttempts} of {MaxRetryAttempts}.");
+							Log.Debug($"Attempting to restart pathfinding; attempt {pathfindingRetryAttempts} of {MaxRetryAttempts}.");
 
 							if (pathfindingRetryAttempts > MaxRetryAttempts)
 							{
@@ -96,7 +96,7 @@ namespace stardew_access.Utils
 			}
 			catch (Exception ex)
 			{
-				MainClass.ErrorLog($"Unhandled exception {ex} in CheckPathingTimer_Elapsed.");
+				Log.Error($"Unhandled exception {ex} in CheckPathingTimer_Elapsed.");
 			}
 		}
 

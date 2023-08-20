@@ -47,7 +47,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"An error occured in DrawPatch() in TextBoxPatch:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occured in DrawPatch() in TextBoxPatch:\n{e.Message}\n{e.StackTrace}");
             }
         }
     }

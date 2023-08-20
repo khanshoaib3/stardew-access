@@ -20,7 +20,7 @@ namespace stardew_access.Patches
             }
             catch (System.Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
     }

@@ -23,14 +23,14 @@ namespace stardew_access.Patches
 
                 if (___difficulty > MainClass.Config.MaximumFishingDifficulty)
                 {
-                    MainClass.DebugLog($"Fish difficulty set to {MainClass.Config.MaximumFishingDifficulty} from {___difficulty}");
+                    Log.Debug($"Fish difficulty set to {MainClass.Config.MaximumFishingDifficulty} from {___difficulty}");
                     ___difficulty = MainClass.Config.MaximumFishingDifficulty;
                 }
 
                 if (___motionType != MainClass.Config.FixFishingMotionType &&
                         (MainClass.Config.FixFishingMotionType >= 0 && MainClass.Config.FixFishingMotionType <= 4))
                 {
-                    MainClass.DebugLog($"Motion type set to {MainClass.Config.FixFishingMotionType} from {___motionType}");
+                    Log.Debug($"Motion type set to {MainClass.Config.FixFishingMotionType} from {___motionType}");
                     ___motionType = MainClass.Config.FixFishingMotionType;
                 }
 
@@ -44,7 +44,7 @@ namespace stardew_access.Patches
             }
             catch (System.Exception e)
             {
-                MainClass.ErrorLog($"An error occured while patching bobber bar:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occured while patching bobber bar:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -141,12 +141,12 @@ namespace stardew_access.Patches
             float estimatedBobberBarPos = ___bobberBarPos + ___bobberBarSpeed;
             if (estimatedBobberBarPos + (float)___bobberBarHeight > 568f)
             {
-                MainClass.DebugLog("Collided with bottom");
+                Log.Debug("Collided with bottom");
                 Game1.playSoundPitched("axchop", -100);
             }
             else if (estimatedBobberBarPos < 0f)
             {
-                MainClass.DebugLog("Collided with top");
+                Log.Debug("Collided with top");
                 Game1.playSoundPitched("axchop", 1000);
             }
         }

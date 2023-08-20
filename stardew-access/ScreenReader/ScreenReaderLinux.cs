@@ -35,7 +35,7 @@ namespace stardew_access.ScreenReader
 
         public override void InitializeScreenReader()
         {
-            MainClass.InfoLog("Initializing speech dispatcher...");
+            Log.Info("Initializing speech dispatcher...");
             if (!resolvedDll)
             {
                 NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), DllImportResolver);
@@ -45,11 +45,11 @@ namespace stardew_access.ScreenReader
             if (res == 1)
             {
                 initialized = true;
-                MainClass.InfoLog("Successfully initialized.");
+                Log.Info("Successfully initialized.");
             }
             else
             {
-                MainClass.ErrorLog("Unable to initialize.");
+                Log.Error("Unable to initialize.");
             }
         }
 
@@ -75,14 +75,12 @@ namespace stardew_access.ScreenReader
 
             if (re != 1)
             {
-                MainClass.ErrorLog($"Failed to output text: {text}");
+                Log.Error($"Failed to output text: {text}");
                 return false;
             }
             else
             {
-                #if DEBUG
-                MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
-                #endif
+                Log.Verbose($"Speaking(interrupt: {interrupt}) = {text}");
                 return true;
             }
         }

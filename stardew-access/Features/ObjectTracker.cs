@@ -33,12 +33,12 @@ namespace stardew_access.Features
             sortByProximity = MainClass.Config.OTSortByProximity;
             updateActions = new List<Action>
             {
-                () => UpdateAndRunIfChanged(ref objectCounts[0], Game1.currentLocation.debris.Count, () => { MainClass.DebugLog("Debris count has changed."); countHasChanged = true; }),
-                () => UpdateAndRunIfChanged(ref objectCounts[1], Game1.currentLocation.objects.Count(), () => { MainClass.DebugLog("Objects count has changed."); countHasChanged = true; }),
-                () => UpdateAndRunIfChanged(ref objectCounts[2], Game1.currentLocation.furniture.Count, () => { MainClass.DebugLog("Furniture count has changed."); countHasChanged = true; }),
-                () => UpdateAndRunIfChanged(ref objectCounts[3], Game1.currentLocation.resourceClumps.Count, () => { MainClass.DebugLog("ResourceClumps count has changed."); countHasChanged = true; }),
-                () => UpdateAndRunIfChanged(ref objectCounts[4], Game1.currentLocation.terrainFeatures.Count(), () => { MainClass.DebugLog("TerrainFeatures count has changed."); countHasChanged = true; }),
-                () => UpdateAndRunIfChanged(ref objectCounts[5], Game1.currentLocation.largeTerrainFeatures.Count, () => { MainClass.DebugLog("LargeTerrainFeatures count has changed."); countHasChanged = true; }),
+                () => UpdateAndRunIfChanged(ref objectCounts[0], Game1.currentLocation.debris.Count, () => { Log.Debug("Debris count has changed."); countHasChanged = true; }),
+                () => UpdateAndRunIfChanged(ref objectCounts[1], Game1.currentLocation.objects.Count(), () => { Log.Debug("Objects count has changed."); countHasChanged = true; }),
+                () => UpdateAndRunIfChanged(ref objectCounts[2], Game1.currentLocation.furniture.Count, () => { Log.Debug("Furniture count has changed."); countHasChanged = true; }),
+                () => UpdateAndRunIfChanged(ref objectCounts[3], Game1.currentLocation.resourceClumps.Count, () => { Log.Debug("ResourceClumps count has changed."); countHasChanged = true; }),
+                () => UpdateAndRunIfChanged(ref objectCounts[4], Game1.currentLocation.terrainFeatures.Count(), () => { Log.Debug("TerrainFeatures count has changed."); countHasChanged = true; }),
+                () => UpdateAndRunIfChanged(ref objectCounts[5], Game1.currentLocation.largeTerrainFeatures.Count, () => { Log.Debug("LargeTerrainFeatures count has changed."); countHasChanged = true; }),
             };
         }
 
@@ -48,7 +48,7 @@ namespace stardew_access.Features
 
             if (updateActions.Count == 0)
             {
-                MainClass.ErrorLog("No update actions to run.");
+                Log.Error("No update actions to run.");
                 return;
             }
 
@@ -61,7 +61,7 @@ namespace stardew_access.Features
                 // If a change was detected, refresh the objects
                 if (countHasChanged)
                 {
-                    MainClass.DebugLog("Refreshing ObjectTracker; changes detected.");
+                    Log.Debug("Refreshing ObjectTracker; changes detected.");
                     GetLocationObjects(resetFocus: false);
                     countHasChanged = false;  // Reset the flag for the next cycle
                 }
@@ -80,7 +80,7 @@ namespace stardew_access.Features
             }
             catch (Exception ex)
             {
-                MainClass.ErrorLog($"Error in RunUpdateAction: {ex.Message}");
+                Log.Error($"Error in RunUpdateAction: {ex.Message}");
             }
         }
 
@@ -192,7 +192,7 @@ namespace stardew_access.Features
 
             string outputCategory = SelectedCategory ?? "No Category";
             string outputObject = SelectedObject ?? "No Object";
-            MainClass.DebugLog($"Category: {outputCategory} | Object: {outputObject}");
+            Log.Debug($"Category: {outputCategory} | Object: {outputObject}");
         }
 
         internal void GetLocationObjects(bool resetFocus = true)
@@ -264,7 +264,11 @@ namespace stardew_access.Features
             }
 
             suffixText = suffixText.Length > 0 ? ", " + suffixText : string.Empty;
-            MainClass.ScreenReader.Say($"{SelectedCategory ?? "No Category"}, {SelectedObject ?? "No Object"}" + suffixText, true);
+            string spokenText = cycleCategories
+                ? $"{SelectedCategory ?? "No Category"}, {SelectedObject ?? "No Object"}" + suffixText
+                : $"{SelectedObject ?? "No Object"}" + suffixText;
+
+            MainClass.ScreenReader.Say(spokenText, true);
         }
 
         internal void HandleKeys(object? sender, ButtonsChangedEventArgs e)
@@ -333,7 +337,7 @@ namespace stardew_access.Features
 
         private void MoveToCurrentlySelectedObject()
         {
-            MainClass.DebugLog("Attempt pathfinding.");
+            Log.Debug("Attempt pathfinding.");
             if (IsFocusValid())
             {
                 ReadCurrentlySelectedObject();

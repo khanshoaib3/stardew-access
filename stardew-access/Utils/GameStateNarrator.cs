@@ -1,4 +1,4 @@
-﻿using StardewValley;
+using StardewValley;
 using System.Text.RegularExpressions;
 using stardew_access.Translation;
 
@@ -82,7 +82,7 @@ namespace stardew_access.Utils
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate hud messages:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"Unable to narrate hud messages:\n{e.Message}\n{e.StackTrace}");
             }
         }
     }

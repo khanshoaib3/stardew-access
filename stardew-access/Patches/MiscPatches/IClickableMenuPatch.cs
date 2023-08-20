@@ -123,7 +123,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"An error occurred in draw hover text patch:\n{e.StackTrace}\n{e.Message}");
+                Log.Error($"An error occurred in draw hover text patch:\n{e.StackTrace}\n{e.Message}");
             }
         }
 
@@ -131,12 +131,12 @@ namespace stardew_access.Patches
         {
             try
             {
-                MainClass.DebugLog($"Closed {__instance.GetType()} menu, performing cleanup...");
+                Log.Debug($"Closed {__instance.GetType()} menu, performing cleanup...");
                 Cleanup(__instance);
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"An error occurred in exit this menu patch:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in exit this menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 

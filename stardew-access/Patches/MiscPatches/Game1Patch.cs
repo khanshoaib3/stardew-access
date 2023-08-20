@@ -28,12 +28,12 @@ namespace stardew_access.Patches
         {
             try
             {
-                MainClass.DebugLog($"Closing {Game1.activeClickableMenu.GetType()} menu, performing cleanup...");
+                Log.Debug($"Closing {Game1.activeClickableMenu.GetType()} menu, performing cleanup...");
                 IClickableMenuPatch.Cleanup(Game1.activeClickableMenu);
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"An error occurred in exit active menu patch:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in exit active menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -57,7 +57,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"An error occurred in play sound patch:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in play sound patch:\n{e.Message}\n{e.StackTrace}");
             }
 
             return true;

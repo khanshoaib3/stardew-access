@@ -398,7 +398,7 @@ event_tile-feast_of_the_winter_star_shop-name = Feast of the Winter Star Shop
 # Copied from default.json (needs to be organised)
 
 grandpastory-scene0 = Grandpa, on his deathbed.
-grandpastory-scene4 = Employees working in JoJa corp.
+grandpastory-scene4 = Employees working in Joja corp.
 grandpastory-scene5 = Employees in their cubicles, some of them look exhausted including yourself.
 grandpastory-scene6 = You reach your desk finding grandpa's letter.
 grandpastory-letteropen = Left click to open grandpa's letter
@@ -436,20 +436,8 @@ common-ui-equipment_slots = {$slot_name ->
 # TODO add this to more places
 common-util-pluralize_name = 
   {$name ->
-    [Quartz] {$item_count ->
-      [1] Quartz
-      *[other] {$item_count} Quartz
-    }
-    [Topaz] {$item_count ->
-      [1] Topaz
-      *[other] {$item_count} Topazes
-    }
-    [Strawberry] {$item_count ->
-      [1] Strawberry
-      *[other] {$item_count} Strawberries
-    }
     *[other] {$item_count ->
-      [1] {$name}
-      *[other] {$item_count} {$name}s
+      [1] {$item_count} {PLURALIZE($item_count, $name)}
+      *[other] {$item_count} {PLURALIZE($item_count, $name)}
     }
   }

@@ -25,12 +25,12 @@ namespace stardew_access.Utils
         /// <summary>
         /// A nullable JsonElement containing static tile data.
         /// </summary>
-        private static JsonElement? staticTilesData;
+        private static JsonElement staticTilesData = default;
 
         /// <summary>
         /// A nullable JsonElement containing custom tile data.
         /// </summary>
-        private static JsonElement? customTilesData;
+        private static JsonElement customTilesData = default;
 
         /// <summary>
         /// A dictionary that maps location names to tile data dictionaries for static tiles.
@@ -97,7 +97,7 @@ namespace stardew_access.Utils
                 {
                     // Branch for mod locations
                     // Log an error message and return false, as mod locations are not yet supported for the Farm conditional
-                    MainClass.ErrorLog("Mod locations are not yet supported for the Farm conditional.");
+                    Log.Error("Mod locations are not yet supported for the Farm conditional.");
                     return false;
                 }
             },
@@ -125,8 +125,17 @@ namespace stardew_access.Utils
         {
             if (MainClass.ModHelper is null) return;
 
-            staticTilesData = LoadJsonFile(StaticTilesFileName);
-            customTilesData = LoadJsonFile(CustomTilesFileName);
+            bool loaded = TryLoadJsonFile(StaticTilesFileName, out staticTilesData);
+            if (!loaded)
+            {
+                Log.Error($"Unable to load {StaticTilesFileName}.");
+            }
+            bool loaded_user = TryLoadJsonFile(CustomTilesFileName, out customTilesData);
+            if (!loaded_user)
+            {
+                Log.Warn($"Unable to load {CustomTilesFileName}.");
+            }
+
         }
 
         /// <summary>
@@ -153,7 +162,7 @@ namespace stardew_access.Utils
             // Check if the conditionName already exists in the dictionary
             if (conditionals.ContainsKey(conditionName))
             {
-                MainClass.ErrorLog($"A conditional with the name '{conditionName}' already exists.");
+                Log.Error($"A conditional with the name '{conditionName}' already exists.");
                 return false;
             }
 
@@ -181,7 +190,7 @@ namespace stardew_access.Utils
                 // Error handling: Check if "x" and "y" properties exist in the JSON object
                 if (!item.Value.TryGetProperty("x", out var xElement) || !item.Value.TryGetProperty("y", out var yElement))
                 {
-                    MainClass.ErrorLog($"Missing x or y property for {name}");
+                    Log.Error($"Missing x or y property for {name}");
                     continue;
                 }
 
@@ -191,7 +200,7 @@ namespace stardew_access.Utils
                 // Error handling: Ensure that x and y arrays are not empty
                 if (xValues.Length == 0 || yValues.Length == 0)
                 {
-                    MainClass.ErrorLog($"Empty x or y array for {name}");
+                    Log.Error($"Empty x or y array for {name}");
                     continue;
                 }
 
@@ -303,7 +312,7 @@ namespace stardew_access.Utils
             {
                 if (property.Value.ValueKind != JsonValueKind.Object)
                 {
-                    MainClass.ErrorLog($"Invalid value type for {property.Name}");
+                    Log.Error($"Invalid value type for {property.Name}");
                     continue;
                 }
 
@@ -341,7 +350,7 @@ namespace stardew_access.Utils
                         }
                         else
                         {
-                            MainClass.ErrorLog($"Unknown conditional name: {conditionalName}");
+                            Log.Error($"Unknown conditional name: {conditionalName}");
                             continue;
                         }
                     }
@@ -355,7 +364,7 @@ namespace stardew_access.Utils
                 }
                 else
                 {
-                    MainClass.ErrorLog($"Unknown location category for {propertyName}");
+                    Log.Error($"Unknown location category for {propertyName}");
                 }
             }
 
@@ -434,18 +443,18 @@ namespace stardew_access.Utils
         /// </summary>
         public static void SetupTilesDicts()
         {
-            if (staticTilesData.HasValue && staticTilesData.Value.ValueKind != JsonValueKind.Undefined)
+            if (staticTilesData.ValueKind != JsonValueKind.Undefined)
             {
-                staticTilesDataDict = BuildTilesDict(staticTilesData.Value);
+                staticTilesDataDict = BuildTilesDict(staticTilesData);
             }
             else
             {
                 staticTilesDataDict = new Dictionary<string, Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)>>();
             }
             
-            if (customTilesData.HasValue && customTilesData.Value.ValueKind != JsonValueKind.Undefined)
+            if (customTilesData.ValueKind != JsonValueKind.Undefined)
             {
-                customTilesDataDict = BuildTilesDict(customTilesData.Value);
+                customTilesDataDict = BuildTilesDict(customTilesData);
             }
             else
             {

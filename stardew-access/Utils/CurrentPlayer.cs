@@ -1,4 +1,4 @@
-﻿using StardewValley;
+using StardewValley;
 using Microsoft.Xna.Framework;
 
 namespace stardew_access.Utils

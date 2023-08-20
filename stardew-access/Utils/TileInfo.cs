@@ -169,7 +169,7 @@ namespace stardew_access.Utils
                 }
                 catch (Exception e)
                 {
-                    MainClass.ErrorLog($"An error occurred while detecting dropped items:\n{e.Message}");
+                    Log.Error($"An error occurred while detecting dropped items:\n{e.Message}");
                 }
             }
 
@@ -604,7 +604,7 @@ namespace stardew_access.Utils
             // Check the object type and assign the appropriate name and category
             if (obj is Chest chest)
             {
-                DiscreteColorPicker dummyColorPicker = new DiscreteColorPicker(0, 0);
+                DiscreteColorPicker dummyColorPicker = new(0, 0);
                 int colorIndex = dummyColorPicker.getSelectionFromColor(chest.playerChoiceColor.Get());
                 string chestColor = colorIndex == 0 ? "" : Translator.Instance.Translate("menu-item_grab-chest_colors", new {index = colorIndex});
                 toReturn = ($"{chestColor} {chest.DisplayName}", CATEGORY.Containers);

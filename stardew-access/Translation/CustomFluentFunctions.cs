@@ -1,12 +1,17 @@
 using Shockah.ProjectFluent;
+using stardew_access.Utils;
 using StardewModdingAPI;
-
-namespace stardew_access
+using System;
+using System.Reflection;
+using System.Text;
+namespace stardew_access.Translation
 {
     internal class CustomFluentFunctions
     {
         private IManifest ModManifest { get; set; }
         private IFluentApi FluentApi { get; set; }
+        private static readonly Dictionary<string, Type> languageHelpers = new();
+        private static ILanguageHelper? currentLanguageHelper = null;
 
         internal CustomFluentFunctions(IManifest ModManifest, IFluentApi FluentApi)
         {
@@ -18,6 +23,7 @@ namespace stardew_access
         {
             yield return (ModManifest, "EMPTYSTRING", EmptyString);
             yield return (ModManifest, "SIGNOFNUMBER", SignOfNumber);
+            yield return (ModManifest, "PLURALIZE", Pluralize);
         }
 
         /// <summary>
@@ -82,6 +88,87 @@ namespace stardew_access
             }
 
             return FluentApi.CreateStringValue("unknown");
+        }
+
+        internal static void RegisterLanguageHelper(string locale, Type helperType)
+        {
+            var implementsInterface = typeof(ILanguageHelper).IsAssignableFrom(helperType);
+            var inheritsFromBase = MiscUtils.InheritsFrom(helperType, typeof(LanguageHelperBase));
+            Log.Verbose($"Registered language helper for locale '{locale}': Type: {helperType.Name}, Implements ILanguageHelper: {implementsInterface}, Inherits from LanguageHelperBase: {inheritsFromBase}");
+            if (!implementsInterface)
+            {
+                throw new ArgumentException("Provided type does not implement ILanguageHelper.");
+            }
+            languageHelpers[locale] = helperType;
+        }
+
+        internal void LoadLanguageHelper()
+        {
+            var currentLocale = FluentApi.CurrentLocale;
+            var defaultLocale = FluentApi.DefaultLocale;
+            Log.Debug($"CurrentLocale is {currentLocale}; DefaultLocale is {defaultLocale}.");
+
+            // Local function to load a helper for a locale
+            static bool     TryLoadHelperForLocale(string? locale)
+            {
+                // This should never happen
+                if (locale is null) throw new ArgumentNullException(nameof(locale), "Locale cannot be null.");
+                // Attempt to load locale-specific helper (e.g., "en-us")
+                if (languageHelpers.TryGetValue(locale, out Type? helperType) && helperType != null)
+                {
+                    currentLanguageHelper = (ILanguageHelper?)Activator.CreateInstance(helperType);
+                    #if DEBUG
+                    Log.Verbose($"Loaded LanguageHelper for {locale}");
+                    #endif
+                    return true;
+                }
+
+                // Attempt to load general helper (e.g., "en") if specific one wasn't found
+                string generalLocale = locale.Split('-')[0];
+                if (generalLocale != locale && languageHelpers.TryGetValue(generalLocale, out helperType))
+                {
+                    currentLanguageHelper = (ILanguageHelper?)Activator.CreateInstance(helperType);
+                    #if DEBUG
+                    Log.Verbose($"Loaded LanguageHelper for {generalLocale}");
+                    #endif
+                    return true;
+                }
+
+                #if DEBUG
+                Log.Verbose($"Failed to loada helper for {locale} or {generalLocale}");
+                #endif
+                return false;
+            }
+
+            // Try to load helper for current locale
+            if (TryLoadHelperForLocale(currentLocale.ToString()))
+            {
+                return;
+            }
+
+            // If that fails, try to load helper for default locale
+            if (defaultLocale is not null && TryLoadHelperForLocale(defaultLocale.ToString()))
+            {
+                return;
+            }
+
+            throw new NotSupportedException($"No language helper registered for either the current locale ({currentLocale}) or the default locale ({defaultLocale}).");
+        }
+
+        public virtual IFluentFunctionValue Pluralize(
+            IGameLocale locale,
+            IManifest mod,
+            IReadOnlyList<IFluentFunctionValue> positionalArguments,
+            IReadOnlyDictionary<string, IFluentFunctionValue> namedArguments
+        )
+        {
+            if (currentLanguageHelper == null)
+            {
+                throw new InvalidOperationException("Language helper not loaded. Ensure LoadLanguageHelper is called before invoking pluralization.");
+            }
+            
+            if (positionalArguments[1].AsString() == "FluentErrType") return FluentApi.CreateStringValue("");
+            return currentLanguageHelper.Pluralize(locale, mod, positionalArguments, namedArguments);
         }
     }
 }

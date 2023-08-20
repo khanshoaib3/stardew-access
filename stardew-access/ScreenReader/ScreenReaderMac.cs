@@ -27,7 +27,9 @@ namespace stardew_access.ScreenReader
         //
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern void init_speaker();
+        #pragma warning disable CA2101 // Specify marshaling for P/Invoke string arguments
         [DllImport("libspeak", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        #pragma warning restore CA2101 // Specify marshaling for P/Invoke string arguments
         private static extern void speak(String text);
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern void set_voice(Int32 index);
@@ -37,7 +39,9 @@ namespace stardew_access.ScreenReader
         private static extern void set_language(Int32 index);
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern UInt32 available_languages_count();
+        #pragma warning disable CA2101 // Specify marshaling for P/Invoke string arguments
         [DllImport("libspeak",  CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        #pragma warning restore CA2101 // Specify marshaling for P/Invoke string arguments
         private static extern void get_voice_name(UInt32 idx, String pszOut);
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern void set_volume(Single volume);
@@ -101,7 +105,9 @@ namespace stardew_access.ScreenReader
         private static extern void start_listening(IntPtr listener);
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern void stop_listening(IntPtr listener);
+        #pragma warning disable CA2101 // Specify marshaling for P/Invoke string arguments
         [DllImport("libspeak", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        #pragma warning restore CA2101 // Specify marshaling for P/Invoke string arguments
         private static extern void add_command(IntPtr listener, String command);
         [DllImport("libspeak", CallingConvention = CallingConvention.Cdecl)]
         private static extern void cleanup_listener(IntPtr listener);
@@ -141,7 +147,7 @@ namespace stardew_access.ScreenReader
                 resolvedDll = true;
             }
 
-            MainClass.InfoLog("Initializing screen reader");
+            Log.Info("Initializing screen reader");
             speaker = make_speaker();
             rt = new Thread(new ParameterizedThreadStart(SpeakLoop));
             rt.Start(cts.Token);
@@ -163,9 +169,7 @@ namespace stardew_access.ScreenReader
             if (string.IsNullOrWhiteSpace(text)) return false;
             if (!MainClass.Config.TTS) return false;
 
-            #if DEBUG
-            MainClass.DebugLog($"Speaking(interrupt: {interrupt}) = {text}");
-            #endif
+            Log.Verbose($"Speaking(interrupt: {interrupt}) = {text}");
 
             if (interrupt)
             {

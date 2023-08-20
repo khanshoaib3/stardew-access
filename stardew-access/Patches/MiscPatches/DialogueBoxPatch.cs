@@ -35,7 +35,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"An error occurred in dialogue box patch:\n{e.StackTrace}\n{e.Message}");
+                Log.Error($"An error occurred in dialogue box patch:\n{e.StackTrace}\n{e.Message}");
             }
         }
 
