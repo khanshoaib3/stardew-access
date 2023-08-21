@@ -40,6 +40,7 @@ namespace stardew_access.Patches
                 new TrashBearPatch(),
                 // Other Menu Patches
                 new AnimalQueryMenuPatch(),
+                new CarpenterMenuPatch(),
                 // Quest Patches
                 new BillboardPatch(),
             };

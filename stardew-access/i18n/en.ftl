@@ -212,7 +212,10 @@ menu-dialogue_box-npc_dialogue_format = {$is_appearing_first_time ->
     *[1] {$npc_name} said,
   } {$dialogue}
 
-## Animal Query Menu (TODO organise this!)
+## Other Menu Patches
+
+### Animal Query Menu
+
 menu-animal_query-animal_info =
   {$name}, {$is_baby ->
     [0] {$type}
@@ -237,6 +240,22 @@ menu-animal_query-allow_reproduction_button =
     [0] Disabled
     *[1] Enabled
   } allow pregnancy button
+
+### Carpenter Menu
+
+menu-carpenter-blueprint_info = {$name}, Price: {$price}g, Ingredients: {$ingredients_list}, Dimensions: {$width} width and {$height} height, Description: {$description}
+menu-carpenter-previous_blueprint_button = Previous blueprint
+menu-carpenter-next_blueprint_button = Next blueprint
+menu-carpenter-move_building_button = Move building
+menu-carpenter-paint_building_button = Paint building
+menu-carpenter-demolish_building_button = Demolish building{$can_demolish ->
+    [0] , cannot demolish building
+    *[1] {EMPTYSTRING()}
+  }
+menu-carpenter-construct_building_button = Construct building{$can_construct ->
+    [0] , cannot construct building
+    *[1] {EMPTYSTRING()}
+  }
 
 ## Inventory Menu
 
@@ -312,7 +331,7 @@ tile-mine_shaft-name = Shaft
 tile-mine_elevator-name = Elevator
 tile-town_festival_exit-name = Exit Festival
 
-#---------------------------------#
+# ---------------------------------
 
 # Items
 
@@ -434,10 +453,7 @@ common-ui-equipment_slots = {$slot_name ->
 
 # The $name will be in the respective language i.e., it will be in french for french translation and so on. So use the language specific name in the square brackets except for the one with '*', that can have any value. Variants with '*' are marked as default.
 # TODO add this to more places
-common-util-pluralize_name = 
-  {$name ->
-    *[other] {$item_count ->
-      [1] {$item_count} {PLURALIZE($item_count, $name)}
+common-util-pluralize_name = {$item_count ->
+      [1] 1 {$name}
       *[other] {$item_count} {PLURALIZE($item_count, $name)}
     }
-  }

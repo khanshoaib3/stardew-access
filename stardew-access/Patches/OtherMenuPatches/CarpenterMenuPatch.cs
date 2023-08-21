@@ -1,15 +1,26 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Translation;
+using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class CarpenterMenuPatch
+    internal class CarpenterMenuPatch : IPatch
     {
         internal static CarpenterMenu? carpenterMenu = null;
-        internal static string carpenterMenuQuery = "";
         internal static bool isSayingBlueprintInfo = false;
         internal static string prevBlueprintInfo = "";
         internal static bool isOnFarm = false, isUpgrading = false, isDemolishing = false, isPainting = false, isConstructing = false, isMoving = false, isMagicalConstruction = false;
+
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(CarpenterMenu), nameof(CarpenterMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                    prefix: new HarmonyMethod(typeof(CarpenterMenuPatch), nameof(CarpenterMenuPatch.DrawPatch))
+            );
+        }
 
         internal static void DrawPatch(
             CarpenterMenu __instance, bool ___onFarm, List<Item> ___ingredients, int ___price,
@@ -74,39 +85,22 @@ namespace stardew_access.Patches
         private static string GetCurrentBlueprintInfo(BluePrint currentBlueprint, int ___price, List<Item> ___ingredients)
         {
             string ingredients = "";
-            string name = currentBlueprint.displayName;
-            string upgradeName = currentBlueprint.nameOfBuildingToUpgrade;
-            string description = currentBlueprint.description;
-            string price = $"{___price}g";
-            int width = currentBlueprint.tilesWidth;
-            int height = currentBlueprint.tilesHeight;
+            List<string> ingredientsList = new List<string>();
+            ___ingredients.ForEach(ingredient => ingredientsList.Add($"{InventoryUtils.GetPluralNameOfItem(ingredient)} {InventoryUtils.GetQualityFromItem(ingredient)}"));
+            ingredients = string.Join(", ", ingredientsList);
 
-            #region Get ingredients
-            for (int i = 0; i < ___ingredients.Count; i++)
+            string translationKey = "menu-carpenter-blueprint_info";
+            object? translationTokens = new
             {
-                string itemName = ___ingredients[i].DisplayName;
-                int itemStack = ___ingredients[i].Stack;
-                string itemQuality = "";
+                name = currentBlueprint.displayName,
+                price = ___price,
+                ingredients_list = ingredients,
+                width = currentBlueprint.tilesWidth,
+                height = currentBlueprint.tilesHeight,
+                description = currentBlueprint.description,
+            };
 
-                int qualityValue = ((StardewValley.Object)___ingredients[i]).Quality;
-                if (qualityValue == 1)
-                {
-                    itemQuality = "Silver quality";
-                }
-                else if (qualityValue == 2 || qualityValue == 3)
-                {
-                    itemQuality = "Gold quality";
-                }
-                else if (qualityValue >= 4)
-                {
-                    itemQuality = "Iridium quality";
-                }
-
-                ingredients = $"{ingredients}, {itemStack} {itemName} {itemQuality}";
-            }
-            #endregion
-
-            return $"{name}, Price: {price}, Ingredients: {ingredients}, Dimensions: {width} width and {height} height, Description: {description}";
+            return Translator.Instance.Translate(translationKey, translationTokens);
         }
 
         private static async void SpeakAndWait(string toSpeak)
@@ -119,56 +113,58 @@ namespace stardew_access.Patches
 
         private static void NarrateHoveredButton(CarpenterMenu __instance, List<BluePrint> ___blueprints, int ___currentBlueprintIndex, int x, int y)
         {
-            string toSpeak = "";
+            string translationKey = "";
+            object? translationTokens = null;
+
             if (__instance.backButton != null && __instance.backButton.containsPoint(x, y))
             {
-                toSpeak = "Previous Blueprint";
+                translationKey = "menu-carpenter-previous_blueprint_button";
             }
             else if (__instance.forwardButton != null && __instance.forwardButton.containsPoint(x, y))
             {
-                toSpeak = "Next Blueprint";
+                translationKey = "menu-carpenter-next_blueprint_button";
             }
             else if (__instance.demolishButton != null && __instance.demolishButton.containsPoint(x, y))
             {
-                toSpeak = $"Demolish Building" + (__instance.CanDemolishThis(___blueprints[___currentBlueprintIndex]) ? "" : ", cannot demolish building");
+                translationKey = "menu-carpenter-demolish_building_button";
+                translationTokens = new { can_demolish = __instance.CanDemolishThis(___blueprints[___currentBlueprintIndex]) ? 1 : 0 };
             }
             else if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
             {
-                toSpeak = "Construct Building" + (___blueprints[___currentBlueprintIndex].doesFarmerHaveEnoughResourcesToBuild() ? "" : ", cannot cunstrut building, not enough resources to build.");
+                translationKey = "menu-carpenter-construct_building_button";
+                translationTokens = new { can_construct = ___blueprints[___currentBlueprintIndex].doesFarmerHaveEnoughResourcesToBuild() ? 1 : 0 };
             }
             else if (__instance.moveButton != null && __instance.moveButton.containsPoint(x, y))
             {
-                toSpeak = "Move Building";
+                translationKey = "menu-carpenter-move_building_button";
             }
             else if (__instance.paintButton != null && __instance.paintButton.containsPoint(x, y))
             {
-                toSpeak = "Paint Building";
+                translationKey = "menu-carpenter-paint_building_button";
             }
             else if (__instance.cancelButton != null && __instance.cancelButton.containsPoint(x, y))
             {
-                toSpeak = "Cancel Button";
+                translationKey = "common-ui-cancel_button";
             }
             else
             {
                 return;
             }
 
-            if (carpenterMenuQuery != toSpeak)
-            {
-                carpenterMenuQuery = toSpeak;
-                MainClass.ScreenReader.Say(toSpeak, true);
-            }
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens);
         }
 
         internal static void Cleanup()
         {
-            CarpenterMenuPatch.carpenterMenuQuery = "";
-            CarpenterMenuPatch.isUpgrading = false;
-            CarpenterMenuPatch.isDemolishing = false;
-            CarpenterMenuPatch.isPainting = false;
-            CarpenterMenuPatch.isMoving = false;
-            CarpenterMenuPatch.isConstructing = false;
-            CarpenterMenuPatch.carpenterMenu = null;
+            carpenterMenu = null;
+            isSayingBlueprintInfo = false;
+            prevBlueprintInfo = "";
+            isUpgrading = false;
+            isDemolishing = false;
+            isPainting = false;
+            isMoving = false;
+            isConstructing = false;
+            carpenterMenu = null;
         }
     }
 }

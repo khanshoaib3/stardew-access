@@ -103,27 +103,7 @@ namespace stardew_access.Utils
         {
             string namePrefix = HandleHighlightedItemPrefix(isHighlighted, highlightedItemPrefix);
             string nameSuffix = $"{HandleHighlightedItemSuffix(isHighlighted, highlightedItemSuffix)}{HandleUnHighlightedItem(isHighlighted, indexInInventory)}";
-            int stack = item.Stack;
-            string name = item.DisplayName;
-            if (stack == prevStack && name == prevName)
-            {
-                #if DEBUG
-                Log.Trace($"Returning cached translation \"{prevTranslatedName}\" for stack \"{stack}\" and name \"{name}\"", true);
-                #endif
-                name = prevTranslatedName;
-            } else {
-                prevStack = stack;
-                prevName = name;
-                name = Translator.Instance.Translate("common-util-pluralize_name", new Dictionary<string, object>
-                {
-                    {"item_count", stack},
-                    {"name", name}
-                });
-                prevTranslatedName = name;
-                #if DEBUG
-                Log.Verbose("Updated inventory translation cache");
-                #endif
-            }
+            string name = GetPluralNameOfItem(item);
             name = $"{namePrefix}{name}{nameSuffix}";
             string quality = GetQualityFromItem(item);
             string healthNStamina = GetHealthNStaminaFromItem(item);
@@ -149,6 +129,33 @@ namespace stardew_access.Utils
                 toReturn = $"{toReturn}, {details}";
 
             return toReturn;
+        }
+
+        internal static String GetPluralNameOfItem(Item item)
+        {
+            int stack = item.Stack;
+            string name = item.DisplayName;
+            if (stack == prevStack && name == prevName)
+            {
+                #if DEBUG
+                Log.Trace($"Returning cached translation \"{prevTranslatedName}\" for stack \"{stack}\" and name \"{name}\"", true);
+                #endif
+                name = prevTranslatedName;
+            } else {
+                prevStack = stack;
+                prevName = name;
+                name = Translator.Instance.Translate("common-util-pluralize_name", new Dictionary<string, object>
+                {
+                    {"item_count", stack},
+                    {"name", name}
+                });
+                prevTranslatedName = name;
+                #if DEBUG
+                Log.Verbose("Updated inventory translation cache");
+                #endif
+            }
+
+            return name;
         }
         
         internal static String GetQualityFromItem(Item item)
