@@ -459,7 +459,5 @@ common-ui-equipment_slots = {$slot_name ->
 
 # The $name will be in the respective language i.e., it will be in french for french translation and so on. So use the language specific name in the square brackets except for the one with '*', that can have any value. Variants with '*' are marked as default.
 # TODO add this to more places
-common-util-pluralize_name = {$item_count ->
-      [1] 1 {$name}
-      *[other] {$item_count} {PLURALIZE($item_count, $name)}
-    }
+common-util-pluralize_name = {$item_count} {PLURALIZE($item_count, $name)}
+
