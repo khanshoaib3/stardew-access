@@ -263,6 +263,16 @@ menu-choose_from_list-ok_button = Select {$option} button
 menu-choose_from_list-previous_button = Previous option: {$option} button
 menu-choose_from_list-next_button = Next option: {$option} button
 
+### Confirmation Dialogue Menu
+
+# TODO try this
+# menu-confirmation_dialogue-ok_button = {$dialogue_message}
+#   {I18N("common-ui-ok_button", mod:"shoaib.stardewaccess")}
+menu-confirmation_dialogue-ok_button = {$dialogue_message}
+  Ok button
+menu-confirmation_dialogue-cancel_button = {$dialogue_message}
+  Cancel button
+
 ## Inventory Menu
 
 menu-inventory-empty_slot-name = Empty Slot
