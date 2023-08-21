@@ -257,6 +257,12 @@ menu-carpenter-construct_building_button = Construct building{$can_construct ->
     *[1] {EMPTYSTRING()}
   }
 
+### Choose From List Menu
+
+menu-choose_from_list-ok_button = Select {$option} button
+menu-choose_from_list-previous_button = Previous option: {$option} button
+menu-choose_from_list-next_button = Next option: {$option} button
+
 ## Inventory Menu
 
 menu-inventory-empty_slot-name = Empty Slot
