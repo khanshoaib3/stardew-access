@@ -169,7 +169,9 @@ namespace stardew_access.ScreenReader
             if (string.IsNullOrWhiteSpace(text)) return false;
             if (!MainClass.Config.TTS) return false;
 
+            #if DEBUG
             Log.Verbose($"Speaking(interrupt: {interrupt}) = {text}");
+            #endif
 
             if (interrupt)
             {

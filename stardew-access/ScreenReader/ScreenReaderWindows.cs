@@ -57,7 +57,9 @@ namespace stardew_access.ScreenReader
             }
             else
             {
+                #if DEBUG
                 Log.Verbose($"Speaking(interrupt: {interrupt}) = {text}");
+                #endif
                 return true;
             }
         }

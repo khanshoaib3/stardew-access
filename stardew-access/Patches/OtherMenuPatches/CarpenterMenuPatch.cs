@@ -78,7 +78,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in carpenter menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
