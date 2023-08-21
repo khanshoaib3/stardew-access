@@ -210,6 +210,12 @@ namespace stardew_access.Utils
                 // Obtain the category instance
                 var category = CATEGORY.FromString(type!);
 
+                // Removes content within square brackets from the name if present at the last.
+                // So, Stool[1], Stool[2], etc. will be replaced to Stool.
+                var trueName = (name.Last().Equals(']') && name.LastIndexOf('[') is not -1)
+                        ? name.Remove(name.LastIndexOf('['))
+                        : name;
+
                 // Iterate over y and x values, adding entries to the locationData dictionary
                 for (int j = 0; j < yValues.Length; j++)
                 {
@@ -217,7 +223,7 @@ namespace stardew_access.Utils
                     for (int i = 0; i < xValues.Length; i++)
                     {
                         var x = xValues[i];
-                        locationData.TryAdd((x, y), (name, category));
+                        locationData.TryAdd((x, y), (trueName, category));
                     }
                 }
             }
@@ -226,7 +232,7 @@ namespace stardew_access.Utils
         }
 
         /// <summary>
-                /// Represents the different categories of locations.
+        /// Represents the different categories of locations.
         /// </summary>
         public enum LocationCategory
         {
@@ -451,7 +457,7 @@ namespace stardew_access.Utils
             {
                 staticTilesDataDict = new Dictionary<string, Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)>>();
             }
-            
+
             if (customTilesData.ValueKind != JsonValueKind.Undefined)
             {
                 customTilesDataDict = BuildTilesDict(customTilesData);
