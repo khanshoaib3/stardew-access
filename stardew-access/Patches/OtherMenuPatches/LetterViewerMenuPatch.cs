@@ -1,3 +1,5 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
@@ -5,11 +7,19 @@ using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class LetterViwerMenuPatch
+    internal class LetterViwerMenuPatch : IPatch
     {
         private static string letterViewerQueryText = "";
 
-        internal static void DrawPatch(LetterViewerMenu __instance)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(LetterViewerMenu), nameof(LetterViewerMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                    postfix: new HarmonyMethod(typeof(LetterViwerMenuPatch), nameof(LetterViwerMenuPatch.DrawPatch))
+            );
+        }
+
+        private static void DrawPatch(LetterViewerMenu __instance)
         {
             try
             {

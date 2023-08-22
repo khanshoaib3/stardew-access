@@ -299,6 +299,13 @@ menu-letter_viewer-pagination_text-prefix = Page {$current_page} of {$total_page
   {$content}
 menu-letter_viewer-grabbable_item_text = Left click to collect {$name}
 
+### Level Up Menu
+
+menu-level_up-profession_chooser_heading = {$title}. Select a new profession.
+menu-level_up-profession_chooser_button = Selected: {$profession_description_list}
+  Left click to choose.
+menu-level_up-ok_button = {$title}, {$extra_info}, Learned recipes: {$learned_recipes}, Left click to close.
+
 ## Inventory Menu
 
 menu-inventory-empty_slot-name = Empty Slot
@@ -407,6 +414,10 @@ item-dropped_item-info = Dropped Item: {$item_count ->
     [1] 1 {$item_name}
     *[other] {$item_count} {$item_name}s
   }
+item-crafting_recipe_info = {$name} {$is_cooking_recipe ->
+    [0] (crafting)
+    *[1] (cooking)
+  } {$description}
 
 building_name-shipping_bin = Shipping Bin
 building-parrot_perch-required_nuts = Parrots require {$item_count ->

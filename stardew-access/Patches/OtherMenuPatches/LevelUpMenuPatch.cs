@@ -1,109 +1,131 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class LevelUpMenuPatch
+    internal class LevelUpMenuPatch : IPatch
     {
-        private static string currentLevelUpTitle = "";
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(LevelUpMenu), nameof(LevelUpMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(LevelUpMenuPatch), nameof(LevelUpMenuPatch.DrawPatch))
+            );
+        }
 
-        internal static void DrawPatch(LevelUpMenu __instance, List<int> ___professionsToChoose, List<string> ___leftProfessionDescription, List<string> ___rightProfessionDescription, List<string> ___extraInfoForLevel, List<CraftingRecipe> ___newCraftingRecipes, string ___title, bool ___isActive, bool ___isProfessionChooser)
+        private static void DrawPatch(LevelUpMenu __instance, List<int> ___professionsToChoose,
+                                       List<string> ___leftProfessionDescription,
+                                       List<string> ___rightProfessionDescription, List<string> ___extraInfoForLevel,
+                                       List<CraftingRecipe> ___newCraftingRecipes, string ___title, ref bool ___isActive,
+                                       ref bool ___isProfessionChooser)
         {
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
-                string leftProfession = "", rightProfession = "", extraInfo = "", newCraftingRecipe = "", toSpeak = "";
 
                 if (!__instance.informationUp)
                     return;
-                
-                if (__instance.isProfessionChooser)
-                {
-                    if (___professionsToChoose.Count == 0) return;
-                    
-                    for (int j = 0; j < ___leftProfessionDescription.Count; j++)
-                    {
-                        leftProfession += ___leftProfessionDescription[j] + ", ";
-                    }
-                    for (int i = 0; i < ___rightProfessionDescription.Count; i++)
-                    {
-                        rightProfession += ___rightProfessionDescription[i] + ", ";
-                    }
 
-                    if (__instance.leftProfession.containsPoint(x, y))
-                    {
-                        if ((MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed()) && __instance.readyToClose())
-                        {
-                            Game1.player.professions.Add(___professionsToChoose[0]);
-                            __instance.getImmediateProfessionPerk(___professionsToChoose[0]);
-                            ___isActive = false;
-                            __instance.informationUp = false;
-                            ___isProfessionChooser = false;
-                            __instance.RemoveLevelFromLevelList();
-                            __instance.exitThisMenu();
-                            return;
-                        }
-
-                        toSpeak = $"Selected: {leftProfession} Left click to choose.";
-                    }
-
-                    if (__instance.rightProfession.containsPoint(x, y))
-                    {
-                        if ((MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed()) && __instance.readyToClose())
-                        {
-                            Game1.player.professions.Add(___professionsToChoose[1]);
-                            __instance.getImmediateProfessionPerk(___professionsToChoose[1]);
-                            ___isActive = false;
-                            __instance.informationUp = false;
-                            ___isProfessionChooser = false;
-                            __instance.RemoveLevelFromLevelList();
-                            __instance.exitThisMenu();
-                            return;
-                        }
-
-                        toSpeak = $"Selected: {rightProfession} Left click to choose.";
-                    }
-                }
-                else
-                {
-                    foreach (string s2 in ___extraInfoForLevel)
-                    {
-                        extraInfo += s2 + ", ";
-                    }
-                    foreach (CraftingRecipe s in ___newCraftingRecipes)
-                    {
-                        string cookingOrCrafting = Game1.content.LoadString("Strings\\UI:LearnedRecipe_" + (s.isCookingRecipe ? "cooking" : "crafting"));
-                        string message = Game1.content.LoadString("Strings\\UI:LevelUp_NewRecipe", cookingOrCrafting, s.DisplayName);
-
-                        newCraftingRecipe += $"{message}, ";
-                    }
-                }
-
-                if (__instance.okButton.containsPoint(x, y))
-                {
-                    if (MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed())
-                        __instance.okButtonClicked();
-
-                    toSpeak = $"{___title} {extraInfo} {newCraftingRecipe}. Left click to close.";
-                }
-
-                if (toSpeak != "")
-                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
-                else if (__instance.isProfessionChooser && currentLevelUpTitle != $"{___title}. Select a new profession.")
-                {
-                    MainClass.ScreenReader.SayWithMenuChecker($"{___title}. Select a new profession.", true);
-                    currentLevelUpTitle = $"{___title}. Select a new profession.";
-                }
+                NarrateProfessionChooser(__instance, ___professionsToChoose, ___leftProfessionDescription,
+                                         ___rightProfessionDescription, ___title, ref ___isActive,
+                                         ref ___isProfessionChooser, x, y);
+                NarrateLevelUpInfo(__instance, ___extraInfoForLevel, ___newCraftingRecipes, ___title, x, y);
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in level up menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
-        internal static void Cleanup()
+        private static void NarrateProfessionChooser(LevelUpMenu __instance, List<int> ___professionsToChoose,
+                                                     List<string> ___leftProfessionDescription,
+                                                     List<string> ___rightProfessionDescription, string ___title,
+                                                     ref bool ___isActive, ref bool ___isProfessionChooser, int x, int y)
         {
-            currentLevelUpTitle = "";
+            if (!__instance.isProfessionChooser) return;
+            if (___professionsToChoose.Count == 0) return;
+
+            string translationKey = "";
+            object? translationTokens = null;
+
+            if (__instance.leftProfession.containsPoint(x, y))
+            {
+                if ((MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed()) && __instance.readyToClose())
+                {
+                    Game1.player.professions.Add(___professionsToChoose[0]);
+                    __instance.getImmediateProfessionPerk(___professionsToChoose[0]);
+                    ___isActive = false;
+                    __instance.informationUp = false;
+                    ___isProfessionChooser = false;
+                    __instance.RemoveLevelFromLevelList();
+                    __instance.exitThisMenu();
+                    return;
+                }
+
+                translationKey = "menu-level_up-profession_chooser_button";
+                translationTokens = new
+                {
+                    profession_description_list = string.Join(", ", ___leftProfessionDescription)
+                };
+            }
+            else if (__instance.rightProfession.containsPoint(x, y))
+            {
+                if ((MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed()) && __instance.readyToClose())
+                {
+                    Game1.player.professions.Add(___professionsToChoose[1]);
+                    __instance.getImmediateProfessionPerk(___professionsToChoose[1]);
+                    ___isActive = false;
+                    __instance.informationUp = false;
+                    ___isProfessionChooser = false;
+                    __instance.RemoveLevelFromLevelList();
+                    __instance.exitThisMenu();
+                    return;
+                }
+
+                translationKey = "menu-level_up-profession_chooser_button";
+                translationTokens = new
+                {
+                    profession_description_list = string.Join(", ", ___rightProfessionDescription)
+                };
+            }
+            else
+            {
+                translationKey = "menu-level_up-profession_chooser_heading";
+                translationTokens = new
+                {
+                    title = ___title
+                };
+            }
+
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens);
+        }
+
+        private static void NarrateLevelUpInfo(LevelUpMenu __instance, List<string> ___extraInfoForLevel,
+                                               List<CraftingRecipe> ___newCraftingRecipes, string ___title, int x, int y)
+        {
+            if (__instance.isProfessionChooser) return;
+            if (!__instance.okButton.containsPoint(x, y)) return;
+
+            if (MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed())
+                __instance.okButtonClicked();
+
+            List<string> recipeInfoList = new();
+            ___newCraftingRecipes.ForEach(recipe => recipeInfoList.Add(InventoryUtils.GetCraftingRecipeInfo(recipe)));
+            string learnedRecipes = string.Join(", ", recipeInfoList);
+
+            string extraInfo = string.Join(", ", ___extraInfoForLevel);
+
+            object translationTokens = new
+            {
+                title = ___title,
+                extra_info = extraInfo,
+                learned_recipes = learnedRecipes
+            };
+
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-level_up-ok_button", true, translationTokens);
         }
     }
 }

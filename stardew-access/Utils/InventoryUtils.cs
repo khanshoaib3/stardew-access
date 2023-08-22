@@ -240,6 +240,20 @@ namespace stardew_access.Utils
                 return Translator.Instance.Translate("item-required_item_info", new {name = itemName});
         }
 
+        internal static String GetCraftingRecipeInfo(CraftingRecipe recipe)
+        {
+            if (recipe is null) return "";
+
+            object translationTokens = new
+            {
+                name = recipe.DisplayName,
+                is_cooking_recipe = recipe.isCookingRecipe ? 1 : 0,
+                description = recipe.description,
+            };
+
+            return Translator.Instance.Translate("item-crafting_recipe_info", translationTokens);
+        }
+
         internal static String GetIngredientsFromRecipe(CraftingRecipe recipe)
         {
             if (recipe is null) return "";

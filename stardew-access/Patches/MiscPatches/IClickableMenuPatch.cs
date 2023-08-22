@@ -156,9 +156,6 @@ namespace stardew_access.Patches
                 case LetterViewerMenu:
                     LetterViwerMenuPatch.Cleanup();
                     break;
-                case LevelUpMenu:
-                    LevelUpMenuPatch.Cleanup();
-                    break;
                 case GameMenu:
                     CraftingPagePatch.Cleanup();
                     break;
