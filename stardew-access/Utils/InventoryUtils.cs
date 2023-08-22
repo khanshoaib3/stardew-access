@@ -255,7 +255,7 @@ namespace stardew_access.Utils
             {
                 name = recipe.DisplayName,
                 is_cooking_recipe = recipe.isCookingRecipe ? 1 : 0,
-                description = recipe.description,
+                recipe.description,
             };
 
             return Translator.Instance.Translate("item-crafting_recipe_info", translationTokens);

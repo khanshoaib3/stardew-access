@@ -48,7 +48,7 @@ namespace stardew_access.Patches
                     day = i + 1,
                     is_current = (Game1.dayOfMonth == i + 1) ? 1 : 0,
                     season = Game1.CurrentSeasonDisplayName,
-                    year = Game1.year,
+                    Game1.year,
                     day_name = string.IsNullOrEmpty(__instance.calendarDays[i].name)
                         ? "null"
                         : __instance.calendarDays[i].name,

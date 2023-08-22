@@ -25,7 +25,7 @@ namespace stardew_access.Utils
         {
             string translationKey;
             string label = optionsElement.label;
-            object? tokens = new { label = label };
+            object? tokens = new { label };
 
             switch (optionsElement)
             {
@@ -36,7 +36,7 @@ namespace stardew_access.Utils
                     translationKey = "options_element-checkbox_info";
                     tokens = new
                     {
-                        label = label,
+                        label,
                         is_checked = checkbox.isChecked ? 1 : 0
                     };
                     break;
@@ -44,7 +44,7 @@ namespace stardew_access.Utils
                     translationKey = "options_element-dropdown_info";
                     tokens = new
                     {
-                        label = label,
+                        label,
                         selected_option = dropdown.dropDownDisplayOptions[dropdown.selectedOption]
                     };
                     break;
@@ -52,7 +52,7 @@ namespace stardew_access.Utils
                     translationKey = "options_element-slider_info";
                     tokens = new
                     {
-                        label = label,
+                        label,
                         slider_value = slider.value
                     };
                     break;
@@ -60,7 +60,7 @@ namespace stardew_access.Utils
                     translationKey = "options_element-plus_minus_button_info";
                     tokens = new
                     {
-                        label = label,
+                        label,
                         selected_option = plusMinus.displayOptions[plusMinus.selected]
                     };
                     break;
@@ -69,7 +69,7 @@ namespace stardew_access.Utils
                     translationKey = "options_element-input_listener_info";
                     tokens = new
                     {
-                        label = label,
+                        label,
                         buttons_list = buttons
                     };
                     break;
@@ -78,7 +78,7 @@ namespace stardew_access.Utils
                     translationKey = "options_element-text_box_info";
                     tokens = new
                     {
-                        label = label,
+                        label,
                         value = string.IsNullOrEmpty(textEntry.textBox.Text) ? "null" : textEntry.textBox.Text,
                     };
                     break;

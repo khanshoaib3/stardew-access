@@ -93,7 +93,7 @@ namespace stardew_access.Patches
             {
                 firstTimeInIndividualQuest = false;
 
-                List<string> objectivesList = new List<string>();
+                List<string> objectivesList = new();
                 for (int j = 0; !____shownQuest.ShouldDisplayAsComplete() && j < ____objectiveText.Count; j++)
                 {
                     string objective_info = ____objectiveText[j];

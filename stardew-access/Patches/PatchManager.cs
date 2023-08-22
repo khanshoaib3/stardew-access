@@ -6,7 +6,7 @@ namespace stardew_access.Patches
     {
         public static void PatchAll(Harmony harmony)
         {
-            List<IPatch> allPatches = new List<IPatch>()
+            List<IPatch> allPatches = new()
             {
                 // Bundle Menu Patches
                 new JojaCDMenuPatch(),
