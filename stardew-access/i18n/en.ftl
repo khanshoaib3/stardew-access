@@ -273,6 +273,13 @@ menu-confirmation_dialogue-ok_button = {$dialogue_message}
 menu-confirmation_dialogue-cancel_button = {$dialogue_message}
   Cancel button
 
+### Item List Menu
+
+menu-item_list-ok_button = {$title}
+  {$item_list}
+  Page {$active_tab} of {$total_tabs}
+  Ok button
+
 ## Inventory Menu
 
 menu-inventory-empty_slot-name = Empty Slot
@@ -454,6 +461,8 @@ common-ui-organize_inventory_button = Organize inventory button
 common-ui-community_center_button = Community center button
 common-ui-scroll_up_button = Scroll up button
 common-ui-scroll_down_button = Scroll down button
+common-ui-next_page_button = Next page button
+common-ui-previous_page_button = Previous page button
 common-ui-equipment_slots = {$slot_name ->
     [hat] Hat
     [left_ring] Left ring

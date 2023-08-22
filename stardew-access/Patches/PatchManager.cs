@@ -43,6 +43,7 @@ namespace stardew_access.Patches
                 new CarpenterMenuPatch(),
                 new ChooseFromListMenuPatch(),
                 new ConfirmationDialogMenuPatch(),
+                new ItemListMenuPatch(),
                 // Quest Patches
                 new BillboardPatch(),
             };

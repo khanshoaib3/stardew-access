@@ -180,9 +180,6 @@ namespace stardew_access.Patches
                 case QuestLog:
                     QuestLogPatch.Cleanup();
                     break;
-                case ItemListMenu:
-                    ItemListMenuPatch.Cleanup();
-                    break;
                 case PondQueryMenu:
                     PondQueryMenuPatch.Cleanup();
                     break;
