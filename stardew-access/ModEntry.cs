@@ -373,6 +373,7 @@ namespace stardew_access
                 if (ModHelper == null)
                     return;
 
+                // TODO unify translation keys
                 string toSpeak = Config.HealthNStaminaInPercentage
                     ? Translator.Instance.Translate(
                         "feature-speak_health_n_stamina-in_percentage_format",
