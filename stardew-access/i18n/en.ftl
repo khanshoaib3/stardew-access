@@ -277,8 +277,27 @@ menu-confirmation_dialogue-cancel_button = {$dialogue_message}
 
 menu-item_list-ok_button = {$title}
   {$item_list}
-  Page {$active_tab} of {$total_tabs}
+  Page {$current_page} of {$total_pages}
   Ok button
+
+### Letter Viewer Menu
+
+menu-letter_viewer-letter_message = {$message_content}{$is_money_included ->
+    [0] {EMPTYSTRING()}
+    *[1] 
+      Got {$received_money}g
+  }{$learned_any_recipe ->
+    [0] {EMPTYSTRING()}
+    *[1] 
+      Learned {$learned_recipe} recipe
+  }{$is_quest ->
+    [0] {EMPTYSTRING()}
+    *[1] 
+      Left click to accept quest
+  }
+menu-letter_viewer-pagination_text-prefix = Page {$current_page} of {$total_pages}
+  {$content}
+menu-letter_viewer-grabbable_item_text = Left click to collect {$name}
 
 ## Inventory Menu
 

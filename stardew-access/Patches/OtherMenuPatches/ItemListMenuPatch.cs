@@ -41,8 +41,8 @@ namespace stardew_access.Patches
                     translationTokens = new
                     {
                         title = ___title,
-                        active_tab = ___currentTab + 1,
-                        total_tabs = ((int)___itemsToList.Count / __instance.itemsPerCategoryPage) + 1,
+                        current_page = ___currentTab + 1,
+                        total_pages = ((int)___itemsToList.Count / __instance.itemsPerCategoryPage) + 1,
                         item_list = string.Join(", ", currentList)
                     };
                 }

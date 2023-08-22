@@ -18,7 +18,7 @@ namespace stardew_access.Patches
 
                 if (___letterView != null)
                 {
-                    LetterViwerMenuPatch.NarrateLetterContent(___letterView);
+                    LetterViwerMenuPatch.NarrateMenu(___letterView);
                 }
 
                 if (MainClass.ModHelper == null)
