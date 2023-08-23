@@ -90,6 +90,7 @@ menu-inventory_page-money_info_key = {$farm_name}, {$current_funds}, {$total_ear
 ### Options Page
 
 menu-options_page-button_info = {$label} button
+menu-options_page-text_box_info = {$label} text box
 menu-options_page-checkbox_info = {$is_checked ->
     [0] Disabled
     *[1] Enabled
@@ -306,9 +307,11 @@ menu-level_up-profession_chooser_button = Selected: {$profession_description_lis
   Left click to choose.
 menu-level_up-ok_button = {$title}, {$extra_info}, Learned recipes: {$learned_recipes}, Left click to close.
 
-### Mine Elevator Menu Patch
+### Naming Menu
 
-menu-elevator-button = {$level_number} level
+menu-naming-done_naming_button = Done naming button
+menu-naming-random_button = Random button
+
 
 ## Number Selection Menu
 

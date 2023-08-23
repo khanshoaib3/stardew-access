@@ -50,11 +50,6 @@ namespace stardew_access
             );
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(NamingMenu), nameof(NamingMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(NamingMenuPatch), nameof(NamingMenuPatch.DrawPatch))
-            );
-
-            harmony.Patch(
                 original: AccessTools.Method(typeof(NumberSelectionMenu), nameof(NumberSelectionMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(NumberSelectionMenuPatch), nameof(NumberSelectionMenuPatch.DrawPatch))
             );
