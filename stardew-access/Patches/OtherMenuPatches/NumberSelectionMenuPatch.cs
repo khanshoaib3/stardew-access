@@ -1,16 +1,26 @@
 using StardewValley;
 using StardewValley.Menus;
 using stardew_access.Translation;
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace stardew_access.Patches
 {
-    internal class NumberSelectionMenuPatch
+    internal class NumberSelectionMenuPatch : IPatch
     {
         private static bool firstTimeInMenu = true;
         private static string previousValueNPriceText = "";
         private static string previousHoveredButton = "";
 
-        internal static void DrawPatch(
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(NumberSelectionMenu), nameof(NumberSelectionMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(NumberSelectionMenuPatch), nameof(NumberSelectionMenuPatch.DrawPatch))
+            );
+        }
+
+        private static void DrawPatch(
             NumberSelectionMenu __instance,
             string ___message,
             int ___currentValue,

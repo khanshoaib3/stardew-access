@@ -313,7 +313,7 @@ menu-naming-done_naming_button = Done naming button
 menu-naming-random_button = Random button
 
 
-## Number Selection Menu
+### Number Selection Menu
 
 menu-number_selection-button-left_button = Decrease value button
 menu-number_selection-button-right_button = Increase value button
