@@ -44,13 +44,13 @@ namespace stardew_access.Patches
                 }
 
                 // Player inventory
-                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory, __instance.inventory.actualInventory, inventoryMenu: __instance.inventory, giveExtraDetails: true))
                 {
                     return;
                 }
 
                 // Other inventory
-                InventoryUtils.NarrateHoveredSlot(__instance.ItemsToGrabMenu, __instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, x, y, true);
+                InventoryUtils.NarrateHoveredSlot(__instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, inventoryMenu: __instance.ItemsToGrabMenu, giveExtraDetails: true);
             }
             catch (Exception e)
             {

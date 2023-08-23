@@ -1,6 +1,7 @@
 using StardewValley;
 using StardewValley.Menus;
 using stardew_access.Translation;
+using System.Diagnostics.CodeAnalysis;
 
 namespace stardew_access.Utils
 {
@@ -23,7 +24,9 @@ namespace stardew_access.Utils
                                                 int extraItemToShowIndex = -1,
                                                 int extraItemToShowAmount = -1,
                                                 string highlightedItemPrefix = "",
-                                                string highlightedItemSuffix = "")
+                                                string highlightedItemSuffix = "",
+                                                int? hoverX = null,
+                                                int? hoverY = null)
         {
             if (NarrateHoveredSlotAndReturnIndex(inventory,
                                                  actualInventory,
@@ -33,7 +36,9 @@ namespace stardew_access.Utils
                                                  extraItemToShowIndex,
                                                  extraItemToShowAmount,
                                                  highlightedItemPrefix,
-                                                 highlightedItemSuffix) == -999)
+                                                 highlightedItemSuffix,
+                                                 hoverX,
+                                                 hoverY) == -999)
             {
                 return false;
             }
@@ -49,10 +54,13 @@ namespace stardew_access.Utils
                                                              int extraItemToShowIndex = -1,
                                                              int extraItemToShowAmount = -1,
                                                              string highlightedItemPrefix = "",
-                                                             string highlightedItemSuffix = "")
+                                                             string highlightedItemSuffix = "",
+                                                             int? hoverX = null,
+                                                             int? hoverY = null)
         {
             giveExtraDetails ??= !MainClass.Config.DisableInventoryVerbosity;
-            int mouseX = Game1.getMouseX(true), mouseY = Game1.getMouseY(true);
+            int mouseX = hoverX ?? Game1.getMouseX(true);
+            int mouseY = hoverY ?? Game1.getMouseY(true);
 
             for (int i = 0; i < inventory.Count; i++)
             {

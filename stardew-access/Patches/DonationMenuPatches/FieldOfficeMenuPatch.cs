@@ -38,7 +38,7 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                    if (InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory, __instance.inventory.actualInventory, __instance.inventory))
                     {
                         return;
                     }

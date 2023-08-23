@@ -103,9 +103,10 @@ namespace stardew_access.Patches
 
             if (NarrateHoveredButtons(__instance, x, y)) return;
 
-            string highlightedItemPrefix = Translator.Instance.Translate("menu-donation_common-donatable_item_in_inventory-prefix", new {content = ""});
-            int hoveredItemIndex = InventoryUtils.NarrateHoveredSlotAndReturnIndex(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory,
-                    x, y, highlightedItemPrefix: highlightedItemPrefix);
+            string highlightedItemPrefix = Translator.Instance.Translate("menu-donation_common-donatable_item_in_inventory-prefix",
+                new { content = "" });
+            int hoveredItemIndex = InventoryUtils.NarrateHoveredSlotAndReturnIndex(__instance.inventory.inventory,
+                __instance.inventory.actualInventory, __instance.inventory, highlightedItemPrefix: highlightedItemPrefix);
             if (hoveredItemIndex != -999)
             {
                 bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed(); // For donating hovered item

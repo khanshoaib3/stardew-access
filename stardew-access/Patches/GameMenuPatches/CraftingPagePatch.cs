@@ -39,7 +39,7 @@ namespace stardew_access.Patches
                     return;
                 }
 
-                InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y);
+                InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory, __instance.inventory.actualInventory, __instance.inventory);
             }
             catch (Exception e)
             {

@@ -227,7 +227,7 @@ namespace stardew_access.Patches
             }
             else
             {
-                toSpeak = $"{ingredient.stack} {InventoryUtils.GetQualityFromIndex(ingredient.quality)} {toSpeak}";
+                toSpeak = $"{InventoryUtils.GetPluralNameOfItem(item)}, {InventoryUtils.GetQualityFromIndex(ingredient.quality)}";
             }
 
             c.snapMouseCursorToCenter();
@@ -302,11 +302,11 @@ namespace stardew_access.Patches
             Item item = __instance.inventory.actualInventory[currentInventorySlot];
             ClickableComponent c = __instance.inventory.inventory[currentInventorySlot];
             InventoryUtils.NarrateHoveredSlot(
-                __instance.inventory,
                 __instance.inventory.inventory,
                 __instance.inventory.actualInventory,
-                c.bounds.Center.X,
-                c.bounds.Center.Y
+                __instance.inventory,
+                hoverX: c.bounds.Center.X,
+                hoverY: c.bounds.Center.Y
             );
             c.snapMouseCursorToCenter();
         }
