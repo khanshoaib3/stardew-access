@@ -28,7 +28,7 @@ menu-joja_cd-project_name = {$project_index ->
 ### Junimo Note Menu
 
 menu-junimo_note-scrambled_text = Scrambled text
-menu-junimo_note-current_area_info-prefix = Area: {$area_name}, Reward: {$completion_reward}, 
+menu-junimo_note-current_area_info-prefix = Area: {$area_name}, {$completion_reward}, 
 menu-junimo_note-bundle_open_button = {$bundle_name} bundle
 menu-junimo_note-input_slot = Input Slot {$index}
 menu-junimo_note-collect_rewards = Collect rewards
@@ -306,10 +306,9 @@ menu-level_up-profession_chooser_button = Selected: {$profession_description_lis
   Left click to choose.
 menu-level_up-ok_button = {$title}, {$extra_info}, Learned recipes: {$learned_recipes}, Left click to close.
 
-## Inventory Menu
+### Mine Elevator Menu Patch
 
-menu-inventory-empty_slot-name = Empty Slot
-menu-inventory-not_usable-suffix = , not usable here
+menu-elevator-button = {$level_number} level
 
 ## Number Selection Menu
 
@@ -505,6 +504,12 @@ common-ui-equipment_slots = {$slot_name ->
     [0] : {$item_name}, {$item_description}
     *[1] {EMPTYSTRING()}
   }
+
+## Inventory Util
+
+menu-inventory-empty_slot-name = Empty Slot
+menu-inventory-not_usable-suffix = , not usable here
+
 
 # The $name will be in the respective language i.e., it will be in french for french translation and so on. So use the language specific name in the square brackets except for the one with '*', that can have any value. Variants with '*' are marked as default.
 # TODO add this to more places

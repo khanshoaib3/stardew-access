@@ -32,12 +32,12 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    for (int i = 0; i < __instance.languages.Count; i++)
+                    foreach (ClickableComponent languageButton in __instance.languages)
                     {
-                        if (__instance.languages[i] == null || !__instance.languages[i].visible || !__instance.languages[i].containsPoint(x, y))
+                        if (languageButton == null || !languageButton.visible || !languageButton.containsPoint(x, y))
                             continue;
 
-                        MainClass.ScreenReader.SayWithMenuChecker(__instance.languageList[i], true);
+                        MainClass.ScreenReader.SayWithMenuChecker(languageButton.name, true);
                         return;
                     }
                 }

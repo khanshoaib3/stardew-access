@@ -47,6 +47,7 @@ namespace stardew_access.Patches
                 new LanguageSelectionMenuPatch(),
                 new LetterViwerMenuPatch(),
                 new LevelUpMenuPatch(),
+                new MineElevatorMenuPatch(),
                 // Quest Patches
                 new BillboardPatch(),
             };
