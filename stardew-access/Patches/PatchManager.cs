@@ -50,6 +50,7 @@ namespace stardew_access.Patches
                 new MineElevatorMenuPatch(),
                 new NamingMenuPatch(),
                 new NumberSelectionMenuPatch(),
+                new PondQueryMenuPatch(),
                 // Quest Patches
                 new BillboardPatch(),
             };

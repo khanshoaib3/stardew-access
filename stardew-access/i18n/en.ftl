@@ -322,6 +322,11 @@ menu-number_selection-value_and_price_info = {$value} {$price ->
     *[other] Price: {$price}
   }
 
+### Pond Query Menu
+
+menu-pond_query-change_netting_button = Change netting button
+menu-pond_query-empty_pond_button = Empty pond button
+menu-pond_query-pond_info = {$pond_name}, {$population_info}, {$required_item_info}, Status: {$status}
 
 # FIXME update naming convention
 prefix-repair = Repair {$content}
@@ -487,6 +492,7 @@ common-unknown = Unknown
 # Common UI elements
 common-ui-ok_button = OK button
 common-ui-cancel_button = Cancel button
+common-ui-confirm_button = Confirm button
 common-ui-drop_item_button = Drop item button
 common-ui-trashcan_button = Trashcan
 common-ui-organize_inventory_button = Organize inventory button
