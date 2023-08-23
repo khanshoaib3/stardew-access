@@ -1,31 +1,25 @@
 using Microsoft.Xna.Framework;
+using static stardew_access.Utils.MachineUtils;
+using stardew_access.Translation;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using stardew_access.Translation;
 using System.Text;
-using StardewValley.Menus;
 
 namespace stardew_access.Utils
 {
     public class TileInfo
     {
-        private static readonly string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom", "statue of endless fortune", "statue of perfection", "crab pot" };
-        private static readonly Dictionary<int, string> ResourceClumpNameTranslationKeys = new()
+        private static readonly string[] trackable_machines;
+        private static readonly Dictionary<int, string> ResourceClumpNameTranslationKeys;
+
+        static TileInfo()
         {
-            { 600, "tile-resource_clump-large_stump-name" },
-            { 602, "tile-resource_clump-hollow_log-name" },
-            { 622, "tile-resource_clump-meteorite-name" },
-            { 672, "tile-resource_clump-boulder-name" },
-            { 752, "tile-resource_clump-mine_rock-name" },
-            { 754, "tile-resource_clump-mine_rock-name" },
-            { 756, "tile-resource_clump-mine_rock-name" },
-            { 758, "tile-resource_clump-mine_rock-name" },
-            { 190, "tile-resource_clump-giant_cauliflower-name" },
-            { 254, "tile-resource_clump-giant_melon-name" },
-            { 276, "tile-resource_clump-giant_pumpkin-name" }
-        };
+            JsonLoader.TryLoadJsonArray("trackable_machines.json", out trackable_machines);
+            JsonLoader.TryLoadJsonDictionary("resource_clump_name_translation_keys.json", out ResourceClumpNameTranslationKeys);
+        }
 
         ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>
         public static (string? name, string? categoryName) GetNameWithCategoryNameAtTile(Vector2 tile, GameLocation? currentLocation)
@@ -687,53 +681,6 @@ namespace stardew_access.Utils
             }
 
             return toReturn;
-        }
-
-        /// <summary>
-        /// Determines the state of a machine based on its properties.
-        /// </summary>
-        /// <param name="machine">The machine object to get the state of.</param>
-        /// <returns>A MachineState enumeration value representing the machine's state.</returns>
-        private static MachineState GetMachineState(StardewValley.Object machine)
-        {
-            // Check if the machine is a CrabPot and determine its state based on bait and heldObject
-            if (machine is CrabPot crabPot)
-            {
-                bool hasBait = crabPot.bait.Value is not null;
-                bool hasHeldObject = crabPot.heldObject.Value is not null;
-
-                if (hasBait && !hasHeldObject)
-                    return MachineState.Busy;
-                else if (hasBait && hasHeldObject)
-                    return MachineState.Ready;
-            }
-
-            // For other machine types, determine the state based on readyForHarvest, MinutesUntilReady, and heldObject
-            return GetMachineState(machine.readyForHarvest.Value, machine.MinutesUntilReady, machine.heldObject.Value);
-        }
-
-        /// <summary>
-        /// Determines the state of a machine based on its readiness for harvest, remaining minutes, and held object.
-        /// </summary>
-        /// <param name="readyForHarvest">A boolean indicating if the machine is ready for harvest.</param>
-        /// <param name="minutesUntilReady">The number of minutes remaining until the machine is ready.</param>
-        /// <param name="heldObject">The object held by the machine, if any.</param>
-        /// <returns>A MachineState enumeration value representing the machine's state.</returns>
-        private static MachineState GetMachineState(bool readyForHarvest, int minutesUntilReady, StardewValley.Object? heldObject)
-        {
-            // Determine the machine state based on the input parameters
-            if (readyForHarvest || (heldObject is not null && minutesUntilReady <= 0))
-            {
-                return MachineState.Ready;
-            }
-            else if (minutesUntilReady > 0)
-            {
-                return MachineState.Busy;
-            }
-            else
-            {
-                return MachineState.Waiting;
-            }
         }
 
         /// <summary>
