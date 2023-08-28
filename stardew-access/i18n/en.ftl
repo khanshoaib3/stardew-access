@@ -334,7 +334,7 @@ menu-purchase_animal-animal_info = {$name}, Price: {$price}g, Description: {$des
 menu-purchase_animal-first_time_in_menu_info = Enter the name of animal in the name text box.
 menu-purchase_animal-random_name_button = Random name button
 menu-purchase_animal-animal_name_text_box = Name text box{$value ->
-    [null] {EMPTYSTRING}
+    [null] {EMPTYSTRING()}
     *[other] , Value: {$value}
   }
 
@@ -346,6 +346,26 @@ menu-title_text_input-paste_button = Paste button
 
 menu-shipping-total_money_received_info = Received {$money}g in total. Left click to save.
 menu-shipping-money_received_from_category_info = {$money}g received from {$category_name}.
+
+## Quest Patches
+
+### Billboard Menu
+
+menu-billboard-calendar-day_info = {$is_current ->
+    [0] {EMPTYSTRING()}
+    *[1] Current
+  } Day {$day}{$day_name ->
+    [null] {EMPTYSTRING()}
+    *[other] , {$day_name}
+  }{$day ->
+    [1] of {$season} year {$year}
+    *[other] {EMPTYSTRING()}
+  }{$extra_info ->
+    [null] {EMPTYSTRING()}
+    *[other] , {$extra_info}
+  }
+menu-billboard-daily_quest-accept_quest-suffix =
+  Left click to accept quest.
 
 # FIXME update naming convention
 prefix-repair = Repair {$content}
