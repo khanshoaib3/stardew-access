@@ -1,3 +1,6 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Translation;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Quests;
@@ -5,13 +8,20 @@ using StardewValley.Quests;
 namespace stardew_access.Patches
 {
     // a.k.a. Journal Menu
-    internal class QuestLogPatch
+    internal class QuestLogPatch : IPatch
     {
-        internal static string questLogQuery = "";
         internal static bool isNarratingQuestInfo = false;
         internal static bool firstTimeInIndividualQuest = true;
 
-        internal static void DrawPatch(QuestLog __instance, int ___questPage, List<List<IQuest>> ___pages, int ___currentPage, IQuest ____shownQuest, List<string> ____objectiveText)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(QuestLog), nameof(QuestLog.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(QuestLogPatch), nameof(QuestLogPatch.DrawPatch))
+            );
+        }
+
+        private static void DrawPatch(QuestLog __instance, int ___questPage, List<List<IQuest>> ___pages, int ___currentPage, IQuest ____shownQuest, List<string> ____objectiveText)
         {
             try
             {
@@ -28,22 +38,23 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in quest log menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
         private static void NarrateQuestList(QuestLog __instance, List<List<IQuest>> ___pages, int ___currentPage, int x, int y)
         {
-            string toSpeak = "";
+            string translationKey = "";
+            object? translationTokens = null;
 
             if (!firstTimeInIndividualQuest) firstTimeInIndividualQuest = true;
 
             if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
-                toSpeak = "Previous page button";
+                translationKey = "common-ui-previous_page_button";
             else if (__instance.forwardButton != null && __instance.forwardButton.visible && __instance.forwardButton.containsPoint(x, y))
-                toSpeak = "Next page button";
+                translationKey = "common-ui-next_page_button";
             else if (__instance.upperRightCloseButton != null && __instance.upperRightCloseButton.visible && __instance.upperRightCloseButton.containsPoint(x, y))
-                toSpeak = "Close menu button";
+                translationKey = "common-ui-close_menu_button";
             else
             {
                 for (int i = 0; i < __instance.questLogButtons.Count; i++)
@@ -54,109 +65,82 @@ namespace stardew_access.Patches
                     if (!__instance.questLogButtons[i].containsPoint(x, y))
                         continue;
 
-                    string name = ___pages[___currentPage][i].GetName();
-                    int daysLeft = ___pages[___currentPage][i].GetDaysLeft();
-                    toSpeak = $"{name}";
+                    translationTokens = new
+                    {
+                        title = ___pages[___currentPage][i].GetName(),
+                        days_left = ___pages[___currentPage][i].GetDaysLeft(),
+                        is_completed = ___pages[___currentPage][i].ShouldDisplayAsComplete() ? 1 : 0
+                    };
 
-                    if (daysLeft > 0 && ___pages[___currentPage][i].ShouldDisplayAsComplete())
-                        toSpeak += $"\t\n {daysLeft} days left";
-
-                    toSpeak += ___pages[___currentPage][i].ShouldDisplayAsComplete() ? " completed!" : "";
+                    translationKey = "menu-quest_log-quest_brief";
                     break;
                 }
             }
 
-            if (questLogQuery != toSpeak)
-            {
-                questLogQuery = toSpeak;
-                MainClass.ScreenReader.Say(toSpeak, true);
-            }
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens);
         }
 
         private static void NarrateIndividualQuest(QuestLog __instance, int ___currentPage, IQuest ____shownQuest, List<string> ____objectiveText, int x, int y)
         {
+            if (____shownQuest == null)  return;
+
             bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
             bool containsReward = __instance.HasReward() || __instance.HasMoneyReward();
-            string description = Game1.parseText(____shownQuest.GetDescription(), Game1.dialogueFont, __instance.width - 128);
+            string description = ____shownQuest.GetDescription();
             string title = ____shownQuest.GetName();
-            string toSpeak = "";
-            string extra = "";
+            string translationKey = "";
 
             if (firstTimeInIndividualQuest || (isPrimaryInfoKeyPressed && !isNarratingQuestInfo))
             {
-                if (firstTimeInIndividualQuest)
-                    toSpeak = "Back button";
+                firstTimeInIndividualQuest = false;
 
-                if (____shownQuest.ShouldDisplayAsComplete())
+                List<string> objectivesList = new List<string>();
+                for (int j = 0; !____shownQuest.ShouldDisplayAsComplete() && j < ____objectiveText.Count; j++)
                 {
-                    #region Quest completed menu
-
-                    extra = $"Quest: {title} Completed!";
-
-                    if (__instance.HasMoneyReward())
-                        extra += $"you recieved {____shownQuest.GetMoneyReward()}g";
-
-                    #endregion
-                }
-                else
-                {
-                    #region Quest in-complete menu
-                    extra = $"Title: {title}. \t\n Description: {description}";
-
-                    for (int j = 0; j < ____objectiveText.Count; j++)
+                    string objective_info = ____objectiveText[j];
+                    if (____shownQuest is SpecialOrder order)
                     {
-                        string parsed_text = Game1.parseText(____objectiveText[j], width: __instance.width - 192, whichFont: Game1.dialogueFont);
-                        if (____shownQuest != null && ____shownQuest is SpecialOrder order)
-                        {
-                            OrderObjective order_objective = order.objectives[j];
-                            if (order_objective.GetMaxCount() > 1 && order_objective.ShouldShowProgress())
-                                parsed_text += "\n\t" + order_objective.GetCount() + " of " + order_objective.GetMaxCount() + " completed";
-                        }
-
-                        extra += $"\t\nOrder {j + 1}: {parsed_text} \t\n";
+                        OrderObjective order_objective = order.objectives[j];
+                        if (order_objective.GetMaxCount() > 1 && order_objective.ShouldShowProgress())
+                            objective_info = $"{order_objective.GetCount()}/{order_objective.GetMaxCount()} {objective_info}";
                     }
 
-                    if (____shownQuest != null)
-                    {
-                        int daysLeft = ____shownQuest.GetDaysLeft();
-
-                        if (daysLeft > 0)
-                            extra += $"\t\n{daysLeft} days left.";
-                    }
-                    #endregion
+                    objectivesList.Add($"{j + 1}: {objective_info}");
                 }
 
+                object translationTokens = new
+                {
+                    is_completed = ____shownQuest.ShouldDisplayAsComplete() ? 1 : 0,
+                    title = ____shownQuest.GetName(),
+                    description = ____shownQuest.GetDescription(),
+                    objectives_list = string.Join(", ", objectivesList),
+                    days_left = ____shownQuest.GetDaysLeft(),
+                    has_received_money = __instance.HasMoneyReward() ? 1 : 0,
+                    received_money = ____shownQuest.GetMoneyReward()
+                };
+
+                MainClass.ScreenReader.MenuPrefixNoQueryText = $"{Translator.Instance.Translate("menu-quest_log-quest_detail", translationTokens)}\n";
+                MainClass.ScreenReader.PrevMenuQueryText = "";
                 isNarratingQuestInfo = true;
                 Task.Delay(200).ContinueWith(_ => { isNarratingQuestInfo = false; });
-                questLogQuery = "";
             }
 
-            if (!firstTimeInIndividualQuest)
-            {
-                if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
-                    toSpeak = (___currentPage > 0) ? "Previous page button" : "Back button";
-                else if (__instance.forwardButton != null && __instance.forwardButton.visible && __instance.forwardButton.containsPoint(x, y))
-                    toSpeak = "Next page button";
-                else if (__instance.cancelQuestButton != null && __instance.cancelQuestButton.visible && __instance.cancelQuestButton.containsPoint(x, y))
-                    toSpeak = "Cancel quest button";
-                else if (__instance.upperRightCloseButton != null && __instance.upperRightCloseButton.visible && __instance.upperRightCloseButton.containsPoint(x, y))
-                    toSpeak = "Close menu button";
-                else if (containsReward && __instance.rewardBox.containsPoint(x, y))
-                    toSpeak = "Left click to collect reward";
-            }
+            if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
+                translationKey = (___currentPage > 0) ? "common-ui-previous_page_button" : "common-ui-back_button";
+            else if (__instance.forwardButton != null && __instance.forwardButton.visible && __instance.forwardButton.containsPoint(x, y))
+                translationKey = "common-ui-next_page_button";
+            else if (__instance.cancelQuestButton != null && __instance.cancelQuestButton.visible && __instance.cancelQuestButton.containsPoint(x, y))
+                translationKey = "menu-quest_log-cancel_quest_button";
+            else if (__instance.upperRightCloseButton != null && __instance.upperRightCloseButton.visible && __instance.upperRightCloseButton.containsPoint(x, y))
+                translationKey = "common-ui-close_menu_button";
+            else if (containsReward && __instance.rewardBox.containsPoint(x, y))
+                translationKey = "menu-quest_log-reward_button";
 
-            if (firstTimeInIndividualQuest || (questLogQuery != toSpeak))
-            {
-                questLogQuery = toSpeak;
-                MainClass.ScreenReader.Say(extra + " \n\t" + toSpeak, true);
-
-                if (firstTimeInIndividualQuest) firstTimeInIndividualQuest = false;
-            }
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true);
         }
 
         internal static void Cleanup()
         {
-            questLogQuery = "";
             isNarratingQuestInfo = false;
             firstTimeInIndividualQuest = true;
         }

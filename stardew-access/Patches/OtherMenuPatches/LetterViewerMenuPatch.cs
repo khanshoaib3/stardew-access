@@ -7,7 +7,7 @@ using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class LetterViwerMenuPatch : IPatch
+    internal class LetterViewerMenuPatch : IPatch
     {
         private static string letterViewerQueryText = "";
 
@@ -15,7 +15,7 @@ namespace stardew_access.Patches
         {
             harmony.Patch(
                     original: AccessTools.Method(typeof(LetterViewerMenu), nameof(LetterViewerMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(LetterViwerMenuPatch), nameof(LetterViwerMenuPatch.DrawPatch))
+                    postfix: new HarmonyMethod(typeof(LetterViewerMenuPatch), nameof(LetterViewerMenuPatch.DrawPatch))
             );
         }
 

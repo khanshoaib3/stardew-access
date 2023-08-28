@@ -45,7 +45,7 @@ namespace stardew_access.Patches
                 new ConfirmationDialogMenuPatch(),
                 new ItemListMenuPatch(),
                 new LanguageSelectionMenuPatch(),
-                new LetterViwerMenuPatch(),
+                new LetterViewerMenuPatch(),
                 new LevelUpMenuPatch(),
                 new MineElevatorMenuPatch(),
                 new NamingMenuPatch(),
@@ -56,6 +56,7 @@ namespace stardew_access.Patches
                 new TitleTextInputMenuPatch(),
                 // Quest Patches
                 new BillboardPatch(),
+                new QuestLogPatch(),
             };
 
             foreach (IPatch patch in allPatches)

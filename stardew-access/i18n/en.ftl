@@ -367,6 +367,33 @@ menu-billboard-calendar-day_info = {$is_current ->
 menu-billboard-daily_quest-accept_quest-suffix =
   Left click to accept quest.
 
+### Quest Log Menu (Journal Menu)
+
+menu-quest_log-cancel_quest_button = Cancel quest button
+menu-quest_log-reward_button = Collect reward button
+menu-quest_log-quest_brief = {$title} {$is_completed ->
+    [0] {SIGNOFNUMBER($days_left) ->
+      [positive] , {$days_left} {$days_left ->
+        [1] day
+        *[other] days
+      } left
+      *[other] {EMPTYSTRING()}
+    }
+    *[1] completed!
+  }
+menu-quest_log-quest_detail = {$title} {$is_completed ->
+    [0] , Description: {$description}, Objectives: {$objectives_list} {SIGNOFNUMBER($days_left) ->
+      [positive] , {$days_left} {$days_left ->
+        [1] day
+        *[other] days
+      } left
+      *[other] {EMPTYSTRING()}
+    }
+    *[1] completed! {$has_received_money ->
+      *[1] You received {$received_money}g
+    }
+  }
+
 # FIXME update naming convention
 prefix-repair = Repair {$content}
 
@@ -540,6 +567,8 @@ common-ui-scroll_up_button = Scroll up button
 common-ui-scroll_down_button = Scroll down button
 common-ui-next_page_button = Next page button
 common-ui-previous_page_button = Previous page button
+common-ui-close_menu_button = Close menu button
+common-ui-back_button = Back button
 common-ui-equipment_slots = {$slot_name ->
     [hat] Hat
     [left_ring] Left ring
@@ -562,4 +591,3 @@ menu-inventory-not_usable-suffix = , not usable here
 # The $name will be in the respective language i.e., it will be in french for french translation and so on. So use the language specific name in the square brackets except for the one with '*', that can have any value. Variants with '*' are marked as default.
 # TODO add this to more places
 common-util-pluralize_name = {$item_count} {PLURALIZE($item_count, $name)}
-
