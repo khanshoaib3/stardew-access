@@ -1,46 +1,70 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class ShippingMenuPatch
+    // TODO Speak per category money distribution info
+    internal class ShippingMenuPatch : IPatch
     {
-        internal static int prevSlotIndex = -999;
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(ShippingMenu), nameof(ShippingMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(ShippingMenuPatch), nameof(ShippingMenuPatch.DrawPatch))
+            );
+        }
 
-        internal static void DrawPatch(ShippingMenu __instance, List<int> ___categoryTotals)
+        private static void DrawPatch(ShippingMenu __instance, List<int> ___categoryTotals)
         {
             try
             {
+                Log.Debug($"Curr page: {__instance.currentPage}\t curr region: {__instance.currentRegion}\t curr tab: {__instance.currentTab}", true);
 
-                if (__instance.currentPage == -1)
+                if (__instance.currentPage != -1)
+                    return;
+
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+
+                // Perform Left Click
+                if (MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed())
                 {
-                    int total = ___categoryTotals[5];
-                    string toSpeak;
-                    if (__instance.okButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
-                    {
-                        // Perform Left Click
-                        if (MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed())
-                        {
-                            Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
-                        }
-                        toSpeak = $"{total}g in total. Press left mouse button to save.";
-                        MainClass.ScreenReader.SayWithChecker(toSpeak, true);
-                    }
+                    Game1.activeClickableMenu.receiveLeftClick(x, y);
+                }
 
-                    for (int i = 0; i < __instance.categories.Count; i++)
+                int total = ___categoryTotals[5];
+                string toSpeak;
+                object? translationTokens = null;
+                if (__instance.okButton.containsPoint(x, y))
+                {
+                    toSpeak = "menu-shipping-total_money_received_info";
+                    translationTokens = new
                     {
-                        if (__instance.categories[i].containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
-                        {
-                            toSpeak = $"Money received from {__instance.getCategoryName(i)}: {___categoryTotals[i]}g.";
-                            MainClass.ScreenReader.SayWithChecker(toSpeak, true);
-                            break;
-                        }
-                    }
+                        money = total
+                    };
+                    MainClass.ScreenReader.TranslateAndSayWithMenuChecker(toSpeak, true, translationTokens);
+                    return;
+                }
+
+                for (int i = 0; i < __instance.categories.Count; i++)
+                {
+                    if (!__instance.categories[i].containsPoint(x, y))
+                        continue;
+
+                    toSpeak = "menu-shipping-money_received_from_category_info";
+                    translationTokens = new
+                    {
+                        category_name = __instance.getCategoryName(i),
+                        money = ___categoryTotals[i]
+                    };
+                    MainClass.ScreenReader.TranslateAndSayWithMenuChecker(toSpeak, true, translationTokens);
+                    return;
                 }
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in shipping menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
     }

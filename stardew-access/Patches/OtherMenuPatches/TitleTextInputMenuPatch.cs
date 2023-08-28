@@ -15,7 +15,7 @@ namespace stardew_access.Patches
             );
         }
 
-        internal static void DrawPatch(TitleTextInputMenu __instance)
+        private static void DrawPatch(TitleTextInputMenu __instance)
         {
             try
             {

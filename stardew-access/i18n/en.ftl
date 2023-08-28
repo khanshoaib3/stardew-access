@@ -342,6 +342,11 @@ menu-purchase_animal-animal_name_text_box = Name text box{$value ->
 
 menu-title_text_input-paste_button = Paste button
 
+### Shipping Menu
+
+menu-shipping-total_money_received_info = Received {$money}g in total. Left click to save.
+menu-shipping-money_received_from_category_info = {$money}g received from {$category_name}.
+
 # FIXME update naming convention
 prefix-repair = Repair {$content}
 
