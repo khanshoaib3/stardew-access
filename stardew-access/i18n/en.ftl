@@ -328,6 +328,16 @@ menu-pond_query-change_netting_button = Change netting button
 menu-pond_query-empty_pond_button = Empty pond button
 menu-pond_query-pond_info = {$pond_name}, {$population_info}, {$required_item_info}, Status: {$status}
 
+### Purchase Animal Menu
+
+menu-purchase_animal-animal_info = {$name}, Price: {$price}g, Description: {$description}
+menu-purchase_animal-first_time_in_menu_info = Enter the name of animal in the name text box.
+menu-purchase_animal-random_name_button = Random name button
+menu-purchase_animal-animal_name_text_box = Name text box{$value ->
+    [null] {EMPTYSTRING}
+    *[other] , Value: {$value}
+  }
+
 # FIXME update naming convention
 prefix-repair = Repair {$content}
 

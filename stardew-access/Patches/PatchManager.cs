@@ -51,6 +51,7 @@ namespace stardew_access.Patches
                 new NamingMenuPatch(),
                 new NumberSelectionMenuPatch(),
                 new PondQueryMenuPatch(),
+                new PurchaseAnimalsMenuPatch(),
                 // Quest Patches
                 new BillboardPatch(),
             };

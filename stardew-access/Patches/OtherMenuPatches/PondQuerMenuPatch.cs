@@ -68,7 +68,7 @@ namespace stardew_access.Patches
                         toSpeak = Translator.Instance.Translate("menu-pond_query-empty_pond_button");
                 }
 
-                MainClass.ScreenReader.SayWithMenuChecker(string.Join("\n", [extra, toSpeak]), true);
+                MainClass.ScreenReader.SayWithMenuChecker(string.Join("\n", new List<string>(){extra, toSpeak}), true);
             }
             catch (System.Exception e)
             {
