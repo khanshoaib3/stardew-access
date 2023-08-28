@@ -338,6 +338,10 @@ menu-purchase_animal-animal_name_text_box = Name text box{$value ->
     *[other] , Value: {$value}
   }
 
+### Title Text Input Menu
+
+menu-title_text_input-paste_button = Paste button
+
 # FIXME update naming convention
 prefix-repair = Repair {$content}
 
