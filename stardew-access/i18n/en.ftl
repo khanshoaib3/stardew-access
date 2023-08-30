@@ -87,20 +87,6 @@ menu-inventory_page-money_info_key = {$farm_name}, {$current_funds}, {$total_ear
     *[other] {EMPTYSTRING()}
   }
 
-### Options Page
-
-menu-options_page-button_info = {$label} button
-menu-options_page-text_box_info = {$label} text box
-menu-options_page-checkbox_info = {$is_checked ->
-    [0] Disabled
-    *[1] Enabled
-  } {$label} checkbox
-menu-options_page-dropdown_info = {$label} dropdown, option {$selected_option} selected
-menu-options_page-slider_info = {$slider_value}% {$label} slider
-menu-options_page-plus_minus_button_info = {$selected_option} selected of {$label}
-menu-options_page-input_listener_info = {$label} is bound to {$buttons_list}. Left click to change.
-menu-options_page-heading_info = {$label} Options:
-
 ### Social Page
 
 menu-social_page-npc_info = {$name}{$has_talked ->
@@ -607,6 +593,22 @@ common-ui-equipment_slots = {$slot_name ->
 
 menu-inventory-empty_slot-name = Empty Slot
 menu-inventory-not_usable-suffix = , not usable here
+
+# Options Element
+
+options_element-button_info = {$label} button
+options_element-text_box_info = {$label} text box{$value ->
+    [null] {EMPTYSTRING()}
+    *[other] : {$value}
+  }
+options_element-checkbox_info = {$is_checked ->
+    [0] Disabled
+    *[1] Enabled
+  } {$label} checkbox
+options_element-dropdown_info = {$label} dropdown, option {$selected_option} selected
+options_element-slider_info = {$slider_value}% {$label} slider
+options_element-plus_minus_button_info = {$selected_option} selected of {$label}
+options_element-input_listener_info = {$label} is bound to {$buttons_list}. Left click to change.
 
 
 # The $name will be in the respective language i.e., it will be in french for french translation and so on. So use the language specific name in the square brackets except for the one with '*', that can have any value. Variants with '*' are marked as default.

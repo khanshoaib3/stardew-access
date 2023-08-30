@@ -37,10 +37,11 @@ namespace stardew_access.Patches
 
                 if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
                 {
-                    translationKey = $"menu-options_page-text_box_info";
+                    translationKey = $"options_element-text_box_info";
                     translationTokens = new
                     {
-                        label = ___title
+                        label = ___title,
+                        value = string.IsNullOrEmpty(___textBox.Text) ? "null" : ___textBox.Text,
                     };
                 }
                 else if (__instance.doneNamingButton != null && __instance.doneNamingButton.containsPoint(x, y))

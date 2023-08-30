@@ -58,6 +58,8 @@ namespace stardew_access.Patches
                 new BillboardPatch(),
                 new QuestLogPatch(),
                 new SpecialOrdersBoardPatch(),
+                // Title Menu Patches
+                new AdvancedGameOptionsPatch(),
             };
 
             foreach (IPatch patch in allPatches)

@@ -324,14 +324,14 @@ namespace stardew_access
             {
                 if (Game1.activeClickableMenu != null)
                 {
-                    SimulateMouseClicks(
+                    MouseUtils.SimulateMouseClicks(
                         (x, y) => Game1.activeClickableMenu.receiveLeftClick(x, y),
                         (x, y) => Game1.activeClickableMenu.receiveRightClick(x, y)
                     );
                 }
                 else if (Game1.currentMinigame != null)
                 {
-                    SimulateMouseClicks(
+                    MouseUtils.SimulateMouseClicks(
                         (x, y) => Game1.currentMinigame.receiveLeftClick(x, y),
                         (x, y) => Game1.currentMinigame.receiveRightClick(x, y)
                     );
@@ -433,27 +433,6 @@ namespace stardew_access
             HandleGridMovement();
 
             // local functions
-            void SimulateMouseClicks(Action<int, int> leftClickHandler, Action<int, int> rightClickHandler)
-            {
-                int mouseX = Game1.getMouseX(true);
-                int mouseY = Game1.getMouseY(true);
-
-                if (Config.LeftClickMainKey.JustPressed() || Config.LeftClickAlternateKey.JustPressed())
-                {
-                    #if DEBUG
-                    Log.Debug("Simulating left mouse click");
-                    #endif
-                    leftClickHandler(mouseX, mouseY);
-                }
-                else if (Config.RightClickMainKey.JustPressed() || Config.RightClickAlternateKey.JustPressed())
-                {
-                    #if DEBUG
-                    Log.Debug("Simulating right mouse click");
-                    #endif
-                    rightClickHandler(mouseX, mouseY);
-                }
-            }
-
             void Narrate(string message) => MainClass.ScreenReader.Say(message, true);
 
             bool IsMovementKey(SButton button)
