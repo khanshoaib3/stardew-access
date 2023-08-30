@@ -4,6 +4,8 @@ namespace stardew_access.Utils
 {
     public static class JsonLoader
     {
+        public delegate IEnumerable<KeyValuePair<TKey, TValue>> NestedItemProcessor<TKey, TValue>(List<string> path, JsonElement element);
+
         private const string DefaultDir = "assets";
         private static string GetFilePath(string fileName, string subdir)
         {
@@ -103,6 +105,65 @@ namespace stardew_access.Utils
             result = default;
             #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
             return false;
+        }
+
+        public static bool TryLoadNestedJson<TKey, TValue>(
+            string fileName,
+            NestedItemProcessor<TKey, TValue> nestedItemProcessor,
+            out Dictionary<TKey, TValue> result,
+            int nestingLevel,
+            string subdir = DefaultDir
+        ) where TKey : notnull
+        {
+            Log.Verbose($"[TryLoadNestedJson] Starting to load {fileName} with nesting level {nestingLevel}");
+
+            result = new Dictionary<TKey, TValue>();
+
+            if (TryLoadJsonFile(fileName, out JsonDocument document, subdir) && document != null)
+            {
+                #if DEBUG
+                Log.Verbose("[TryLoadNestedJson] Successfully loaded JSON file. Starting to process root element.");
+                #endif
+
+                ProcessJsonElement(new List<string>(), document.RootElement, nestingLevel, result);
+
+                #if DEBUG
+                Log.Verbose("[TryLoadNestedJson] Finished processing root element.");
+                #endif
+                Log.Trace($"[TryLoadNestedJson] Loaded {result.Count} entries from {fileName}.");
+                return true;
+            }
+            Log.Warn($"[TryLoadNestedJson] Failed to load or parse {fileName}", true);
+            return false;
+
+            void ProcessJsonElement(List<string> path, JsonElement element, int remainingLevels, Dictionary<TKey, TValue> res)
+            {
+                #if DEBUG
+                Log.Verbose($"[ProcessJsonElement] Processing element at path: {string.Join(" -> ", path)} with remaining levels: {remainingLevels}");
+                #endif
+
+                if (remainingLevels == 0)
+                {
+                    foreach (var kvp in nestedItemProcessor(path, element))
+                    {
+                        res[kvp.Key] = kvp.Value;
+                    }
+                    #if DEBUG
+                    Log.Verbose("[ProcessJsonElement] Processed element and populated result dictionary.");
+                    #endif
+                }
+                else
+                {
+                    foreach (var child in element.EnumerateObject())
+                    {
+                        var newPath = new List<string>(path) { child.Name };
+                        ProcessJsonElement(newPath, child.Value, remainingLevels - 1, res);
+                    }
+                    #if DEBUG
+                    Log.Verbose("[ProcessJsonElement] Completed iteration over child elements.");
+                    #endif
+                }
+            }
         }
 
         public static bool TryLoadJsonAsArray(string fileName, out List<object?> result, string subdir = DefaultDir)
