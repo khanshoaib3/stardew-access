@@ -371,7 +371,7 @@ menu-billboard-daily_quest-accept_quest-suffix =
 
 menu-quest_log-cancel_quest_button = Cancel quest button
 menu-quest_log-reward_button = Collect reward button
-menu-quest_log-quest_brief = {$title} {$is_completed ->
+menu-quest_log-quest_brief = {$name} {$is_completed ->
     [0] {SIGNOFNUMBER($days_left) ->
       [positive] , {$days_left} {$days_left ->
         [1] day
@@ -381,7 +381,7 @@ menu-quest_log-quest_brief = {$title} {$is_completed ->
     }
     *[1] completed!
   }
-menu-quest_log-quest_detail = {$title} {$is_completed ->
+menu-quest_log-quest_detail = {$name} {$is_completed ->
     [0] , Description: {$description}, Objectives: {$objectives_list} {SIGNOFNUMBER($days_left) ->
       [positive] , {$days_left} {$days_left ->
         [1] day
@@ -390,9 +390,30 @@ menu-quest_log-quest_detail = {$title} {$is_completed ->
       *[other] {EMPTYSTRING()}
     }
     *[1] completed! {$has_received_money ->
-      *[1] You received {$received_money}g
+      [0] {EMPTYSTRING()}
+      *[1] Collect {$received_money}g
     }
   }
+
+### Special Orders Board Menu
+
+menu-special_orders_board-quest_details = {$name}, Description: {$description}, Objectives: {$objectives_list}{$is_timed ->
+    [0] {EMPTYSTRING()}
+    *[1] , Time: {$days} {$days ->
+      [1] day
+      *[other] days
+    }
+  }{$has_money_reward ->
+    [0] {EMPTYSTRING()}
+    *[1] , Reward: {$money}
+  }
+menu-special_orders_board-accept_button = {$is_left_quest ->
+    [0] Right
+    *[1] Left
+  } quest: {$quest_details}
+  Left click to accept this quest.
+menu-special_orders_board-quest_in_progress = In progress: {$quest_details}
+menu-special_orders_board-quest_completed = Quest {$name} completed! Open journal to collect your reward.
 
 # FIXME update naming convention
 prefix-repair = Repair {$content}

@@ -38,14 +38,6 @@ namespace stardew_access
             );
             #endregion
 
-            #region Quest Patches
-            harmony.Patch(
-                    original: AccessTools.Method(typeof(SpecialOrdersBoard), nameof(SpecialOrdersBoard.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(SpecialOrdersBoardPatch), nameof(SpecialOrdersBoardPatch.DrawPatch))
-                );
-
-            #endregion
-
             #region Mini Games
             harmony.Patch(
                         original: AccessTools.Method(typeof(Intro), nameof(Intro.draw), new Type[] { typeof(SpriteBatch) }),

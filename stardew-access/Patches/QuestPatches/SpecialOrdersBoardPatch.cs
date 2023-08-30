@@ -1,13 +1,22 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Translation;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class SpecialOrdersBoardPatch
+    internal class SpecialOrdersBoardPatch : IPatch
     {
-        private static string specialOrdersBoardQueryKey = "";
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(SpecialOrdersBoard), nameof(SpecialOrdersBoard.draw), new Type[] { typeof(SpriteBatch) }),
+                    postfix: new HarmonyMethod(typeof(SpecialOrdersBoardPatch), nameof(SpecialOrdersBoardPatch.DrawPatch))
+            );
+        }
 
-        internal static void DrawPatch(SpecialOrdersBoard __instance)
+        private static void DrawPatch(SpecialOrdersBoard __instance)
         {
             try
             {
@@ -15,70 +24,65 @@ namespace stardew_access.Patches
 
                 if (__instance.acceptLeftQuestButton.visible && __instance.acceptLeftQuestButton.containsPoint(x, y))
                 {
-                    string toSpeak = GetSpecialOrderDetails(__instance.leftOrder);
-
-                    toSpeak = $"Left Quest:\n\t{toSpeak}\n\tPress left click to accept this quest.";
-
-                    Speak(toSpeak);
+                    MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-special_orders_board-accept_button", true, new
+                    {
+                        is_left_quest = 1,
+                        quest_details = GetQuestDetails(__instance.leftOrder)
+                    });
                     return;
                 }
 
                 if (__instance.acceptRightQuestButton.visible && __instance.acceptRightQuestButton.containsPoint(x, y))
                 {
-                    string toSpeak = GetSpecialOrderDetails(__instance.rightOrder);
-
-                    toSpeak = $"Right Quest:\n\t{toSpeak}\n\tPress left click to accept this quest.";
-
-                    Speak(toSpeak);
+                    MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-special_orders_board-accept_button", true, new
+                    {
+                        is_left_quest = 0,
+                        quest_details = GetQuestDetails(__instance.rightOrder)
+                    });
                     return;
                 }
+
+                if (Game1.player.team.acceptedSpecialOrderTypes.Contains(__instance.GetOrderType()))
+                {
+                    if (__instance.leftOrder.questState.Value == SpecialOrder.QuestState.InProgress || __instance.rightOrder.questState.Value == SpecialOrder.QuestState.InProgress)
+                    {
+                        MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-special_orders_board-quest_in_progress", true, new
+                        {
+                            quest_details = GetQuestDetails((__instance.leftOrder.questState.Value == SpecialOrder.QuestState.InProgress) ? __instance.leftOrder : __instance.rightOrder)
+                        });
+                    }
+                    return;
+                }
+
+                // FIXME Does not indicate completed status with this logic
+                /*
+                if (Game1.player.team.completedSpecialOrders.ContainsKey(__instance.GetOrderType()))
+                {
+                    if (__instance.leftOrder.questState.Value == SpecialOrder.QuestState.Complete || __instance.rightOrder.questState.Value == SpecialOrder.QuestState.Complete)
+                    {
+                        MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-special_orders_board-quest_completed", true, new
+                        {
+                            name = (__instance.leftOrder.questState.Value == SpecialOrder.QuestState.Complete) ? __instance.leftOrder.GetName() : __instance.rightOrder.GetName()
+                        });
+                    }
+                }
+                */
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in special orders board patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
-        private static string GetSpecialOrderDetails(SpecialOrder order)
+        private static string GetQuestDetails(SpecialOrder order) => Translator.Instance.Translate("menu-special_orders_board-quest_details", new
         {
-            int daysLeft = order.GetDaysLeft();
-            string description = order.GetDescription();
-            string objectiveDescription = "";
-            string name = order.GetName();
-            int moneyReward = order.GetMoneyReward();
-
-            // Get each objectives
-            for (int i = 0; i < order.GetObjectiveDescriptions().Count; i++)
-            {
-                objectiveDescription += order.GetObjectiveDescriptions()[i] + ", \n";
-            }
-
-            string toReturn = $"{name}\n\tDescription:{description}\n\tObjectives: {objectiveDescription}";
-
-            if (order.IsTimedQuest())
-            {
-                toReturn = $"{toReturn}\n\tTime: {daysLeft} days";
-            }
-
-            if (order.HasMoneyReward())
-            {
-                toReturn = $"{toReturn}\n\tReward: {moneyReward}g";
-            }
-
-            return toReturn;
-        }
-
-        private static void Speak(string toSpeak)
-        {
-            if (specialOrdersBoardQueryKey == toSpeak) return;
-
-            specialOrdersBoardQueryKey = toSpeak;
-            MainClass.ScreenReader.Say(toSpeak, true);
-        }
-
-        internal static void Cleanup()
-        {
-            specialOrdersBoardQueryKey = "";
-        }
+            name = order.GetName(),
+            description = order.GetDescription(),
+            objectives_list = string.Join(", ", order.GetObjectiveDescriptions()),
+            is_timed = order.IsTimedQuest() ? 1 : 0,
+            days = order.GetDaysLeft(),
+            has_money_reward = order.HasMoneyReward() ? 1 : 0,
+            money = order.GetMoneyReward()
+        });
     }
 }

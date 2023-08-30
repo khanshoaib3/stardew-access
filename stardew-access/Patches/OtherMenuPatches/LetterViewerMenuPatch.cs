@@ -62,7 +62,7 @@ namespace stardew_access.Patches
                 toSpeak = Translator.Instance.Translate("menu-letter_viewer-pagination_text-prefix", new
                 {
                     current_page = __instance.page + 1,
-                    totalPages = __instance.mailMessage.Count,
+                    total_pages = __instance.mailMessage.Count,
                     content = toSpeak
                 });
             }

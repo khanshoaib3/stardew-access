@@ -67,7 +67,7 @@ namespace stardew_access.Patches
 
                     translationTokens = new
                     {
-                        title = ___pages[___currentPage][i].GetName(),
+                        name = ___pages[___currentPage][i].GetName(),
                         days_left = ___pages[___currentPage][i].GetDaysLeft(),
                         is_completed = ___pages[___currentPage][i].ShouldDisplayAsComplete() ? 1 : 0
                     };
@@ -87,7 +87,6 @@ namespace stardew_access.Patches
             bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
             bool containsReward = __instance.HasReward() || __instance.HasMoneyReward();
             string description = ____shownQuest.GetDescription();
-            string title = ____shownQuest.GetName();
             string translationKey = "";
 
             if (firstTimeInIndividualQuest || (isPrimaryInfoKeyPressed && !isNarratingQuestInfo))
@@ -111,12 +110,12 @@ namespace stardew_access.Patches
                 object translationTokens = new
                 {
                     is_completed = ____shownQuest.ShouldDisplayAsComplete() ? 1 : 0,
-                    title = ____shownQuest.GetName(),
+                    name = ____shownQuest.GetName(),
                     description = ____shownQuest.GetDescription(),
                     objectives_list = string.Join(", ", objectivesList),
                     days_left = ____shownQuest.GetDaysLeft(),
                     has_received_money = __instance.HasMoneyReward() ? 1 : 0,
-                    received_money = ____shownQuest.GetMoneyReward()
+                    received_money = ____shownQuest.GetMoneyReward(),
                 };
 
                 MainClass.ScreenReader.MenuPrefixNoQueryText = $"{Translator.Instance.Translate("menu-quest_log-quest_detail", translationTokens)}\n";

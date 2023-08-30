@@ -57,6 +57,7 @@ namespace stardew_access.Patches
                 // Quest Patches
                 new BillboardPatch(),
                 new QuestLogPatch(),
+                new SpecialOrdersBoardPatch(),
             };
 
             foreach (IPatch patch in allPatches)

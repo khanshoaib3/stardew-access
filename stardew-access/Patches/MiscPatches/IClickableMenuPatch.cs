@@ -180,9 +180,6 @@ namespace stardew_access.Patches
                 case PondQueryMenu:
                     PondQueryMenuPatch.Cleanup();
                     break;
-                case SpecialOrdersBoard:
-                    SpecialOrdersBoardPatch.Cleanup();
-                    break;
                 case NumberSelectionMenu:
                     NumberSelectionMenuPatch.Cleanup();
                     break;
