@@ -144,9 +144,6 @@ namespace stardew_access.Patches
         {
             switch (menu)
             {
-                case TitleMenu:
-                    TitleMenuPatch.Cleanup();
-                    break;
                 case CoopMenu:
                     CoopMenuPatch.Cleanup();
                     break;

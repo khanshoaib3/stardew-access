@@ -401,6 +401,23 @@ menu-special_orders_board-accept_button = {$is_left_quest ->
 menu-special_orders_board-quest_in_progress = In progress: {$quest_details}
 menu-special_orders_board-quest_completed = Quest {$name} completed! Open journal to collect your reward.
 
+## Title Menus
+
+### Title Menu
+
+menu-title-new_game_button = New game button
+menu-title-load_button = Load button
+menu-title-co_op_button = Co-op button
+menu-title-language_button = Language button
+menu-title-about_button = About button
+menu-title-mute_music_button = Mute music button
+menu-title-fullscreen_button = Fullscreen: {$is_enabled ->
+    [0] disabled
+    *[1] enabled
+  }
+menu-title-exit_button = Exit button
+menu-title-invite_button = Invite button
+
 # FIXME update naming convention
 prefix-repair = Repair {$content}
 
