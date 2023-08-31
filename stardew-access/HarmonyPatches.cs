@@ -11,14 +11,6 @@ namespace stardew_access
     {
         internal static void Initialize(Harmony harmony)
         {
-            #region Title Menu Patches
-            harmony.Patch(
-                original: AccessTools.Method(typeof(CharacterCustomization), nameof(CharacterCustomization.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(CharacterCustomizationMenuPatch), nameof(CharacterCustomizationMenuPatch.DrawPatch))
-            );
-
-            #endregion
-
             #region Mini Games
             harmony.Patch(
                         original: AccessTools.Method(typeof(Intro), nameof(Intro.draw), new Type[] { typeof(SpriteBatch) }),

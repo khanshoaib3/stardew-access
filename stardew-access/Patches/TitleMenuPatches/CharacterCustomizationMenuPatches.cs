@@ -3,14 +3,16 @@ using StardewValley.Menus;
 using System.Text.Json;
 using static stardew_access.Utils.JsonLoader;
 using static stardew_access.Utils.ColorMatcher;
+using stardew_access.Translation;
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace stardew_access.Patches
 {
-    internal class CharacterCustomizationMenuPatch
+    internal class CharacterCustomizationMenuPatch : IPatch
     {
         private static bool isRunning = false;
         private static int saveGameIndex = -1;
-        private static string characterCreationMenuQueryKey = " ";
         private static string prevPants = " ";
         private static string prevShirt = " ";
         private static string prevHair = " ";
@@ -32,6 +34,15 @@ namespace stardew_access.Patches
         private static bool characterDesignToggle = false;
         private static bool characterDesignToggleShouldSpeak = true;
         private static ClickableComponent? currentComponent = null;
+
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(CharacterCustomization), nameof(CharacterCustomization.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(CharacterCustomizationMenuPatch), nameof(CharacterCustomizationMenuPatch.DrawPatch))
+            );
+        }
+
         private static Dictionary<string, Dictionary<int, string>> Descriptions
         {
             get
@@ -152,15 +163,11 @@ namespace stardew_access.Patches
                 if (changesToSpeak != "")
                     toSpeak = $"{toSpeak} \n {changesToSpeak}";
 
-                if (characterCreationMenuQueryKey != toSpeak && toSpeak.Trim() != "")
-                {
-                    characterCreationMenuQueryKey = toSpeak;
-                    MainClass.ScreenReader.Say(toSpeak, true);
-                }
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
             }
             catch (Exception e)
             {
-                Log.Error($"An error occured in character customization menu patch:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in character customization menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -395,62 +402,46 @@ namespace stardew_access.Patches
         {
             string toSpeak = " ";
             int DesignControlsIndex = 0;
-            Dictionary<ClickableComponent, string> buttons = new();
+            Dictionary<ClickableComponent, (string translationKey, object? translationTokens)> buttons = new();
 
             #region Add buttons with their names IF they are available
 
             #region Character related
-            string postText = "";
             if (__instance.nameBoxCC != null && __instance.nameBoxCC.visible)
             {
-                if (___nameBox.Text != "")
+                buttons.Add(__instance.nameBoxCC, ("menu-character_creation-farmer_name_text_box", new
                 {
-                    postText = $": {___nameBox.Text}";
-                }
-                else
-                {
-                    postText = " Text Box";
-                }
-                buttons.Add(__instance.nameBoxCC, $"Farmer's Name{postText}");
+                    value = string.IsNullOrEmpty(___nameBox.Text) ? "null" : ___nameBox.Text
+                }));
             }
 
             if (__instance.farmnameBoxCC != null && __instance.farmnameBoxCC.visible)
             {
-                if (___farmnameBox.Text != "")
+                buttons.Add(__instance.farmnameBoxCC, ("menu-character_creation-farm_name_text_box", new
                 {
-                    postText = $": {___farmnameBox.Text}";
-                }
-                else
-                {
-                    postText = " Text Box";
-                }
-                buttons.Add(__instance.farmnameBoxCC, $"Farm's Name{postText}");
+                    value = string.IsNullOrEmpty(___farmnameBox.Text) ? "null" : ___farmnameBox.Text
+                }));
             }
 
             if (__instance.favThingBoxCC != null && __instance.favThingBoxCC.visible)
             {
-                if (___favThingBox.Text != "")
+                buttons.Add(__instance.favThingBoxCC, ("menu-character_creation-favorite_thing_text_box", new
                 {
-                    postText = $": {___favThingBox.Text}";
-                }
-                else
-                {
-                    postText = " Text Box";
-                }
-                buttons.Add(__instance.favThingBoxCC, $"Favourite Thing{postText}");
+                    value = string.IsNullOrEmpty(___favThingBox.Text) ? "null" : ___favThingBox.Text
+                }));
             }
 
             if (__instance.petPortraitBox.HasValue) // Cannot get petButtons like with others
             {
                 ClickableComponent petPrev = __instance.getComponentWithID(511);
-                buttons.Add(petPrev, "Previous pet button");
+                buttons.Add(petPrev, ("menu-character_creation-previous_pet_button", null));
 
                 ClickableComponent petNext = __instance.getComponentWithID(510);
-                buttons.Add(petNext, "Next pet button");
+                buttons.Add(petNext, ("menu-character_creation-next_pet_button", null));
             }
 
             if (__instance.randomButton != null && __instance.randomButton.visible)
-                buttons.Add(__instance.randomButton, "Random Skin Button");
+                buttons.Add(__instance.randomButton, ("menu-character_creation-random_skin_button", null));
 
             // Controls to rotate the farmer (Potentially useful for low vision players) are first if they're available.
             // They also appear above the gender buttons, so we handle them separately here.
@@ -459,16 +450,24 @@ namespace stardew_access.Patches
                 if (new[] { __instance.leftSelectionButtons[DesignControlsIndex].visible, __instance.rightSelectionButtons[DesignControlsIndex].visible }.All(v => v == true) // both visible
                     && new[] { __instance.leftSelectionButtons[DesignControlsIndex].name, __instance.rightSelectionButtons[DesignControlsIndex].name }.All(n => n == "Direction")) // both named "Direction"
                 {
-                    buttons.Add(__instance.leftSelectionButtons[DesignControlsIndex], "Rotate Left Button");
-                    buttons.Add(__instance.rightSelectionButtons[DesignControlsIndex], "Rotate Right Button");
+                    buttons.Add(__instance.leftSelectionButtons[DesignControlsIndex], ("menu-character_creation-rotate_left_button", null));
+                    buttons.Add(__instance.rightSelectionButtons[DesignControlsIndex], ("menu-character_creation-rotate_right_button", null));
                     ++DesignControlsIndex;
                 }
             }
 
             if (__instance.genderButtons.Count > 0)
             {
-                buttons.Add(__instance.genderButtons[0], ((Game1.player.IsMale) ? "Selected " : "") + "Gender: Male Button");
-                buttons.Add(__instance.genderButtons[1], ((!Game1.player.IsMale) ? "Selected " : "") + "Gender: Female Button");
+                buttons.Add(__instance.genderButtons[0], ("menu-character_creation-gender_button", new
+                {
+                    is_selected = Game1.player.IsMale ? 1 : 0,
+                    is_male = 1
+                }));
+                buttons.Add(__instance.genderButtons[1], ("menu-character_creation-gender_button", new
+                {
+                    is_selected = !Game1.player.IsMale ? 1 : 0,
+                    is_male = 0
+                }));
             }
 
             if (characterDesignToggle && new[] { __instance.leftSelectionButtons.Count, __instance.rightSelectionButtons.Count }.All(c => c >= DesignControlsIndex) && new[] { __instance.leftSelectionButtons[DesignControlsIndex].visible, __instance.rightSelectionButtons[DesignControlsIndex].visible }.All(v => v == true))
@@ -495,8 +494,9 @@ namespace stardew_access.Patches
                     }
                     if (!buttons.ContainsKey(left) || !buttons.ContainsKey(right))
                     {
-                        buttons.Add(left, $"Previous {name} button");
-                        buttons.Add(right, $"Next {name} button");
+                        // FIXME Translate these!!
+                        buttons.Add(left, ($"Previous {name} button", null));
+                        buttons.Add(right, ($"Next {name} button", null));
                     }
                     //MainClass.ScreenReader.Say($"Left {DesignControlsIndex}: {__instance.leftSelectionButtons[DesignControlsIndex]} {__instance.leftSelectionButtons[DesignControlsIndex].name}\n", true);
                     //MainClass.ScreenReader.Say($"Right {DesignControlsIndex}: {__instance.rightSelectionButtons[DesignControlsIndex]} {__instance.rightSelectionButtons[DesignControlsIndex].name}\n", true);
@@ -505,39 +505,39 @@ namespace stardew_access.Patches
 
                 ClickableComponent eyeColorHue = __instance.getComponentWithID(522);
                 if (eyeColorHue != null && eyeColorHue.visible)
-                    buttons.Add(eyeColorHue, "eye color hue slider");
+                    buttons.Add(eyeColorHue, ("menu-character_creation-eye_color_hue_slider", null));
 
                 ClickableComponent eyeColorSaturation = __instance.getComponentWithID(523);
                 if (eyeColorSaturation != null && eyeColorSaturation.visible)
-                    buttons.Add(eyeColorSaturation, "eye color saturation slider");
+                    buttons.Add(eyeColorSaturation, ("menu-character_creation-eye_color_saturation_slider", null));
 
                 ClickableComponent eyeColorValue = __instance.getComponentWithID(524);
                 if (eyeColorValue != null && eyeColorValue.visible)
-                    buttons.Add(eyeColorValue, "eye color Value slider");
+                    buttons.Add(eyeColorValue, ("menu-character_creation-eye_color_value_slider", null));
 
                 ClickableComponent hairColorHue = __instance.getComponentWithID(525);
                 if (hairColorHue != null && hairColorHue.visible)
-                    buttons.Add(hairColorHue, "hair color hue slider");
+                    buttons.Add(hairColorHue, ("menu-character_creation-hair_color_hue_slider", null));
 
                 ClickableComponent hairColorSaturation = __instance.getComponentWithID(526);
                 if (hairColorSaturation != null && hairColorSaturation.visible)
-                    buttons.Add(hairColorSaturation, "hair color saturation slider");
+                    buttons.Add(hairColorSaturation, ("menu-character_creation-hair_color_saturation_slider", null));
 
                 ClickableComponent hairColorValue = __instance.getComponentWithID(527);
                 if (hairColorValue != null && hairColorValue.visible)
-                    buttons.Add(hairColorValue, "hair color Value slider");
+                    buttons.Add(hairColorValue, ("menu-character_creation-hair_color_value_slider", null));
 
                 ClickableComponent pantsColorHue = __instance.getComponentWithID(528);
                 if (pantsColorHue != null && pantsColorHue.visible)
-                    buttons.Add(pantsColorHue, "pants color hue slider");
+                    buttons.Add(pantsColorHue, ("menu-character_creation-pants_color_hue_slider", null));
 
                 ClickableComponent pantsColorSaturation = __instance.getComponentWithID(529);
                 if (pantsColorSaturation != null && pantsColorSaturation.visible)
-                    buttons.Add(pantsColorSaturation, "pants color saturation slider");
+                    buttons.Add(pantsColorSaturation, ("menu-character_creation-pants_color_saturation_slider", null));
 
                 ClickableComponent pantsColorValue = __instance.getComponentWithID(530);
                 if (pantsColorValue != null && pantsColorValue.visible)
-                    buttons.Add(pantsColorValue, "pants color Value slider");
+                    buttons.Add(pantsColorValue, ("menu-character_creation-pants_color_value_slider", null));
             }
 
             #endregion
@@ -547,15 +547,19 @@ namespace stardew_access.Patches
             {
                 for (int i = 0; i < __instance.farmTypeButtons.Count; i++)
                 {
-                    buttons.Add(__instance.farmTypeButtons[i], ((i == Game1.whichFarm) ? "Selected " : "") + GetFarmHoverText(__instance.farmTypeButtons[i]));
+                    buttons.Add(__instance.farmTypeButtons[i], ("menu-character_creation-farm_type_buttons", new
+                    {
+                        is_selected = (i == Game1.whichFarm) ? 1 : 0,
+                        value = GetFarmHoverText(__instance.farmTypeButtons[i])
+                    }));
                 }
             }
 
             if (__instance.farmTypeNextPageButton != null && __instance.farmTypeNextPageButton.visible)
-                buttons.Add(__instance.farmTypeNextPageButton, "Next Farm Type Page Button");
+                buttons.Add(__instance.farmTypeNextPageButton, ("menu-character_creation-next_farm_type_page_button", null));
 
             if (__instance.farmTypePreviousPageButton != null && __instance.farmTypePreviousPageButton.visible)
-                buttons.Add(__instance.farmTypePreviousPageButton, "Previous Farm Type Page Button");
+                buttons.Add(__instance.farmTypePreviousPageButton, ("menu-character_creation-previous_farm_type_page_button", null));
             #endregion
 
             #region Co-op related
@@ -563,42 +567,54 @@ namespace stardew_access.Patches
             {
                 ClickableComponent cabinLeft = __instance.getComponentWithID(621);
                 if (Game1.startingCabins > 0)
-                    buttons.Add(cabinLeft, "Decrease starting cabins button");
+                    buttons.Add(cabinLeft, ("menu-character_creation-decrease_starting_cabins_button", null));
 
-                buttons.Add(___startingCabinsLabel, $"Starting cabins: {Game1.startingCabins}");
+                buttons.Add(___startingCabinsLabel, ("menu-character_creation-starting_cabins_label", new
+                {
+                    value = Game1.startingCabins
+                }));
 
                 ClickableComponent cabinRight = __instance.getComponentWithID(622);
                 if (Game1.startingCabins < 3)
-                    buttons.Add(cabinRight, "Increase starting cabins button");
+                    buttons.Add(cabinRight, ("menu-character_creation-increase_starting_cabins_button", null));
 
                 if (Game1.startingCabins > 0)
                 {
-                    buttons.Add(__instance.cabinLayoutButtons[0], "Cabin layout to nearby Button");
-                    buttons.Add(__instance.cabinLayoutButtons[1], "Cabin layout to separate Button");
+                    buttons.Add(__instance.cabinLayoutButtons[0], ("menu-character_creation-cabin_layout_nearby_button", null));
+                    buttons.Add(__instance.cabinLayoutButtons[1], ("menu-character_creation-cabin_layout_separate_button", null));
                 }
 
                 ClickableComponent difficultyLeft = __instance.getComponentWithID(627);
-                buttons.Add(difficultyLeft, "Increase profit margin button");
-                buttons.Add(___difficultyModifierLabel, "Profit Margin: " + (((Game1.player.difficultyModifier * 100) == 100f) ? "normal" : Game1.player.difficultyModifier.ToString()));
+                buttons.Add(difficultyLeft, ("menu-character_creation-increase_profit_margin_button", null));
+                buttons.Add(___difficultyModifierLabel, ("menu-character_creation-profit_margin_label", new
+                {
+                    value = ((Game1.player.difficultyModifier * 100) == 100f) ? "normal" : Game1.player.difficultyModifier.ToString()
+                }));
                 ClickableComponent difficultyRight = __instance.getComponentWithID(628);
-                buttons.Add(difficultyRight, "Decrease profit margin button");
+                buttons.Add(difficultyRight, ("menu-character_creation-decrease_profit_margin_button", null));
 
                 ClickableComponent walletLeft = __instance.getComponentWithID(631);
-                buttons.Add(walletLeft, "Money style to " + ((!Game1.player.team.useSeparateWallets.Value) ? "separate wallets" : "shared wallets") + " button");
+                buttons.Add(walletLeft, ("menu-character_creation-money_style_separate_wallets_button", new
+                {
+                    separate_wallets = !Game1.player.team.useSeparateWallets.Value ? 1 : 0
+                }));
             }
             #endregion
 
             if (__instance.skipIntroButton != null && __instance.skipIntroButton.visible)
-                buttons.Add(__instance.skipIntroButton, (___skipIntro ? "Enabled" : "Disabled") + " Skip Intro Button");
+                buttons.Add(__instance.skipIntroButton, ("menu-character_creation-skip_intro_button", new
+                {
+                    is_enabled = ___skipIntro ? 1 : 0
+                }));
 
             if (__instance.advancedOptionsButton != null && __instance.advancedOptionsButton.visible)
-                buttons.Add(__instance.advancedOptionsButton, "Advanced Options Button");
+                buttons.Add(__instance.advancedOptionsButton, ("menu-character_creation-advanced_options_button", null));
 
             if (__instance.okButton != null && __instance.okButton.visible)
-                buttons.Add(__instance.okButton, "OK Button");
+                buttons.Add(__instance.okButton, ("common-ui-ok_button", null));
 
             if (__instance.backButton != null && __instance.backButton.visible)
-                buttons.Add(__instance.backButton, "Back Button");
+                buttons.Add(__instance.backButton, ("common-ui-back_button", null));
             #endregion
 
             int size = buttons.Count - 1;
@@ -620,7 +636,8 @@ namespace stardew_access.Patches
             currentComponent!.snapMouseCursor();
             __instance.setCurrentlySnappedComponentTo(currentComponent!.myID);
 
-            toSpeak = buttons.ElementAt(saveGameIndex).Value;
+            (string translationKey, object? translationTokens) = buttons.ElementAt(saveGameIndex).Value;
+            toSpeak = Translator.Instance.Translate(translationKey, translationTokens);
 
             return toSpeak.Trim();
         }
@@ -672,13 +689,13 @@ namespace stardew_access.Patches
                             _ => __instance.eyeColorPicker,// 522-524 == eye color
                         };
                 SliderBar
-                                                // 523, 526, 529 == saturation slider
-                                                sb = whichSliderBar switch
-                                                {
-                                                    1 => cp.saturationBar,// 523, 526, 529 == saturation slider
-                                                    2 => cp.valueBar,// 524, 527, 530 == value slider
-                                                    _ => cp.hueBar,// 522, 525, 528 == hue slider
-                                                };
+                        // 523, 526, 529 == saturation slider
+                        sb = whichSliderBar switch
+                        {
+                            1 => cp.saturationBar,// 523, 526, 529 == saturation slider
+                            2 => cp.valueBar,// 524, 527, 530 == value slider
+                            _ => cp.hueBar,// 522, 525, 528 == hue slider
+                        };
                 return sb;
             }
             else
@@ -742,7 +759,7 @@ namespace stardew_access.Patches
 
         private static string GetCurrentAttributeValue(string componentName, Func<int> getValue, bool lessInfo = false)
         {
-            if (currentComponent != null && (currentComponent.myID == 507 || (!string.IsNullOrEmpty(currentComponent.name)  && componentName.StartsWith(currentComponent.name, StringComparison.OrdinalIgnoreCase))))
+            if (currentComponent != null && (currentComponent.myID == 507 || (!string.IsNullOrEmpty(currentComponent.name) && componentName.StartsWith(currentComponent.name, StringComparison.OrdinalIgnoreCase))))
             {
                 int index = getValue();
 
