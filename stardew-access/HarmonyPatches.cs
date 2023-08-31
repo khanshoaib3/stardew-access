@@ -13,11 +13,6 @@ namespace stardew_access
         {
             #region Title Menu Patches
             harmony.Patch(
-                original: AccessTools.Method(typeof(LoadGameMenu.SaveFileSlot), nameof(LoadGameMenu.SaveFileSlot.Draw), new Type[] { typeof(SpriteBatch), typeof(int) }),
-                postfix: new HarmonyMethod(typeof(LoadGameMenuPatch), nameof(LoadGameMenuPatch.DrawPatch))
-            );
-
-            harmony.Patch(
                 original: AccessTools.Method(typeof(CharacterCustomization), nameof(CharacterCustomization.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(CharacterCustomizationMenuPatch), nameof(CharacterCustomizationMenuPatch.DrawPatch))
             );

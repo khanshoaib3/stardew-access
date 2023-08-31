@@ -418,6 +418,15 @@ menu-title-fullscreen_button = Fullscreen: {$is_enabled ->
 menu-title-exit_button = Exit button
 menu-title-invite_button = Invite button
 
+### Load Game Menu
+
+menu-load_game-delete_farm_button = Delete {$name} farm
+menu-load_game-delete_farm_confirmation_text = Really delete farm?
+menu-load_game-farm_details = {$farm_name} Farm, {$farmer_name}, {$money}g, {$date}, {$hours_played} hours played
+
+
+
+
 # FIXME update naming convention
 prefix-repair = Repair {$content}
 

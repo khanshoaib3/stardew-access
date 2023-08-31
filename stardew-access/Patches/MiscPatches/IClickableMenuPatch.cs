@@ -147,9 +147,6 @@ namespace stardew_access.Patches
                 case CoopMenu:
                     CoopMenuPatch.Cleanup();
                     break;
-                case LoadGameMenu:
-                    LoadGameMenuPatch.Cleanup();
-                    break;
                 case LetterViewerMenu:
                     LetterViewerMenuPatch.Cleanup();
                     break;
