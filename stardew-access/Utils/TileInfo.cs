@@ -123,7 +123,7 @@ namespace stardew_access.Utils
 
             if (terrainFeature.TryGetValue(tile, out var tf))
             {
-                (string? name, CATEGORY category) = GetTerrainFeatureAtTile(tf);
+                (string? name, CATEGORY? category) = GetTerrainFeatureAtTile(tf);
                 if (name != null)
                 {
                     return (name, category);
@@ -398,205 +398,12 @@ namespace stardew_access.Utils
         /// </summary>
         /// <param name="terrain">A reference to the terrain feature to be checked.</param>
         /// <returns>A tuple containing the name and category of the terrain feature at the tile.</returns>
-        public static (string? name, CATEGORY category) GetTerrainFeatureAtTile(Netcode.NetRef<TerrainFeature> terrain)
+        public static (string? name, CATEGORY? category) GetTerrainFeatureAtTile(Netcode.NetRef<TerrainFeature> terrain)
         {
             // Get the terrain feature from the reference
             var terrainFeature = terrain.Get();
-
-            // Check if the terrain feature is HoeDirt
-            if (terrainFeature is HoeDirt dirt)
-            {
-                return (GetHoeDirtDetail(dirt), CATEGORY.Crops);
-            }
-            // Check if the terrain feature is a CosmeticPlant
-            else if (terrainFeature is CosmeticPlant cosmeticPlant)
-            {
-                string toReturn = cosmeticPlant.textureName().ToLower();
-
-                toReturn = toReturn.Replace("terrain", "").Replace("feature", "");
-
-                return (toReturn, CATEGORY.Furnitures);
-            }
-            // Check if the terrain feature is Flooring
-            else if (terrainFeature is Flooring flooring && MainClass.Config.ReadFlooring)
-            {
-                bool isPathway = flooring.isPathway.Get();
-                bool isSteppingStone = flooring.isSteppingStone.Get();
-                string toReturn = isPathway ? "Pathway" : (isSteppingStone ? "Stepping Stone" : "Flooring");
-
-                return (toReturn, CATEGORY.Flooring);
-            }
-            // Check if the terrain feature is a FruitTree
-            else if (terrainFeature is FruitTree fruitTree)
-            {
-                return (GetFruitTree(fruitTree), CATEGORY.Trees);
-            }
-            // Check if the terrain feature is Grass
-            else if (terrainFeature is Grass)
-            {
-                return ("tile-grass-name", CATEGORY.Debris);
-            }
-            // Check if the terrain feature is a Tree
-            else if (terrainFeature is Tree tree)
-            {
-                return (GetTree(tree), CATEGORY.Trees);
-            }
-
-            return (null, CATEGORY.Others);
+            return TerrainUtils.GetTerrainFeatureInfoAndCategory(terrainFeature);
         }
-
-        /// <summary>
-        /// Retrieves a detailed description of HoeDirt, including its soil, plant, and other relevant information.
-        /// </summary>
-        /// <param name="dirt">The HoeDirt object to get details for.</param>
-        /// <param name="ignoreIfEmpty">If true, the method will return an empty string for empty soil; otherwise, it will return "Soil".</param>
-        /// <returns>A string representing the details of the provided HoeDirt object.</returns>
-        public static string GetHoeDirtDetail(HoeDirt dirt, bool ignoreIfEmpty = false)
-        {
-            // Use StringBuilder for efficient string manipulation
-            StringBuilder detail = new();
-
-            // Calculate isWatered and isFertilized only once
-            bool isWatered = dirt.state.Value == HoeDirt.watered;
-            bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
-
-            // Check the watered status and append it to the detail string
-            if (isWatered && MainClass.Config.WateredToggle)
-                detail.Append("Watered ");
-            else if (!isWatered && !MainClass.Config.WateredToggle)
-                detail.Append("Unwatered ");
-
-            // Check if the dirt is fertilized and append it to the detail string
-            if (isFertilized)
-                detail.Append("Fertilized ");
-
-            // Check if the dirt has a crop
-            if (dirt.crop != null)
-            {
-                // Handle forage crops
-                if (dirt.crop.forageCrop.Value)
-                {
-                    detail.Append(dirt.crop.whichForageCrop.Value switch
-                    {
-                        1 => "Spring onion",
-                        2 => "Ginger",
-                        _ => "Forageable crop"
-                    });
-                }
-                else // Handle non-forage crops
-                {
-                    // Append the crop name to the detail string
-                    string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest.Value].Split('/')[0];
-                    detail.Append(cropName);
-
-                    // Check if the crop is harvestable and prepend it to the detail string
-                    if (dirt.readyForHarvest())
-                        detail.Insert(0, "Harvestable ");
-
-                    // Check if the crop is dead and prepend it to the detail string
-                    if (dirt.crop.dead.Value)
-                        detail.Insert(0, "Dead ");
-                }
-            }
-            else if (!ignoreIfEmpty) // If there's no crop and ignoreIfEmpty is false, append "Soil" to the detail string
-            {
-                detail.Append("Soil");
-            }
-
-            return detail.ToString();
-        }
-
-        /// <summary>
-        /// Retrieves the fruit tree's display name based on its growth stage and fruit index.
-        /// </summary>
-        /// <param name="fruitTree">The FruitTree object to get the name for.</param>
-        /// <returns>The fruit tree's display name.</returns>
-        public static string GetFruitTree(FruitTree fruitTree)
-        {
-            int stage = fruitTree.growthStage.Value;
-            int fruitIndex = fruitTree.indexOfFruit.Get();
-
-            // Get the base name of the fruit tree from the object information
-            string toReturn = Game1.objectInformation[fruitIndex].Split('/')[0];
-
-            // Append the growth stage description to the fruit tree name
-            if (stage == 0)
-                toReturn = $"{toReturn} seed";
-            else if (stage == 1)
-                toReturn = $"{toReturn} sprout";
-            else if (stage == 2)
-                toReturn = $"{toReturn} sapling";
-            else if (stage == 3)
-                toReturn = $"{toReturn} bush";
-            else if (stage >= 4)
-                toReturn = $"{toReturn} tree";
-
-            // If there are fruits on the tree, prepend "Harvestable" to the name
-            if (fruitTree.fruitsOnTree.Value > 0)
-                toReturn = $"Harvestable {toReturn}";
-
-            return toReturn;
-        }
-
-        /// <summary>
-        /// Retrieves the tree's display name based on its type and growth stage.
-        /// </summary>
-        /// <param name="tree">The Tree object to get the name for.</param>
-        /// <returns>The tree's display name.</returns>
-        public static string GetTree(Tree tree)
-        {
-            int treeType = tree.treeType.Value;
-            int treeStage = tree.growthStage.Value;
-            string seedName = "";
-
-            // Handle special tree types and return their names
-            switch (treeType)
-            {
-                case 4:
-                case 5:
-                    return "Winter Tree";
-                case 6:
-                    return "Palm Tree";
-                case 7:
-                    return "Mushroom Tree";
-            }
-
-            // Get the seed name for the tree type
-            if (treeType <= 3)
-                seedName = Game1.objectInformation[308 + treeType].Split('/')[0];
-            else if (treeType == 8)
-                seedName = Game1.objectInformation[292].Split('/')[0];
-
-            // Determine the tree name and growth stage description
-            if (treeStage >= 1)
-            {
-                string treeName = seedName.ToLower() switch
-                {
-                    "mahogany seed" => "Mahogany",
-                    "acorn" => "Oak",
-                    "maple seed" => "Maple",
-                    "pine cone" => "Pine",
-                    _ => "Coconut",
-                };
-
-                // Append the growth stage description to the tree name
-                if (treeStage == 1)
-                    treeName = $"{treeName} sprout";
-                else if (treeStage == 2)
-                    treeName = $"{treeName} sapling";
-                else if (treeStage == 3 || treeStage == 4)
-                    treeName = $"{treeName} bush";
-                else if (treeStage >= 5)
-                    treeName = $"{treeName} tree";
-
-                return treeName;
-            }
-
-            // Return the seed name if the tree is at stage 0
-            return seedName;
-        }
-
-        
         #region Objects
         /// <summary>
         /// Retrieves the name and category of an object at a specific tile in the game location.
@@ -633,7 +440,7 @@ namespace stardew_access.Utils
             }
             else if (obj is IndoorPot indoorPot)
             {
-                toReturn.name = $"{obj.DisplayName}, {GetHoeDirtDetail(indoorPot.hoeDirt.Value, true)}";
+                toReturn.name = $"{obj.DisplayName}, {TerrainUtils.GetDirtInfoString(indoorPot.hoeDirt.Value, true)}";
             }
             else if (obj is Sign sign && sign.displayItem.Value != null)
             {
