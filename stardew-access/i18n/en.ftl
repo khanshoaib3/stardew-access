@@ -295,7 +295,7 @@ menu-level_up-ok_button = {$title}, {$extra_info}, Learned recipes: {$learned_re
 
 ### Naming Menu
 
-menu-naming-done_naming_button = Done naming button
+menu-naming-done_naming_button = Done button
 menu-naming-random_button = Random button
 
 
@@ -423,6 +423,20 @@ menu-title-invite_button = Invite button
 menu-load_game-delete_farm_button = Delete {$name} farm
 menu-load_game-delete_farm_confirmation_text = Really delete farm?
 menu-load_game-farm_details = {$farm_name} Farm, {$farmer_name}, {$money}g, {$date}, {$hours_played} hours played
+
+### Co-op Menu
+
+menu-co_op-join_lan_game_button = Join lan game
+menu-co_op-host_new_farm_button = Host new farm
+menu-co_op-refresh_button = Refresh Button
+menu-co_op-join_tab_button = Join tab {$is_selected ->
+    [0] {EMPTYSTRING()}
+    *[1] selected
+  }
+menu-co_op-host_tab_button = Host tab {$is_selected ->
+    [0] {EMPTYSTRING()}
+    *[1] selected
+  }
 
 
 

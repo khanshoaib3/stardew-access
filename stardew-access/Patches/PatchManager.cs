@@ -60,6 +60,7 @@ namespace stardew_access.Patches
                 new SpecialOrdersBoardPatch(),
                 // Title Menu Patches
                 new AdvancedGameOptionsPatch(),
+                new CoopMenuPatch(),
                 new LoadGameMenuPatch(),
                 new TitleMenuPatch(),
             };

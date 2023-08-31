@@ -17,11 +17,6 @@ namespace stardew_access
                 postfix: new HarmonyMethod(typeof(CharacterCustomizationMenuPatch), nameof(CharacterCustomizationMenuPatch.DrawPatch))
             );
 
-            harmony.Patch(
-                original: AccessTools.Method(typeof(CoopMenu), nameof(CoopMenu.update), new Type[] { typeof(GameTime) }),
-                postfix: new HarmonyMethod(typeof(CoopMenuPatch), nameof(CoopMenuPatch.DrawPatch))
-            );
-
             #endregion
 
             #region Mini Games
