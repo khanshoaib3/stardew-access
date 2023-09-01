@@ -28,7 +28,9 @@ namespace stardew_access.Patches
                 }
                 else if (__instance.cancelButton.containsPoint(x, y))
                 {
-                    translationKey = "menu-confirmation_dialogue-cancel_button";
+                    translationKey = Game1.activeClickableMenu is InviteCodeDialog
+                        ? "menu-confirmation_dialogue-copy_button"
+                        : "menu-confirmation_dialogue-cancel_button";
                 }
 
                 if (string.IsNullOrEmpty(translationKey))

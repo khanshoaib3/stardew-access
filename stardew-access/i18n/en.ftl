@@ -259,6 +259,8 @@ menu-confirmation_dialogue-ok_button = {$dialogue_message}
   Ok button
 menu-confirmation_dialogue-cancel_button = {$dialogue_message}
   Cancel button
+menu-confirmation_dialogue-copy_button = {$dialogue_message}
+  Copy to clipboard button
 
 ### Item List Menu
 
