@@ -1,3 +1,4 @@
+using static stardew_access.Utils.ObjectUtils;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using System.Text;
@@ -19,7 +20,7 @@ namespace stardew_access.Utils
                             2 => "Ginger",
                             _ => "Forageable crop",
                         }
-                        : Game1.objectInformation[dirt.crop.indexOfHarvest.Value].Split('/')[0]
+                        : GetObjectById(dirt.crop.indexOfHarvest.Value)
                     : null,
                 IsReadyForHarvest: dirt.crop != null && dirt.readyForHarvest(),
                 IsDead: dirt.crop?.dead.Value ?? false
@@ -64,7 +65,7 @@ namespace stardew_access.Utils
         {
             int stage = fruitTree.growthStage.Value;
             int fruitIndex = fruitTree.indexOfFruit.Get();
-            string treeType = Game1.objectInformation[fruitIndex].Split('/')[0];
+            string treeType = GetObjectById(fruitIndex);
             bool isHarvestable = fruitTree.fruitsOnTree.Value > 0;
 
             return (treeType, stage, isHarvestable);
@@ -101,7 +102,7 @@ namespace stardew_access.Utils
             string seedName = "";
 
             if (tree.treeType.Value <= 3 || tree.treeType.Value == 8)
-                seedName = Game1.objectInformation[308 + (tree.treeType.Value == 8 ? -16 : tree.treeType.Value)].Split('/')[0];
+                seedName = GetObjectById(308 + (tree.treeType.Value == 8 ? -16 : tree.treeType.Value));
 
             return (tree.treeType.Value, treeStage, seedName);
         }
@@ -178,29 +179,30 @@ namespace stardew_access.Utils
             return "tile-grass-name";
         }
 
-        private static int GetBushShakeOff(Bush bush, string season)
-        {
-            int shakeOff = season switch
-            {
-                "spring" => 296,
-                "fall" => 410,
-                _ => -1
-            };
-            return bush.size.Value switch
-            {
-                3 => 815,
-                4 => 73,
-                _ => shakeOff
-            };
-        }
-
         public static (bool IsTownBush, bool IsGreenhouseBush, bool IsHarvestable, int ShakeOff) GetBushInfo(Bush bush)
         {
+            // Local function to get shake off object value
+            int GetBushShakeOff(string season)
+            {
+                int shakeOff = season switch
+                {
+                    "spring" => 296, // Salmonberry
+                    "fall" => 410, // Blackberry
+                    _ => -1 // none
+                };
+                return bush.size.Value switch
+                {
+                    3 => 815, // Tea Leaves
+                    4 => 73, // Golden Walnut
+                    _ => shakeOff
+                };
+            }
+
             string season = bush.overrideSeason.Value == -1 
                 ? Game1.GetSeasonForLocation(bush.currentLocation) 
                 : Utility.getSeasonNameFromNumber(bush.overrideSeason.Value);
             
-            int shakeOff = GetBushShakeOff(bush, season);
+            int shakeOff = GetBushShakeOff(season);
 
             bool isHarvestable = !bush.townBush.Value && bush.tileSheetOffset.Value == 1 && bush.inBloom(season, Game1.dayOfMonth);
 
@@ -211,10 +213,11 @@ namespace stardew_access.Utils
         {
             StringBuilder bushInfoString = new();
 
-            // Add the harvest status if it's harvestable
+            // Add the harvest status and item name if it's harvestable
             if (bushInfo.IsHarvestable)
             {
-                bushInfoString.Append("Harvestable ");
+                //string harvestableItemName = ObjectUtils.GetObjectById(shakeOff);
+                bushInfoString.Append($"Harvestable {GetObjectById(bushInfo.ShakeOff)} ");
             }
 
             // Add the type of the bush
@@ -230,7 +233,7 @@ namespace stardew_access.Utils
             // Append the word "Bush" to all
             bushInfoString.Append("Bush");
 
-            return bushInfoString.ToString();
+            return bushInfoString.ToString().Trim();
         }
 
         public static string GetBushInfoString(Bush bush)
