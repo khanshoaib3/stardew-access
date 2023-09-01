@@ -120,5 +120,10 @@ namespace stardew_access.ScreenReader
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
         /// <returns>true if the text was spoken otherwise false.</returns>
         public bool SayWithTileQuery(string text, int x, int y, bool interrupt);
+        
+        /// <summary>
+        /// Is called when a menu is closed and clears the menu queries.
+        /// </summary>
+        public void Cleanup();
     }
 }

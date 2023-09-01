@@ -116,7 +116,7 @@ namespace stardew_access.ScreenReader
         {
             if (prevChatText == text)
                 return false;
-            
+
             prevChatText = text;
             return Say(text, interrupt);
         }
@@ -127,9 +127,16 @@ namespace stardew_access.ScreenReader
 
             if (prevTextTile == query)
                 return false;
-            
+
             prevTextTile = query;
             return Say(text, interrupt);
+        }
+
+        public void Cleanup()
+        {
+            MainClass.ScreenReader.PrevMenuQueryText = "";
+            MainClass.ScreenReader.MenuPrefixText = "";
+            MainClass.ScreenReader.MenuSuffixText = "";
         }
     }
 }

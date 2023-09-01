@@ -176,9 +176,7 @@ namespace stardew_access.Patches
                     break;
             }
 
-            MainClass.ScreenReader.PrevMenuQueryText = "";
-            MainClass.ScreenReader.MenuPrefixText = "";
-            MainClass.ScreenReader.MenuSuffixText = "";
+            MainClass.ScreenReader.Cleanup();
             InventoryUtils.Cleanup();
             TextBoxPatch.activeTextBoxes = "";
         }
