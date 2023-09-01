@@ -178,11 +178,75 @@ namespace stardew_access.Utils
             return "tile-grass-name";
         }
 
-        public static (string? name, CATEGORY? category) GetTerrainFeatureInfoAndCategory(TerrainFeature terrainFeature, bool ignoreIfEmpty = false)
+        private static int GetBushShakeOff(Bush bush, string season)
         {
+            int shakeOff = season switch
+            {
+                "spring" => 296,
+                "fall" => 410,
+                _ => -1
+            };
+            return bush.size.Value switch
+            {
+                3 => 815,
+                4 => 73,
+                _ => shakeOff
+            };
+        }
+
+        public static (bool IsTownBush, bool IsGreenhouseBush, bool IsHarvestable, int ShakeOff) GetBushInfo(Bush bush)
+        {
+            string season = bush.overrideSeason.Value == -1 
+                ? Game1.GetSeasonForLocation(bush.currentLocation) 
+                : Utility.getSeasonNameFromNumber(bush.overrideSeason.Value);
+            
+            int shakeOff = GetBushShakeOff(bush, season);
+
+            bool isHarvestable = !bush.townBush.Value && bush.tileSheetOffset.Value == 1 && bush.inBloom(season, Game1.dayOfMonth);
+
+            return (bush.townBush.Value, bush.greenhouseBush.Value, isHarvestable, shakeOff);
+        }
+
+        public static string GetBushInfoString((bool IsTownBush, bool IsGreenhouseBush, bool IsHarvestable, int ShakeOff) bushInfo)
+        {
+            StringBuilder bushInfoString = new();
+
+            // Add the harvest status if it's harvestable
+            if (bushInfo.IsHarvestable)
+            {
+                bushInfoString.Append("Harvestable ");
+            }
+
+            // Add the type of the bush
+            if (bushInfo.IsTownBush)
+            {
+                bushInfoString.Append("Town ");
+            }
+            else if (bushInfo.IsGreenhouseBush)
+            {
+                bushInfoString.Append("Greenhouse ");
+            }
+
+            // Append the word "Bush" to all
+            bushInfoString.Append("Bush");
+
+            return bushInfoString.ToString();
+        }
+
+        public static string GetBushInfoString(Bush bush)
+        {
+            var bushInfo = GetBushInfo(bush);
+            return GetBushInfoString(bushInfo);
+        }
+
+        public static (string? name, CATEGORY? category) GetTerrainFeatureInfoAndCategory(TerrainFeature? terrainFeature, bool ignoreIfEmpty = false)
+        {
+            if (terrainFeature == null) return (null, null);
             // Switch on the actual type of the terrain feature
             switch (terrainFeature)
             {
+                case LargeTerrainFeature largeTerrainFeature:
+                    return GetTerrainFeatureInfoAndCategory(largeTerrainFeature, ignoreIfEmpty);
                 case HoeDirt dirt:
                     return (GetDirtInfoString(dirt, ignoreIfEmpty), CATEGORY.Crops);
                 case CosmeticPlant cosmeticPlant:
@@ -199,6 +263,21 @@ namespace stardew_access.Utils
                     return (GetTreeInfoString(tree), CATEGORY.Trees);
                 default:
                     Log.Warn($"Unknown terrain feature type: {terrainFeature.GetType().Name}", true);
+                    return (null, null);
+            }
+        }
+
+        public static (string? name, CATEGORY? category) GetTerrainFeatureInfoAndCategory(LargeTerrainFeature? largeTerrainFeature, bool ignoreIfEmpty = false)
+        {
+            if (largeTerrainFeature == null) return (null, null);
+
+            switch (largeTerrainFeature)
+            {
+                case Bush bush:
+                    return (GetBushInfoString(bush), CATEGORY.Bush);
+                // Add more cases for other types of LargeTerrainFeature here
+                default:
+                    Log.Warn($"Unknown LargeTerrainFeature type: {largeTerrainFeature.GetType().Name}", true);
                     return (null, null);
             }
         }

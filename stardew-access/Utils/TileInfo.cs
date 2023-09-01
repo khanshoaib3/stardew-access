@@ -209,40 +209,7 @@ namespace stardew_access.Utils
             if (bush is null || (lessInfo && (bush.tilePosition.Value.X != x || bush.tilePosition.Value.Y != y)))
                 return null;
 
-            if (!bush.townBush.Value && bush.tileSheetOffset.Value == 1 && bush.inBloom(Game1.GetSeasonForLocation(currentLocation), Game1.dayOfMonth))
-            {
-                string season = bush.overrideSeason.Value == -1 ? Game1.GetSeasonForLocation(currentLocation) : Utility.getSeasonNameFromNumber(bush.overrideSeason.Value);
-                int shakeOff = season switch
-                {
-                    "spring" => 296,
-                    "fall" => 410,
-                    _ => -1
-                };
-
-                shakeOff = bush.size.Value switch
-                {
-                    3 => 815,
-                    4 => 73,
-                    _ => shakeOff
-                };
-
-                if (shakeOff == -1)
-                {
-                    return null;
-                }
-
-                return bush.townBush.Value
-                    ? "Harvestable Town Bush"
-                    : bush.greenhouseBush.Value
-                        ? "Harvestable Greenhouse Bush"
-                        : "Harvestable Bush";
-            }
-
-            return bush.townBush.Value
-                ? "Town Bush"
-                : bush.greenhouseBush.Value
-                    ? "Greenhouse Bush"
-                    : "Bush";
+            return TerrainUtils.GetBushInfoString(bush);
         }
 
         /// <summary>
