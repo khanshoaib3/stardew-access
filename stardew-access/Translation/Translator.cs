@@ -60,7 +60,7 @@ namespace stardew_access.Translation
             if (Fluent.ContainsKey(translationKey))
             {
                 #if DEBUG
-                Log.Verbose($"Translate: found translation key \"{translationKey}\"");
+                Log.Verbose($"Translate: found translation key \"{translationKey}\"", true);
                 #endif
                 return Fluent.Get(translationKey);
             }
@@ -86,17 +86,17 @@ namespace stardew_access.Translation
                 #if DEBUG
                 if (tokens is Dictionary<string, object> dictTokens)
                 {
-                    Log.Verbose($"Translate with tokens: found translation key \"{translationKey}\" with tokens: {string.Join(", ", dictTokens.Select(kv => $"{kv.Key}: {kv.Value}"))}");
+                    Log.Verbose($"Translate with tokens: found translation key \"{translationKey}\" with tokens: {string.Join(", ", dictTokens.Select(kv => $"{kv.Key}: {kv.Value}"))}", true);
                 }
                 else
                 {
                     var tokenStr = tokens is not null ? string.Join(", ", tokens.GetType().GetProperties().Select(prop => $"{prop.Name}: {prop.GetValue(tokens)}")) : "null";
-                    Log.Verbose($"Translate with tokens: found translation key \"{translationKey}\" with tokens: {tokenStr}");
+                    Log.Verbose($"Translate with tokens: found translation key \"{translationKey}\" with tokens: {tokenStr}", true);
                 }
                 #endif
                 var result = Fluent.Get(translationKey, tokens);
                 #if DEBUG
-                Log.Verbose($"Translated to: {result}");
+                Log.Verbose($"Translated to: {result}", true);
                 #endif
                 return result;
             }
