@@ -64,6 +64,7 @@ namespace stardew_access.Patches
                 new CoopMenuPatch(),
                 new LoadGameMenuPatch(),
                 new TitleMenuPatch(),
+                new FarmHandMenuPatch(),
             };
 
             foreach (IPatch patch in allPatches)

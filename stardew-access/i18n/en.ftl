@@ -422,7 +422,13 @@ menu-title-invite_button = Invite button
 
 menu-load_game-delete_farm_button = Delete {$name} farm
 menu-load_game-delete_farm_confirmation_text = Really delete farm?
-menu-load_game-farm_details = {$farm_name} Farm, {$farmer_name}, {$money}g, {$date}, {$hours_played} hours played
+menu-load_game-farm_details = {$index ->
+    [-1] {EMPTYSTRING()}
+    *[other] {$index}
+  } {$farm_name} Farm, {$farmer_name}, {$money ->
+    [-1] {EMPTYSTRING()}
+    *[other] {$money}g
+  }, {$date}, {$hours_played} hours played
 
 ### Co-op Menu
 
@@ -437,6 +443,7 @@ menu-co_op-host_tab_button = Host tab {$is_selected ->
     [0] {EMPTYSTRING()}
     *[1] selected
   }
+menu-co_op-friend_hosted_farm_details = {$farm_name}, Owner: {$owner_name}, {$date}
 
 ### Character Creation Menu (or new game menu)
 

@@ -27,13 +27,18 @@ namespace stardew_access.Patches
             );
         }
 
-        private static void UpdatePatch(CoopMenu __instance, CoopMenu.Tab ___currentTab)
+        private static void UpdatePatch(CoopMenu __instance, CoopMenu.Tab ___currentTab, bool ___isSetUp)
         {
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
                 string translationKey = "";
                 object? translationTokens = null;
+                if (!___isSetUp)
+                {
+                    MainClass.ScreenReader.SayWithMenuChecker(Game1.content.LoadString("Strings\\UI:CoopMenu_ConnectingOnlineServices"), true);
+                    return;
+                }
 
                 if (__instance.joinTab.containsPoint(x, y))
                 {
@@ -94,7 +99,23 @@ namespace stardew_access.Patches
                 if (!___menu.slotButtons[i].visible || !___menu.slotButtons[i].containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                     return;
 
-                Log.Debug((string)___Farm.GetType().GetProperty("FarmName", BindingFlags.Instance).GetValue(___Farm));
+                string? farmName = ___Farm.GetType().GetField("FarmName", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)?.GetValue(___Farm)?.ToString();
+                string? ownerName = ___Farm.GetType().GetField("OwnerName", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)?.GetValue(___Farm)?.ToString();
+                bool? previouslyJoined = (bool?)(___Farm.GetType().GetField("PreviouslyJoined", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)?.GetValue(___Farm));
+                WorldDate? date = (WorldDate?)___Farm.GetType().GetField("Date", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)?.GetValue(___Farm);
+
+                if (farmName == null || ownerName == null || date == null || previouslyJoined == null)
+                    return;
+
+                string path = previouslyJoined == true ? "Strings\\UI:CoopMenu_RevisitFriendFarm" : "Strings\\UI:CoopMenu_JoinFriendFarm";
+                farmName = Game1.content.LoadString(path, farmName);
+
+                MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-co_op-friend_hosted_farm_details", true, new
+                {
+                    farm_name = farmName,
+                    owner_name = ownerName,
+                    date = date.Localize()
+                });
             }
             catch (Exception e)
             {

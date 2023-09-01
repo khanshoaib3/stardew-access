@@ -81,10 +81,14 @@ namespace stardew_access.Patches
                 !__instance.Farmer.yearForSaveGame.HasValue) ? __instance.Farmer.dateStringForSaveGame : Utility.getDateStringFor(__instance.Farmer.dayOfMonthForSaveGame.Value, __instance.Farmer.seasonForSaveGame.Value, __instance.Farmer.yearForSaveGame.Value);
 
             string translationKey = "menu-load_game-farm_details";
+            Log.Debug(TitleMenu.subMenu + "");
             object translationTokens = new
             {
+                index = i + 1,
                 farm_name = __instance.Farmer.farmName.Value,
-                farmer_name = __instance.Farmer.displayName,
+                farmer_name = __instance.Farmer.isCustomized.Value
+                                ? __instance.Farmer.displayName
+                                : Game1.content.LoadString("Strings\\UI:CoopMenu_NewFarmhand"),
                 money = __instance.Farmer.Money.ToString(),
                 hours_played = Utility.getHoursMinutesStringFromMilliseconds(__instance.Farmer.millisecondsPlayed),
                 date = dateStringForSaveGame

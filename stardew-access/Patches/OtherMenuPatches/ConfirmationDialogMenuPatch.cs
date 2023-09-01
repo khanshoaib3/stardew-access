@@ -31,7 +31,10 @@ namespace stardew_access.Patches
                     translationKey = "menu-confirmation_dialogue-cancel_button";
                 }
 
-                MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, new { message = ___message });
+                if (string.IsNullOrEmpty(translationKey))
+                    MainClass.ScreenReader.SayWithMenuChecker(___message, true);
+                else
+                    MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, new { dialogue_message = ___message });
             }
             catch (Exception e)
             {

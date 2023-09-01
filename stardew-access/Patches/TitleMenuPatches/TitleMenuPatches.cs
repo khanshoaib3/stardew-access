@@ -67,6 +67,10 @@ namespace stardew_access.Patches
                     if (__instance.backButton.containsPoint(x, y))
                     {
                         translationKey = "common-ui-back_button";
+                        MouseUtils.SimulateMouseClicks(
+                            (_, _) => __instance.backButtonPressed(),
+                            null
+                        );
                     }
                 }
 
