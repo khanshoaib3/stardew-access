@@ -4,7 +4,7 @@ namespace stardew_access.Utils
 {
     public static class JsonLoader
     {
-        public delegate IEnumerable<KeyValuePair<TKey, TValue>> NestedItemProcessor<TKey, TValue>(List<string> path, JsonElement element);
+        public delegate void NestedItemProcessor<TKey, TValue>(List<string> path, JsonElement element, ref Dictionary<TKey, TValue> res) where TKey : notnull;
 
         private const string DefaultDir = "assets";
         private static string GetFilePath(string fileName, string subdir)
@@ -138,16 +138,13 @@ namespace stardew_access.Utils
 
             void ProcessJsonElement(List<string> path, JsonElement element, int remainingLevels, Dictionary<TKey, TValue> res)
             {
-                #if DEBUG
+                 #if DEBUG
                 Log.Verbose($"[ProcessJsonElement] Processing element at path: {string.Join(" -> ", path)} with remaining levels: {remainingLevels}");
                 #endif
 
                 if (remainingLevels == 0)
                 {
-                    foreach (var kvp in nestedItemProcessor(path, element))
-                    {
-                        res[kvp.Key] = kvp.Value;
-                    }
+                    nestedItemProcessor(path, element, ref res);
                     #if DEBUG
                     Log.Verbose("[ProcessJsonElement] Processed element and populated result dictionary.");
                     #endif

@@ -16,6 +16,7 @@ namespace stardew_access.Utils
         private static readonly string[] trackable_machines;
         private static readonly Dictionary<int, string> ResourceClumpNameTranslationKeys;
         private static readonly Dictionary<int, (string category, string itemName)> ParentSheetIndexes;
+        private static readonly Dictionary<string, Dictionary<(int, int), string>> BundleLocations;
 
         static TileInfo()
         {
@@ -28,21 +29,41 @@ namespace stardew_access.Utils
                 2,
                 subdir: "assets/TileData"
             );
+            JsonLoader.TryLoadNestedJson<string, Dictionary<(int, int), string>>(
+                "BundleLocations.json", 
+                ProcessBundleLocation,
+                out BundleLocations,
+                2,
+                subdir: "assets/TileData"
+            );
+
         }
 
-        public static IEnumerable<KeyValuePair<int, (string, string)>> ProcessParentSheetIndex(List<string> path, JsonElement element)
+        private static void ProcessParentSheetIndex(List<string> path, JsonElement element, ref Dictionary<int, (string, string)> result)
         {
-            var list = new List<KeyValuePair<int, (string, string)>>();
             string category = path[0];
             string itemName = path[1];
 
             foreach (JsonElement indexElement in element.EnumerateArray())
             {
                 int index = indexElement.GetInt32();
-                list.Add(new KeyValuePair<int, (string, string)>(index, (category, itemName)));
+                result[index] = (category, itemName);
             }
+        }
 
-            return list;
+        private static void ProcessBundleLocation(List<string> path, JsonElement element, ref Dictionary<string, Dictionary<(int x, int y), string>> bundleLocations)
+        {
+            string locationName = path[0];
+            string bundleName = path[1];
+            int x = element[0].GetInt32();
+            int y = element[1].GetInt32();
+
+            if (!bundleLocations.ContainsKey(locationName))
+            {
+                bundleLocations[locationName] = new Dictionary<(int x, int y), string>();
+            }
+            
+            bundleLocations[locationName][(x, y)] = bundleName;
         }
 
         ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>
@@ -221,40 +242,27 @@ namespace stardew_access.Utils
         /// <returns>The name of the Junimo bundle if one is found at the specified coordinates, otherwise null.</returns>
         public static string? GetJunimoBundleAt(GameLocation currentLocation, int x, int y)
         {
-            if (currentLocation is CommunityCenter communityCenter)
+            string locationName = currentLocation.NameOrUniqueName;
+            
+            if (BundleLocations.TryGetValue(locationName, out var bundleCoords))
             {
-                // Determine the name of the bundle based on the tile coordinates
-                string? name = (x, y) switch
+                if (bundleCoords.TryGetValue((x, y), out var bundleName))
                 {
-                    (14, 5) => "Pantry",
-                    (14, 23) => "Crafts Room",
-                    (40, 10) => "Fish Tank",
-                    (63, 14) => "Boiler Room",
-                    (55, 6) => "Vault",
-                    (46, 12) => "Bulletin Board",
-                    _ => null,
-                };
-
-                // If a bundle name is found and a note should appear in the area, return the bundle name
-                if (name is not null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
-                    return $"{name} bundle";
+                    if (currentLocation is CommunityCenter communityCenter)
+                    {
+                        if (communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(bundleName)))
+                        {
+                            return $"{bundleName} bundle";
+                        }
+                    }
+                    else if (currentLocation is AbandonedJojaMart)
+                    {
+                        return $"{bundleName} bundle";
+                    }
+                }
             }
-            else if (currentLocation is AbandonedJojaMart)
-            {
-                // Determine the name of the bundle based on the tile coordinates
-                string? name = (x, y) switch
-                {
-                    (8, 8) => "Missing",
-                    _ => null,
-                };
-
-                if (name is not null)
-                    // Bundle name was found
-                    return $"{name} bundle";
-            }
-
-            // No bundle was found
-            return null;
+            
+            return null;  // No bundle was found
         }
 
         /// <summary>
