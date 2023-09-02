@@ -70,7 +70,7 @@ namespace stardew_access
         public KeybindList SnapToFirstSecondaryInventorySlotKey { get; set; } = KeybindList.Parse("LeftShift + I");
 
         // Crafting menu
-        public KeybindList CraftingMenuCycleThroughRecipiesKey { get; set; } = KeybindList.Parse("C");
+        public KeybindList CraftingMenuCycleThroughRecipesKey { get; set; } = KeybindList.Parse("C");
         #endregion
 
         #region GridMovement
