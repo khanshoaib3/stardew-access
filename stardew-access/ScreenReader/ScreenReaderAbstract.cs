@@ -54,12 +54,12 @@ namespace stardew_access.ScreenReader
 
         public abstract bool Say(string text, bool interrupt);
 
-        public bool TranslateAndSay(string translationKey, bool interrupt, object? translationTokens = null, bool disableTranslationWarnings = false)
+        public bool TranslateAndSay(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.DEFAULT, bool disableTranslationWarnings = false)
         {
             if (string.IsNullOrWhiteSpace(translationKey))
                 return false;
 
-            return Say(Translator.Instance.Translate(translationKey, translationTokens, disableTranslationWarnings), interrupt);
+            return Say(Translator.Instance.Translate(translationKey, translationTokens, translationCategory, disableTranslationWarnings), interrupt);
         }
 
         public bool SayWithChecker(string text, bool interrupt, string? customQuery = null)
@@ -76,12 +76,12 @@ namespace stardew_access.ScreenReader
             return Say(text, interrupt);
         }
 
-        public bool TranslateAndSayWithChecker(string translationKey, bool interrupt, object? translationTokens = null, string? customQuery = null, bool disableTranslationWarnings = false)
+        public bool TranslateAndSayWithChecker(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.DEFAULT, string? customQuery = null, bool disableTranslationWarnings = false)
         {
             if (string.IsNullOrWhiteSpace(translationKey))
                 return false;
 
-            return SayWithChecker(Translator.Instance.Translate(translationKey, translationTokens, disableTranslationWarnings), interrupt, customQuery);
+            return SayWithChecker(Translator.Instance.Translate(translationKey, translationTokens, translationCategory, disableTranslationWarnings), interrupt, customQuery);
         }
 
         public bool SayWithMenuChecker(string text, bool interrupt, string? customQuery = null)
@@ -104,12 +104,12 @@ namespace stardew_access.ScreenReader
             return re;
         }
 
-        public bool TranslateAndSayWithMenuChecker(string translationKey, bool interrupt, object? translationTokens = null, string? customQuery = null, bool disableTranslationWarnings = false)
+        public bool TranslateAndSayWithMenuChecker(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.MENU, string? customQuery = null, bool disableTranslationWarnings = false)
         {
             if (string.IsNullOrWhiteSpace(translationKey))
                 return false;
 
-            return SayWithMenuChecker(Translator.Instance.Translate(translationKey, translationTokens, disableTranslationWarnings), interrupt, customQuery);
+            return SayWithMenuChecker(Translator.Instance.Translate(translationKey, translationTokens, translationCategory, disableTranslationWarnings), interrupt, customQuery);
         }
 
         public bool SayWithChatChecker(string text, bool interrupt)

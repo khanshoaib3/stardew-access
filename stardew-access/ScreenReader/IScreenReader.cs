@@ -1,3 +1,5 @@
+using stardew_access.Translation;
+
 namespace stardew_access.ScreenReader
 {
     public interface IScreenReader
@@ -58,7 +60,7 @@ namespace stardew_access.ScreenReader
         /// <param name="translationTokens">Optional tokens to be used for formatting the translation.</param>
         /// <param name="disableTranslationWarnings">Whether to disable translation not found warning or not.</param>
         /// <returns>true if the text was spoken otherwise, false.</returns>
-        public bool TranslateAndSay(string translationKey, bool interrupt, object? translationTokens = null, bool disableTranslationWarnings = false);
+        public bool TranslateAndSay(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.DEFAULT, bool disableTranslationWarnings = false);
 
         /// <summary>Speaks the text via the loaded screen reader (if any).
         /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.</summary>
@@ -78,7 +80,7 @@ namespace stardew_access.ScreenReader
         /// <param name="customQuery">If set, uses this instead of the translated text as a query to check whether to speak the text or not.</param>
         /// <param name="disableTranslationWarnings">Whether to disable translation warnings or not.</param>
         /// <returns>true if the text was spoken otherwise, false.</returns>
-        public bool TranslateAndSayWithChecker(string translationKey, bool interrupt, object? translationTokens = null, string? customQuery = null, bool disableTranslationWarnings = false);
+        public bool TranslateAndSayWithChecker(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.DEFAULT, string? customQuery = null, bool disableTranslationWarnings = false);
 
         /// <summary>Speaks the text via the loaded screen reader (if any).
         /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
@@ -101,7 +103,7 @@ namespace stardew_access.ScreenReader
         /// <param name="customQuery">If set, uses this instead of the translated text as a query to check whether to speak the text or not.</param>
         /// <param name="disableTranslationWarnings">Whether to disable translation warnings or not.</param>
         /// <returns>true if the text was spoken otherwise, false.</returns>
-        public bool TranslateAndSayWithMenuChecker(string translationKey, bool interrupt, object? translationTokens = null, string? customQuery = null, bool disableTranslationWarnings = false);
+        public bool TranslateAndSayWithMenuChecker(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.MENU, string? customQuery = null, bool disableTranslationWarnings = false);
 
         /// <summary>Speaks the text via the loaded screen reader (if any).
         /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
