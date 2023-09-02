@@ -106,7 +106,7 @@ menu-social_page-npc_info = {$name}{$has_talked ->
 
 ### Crafting Page
 
-menu-cragting_page-recipe_info = {$produce_count} {$name}, {$is_craftable ->
+menu-crafting_page-recipe_info = {$produce_count} {$name}, {$is_craftable ->
     [0] not craftable
     *[1] craftable
   }, Ingredients: {$ingredients}, Description: {$description}, {$buffs}
