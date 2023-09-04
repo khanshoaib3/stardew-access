@@ -144,7 +144,6 @@ namespace stardew_access
 
             harmony = new Harmony(ModManifest.UniqueID);
             PatchManager.PatchAll(harmony);
-            HarmonyPatches.Initialize(harmony);
 
             //Initialize marked locations
             for (int i = 0; i < BuildingOperations.marked.Length; i++)

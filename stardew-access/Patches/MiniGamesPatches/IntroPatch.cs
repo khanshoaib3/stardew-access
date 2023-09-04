@@ -1,13 +1,22 @@
+using HarmonyLib;
 using StardewValley.Minigames;
 using stardew_access.Translation;
 
 namespace stardew_access.Patches
 {
-    public class IntroPatch
+    public class IntroPatch : IPatch
     {
-        internal static string introQuery = " ";
+        private static string introQuery = " ";
 
-        internal static void DrawPatch(Intro __instance, int ___currentState)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.DeclaredMethod(typeof(Intro), "draw"),
+                postfix: new HarmonyMethod(typeof(IntroPatch), nameof(DrawPatch))
+            );
+        }
+
+        private static void DrawPatch(Intro __instance, int ___currentState)
         {
             try
             {

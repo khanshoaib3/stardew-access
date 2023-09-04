@@ -65,6 +65,10 @@ namespace stardew_access.Patches
                 new LoadGameMenuPatch(),
                 new TitleMenuPatch(),
                 new FarmHandMenuPatch(),
+                // Mini Game Patches
+                new FishingMiniGamePatch(),
+                new GrandpaStoryPatch(),
+                new IntroPatch(),
             };
 
             foreach (IPatch patch in allPatches)
