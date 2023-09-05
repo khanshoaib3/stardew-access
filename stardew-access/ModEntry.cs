@@ -17,6 +17,7 @@ namespace stardew_access
         #region Global Vars & Properties
 
         private static int prevDate = -99;
+        private static LocalizedContentManager.LanguageCode previousLanguageCode;
         private static bool FirstRun = true;
         private static ModConfig? config;
         private Harmony? harmony;
@@ -187,6 +188,8 @@ namespace stardew_access
 
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
+            RefreshTranslationsOnLocaleChange();
+            
             // The event with id 13 is the Haley's six heart event, the one at the beach requiring the player to find the bracelet
             // *** Exiting here will cause GridMovement and ObjectTracker functionality to not work during this event, making the bracelet impossible to track ***
             if (!Context.IsPlayerFree && !(Game1.CurrentEvent is not null && Game1.CurrentEvent.id == 13))
@@ -249,6 +252,15 @@ namespace stardew_access
                 }
             }
 
+            void RefreshTranslationsOnLocaleChange()
+            {
+                if (previousLanguageCode == Game1.content.GetCurrentLanguage()) return;
+                
+                Log.Trace("Locale changed! Refreshing translations...");
+                previousLanguageCode = Game1.content.GetCurrentLanguage();
+                Translator.Instance.Initialize(ModManifest);
+            }
+
             void RunGridMovementFeatureIfEnabled()
             {
                 if (LastGridMovementButtonPressed.HasValue)
@@ -279,6 +291,7 @@ namespace stardew_access
             if (FirstRun)
             {
                 Log.Trace("First WindowResized.");
+                previousLanguageCode = Game1.content.GetCurrentLanguage();
                 Translator.Instance.Initialize(ModManifest);
                 Translator.Instance.CustomFunctions!.LoadLanguageHelper();
                 FirstRun = false;
