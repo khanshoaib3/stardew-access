@@ -54,7 +54,7 @@ namespace stardew_access.ScreenReader
 
         public abstract bool Say(string text, bool interrupt);
 
-        public bool TranslateAndSay(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.DEFAULT, bool disableTranslationWarnings = false)
+        public bool TranslateAndSay(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.Default, bool disableTranslationWarnings = false)
         {
             if (string.IsNullOrWhiteSpace(translationKey))
                 return false;
@@ -76,7 +76,7 @@ namespace stardew_access.ScreenReader
             return Say(text, interrupt);
         }
 
-        public bool TranslateAndSayWithChecker(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.DEFAULT, string? customQuery = null, bool disableTranslationWarnings = false)
+        public bool TranslateAndSayWithChecker(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.Default, string? customQuery = null, bool disableTranslationWarnings = false)
         {
             if (string.IsNullOrWhiteSpace(translationKey))
                 return false;
@@ -104,7 +104,7 @@ namespace stardew_access.ScreenReader
             return re;
         }
 
-        public bool TranslateAndSayWithMenuChecker(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.MENU, string? customQuery = null, bool disableTranslationWarnings = false)
+        public bool TranslateAndSayWithMenuChecker(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.Menu, string? customQuery = null, bool disableTranslationWarnings = false)
         {
             if (string.IsNullOrWhiteSpace(translationKey))
                 return false;

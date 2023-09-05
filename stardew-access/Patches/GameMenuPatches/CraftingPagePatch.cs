@@ -2,7 +2,6 @@ using StardewValley;
 using stardew_access.Utils;
 using StardewValley.Menus;
 using StardewValley.Objects;
-using stardew_access.Translation;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -82,24 +81,24 @@ namespace stardew_access.Patches
 
         private static bool NarrateMenuButtons(CraftingPage __instance, int x, int y)
         {
-            string? toSpeak = null;
+            string? translationKey = null;
             bool isDropItemButton = false;
 
             if (__instance.upButton != null && __instance.upButton.containsPoint(x, y))
             {
-                toSpeak = Translator.Instance.Translate("menu-crafting_page-previous_recipe_list_button");
+                translationKey = "menu-crafting_page-previous_recipe_list_button";
             }
             else if (__instance.downButton != null && __instance.downButton.containsPoint(x, y))
             {
-                toSpeak = Translator.Instance.Translate("menu-crafting_page-next_recipe_list_button");
+                translationKey = "menu-crafting_page-next_recipe_list_button";
             }
             else if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
             {
-                toSpeak = Translator.Instance.Translate("common-ui-trashcan_button");
+                translationKey = "common-ui-trashcan_button";
             }
             else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
             {
-                toSpeak = Translator.Instance.Translate("common-ui-drop_item_button");
+                translationKey = "common-ui-drop_item_button";
                 isDropItemButton = true;
             }
             else
@@ -107,7 +106,7 @@ namespace stardew_access.Patches
                 return false;
             }
 
-            if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true))
+            if (MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true))
                 if (isDropItemButton) Game1.playSound("drop_item");
 
             return true;
@@ -130,13 +129,13 @@ namespace stardew_access.Patches
                 if (!isRecipeInFocus)
                     return false;
 
-                MainClass.ScreenReader.SayWithMenuChecker(Translator.Instance.Translate("menu-crafting_page-unknown_recipe"), true);
+                MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-crafting_page-unknown_recipe", true);
                 return true;
             }
 
             Item producesItem = ___hoverRecipe.createItem();
-            string toSpeak = Translator.Instance.Translate("menu-crafting_page-recipe_info",
-                new
+            string translationKey = "menu-crafting_page-recipe_info";
+            object translationTokens = new
                 {
                     produce_count = ___hoverRecipe.numberProducedPerCraft,
                     name = ___hoverRecipe.DisplayName,
@@ -144,9 +143,9 @@ namespace stardew_access.Patches
                     ingredients = InventoryUtils.GetIngredientsFromRecipe(___hoverRecipe),
                     description = ___hoverRecipe.description,
                     buffs = $"{InventoryUtils.GetHealthNStaminaFromItem(producesItem)}, {InventoryUtils.GetBuffsFromItem(producesItem)}"
-                });
+                };
 
-            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens);
 
             return true;
         }

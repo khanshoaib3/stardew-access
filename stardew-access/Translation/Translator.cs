@@ -5,27 +5,31 @@ namespace stardew_access.Translation
 {
     public enum TranslationCategory
     {
-        MENU,
-        DEFAULT
+        Menu,
+        Default
     }
 
     internal class Translator
     {
-        private static Translator? _instance = null;
+        private static Translator? instance;
         private IFluent<string>? DefaultEntries { get; set; }
         private IFluent<string>? MenuEntries { get; set; }
-        private static readonly object _instanceLock = new();
-        private Translator() { }
+        private static readonly object InstanceLock = new();
+
+        private Translator()
+        {
+        }
+
         internal CustomFluentFunctions? CustomFunctions;
 
         public static Translator Instance
         {
             get
             {
-                lock (_instanceLock)
+                lock (InstanceLock)
                 {
-                    _instance ??= new Translator();
-                    return _instance;
+                    instance ??= new Translator();
+                    return instance;
                 }
             }
         }
@@ -38,8 +42,8 @@ namespace stardew_access.Translation
             IFluentApi? fluentApi = MainClass.ModHelper?.ModRegistry.GetApi<IFluentApi>("Shockah.ProjectFluent");
             if (fluentApi != null)
             {
-                DefaultEntries = fluentApi.GetLocalizationsForCurrentLocale(modManifest);
-                MenuEntries = fluentApi.GetLocalizationsForCurrentLocale(modManifest, "menu");
+                DefaultEntries = fluentApi.GetLocalizations(fluentApi.CurrentLocale, modManifest);
+                MenuEntries = fluentApi.GetLocalizations(fluentApi.CurrentLocale, modManifest, "menu");
 #if DEBUG
                 Log.Verbose("Registering custom fluent functions");
 #endif
@@ -58,7 +62,8 @@ namespace stardew_access.Translation
             }
         }
 
-        public string Translate(string translationKey, TranslationCategory translationCategory = TranslationCategory.DEFAULT, bool disableWarning = false)
+        public string Translate(string translationKey,
+            TranslationCategory translationCategory = TranslationCategory.Default, bool disableWarning = false)
         {
             IFluent<string>? requiredEntries = GetEntriesFromCategory(translationCategory);
 
@@ -84,7 +89,8 @@ namespace stardew_access.Translation
             return translationKey;
         }
 
-        public string Translate(string translationKey, object? tokens, TranslationCategory translationCategory = TranslationCategory.DEFAULT, bool disableWarning = false)
+        public string Translate(string translationKey, object? tokens,
+            TranslationCategory translationCategory = TranslationCategory.Default, bool disableWarning = false)
         {
             IFluent<string>? requiredEntries = GetEntriesFromCategory(translationCategory);
 
@@ -99,12 +105,19 @@ namespace stardew_access.Translation
 #if DEBUG
                 if (tokens is Dictionary<string, object> dictTokens)
                 {
-                    Log.Verbose($"Translate with tokens: found translation key \"{translationKey}\" with tokens: {string.Join(", ", dictTokens.Select(kv => $"{kv.Key}: {kv.Value}"))}", true);
+                    Log.Verbose(
+                        $"Translate with tokens: found translation key \"{translationKey}\" with tokens: {string.Join(", ", dictTokens.Select(kv => $"{kv.Key}: {kv.Value}"))}",
+                        true);
                 }
                 else
                 {
-                    var tokenStr = tokens is not null ? string.Join(", ", tokens.GetType().GetProperties().Select(prop => $"{prop.Name}: {prop.GetValue(tokens)}")) : "null";
-                    Log.Verbose($"Translate with tokens: found translation key \"{translationKey}\" with tokens: {tokenStr}", true);
+                    var tokenStr = tokens is not null
+                        ? string.Join(", ",
+                            tokens.GetType().GetProperties().Select(prop => $"{prop.Name}: {prop.GetValue(tokens)}"))
+                        : "null";
+                    Log.Verbose(
+                        $"Translate with tokens: found translation key \"{translationKey}\" with tokens: {tokenStr}",
+                        true);
                 }
 #endif
                 var result = requiredEntries.Get(translationKey, tokens);
@@ -122,11 +135,12 @@ namespace stardew_access.Translation
             return translationKey;
         }
 
-        private IFluent<string>? GetEntriesFromCategory(TranslationCategory translationCategory) => translationCategory switch
-        {
-            TranslationCategory.MENU => MenuEntries,
-            TranslationCategory.DEFAULT => DefaultEntries,
-            _ => null
-        };
+        private IFluent<string>? GetEntriesFromCategory(TranslationCategory translationCategory) =>
+            translationCategory switch
+            {
+                TranslationCategory.Menu => MenuEntries,
+                TranslationCategory.Default => DefaultEntries,
+                _ => null
+            };
     }
 }

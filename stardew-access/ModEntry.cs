@@ -157,7 +157,6 @@ namespace stardew_access
             }
             #endregion
 
-            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.Input.ButtonsChanged += OnButtonsChanged;
             helper.Events.Player.Warped += OnPlayerWarped;
@@ -168,8 +167,6 @@ namespace stardew_access
             AppDomain.CurrentDomain.DomainUnload += OnExit;
             AppDomain.CurrentDomain.ProcessExit += OnExit;
         }
-
-        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) => Translator.Instance.Initialize(ModManifest);
 
         /// <summary>Returns the Screen Reader class for other mods to use.</summary>
         public override object GetApi() => new API();
@@ -282,6 +279,7 @@ namespace stardew_access
             if (FirstRun)
             {
                 Log.Trace("First WindowResized.");
+                Translator.Instance.Initialize(ModManifest);
                 Translator.Instance.CustomFunctions!.LoadLanguageHelper();
                 FirstRun = false;
                 ModHelper!.Events.Display.WindowResized -= OnFirstWindowResized;

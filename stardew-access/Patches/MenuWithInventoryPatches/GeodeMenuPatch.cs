@@ -12,7 +12,7 @@ namespace stardew_access.Patches
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
-                original: AccessTools.Method(typeof(GeodeMenu), nameof(GeodeMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                original: AccessTools.DeclaredMethod(typeof(GeodeMenu), "draw"),
                 postfix: new HarmonyMethod(typeof(GeodeMenuPatch), nameof(GeodeMenuPatch.DrawPatch))
             );
         }
@@ -26,7 +26,8 @@ namespace stardew_access.Patches
                 if (NarrateReceivedTreasure(__instance)) return;
                 if (NarrateHoveredButton(__instance, x, y)) return;
 
-                InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory, __instance.inventory.actualInventory, __instance.inventory);
+                InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory, __instance.inventory.actualInventory,
+                    __instance.inventory);
             }
             catch (Exception e)
             {
@@ -40,11 +41,11 @@ namespace stardew_access.Patches
             if (__instance.geodeTreasure == null) return false;
 
             string pluralizedName = Translator.Instance.Translate("common-util-pluralize_name",
-                            new
-                            {
-                                item_count = __instance.geodeTreasure.Stack,
-                                name = __instance.geodeTreasure.DisplayName
-                            });
+                new
+                {
+                    item_count = __instance.geodeTreasure.Stack,
+                    name = __instance.geodeTreasure.DisplayName
+                });
 
             MainClass.ScreenReader.TranslateAndSayWithMenuChecker(
                 "menu-geode-received_treasure_info",
@@ -62,7 +63,8 @@ namespace stardew_access.Patches
             {
                 translationKey = "menu-geode-geode_input_slot";
             }
-            else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+            else if (__instance.dropItemInvisibleButton != null &&
+                     __instance.dropItemInvisibleButton.containsPoint(x, y))
             {
                 translationKey = "common-ui-drop_item_button";
                 isDropItemButton = true;
@@ -81,7 +83,8 @@ namespace stardew_access.Patches
             }
 
             if (MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true))
-                if (isDropItemButton) Game1.playSound("drop_item");
+                if (isDropItemButton)
+                    Game1.playSound("drop_item");
 
             return true;
         }
