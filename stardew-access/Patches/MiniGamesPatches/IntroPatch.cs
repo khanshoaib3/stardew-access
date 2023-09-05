@@ -23,23 +23,22 @@ namespace stardew_access.Patches
                 if (MainClass.ModHelper == null)
                     return;
 
-                string toSpeak = " ";
+                string translationKey = "";
 
                 if (___currentState == 3)
                 {
-                    toSpeak = Translator.Instance.Translate("intro-scene3");
+                    translationKey = "intro-scene3";
                 }
                 else if (___currentState == 4)
                 {
-                    toSpeak = Translator.Instance.Translate("intro-scene4");
+                    translationKey = "intro-scene4";
                 }
 
-                if (toSpeak != " " && introQuery != toSpeak)
-                {
-                    introQuery = toSpeak;
-                    MainClass.ScreenReader.Say(toSpeak, false);
-                    return;
-                }
+                if (introQuery == translationKey) return;
+                introQuery = translationKey;
+
+                MainClass.ScreenReader.TranslateAndSay(translationKey, false,
+                    translationCategory: TranslationCategory.MiniGames);
             }
             catch (System.Exception e)
             {

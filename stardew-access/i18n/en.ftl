@@ -154,15 +154,6 @@ event_tile-free_burgers-name = Free Burgers
 event_tile-travelling_cart-name = Travelling Cart
 event_tile-feast_of_the_winter_star_shop-name = Feast of the Winter Star Shop
 
-# Copied from default.json (needs to be organised)
-
-grandpastory-scene0 = Grandpa, on his deathbed.
-grandpastory-scene4 = Employees working in Joja corp.
-grandpastory-scene5 = Employees in their cubicles, some of them look exhausted including yourself.
-grandpastory-scene6 = You reach your desk finding grandpa's letter.
-grandpastory-letteropen = Left click to open grandpa's letter
-intro-scene3 = Traveling to Stardew Valley bus stop
-intro-scene4 = Stardew valley 0.5 miles away
 patch-trash_bear-wanted_item = {$trash_bear_name} wants {$item_name}!
 
 

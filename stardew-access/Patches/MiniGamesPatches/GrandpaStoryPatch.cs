@@ -19,14 +19,14 @@ namespace stardew_access.Patches
             );
         }
 
-        private static void DrawPatch(GrandpaStory __instance, StardewValley.Menus.LetterViewerMenu ___letterView,
+        private static void DrawPatch(GrandpaStory __instance, StardewValley.Menus.LetterViewerMenu? ___letterView,
             bool ___drawGrandpa, bool ___letterReceived, bool ___mouseActive, Queue<string> ___grandpaSpeech,
             int ___grandpaSpeechTimer, int ___totalMilliseconds, int ___scene, int ___parallaxPan)
         {
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                string toSpeak = " ";
+                string toSpeak = "";
 
                 if (___letterView != null)
                 {
@@ -38,7 +38,7 @@ namespace stardew_access.Patches
 
                 if (___scene == 0)
                 {
-                    toSpeak = Translator.Instance.Translate("grandpastory-scene0");
+                    toSpeak = Translator.Instance.Translate("grandpastory-scene0", TranslationCategory.MiniGames);
                 }
                 else if (___drawGrandpa)
                 {
@@ -53,11 +53,11 @@ namespace stardew_access.Patches
                 }
                 else if (___scene == 4)
                 {
-                    toSpeak = Translator.Instance.Translate("grandpastory-scene4");
+                    toSpeak = Translator.Instance.Translate("grandpastory-scene4", TranslationCategory.MiniGames);
                 }
                 else if (___scene == 5)
                 {
-                    toSpeak = Translator.Instance.Translate("grandpastory-scene5");
+                    toSpeak = Translator.Instance.Translate("grandpastory-scene5", TranslationCategory.MiniGames);
                 }
                 else if (___scene == 6)
                 {
@@ -65,7 +65,7 @@ namespace stardew_access.Patches
                     {
                         if (ClickableGrandpaLetterRect(___parallaxPan, ___grandpaSpeechTimer).Contains(x, y))
                         {
-                            toSpeak = Translator.Instance.Translate("grandpastory-letteropen");
+                            toSpeak = Translator.Instance.Translate("grandpastory-letteropen", TranslationCategory.MiniGames);
                         }
                         else if (___letterView == null)
                         {
@@ -77,15 +77,14 @@ namespace stardew_access.Patches
                     }
                     else
                     {
-                        toSpeak = Translator.Instance.Translate("grandpastory-scene6");
+                        toSpeak = Translator.Instance.Translate("grandpastory-scene6", TranslationCategory.MiniGames);
                     }
                 }
 
-                if (toSpeak != " " && grandpaStoryQuery != toSpeak)
-                {
-                    grandpaStoryQuery = toSpeak;
-                    MainClass.ScreenReader.Say(toSpeak, false);
-                }
+                if (grandpaStoryQuery == toSpeak) return;
+                grandpaStoryQuery = toSpeak;
+                
+                MainClass.ScreenReader.Say(toSpeak, false);
             }
             catch (System.Exception e)
             {
