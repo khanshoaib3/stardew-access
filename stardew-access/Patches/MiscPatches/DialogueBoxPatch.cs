@@ -13,13 +13,14 @@ namespace stardew_access.Patches
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
-                    original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(DialogueBoxPatch), nameof(DialogueBoxPatch.DrawPatch))
+                original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.draw),
+                    new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(DialogueBoxPatch), nameof(DialogueBoxPatch.DrawPatch))
             );
 
             harmony.Patch(
-                    original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.receiveLeftClick)),
-                    postfix: new HarmonyMethod(typeof(DialogueBoxPatch), nameof(DialogueBoxPatch.RecieveLeftClickPatch))
+                original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.receiveLeftClick)),
+                postfix: new HarmonyMethod(typeof(DialogueBoxPatch), nameof(DialogueBoxPatch.RecieveLeftClickPatch))
             );
         }
 
@@ -64,13 +65,14 @@ namespace stardew_access.Patches
                     is_appearing_first_time = isDialogueAppearingFirstTime ? 1 : 0,
                     npc_name = dialogue.speaker.displayName,
                     dialogue = __instance.getCurrentString()
-                });
+                }, TranslationCategory.Menu);
 
             if (hasResponses)
             {
                 responseText = GetCurrentResponseText(__instance);
 
-                CheckAndSpeak(isDialogueAppearingFirstTime ? $"{dialogueText}\n{responseText}" : responseText, responseText);
+                CheckAndSpeak(isDialogueAppearingFirstTime ? $"{dialogueText}\n{responseText}" : responseText,
+                    responseText);
                 if (isDialogueAppearingFirstTime) isDialogueAppearingFirstTime = false;
             }
             else
@@ -97,7 +99,8 @@ namespace stardew_access.Patches
 
             responseText = GetCurrentResponseText(__instance);
 
-            CheckAndSpeak(isDialogueAppearingFirstTime ? $"{questionText}\n{responseText}" : responseText, responseText);
+            CheckAndSpeak(isDialogueAppearingFirstTime ? $"{questionText}\n{responseText}" : responseText,
+                responseText);
             if (isDialogueAppearingFirstTime) isDialogueAppearingFirstTime = false;
 
             return true;

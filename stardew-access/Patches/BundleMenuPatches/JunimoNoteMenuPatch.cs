@@ -12,6 +12,7 @@ namespace stardew_access.Patches
     {
         internal static bool firstTimeInMenu = true;
         internal static bool isUsingCustomKeyBinds = false;
+
         internal static int currentIngredientListItem = -1,
             currentIngredientInputSlot = -1,
             currentInventorySlot = -1;
@@ -19,7 +20,8 @@ namespace stardew_access.Patches
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
-                original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.draw),
+                    new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(JunimoNoteMenuPatch), nameof(JunimoNoteMenuPatch.DrawPatch))
             );
         }
@@ -45,7 +47,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                Log.Error( $"An error occurred in Junimo Note Menu patch:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in Junimo Note Menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -70,8 +72,7 @@ namespace stardew_access.Patches
 
             if (__instance.scrambledText)
             {
-                string scrambledText = Translator.Instance.Translate("menu-junimo_note-scrambled_text");
-                MainClass.ScreenReader.SayWithMenuChecker(scrambledText, true);
+                MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-junimo_note-scrambled_text", true);
                 return true;
             }
 
@@ -80,26 +81,29 @@ namespace stardew_access.Patches
                 firstTimeInMenu = false;
                 MainClass.ScreenReader.MenuPrefixNoQueryText = Translator.Instance.Translate(
                     "menu-junimo_note-current_area_info-prefix",
-                    new { area_name = areaName, completion_reward = reward }
+                    new { area_name = areaName, completion_reward = reward },
+                    TranslationCategory.Menu
                 );
             }
 
-            string toSpeak = "";
+            string translationKey = "";
+            object? translationToken = null;
+
             if (__instance.presentButton != null && __instance.presentButton.containsPoint(x, y))
             {
-                toSpeak = Translator.Instance.Translate("menu-junimo_note-collect_rewards");
+                translationKey = "menu-junimo_note-collect_rewards";
             }
-            else if ( __instance.fromGameMenu && __instance.areaNextButton.visible
-                && __instance.areaNextButton.containsPoint(x, y)
-            )
+            else if (__instance.fromGameMenu && __instance.areaNextButton.visible
+                                             && __instance.areaNextButton.containsPoint(x, y)
+                    )
             {
-                toSpeak = Translator.Instance.Translate("menu-junimo_note-next_area_button");
+                translationKey = "menu-junimo_note-next_area_button";
             }
-            else if ( __instance.fromGameMenu && __instance.areaBackButton.visible
-                && __instance.areaBackButton.containsPoint(x, y)
-            )
+            else if (__instance.fromGameMenu && __instance.areaBackButton.visible
+                                             && __instance.areaBackButton.containsPoint(x, y)
+                    )
             {
-                toSpeak = Translator.Instance.Translate("menu-junimo_note-previous_area_button");
+                translationKey = "menu-junimo_note-previous_area_button";
             }
             else
             {
@@ -108,17 +112,15 @@ namespace stardew_access.Patches
                     if (!__instance.bundles[i].containsPoint(x, y))
                         continue;
 
-                    toSpeak = Translator.Instance.Translate(
-                        "menu-junimo_note-bundle_open_button",
-                        new { bundle_name = __instance.bundles[i].name }
-                    );
+                    translationKey = "menu-junimo_note-bundle_open_button";
+                    translationToken = new { bundle_name = __instance.bundles[i].name };
                     break;
                 }
             }
 
-            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationToken);
 
-            return !string.IsNullOrWhiteSpace(toSpeak);
+            return !string.IsNullOrWhiteSpace(translationKey);
         }
 
         private static void NarrateBundlePage(
@@ -135,49 +137,45 @@ namespace stardew_access.Patches
             bool isIPressed = MainClass.Config.BundleMenuIngredientsKey.JustPressed(); // For the ingredients
             bool isCPressed = MainClass.Config.BundleMenuInventoryItemsKey.JustPressed(); // For the items in inventory
             bool isPPressed = MainClass.Config.BundleMenuPurchaseButtonKey.JustPressed(); // For the Purchase Button
-            bool isVPressed = MainClass.Config.BundleMenuIngredientsInputSlotKey.JustPressed(); // For the ingredient input slots
+            bool isVPressed =
+                MainClass.Config.BundleMenuIngredientsInputSlotKey.JustPressed(); // For the ingredient input slots
             bool isBackPressed = MainClass.Config.BundleMenuBackButtonKey.JustPressed(); // For the back button
-            bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
+            bool isLeftShiftPressed =
+                Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
             if (isIPressed && !isUsingCustomKeyBinds)
             {
                 isUsingCustomKeyBinds = true;
                 CycleThroughIngredientList(__instance, ___currentPageBundle, isLeftShiftPressed);
-                Task.Delay(200).ContinueWith(_ =>
-                    {
-                        isUsingCustomKeyBinds = false;
-                    });
+                Task.Delay(200).ContinueWith(_ => { isUsingCustomKeyBinds = false; });
             }
             else if (isVPressed && !isUsingCustomKeyBinds)
             {
                 isUsingCustomKeyBinds = true;
                 CycleThroughInputSlots(__instance, ___currentPageBundle, isLeftShiftPressed);
-                Task.Delay(200).ContinueWith(_ =>
-                    {
-                        isUsingCustomKeyBinds = false;
-                    });
+                Task.Delay(200).ContinueWith(_ => { isUsingCustomKeyBinds = false; });
             }
             else if (isCPressed && !isUsingCustomKeyBinds)
             {
                 isUsingCustomKeyBinds = true;
                 CycleThroughInventorySlots(__instance, ___currentPageBundle, isLeftShiftPressed);
-                Task.Delay(200).ContinueWith(_ =>
-                    {
-                        isUsingCustomKeyBinds = false;
-                    });
+                Task.Delay(200).ContinueWith(_ => { isUsingCustomKeyBinds = false; });
             }
-            else if ( isBackPressed && __instance.backButton != null
-                && !__instance.backButton.containsPoint(x, y))
+            else if (isBackPressed && __instance.backButton != null
+                                   && !__instance.backButton.containsPoint(x, y))
             {
                 __instance.backButton.snapMouseCursorToCenter();
-                MainClass.ScreenReader.Say(Translator.Instance.Translate("menu-junimo_note-back_button"), true);
+                MainClass.ScreenReader.Say(
+                    Translator.Instance.Translate("menu-junimo_note-back_button", TranslationCategory.Menu), true);
             }
-            else if ( isPPressed && __instance.purchaseButton != null
-                && !__instance.purchaseButton.containsPoint(x, y))
+            else if (isPPressed && __instance.purchaseButton != null
+                                && !__instance.purchaseButton.containsPoint(x, y))
             {
                 __instance.purchaseButton.snapMouseCursorToCenter();
-                MainClass.ScreenReader.Say(Translator.Instance.Translate("menu-junimo_note-purchase_button"), true);
+                MainClass.ScreenReader.Say(
+                    Translator.Instance.Translate("menu-junimo_note-purchase_button", TranslationCategory.Menu), true);
             }
+
             return;
         }
 
@@ -208,13 +206,11 @@ namespace stardew_access.Patches
                 currentIngredientListItem
             ];
 
-            Item item = new StardewValley.Object( ingredient.index, ingredient.stack, isRecipe: false, -1, ingredient.quality); bool completed = false;
-            if (___currentPageBundle != null && ___currentPageBundle.ingredients != null
-                && currentIngredientListItem < ___currentPageBundle.ingredients.Count
-                && ___currentPageBundle.ingredients[currentIngredientListItem].completed)
-            {
-                completed = true;
-            }
+            Item item = new StardewValley.Object(ingredient.index, ingredient.stack, isRecipe: false, -1,
+                ingredient.quality);
+            bool completed = ___currentPageBundle != null && ___currentPageBundle.ingredients != null
+                                                          && currentIngredientListItem < ___currentPageBundle.ingredients.Count
+                                                          && ___currentPageBundle.ingredients[currentIngredientListItem] .completed;
 
             string toSpeak = item.DisplayName;
 
@@ -222,7 +218,8 @@ namespace stardew_access.Patches
             {
                 toSpeak = Translator.Instance.Translate(
                     "menu-bundle-completed-prefix",
-                    new { content = toSpeak }
+                    new { content = toSpeak },
+                    TranslationCategory.Menu
                 );
             }
             else
@@ -264,7 +261,8 @@ namespace stardew_access.Patches
             {
                 toSpeak = Translator.Instance.Translate(
                     "menu-junimo_note-input_slot",
-                    new { index = currentIngredientInputSlot + 1 }
+                    new { index = currentIngredientInputSlot + 1 },
+                    TranslationCategory.Menu
                 );
             }
             else

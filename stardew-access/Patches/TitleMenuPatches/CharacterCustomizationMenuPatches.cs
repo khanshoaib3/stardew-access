@@ -637,7 +637,7 @@ namespace stardew_access.Patches
             __instance.setCurrentlySnappedComponentTo(currentComponent!.myID);
 
             (string translationKey, object? translationTokens) = buttons.ElementAt(saveGameIndex).Value;
-            toSpeak = Translator.Instance.Translate(translationKey, translationTokens);
+            toSpeak = Translator.Instance.Translate(translationKey, translationTokens, TranslationCategory.Menu);
 
             return toSpeak.Trim();
         }

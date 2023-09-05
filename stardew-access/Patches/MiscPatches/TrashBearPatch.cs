@@ -10,20 +10,24 @@ namespace stardew_access.Patches
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
-                    original: AccessTools.Method(typeof(TrashBear), nameof(TrashBear.checkAction)),
-                    postfix: new HarmonyMethod(typeof(TrashBearPatch), nameof(TrashBearPatch.CheckActionPatch))
+                original: AccessTools.Method(typeof(TrashBear), nameof(TrashBear.checkAction)),
+                postfix: new HarmonyMethod(typeof(TrashBearPatch), nameof(TrashBearPatch.CheckActionPatch))
             );
         }
 
-        private static void CheckActionPatch(TrashBear __instance, bool __result, int ___itemWantedIndex, int ___showWantBubbleTimer)
+        private static void CheckActionPatch(TrashBear __instance, bool __result, int ___itemWantedIndex,
+            int ___showWantBubbleTimer)
         {
             try
             {
-                if (__result) return; // The true `true` value of __result indicates the bear is interactable i.e. when giving the bear the wanted item
+                if (__result)
+                    return; // The true `true` value of __result indicates the bear is interactable i.e. when giving the bear the wanted item
                 if (__instance.Sprite.CurrentAnimation != null) return;
 
                 string itemName = Game1.objectInformation[___itemWantedIndex].Split('/')[4];
-                MainClass.ScreenReader.Say(Translator.Instance.Translate("patch-trash_bear-wanted_item", new {trash_bear_name = __instance.displayName, item_name = itemName}), true);
+                MainClass.ScreenReader.Say(
+                    Translator.Instance.Translate("patch-trash_bear-wanted_item",
+                        new { trash_bear_name = __instance.displayName, item_name = itemName }), true);
             }
             catch (Exception e)
             {

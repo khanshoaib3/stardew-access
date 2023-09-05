@@ -11,7 +11,8 @@ namespace stardew_access.Patches
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
-                original: AccessTools.Method(typeof(ExitPage), nameof(ExitPage.draw), new Type[] { typeof(SpriteBatch) }),
+                original: AccessTools.Method(typeof(ExitPage), nameof(ExitPage.draw),
+                    new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(ExitPagePatch), nameof(ExitPagePatch.DrawPatch))
             );
         }
@@ -20,16 +21,21 @@ namespace stardew_access.Patches
         {
             try
             {
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
+
                 if (__instance.exitToTitle.visible &&
-                        __instance.exitToTitle.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
+                    __instance.exitToTitle.containsPoint(x, y))
                 {
-                    MainClass.ScreenReader.SayWithMenuChecker(Translator.Instance.Translate("menu-exit_page-exit_to_title_button"), true);
+                    MainClass.ScreenReader.TranslateAndSayWithMenuChecker(
+                        "menu-exit_page-exit_to_title_button", true);
                     return;
                 }
+
                 if (__instance.exitToDesktop.visible &&
-                    __instance.exitToDesktop.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
+                    __instance.exitToDesktop.containsPoint(x, y))
                 {
-                    MainClass.ScreenReader.SayWithMenuChecker(Translator.Instance.Translate("menu-exit_page-exit_to_desktop_button"), true);
+                    MainClass.ScreenReader.TranslateAndSayWithMenuChecker(
+                        "menu-exit_page-exit_to_desktop_button", true);
                     return;
                 }
             }

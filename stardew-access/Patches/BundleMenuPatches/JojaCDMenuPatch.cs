@@ -11,7 +11,8 @@ namespace stardew_access.Patches
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
-                original: AccessTools.Method(typeof(JojaCDMenu), nameof(JojaCDMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                original: AccessTools.Method(typeof(JojaCDMenu), nameof(JojaCDMenu.draw),
+                    new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(JojaCDMenuPatch), nameof(JojaCDMenuPatch.DrawPatch))
             );
         }
@@ -22,7 +23,8 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true),
                     y = Game1.getMouseY(true); // Mouse x and y position
-                string toSpeak = "";
+                string translationKey = "";
+                object? translationToken = null;
 
                 for (int i = 0; i < __instance.checkboxes.Count; i++)
                 {
@@ -32,38 +34,29 @@ namespace stardew_access.Patches
 
                     if (c.name.Equals("complete"))
                     {
-                        toSpeak = Translator.Instance.Translate(
-                            "menu-bundle-completed-prefix",
-                            new
-                            {
-                                content = Translator.Instance.Translate(
-                                    "menu-joja_cd-project_name",
-                                    new { project_index = i }
-                                ),
-                            }
-                        );
+                        translationKey = "menu-bundle-completed-prefix";
+                        translationToken = new
+                        {
+                            content = Translator.Instance.Translate("menu-joja_cd-project_name",
+                                new { project_index = i }, TranslationCategory.Menu),
+                        };
                     }
                     else
                     {
-                        toSpeak = Translator.Instance.Translate(
-                            "menu-joja_cd-project_info",
-                            new
-                            {
-                                name = Translator.Instance.Translate(
-                                    "menu-joja_cd-project_name",
-                                    new { project_index = i }
-                                ),
-                                price = __instance.getPriceFromButtonNumber(i),
-                                description = __instance.getDescriptionFromButtonNumber(i)
-                            }
-                        );
+                        translationKey = "menu-joja_cd-project_info";
+                        translationToken = new
+                        {
+                            name = Translator.Instance.Translate("menu-joja_cd-project_name", new { project_index = i },
+                                TranslationCategory.Menu),
+                            price = __instance.getPriceFromButtonNumber(i),
+                            description = __instance.getDescriptionFromButtonNumber(i)
+                        };
                     }
 
                     break;
                 }
 
-
-                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+                MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationToken);
             }
             catch (System.Exception e)
             {

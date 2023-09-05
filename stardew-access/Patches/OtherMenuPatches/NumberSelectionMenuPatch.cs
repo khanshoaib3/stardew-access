@@ -34,19 +34,19 @@ namespace stardew_access.Patches
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
                 if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
-                    hoveredButton = Translator.Instance.Translate("common-ui-ok_button");
+                    hoveredButton = Translator.Instance.Translate("common-ui-ok_button", TranslationCategory.Menu);
                 else if (__instance.cancelButton != null && __instance.cancelButton.containsPoint(x, y))
-                    hoveredButton = Translator.Instance.Translate("common-ui-cancel_button");
+                    hoveredButton = Translator.Instance.Translate("common-ui-cancel_button", TranslationCategory.Menu);
                 else if (__instance.leftButton != null && __instance.leftButton.containsPoint(x, y))
-                    hoveredButton = Translator.Instance.Translate("menu-number_selection-button-left_button");
+                    hoveredButton = Translator.Instance.Translate("menu-number_selection-button-left_button", TranslationCategory.Menu);
                 else if (__instance.rightButton != null && __instance.rightButton.containsPoint(x, y))
-                    hoveredButton = Translator.Instance.Translate("menu-number_selection-button-right_button");
+                    hoveredButton = Translator.Instance.Translate("menu-number_selection-button-right_button", TranslationCategory.Menu);
                 else
                     return; // Skips if no button is hovered, this usually happens when the menu is transitioning or fading in.
 
                 int totalPrice = (___price <= 0) ? 0 : ___price * ___currentValue;
                 string valueNPriceText = Translator.Instance.Translate("menu-number_selection-value_and_price_info",
-                    new { value = ___currentValue, price = totalPrice }
+                    new { value = ___currentValue, price = totalPrice }, TranslationCategory.Menu
                 );
 
                 if (firstTimeInMenu)

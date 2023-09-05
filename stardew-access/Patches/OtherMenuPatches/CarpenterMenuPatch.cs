@@ -100,7 +100,7 @@ namespace stardew_access.Patches
                 description = currentBlueprint.description,
             };
 
-            return Translator.Instance.Translate(translationKey, translationTokens);
+            return Translator.Instance.Translate(translationKey, translationTokens, TranslationCategory.Menu);
         }
 
         private static async void SpeakAndWait(string toSpeak)

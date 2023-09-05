@@ -55,32 +55,31 @@ namespace stardew_access.Patches
                 is_quest = (__instance.acceptQuestButton != null && __instance.questID != -1) ? 1 : 0,
             };
 
-            string toSpeak = Translator.Instance.Translate(translationKey, translationTokens);
+            string toSpeak = Translator.Instance.Translate(translationKey, translationTokens, TranslationCategory.Menu);
 
             if (__instance.mailMessage.Count > 1)
             {
                 toSpeak = Translator.Instance.Translate("menu-letter_viewer-pagination_text-prefix", new
-                {
-                    current_page = __instance.page + 1,
-                    total_pages = __instance.mailMessage.Count,
-                    content = toSpeak
-                });
+                    {
+                        current_page = __instance.page + 1,
+                        total_pages = __instance.mailMessage.Count,
+                        content = toSpeak
+                    },
+                    TranslationCategory.Menu);
             }
 
-            if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true))
-            {
-                // snap mouse to accept quest button
-                if (__instance.acceptQuestButton != null && __instance.questID != -1)
-                    __instance.acceptQuestButton.snapMouseCursorToCenter();
-            }
+            if (!MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true)) return;
+            // snap mouse to accept quest button
+            if (__instance.acceptQuestButton != null && __instance.questID != -1)
+                __instance.acceptQuestButton.snapMouseCursorToCenter();
         }
 
         private static void NarrateHoveredButtons(LetterViewerMenu __instance, int x, int y)
         {
             if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
-                CheckAndSpeak(Translator.Instance.Translate("common-ui-previous_page_button"));
+                CheckAndSpeak(Translator.Instance.Translate("common-ui-previous_page_button", TranslationCategory.Menu));
             else if (__instance.forwardButton != null && __instance.forwardButton.visible && __instance.forwardButton.containsPoint(x, y))
-                CheckAndSpeak(Translator.Instance.Translate("common-ui-next_page_button"));
+                CheckAndSpeak(Translator.Instance.Translate("common-ui-next_page_button", TranslationCategory.Menu));
             else if (__instance.ShouldShowInteractable())
             {
                 foreach (ClickableComponent c in __instance.itemsToGrab)
@@ -89,7 +88,7 @@ namespace stardew_access.Patches
                         continue;
 
                     object? token = new { name = InventoryUtils.GetPluralNameOfItem(c.item) };
-                    CheckAndSpeak(Translator.Instance.Translate("menu-letter_viewer-grabbable_item_text", token));
+                    CheckAndSpeak(Translator.Instance.Translate("menu-letter_viewer-grabbable_item_text", token, TranslationCategory.Menu));
                 }
             }
         }

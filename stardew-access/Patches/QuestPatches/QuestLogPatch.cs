@@ -118,7 +118,7 @@ namespace stardew_access.Patches
                     received_money = ____shownQuest.GetMoneyReward(),
                 };
 
-                MainClass.ScreenReader.MenuPrefixNoQueryText = $"{Translator.Instance.Translate("menu-quest_log-quest_detail", translationTokens)}\n";
+                MainClass.ScreenReader.MenuPrefixNoQueryText = $"{Translator.Instance.Translate("menu-quest_log-quest_detail", translationTokens, TranslationCategory.Menu)}\n";
                 MainClass.ScreenReader.PrevMenuQueryText = "";
                 isNarratingQuestInfo = true;
                 Task.Delay(200).ContinueWith(_ => { isNarratingQuestInfo = false; });

@@ -79,7 +79,7 @@ namespace stardew_access.Patches
 
             if (firstTimeInNamingMenu)
             {
-                MainClass.ScreenReader.MenuPrefixNoQueryText = Translator.Instance.Translate("menu-purchase_animal-first_time_in_menu_info");
+                MainClass.ScreenReader.MenuPrefixNoQueryText = Translator.Instance.Translate("menu-purchase_animal-first_time_in_menu_info", TranslationCategory.Menu);
                 firstTimeInNamingMenu = false;
             }
 

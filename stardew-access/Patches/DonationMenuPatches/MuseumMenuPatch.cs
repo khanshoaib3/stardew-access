@@ -87,14 +87,17 @@ namespace stardew_access.Patches
             if (__instance.heldItem == null) return;
 
             string toSpeak = "";
+            object? trasnlationToken = null;
             int tileX = (int)(Utility.ModifyCoordinateFromUIScale(x) + (float)Game1.viewport.X) / 64;
             int tileY = (int)(Utility.ModifyCoordinateFromUIScale(y) + (float)Game1.viewport.Y) / 64;
-            LibraryMuseum libraryMuseum = (LibraryMuseum)Game1.currentLocation;
 
-            if (libraryMuseum.isTileSuitableForMuseumPiece(tileX, tileY))
-                toSpeak = Translator.Instance.Translate("menu-museum-slot_info", new {x_position = tileX, y_position = tileY});
+            if (((LibraryMuseum)Game1.currentLocation).isTileSuitableForMuseumPiece(tileX, tileY))
+            {
+                toSpeak = "menu-museum-slot_info";
+                trasnlationToken = new { x_position = tileX, y_position = tileY };
+            }
 
-            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker(toSpeak, true, trasnlationToken);
         }
 
         private static void NarratePlayerInventory(MuseumMenu __instance, int x, int y)
@@ -104,7 +107,7 @@ namespace stardew_access.Patches
             if (NarrateHoveredButtons(__instance, x, y)) return;
 
             string highlightedItemPrefix = Translator.Instance.Translate("menu-donation_common-donatable_item_in_inventory-prefix",
-                new { content = "" });
+                new { content = "" }, TranslationCategory.Menu);
             int hoveredItemIndex = InventoryUtils.NarrateHoveredSlotAndReturnIndex(__instance.inventory.inventory,
                 __instance.inventory.actualInventory, __instance.inventory, highlightedItemPrefix: highlightedItemPrefix);
             if (hoveredItemIndex != -999)
@@ -120,16 +123,16 @@ namespace stardew_access.Patches
 
         private static bool NarrateHoveredButtons(MuseumMenu __instance, int x, int y)
         {
-            string toSpeak = "";
+            string translationKey = "";
             bool isDropItemButton = false;
 
             if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
             {
-                toSpeak = Translator.Instance.Translate("common-ui-ok_button");
+                translationKey = "common-ui-ok_button";
             }
             else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
             {
-                toSpeak = Translator.Instance.Translate("common-ui-drop_item_button");
+                translationKey = "common-ui-drop_item_button";
                 isDropItemButton = true;
             }
             else
@@ -137,8 +140,8 @@ namespace stardew_access.Patches
                 return false;
             }
 
-            if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true))
-                if (isDropItemButton) Game1.playSound("drop_item");
+            if (!MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true)) return true;
+            if (isDropItemButton) Game1.playSound("drop_item");
 
             return true;
         }

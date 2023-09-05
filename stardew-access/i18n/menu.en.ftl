@@ -217,6 +217,9 @@ menu-item_grab-chest_colors =
    [19] Light Grey
    [20] White
    *[other] Unknown
+  } {$is_selected ->
+  [0] {EMPTYSTRING()}
+  *[1] selected
   }
 
 ### Shop menu

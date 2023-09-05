@@ -47,12 +47,7 @@ namespace stardew_access.Patches
                 translationTokens = new
                 {
                     is_empty = (item == null) ? 1 : 0,
-                    item_name = (item == null) ? "" : Translator.Instance.Translate("common-util-pluralize_name",
-                            new
-                            {
-                                item_count = item.Stack,
-                                name = item.DisplayName
-                            })
+                    item_name = (item == null) ? "" : InventoryUtils.GetPluralNameOfItem(item)
                 };
             }
             else if (__instance.rightIngredientSpot != null && __instance.rightIngredientSpot.containsPoint(x, y))
@@ -62,12 +57,7 @@ namespace stardew_access.Patches
                 translationTokens = new
                 {
                     is_empty = (item == null) ? 1 : 0,
-                    item_name = (item == null) ? "" : Translator.Instance.Translate("common-util-pluralize_name",
-                            new
-                            {
-                                item_count = item.Stack,
-                                name = item.DisplayName
-                            })
+                    item_name = (item == null) ? "" : InventoryUtils.GetPluralNameOfItem(item)
                 };
             }
             else if (__instance.startTailoringButton != null && __instance.startTailoringButton.containsPoint(x, y))
@@ -99,12 +89,7 @@ namespace stardew_access.Patches
                 {
                     slot_name = "left_ring",
                     is_empty = (item == null) ? 1 : 0,
-                    item_name = (item == null) ? "" : Translator.Instance.Translate( "common-util-pluralize_name",
-                            new
-                            {
-                                item_count = item.Stack,
-                                name = item.DisplayName
-                            }),
+                    item_name = (item == null) ? "" : InventoryUtils.GetPluralNameOfItem(item),
                     item_description = ""
                 };
             }
@@ -116,12 +101,7 @@ namespace stardew_access.Patches
                 {
                     slot_name = "right_ring",
                     is_empty = (item == null) ? 1 : 0,
-                    item_name = (item == null) ? "" : Translator.Instance.Translate( "common-util-pluralize_name",
-                            new
-                            {
-                                item_count = item.Stack,
-                                name = item.DisplayName
-                            }),
+                    item_name = (item == null) ? "" : InventoryUtils.GetPluralNameOfItem(item),
                     item_description = ""
                 };
             }

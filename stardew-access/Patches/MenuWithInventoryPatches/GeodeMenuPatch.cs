@@ -40,12 +40,7 @@ namespace stardew_access.Patches
             // Narrates the treasure received on breaking the geode
             if (__instance.geodeTreasure == null) return false;
 
-            string pluralizedName = Translator.Instance.Translate("common-util-pluralize_name",
-                new
-                {
-                    item_count = __instance.geodeTreasure.Stack,
-                    name = __instance.geodeTreasure.DisplayName
-                });
+            string pluralizedName = InventoryUtils.GetPluralNameOfItem(__instance.geodeTreasure);
 
             MainClass.ScreenReader.TranslateAndSayWithMenuChecker(
                 "menu-geode-received_treasure_info",

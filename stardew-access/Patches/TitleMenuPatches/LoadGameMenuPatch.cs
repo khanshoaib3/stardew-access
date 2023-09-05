@@ -55,7 +55,7 @@ namespace stardew_access.Patches
             if (firstTimeInMenu)
             {
                 firstTimeInMenu = false;
-                MainClass.ScreenReader.MenuPrefixNoQueryText = Translator.Instance.Translate("menu-load_game-delete_farm_confirmation_text") + " ";
+                MainClass.ScreenReader.MenuPrefixNoQueryText = Translator.Instance.Translate("menu-load_game-delete_farm_confirmation_text", TranslationCategory.Menu) + " ";
             }
 
             if (___menu.okDeleteButton.containsPoint(x, y))

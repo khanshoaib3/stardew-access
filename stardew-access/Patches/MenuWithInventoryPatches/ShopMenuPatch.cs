@@ -83,7 +83,7 @@ namespace stardew_access.Patches
             if (__instance.hoveredItem == null) return;
 
             string name = __instance.hoveredItem.DisplayName;
-            string price = Translator.Instance.Translate("menu-shop-buy_price_info", new { price = __instance.hoverPrice });
+            string price = Translator.Instance.Translate("menu-shop-buy_price_info", new { price = __instance.hoverPrice }, TranslationCategory.Menu);
             string description = __instance.hoveredItem.getDescription();
 
             int itemIndex = (__instance.itemPriceAndStock[__instance.hoveredItem].Length > 2)

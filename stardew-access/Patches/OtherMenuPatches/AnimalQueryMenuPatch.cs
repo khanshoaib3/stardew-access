@@ -64,6 +64,8 @@ namespace stardew_access.Patches
             if (!isPrimaryInfoKeyPressed | isNarratingAnimalInfo)
                 return;
 
+            isNarratingAnimalInfo = true;
+            
             string name = ___animal.displayName;
             string type = ___animal.displayType;
             int age = (___animal.GetDaysOwned() + 1) / 28 + 1;
@@ -87,20 +89,17 @@ namespace stardew_access.Patches
                 heartCount += 0.5;
             }
 
-            string toSpeak = Translator.Instance.Translate( "animal_query_menu-animal_info",
-                new {
+            MainClass.ScreenReader.TranslateAndSay("animal_query_menu-animal_info", true, new
+                {
                     name,
                     type,
                     is_baby = ___animal.isBaby() ? 1 : 0,
                     heart_count = heartCount,
                     age,
                     parent_name = parent
-                }
-            );
-
-            isNarratingAnimalInfo = true;
-            Task.Delay(200) .ContinueWith(_ => { isNarratingAnimalInfo = false; }); // Adds delay
-            MainClass.ScreenReader.Say(toSpeak, true);
+                },
+                TranslationCategory.Menu);
+            Task.Delay(200).ContinueWith(_ => { isNarratingAnimalInfo = false; }); // Adds delay
         }
 
         private static void NarrateHoveredButton(

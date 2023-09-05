@@ -11,7 +11,8 @@ namespace stardew_access.Patches
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
-                original: AccessTools.Method(typeof(GameMenu), nameof(GameMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                original: AccessTools.Method(typeof(GameMenu), nameof(GameMenu.draw),
+                    new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(GameMenuPatch), nameof(GameMenuPatch.DrawPatch))
             );
         }
@@ -31,12 +32,11 @@ namespace stardew_access.Patches
                     if (!__instance.tabs[i].containsPoint(x, y))
                         continue;
 
-                    string toSpeak = Translator.Instance.Translate("menu-game_menu-tab_names",
-                            new {
-                                tab_name = GameMenu.getLabelOfTabFromIndex(i),
-                                is_active = (i == __instance.currentTab) ? 1 : 0
-                            });
-                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+                    MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-game_menu-tab_names", true, new
+                    {
+                        tab_name = GameMenu.getLabelOfTabFromIndex(i),
+                        is_active = (i == __instance.currentTab) ? 1 : 0
+                    });
                     return;
                 }
             }

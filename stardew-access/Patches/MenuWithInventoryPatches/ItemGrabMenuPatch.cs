@@ -12,7 +12,8 @@ namespace stardew_access.Patches
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
-                original: AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                original: AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.draw),
+                    new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(ItemGrabMenuPatch), nameof(ItemGrabMenuPatch.DrawPatch))
             );
         }
@@ -23,12 +24,14 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
-                if (MainClass.Config.SnapToFirstSecondaryInventorySlotKey.JustPressed() && __instance.ItemsToGrabMenu.inventory.Count > 0 && !__instance.shippingBin)
+                if (MainClass.Config.SnapToFirstSecondaryInventorySlotKey.JustPressed() &&
+                    __instance.ItemsToGrabMenu.inventory.Count > 0 && !__instance.shippingBin)
                 {
                     __instance.setCurrentlySnappedComponentTo(__instance.ItemsToGrabMenu.inventory[0].myID);
                     __instance.ItemsToGrabMenu.inventory[0].snapMouseCursorToCenter();
                 }
-                else if (MainClass.Config.SnapToFirstInventorySlotKey.JustPressed() && __instance.inventory.inventory.Count > 0)
+                else if (MainClass.Config.SnapToFirstInventorySlotKey.JustPressed() &&
+                         __instance.inventory.inventory.Count > 0)
                 {
                     __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
                     __instance.inventory.inventory[0].snapMouseCursorToCenter();
@@ -38,19 +41,24 @@ namespace stardew_access.Patches
                 {
                     return;
                 }
+
                 if (NarrateLastShippedItem(__instance, x, y))
                 {
                     return;
                 }
 
                 // Player inventory
-                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory, __instance.inventory.actualInventory, inventoryMenu: __instance.inventory, giveExtraDetails: true))
+                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory,
+                        __instance.inventory.actualInventory, inventoryMenu: __instance.inventory,
+                        giveExtraDetails: true))
                 {
                     return;
                 }
 
                 // Other inventory
-                InventoryUtils.NarrateHoveredSlot(__instance.ItemsToGrabMenu.inventory, __instance.ItemsToGrabMenu.actualInventory, inventoryMenu: __instance.ItemsToGrabMenu, giveExtraDetails: true);
+                InventoryUtils.NarrateHoveredSlot(__instance.ItemsToGrabMenu.inventory,
+                    __instance.ItemsToGrabMenu.actualInventory, inventoryMenu: __instance.ItemsToGrabMenu,
+                    giveExtraDetails: true);
             }
             catch (Exception e)
             {
@@ -84,7 +92,8 @@ namespace stardew_access.Patches
             {
                 translationKey = "menu-item_grab-special_button";
             }
-            else if (__instance.colorPickerToggleButton != null && __instance.colorPickerToggleButton.containsPoint(x, y))
+            else if (__instance.colorPickerToggleButton != null &&
+                     __instance.colorPickerToggleButton.containsPoint(x, y))
             {
                 translationKey = "menu-item_grab-color_picker_button";
                 translationTokens = new
@@ -96,43 +105,47 @@ namespace stardew_access.Patches
             {
                 translationKey = "common-ui-community_center_button";
             }
-            else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+            else if (__instance.dropItemInvisibleButton != null &&
+                     __instance.dropItemInvisibleButton.containsPoint(x, y))
             {
                 translationKey = "common-ui-drop_item_button";
                 isDropItemButton = true;
             }
             else
             {
-                for (int i = 0; __instance.discreteColorPickerCC != null && i < __instance.discreteColorPickerCC.Count; i++)
+                for (int i = 0;
+                     __instance.discreteColorPickerCC != null && i < __instance.discreteColorPickerCC.Count;
+                     i++)
                 {
                     if (!__instance.discreteColorPickerCC[i].containsPoint(x, y))
                         continue;
 
-                    string toSpeak = Translator.Instance.Translate("menu-item_grab-chest_colors", new {index = i});
-                    if (i == __instance.chestColorPicker.colorSelection)
-                        toSpeak = $"{toSpeak} Selected";
-                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+                    MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-item_grab-chest_colors", true, new
+                    {
+                        index = i,
+                        is_selected = i == __instance.chestColorPicker.colorSelection ? 1 : 0
+                    });
+
+                    return true;
                 }
-		
+
                 return false;
             }
 
-            if (MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens))
-                if (isDropItemButton) Game1.playSound("drop_item");
+            if (!MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens)) return true;
+            if (isDropItemButton) Game1.playSound("drop_item");
 
             return true;
         }
 
         private static bool NarrateLastShippedItem(ItemGrabMenu __instance, int x, int y)
         {
-            if (!__instance.shippingBin || Game1.getFarm().lastItemShipped == null || !__instance.lastShippedHolder.containsPoint(x, y))
+            if (!__instance.shippingBin || Game1.getFarm().lastItemShipped == null ||
+                !__instance.lastShippedHolder.containsPoint(x, y))
                 return false;
 
             Item lastShippedItem = Game1.getFarm().lastItemShipped;
-            int count = lastShippedItem.Stack;
-            string pluralizedName = Translator.Instance.Translate(
-                "common-util-pluralize_name",
-                new { item_count = count, name = lastShippedItem.DisplayName });
+            string pluralizedName = InventoryUtils.GetPluralNameOfItem(lastShippedItem);
 
             MainClass.ScreenReader.TranslateAndSayWithMenuChecker(
                 "menu-item_grab-last_shipped_info",

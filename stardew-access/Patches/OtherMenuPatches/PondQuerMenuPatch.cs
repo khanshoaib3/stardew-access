@@ -30,9 +30,9 @@ namespace stardew_access.Patches
                 if (___confirmingEmpty)
                 {
                     if (__instance.yesButton != null && __instance.yesButton.containsPoint(x, y))
-                        toSpeak = Translator.Instance.Translate("common-ui-confirm_button");
+                        toSpeak = Translator.Instance.Translate("common-ui-confirm_button", TranslationCategory.Menu);
                     else if (__instance.noButton != null && __instance.noButton.containsPoint(x, y))
-                        toSpeak = Translator.Instance.Translate("common-ui-cancel_button");
+                        toSpeak = Translator.Instance.Translate("common-ui-cancel_button", TranslationCategory.Menu);
                 }
                 else
                 {
@@ -53,7 +53,7 @@ namespace stardew_access.Patches
                             required_item_info = bring_text,
                             status = ____statusText
                         };
-                        extra = Translator.Instance.Translate("menu-pond_query-pond_info", translationTokens);
+                        extra = Translator.Instance.Translate("menu-pond_query-pond_info", translationTokens, TranslationCategory.Menu);
                         MainClass.ScreenReader.PrevMenuQueryText = "";
 
                         isNarratingPondInfo = true;
@@ -61,11 +61,11 @@ namespace stardew_access.Patches
                     }
 
                     if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
-                        toSpeak = Translator.Instance.Translate("common-ui-ok_button");
+                        toSpeak = Translator.Instance.Translate("common-ui-ok_button", TranslationCategory.Menu);
                     else if (__instance.changeNettingButton != null && __instance.changeNettingButton.containsPoint(x, y))
-                        toSpeak = Translator.Instance.Translate("menu-pond_query-change_netting_button");
+                        toSpeak = Translator.Instance.Translate("menu-pond_query-change_netting_button", TranslationCategory.Menu);
                     else if (__instance.emptyButton != null && __instance.emptyButton.containsPoint(x, y))
-                        toSpeak = Translator.Instance.Translate("menu-pond_query-empty_pond_button");
+                        toSpeak = Translator.Instance.Translate("menu-pond_query-empty_pond_button", TranslationCategory.Menu);
                 }
 
                 MainClass.ScreenReader.SayWithMenuChecker(string.Join("\n", new List<string>(){extra, toSpeak}), true);

@@ -74,15 +74,17 @@ namespace stardew_access.Patches
             }
         }
 
-        private static string GetQuestDetails(SpecialOrder order) => Translator.Instance.Translate("menu-special_orders_board-quest_details", new
-        {
-            name = order.GetName(),
-            description = order.GetDescription(),
-            objectives_list = string.Join(", ", order.GetObjectiveDescriptions()),
-            is_timed = order.IsTimedQuest() ? 1 : 0,
-            days = order.GetDaysLeft(),
-            has_money_reward = order.HasMoneyReward() ? 1 : 0,
-            money = order.GetMoneyReward()
-        });
+        private static string GetQuestDetails(SpecialOrder order) => Translator.Instance.Translate(
+            "menu-special_orders_board-quest_details", new
+            {
+                name = order.GetName(),
+                description = order.GetDescription(),
+                objectives_list = string.Join(", ", order.GetObjectiveDescriptions()),
+                is_timed = order.IsTimedQuest() ? 1 : 0,
+                days = order.GetDaysLeft(),
+                has_money_reward = order.HasMoneyReward() ? 1 : 0,
+                money = order.GetMoneyReward()
+            },
+            TranslationCategory.Menu);
     }
 }

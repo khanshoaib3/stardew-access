@@ -12,7 +12,8 @@ namespace stardew_access.Patches
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
-                original: AccessTools.Method(typeof(FieldOfficeMenu), nameof(FieldOfficeMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                original: AccessTools.Method(typeof(FieldOfficeMenu), nameof(FieldOfficeMenu.draw),
+                    new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(FieldOfficeMenuPatch), nameof(FieldOfficeMenuPatch.DrawPatch))
             );
         }
@@ -26,19 +27,21 @@ namespace stardew_access.Patches
 
                 if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
                 {
-                    toSpeak = Translator.Instance.Translate("common-ui-trashcan_button");
+                    toSpeak = Translator.Instance.Translate("common-ui-trashcan_button", TranslationCategory.Menu);
                 }
                 else if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
                 {
-                    toSpeak = Translator.Instance.Translate("common-ui-ok_button");
+                    toSpeak = Translator.Instance.Translate("common-ui-ok_button", TranslationCategory.Menu);
                 }
-                else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+                else if (__instance.dropItemInvisibleButton != null &&
+                         __instance.dropItemInvisibleButton.containsPoint(x, y))
                 {
-                    toSpeak = Translator.Instance.Translate("common-ui-drop_item_button");
+                    toSpeak = Translator.Instance.Translate("common-ui-drop_item_button", TranslationCategory.Menu);
                 }
                 else
                 {
-                    if (InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory, __instance.inventory.actualInventory, __instance.inventory))
+                    if (InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory,
+                            __instance.inventory.actualInventory, __instance.inventory))
                     {
                         return;
                     }
@@ -49,15 +52,29 @@ namespace stardew_access.Patches
                             continue;
 
                         if (__instance.pieceHolders[i].item == null)
-                            toSpeak = Translator.Instance.Translate("menu-field_office-incomplete_slot_names", new {slot_index = i});
+                        {
+                            toSpeak = Translator.Instance.Translate("menu-field_office-incomplete_slot_names",
+                                new { slot_index = i }, TranslationCategory.Menu);
+                        }
                         else
-                            toSpeak = Translator.Instance.Translate("menu-field_office-completed_slot_info", new {slot_index = i + 1, item_name_in_slot = __instance.pieceHolders[i].item.DisplayName});
+                        {
+                            toSpeak = Translator.Instance.Translate("menu-field_office-completed_slot_info",
+                                new
+                                {
+                                    slot_index = i + 1, item_name_in_slot = __instance.pieceHolders[i].item.DisplayName
+                                }, TranslationCategory.Menu);
+                        }
 
-                        if (!MainClass.Config.DisableInventoryVerbosity && __instance.heldItem != null && __instance.pieceHolders[i].item == null)
+                        if (!MainClass.Config.DisableInventoryVerbosity && __instance.heldItem != null &&
+                            __instance.pieceHolders[i].item == null)
                         {
                             int highlight = GetPieceIndexForDonationItem(__instance.heldItem.ParentSheetIndex);
                             if (highlight != -1 && highlight == i)
-                                toSpeak = Translator.Instance.Translate("menu-donation_common-donatable_item_in_inventory-prefix", new {content = toSpeak});
+                            {
+                                toSpeak = Translator.Instance.Translate(
+                                    "menu-donation_common-donatable_item_in_inventory-prefix",
+                                    new { content = toSpeak }, TranslationCategory.Menu);
+                            }
                         }
 
                         MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, $"{toSpeak}:{i}");
@@ -66,7 +83,8 @@ namespace stardew_access.Patches
                 }
 
                 if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true))
-                    if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+                    if (__instance.dropItemInvisibleButton != null &&
+                        __instance.dropItemInvisibleButton.containsPoint(x, y))
                         Game1.playSound("drop_item");
             }
             catch (System.Exception e)

@@ -12,7 +12,8 @@ namespace stardew_access.Patches
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
-                original: AccessTools.Method(typeof(InventoryPage), nameof(InventoryPage.draw), new Type[] { typeof(SpriteBatch) }),
+                original: AccessTools.Method(typeof(InventoryPage), nameof(InventoryPage.draw),
+                    new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(InventoryPagePatch), nameof(InventoryPagePatch.DrawPatch))
             );
         }
@@ -35,7 +36,8 @@ namespace stardew_access.Patches
                     return;
                 }
 
-                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory, __instance.inventory.actualInventory, __instance.inventory, giveExtraDetails: true))
+                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory,
+                        __instance.inventory.actualInventory, __instance.inventory, giveExtraDetails: true))
                 {
                     return;
                 }
@@ -52,57 +54,61 @@ namespace stardew_access.Patches
                 return;
 
             string farmName = Game1.content.LoadString("Strings\\UI:Inventory_FarmName", Game1.player.farmName.Value);
-            string currentFunds = Game1.content.LoadString("Strings\\UI:Inventory_CurrentFunds" + (Game1.player.useSeparateWallets ? "_Separate" : ""), Utility.getNumberWithCommas(Game1.player.Money));
-            string totalEarnings = Game1.content.LoadString("Strings\\UI:Inventory_TotalEarnings" + (Game1.player.useSeparateWallets ? "_Separate" : ""), Utility.getNumberWithCommas((int)Game1.player.totalMoneyEarned));
+            string currentFunds = Game1.content.LoadString(
+                "Strings\\UI:Inventory_CurrentFunds" + (Game1.player.useSeparateWallets ? "_Separate" : ""),
+                Utility.getNumberWithCommas(Game1.player.Money));
+            string totalEarnings = Game1.content.LoadString(
+                "Strings\\UI:Inventory_TotalEarnings" + (Game1.player.useSeparateWallets ? "_Separate" : ""),
+                Utility.getNumberWithCommas((int)Game1.player.totalMoneyEarned));
             int festivalScore = Game1.player.festivalScore;
             int walnut = Game1.netWorldState.Value.GoldenWalnuts.Value;
             int qiGems = Game1.player.QiGems;
             int qiCoins = Game1.player.clubCoins;
 
-            string toSpeak = Translator.Instance.Translate("menu-inventory_page-money_info_key",
-                    new {
-                        farm_name = farmName,
-                        current_funds = currentFunds,
-                        total_earnings = totalEarnings,
-                        festival_score = festivalScore,
-                        golden_walnut_count = walnut,
-                        qi_gem_count = qiGems,
-                        qi_club_coins = qiCoins
-                    });
 
-
-            MainClass.ScreenReader.Say(toSpeak, true);
+            MainClass.ScreenReader.TranslateAndSay("menu-inventory_page-money_info_key", true, new
+                {
+                    farm_name = farmName,
+                    current_funds = currentFunds,
+                    total_earnings = totalEarnings,
+                    festival_score = festivalScore,
+                    golden_walnut_count = walnut,
+                    qi_gem_count = qiGems,
+                    qi_club_coins = qiCoins
+                },
+                TranslationCategory.Menu);
         }
 
         private static bool NarrateHoveredButton(InventoryPage __instance, int x, int y)
         {
-            string? toSpeak = null;
+            string? translationKey = null;
             bool isDropItemButton = false;
 
-            if (__instance.inventory.dropItemInvisibleButton != null && __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
+            if (__instance.inventory.dropItemInvisibleButton != null &&
+                __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
             {
-                toSpeak = Translator.Instance.Translate("common-ui-drop_item_button");
+                translationKey = "common-ui-drop_item_button";
                 isDropItemButton = true;
             }
             else if (__instance.organizeButton != null && __instance.organizeButton.containsPoint(x, y))
             {
-                toSpeak = Translator.Instance.Translate("common-ui-organize_inventory_button");
+                translationKey = "common-ui-organize_inventory_button";
             }
             else if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
             {
-                toSpeak = Translator.Instance.Translate("common-ui-trashcan_button");
+                translationKey = "common-ui-trashcan_button";
             }
             else if (__instance.junimoNoteIcon != null && __instance.junimoNoteIcon.containsPoint(x, y))
             {
-                toSpeak = Translator.Instance.Translate("common-ui-community_center_button");
+                translationKey = "common-ui-community_center_button";
             }
             else
             {
                 return false;
             }
 
-            if (MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true))
-                if (isDropItemButton) Game1.playSound("drop_item");
+            if (!MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true)) return true;
+            if (isDropItemButton) Game1.playSound("drop_item");
 
             return true;
         }
@@ -114,9 +120,8 @@ namespace stardew_access.Patches
                 if (!__instance.equipmentIcons[i].containsPoint(mouseX, mouseY))
                     continue;
 
-                string toSpeak = Translator.Instance.Translate(GetNameAndDescriptionOfItem(__instance.equipmentIcons[i].name.ToLower().Replace(" ", "_")), true);
-
-                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+                MainClass.ScreenReader.SayWithMenuChecker(
+                    GetNameAndDescriptionOfItem(__instance.equipmentIcons[i].name.ToLower().Replace(" ", "_")), true);
 
                 return true;
             }
@@ -145,7 +150,8 @@ namespace stardew_access.Patches
                     is_empty = (item == null) ? 1 : 0,
                     item_name = (item == null) ? "" : item.DisplayName,
                     item_description = (item == null) ? "" : item.getDescription()
-                });
+                },
+                TranslationCategory.Menu);
         }
     }
 }

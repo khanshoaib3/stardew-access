@@ -606,7 +606,10 @@ namespace stardew_access.Utils
             {
                 DiscreteColorPicker dummyColorPicker = new(0, 0);
                 int colorIndex = dummyColorPicker.getSelectionFromColor(chest.playerChoiceColor.Get());
-                string chestColor = colorIndex == 0 ? "" : Translator.Instance.Translate("menu-item_grab-chest_colors", new {index = colorIndex});
+                string chestColor = colorIndex == 0
+                    ? ""
+                    : Translator.Instance.Translate("menu-item_grab-chest_colors",
+                        new { index = colorIndex, is_selected = 0 }, TranslationCategory.Menu);
                 toReturn = ($"{chestColor} {chest.DisplayName}", CATEGORY.Containers);
             }
             else if (obj is IndoorPot indoorPot)
