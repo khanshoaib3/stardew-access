@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using StardewValley;
 using StardewValley.Menus;
 using static stardew_access.Utils.ColorMatcher;
@@ -106,7 +105,7 @@ namespace stardew_access.Patches
                     Task.Delay(200).ContinueWith(_ => { isRunning = false; });
                 }
 
-                else if (Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) && MainClass.Config.CharacterCreationMenuDesignToggleKey.JustPressed() && !isRunning)
+                else if (/*Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) &&*/ MainClass.Config.CharacterCreationMenuDesignToggleKey.JustPressed() && !isRunning)
                 {
                     characterDesignToggle = !characterDesignToggle;
                     saveGameIndex =
@@ -441,6 +440,11 @@ namespace stardew_access.Patches
                     ClickableComponent left = __instance.leftSelectionButtons[DesignControlsIndex];
                     ClickableComponent right = __instance.rightSelectionButtons[DesignControlsIndex];
                     string name = left.name.ToLower().Replace(' ', '_');
+                    if (name == "cabins" || name == "difficulty" || name == "wallets")
+                    {
+                        ++DesignControlsIndex;
+                        continue;
+                    }
                     
                     if (!buttons.ContainsKey(left) || !buttons.ContainsKey(right))
                     {
@@ -521,6 +525,7 @@ namespace stardew_access.Patches
             if (__instance.source == CharacterCustomization.Source.HostNewFarm)
             {
                 ClickableComponent cabinLeft = __instance.getComponentWithID(621);
+                Log.Info(buttons.GetValueSafe(cabinLeft).translationKey);
                 if (Game1.startingCabins > 0)
                     buttons.Add(cabinLeft, ("menu-character_creation-decrease_starting_cabins_button", null));
 
@@ -566,10 +571,10 @@ namespace stardew_access.Patches
                 buttons.Add(__instance.advancedOptionsButton, ("menu-character_creation-advanced_options_button", null));
 
             if (__instance.okButton != null && __instance.okButton.visible)
-                buttons.Add(__instance.okButton, ("common-ui-ok_button", null));
+                buttons.Add(__instance.okButton, (Translator.Instance.Translate("common-ui-ok_button", TranslationCategory.Menu), null));
 
             if (__instance.backButton != null && __instance.backButton.visible)
-                buttons.Add(__instance.backButton, ("common-ui-back_button", null));
+                buttons.Add(__instance.backButton, (Translator.Instance.Translate("common-ui-back_button", TranslationCategory.Menu), null));
             #endregion
 
             int size = buttons.Count - 1;
