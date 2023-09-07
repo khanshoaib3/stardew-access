@@ -1,7 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
 using StardewValley;
 using StardewValley.Menus;
-using System.Text.Json;
-using static stardew_access.Utils.JsonLoader;
 using static stardew_access.Utils.ColorMatcher;
 using stardew_access.Translation;
 using HarmonyLib;
@@ -11,6 +10,8 @@ namespace stardew_access.Patches
 {
     internal class CharacterCustomizationMenuPatch : IPatch
     {
+        #region Fields
+
         private static bool isRunning = false;
         private static int saveGameIndex = -1;
         private static string prevPants = " ";
@@ -35,51 +36,14 @@ namespace stardew_access.Patches
         private static bool characterDesignToggleShouldSpeak = true;
         private static ClickableComponent? currentComponent = null;
 
+        #endregion
+        
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
                 original: AccessTools.Method(typeof(CharacterCustomization), nameof(CharacterCustomization.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(CharacterCustomizationMenuPatch), nameof(CharacterCustomizationMenuPatch.DrawPatch))
             );
-        }
-
-        private static Dictionary<string, Dictionary<int, string>> Descriptions
-        {
-            get
-            {
-                _descriptions ??= LoadDescriptionJson();
-                return _descriptions;
-            }
-        }
-        private static Dictionary<string, Dictionary<int, string>>? _descriptions;
-
-        private static Dictionary<string, Dictionary<int, string>> LoadDescriptionJson()
-        {
-            Log.Debug("Attempting to load json");
-            bool loaded = TryLoadJsonFile("new-character-appearance-descriptions.json", out JsonElement jsonElement);
-
-            if (!loaded || jsonElement.ValueKind == JsonValueKind.Undefined)
-            {
-                return new Dictionary<string, Dictionary<int, string>>();
-            }
-
-            Dictionary<string, Dictionary<int, string>> result = new();
-
-            foreach (JsonProperty category in jsonElement.EnumerateObject())
-            {
-                Dictionary<int, string> innerDictionary = new();
-
-                foreach (JsonProperty item in category.Value.EnumerateObject())
-                {
-                    int index = int.Parse(item.Name);
-                    innerDictionary[index] = item.Value.GetString() ?? "";
-                }
-
-                result[category.Name] = innerDictionary;
-                Log.Info($"Loaded key '{category.Name}' with {innerDictionary.Count} entries in the sub dictionary.");
-            }
-
-            return result;
         }
 
         internal static void DrawPatch(CharacterCustomization __instance, bool ___skipIntro,
@@ -90,11 +54,10 @@ namespace stardew_access.Patches
             {
                 if (TextBoxPatch.IsAnyTextBoxActive) return;
 
-                bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
                 string toSpeak = "";
                 if (characterDesignToggleShouldSpeak)
                 {
-                    toSpeak = "Press left control + space to toggle character appearance controls";
+                    toSpeak = Translator.Instance.Translate("menu-character_creation-character_design_controls_usage_info", TranslationCategory.CharacterCreationMenu);
                     characterDesignToggleShouldSpeak = false;
                 }
                 string itemsToSpeak = "";
@@ -145,18 +108,15 @@ namespace stardew_access.Patches
 
                 else if (Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) && MainClass.Config.CharacterCreationMenuDesignToggleKey.JustPressed() && !isRunning)
                 {
-                    string displayState = "";
                     characterDesignToggle = !characterDesignToggle;
-                    saveGameIndex = Math.Min(saveGameIndex, 5); // move to random skin button if focus was beyond that point
-                    if (characterDesignToggle)
-                    {
-                        displayState = "shown";
-                    }
-                    else
-                    {
-                        displayState = "hidden";
-                    }
-                    toSpeak = $"Character design controls {displayState}. \n {toSpeak}";
+                    saveGameIndex =
+                        Math.Min(saveGameIndex, 5); // move to random skin button if focus was beyond that point
+                    toSpeak = string.Format("Character design controls {0}. \n {1}", Translator.Instance.Translate(
+                            "menu-character_creation-character_design_controls_toggle_info", new
+                            {
+                                is_enabled = characterDesignToggle ? 1 : 0
+                            }, TranslationCategory.CharacterCreationMenu),
+                        toSpeak);
                 }
 
                 changesToSpeak = GetChangesToSpeak(__instance);
@@ -391,7 +351,11 @@ namespace stardew_access.Patches
             {
                 prevPet = currentPet;
                 if (currentPet != "")
-                    toSpeak = $"{toSpeak} \n Current Pet: {currentPet}";
+                    toSpeak = string.Format("{0} \n {1}", toSpeak, Translator.Instance.Translate("menu-character_creation-current_pet-prefix", new
+                        {
+                            content = currentPet
+                        },
+                        TranslationCategory.CharacterCreationMenu));
             }
             return toSpeak.Trim();
         }
@@ -476,30 +440,21 @@ namespace stardew_access.Patches
                 {
                     ClickableComponent left = __instance.leftSelectionButtons[DesignControlsIndex];
                     ClickableComponent right = __instance.rightSelectionButtons[DesignControlsIndex];
-                    string name = left.name;
-                    // minor cleanup on names to be slightly more descriptive
-                    switch (name)
-                    {
-                        case "Skin":
-                            name += " Tone";
-                            break;
-                        case "Hair":
-                            name += " Style";
-                            break;
-                        case "Acc":
-                            name = "Accessory";
-                            break;
-                        default:
-                            break;
-                    }
+                    string name = left.name.ToLower().Replace(' ', '_');
+                    
                     if (!buttons.ContainsKey(left) || !buttons.ContainsKey(right))
                     {
-                        // FIXME Translate these!!
-                        buttons.Add(left, ($"Previous {name} button", null));
-                        buttons.Add(right, ($"Next {name} button", null));
+                        buttons.Add(left, ("menu-character_creation-previous_button_with_label", new
+                        {
+                            label = Translator.Instance.Translate($"menu-character_creation-label-{name}",
+                                TranslationCategory.CharacterCreationMenu)
+                        }));
+                        buttons.Add(right, ("menu-character_creation-next_button_with_label", new
+                        {
+                            label = Translator.Instance.Translate($"menu-character_creation-label-{name}",
+                                TranslationCategory.CharacterCreationMenu)
+                        }));
                     }
-                    //MainClass.ScreenReader.Say($"Left {DesignControlsIndex}: {__instance.leftSelectionButtons[DesignControlsIndex]} {__instance.leftSelectionButtons[DesignControlsIndex].name}\n", true);
-                    //MainClass.ScreenReader.Say($"Right {DesignControlsIndex}: {__instance.rightSelectionButtons[DesignControlsIndex]} {__instance.rightSelectionButtons[DesignControlsIndex].name}\n", true);
                     ++DesignControlsIndex;
                 }
 
@@ -637,7 +592,7 @@ namespace stardew_access.Patches
             __instance.setCurrentlySnappedComponentTo(currentComponent!.myID);
 
             (string translationKey, object? translationTokens) = buttons.ElementAt(saveGameIndex).Value;
-            toSpeak = Translator.Instance.Translate(translationKey, translationTokens, TranslationCategory.Menu);
+            toSpeak = Translator.Instance.Translate(translationKey, translationTokens, TranslationCategory.CharacterCreationMenu);
 
             return toSpeak.Trim();
         }
@@ -662,7 +617,11 @@ namespace stardew_access.Patches
             {
                 if (farm.name.Contains("Gray"))
                 {
-                    hoverText = "Reach level 10 " + Game1.content.LoadString("Strings\\UI:Character_" + farm.name.Split('_')[1]) + " to unlock.";
+                    hoverText = Translator.Instance.Translate("menu-character_creation-farm_type_locked_info", new
+                        {
+                            farm_name = Game1.content.LoadString("Strings\\UI:Character_" + farm.name.Split('_')[1])
+                        },
+                        TranslationCategory.CharacterCreationMenu);
                 }
             }
 
@@ -735,101 +694,80 @@ namespace stardew_access.Patches
         // Most values (exception noted below) are 0 indexed internally but visually start from 1. Thus we increment before returning.
         private static string GetCurrentPet(bool lessInfo = false)
         {
-            if (currentComponent != null && currentComponent.name == "Pet")
-            {
-                int whichPetBreed = Game1.player.whichPetBreed + 1;
-
-                if (!lessInfo)
+            if (currentComponent is not { name: "Pet" })
+                return "";
+            
+            return Translator.Instance.Translate(
+                "menu-character_creation-description-" + (Game1.player.catPerson ? "cat" : "dog"), new
                 {
-                    string petType = Game1.player.catPerson ? "Cat" : "Dog";
-                    if (Descriptions.TryGetValue(petType, out var innerDict) && innerDict.TryGetValue(whichPetBreed, out var description))
-                    {
-                        return description;
-                    }
-                    else
-                    {
-                        Log.Error($"Warning: Description for {petType} with index {whichPetBreed} not found in the dictionary.");
-                    }
-                }
-
-                return $"{(Game1.player.catPerson ? "Cat" : "Dog")} #{whichPetBreed + 1}";
-            }
-            return "";
+                    breed = Game1.player.whichPetBreed + 1,
+                    less_info = lessInfo ? 1 : 0
+                },
+                TranslationCategory.CharacterCreationMenu);
         }
 
         private static string GetCurrentAttributeValue(string componentName, Func<int> getValue, bool lessInfo = false)
         {
-            if (currentComponent != null && (currentComponent.myID == 507 || (!string.IsNullOrEmpty(currentComponent.name) && componentName.StartsWith(currentComponent.name, StringComparison.OrdinalIgnoreCase))))
-            {
-                int index = getValue();
-
-                if (!lessInfo)
+            if (currentComponent == null || (currentComponent.myID != 507 &&
+                                             (string.IsNullOrEmpty(currentComponent.name) ||
+                                              !currentComponent.name.StartsWith(componentName,
+                                                  StringComparison.OrdinalIgnoreCase))))
+                return "";
+            
+            return Translator.Instance.Translate(
+                $"menu-character_creation-description-{componentName}", new
                 {
-                    if (Descriptions.TryGetValue(componentName, out var innerDict))
-                    {
-                        if (innerDict.TryGetValue(index, out var description))
-                        {
-                            return description;
-                        }
-                        else
-                        {
-                            Log.Error($"Warning: Description for {componentName} with index {index} not found in the inner dictionary.");
-                        }
-                    }
-                    else
-                    {
-                        Log.Error($"Warning: Description for {componentName} not found in the outer dictionary.");
-                    }
-                }
-                return $"{componentName}: {index}";
-            }
-            return "";
+                    index = getValue(),
+                    less_info = lessInfo ? 1 : 0
+                },
+                TranslationCategory.CharacterCreationMenu);
         }
 
-        private static string GetCurrentSkin(bool lessInfo = false) => GetCurrentAttributeValue("Skin", () => Game1.player.skin.Value + 1, lessInfo);
+        private static string GetCurrentSkin(bool lessInfo = false) => GetCurrentAttributeValue("skin", () => Game1.player.skin.Value + 1, lessInfo);
 
-        private static string GetCurrentHair(bool lessInfo = false) => GetCurrentAttributeValue("Hair", () => Game1.player.hair.Value + 1, lessInfo);
+        private static string GetCurrentHair(bool lessInfo = false) => GetCurrentAttributeValue("hair", () => Game1.player.hair.Value + 1, lessInfo);
 
-        private static string GetCurrentShirt(bool lessInfo = false) => GetCurrentAttributeValue("Shirt", () => Game1.player.shirt.Value + 1, lessInfo);
+        private static string GetCurrentShirt(bool lessInfo = false) => GetCurrentAttributeValue("shirt", () => Game1.player.shirt.Value + 1, lessInfo);
 
-        private static string GetCurrentPants(bool lessInfo = false) => GetCurrentAttributeValue("Pants Style", () => Game1.player.pants.Value + 1, lessInfo);
+        private static string GetCurrentPants(bool lessInfo = false) => GetCurrentAttributeValue("pant", () => Game1.player.pants.Value + 1, lessInfo);
 
-        private static string GetCurrentAccessory(bool lessInfo = false) => GetCurrentAttributeValue("Accessory", () => Game1.player.accessory.Value + 2, lessInfo);
+        private static string GetCurrentAccessory(bool lessInfo = false) => GetCurrentAttributeValue("acc", () => Game1.player.accessory.Value + 2, lessInfo);
 
         private static string GetCurrentColorAttributeValue(string componentName, int minID, int maxID, Func<string> getValue)
         {
-            if (currentComponent != null && (currentComponent.myID == 507 || (currentComponent.myID >= minID && currentComponent.myID <= maxID)))
-            {
-                return $"{componentName}: {getValue()}";
-            }
-            return "";
+            if (currentComponent == null || (currentComponent.myID != 507 &&
+                                             (currentComponent.myID < minID || currentComponent.myID > maxID)))
+                return "";
+            
+            return string.Format("{0}: {1}",
+                Translator.Instance.Translate($"menu-character_creation-label-{componentName}", TranslationCategory.CharacterCreationMenu), getValue());
         }
 
         private static string GetCurrentEyeColor()
         {
-            return GetCurrentColorAttributeValue("Eye color", 522, 524, () => GetNearestColorName(Game1.player.newEyeColor.R, Game1.player.newEyeColor.G, Game1.player.newEyeColor.B));
+            return GetCurrentColorAttributeValue("eye_color", 522, 524, () => GetNearestColorName(Game1.player.newEyeColor.R, Game1.player.newEyeColor.G, Game1.player.newEyeColor.B));
         }
 
-        private static string GetCurrentEyeColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hue", 522, 524, () => (GetCurrentSliderBar(522, __instance)!.value!.ToString()));
-        private static string GetCurrentEyeColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Saturation", 522, 524, () => (GetCurrentSliderBar(523, __instance)!.value!.ToString()));
-        private static string GetCurrentEyeColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Value", 522, 524, () => (GetCurrentSliderBar(524, __instance)!.value!.ToString()));
+        private static string GetCurrentEyeColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("hue", 522, 524, () => (GetCurrentSliderBar(522, __instance)!.value!.ToString()));
+        private static string GetCurrentEyeColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("saturation", 522, 524, () => (GetCurrentSliderBar(523, __instance)!.value!.ToString()));
+        private static string GetCurrentEyeColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("value", 522, 524, () => (GetCurrentSliderBar(524, __instance)!.value!.ToString()));
 
         private static string GetCurrentHairColor()
         {
-            return GetCurrentColorAttributeValue("Hair color", 525, 527, () => GetNearestColorName(Game1.player.hairstyleColor.R, Game1.player.hairstyleColor.G, Game1.player.hairstyleColor.B));
+            return GetCurrentColorAttributeValue("hair_color", 525, 527, () => GetNearestColorName(Game1.player.hairstyleColor.R, Game1.player.hairstyleColor.G, Game1.player.hairstyleColor.B));
         }
 
-        private static string GetCurrentHairColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hue", 525, 527, () => (GetCurrentSliderBar(525, __instance)!.value!.ToString()));
-        private static string GetCurrentHairColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Saturation", 525, 527, () => (GetCurrentSliderBar(526, __instance)!.value!.ToString()));
-        private static string GetCurrentHairColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Value", 525, 527, () => (GetCurrentSliderBar(527, __instance)!.value!.ToString()));
+        private static string GetCurrentHairColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("hue", 525, 527, () => (GetCurrentSliderBar(525, __instance)!.value!.ToString()));
+        private static string GetCurrentHairColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("saturation", 525, 527, () => (GetCurrentSliderBar(526, __instance)!.value!.ToString()));
+        private static string GetCurrentHairColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("value", 525, 527, () => (GetCurrentSliderBar(527, __instance)!.value!.ToString()));
 
         private static string GetCurrentPantsColor()
         {
-            return GetCurrentColorAttributeValue("Pants color", 528, 530, () => GetNearestColorName(Game1.player.pantsColor.R, Game1.player.pantsColor.G, Game1.player.pantsColor.B));
+            return GetCurrentColorAttributeValue("pants_color", 528, 530, () => GetNearestColorName(Game1.player.pantsColor.R, Game1.player.pantsColor.G, Game1.player.pantsColor.B));
         }
 
-        private static string GetCurrentPantsColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Hue", 528, 530, () => (GetCurrentSliderBar(528, __instance)!.value!.ToString()));
-        private static string GetCurrentPantsColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Saturation", 528, 530, () => (GetCurrentSliderBar(529, __instance)!.value!.ToString()));
-        private static string GetCurrentPantsColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("Value", 528, 530, () => (GetCurrentSliderBar(530, __instance)!.value!.ToString()));
+        private static string GetCurrentPantsColorHue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("hue", 528, 530, () => (GetCurrentSliderBar(528, __instance)!.value!.ToString()));
+        private static string GetCurrentPantsColorSaturation(CharacterCustomization __instance) => GetCurrentColorAttributeValue("saturation", 528, 530, () => (GetCurrentSliderBar(529, __instance)!.value!.ToString()));
+        private static string GetCurrentPantsColorValue(CharacterCustomization __instance) => GetCurrentColorAttributeValue("value", 528, 530, () => (GetCurrentSliderBar(530, __instance)!.value!.ToString()));
     }
 }

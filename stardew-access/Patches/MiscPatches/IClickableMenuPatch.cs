@@ -74,7 +74,7 @@ namespace stardew_access.Patches
                     return;
                 }
 
-                if (Game1.activeClickableMenu is TitleMenu titleMenu && titleMenu.GetChildMenu() is not CharacterCustomization)
+                if (Game1.activeClickableMenu is TitleMenu titleMenu && TitleMenu.subMenu is not CharacterCustomization)
                 {
                     return;
                 }

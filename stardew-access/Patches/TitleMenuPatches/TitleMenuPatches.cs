@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
-using StardewValley.Objects;
 
 namespace stardew_access.Patches
 {
@@ -64,7 +63,7 @@ namespace stardew_access.Patches
                 }
                 else if (TitleMenu.subMenu != null)
                 {
-                    if (__instance.backButton.containsPoint(x, y))
+                    if (__instance.backButton.containsPoint(x, y) && TitleMenu.subMenu is not CharacterCustomization)
                     {
                         translationKey = "common-ui-back_button";
                         MouseUtils.SimulateMouseClicks(
