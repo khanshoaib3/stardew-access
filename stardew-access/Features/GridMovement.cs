@@ -55,13 +55,13 @@ namespace stardew_access.Features
 			GameLocation location = Game1.currentLocation;
 			timer.Interval = minMillisecondsBetweenSteps - (player.addedSpeed * (minMillisecondsBetweenSteps / 9));
 
+			if (this.is_warping == true || is_moving || Game1.IsChatting || !Game1.player.CanMove || (Game1.CurrentEvent!=null && !Game1.CurrentEvent.canMoveAfterDialogue()))
+				return;
+
 			MainClass.LastGridMovementButtonPressed = pressedButton;
 			MainClass.LastGridMovementDirection = direction;
 
 			HandlePlayerDirection(direction);
-
-			if (this.is_warping == true || is_moving || Game1.IsChatting || !Game1.player.CanMove || (Game1.CurrentEvent!=null && !Game1.CurrentEvent.canMoveAfterDialogue()))
-				return;
 
 			is_moving = true;
 			timer.Start();
