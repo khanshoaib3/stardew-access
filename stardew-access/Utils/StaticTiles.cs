@@ -125,12 +125,12 @@ namespace stardew_access.Utils
         {
             if (MainClass.ModHelper is null) return;
 
-            bool loaded = TryLoadJsonFile(StaticTilesFileName, out staticTilesData);
+            bool loaded = TryLoadJsonFile(StaticTilesFileName, out staticTilesData, subdir: "assets/TileData");
             if (!loaded)
             {
                 Log.Error($"Unable to load {StaticTilesFileName}.");
             }
-            bool loaded_user = TryLoadJsonFile(CustomTilesFileName, out customTilesData);
+            bool loaded_user = TryLoadJsonFile(CustomTilesFileName, out customTilesData, subdir: "assets/TileData");
             if (!loaded_user)
             {
                 Log.Warn($"Unable to load {CustomTilesFileName}.");

@@ -20,8 +20,8 @@ namespace stardew_access.Utils
 
         static TileInfo()
         {
-            JsonLoader.TryLoadJsonArray("trackable_machines.json", out trackable_machines);
-            JsonLoader.TryLoadJsonDictionary("resource_clump_name_translation_keys.json", out ResourceClumpNameTranslationKeys);
+            JsonLoader.TryLoadJsonArray("trackable_machines.json", out trackable_machines, subdir: "assets/TileData");
+            JsonLoader.TryLoadJsonDictionary("resource_clump_name_translation_keys.json", out ResourceClumpNameTranslationKeys, subdir: "assets/TileData");
             JsonLoader.TryLoadNestedJson<int, (string, string)>(
                 "ParentSheetIndexes.json", 
                 ProcessParentSheetIndex,
@@ -279,8 +279,7 @@ namespace stardew_access.Utils
             // Check if the tile is NOT a warp point and if it collides with an object or terrain feature
             // OR if the tile has stumps in a Woods location
             return !IsWarpPointAtTile(currentLocation, x, y) &&
-                   (currentLocation.isCollidingPosition(new Rectangle(x * 64 + 1, y * 64 + 1, 62, 62), Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: true) ||
-                   (currentLocation is Woods woods && GetStumpsInWoods(woods, x, y, lessInfo) is not null));
+                   (currentLocation.isCollidingPosition(new Rectangle(x * 64 + 1, y * 64 + 1, 62, 62), Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: true));
         }
 
         /// <summary>
@@ -591,51 +590,30 @@ namespace stardew_access.Utils
         /// <returns>A string containing the resource clump information if a resource clump is found at the specified tile; null if no resource clump is found.</returns>
         public static string? GetResourceClumpAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false)
         {
-            // Check if the current location is Woods and handle stumps in woods separately
-            if (currentLocation is Woods woods)
-                return GetStumpsInWoods(woods, x, y, lessInfo);
+            // Get the dictionary of resource clumps (this includes stumps in woods)
+            Dictionary<(int x, int y), ResourceClump>? resourceClumpsByCoordinate = ResourceClumpUtils.GetResourceClumpsAtLocation(currentLocation);
 
-            // Iterate through resource clumps in the location using a for loop for performance reasons
-            for (int i = 0, count = currentLocation.resourceClumps.Count; i < count; i++)
+            // Check if there's a resource clump at the given coordinates
+            if (resourceClumpsByCoordinate?.TryGetValue((x, y), out ResourceClump? resourceClump) == true)
             {
-                var resourceClump = currentLocation.resourceClumps[i];
-
-                // Check if the resource clump occupies the tile and meets the lessInfo condition
-                if (resourceClump.occupiesTile(x, y) && (!lessInfo || (resourceClump.tile.X == x && resourceClump.tile.Y == y)))
+                // Check if lessInfo condition is met
+                if (!lessInfo || (resourceClump.tile.X == x && resourceClump.tile.Y == y))
                 {
-                    // Get the resource clump name if available, otherwise use "Unknown"
-                    return ResourceClumpNameTranslationKeys.TryGetValue(resourceClump.parentSheetIndex.Value, out string? translationKey)
-                            ? translationKey
-                            : "common-unknown";
+                    // Return the name of the resource clump or "Unknown" if not available
+                    if (ResourceClumpNameTranslationKeys.TryGetValue(resourceClump.parentSheetIndex.Value, out string? translationKey))
+                    {
+                        return translationKey;
+                    }
+                    else
+                    {
+                        // Log the missing translation key and some info about the clump
+                        Log.Warn($"Missing translation key for resource clump with parentSheetIndex {resourceClump.parentSheetIndex.Value}.", true);
+                        return "common-unknown";
+                    }
                 }
             }
 
             // No matching resource clump found
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the stump information at the specified tile coordinates in the given Woods location.
-        /// </summary>
-        /// <param name="woods">The Woods location where the stump might be found.</param>
-        /// <param name="x">The x-coordinate of the tile to check.</param>
-        /// <param name="y">The y-coordinate of the tile to check.</param>
-        /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the stump's origin. Default is false.</param>
-        /// <returns>A string containing the stump information if a stump is found at the specified tile; null if no stump is found.</returns>
-        public static string? GetStumpsInWoods(Woods woods, int x, int y, bool lessInfo = false)
-        {
-            // Iterate through stumps in the Woods location
-            foreach (var stump in woods.stumps)
-            {
-                // Check if the stump occupies the tile and meets the lessInfo condition
-                if (stump.occupiesTile(x, y) && (!lessInfo || (stump.tile.X == x && stump.tile.Y == y)))
-                {
-                    // Return stump information
-                    return "tile-resource_clump-large_stump-name";
-                }
-            }
-
-            // No matching stump found
             return null;
         }
     }
