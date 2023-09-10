@@ -484,7 +484,7 @@ namespace stardew_access.Utils
             {
                 if (customLocationDict != null && customLocationDict.TryGetValue(((short)x, (short)y), out var customTile))
                 {
-                    string translatedName = Translator.Instance.Translate(customTile.translationKeyOrName, true);
+                    string translatedName = Translator.Instance.Translate(customTile.translationKeyOrName, disableWarning: true);
                     return (translatedName, includeCategory ? customTile.category : (CATEGORY?)null);
                 }
             }
@@ -493,7 +493,9 @@ namespace stardew_access.Utils
             {
                 if (staticLocationDict != null && staticLocationDict.TryGetValue(((short)x, (short)y), out var staticTile))
                 {
-                    string translatedName = Translator.Instance.Translate(staticTile.translationKeyOrName, true);
+                    string translatedName = Translator.Instance.Translate(staticTile.translationKeyOrName,
+                        translationCategory: TranslationCategory.StaticTiles,
+                        disableWarning: true);
                     return (translatedName, includeCategory ? staticTile.category : (CATEGORY?)null);
                 }
             }
