@@ -244,9 +244,9 @@ namespace stardew_access.Utils
         {
             string locationName = currentLocation.NameOrUniqueName;
             
-            if (BundleLocations.TryGetValue(locationName, out var bundleCoords))
+            if (BundleLocations.TryGetValue(locationName, out Dictionary<(int, int), string>? bundleCoords))
             {
-                if (bundleCoords.TryGetValue((x, y), out var bundleName))
+                if (bundleCoords.TryGetValue((x, y), out string? bundleName))
                 {
                     if (currentLocation is CommunityCenter communityCenter)
                     {
@@ -335,37 +335,17 @@ namespace stardew_access.Utils
         /// </returns>
         public static string? GetFarmAnimalAt(GameLocation location, int x, int y)
         {
-            // Return null if the location is null or not a Farm or AnimalHouse
-            if (location is null || !(location is Farm || location is AnimalHouse))
+            Dictionary<(int x, int y), FarmAnimal>? animalsByCoordinate = AnimalUtils.GetAnimalsByLocation(location);
+            
+            if (animalsByCoordinate == null || !animalsByCoordinate.TryGetValue((x, y), out FarmAnimal? foundAnimal))
                 return null;
 
-            // Use an empty enumerable to store farm animals if no animals are found
-            IEnumerable<FarmAnimal> farmAnimals = Enumerable.Empty<FarmAnimal>();
+            string name = foundAnimal.displayName;
+            int age = foundAnimal.age.Value;
+            string type = foundAnimal.displayType;
 
-            // If the location is a Farm, get all the farm animals
-            if (location is Farm farm)
-                farmAnimals = farm.getAllFarmAnimals();
-            // If the location is an AnimalHouse, get all the animals from the AnimalHouse
-            else if (location is AnimalHouse animalHouse)
-                farmAnimals = animalHouse.animals.Values;
-
-            // Use LINQ to find the first farm animal at the specified tile (x, y) coordinates
-            var foundAnimal = farmAnimals.FirstOrDefault(farmAnimal => farmAnimal.getTileX() == x && farmAnimal.getTileY() == y);
-
-            // If a farm animal was found at the specified tile coordinates
-            if (foundAnimal != null)
-            {
-                string name = foundAnimal.displayName;
-                int age = foundAnimal.age.Value;
-                string type = foundAnimal.displayType;
-
-                // TODO better age info
-                // Return a formatted string with the farm animal's name, type, and age
-                return $"{name}, {type}, age {age}";
-            }
-
-            // If no farm animal was found, return null
-            return null;
+            // TODO: Better age info
+            return $"{name}, {type}, age {age}";
         }
 
         /// <summary>
