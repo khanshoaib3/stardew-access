@@ -161,7 +161,7 @@ namespace stardew_access
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.Input.ButtonsChanged += OnButtonsChanged;
             helper.Events.Player.Warped += OnPlayerWarped;
-            helper.Events.Display.WindowResized += OnFirstWindowResized;
+            helper.Events.Display.Rendering += OnRenderingStart;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
             helper.Events.Display.MenuChanged += OnMenuChanged;
@@ -286,7 +286,7 @@ namespace stardew_access
             }
         }
 
-        private void OnFirstWindowResized(object? sender, WindowResizedEventArgs e)
+        private void OnRenderingStart(object? sender, RenderingEventArgs renderingEventArgs)
         { 
             if (FirstRun)
             {
@@ -295,7 +295,7 @@ namespace stardew_access
                 Translator.Instance.Initialize(ModManifest);
                 Translator.Instance.CustomFunctions!.LoadLanguageHelper();
                 FirstRun = false;
-                ModHelper!.Events.Display.WindowResized -= OnFirstWindowResized;
+                ModHelper!.Events.Display.Rendering -= OnRenderingStart;
                 Log.Trace("Removed OnFirstWindowResized");
             }
         }
