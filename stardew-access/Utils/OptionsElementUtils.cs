@@ -86,7 +86,7 @@ namespace stardew_access.Utils
                     return label;
             }
 
-            return Translator.Instance.Translate(translationKey, tokens);
+            return Translator.Instance.Translate(translationKey, tokens, TranslationCategory.Menu);
         }
     }
 }
