@@ -1,153 +1,153 @@
 {
   "adventureguild": {
-    "Goals Board": {
+    "static_tile-adventure_guild-goals_board": {
       "x": [8],
       "y": [10],
       "type": "interactable"
     },
-    "Shop Counter": {
+    "static_tile-adventure_guild-shop_counter": {
       "x": [5],
       "y": [12],
       "type": "interactable"
     },
-    "Gil": {
+    "static_tile-adventure_guild-gil": {
       "x": [11],
       "y": [12],
       "type": "npc"
     },
-    "Stool[1]": {
+    "static_tile-adventure_guild-stool[1]": {
       "x": [2],
       "y": [13],
       "type": "furniture"
     },
-    "Stool[2]": {
+    "static_tile-adventure_guild-stool[2]": {
       "x": [11],
       "y": [16],
       "type": "furniture"
     },
-    "Stool[3]": {
+    "static_tile-adventure_guild-stool[3]": {
       "x": [9],
       "y": [17],
       "type": "furniture"
     },
-    "Stool[4]": {
+    "static_tile-adventure_guild-stool[4]": {
       "x": [11],
       "y": [18],
       "type": "furniture"
     },
-    "Fireplace": {
+    "static_tile-adventure_guild-fireplace": {
       "x": [9, 10],
       "y": [11],
       "type": "decoration"
     },
-    "Table": {
+    "static_tile-adventure_guild-table": {
       "x": [10, 11],
       "y": [17],
       "type": "decoration"
     },
-    "House Plant": {
+    "static_tile-adventure_guild-house_plant": {
       "x": [12],
       "y": [18],
       "type": "decoration"
     }
   },
   "animalshop": {
-    "Shop Counter": {
+    "static_tile-animal_shop-shop_counter": {
       "x": [12, 13],
       "y": [15],
       "type": "interactable"
     },
-    "Marnie's Room Door": {
+    "static_tile-animal_shop-marnies_room_door": {
       "x": [15],
       "y": [12],
       "type": "door"
     },
-    "Jas's Room Door": {
+    "static_tile-animal_shop-jass_room_door": {
       "x": [6],
       "y": [13],
       "type": "door"
     },
-    "Shane's Room Door": {
+    "static_tile-animal_shop-shanes_room_door": {
       "x": [21],
       "y": [13],
       "type": "door"
     },
-    "Marnie's Barn Door": {
+    "static_tile-animal_shop-marnies_barn_door": {
       "x": [30],
       "y": [13],
       "type": "door"
     },
-    "Fridge": {
+    "static_tile-animal_shop-fridge": {
       "x": [28],
       "y": [14],
       "type": "decoration"
     },
-    "Oven": {
+    "static_tile-animal_shop-oven": {
       "x": [24],
       "y": [14],
       "type": "decoration"
     },
-    "Mega Station": {
+    "static_tile-animal_shop-mega_station": {
       "x": [22],
       "y": [5],
       "type": "decoration"
     },
-    "Shane's Radio": {
+    "static_tile-animal_shop-shanes_radio": {
       "x": [24],
       "y": [4],
       "type": "decoration"
     },
-    "Marnie's Dresser": {
+    "static_tile-animal_shop-marnies_dresser": {
       "x": [16],
       "y": [4],
       "type": "decoration"
     },
-    "Marnie's Drawer": {
+    "static_tile-animal_shop-marnies_drawer": {
       "x": [17],
       "y": [4],
       "type": "decoration"
     },
-    "Jack in the Box": {
+    "static_tile-animal_shop-jack_in_the_box": {
       "x": [8],
       "y": [5],
       "type": "decoration"
     },
-    "Futan Bear": {
+    "static_tile-animal_shop-futan_bear": {
       "x": [2, 3],
       "y": [4],
       "type": "decoration"
     },
-    "Colouring Book": {
+    "static_tile-animal_shop-colouring_book": {
       "x": [5],
       "y": [4],
       "type": "decoration"
     },
-    "Paint Set": {
+    "static_tile-animal_shop-paint_set": {
       "x": [5],
       "y": [7],
       "type": "decoration"
     },
-    "Jas's Alarm Clock": {
+    "static_tile-animal_shop-jass_alarm_clock": {
       "x": [8],
       "y": [8],
       "type": "decoration"
     },
-    "Jas's Radio": {
+    "static_tile-animal_shop-jass_radio": {
       "x": [4],
       "y": [9],
       "type": "decoration"
     },
-    "Arts And Craft": {
+    "static_tile-animal_shop-arts_and_craft": {
       "x": [7],
       "y": [6],
       "type": "decoration"
     },
-    "Doll House": {
+    "static_tile-animal_shop-doll_house": {
       "x": [6, 7],
       "y": [4],
       "type": "decoration"
     }
-  },
+  } ,
   "archaeologyhouse": {
     "Gunther's Box": {
       "x": [6],
