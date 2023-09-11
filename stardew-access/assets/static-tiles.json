@@ -276,35 +276,35 @@
     }
   },
   "barn": {
-    "static_tile-barn-hay_hopper": {
+    "static_tile-common-hay_hopper": {
       "x": [6],
       "y": [3],
       "type": "interactable"
     }
   },
   "barn2": {
-    "static_tile-barn-hay_hopper": {
+    "static_tile-common-hay_hopper": {
       "x": [6],
       "y": [3],
       "type": "interactable"
     }
   },
   "big barn": {
-    "static_tile-barn-hay_hopper": {
+    "static_tile-common-hay_hopper": {
       "x": [6],
       "y": [3],
       "type": "interactable"
     }
   },
   "barn3": {
-    "static_tile-barn-hay_hopper": {
+    "static_tile-common-hay_hopper": {
       "x": [6],
       "y": [3],
       "type": "interactable"
     }
   },
   "deluxe barn": {
-    "static_tile-barn-hay_hopper": {
+    "static_tile-common-hay_hopper": {
       "x": [6],
       "y": [3],
       "type": "interactable"
@@ -382,217 +382,217 @@
     }
   },
   "beach": {
-    "Beach Warp Statue": {
+    "static_tile-beach-beach_warp_statue": {
       "x": [20],
       "y": [4],
       "type": "decoration"
     },
-    "Willy's Barrel": {
+    "static_tile-beach-willys_barrel": {
       "x": [37],
       "y": [33],
       "type": "container"
     }
   },
   "beachnightmarket": {
-    "Fishing Submarine Door": {
+    "static_tile-beach_night_market-fishing_submarine_door": {
       "x": [5],
       "y": [34],
       "type": "door"
     },
-    "Mermaid Boat Door": {
+    "static_tile-beach_night_market-mermaid_boat_door": {
       "x": [58],
       "y": [31],
       "type": "door"
     },
-    "Desert Trader": {
+    "static_tile-beach_night_market-desert_trader": {
       "x": [14],
       "y": [37],
       "type": "npc"
     },
-    "Famous Painter Lupini": {
+    "static_tile-beach_night_market-famous_painter_lupini": {
       "x": [43],
       "y": [34],
       "type": "npc"
     },
-    "Travelling Cart": {
+    "static_tile-beach_night_market-travelling_cart": {
       "x": [39],
       "y": [30],
       "type": "interactable"
     },
-    "Shrouded Figure": {
+    "static_tile-beach_night_market-shrouded_figure": {
       "x": [32],
       "y": [34],
       "type": "npc"
     },
-    "Decoration Boat": {
+    "static_tile-beach_night_market-decoration_boat": {
       "x": [19],
       "y": [33],
       "type": "interactable"
     },
-    "Magic Shop Boat": {
+    "static_tile-beach_night_market-magic_shop_boat": {
       "x": [48],
       "y": [34],
       "type": "interactable"
     }
   },
   "blacksmith": {
-    "Shop Counter": {
+    "static_tile-blacksmith-shop_counter": {
       "x": [3],
       "y": [14],
       "type": "interactable"
     },
-    "Clint's Room Door": {
+    "static_tile-blacksmith-clints_room_door": {
       "x": [4],
       "y": [9],
       "type": "door"
     },
-    "Clint's Furnace": {
+    "static_tile-blacksmith-clints_furnace": {
       "x": [9, 10],
       "y": [12],
       "type": "decoration"
     },
-    "Blueprints": {
+    "static_tile-blacksmith-blueprints": {
       "x": [13],
       "y": [15, 16],
       "type": "decoration"
     },
-    "Anvil": {
+    "static_tile-blacksmith-anvil": {
       "x": [12, 13],
       "y": [13],
       "type": "decoration"
     },
-    "Cassette Deck": {
+    "static_tile-blacksmith-cassette_deck": {
       "x": [2],
       "y": [4],
       "type": "decoration"
     },
-    "Clint's Drawer": {
+    "static_tile-blacksmith-clints_drawer": {
       "x": [5, 6],
       "y": [4],
       "type": "decoration"
     }
   },
   "busstop": {
-    "Ticket Machine": {
+    "static_tile-bus_stop-ticket_machine": {
       "x": [7],
       "y": [11],
       "type": "interactable"
     },
-    "Minecart": {
+    "static_tile-bus_stop-minecart": {
       "x": [4, 5],
       "y": [3],
       "type": "interactable"
     }
   },
   "caldera": {
-    "Rare Chest": {
+    "static_tile-caldera-rare_chest": {
       "x": [25],
       "y": [28],
       "type": "container"
     },
-    "Forge": {
+    "static_tile-caldera-forge": {
       "x": [23],
       "y": [21],
       "type": "interactable"
     }
   },
   "club": {
-    "Coin Machine": {
+    "static_tile-club-coin_machine": {
       "x": [12],
       "y": [4],
       "type": "interactable"
     },
-    "Shop Counter": {
+    "static_tile-club-shop_counter": {
       "x": [25],
       "y": [3],
       "type": "interactable"
     },
-    "Calico Spin Machine": {
+    "static_tile-club-calico_spin_machine": {
       "x": [11, 13, 15],
       "y": [8, 10],
       "type": "interactable"
     },
-    "High Stakes Calico Jack Table": {
+    "static_tile-club-high_stakes_calico_jack_table": {
       "x": [23, 24],
       "y": [10, 11],
       "type": "interactable"
     },
-    "Low Stakes Calico Jack Table": {
+    "static_tile-club-low_stakes_calico_jack_table": {
       "x": [3],
       "y": [7, 9],
       "type": "interactable"
     },
-    "Man": {
+    "static_tile-club-man": {
       "x": [13],
       "y": [11],
       "type": "npc"
     },
-    "Welwick": {
+    "static_tile-club-welwick": {
       "x": [18],
       "y": [9],
       "type": "npc"
     },
-    "Unknown person": {
+    "static_tile-club-unknown_person": {
       "x": [16],
       "y": [4],
       "type": "npc"
     },
-    "Stats Checker": {
+    "static_tile-club-stats_checker": {
       "x": [3],
       "y": [4],
       "type": "interactable"
     }
   },
   "coop": {
-    "Hay Hopper": {
+    "static_tile-common-hay_hopper": {
       "x": [3],
       "y": [3],
       "type": "interactable"
     }
   },
   "coop2": {
-    "Hay Hopper": {
+    "static_tile-common-hay_hopper": {
       "x": [3],
       "y": [3],
       "type": "interactable"
     },
-    "Incubator": {
+    "static_tile-coop-incubator": {
       "x": [2],
       "y": [3],
       "type": "machine"
     }
   },
   "big coop": {
-    "Hay Hopper": {
+    "static_tile-common-hay_hopper": {
       "x": [3],
       "y": [3],
       "type": "interactable"
     },
-    "Incubator": {
+    "static_tile-coop-incubator": {
       "x": [2],
       "y": [3],
       "type": "machine"
     }
   },
   "coop3": {
-    "Hay Hopper": {
+    "static_tile-common-hay_hopper": {
       "x": [3],
       "y": [3],
       "type": "interactable"
     },
-    "Incubator": {
+    "static_tile-coop-incubator": {
       "x": [2],
       "y": [3],
       "type": "machine"
     }
   },
   "deluxe coop": {
-    "Hay Hopper": {
+    "static_tile-common-hay_hopper": {
       "x": [3],
       "y": [3],
       "type": "interactable"
     },
-    "Incubator": {
+    "static_tile-coop-incubator": {
       "x": [2],
       "y": [3],
       "type": "machine"

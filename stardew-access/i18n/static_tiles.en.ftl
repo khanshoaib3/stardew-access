@@ -1,3 +1,7 @@
+# Common
+
+static_tile-common-hay_hopper = Hay Hopper
+
 # Adventures Guild
 
 static_tile-adventure_guild-goals_board = Goals Board
@@ -48,10 +52,6 @@ static_tile-archaeology_house-teddybear = Teddybear
 static_tile-archaeology_house-atlas = Atlas
 static_tile-archaeology_house-childrens_book = Children's Book
 
-# Barns
-
-static_tile-barn-hay_hopper = Hay Hopper
-
 # Bathouse
 
 ## Men locker room
@@ -73,3 +73,55 @@ static_tile-bathhouse_pool-southeast_steps = Southeast Steps
 
 static_tile-bathhouse_womens_locker-entry_room_door = Entry Room Door
 static_tile-bathhouse_womens_locker-pool_entrance = Pool Entrance
+
+# Beach
+
+static_tile-beach-beach_warp_statue = Beach Warp Statue
+static_tile-beach-willys_barrel = Willy's Barrel
+
+# Beach night market
+
+static_tile-beach_night_market-fishing_submarine_door = Fishing Submarine Door
+static_tile-beach_night_market-mermaid_boat_door = Mermaid Boat Door
+static_tile-beach_night_market-desert_trader = Desert Trader
+static_tile-beach_night_market-famous_painter_lupini = Famous Painter Lupini
+static_tile-beach_night_market-travelling_cart = Travelling Cart
+static_tile-beach_night_market-shrouded_figure = Shrouded Figure
+static_tile-beach_night_market-decoration_boat = Decoration Boat
+static_tile-beach_night_market-magic_shop_boat = Magic Shop Boat
+
+# Blacksmith
+
+static_tile-blacksmith-shop_counter = Shop Counter
+static_tile-blacksmith-clints_room_door = Clint's Room Door
+static_tile-blacksmith-clints_furnace = Clint's Furnace
+static_tile-blacksmith-blueprints = Blueprints
+static_tile-blacksmith-anvil = Anvil
+static_tile-blacksmith-cassette_deck = Cassette Deck
+static_tile-blacksmith-clints_drawer = Clint's Drawer
+
+# Bus stop
+
+static_tile-bus_stop-ticket_machine = Ticket Machine
+static_tile-bus_stop-minecart = Minecart
+
+# Caldera
+
+static_tile-caldera-rare_chest = Rare Chest
+static_tile-caldera-forge = Forge
+
+# Casino (Qi's club)
+
+static_tile-club-coin_machine = Coin Machine
+static_tile-club-shop_counter = Shop Counter
+static_tile-club-calico_spin_machine = Calico Spin Machine
+static_tile-club-high_stakes_calico_jack_table = High Stakes Calico Jack Table
+static_tile-club-low_stakes_calico_jack_table = Low Stakes Calico Jack Table
+static_tile-club-man = Man
+static_tile-club-welwick = Welwick
+static_tile-club-unknown_person = Unknown person
+static_tile-club-stats_checker = Stats Checker
+
+# Coops
+
+static_tile-coop-incubator = Incubator
