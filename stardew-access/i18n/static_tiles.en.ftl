@@ -29,3 +29,47 @@ static_tile-animal_shop-jass_alarm_clock = Jas's Alarm Clock
 static_tile-animal_shop-jass_radio = Jas's Radio
 static_tile-animal_shop-arts_and_craft = Arts And Craft
 static_tile-animal_shop-doll_house = Doll House
+
+# Archeology House
+
+static_tile-archaeology_house-gunthers_box = Gunther's Box
+static_tile-archaeology_house-collection = Collection
+static_tile-archaeology_house-counter = Counter
+static_tile-archaeology_house-stool = Stool
+static_tile-archaeology_house-chair = Chair
+static_tile-archaeology_house-table = Table
+static_tile-archaeology_house-desk = Desk
+static_tile-archaeology_house-house_plant = House Plant
+static_tile-archaeology_house-palm_tree = Palm Tree
+static_tile-archaeology_house-fireplace = Fireplace
+static_tile-archaeology_house-history_book = History Book
+static_tile-archaeology_house-step_stool = Step Stool
+static_tile-archaeology_house-teddybear = Teddybear
+static_tile-archaeology_house-atlas = Atlas
+static_tile-archaeology_house-childrens_book = Children's Book
+
+# Barns
+
+static_tile-barn-hay_hopper = Hay Hopper
+
+# Bathouse
+
+## Men locker room
+
+static_tile-bathhouse_mens_locker-entry_room_door = Entry Room Door
+static_tile-bathhouse_mens_locker-pool_entrance = Pool Entrance
+
+## Pool
+
+static_tile-bathhouse_pool-womens_locker_room_door = Women's Locker Room Door
+static_tile-bathhouse_pool-mens_locker_room_door = Men's Locker Room Door
+static_tile-bathhouse_pool-bench = Bench
+static_tile-bathhouse_pool-northwest_steps = Northwest Steps
+static_tile-bathhouse_pool-northeast_steps = Northeast Steps
+static_tile-bathhouse_pool-southwest_steps = Southwest Steps
+static_tile-bathhouse_pool-southeast_steps = Southeast Steps
+
+## Women locker room
+
+static_tile-bathhouse_womens_locker-entry_room_door = Entry Room Door
+static_tile-bathhouse_womens_locker-pool_entrance = Pool Entrance

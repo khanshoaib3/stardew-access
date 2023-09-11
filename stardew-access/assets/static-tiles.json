@@ -149,233 +149,233 @@
     }
   } ,
   "archaeologyhouse": {
-    "Gunther's Box": {
+    "static_tile-archaeology_house-gunthers_box": {
       "x": [6],
       "y": [9],
       "type": "container"
     },
-    "Collection": {
+    "static_tile-archaeology_house-collection": {
       "x": [2],
       "y": [9],
       "type": "interactable"
     },
-    "Counter": {
+    "static_tile-archaeology_house-counter": {
       "x": [3],
       "y": [9],
       "type": "interactable"
     },
-    "Stool": {
+    "static_tile-archaeology_house-stool[1]": {
       "x": [1],
       "y": [10],
       "type": "furniture"
     },
-    "Chair[1]": {
+    "static_tile-archaeology_house-chair[1]": {
       "x": [13],
       "y": [14],
       "type": "furniture"
     },
-    "Chair[2]": {
+    "static_tile-archaeology_house-chair[2]": {
       "x": [9],
       "y": [16],
       "type": "furniture"
     },
-    "Chair[3]": {
+    "static_tile-archaeology_house-chair[3]": {
       "x": [13],
       "y": [18],
       "type": "furniture"
     },
-    "Chair[4]": {
+    "static_tile-archaeology_house-chair[4]": {
       "x": [17],
       "y": [18],
       "type": "furniture"
     },
-    "Table": {
+    "static_tile-archaeology_house-table": {
       "x": [17, 18],
       "y": [10, 11],
       "type": "decoration"
     },
-    "Desk[1]": {
+    "static_tile-archaeology_house-desk[1]": {
       "x": [9, 10],
       "y": [15],
       "type": "decoration"
     },
-    "Desk[2]": {
+    "static_tile-archaeology_house-desk[2]": {
       "x": [13, 14],
       "y": [15],
       "type": "decoration"
     },
-    "Desk[3]": {
+    "static_tile-archaeology_house-desk[3]": {
       "x": [17, 18],
       "y": [15],
       "type": "decoration"
     },
-    "Desk[4]": {
+    "static_tile-archaeology_house-desk[4]": {
       "x": [9, 10],
       "y": [17],
       "type": "decoration"
     },
-    "Desk[5]": {
+    "static_tile-archaeology_house-desk[5]": {
       "x": [13, 14],
       "y": [17],
       "type": "decoration"
     },
-    "Desk[6]": {
+    "static_tile-archaeology_house-desk[6]": {
       "x": [17, 18],
       "y": [17],
       "type": "decoration"
     },
-    "House Plant[1]": {
+    "static_tile-archaeology_house-house_plant[1]": {
       "x": [27],
       "y": [4],
       "type": "decoration"
     },
-    "House Plant[2]": {
+    "static_tile-archaeology_house-house_plant[2]": {
       "x": [26],
       "y": [18],
       "type": "decoration"
     },
-    "Palm Tree": {
+    "static_tile-archaeology_house-palm_tree": {
       "x": [38],
       "y": [4],
       "type": "decoration"
     },
-    "Fireplace": {
+    "static_tile-archaeology_house-fireplace": {
       "x": [43, 44],
       "y": [4],
       "type": "decoration"
     },
-    "History Book": {
+    "static_tile-archaeology_house-history_book": {
       "x": [15, 16, 17, 18, 19],
       "y": [8],
       "type": "decoration"
     },
-    "Step Stool[1]": {
+    "static_tile-archaeology_house-step_stool[1]": {
       "x": [10],
       "y": [9],
       "type": "decoration"
     },
-    "Step Stool[2]": {
+    "static_tile-archaeology_house-step_stool[2]": {
       "x": [18],
       "y": [5],
       "type": "decoration"
     },
-    "Teddybear": {
+    "static_tile-archaeology_house-teddybear": {
       "x": [20],
       "y": [9],
       "type": "decoration"
     },
-    "Atlas": {
+    "static_tile-archaeology_house-atlas": {
       "x": [21],
       "y": [7, 8],
       "type": "decoration"
     },
-    "Children's Book": {
+    "static_tile-archaeology_house-childrens_book": {
       "x": [21],
       "y": [9, 10],
       "type": "decoration"
     }
   },
   "barn": {
-    "Hay Hopper": {
+    "static_tile-barn-hay_hopper": {
       "x": [6],
       "y": [3],
       "type": "interactable"
     }
   },
   "barn2": {
-    "Hay Hopper": {
+    "static_tile-barn-hay_hopper": {
       "x": [6],
       "y": [3],
       "type": "interactable"
     }
   },
   "big barn": {
-    "Hay Hopper": {
+    "static_tile-barn-hay_hopper": {
       "x": [6],
       "y": [3],
       "type": "interactable"
     }
   },
   "barn3": {
-    "Hay Hopper": {
+    "static_tile-barn-hay_hopper": {
       "x": [6],
       "y": [3],
       "type": "interactable"
     }
   },
   "deluxe barn": {
-    "Hay Hopper": {
+    "static_tile-barn-hay_hopper": {
       "x": [6],
       "y": [3],
       "type": "interactable"
     }
   },
   "bathhouse_menslocker": {
-    "Entry Room Door": {
+    "static_tile-bathhouse_mens_locker-entry_room_door": {
       "x": [3],
       "y": [27],
       "type": "door"
     },
-    "Pool Entrance": {
+    "static_tile-bathhouse_mens_locker-pool_entrance": {
       "x": [15],
       "y": [27],
       "type": "door"
     }
   },
   "bathhouse_pool": {
-    "Women's Locker Room Door": {
+    "static_tile-bathhouse_pool-womens_locker_room_door": {
       "x": [6],
       "y": [0],
       "type": "door"
     },
-    "Men's Locker Room Door": {
+    "static_tile-bathhouse_pool-mens_locker_room_door": {
       "x": [21],
       "y": [0],
       "type": "door"
     },
-    "Bench[1]": {
+    "static_tile-bathhouse_pool-bench[1]": {
       "x": [11],
       "y": [9],
       "type": "furniture"
     },
-    "Bench[2]": {
+    "static_tile-bathhouse_pool-bench[2]": {
       "x": [13],
       "y": [9],
       "type": "furniture"
     },
-    "Bench[3]": {
+    "static_tile-bathhouse_pool-bench[3]": {
       "x": [16],
       "y": [9],
       "type": "furniture"
     },
-    "Northwest Steps": {
+    "static_tile-bathhouse_pool-northwest_steps": {
       "x": [6],
       "y": [8],
       "type": "other"
     },
-    "Northeast Steps": {
+    "static_tile-bathhouse_pool-northeast_steps": {
       "x": [21],
       "y": [8],
       "type": "other"
     },
-    "Southwest Steps": {
+    "static_tile-bathhouse_pool-southwest_steps": {
       "x": [7],
       "y": [26],
       "type": "other"
     },
-    "Southeast Steps": {
+    "static_tile-bathhouse_pool-southeast_steps": {
       "x": [20],
       "y": [26],
       "type": "other"
     }
   },
   "bathhouse_womenslocker": {
-    "Entry Room Door": {
+    "static_tile-bathhouse_womens_locker-entry_room_door": {
       "x": [13],
       "y": [27],
       "type": "door"
     },
-    "Pool Entrance": {
+    "static_tile-bathhouse_womens_locker-pool_entrance": {
       "x": [2],
       "y": [27],
       "type": "door"
