@@ -125,3 +125,72 @@ static_tile-club-stats_checker = Stats Checker
 # Coops
 
 static_tile-coop-incubator = Incubator
+
+# Desert
+
+static_tile-desert-bus = Bus
+static_tile-desert-camel = Camel
+static_tile-desert-desert_trader = Desert Trader
+static_tile-desert-three_pillars = Three Pillars
+static_tile-desert-three_pillars_center = Three Pillars Center
+static_tile-desert-desert_warp_statue = Desert Warp Statue
+static_tile-desert-sand_dragon_skull = Sand Dragon Skull
+static_tile-desert-bench = Bench
+
+# Elliott House
+
+static_tile-elliott_house-piano_key_1 = Piano Key 1
+static_tile-elliott_house-piano_key_2 = Piano Key 2
+static_tile-elliott_house-piano_key_3 = Piano Key 3
+static_tile-elliott_house-piano_key_4 = Piano Key 4
+
+# Farm
+
+static_tile-farm-grandpa_shrine = Grandpa's Shrine
+static_tile-farm-lumber_pile = Lumber Pile
+
+# Fish shop
+
+static_tile-fishshop-shop_counter = Shop Counter
+
+# Forest
+
+static_tile-forest-bridge_1 = Bridge 1
+static_tile-forest-bridge_2 = Bridge 2
+static_tile-forest-bridge_3 = Bridge 3
+static_tile-forest-bridge_4 = Bridge 4
+static_tile-forest-bridge_5 = Bridge 5
+static_tile-forest-abandoned_house = Abandoned House
+
+# Greenhouse
+
+static_tile-greenhouse-water_trough = Water Trough
+
+# 2 Willow Lane (home of sisters Emily and Haley)
+
+static_tile-haley_house-sewing_machine = Sewing Machine
+static_tile-haley_house-dye_pots = Dye Pots
+static_tile-haley_house-emilys_room_door = Emily's Room Door
+static_tile-haley_house-emilys_computer = Emily's Computer
+static_tile-haley_house-emilys_pet_parrot = Emily's Pet Parrot
+static_tile-haley_house-magazine = Magazine
+static_tile-haley_house-globe = Globe
+static_tile-haley_house-fridge = Fridge
+static_tile-haley_house-haleys_room_door = Haley's Room Door
+static_tile-haley_house-futan_bear = Futan Bear
+static_tile-haley_house-diary = Diary
+static_tile-haley_house-haleys_camera = Haley's Camera
+
+# Harvey's room
+
+static_tile-harvey_room-fridge = Fridge
+static_tile-harvey_room-oven = Oven
+static_tile-harvey_room-airplane_collection = Airplane Collection
+static_tile-harvey_room-radio_broadcasting_set = Radio Broadcasting Set
+static_tile-harvey_room-cassette_deck = Cassette Deck
+
+# Harvey's clinic
+
+static_tile-hospital-harveys_room_entrance_door = Harvey's Room Entrance Door
+static_tile-hospital-main_area_door = Main Area Door
+static_tile-hospital-shop_counter = Shop Counter

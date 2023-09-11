@@ -599,228 +599,228 @@
     }
   },
   "desert": {
-    "Bus": {
+    "static_tile-desert-bus": {
       "x": [18],
       "y": [27],
       "type": "interactable"
     },
-    "Camel": {
+    "static_tile-desert-camel": {
       "x": [38],
       "y": [24],
       "type": "npc"
     },
-    "Desert Trader": {
+    "static_tile-desert-desert_trader": {
       "x": [42],
       "y": [23],
       "type": "interactable"
     },
-    "Three Pillars": {
+    "static_tile-desert-three_pillars": {
       "x": [34, 37, 40],
       "y": [8, 13],
       "type": "decoration"
     },
-    "Three Pillars Center": {
+    "static_tile-desert-three_pillars_center": {
       "x": [37],
       "y": [11],
       "type": "interactable"
     },
-    "Desert Warp Statue": {
+    "static_tile-desert-desert_warp_statue": {
       "x": [35],
       "y": [43],
       "type": "decoration"
     },
-    "Sand Dragon Skull": {
+    "static_tile-desert-sand_dragon_skull": {
       "x": [9, 10],
       "y": [35, 36],
       "type": "decoration"
     },
-    "Bench": {
+    "static_tile-desert-bench": {
       "x": [43, 44],
       "y": [54],
       "type": "furniture"
     }
   },
   "elliotthouse": {
-    "Piano Key 1": {
+    "static_tile-elliott_house-piano_key_1": {
       "x": [7],
       "y": [4],
       "type": "interactable"
     },
-    "Piano Key 2": {
+    "static_tile-elliott_house-piano_key_2": {
       "x": [8],
       "y": [4],
       "type": "interactable"
     },
-    "Piano Key 3": {
+    "static_tile-elliott_house-piano_key_3": {
       "x": [9],
       "y": [4],
       "type": "interactable"
     },
-    "Piano Key 4": {
+    "static_tile-elliott_house-piano_key_4": {
       "x": [10],
       "y": [4],
       "type": "interactable"
     }
   },
   "farm": {
-    "Grandpa's Shrine": {
+    "static_tile-farm-grandpa_shrine": {
       "x": [8],
       "y": [7],
       "type": "interactable"
     },
-    "Lumber Pile": {
+    "static_tile-farm-lumber_pile": {
       "x": [60, 61],
       "y": [14],
       "type": "decoration"
     }
   },
   "fishshop": {
-    "Shop Counter": {
+    "static_tile-fishshop-shop_counter": {
       "x": [4, 5, 6],
       "y": [5],
       "type": "interactable"
     }
   },
   "forest": {
-    "Bridge 1": {
+    "static_tile-forest-bridge_1": {
       "x": [77, 82],
       "y": [49],
       "type": "bridge"
     },
-    "Bridge 2": {
+    "static_tile-forest-bridge_2": {
       "x": [87],
       "y": [52, 56],
       "type": "bridge"
     },
-    "Bridge 3": {
+    "static_tile-forest-bridge_3": {
       "x": [65, 62],
       "y": [70],
       "type": "bridge"
     },
-    "Bridge 4": {
+    "static_tile-forest-bridge_4": {
       "x": [41],
       "y": [79, 82],
       "type": "bridge"
     },
-    "Bridge 5": {
+    "static_tile-forest-bridge_5": {
       "x": [38],
       "y": [85, 87],
       "type": "bridge"
     },
-    "Abandoned House": {
+    "static_tile-forest-abandoned_house": {
       "x": [34],
       "y": [95],
       "type": "interactable"
     }
   },
   "greenhouse": {
-    "Water Trough": {
+    "static_tile-greenhouse-water_trough": {
       "x": [9, 10],
       "y": [7],
       "type": "water"
     }
   },
   "haleyhouse": {
-    "Sewing Machine": {
+    "static_tile-haley_house-sewing_machine": {
       "x": [12, 13],
       "y": [23],
       "type": "interactable"
     },
-    "Dye Pots": {
+    "static_tile-haley_house-dye_pots": {
       "x": [17],
       "y": [25],
       "type": "interactable"
     },
-    "Emily's Room Door": {
+    "static_tile-haley_house-emilys_room_door": {
       "x": [16],
       "y": [12],
       "type": "door"
     },
-    "Emily's Computer": {
+    "static_tile-haley_house-emilys_computer": {
       "x": [22],
       "y": [6],
       "type": "decoration"
     },
-    "Emily's Pet Parrot": {
+    "static_tile-haley_house-emilys_pet_parrot": {
       "x": [14],
       "y": [4],
       "type": "decoration"
     },
-    "Magazine": {
+    "static_tile-haley_house-magazine": {
       "x": [4],
       "y": [22],
       "type": "decoration"
     },
-    "Globe": {
+    "static_tile-haley_house-globe": {
       "x": [8],
       "y": [15],
       "type": "decoration"
     },
-    "Fridge": {
+    "static_tile-haley_house-fridge": {
       "x": [21],
       "y": [15],
       "type": "decoration"
     },
-    "Haley's Room Door": {
+    "static_tile-haley_house-haleys_room_door": {
       "x": [5],
       "y": [13],
       "type": "door"
     },
-    "Futan Bear": {
+    "static_tile-haley_house-futan_bear": {
       "x": [8],
       "y": [4],
       "type": "decoration"
     },
-    "Diary": {
+    "static_tile-haley_house-diary": {
       "x": [9],
       "y": [5],
       "type": "decoration"
     },
-    "Haley's Camera": {
+    "static_tile-haley_house-haleys_camera": {
       "x": [1],
       "y": [9],
       "type": "decoration"
     }
   },
   "harveyroom": {
-    "Fridge": {
+    "static_tile-harvey_room-fridge": {
       "x": [21],
       "y": [6],
       "type": "decoration"
     },
-    "Oven": {
+    "static_tile-harvey_room-oven": {
       "x": [19],
       "y": [6],
       "type": "decoration"
     },
-    "Airplane Collection": {
+    "static_tile-harvey_room-airplane_collection": {
       "x": [6, 7],
       "y": [3],
       "type": "decoration"
     },
-    "Radio Broadcasting Set": {
+    "static_tile-harvey_room-radio_broadcasting_set": {
       "x": [4, 5],
       "y": [4],
       "type": "decoration"
     },
-    "Cassette Deck": {
+    "static_tile-harvey_room-cassette_deck": {
       "x": [8],
       "y": [4],
       "type": "decoration"
     }
   },
   "hospital": {
-    "Harvey's Room Entrance Door": {
+    "static_tile-hospital-harveys_room_entrance_door": {
       "x": [10],
       "y": [5],
       "type": "door"
     },
-    "Main Area Door": {
+    "static_tile-hospital-main_area_door": {
       "x": [10],
       "y": [13],
       "type": "door"
     },
-    "Shop Counter": {
+    "static_tile-hospital-shop_counter": {
       "x": [5, 6, 7],
       "y": [16],
       "type": "interactable"
