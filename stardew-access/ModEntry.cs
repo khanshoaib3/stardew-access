@@ -315,7 +315,7 @@ namespace stardew_access
             if (Game1.player.controller is not null && Config!.OTCancelAutoWalking.JustPressed())
             {
                 #if DEBUG
-                Log.Debug("Canceling OTAutoWalking.");
+                Log.Verbose("OnButtonPressed: canceling OTAutoWalking.");
                 #endif
                 Game1.player.controller.endBehaviorFunction(Game1.player, Game1.currentLocation);
                 Helper.Input.Suppress(e.Button);
@@ -324,7 +324,7 @@ namespace stardew_access
             if (Config is null)
             {
                 #if DEBUG
-                Log.Debug("Returning due to 'Config' being null");
+                Log.Verbose("OnButtonPressed: returning due to 'Config' being null");
                 #endif
                 return;
             }
@@ -353,7 +353,7 @@ namespace stardew_access
             if (Game1.activeClickableMenu != null)
             {
                 #if DEBUG
-                Log.Debug("Returning due to 'Game1.activeClickableMenu' not being null AKA in a menu");
+                Log.Verbose("OnButtonPressed: returning due to 'Game1.activeClickableMenu' not being null AKA in a menu");
                 #endif
                 return;
             }
@@ -429,14 +429,14 @@ namespace stardew_access
             {
                 Helper.Input.Suppress(e.Button);
                 #if DEBUG
-                Log.Debug("Returning due to Game1.player.controller not being null or GridMovementFeature.is_warping being true");
+                Log.Verbose("OnButtonPressed: returning due to Game1.player.controller not being null or GridMovementFeature.is_warping being true");
                 #endif
                 return;
             }
             if (!Context.CanPlayerMove)
             {
                 #if DEBUG
-                Log.Debug("Returning due to 'Context.CanPlayerMove' being false");
+                Log.Verbose("OnButtonPressed: returning due to 'Context.CanPlayerMove' being false");
                 #endif
                 return;
             }
@@ -458,7 +458,7 @@ namespace stardew_access
                 if (Config!.GridMovementOverrideKey.IsDown())
                 {
                     #if DEBUG
-                    Log.Debug("Returning due to 'Config.GridMovementOverrideKey.IsDown()' being true");
+                    Log.Verbose("HandleGridMovement: returning due to 'Config.GridMovementOverrideKey.IsDown()' being true");
                     #endif
                     return;
                 }
@@ -466,7 +466,7 @@ namespace stardew_access
                 if (!Config!.GridMovementActive)
                 {
                     #if DEBUG
-                    Log.Debug("Returning due to 'Config.GridMovementActive' being false");
+                    Log.Verbose("HandleGridMovement: returning due to 'Config.GridMovementActive' being false");
                     #endif
                     return;
                 }
@@ -474,7 +474,7 @@ namespace stardew_access
                 if (GridMovementFeature == null)
                 {
                     #if DEBUG
-                    Log.Debug("Returning due to 'gridMovement' being null");
+                    Log.Verbose("HandleGridMovement: : returning due to 'gridMovement' being null");
                     #endif
                     return;
                 }
