@@ -194,3 +194,60 @@ static_tile-harvey_room-cassette_deck = Cassette Deck
 static_tile-hospital-harveys_room_entrance_door = Harvey's Room Entrance Door
 static_tile-hospital-main_area_door = Main Area Door
 static_tile-hospital-shop_counter = Shop Counter
+
+# Ginger Island
+
+## Island East
+
+static_tile-island_east-banana_shrine = Banana Shrine
+static_tile-island_east-jungle_parrot_express = Jungle Parrot Express
+
+## Island Farm Cave
+
+static_tile-island_farm_cave-gourmand_frog = Gourmand Frog
+
+## Island Field Office
+
+static_tile-island_field_office-counter = Counter
+static_tile-island_field_office-island_survey = Island Survey
+
+## Island North
+
+static_tile-island_north-dig_site_parrot_express = Dig Site Parrot Express
+static_tile-island_north-volcano_parrot_express = Volcano Parrot Express
+
+## Island Shrine
+
+static_tile-island_shrine-shrine = Shrine
+static_tile-island_shrine-north_pedestal = North Pedestal
+static_tile-island_shrine-east_pedestal = East Pedestal
+static_tile-island_shrine-west_pedestal = West Pedestal
+static_tile-island_shrine-south_pedestal = South Pedestal
+
+## Island South
+
+static_tile-island_south-ginger_island_warp_statue = Ginger Island Warp Statue
+static_tile-island_south-docks_parrot_express = Docks Parrot Express
+static_tile-island_south-return_boat = Return Boat
+
+## Island West
+
+static_tile-island_west-farm_parrot_express = Farm Parrot Express
+static_tile-island_west-bridge_1 = Bridge 1
+static_tile-island_west-qis_walnut_room_door = Qi's Walnut Room Door
+static_tile-island_west-door_to_shipwreck_interior = Door to Shipwreck Interior
+static_tile-island_west-hole_1 = Hole 1
+static_tile-island_west-hole_2 = Hole 2
+static_tile-island_west-hole_3 = Hole 3
+static_tile-island_west-hole_4 = Hole 4
+static_tile-island_west-bridge_2 = Bridge 2
+static_tile-island_west-island_farm_house_door = Island Farm House Door
+
+## Island West Cave 1
+
+static_tile-island_west_cave_1-lion_statue = Lion Statue
+static_tile-island_west_cave_1-crystal_1 = Crystal 1
+static_tile-island_west_cave_1-crystal_2 = Crystal 2
+static_tile-island_west_cave_1-crystal_3 = Crystal 3
+static_tile-island_west_cave_1-crystal_4 = Crystal 4
+static_tile-island_west_cave_1-crystal_5 = Crystal 5

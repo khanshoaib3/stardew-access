@@ -827,171 +827,171 @@
     }
   },
   "islandeast": {
-    "Banana Shrine": {
+    "static_tile-island_east-banana_shrine": {
       "x": [16],
       "y": [26],
       "type": "interactable"
     },
-    "Jungle Parrot Express": {
+    "static_tile-island_east-jungle_parrot_express": {
       "x": [28],
       "y": [27],
       "type": "interactable"
     }
   },
   "islandfarmcave": {
-    "Gourmand Frog": {
+    "static_tile-island_farm_cave-gourmand_frog": {
       "x": [5],
       "y": [4],
       "type": "npc"
     }
   },
   "islandfieldoffice": {
-    "Counter": {
+    "static_tile-island_field_office-counter": {
       "x": [8],
       "y": [7],
       "type": "interactable"
     },
-    "Island Survey": {
+    "static_tile-island_field_office-island_survey": {
       "x": [5],
       "y": [3],
       "type": "interactable"
     }
   },
   "islandnorth": {
-    "Dig Site Parrot Express": {
+    "static_tile-island_north-dig_site_parrot_express": {
       "x": [5],
       "y": [48],
       "type": "interactable"
     },
-    "Volcano Parrot Express": {
+    "static_tile-island_north-volcano_parrot_express": {
       "x": [60],
       "y": [16],
       "type": "interactable"
     }
   },
   "islandshrine": {
-    "Shrine": {
+    "static_tile-island_shrine-shrine": {
       "x": [24],
       "y": [22],
       "type": "interactable"
     },
-    "North Pedestal": {
+    "static_tile-island_shrine-north_pedestal": {
       "x": [24],
       "y": [25],
       "type": "interactable"
     },
-    "East Pedestal": {
+    "static_tile-island_shrine-east_pedestal": {
       "x": [27],
       "y": [27],
       "type": "interactable"
     },
-    "West Pedestal": {
+    "static_tile-island_shrine-west_pedestal": {
       "x": [21],
       "y": [27],
       "type": "interactable"
     },
-    "South Pedestal": {
+    "static_tile-island_shrine-south_pedestal": {
       "x": [24],
       "y": [28],
       "type": "interactable"
     }
   },
   "islandsouth": {
-    "Ginger Island Warp Statue": {
+    "static_tile-island_south-ginger_island_warp_statue": {
       "x": [11],
       "y": [11],
       "type": "decoration"
     },
-    "Docks Parrot Express": {
+    "static_tile-island_south-docks_parrot_express": {
       "x": [6],
       "y": [31],
       "type": "interactable"
     },
-    "Return Boat": {
+    "static_tile-island_south-return_boat": {
       "x": [19],
       "y": [43],
       "type": "interactable"
     }
   },
   "islandwest": {
-    "Farm Parrot Express": {
+    "static_tile-island_west-farm_parrot_express": {
       "x": [74],
       "y": [9],
       "type": "interactable"
     },
-    "Bridge 1": {
+    "static_tile-island_west-bridge_1": {
       "x": [67, 62],
       "y": [16],
       "type": "bridge"
     },
-    "Qi's Walnut Room Door": {
+    "static_tile-island_west-qis_walnut_room_door": {
       "x": [20],
       "y": [22],
       "type": "door"
     },
-    "Door to Shipwreck Interior": {
+    "static_tile-island_west-door_to_shipwreck_interior": {
       "x": [60],
       "y": [92],
       "type": "door"
     },
-    "Hole 1": {
+    "static_tile-island_west-hole_1": {
       "x": [37],
       "y": [87],
       "type": "interactable"
     },
-    "Hole 2": {
+    "static_tile-island_west-hole_2": {
       "x": [41],
       "y": [86],
       "type": "interactable"
     },
-    "Hole 3": {
+    "static_tile-island_west-hole_3": {
       "x": [45],
       "y": [86],
       "type": "interactable"
     },
-    "Hole 4": {
+    "static_tile-island_west-hole_4": {
       "x": [48],
       "y": [87],
       "type": "interactable"
     },
-    "Bridge 2": {
+    "static_tile-island_west-bridge_2": {
       "x": [55, 52],
       "y": [80],
       "type": "bridge"
     },
-    "Island Farm House Door": {
+    "static_tile-island_west-island_farm_house_door": {
       "x": [77],
       "y": [39],
       "type": "door"
     }
   },
   "islandwestcave1": {
-    "Lion Statue": {
+    "static_tile-island_west_cave_1-lion_statue": {
       "x": [6],
       "y": [2],
       "type": "other"
     },
-    "Crystal 1": {
+    "static_tile-island_west_cave_1-crystal_1": {
       "x": [3],
       "y": [4],
       "type": "interactable"
     },
-    "Crystal 2": {
+    "static_tile-island_west_cave_1-crystal_2": {
       "x": [4],
       "y": [6],
       "type": "interactable"
     },
-    "Crystal 3": {
+    "static_tile-island_west_cave_1-crystal_3": {
       "x": [6],
       "y": [7],
       "type": "interactable"
     },
-    "Crystal 4": {
+    "static_tile-island_west_cave_1-crystal_4": {
       "x": [8],
       "y": [6],
       "type": "interactable"
     },
-    "Crystal 5": {
+    "static_tile-island_west_cave_1-crystal_5": {
       "x": [9],
       "y": [4],
       "type": "interactable"
