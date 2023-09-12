@@ -348,3 +348,73 @@ static_tile-jojamart-sugar_cane_chips = Sugar Cane Chips
 static_tile-jojamart-inferno_chips = Inferno Chips
 static_tile-jojamart-carbo_cones = Carbo Cones
 static_tile-jojamart-corn_flour = Corn Floue
+
+# 1 River Road (home of George, Evelyn, and Alex)
+
+static_tile-josh_house-tv = TV
+static_tile-josh_house-bookshelf = Bookshelf
+static_tile-josh_house-fridge = Fridge
+static_tile-josh_house-evelyn_and_georges_room_door = Evelyn and George's Room Door
+static_tile-josh_house-alexs_room_door = Alex's Room Door
+static_tile-josh_house-radio = Radio
+static_tile-josh_house-magazine = Magazine
+static_tile-josh_house-alexs_bookshelf = Alex's Bookshelf
+static_tile-josh_house-alexs_drawer = Alex's Drawer
+static_tile-josh_house-dumbbell = Dumbbell
+static_tile-josh_house-gridball = Gridball
+static_tile-josh_house-gridball_helmet = Gridball Helmet
+static_tile-josh_house-evelyns_stove = Evelyn's Stove
+
+# Mayor's Manor
+
+static_tile-manor_house-town_ledger_book = Town Ledger Book
+static_tile-manor_house-marriage_log_book = Marriage Log Book
+static_tile-manor_house-lost_and_found_box = Lost and Found Box
+static_tile-manor_house-mayors_room_door = Mayor's Room Door
+static_tile-manor_house-mayors_oven = Mayor's Oven
+static_tile-manor_house-mayors_fridge = Mayor's Fridge
+
+# Mermaid House
+
+static_tile-mermaid_house-clam_shell_1 = Clam Shell 1
+static_tile-mermaid_house-clam_shell_2 = Clam Shell 2
+static_tile-mermaid_house-clam_shell_3 = Clam Shell 3
+static_tile-mermaid_house-clam_shell_4 = Clam Shell 4
+static_tile-mermaid_house-clam_shell_5 = Clam Shell 5
+
+# Mine
+
+static_tile-mine-minecart = Minecart
+static_tile-mine-quarry_mine_ladder = Quarry Mine Ladder
+
+# Mountain
+
+static_tile-mountain-mine_bridge = Mine Bridge
+static_tile-mountain-quarry_bridge = Quarry Bridge
+static_tile-mountain-minecart = Minecart
+static_tile-mountain-bridge_1 = Bridge 1
+static_tile-mountain-bridge_2 = Bridge 2
+static_tile-mountain-mountain_warp_statue = Mountain Warp Statue
+static_tile-mountain-science_house_secondary_door = Science House Secondary Door
+
+# Movie Theater
+
+static_tile-movie_theater-concessions_counter = Concessions Counter
+static_tile-movie_theater-crane_game = Crane Game
+static_tile-movie_theater-theater_door = Theater Door
+static_tile-movie_theater-crane_man = Crane Man
+
+# Qi's Walnut Room
+
+static_tile-qi_nut_room-perfection_tracker = Perfection Tracker
+static_tile-qi_nut_room-vending_machine = Vending Machine
+static_tile-qi_nut_room-special_order_board = Special Order Board
+
+# Railroad
+
+static_tile-railroad-empty_box = Empty Box
+static_tile-railroad-dumpster = Dumpster
+static_tile-railroad-boulder = Boulder
+static_tile-railroad-summit_boulder = Summit Boulder
+static_tile-railroad-bench = Bench
+static_tile-railroad-water = Water

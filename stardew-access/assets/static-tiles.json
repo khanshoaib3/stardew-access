@@ -1545,246 +1545,246 @@
     }
   },
   "joshhouse": {
-    "TV": {
+    "static_tile-josh_house-tv": {
       "x": [15, 16],
       "y": [20],
       "type": "decoration"
     },
-    "Bookshelf": {
+    "static_tile-josh_house-bookshelf": {
       "x": [17, 18],
       "y": [16],
       "type": "decoration"
     },
-    "Fridge": {
+    "static_tile-josh_house-fridge": {
       "x": [5],
       "y": [16],
       "type": "decoration"
     },
-    "Evelyn and George's Room Door": {
+    "static_tile-josh_house-evelyn_and_georges_room_door": {
       "x": [5],
       "y": [9],
       "type": "door"
     },
-    "Alex's Room Door": {
+    "static_tile-josh_house-alexs_room_door": {
       "x": [10],
       "y": [10],
       "type": "door"
     },
-    "Radio": {
+    "static_tile-josh_house-radio": {
       "x": [3],
       "y": [4],
       "type": "door"
     },
-    "Magazine": {
+    "static_tile-josh_house-magazine": {
       "x": [11],
       "y": [4],
       "type": "door"
     },
-    "Alex's Bookshelf": {
+    "static_tile-josh_house-alexs_bookshelf": {
       "x": [12, 13],
       "y": [4],
       "type": "decoration"
     },
-    "Alex's Drawer": {
+    "static_tile-josh_house-alexs_drawer": {
       "x": [17, 18],
       "y": [4],
       "type": "decoration"
     },
-    "Dumbbell": {
+    "static_tile-josh_house-dumbbell": {
       "x": [14],
       "y": [4],
       "type": "door"
     },
-    "Gridball": {
+    "static_tile-josh_house-gridball": {
       "x": [23],
       "y": [45],
       "type": "door"
     },
-    "Gridball Helmet": {
+    "static_tile-josh_house-gridball_helmet": {
       "x": [23],
       "y": [6],
       "type": "door"
     },
-    "Evelyn's Stove": {
+    "static_tile-josh_house-evelyns_stove": {
       "x": [3],
       "y": [16],
       "type": "container"
     }
   },
   "manorhouse": {
-    "Town Ledger Book": {
+    "static_tile-manor_house-town_ledger_book": {
       "x": [2],
       "y": [5],
       "type": "interactable"
     },
-    "Marriage Log Book": {
+    "static_tile-manor_house-marriage_log_book": {
       "x": [3],
       "y": [5],
       "type": "interactable"
     },
-    "Lost and Found Box": {
+    "static_tile-manor_house-lost_and_found_box": {
       "x": [4],
       "y": [5],
       "type": "interactable"
     },
-    "Mayor's Room Door": {
+    "static_tile-manor_house-mayors_room_door": {
       "x": [16],
       "y": [9],
       "type": "door"
     },
-    "Mayor's Oven": {
+    "static_tile-manor_house-mayors_oven": {
       "x": [7],
       "y": [4],
       "type": "decoration"
     },
-    "Mayor's Fridge": {
+    "static_tile-manor_house-mayors_fridge": {
       "x": [9],
       "y": [4],
       "type": "decoration"
     }
   },
   "mermaidhouse": {
-    "Clam Shell 1": {
+    "static_tile-mermaid_house-clam_shell_1": {
       "x": [2],
       "y": [6],
       "type": "interactable"
     },
-    "Clam Shell 2": {
+    "static_tile-mermaid_house-clam_shell_2": {
       "x": [3],
       "y": [6],
       "type": "interactable"
     },
-    "Clam Shell 3": {
+    "static_tile-mermaid_house-clam_shell_3": {
       "x": [4],
       "y": [6],
       "type": "interactable"
     },
-    "Clam Shell 4": {
+    "static_tile-mermaid_house-clam_shell_4": {
       "x": [5],
       "y": [6],
       "type": "interactable"
     },
-    "Clam Shell 5": {
+    "static_tile-mermaid_house-clam_shell_5": {
       "x": [6],
       "y": [6],
       "type": "interactable"
     }
   },
   "mine": {
-    "Minecart": {
+    "static_tile-mine-minecart": {
       "x": [11, 12],
       "y": [10],
       "type": "interactable"
     },
-    "Quarry Mine Ladder": {
+    "static_tile-mine-quarry_mine_ladder": {
       "x": [67],
       "y": [9],
       "type": "door"
     }
   },
   "mountain": {
-    "Mine Bridge": {
+    "static_tile-mountain-mine_bridge": {
       "x": [47],
       "y": [7],
       "type": "bridge"
     },
-    "Quarry Bridge": {
+    "static_tile-mountain-quarry_bridge": {
       "x": [90],
       "y": [26],
       "type": "bridge"
     },
-    "Minecart": {
+    "static_tile-mountain-minecart": {
       "x": [124, 125],
       "y": [11],
       "type": "interactable"
     },
-    "Bridge 1": {
+    "static_tile-mountain-bridge_1": {
       "x": [57],
       "y": [30],
       "type": "bridge"
     },
-    "Bridge 2": {
+    "static_tile-mountain-bridge_2": {
       "x": [61],
       "y": [21],
       "type": "bridge"
     },
-    "Mountain Warp Statue": {
+    "static_tile-mountain-mountain_warp_statue": {
       "x": [31],
       "y": [20],
       "type": "decoration"
     },
-    "Science House Secondary Door": {
+    "static_tile-mountain-science_house_secondary_door": {
       "x": [8],
       "y": [20],
       "type": "door"
     }
   },
   "movietheater": {
-    "Concessions Counter": {
+    "static_tile-movie_theater-concessions_counter": {
       "x": [7],
       "y": [6],
       "type": "interactable"
     },
-    "Crane Game": {
+    "static_tile-movie_theater-crane_game": {
       "x": [1, 2],
       "y": [8],
       "type": "interactable"
     },
-    "Theater Door": {
+    "static_tile-movie_theater-theater_door": {
       "x": [13],
       "y": [3],
       "type": "door"
     },
-    "Crane Man": {
+    "static_tile-movie_theater-crane_man": {
       "x": [2],
       "y": [9],
       "type": "npc"
     }
   },
   "qinutroom": {
-    "Perfection Tracker": {
+    "static_tile-qi_nut_room-perfection_tracker": {
       "x": [13],
       "y": [4],
       "type": "interactable"
     },
-    "Vending Machine": {
+    "static_tile-qi_nut_room-vending_machine": {
       "x": [11],
       "y": [3],
       "type": "interactable"
     },
-    "Special Order Board": {
+    "static_tile-qi_nut_room-special_order_board": {
       "x": [3],
       "y": [3],
       "type": "interactable"
     }
   },
   "railroad": {
-    "Empty Box": {
+    "static_tile-railroad-empty_box": {
       "x": [45],
       "y": [40],
       "type": "container"
     },
-    "Dumpster": {
+    "static_tile-railroad-dumpster": {
       "x": [28, 29],
       "y": [36],
       "type": "container"
     },
-    "Boulder": {
+    "static_tile-railroad-boulder": {
       "x": [11],
       "y": [38],
       "type": "decoration"
     },
-    "Summit Boulder": {
+    "static_tile-railroad-summit_boulder": {
       "x": [24, 25],
       "y": [35],
       "type": "decoration"
     },
-    "Bench": {
+    "static_tile-railroad-bench": {
       "x": [38, 39, 40],
       "y": [40],
       "type": "furniture"
     },
-    "Water": {
+    "static_tile-railroad-water": {
       "x": [14, 15, 16],
       "y": [54, 55, 56],
       "type": "water"
