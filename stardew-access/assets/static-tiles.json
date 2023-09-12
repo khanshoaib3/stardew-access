@@ -998,547 +998,547 @@
     }
   },
   "jojamart": {
-    "Morris's Kiosk": {
+    "static_tile-jojamart-morriss_kiosk": {
       "x": [21],
       "y": [25],
       "type": "interactable"
     },
-    "Shop Counter": {
+    "static_tile-jojamart-shop_counter": {
       "x": [10],
       "y": [24, 25],
       "type": "interactable"
     },
-    "Salt": {
+    "static_tile-jojamart-salt": {
       "x": [3],
       "y": [10, 11],
       "type": "decoration"
     },
-    "Multipurpose Sauce": {
+    "static_tile-jojamart-multipurpose_sauce": {
       "x": [3],
       "y": [12],
       "type": "decoration"
     },
-    "Marinara Sauce": {
+    "static_tile-jojamart-marinara_sauce": {
       "x": [3],
       "y": [13],
       "type": "decoration"
     },
-    "Pesto": {
+    "static_tile-jojamart-pesto": {
       "x": [3],
       "y": [14],
       "type": "decoration"
     },
-    "Vegan Sausage": {
+    "static_tile-jojamart-vegan_sausage": {
       "x": [3],
       "y": [15, 16],
       "type": "decoration"
     },
-    "Coconut Meat": {
+    "static_tile-jojamart-coconut_meat": {
       "x": [3],
       "y": [17],
       "type": "decoration"
     },
-    "Cowboy Sauce": {
+    "static_tile-jojamart-cowboy_sauce": {
       "x": [3],
       "y": [18, 19],
       "type": "decoration"
     },
-    "Hoisin Sauce[A]": {
+    "static_tile-jojamart-hoisin_sauce[A]": {
       "x": [4],
       "y": [10],
       "type": "decoration"
     },
-    "Pretzel Snacks": {
+    "static_tile-jojamart-pretzel_snacks": {
       "x": [4],
       "y": [11, 12],
       "type": "decoration"
     },
-    "Honey Sauce[A]": {
+    "static_tile-jojamart-honey_sauce[A]": {
       "x": [4],
       "y": [13],
       "type": "decoration"
     },
-    "Yeast[A]": {
+    "static_tile-jojamart-yeast[A]": {
       "x": [4],
       "y": [14],
       "type": "decoration"
     },
-    "Sugar Cones[A]": {
+    "static_tile-jojamart-sugar_cones[A]": {
       "x": [4],
       "y": [15],
       "type": "decoration"
     },
-    "Sugar Stars[A]": {
+    "static_tile-jojamart-sugar_stars[A]": {
       "x": [4],
       "y": [16],
       "type": "decoration"
     },
-    "Gummies[A]": {
+    "static_tile-jojamart-gummies[A]": {
       "x": [4],
       "y": [17],
       "type": "decoration"
     },
-    "Fruit Snacks[A]": {
+    "static_tile-jojamart-fruit_snacks[A]": {
       "x": [4],
       "y": [18],
       "type": "decoration"
     },
-    "Marinated Mushrooms[A]": {
+    "static_tile-jojamart-marinated_mushrooms[A]": {
       "x": [4],
       "y": [19],
       "type": "decoration"
     },
-    "Low Fat Beans[A]": {
+    "static_tile-jojamart-low_fat_beans[A]": {
       "x": [7],
       "y": [11, 12],
       "type": "decoration"
     },
-    "White Fungus Soda[A]": {
+    "static_tile-jojamart-white_fungus_soda[A]": {
       "x": [7],
       "y": [13],
       "type": "decoration"
     },
-    "Powdered Breakfast[A]": {
+    "static_tile-jojamart-powdered_breakfast[A]": {
       "x": [7],
       "y": [14, 15],
       "type": "decoration"
     },
-    "Powdered Wine[A]": {
+    "static_tile-jojamart-powdered_wine[A]": {
       "x": [7],
       "y": [16],
       "type": "decoration"
     },
-    "Canned Scrambled Eggs[A]": {
+    "static_tile-jojamart-canned_scrambled_eggs[A]": {
       "x": [7],
       "y": [17],
       "type": "decoration"
     },
-    "Canned Fish[A]": {
+    "static_tile-jojamart-canned_fish[A]": {
       "x": [7],
       "y": [18],
       "type": "decoration"
     },
-    "Canned Meals[A]": {
+    "static_tile-jojamart-canned_meals[A]": {
       "x": [7],
       "y": [19, 20],
       "type": "decoration"
     },
-    "Protein Bars": {
+    "static_tile-jojamart-protein_bars": {
       "x": [8],
       "y": [10, 11],
       "type": "decoration"
     },
-    "Protein Shakes": {
+    "static_tile-jojamart-protein_shakes": {
       "x": [8],
       "y": [12],
       "type": "decoration"
     },
-    "Protein Powder": {
+    "static_tile-jojamart-protein_powder": {
       "x": [8],
       "y": [13, 14],
       "type": "decoration"
     },
-    "Jitter Juice": {
+    "static_tile-jojamart-jitter_juice": {
       "x": [8],
       "y": [15],
       "type": "decoration"
     },
-    "Explosion Juice": {
+    "static_tile-jojamart-explosion_juice": {
       "x": [8],
       "y": [16],
       "type": "decoration"
     },
-    "Blue Alien Energy": {
+    "static_tile-jojamart-blue_alien_energy": {
       "x": [8],
       "y": [17],
       "type": "decoration"
     },
-    "Hyper Juice": {
+    "static_tile-jojamart-hyper_juice": {
       "x": [8],
       "y": [18],
       "type": "decoration"
     },
-    "Joja Cola Amped": {
+    "static_tile-jojamart-joja_cola_amped": {
       "x": [8],
       "y": [19, 20],
       "type": "decoration"
     },
-    "Sugar Free Lollipop": {
+    "static_tile-jojamart-sugar_free_lollipop": {
       "x": [11],
       "y": [10, 11],
       "type": "decoration"
     },
-    "Drinkable Frosting": {
+    "static_tile-jojamart-drinkable_frosting": {
       "x": [11],
       "y": [12, 13],
       "type": "decoration"
     },
-    "Cocoa Zeppelins": {
+    "static_tile-jojamart-cocoa_zeppelins": {
       "x": [11],
       "y": [14],
       "type": "decoration"
     },
-    "Silly Sauce": {
+    "static_tile-jojamart-silly_sauce": {
       "x": [11],
       "y": [15],
       "type": "decoration"
     },
-    "Grape Nibble Pebbles": {
+    "static_tile-jojamart-grape_nibble_pebbles": {
       "x": [11],
       "y": [16, 17],
       "type": "decoration"
     },
-    "Strawberry Lollipops": {
+    "static_tile-jojamart-strawberry_lollipops": {
       "x": [11],
       "y": [18],
       "type": "decoration"
     },
-    "Sugar Orbs": {
+    "static_tile-jojamart-sugar_orbs": {
       "x": [11],
       "y": [19],
       "type": "decoration"
     },
-    "24 Grain Bread": {
+    "static_tile-jojamart-24_grain_bread": {
       "x": [12],
       "y": [10, 11],
       "type": "decoration"
     },
-    "11 Grain Bread": {
+    "static_tile-jojamart-11_grain_bread": {
       "x": [12],
       "y": [12],
       "type": "decoration"
     },
-    "Wheat Bread": {
+    "static_tile-jojamart-wheat_bread": {
       "x": [12],
       "y": [13],
       "type": "decoration"
     },
-    "Oat Bread": {
+    "static_tile-jojamart-oat_bread": {
       "x": [12],
       "y": [14],
       "type": "decoration"
     },
-    "Brown Bread": {
+    "static_tile-jojamart-brown_bread": {
       "x": [12],
       "y": [15],
       "type": "decoration"
     },
-    "Rye Bread": {
+    "static_tile-jojamart-rye_bread": {
       "x": [12],
       "y": [16],
       "type": "decoration"
     },
-    "Sourdough Bread": {
+    "static_tile-jojamart-sourdough_bread": {
       "x": [12],
       "y": [17],
       "type": "decoration"
     },
-    "Bread": {
+    "static_tile-jojamart-bread": {
       "x": [12],
       "y": [18],
       "type": "decoration"
     },
-    "Pancakes": {
+    "static_tile-jojamart-pancakes": {
       "x": [12],
       "y": [19],
       "type": "decoration"
     },
-    "Maple Sauce": {
+    "static_tile-jojamart-maple_sauce": {
       "x": [15],
       "y": [10],
       "type": "decoration"
     },
-    "Maypul Syrup": {
+    "static_tile-jojamart-maple_syrup": {
       "x": [15],
       "y": [11],
       "type": "decoration"
     },
-    "Cooking Oil": {
+    "static_tile-jojamart-cooking_oil": {
       "x": [15],
       "y": [12],
       "type": "decoration"
     },
-    "Corn Oil": {
+    "static_tile-jojamart-corn_oil": {
       "x": [15],
       "y": [13],
       "type": "decoration"
     },
-    "Synthetic Butter": {
+    "static_tile-jojamart-synthetic_butter": {
       "x": [15],
       "y": [14],
       "type": "decoration"
     },
-    "Powdered Cream": {
+    "static_tile-jojamart-powdered_cream": {
       "x": [15],
       "y": [15],
       "type": "decoration"
     },
-    "Powdered Butter": {
+    "static_tile-jojamart-powdered_butter": {
       "x": [15],
       "y": [16],
       "type": "decoration"
     },
-    "Joja Oil": {
+    "static_tile-jojamart-joja_oil": {
       "x": [15],
       "y": [17],
       "type": "decoration"
     },
-    "Canola Oil": {
+    "static_tile-jojamart-canola_oil": {
       "x": [15],
       "y": [18],
       "type": "decoration"
     },
-    "Olive Oil": {
+    "static_tile-jojamart-olive_oil": {
       "x": [15],
       "y": [19, 20],
       "type": "decoration"
     },
-    "Marshmallows": {
+    "static_tile-jojamart-marshmallows": {
       "x": [16],
       "y": [10],
       "type": "decoration"
     },
-    "Hair Gel": {
+    "static_tile-jojamart-hair_gel": {
       "x": [16],
       "y": [11, 12],
       "type": "decoration"
     },
-    "Floss": {
+    "static_tile-jojamart-floss": {
       "x": [16],
       "y": [13],
       "type": "decoration"
     },
-    "Mouthwash": {
+    "static_tile-jojamart-mouthwash": {
       "x": [16],
       "y": [14],
       "type": "decoration"
     },
-    "Toothpaste": {
+    "static_tile-jojamart-toothpaste": {
       "x": [16],
       "y": [15],
       "type": "decoration"
     },
-    "Hand Soap": {
+    "static_tile-jojamart-hand_soap": {
       "x": [16],
       "y": [16],
       "type": "decoration"
     },
-    "Multipurpose Detergent": {
+    "static_tile-jojamart-multipurpose_detergent": {
       "x": [16],
       "y": [17],
       "type": "decoration"
     },
-    "Laundry Detergent": {
+    "static_tile-jojamart-laundry_detergent": {
       "x": [16],
       "y": [18, 19, 20],
       "type": "decoration"
     },
-    "Taco Sauce For Babies": {
+    "static_tile-jojamart-taco_sauce_for_babies": {
       "x": [19],
       "y": [10],
       "type": "decoration"
     },
-    "Granny's Sauce": {
+    "static_tile-jojamart-grannys_sauce": {
       "x": [19],
       "y": [11],
       "type": "decoration"
     },
-    "Very Mild Sauce": {
+    "static_tile-jojamart-very_mild_sauce": {
       "x": [19],
       "y": [12],
       "type": "decoration"
     },
-    "Mild Sauce": {
+    "static_tile-jojamart-mild_sauce": {
       "x": [19],
       "y": [13],
       "type": "decoration"
     },
-    "Take Me To The Emergency Room Sauce": {
+    "static_tile-jojamart-take_me_to_the_emergency_room_sauce": {
       "x": [19],
       "y": [14],
       "type": "decoration"
     },
-    "Unbearable Torturous Blaze Sauce": {
+    "static_tile-jojamart-unbearable_torturous_blaze_sauce": {
       "x": [19],
       "y": [15],
       "type": "decoration"
     },
-    "Searing Pain Sauce": {
+    "static_tile-jojamart-searing_pain_sauce": {
       "x": [19],
       "y": [16],
       "type": "decoration"
     },
-    "Inferno Sauce": {
+    "static_tile-jojamart-inferno_sauce": {
       "x": [19],
       "y": [17],
       "type": "decoration"
     },
-    "Fire Sauce": {
+    "static_tile-jojamart-fire_sauce": {
       "x": [19],
       "y": [18],
       "type": "decoration"
     },
-    "Hot Sauce": {
+    "static_tile-jojamart-hot_sauce": {
       "x": [19],
       "y": [19],
       "type": "decoration"
     },
-    "Hoisin Sauce[B]": {
+    "static_tile-jojamart-hoisin_sauce[B]": {
       "x": [20],
       "y": [10],
       "type": "decoration"
     },
-    "Churro Kit": {
+    "static_tile-jojamart-churro_kit": {
       "x": [20],
       "y": [11, 12],
       "type": "decoration"
     },
-    "Honey Sauce[B]": {
+    "static_tile-jojamart-honey_sauce[B]": {
       "x": [20],
       "y": [13],
       "type": "decoration"
     },
-    "Yeast[B]": {
+    "static_tile-jojamart-yeast[B]": {
       "x": [20],
       "y": [14],
       "type": "decoration"
     },
-    "Sugar Cones[B]": {
+    "static_tile-jojamart-sugar_cones[B]": {
       "x": [20],
       "y": [15],
       "type": "decoration"
     },
-    "Sugar Stars[B]": {
+    "static_tile-jojamart-sugar_stars[B]": {
       "x": [20],
       "y": [16],
       "type": "decoration"
     },
-    "Gummies[B]": {
+    "static_tile-jojamart-gummies[B]": {
       "x": [20],
       "y": [17],
       "type": "decoration"
     },
-    "Fruit Snacks[B]": {
+    "static_tile-jojamart-fruit_snacks[B]": {
       "x": [20],
       "y": [18],
       "type": "decoration"
     },
-    "Marinated Mushrooms[B]": {
+    "static_tile-jojamart-marinated_mushrooms[B]": {
       "x": [20],
       "y": [19],
       "type": "decoration"
     },
-    "Canned Soup": {
+    "static_tile-jojamart-canned_soup": {
       "x": [23],
       "y": [10, 11],
       "type": "decoration"
     },
-    "White Bread": {
+    "static_tile-jojamart-white_bread": {
       "x": [23],
       "y": [12],
       "type": "decoration"
     },
-    "Canned Shrimp.": {
+    "static_tile-jojamart-canned_shrimp": {
       "x": [23],
       "y": [13],
       "type": "decoration"
     },
-    "Shrimp Snack": {
+    "static_tile-jojamart-shrimp_snack": {
       "x": [23],
       "y": [14],
       "type": "decoration"
     },
-    "Budget Wine": {
+    "static_tile-jojamart-budget_wine": {
       "x": [23],
       "y": [15],
       "type": "decoration"
     },
-    "X-Treme Chipz": {
+    "static_tile-jojamart-x-treme_chipz": {
       "x": [23],
       "y": [16],
       "type": "decoration"
     },
-    "Pure Gluten.": {
+    "static_tile-jojamart-pure_gluten": {
       "x": [23],
       "y": [17],
       "type": "decoration"
     },
-    "Joja Meal": {
+    "static_tile-jojamart-joja_meal": {
       "x": [23],
       "y": [18],
       "type": "decoration"
     },
-    "Canned Pasta": {
+    "static_tile-jojamart-canned_pasta": {
       "x": [23],
       "y": [19],
       "type": "decoration"
     },
-    "Ranch Chips": {
+    "static_tile-jojamart-ranch_chips": {
       "x": [24],
       "y": [10, 11],
       "type": "decoration"
     },
-    "Smokehouse Chips": {
+    "static_tile-jojamart-smokehouse_chips": {
       "x": [24],
       "y": [12],
       "type": "decoration"
     },
-    "Cinnamon Sugar Chips": {
+    "static_tile-jojamart-cinnamon_sugar_chips": {
       "x": [24],
       "y": [13],
       "type": "decoration"
     },
-    "Sugar Cane Chips": {
+    "static_tile-jojamart-sugar_cane_chips": {
       "x": [24],
       "y": [14],
       "type": "decoration"
     },
-    "Inferno Chips": {
+    "static_tile-jojamart-inferno_chips": {
       "x": [24],
       "y": [15, 16],
       "type": "decoration"
     },
-    "Carbo Cones": {
+    "static_tile-jojamart-carbo_cones": {
       "x": [24],
       "y": [17, 18],
       "type": "decoration"
     },
-    "Corn Flour": {
+    "static_tile-jojamart-corn_flour": {
       "x": [24],
       "y": [19],
       "type": "decoration"
     },
-    "Low Fat Beans[B]": {
+    "static_tile-jojamart-low_fat_beans[B]": {
       "x": [28],
       "y": [11, 12],
       "type": "decoration"
     },
-    "White Fungus Soda[B]": {
+    "static_tile-jojamart-white_fungus_soda[B]": {
       "x": [28],
       "y": [13],
       "type": "decoration"
     },
-    "Powdered Breakfast[B]": {
+    "static_tile-jojamart-powdered_breakfast[B]": {
       "x": [28],
       "y": [14, 15],
       "type": "decoration"
     },
-    "Powdered Wine[B]": {
+    "static_tile-jojamart-powdered_wine[B]": {
       "x": [28],
       "y": [16],
       "type": "decoration"
     },
-    "Canned Scrambled Eggs[B]": {
+    "static_tile-jojamart-canned_scrambled_eggs[B]": {
       "x": [28],
       "y": [17],
       "type": "decoration"
     },
-    "Canned Fish[B]": {
+    "static_tile-jojamart-canned_fish[B]": {
       "x": [28],
       "y": [18],
       "type": "decoration"
     },
-    "Canned Meals[B]": {
+    "static_tile-jojamart-canned_meals[B]": {
       "x": [28],
       "y": [19],
       "type": "decoration"
