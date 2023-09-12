@@ -533,3 +533,42 @@ static_tile-town-bench = Bench
 static_tile-town-smelter = Smelter
 static_tile-town-fountain = Fountain
 
+# Trailer (home of Pam and Penny)
+
+static_tile-trailer-penny_room_door = Penny's Room Door
+static_tile-trailer-bookshelf = Bookshelf
+static_tile-trailer-book = Book
+static_tile-trailer-magazine = Magazine
+static_tile-trailer-pam_kitchen = Pam's Kitchen
+
+static_tile-trailer_big-pam_kitchen = Pam's Kitchen
+
+# Witch's Hut
+
+static_tile-witch_hut-wizard_basement_rune = Wizard's Basement Rune
+static_tile-witch_hut-dark_shrine_of_memory = Dark Shrine of Memory
+static_tile-witch_hut-dark_shrine_of_night_terrors = Dark Shrine of Night Terrors
+static_tile-witch_hut-dark_shrine_of_selfishness = Dark Shrine of Selfishness
+
+# Witch's Swamp
+
+static_tile-witch_swamp-witch_cave_rune = Witch's Cave Rune
+static_tile-witch_swamp-witch_hut_door = Witch's Hut Door
+
+static_tile-witch_warp_cave-witch_swamp_rune = Witch's Swamp Rune
+
+# Wizard's House
+
+static_tile-wizard_house-basement_door = Basement Door
+static_tile-wizard_house-magic_buildings_book = Magic Buildings Book
+
+static_tile-wizard_house_basement-exit_ladder = Exit Ladder
+static_tile-wizard_house_basement-witch_hut_rune = Witch's Hut Rune
+static_tile-wizard_house_basement-shrine_of_illusions = Shrine of Illusions
+
+# Other
+
+static_tile-tunnel-safe = Safe
+static_tile-undergroundmine77377-grim_reaper_statue = Grim Reaper Statue
+static_tile-volcanodungeon5-dwarf_shop = Dwarf Shop
+static_tile-woods-old_master_cannoli = Old Master Cannoli

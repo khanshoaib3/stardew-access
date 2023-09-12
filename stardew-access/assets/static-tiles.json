@@ -2323,132 +2323,132 @@
     }
   },
   "trailer": {
-    "Penny's Room Door": {
+    "static_tile-trailer-penny_room_door": {
       "x": [6],
       "y": [7],
       "type": "door"
     },
-    "Bookshelf": {
+    "static_tile-trailer-bookshelf": {
       "x": [5, 6],
       "y": [4],
       "type": "decoration"
     },
-    "Book": {
+    "static_tile-trailer-book": {
       "x": [2],
       "y": [4],
       "type": "decoration"
     },
-    "Magazine": {
+    "static_tile-trailer-magazine": {
       "x": [1],
       "y": [9],
       "type": "decoration"
     },
-    "Pam's Kitchen": {
+    "static_tile-trailer-pam_kitchen": {
       "x": [10],
       "y": [6],
       "type": "container"
     }
   },
   "trailer_big": {
-    "Pam's Kitchen": {
+    "static_tile-trailer_big-pam_kitchen": {
       "x": [10],
       "y": [6],
       "type": "container"
     }
   },
   "tunnel": {
-    "Safe": {
+    "static_tile-tunnel-safe": {
       "x": [17],
       "y": [6],
       "type": "container"
     }
   },
   "undergroundmine77377": {
-    "Grim Reaper Statue": {
+    "static_tile-undergroundmine77377-grim_reaper_statue": {
       "x": [29, 30],
       "y": [6],
       "type": "interactable"
     }
   },
   "volcanodungeon5": {
-    "Dwarf Shop": {
+    "static_tile-volcanodungeon5-dwarf_shop": {
       "x": [36],
       "y": [30],
       "type": "interactable"
     }
   },
   "witchhut": {
-    "Wizard's Basement Rune": {
+    "static_tile-witch_hut-wizard_basement_rune": {
       "x": [11],
       "y": [11],
       "type": "door"
     },
-    "Dark Shrine of Memory": {
+    "static_tile-witch_hut-dark_shrine_of_memory": {
       "x": [7],
       "y": [4, 5],
       "type": "interactable"
     },
-    "Dark Shrine of Night Terrors": {
+    "static_tile-witch_hut-dark_shrine_of_night_terrors": {
       "x": [12],
       "y": [5, 6],
       "type": "interactable"
     },
-    "Dark Shrine of Selfishness": {
+    "static_tile-witch_hut-dark_shrine_of_selfishness": {
       "x": [2],
       "y": [5, 6],
       "type": "interactable"
     }
   },
   "witchswamp": {
-    "Witch's Cave Rune": {
+    "static_tile-witch_swamp-witch_cave_rune": {
       "x": [20],
       "y": [42],
       "type": "door"
     },
-    "Witch's Hut Door": {
+    "static_tile-witch_swamp-witch_hut_door": {
       "x": [20],
       "y": [20],
       "type": "door"
     }
   },
   "witchwarpcave": {
-    "Witch's Swamp Rune": {
+    "static_tile-witch_warp_cave-witch_swamp_rune": {
       "x": [4],
       "y": [5],
       "type": "door"
     }
   },
   "wizardhouse": {
-    "Basement Door": {
+    "static_tile-wizard_house-basement_door": {
       "x": [4],
       "y": [4],
       "type": "door"
     },
-    "Magic Buildings Book": {
+    "static_tile-wizard_house-magic_buildings_book": {
       "x": [2],
       "y": [13],
       "type": "interactable"
     }
   },
   "wizardhousebasement": {
-    "Exit Ladder": {
+    "static_tile-wizard_house_basement-exit_ladder": {
       "x": [4],
       "y": [3],
       "type": "door"
     },
-    "Witch's Hut Rune": {
+    "static_tile-wizard_house_basement-witch_hut_rune": {
       "x": [2],
       "y": [5],
       "type": "door"
     },
-    "Shrine of Illusions": {
+    "static_tile-wizard_house_basement-shrine_of_illusions": {
       "x": [12],
       "y": [4],
       "type": "interactable"
     }
   },
   "woods": {
-    "Old Master Cannoli": {
+    "static_tile-woods-old_master_cannoli": {
       "x": [8, 9],
       "y": [7],
       "type": "interactable"
