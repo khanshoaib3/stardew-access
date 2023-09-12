@@ -1791,532 +1791,532 @@
     }
   },
   "saloon": {
-    "Shop Counter": {
+    "static_tile-saloon-shop_counter": {
       "x": [14],
       "y": [19],
       "type": "interactable"
     },
-    "Journey of the Prairie King Arcade": {
+    "static_tile-saloon-journey_of_the_prairie_king_arcade": {
       "x": [33],
       "y": [17],
       "type": "interactable"
     },
-    "Junimo Kart Arcade": {
+    "static_tile-saloon-junimo_kart_arcade": {
       "x": [35],
       "y": [17],
       "type": "interactable"
     },
-    "Joja Vending Machine": {
+    "static_tile-saloon-joja_vending_machine": {
       "x": [37, 38],
       "y": [17],
       "type": "interactable"
     },
-    "Jukebox": {
+    "static_tile-saloon-jukebox": {
       "x": [1, 2],
       "y": [17],
       "type": "interactable"
     },
-    "Gus's Fridge": {
+    "static_tile-saloon-gus_fridge": {
       "x": [18],
       "y": [16],
       "type": "container"
     },
-    "Gus's Room Door": {
+    "static_tile-saloon-gus_room_door": {
       "x": [20],
       "y": [9],
       "type": "door"
     },
-    "Dining Room Door": {
+    "static_tile-saloon-dining_room_door": {
       "x": [11],
       "y": [9],
       "type": "door"
     },
-    "Living Area Door": {
+    "static_tile-saloon-living_area_door": {
       "x": [4],
       "y": [16],
       "type": "door"
     },
-    "Gus's Radio": {
+    "static_tile-saloon-gus_radio": {
       "x": [16],
       "y": [6],
       "type": "decoration"
     },
-    "Lockbox": {
+    "static_tile-saloon-lockbox": {
       "x": [28],
       "y": [7],
       "type": "container"
     },
-    "Barstool[1]": {
+    "static_tile-saloon-barstool[1]": {
       "x": [7],
       "y": [19],
       "type": "furniture"
     },
-    "Barstool[2]": {
+    "static_tile-saloon-barstool[2]": {
       "x": [13],
       "y": [20],
       "type": "furniture"
     },
-    "Barstool[3]": {
+    "static_tile-saloon-barstool[3]": {
       "x": [15],
       "y": [20],
       "type": "furniture"
     },
-    "Barstool[4]": {
+    "static_tile-saloon-barstool[4]": {
       "x": [19],
       "y": [20],
       "type": "furniture"
     },
-    "Barstool[5]": {
+    "static_tile-saloon-barstool[5]": {
       "x": [20],
       "y": [18],
       "type": "furniture"
     },
-    "Stool[1]": {
+    "static_tile-saloon-stool[1]": {
       "x": [3],
       "y": [19],
       "type": "furniture"
     },
-    "Stool[2]": {
+    "static_tile-saloon-stool[2]": {
       "x": [4],
       "y": [21],
       "type": "furniture"
     },
-    "Stool[3]": {
+    "static_tile-saloon-stool[3]": {
       "x": [9],
       "y": [21],
       "type": "furniture"
     },
-    "Stool[4]": {
+    "static_tile-saloon-stool[4]": {
       "x": [2],
       "y": [22],
       "type": "furniture"
     },
-    "Stool[5]": {
+    "static_tile-saloon-stool[5]": {
       "x": [12],
       "y": [22],
       "type": "furniture"
     },
-    "Stool[6]": {
+    "static_tile-saloon-stool[6]": {
       "x": [16],
       "y": [23],
       "type": "furniture"
     },
-    "Table[1]": {
+    "static_tile-saloon-table[1]": {
       "x": [3, 4],
       "y": [20],
       "type": "decoration"
     },
-    "Table[2]": {
+    "static_tile-saloon-table[2]": {
       "x": [10, 11],
       "y": [22],
       "type": "decoration"
     },
-    "Table[3]": {
+    "static_tile-saloon-table[3]": {
       "x": [1, 2],
       "y": [23],
       "type": "decoration"
     },
-    "Table[4]": {
+    "static_tile-saloon-table[4]": {
       "x": [17, 18],
       "y": [23],
       "type": "decoration"
     }
   },
   "samhouse": {
-    "Radio": {
+    "static_tile-sam_house-radio": {
       "x": [6],
       "y": [12],
       "type": "decoration"
     },
-    "Vincent's Room Door": {
+    "static_tile-sam_house-vincent_room_door": {
       "x": [16],
       "y": [18],
       "type": "door"
     },
-    "Toy Chest": {
+    "static_tile-sam_house-toy_chest": {
       "x": [12],
       "y": [21],
       "type": "container"
     },
-    "Sam's Room Door": {
+    "static_tile-sam_house-sam_room_door": {
       "x": [12],
       "y": [14],
       "type": "door"
     },
-    "Jodi's Room Door": {
+    "static_tile-sam_house-jodi_room_door": {
       "x": [17],
       "y": [6],
       "type": "door"
     },
-    "Sam's Drawer": {
+    "static_tile-sam_house-sam_drawer": {
       "x": [7, 8],
       "y": [12],
       "type": "decoration"
     },
-    "Bookshelf": {
+    "static_tile-sam_house-bookshelf": {
       "x": [18, 19],
       "y": [12],
       "type": "decoration"
     },
-    "Fridge": {
+    "static_tile-sam_house-fridge": {
       "x": [7],
       "y": [4],
       "type": "decoration"
     }
   },
   "sandyhouse": {
-    "Shop Counter": {
+    "static_tile-sandyhouse-shop_counter": {
       "x": [2],
       "y": [6],
       "type": "interactable"
     }
   },
   "sciencehouse": {
-    "Shop Counter": {
+    "static_tile-science_house-shop_counter": {
       "x": [8],
       "y": [19],
       "type": "interactable"
     },
-    "Sebastian's Room Entrance": {
+    "static_tile-science_house-sebastian_room_entrance": {
       "x": [12],
       "y": [21],
       "type": "door"
     },
-    "Robin and Demetrius's Room Entrance": {
+    "static_tile-science_house-robin_and_demetrius_room_entrance": {
       "x": [13],
       "y": [10],
       "type": "door"
     },
-    "Maru's Room Entrance": {
+    "static_tile-science_house-maru_room_entrance": {
       "x": [7],
       "y": [10],
       "type": "door"
     },
-    "Robin's Wood Pile": {
+    "static_tile-science_house-robin_wood_pile": {
       "x": [11],
       "y": [19],
       "type": "container"
     },
-    "Beaker Set": {
+    "static_tile-science_house-beaker_set": {
       "x": [17],
       "y": [17],
       "type": "decoration"
     },
-    "Microscope": {
+    "static_tile-science_house-microscope": {
       "x": [19],
       "y": [17],
       "type": "decoration"
     },
-    "Stereo Microscope": {
+    "static_tile-science_house-stereo_microscope": {
       "x": [23],
       "y": [20],
       "type": "decoration"
     },
-    "Bookshelf": {
+    "static_tile-science_house-bookshelf": {
       "x": [16, 17],
       "y": [4],
       "type": "decoration"
     },
-    "Maru's Device": {
+    "static_tile-science_house-maru_device": {
       "x": [6],
       "y": [6],
       "type": "decoration"
     },
-    "Poster": {
+    "static_tile-science_house-poster": {
       "x": [6],
       "y": [3],
       "type": "decoration"
     },
-    "Computer": {
+    "static_tile-science_house-computer": {
       "x": [9],
       "y": [4],
       "type": "decoration"
     },
-    "Fridge": {
+    "static_tile-science_house-fridge": {
       "x": [27],
       "y": [8],
       "type": "decoration"
     },
-    "Oven": {
+    "static_tile-science_house-oven": {
       "x": [30],
       "y": [10],
       "type": "decoration"
     }
   },
   "sebastianroom": {
-    "Room Door": {
+    "static_tile-sebastian_room-room_door": {
       "x": [1],
       "y": [3],
       "type": "door"
     },
-    "Sebastian's Radio": {
+    "static_tile-sebastian_room-sebastian_radio": {
       "x": [3],
       "y": [4],
       "type": "decoration"
     },
-    "Graphic Novel": {
+    "static_tile-sebastian_room-graphic_novel": {
       "x": [10],
       "y": [6],
       "type": "decoration"
     },
-    "Computer": {
+    "static_tile-sebastian_room-computer": {
       "x": [7],
       "y": [4],
       "type": "decoration"
     }
   },
   "seedshop": {
-    "Shop Counter": {
+    "static_tile-seed_shop-shop_counter": {
       "x": [4, 5],
       "y": [18],
       "type": "interactable"
     },
-    "Backpack Upgrade": {
+    "static_tile-seed_shop-backpack_upgrade": {
       "x": [7],
       "y": [18],
       "type": "interactable"
     },
-    "Pierre's Bin": {
+    "static_tile-seed_shop-pierre's_bin": {
       "x": [19],
       "y": [28],
       "type": "interactable"
     },
-    "Shrine of Yoba": {
+    "static_tile-seed_shop-shrine_of_yoba": {
       "x": [37],
       "y": [17],
       "type": "decoration"
     },
-    "Fridge": {
+    "static_tile-seed_shop-fridge": {
       "x": [39],
       "y": [4],
       "type": "decoration"
     },
-    "Abigail's Room Door": {
+    "static_tile-seed_shop-abigail's_room_door": {
       "x": [13],
       "y": [11],
       "type": "door"
     },
-    "Pierre and Caroline's Room Door": {
+    "static_tile-seed_shop-pierre_and_caroline's_room_door": {
       "x": [20],
       "y": [11],
       "type": "door"
     },
-    "Living Area Door": {
+    "static_tile-seed_shop-living_area_door": {
       "x": [14],
       "y": [16],
       "type": "door"
     }
   },
   "sewer": {
-    "Exit Ladder": {
+    "static_tile-sewer-exit_ladder": {
       "x": [16],
       "y": [10],
       "type": "door"
     },
-    "Statue Of Uncertainty": {
+    "static_tile-sewer-statue_of_uncertainty": {
       "x": [8],
       "y": [20],
       "type": "interactable"
     },
-    "Mutant Bug Lair": {
+    "static_tile-sewer-mutant_bug_lair": {
       "x": [3],
       "y": [19],
       "type": "door"
     }
   },
   "skullcave": {
-    "Skull Cavern Door": {
+    "static_tile-skull_cave-skull_cavern_door": {
       "x": [3],
       "y": [3],
       "type": "door"
     }
   },
   "slime hutch": {
-    "Water Trough 1": {
+    "static_tile-slime_hutch-water_trough_1": {
       "x": [16],
       "y": [6],
       "type": "other"
     },
-    "Water Trough 2": {
+    "static_tile-slime_hutch-water_trough_2": {
       "x": [16],
       "y": [7],
       "type": "other"
     },
-    "Water Trough 3": {
+    "static_tile-slime_hutch-water_trough_3": {
       "x": [16],
       "y": [8],
       "type": "other"
     },
-    "Water Trough 4": {
+    "static_tile-slime_hutch-water_trough_4": {
       "x": [16],
       "y": [9],
       "type": "other"
     }
   },
   "submarine": {
-    "Captain": {
+    "static_tile-submarine-captain": {
       "x": [2],
       "y": [9],
       "type": "npc"
     }
   },
   "town": {
-    "Calender Board": {
+    "static_tile-town-calender_board": {
       "x": [41],
       "y": [56],
       "type": "interactable"
     },
-    "Daily Quest Board": {
+    "static_tile-town-daily_quest_board": {
       "x": [42],
       "y": [56],
       "type": "interactable"
     },
-    "Sewer": {
+    "static_tile-town-sewer": {
       "x": [34, 35],
       "y": [95, 96],
       "type": "door"
     },
-    "Ice Cream Stand": {
+    "static_tile-town-ice_cream_stand": {
       "x": [88],
       "y": [92],
       "type": "interactable"
     },
-    "Minecart": {
+    "static_tile-town-minecart": {
       "x": [105, 106],
       "y": [79],
       "type": "interactable"
     },
-    "Clinic Sign": {
+    "static_tile-town-clinic_sign": {
       "x": [37],
       "y": [56],
       "type": "decoration"
     },
-    "General Store Sign": {
+    "static_tile-town-general_store_sign": {
       "x": [45],
       "y": [56],
       "type": "decoration"
     },
-    "Faded Gravestone": {
+    "static_tile-town-faded_gravestone": {
       "x": [42],
       "y": [85],
       "type": "decoration"
     },
-    "Mona's Grave": {
+    "static_tile-town-mona_grave": {
       "x": [47],
       "y": [86],
       "type": "decoration"
     },
-    "Dwarvish Headstone": {
+    "static_tile-town-dwarvish_headstone": {
       "x": [51],
       "y": [86],
       "type": "decoration"
     },
-    "Unknown Gravestone": {
+    "static_tile-town-unknown_gravestone": {
       "x": [42],
       "y": [90],
       "type": "decoration"
     },
-    "brown box": {
+    "static_tile-town-brown_box": {
       "x": [100],
       "y": [66],
       "type": "container"
     },
-    "Joja Mart Trash": {
+    "static_tile-town-joja_mart_trash": {
       "x": [110],
       "y": [56],
       "type": "container"
     },
-    "1 River Road Trash": {
+    "static_tile-town-1_river_road_trash": {
       "x": [52],
       "y": [63],
       "type": "container"
     },
-    "Stardew Saloon Trash": {
+    "static_tile-town-stardew_saloon_trash": {
       "x": [47],
       "y": [70],
       "type": "container"
     },
-    "Blacksmith Trash": {
+    "static_tile-town-blacksmith_trash": {
       "x": [97],
       "y": [80],
       "type": "container"
     },
-    "1 Willow Lane Trash": {
+    "static_tile-town-1_willow_lane_trash": {
       "x": [13],
       "y": [86],
       "type": "container"
     },
-    "Manor Trash": {
+    "static_tile-town-manor_trash": {
       "x": [56],
       "y": [86],
       "type": "container"
     },
-    "2 Willow Lane Trash": {
+    "static_tile-town-2_willow_lane_trash": {
       "x": [19],
       "y": [89],
       "type": "container"
     },
-    "Museum Trash": {
+    "static_tile-town-museum_trash": {
       "x": [108],
       "y": [91],
       "type": "container"
     },
-    "Joja Bridge": {
+    "static_tile-town-joja_bridge": {
       "x": [92, 93, 94, 95, 96],
       "y": [11],
       "type": "bridge"
     },
-    "Beach Bridge": {
+    "static_tile-town-beach_bridge": {
       "x": [75, 76, 77, 78, 79, 80, 81, 82],
       "y": [4, 5],
       "type": "bridge"
     },
-    "Bench[1]": {
+    "static_tile-town-bench[1]": {
       "x": [25, 26, 27],
       "y": [21],
       "type": "furniture"
     },
-    "Bench[2]": {
+    "static_tile-town-bench[2]": {
       "x": [20],
       "y": [26, 27],
       "type": "furniture"
     },
-    "Bench[3]": {
+    "static_tile-town-bench[3]": {
       "x": [33],
       "y": [26, 27],
       "type": "furniture"
     },
-    "Bench[4]": {
+    "static_tile-town-bench[4]": {
       "x": [16],
       "y": [57, 58],
       "type": "furniture"
     },
-    "Bench[5]": {
+    "static_tile-town-bench[5]": {
       "x": [17, 18],
       "y": [63],
       "type": "furniture"
     },
-    "Bench[6]": {
+    "static_tile-town-bench[6]": {
       "x": [42, 43, 44, 45],
       "y": [77],
       "type": "furniture"
     },
-    "Bench[7]": {
+    "static_tile-town-bench[7]": {
       "x": [41],
       "y": [78, 79],
       "type": "furniture"
     },
-    "Bench[8]": {
+    "static_tile-town-bench[8]": {
       "x": [46],
       "y": [78, 79],
       "type": "furniture"
     },
-    "Smelter": {
+    "static_tile-town-smelter": {
       "x": [100, 101],
       "y": [79, 80],
       "type": "decoration"
     },
-    "Fountain": {
+    "static_tile-town-fountain": {
       "x": [24, 25, 26, 27, 28],
       "y": [25, 26, 27, 28],
       "type": "water"

@@ -418,3 +418,118 @@ static_tile-railroad-boulder = Boulder
 static_tile-railroad-summit_boulder = Summit Boulder
 static_tile-railroad-bench = Bench
 static_tile-railroad-water = Water
+
+# The Stardrop Saloon
+
+static_tile-saloon-shop_counter = Shop Counter
+static_tile-saloon-journey_of_the_prairie_king_arcade = Journey of the Prairie King Arcade
+static_tile-saloon-junimo_kart_arcade = Junimo Kart Arcade
+static_tile-saloon-joja_vending_machine = Joja Vending Machine
+static_tile-saloon-jukebox = Jukebox
+static_tile-saloon-gus_fridge = Gus's Fridge
+static_tile-saloon-gus_room_door = Gus's Room Door
+static_tile-saloon-dining_room_door = Dining Room Door
+static_tile-saloon-living_area_door = Living Area Door
+static_tile-saloon-gus_radio = Gus's Radio
+static_tile-saloon-lockbox = Lockbox
+static_tile-saloon-barstool = Barstool
+static_tile-saloon-stool = Stool
+static_tile-saloon-table = Table
+
+# 1 Willow Lane (address of Jodi, Kent, Sam and Vincent)
+
+static_tile-sam_house-radio = Radio
+static_tile-sam_house-vincent_room_door = Vincent's Room Door
+static_tile-sam_house-toy_chest = Toy Chest
+static_tile-sam_house-sam_room_door = Sam's Room Door
+static_tile-sam_house-jodi_room_door = Jodi's Room Door
+static_tile-sam_house-sam_drawer = Sam's Drawer
+static_tile-sam_house-bookshelf = Bookshelf
+static_tile-sam_house-fridge = Fridge
+
+static_tile-sandyhouse-shop_counter = Shop Counter
+
+# 24 Mountain Road (Carpenter's Shop, home of Robin, Demetrius, Maru, and Sebastian)
+
+static_tile-science_house-shop_counter = Shop Counter
+static_tile-science_house-sebastian_room_entrance = Sebastian's Room Entrance
+static_tile-science_house-robin_and_demetrius_room_entrance = Robin and Demetrius's Room Entrance
+static_tile-science_house-maru_room_entrance = Maru's Room Entrance
+static_tile-science_house-robin_wood_pile = Robin's Wood Pile
+static_tile-science_house-beaker_set = Beaker Set
+static_tile-science_house-microscope = Microscope
+static_tile-science_house-stereo_microscope = Stereo Microscope
+static_tile-science_house-bookshelf = Bookshelf
+static_tile-science_house-maru_device = Maru's Device
+static_tile-science_house-poster = Poster
+static_tile-science_house-computer = Computer
+static_tile-science_house-fridge = Fridge
+static_tile-science_house-oven = Oven
+
+## Sebastian's Room
+
+static_tile-sebastian_room-room_door = Room Door
+static_tile-sebastian_room-sebastian_radio = Sebastian's Radio
+static_tile-sebastian_room-graphic_novel = Graphic Novel
+static_tile-sebastian_room-computer = Computer
+
+# Pierre's General Store
+
+static_tile-seed_shop-shop_counter = Shop Counter
+static_tile-seed_shop-backpack_upgrade = Backpack Upgrade
+static_tile-seed_shop-pierre_bin = Pierre's Bin
+static_tile-seed_shop-shrine_of_yoba = Shrine of Yoba
+static_tile-seed_shop-fridge = Fridge
+static_tile-seed_shop-abigail_room_door = Abigail's Room Door
+static_tile-seed_shop-pierre_and_caroline_room_door = Pierre and Caroline's Room Door
+static_tile-seed_shop-living_area_door = Living Area Door
+
+# Sewer
+
+static_tile-sewer-exit_ladder = Exit Ladder
+static_tile-sewer-statue_of_uncertainty = Statue Of Uncertainty
+static_tile-sewer-mutant_bug_lair = Mutant Bug Lair
+
+# Scull Cavern Entrance
+
+static_tile-skull_cave-skull_cavern_door = Skull Cavern Door
+
+# Slime Hutch
+
+static_tile-slime_hutch-water_trough_1 = Water Trough 1
+static_tile-slime_hutch-water_trough_2 = Water Trough 2
+static_tile-slime_hutch-water_trough_3 = Water Trough 3
+static_tile-slime_hutch-water_trough_4 = Water Trough 4
+
+# Submarine
+
+static_tile-submarine-captain = Captain
+
+# Town
+
+static_tile-town-calender_board = Calender Board
+static_tile-town-daily_quest_board = Daily Quest Board
+static_tile-town-sewer = Sewer
+static_tile-town-ice_cream_stand = Ice Cream Stand
+static_tile-town-minecart = Minecart
+static_tile-town-clinic_sign = Clinic Sign
+static_tile-town-general_store_sign = General Store Sign
+static_tile-town-faded_gravestone = Faded Gravestone
+static_tile-town-mona_grave = Mona's Grave
+static_tile-town-dwarvish_headstone = Dwarvish Headstone
+static_tile-town-unknown_gravestone = Unknown Gravestone
+static_tile-town-brown_box = Brown Box
+static_tile-town-joja_mart_trash = Joja Mart Trash
+static_tile-town-1_river_road_trash = 1 River Road Trash
+static_tile-town-stardew_saloon_trash = Stardew Saloon Trash
+static_tile-town-blacksmith_trash = Blacksmith Trash
+static_tile-town-1_willow_lane_trash = 1 Willow Lane Trash
+static_tile-town-manor_trash = Manor Trash
+static_tile-town-2_willow_lane_trash = 2 Willow Lane Trash
+static_tile-town-museum_trash = Museum Trash
+static_tile-town-joja_bridge = Joja Bridge
+static_tile-town-beach_bridge = Beach Bridge
+static_tile-town-bench = Bench
+static_tile-town-smelter = Smelter
+static_tile-town-fountain = Fountain
+
