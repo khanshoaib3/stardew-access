@@ -5,7 +5,7 @@
       "y": [10],
       "type": "interactable"
     },
-    "static_tile-adventure_guild-shop_counter": {
+    "static_tile-common-shop_counter": {
       "x": [5],
       "y": [12],
       "type": "interactable"
@@ -52,7 +52,7 @@
     }
   },
   "animalshop": {
-    "static_tile-animal_shop-shop_counter": {
+    "static_tile-common-shop_counter": {
       "x": [12, 13],
       "y": [15],
       "type": "interactable"
@@ -311,12 +311,12 @@
     }
   },
   "bathhouse_menslocker": {
-    "static_tile-bathhouse_mens_locker-entry_room_door": {
+    "static_tile-bathhouse_locker-entry_room_door": {
       "x": [3],
       "y": [27],
       "type": "door"
     },
-    "static_tile-bathhouse_mens_locker-pool_entrance": {
+    "static_tile-bathhouse_locker-pool_entrance": {
       "x": [15],
       "y": [27],
       "type": "door"
@@ -370,12 +370,12 @@
     }
   },
   "bathhouse_womenslocker": {
-    "static_tile-bathhouse_womens_locker-entry_room_door": {
+    "static_tile-bathhouse_locker-entry_room_door": {
       "x": [13],
       "y": [27],
       "type": "door"
     },
-    "static_tile-bathhouse_womens_locker-pool_entrance": {
+    "static_tile-bathhouse_locker-pool_entrance": {
       "x": [2],
       "y": [27],
       "type": "door"
@@ -404,7 +404,7 @@
       "y": [31],
       "type": "door"
     },
-    "static_tile-beach_night_market-desert_trader": {
+    "static_tile-desert-desert_trader": {
       "x": [14],
       "y": [37],
       "type": "npc"
@@ -436,7 +436,7 @@
     }
   },
   "blacksmith": {
-    "static_tile-blacksmith-shop_counter": {
+    "static_tile-common-shop_counter": {
       "x": [3],
       "y": [14],
       "type": "interactable"
@@ -502,7 +502,7 @@
       "y": [4],
       "type": "interactable"
     },
-    "static_tile-club-shop_counter": {
+    "static_tile-common-shop_counter": {
       "x": [25],
       "y": [3],
       "type": "interactable"
@@ -675,7 +675,7 @@
     }
   },
   "fishshop": {
-    "static_tile-fishshop-shop_counter": {
+    "static_tile-common-shop_counter": {
       "x": [4, 5, 6],
       "y": [5],
       "type": "interactable"
@@ -820,7 +820,7 @@
       "y": [13],
       "type": "door"
     },
-    "static_tile-hospital-shop_counter": {
+    "static_tile-common-shop_counter": {
       "x": [5, 6, 7],
       "y": [16],
       "type": "interactable"
@@ -1003,7 +1003,7 @@
       "y": [25],
       "type": "interactable"
     },
-    "static_tile-jojamart-shop_counter": {
+    "static_tile-common-shop_counter": {
       "x": [10],
       "y": [24, 25],
       "type": "interactable"
@@ -1791,7 +1791,7 @@
     }
   },
   "saloon": {
-    "static_tile-saloon-shop_counter": {
+    "static_tile-common-shop_counter": {
       "x": [14],
       "y": [19],
       "type": "interactable"
@@ -1965,14 +1965,14 @@
     }
   },
   "sandyhouse": {
-    "static_tile-sandyhouse-shop_counter": {
+    "static_tile-common-shop_counter": {
       "x": [2],
       "y": [6],
       "type": "interactable"
     }
   },
   "sciencehouse": {
-    "static_tile-science_house-shop_counter": {
+    "static_tile-common-shop_counter": {
       "x": [8],
       "y": [19],
       "type": "interactable"
@@ -2066,7 +2066,7 @@
     }
   },
   "seedshop": {
-    "static_tile-seed_shop-shop_counter": {
+    "static_tile-common-shop_counter": {
       "x": [4, 5],
       "y": [18],
       "type": "interactable"
@@ -2350,7 +2350,7 @@
     }
   },
   "trailer_big": {
-    "static_tile-trailer_big-pam_kitchen": {
+    "static_tile-trailer-pam_kitchen": {
       "x": [10],
       "y": [6],
       "type": "container"

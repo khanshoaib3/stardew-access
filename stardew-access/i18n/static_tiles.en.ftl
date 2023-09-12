@@ -1,11 +1,11 @@
 # Common
 
 static_tile-common-hay_hopper = Hay Hopper
+static_tile-common-shop_counter = Shop Counter
 
 # Adventures Guild
 
 static_tile-adventure_guild-goals_board = Goals Board
-static_tile-adventure_guild-shop_counter = Shop Counter
 static_tile-adventure_guild-gil = Gil
 static_tile-adventure_guild-stool = Stool
 static_tile-adventure_guild-fireplace = Fireplace
@@ -14,7 +14,6 @@ static_tile-adventure_guild-house_plant = House Plant
 
 # Animals Shop
 
-static_tile-animal_shop-shop_counter = Shop Counter
 static_tile-animal_shop-marnies_room_door = Marnie's Room Door
 static_tile-animal_shop-jass_room_door = Jas's Room Door
 static_tile-animal_shop-shanes_room_door = Shane's Room Door
@@ -54,10 +53,10 @@ static_tile-archaeology_house-childrens_book = Children's Book
 
 # Bathouse
 
-## Men locker room
+## Men/Women locker room
 
-static_tile-bathhouse_mens_locker-entry_room_door = Entry Room Door
-static_tile-bathhouse_mens_locker-pool_entrance = Pool Entrance
+static_tile-bathhouse_locker-entry_room_door = Entry Room Door
+static_tile-bathhouse_locker-pool_entrance = Pool Entrance
 
 ## Pool
 
@@ -69,11 +68,6 @@ static_tile-bathhouse_pool-northeast_steps = Northeast Steps
 static_tile-bathhouse_pool-southwest_steps = Southwest Steps
 static_tile-bathhouse_pool-southeast_steps = Southeast Steps
 
-## Women locker room
-
-static_tile-bathhouse_womens_locker-entry_room_door = Entry Room Door
-static_tile-bathhouse_womens_locker-pool_entrance = Pool Entrance
-
 # Beach
 
 static_tile-beach-beach_warp_statue = Beach Warp Statue
@@ -83,7 +77,6 @@ static_tile-beach-willys_barrel = Willy's Barrel
 
 static_tile-beach_night_market-fishing_submarine_door = Fishing Submarine Door
 static_tile-beach_night_market-mermaid_boat_door = Mermaid Boat Door
-static_tile-beach_night_market-desert_trader = Desert Trader
 static_tile-beach_night_market-famous_painter_lupini = Famous Painter Lupini
 static_tile-beach_night_market-travelling_cart = Travelling Cart
 static_tile-beach_night_market-shrouded_figure = Shrouded Figure
@@ -92,7 +85,6 @@ static_tile-beach_night_market-magic_shop_boat = Magic Shop Boat
 
 # Blacksmith
 
-static_tile-blacksmith-shop_counter = Shop Counter
 static_tile-blacksmith-clints_room_door = Clint's Room Door
 static_tile-blacksmith-clints_furnace = Clint's Furnace
 static_tile-blacksmith-blueprints = Blueprints
@@ -113,7 +105,6 @@ static_tile-caldera-forge = Forge
 # Casino (Qi's club)
 
 static_tile-club-coin_machine = Coin Machine
-static_tile-club-shop_counter = Shop Counter
 static_tile-club-calico_spin_machine = Calico Spin Machine
 static_tile-club-high_stakes_calico_jack_table = High Stakes Calico Jack Table
 static_tile-club-low_stakes_calico_jack_table = Low Stakes Calico Jack Table
@@ -148,10 +139,6 @@ static_tile-elliott_house-piano_key_4 = Piano Key 4
 
 static_tile-farm-grandpa_shrine = Grandpa's Shrine
 static_tile-farm-lumber_pile = Lumber Pile
-
-# Fish shop
-
-static_tile-fishshop-shop_counter = Shop Counter
 
 # Forest
 
@@ -193,7 +180,6 @@ static_tile-harvey_room-cassette_deck = Cassette Deck
 
 static_tile-hospital-harveys_room_entrance_door = Harvey's Room Entrance Door
 static_tile-hospital-main_area_door = Main Area Door
-static_tile-hospital-shop_counter = Shop Counter
 
 # Ginger Island
 
@@ -255,7 +241,6 @@ static_tile-island_west_cave_1-crystal_5 = Crystal 5
 # Joja Mart
 
 static_tile-jojamart-morriss_kiosk = Morris's Kiosk
-static_tile-jojamart-shop_counter = Shop Counter
 static_tile-jojamart-salt = Salt
 static_tile-jojamart-multipurpose_sauce = Multipurpose Sauce
 static_tile-jojamart-marinara_sauce = Marinara Sauce
@@ -286,7 +271,7 @@ static_tile-jojamart-jitter_juice = Jitter Juice
 static_tile-jojamart-explosion_juice = Explosion Juice
 static_tile-jojamart-blue_alien_energy = Blue Alien Energy
 static_tile-jojamart-hyper_juice = Hyper Juice
-static_tile-jojamart-joja_cola_amped = JoJa Cola Amped
+static_tile-jojamart-joja_cola_amped = joja Cola Amped
 static_tile-jojamart-sugar_free_lollipop = Suger Free Lollipop
 static_tile-jojamart-drinkable_frosting = Drinkable Frosting
 static_tile-jojamart-cocoa_zeppelins = Cocoa Zeppelins
@@ -310,7 +295,7 @@ static_tile-jojamart-corn_oil = Corn Oil
 static_tile-jojamart-synthetic_butter = Synthetic Butter
 static_tile-jojamart-powdered_cream = Powdered Cream
 static_tile-jojamart-powdered_butter = Powdered Butter
-static_tile-jojamart-joja_oil = JoJa Oil
+static_tile-jojamart-joja_oil = joja Oil
 static_tile-jojamart-canola_oil = Canola Oil
 static_tile-jojamart-olive_oil = Olive Oil
 static_tile-jojamart-marshmallows = Marshmallows
@@ -339,7 +324,7 @@ static_tile-jojamart-shrimp_snack = Shrimp Snack
 static_tile-jojamart-budget_wine = Budget Wine
 static_tile-jojamart-x-treme_chipz = X-treme Chipz
 static_tile-jojamart-pure_gluten = Pure Gluten
-static_tile-jojamart-joja_meal = JoJa Meal
+static_tile-jojamart-joja_meal = joja Meal
 static_tile-jojamart-canned_pasta = Canned Pasta
 static_tile-jojamart-ranch_chips = Ranch Chips
 static_tile-jojamart-smokehouse_chips = Smokehouse Chips
@@ -421,7 +406,6 @@ static_tile-railroad-water = Water
 
 # The Stardrop Saloon
 
-static_tile-saloon-shop_counter = Shop Counter
 static_tile-saloon-journey_of_the_prairie_king_arcade = Journey of the Prairie King Arcade
 static_tile-saloon-junimo_kart_arcade = Junimo Kart Arcade
 static_tile-saloon-joja_vending_machine = Joja Vending Machine
@@ -447,11 +431,8 @@ static_tile-sam_house-sam_drawer = Sam's Drawer
 static_tile-sam_house-bookshelf = Bookshelf
 static_tile-sam_house-fridge = Fridge
 
-static_tile-sandyhouse-shop_counter = Shop Counter
-
 # 24 Mountain Road (Carpenter's Shop, home of Robin, Demetrius, Maru, and Sebastian)
 
-static_tile-science_house-shop_counter = Shop Counter
 static_tile-science_house-sebastian_room_entrance = Sebastian's Room Entrance
 static_tile-science_house-robin_and_demetrius_room_entrance = Robin and Demetrius's Room Entrance
 static_tile-science_house-maru_room_entrance = Maru's Room Entrance
@@ -475,7 +456,6 @@ static_tile-sebastian_room-computer = Computer
 
 # Pierre's General Store
 
-static_tile-seed_shop-shop_counter = Shop Counter
 static_tile-seed_shop-backpack_upgrade = Backpack Upgrade
 static_tile-seed_shop-pierre_bin = Pierre's Bin
 static_tile-seed_shop-shrine_of_yoba = Shrine of Yoba
@@ -540,8 +520,6 @@ static_tile-trailer-bookshelf = Bookshelf
 static_tile-trailer-book = Book
 static_tile-trailer-magazine = Magazine
 static_tile-trailer-pam_kitchen = Pam's Kitchen
-
-static_tile-trailer_big-pam_kitchen = Pam's Kitchen
 
 # Witch's Hut
 
