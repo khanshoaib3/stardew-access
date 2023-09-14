@@ -1929,7 +1929,7 @@
       "type": "decoration"
     },
     "static_tile-sam_house-vincent_room_door": {
-      "x": [16],
+      "x": [11],
       "y": [18],
       "type": "door"
     },
@@ -1954,7 +1954,7 @@
       "type": "decoration"
     },
     "static_tile-sam_house-bookshelf": {
-      "x": [18, 19],
+      "x": [17, 18],
       "y": [12],
       "type": "decoration"
     },
