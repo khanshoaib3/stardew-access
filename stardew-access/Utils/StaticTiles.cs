@@ -36,13 +36,13 @@ namespace stardew_access.Utils
         /// A dictionary that maps location names to tile data dictionaries for static tiles.
         /// Each tile data dictionary maps tile coordinates (x, y) to a tuple containing the object name and category.
         /// </summary>
-        private static Dictionary<string, Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)>> staticTilesDataDict = new();
+        private static Dictionary<string, Dictionary<(int x, int y), (string translationKeyOrName, CATEGORY category)>> staticTilesDataDict = new();
 
         /// <summary>
         /// A dictionary that maps location names to tile data dictionaries for custom tiles.
         /// Each tile data dictionary maps tile coordinates (x, y) to a tuple containing the object name and category.
         /// </summary>
-        private static Dictionary<string, Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)>> customTilesDataDict = new();
+        private static Dictionary<string, Dictionary<(int x, int y), (string translationKeyOrName, CATEGORY category)>> customTilesDataDict = new();
 
         /// <summary>
         /// The file name of the JSON file containing static tile data.
@@ -177,10 +177,10 @@ namespace stardew_access.Utils
         /// </summary>
         /// <param name="jsonDict">The JSON dictionary containing location tile data.</param>
         /// <returns>A dictionary mapping tile coordinates to tile names and categories.</returns>
-        public static Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)> CreateLocationTileDict(JsonElement locationJson)
+        public static Dictionary<(int x, int y), (string translationKeyOrName, CATEGORY category)> CreateLocationTileDict(JsonElement locationJson)
         {
             var jsonDict = locationJson.EnumerateObject().ToDictionary(p => p.Name, p => p.Value);
-            var locationData = new Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)>(jsonDict.Count);
+            var locationData = new Dictionary<(int x, int y), (string translationKeyOrName, CATEGORY category)>(jsonDict.Count);
 
             // Iterate over the JSON dictionary
             foreach (var item in jsonDict)
@@ -295,18 +295,18 @@ namespace stardew_access.Utils
         /// If a mod location is specified, the function checks if the mod is loaded before adding it to the respective dictionary.
         /// </remarks>
         public static (
-            Dictionary<string, Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)>> modConditionalLocations,
-            Dictionary<string, Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)>> modLocations,
-            Dictionary<string, Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)>> vanillaConditionalLocations,
-            Dictionary<string, Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)>> vanillaLocations
+            Dictionary<string, Dictionary<(int x, int y), (string translationKeyOrName, CATEGORY category)>> modConditionalLocations,
+            Dictionary<string, Dictionary<(int x, int y), (string translationKeyOrName, CATEGORY category)>> modLocations,
+            Dictionary<string, Dictionary<(int x, int y), (string translationKeyOrName, CATEGORY category)>> vanillaConditionalLocations,
+            Dictionary<string, Dictionary<(int x, int y), (string translationKeyOrName, CATEGORY category)>> vanillaLocations
         ) SortLocationsByType(JsonElement json)
         {
-            var modConditionalLocations = new Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>();
-            var modLocations = new Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>();
-            var vanillaConditionalLocations = new Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>();
-            var vanillaLocations = new Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>();
+            var modConditionalLocations = new Dictionary<string, Dictionary<(int x, int y), (string name, CATEGORY category)>>();
+            var modLocations = new Dictionary<string, Dictionary<(int x, int y), (string name, CATEGORY category)>>();
+            var vanillaConditionalLocations = new Dictionary<string, Dictionary<(int x, int y), (string name, CATEGORY category)>>();
+            var vanillaLocations = new Dictionary<string, Dictionary<(int x, int y), (string name, CATEGORY category)>>();
 
-            var categoryDicts = new Dictionary<LocationCategory, Dictionary<string, Dictionary<(short x, short y), (string name, CATEGORY category)>>>
+            var categoryDicts = new Dictionary<LocationCategory, Dictionary<string, Dictionary<(int x, int y), (string name, CATEGORY category)>>>
             {
                 { LocationCategory.ModConditional, modConditionalLocations },
                 { LocationCategory.Mod, modLocations },
@@ -427,13 +427,13 @@ namespace stardew_access.Utils
         /// </summary>
         /// <param name="json">A JsonElement containing the location and tile data.</param>
         /// <returns>A dictionary containing location data and tile information.</returns>
-        public static Dictionary<string, Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)>> BuildTilesDict(JsonElement json)
+        public static Dictionary<string, Dictionary<(int x, int y), (string translationKeyOrName, CATEGORY category)>> BuildTilesDict(JsonElement json)
         {
             // Sort the locations by their types (modConditional, mod, vanillaConditional, vanilla)
             var (modConditionalLocations, modLocations, vanillaConditionalLocations, vanillaLocations) = SortLocationsByType(json);
 
             // Create a merged dictionary to store all the location dictionaries
-            var mergedDict = new Dictionary<string, Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)>>(StringComparer.OrdinalIgnoreCase);
+            var mergedDict = new Dictionary<string, Dictionary<(int x, int y), (string translationKeyOrName, CATEGORY category)>>(StringComparer.OrdinalIgnoreCase);
 
             // Merge each category-specific dictionary into the merged dictionary. Prioritize conditional locations whose conditions are true and mod locations where the corresponding mod is loaded. Overwrite their default and vanilla versions, respectively.
             MergeDicts(mergedDict, modConditionalLocations);
@@ -455,7 +455,7 @@ namespace stardew_access.Utils
             }
             else
             {
-                staticTilesDataDict = new Dictionary<string, Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)>>();
+                staticTilesDataDict = new Dictionary<string, Dictionary<(int x, int y), (string translationKeyOrName, CATEGORY category)>>();
             }
 
             if (customTilesData.ValueKind != JsonValueKind.Undefined)
@@ -464,7 +464,7 @@ namespace stardew_access.Utils
             }
             else
             {
-                customTilesDataDict = new Dictionary<string, Dictionary<(short x, short y), (string translationKeyOrName, CATEGORY category)>>();
+                customTilesDataDict = new Dictionary<string, Dictionary<(int x, int y), (string translationKeyOrName, CATEGORY category)>>();
             }
         }
 
@@ -482,7 +482,7 @@ namespace stardew_access.Utils
 
             if (customTilesDataDict != null && customTilesDataDict.TryGetValue(currentLocationName, out var customLocationDict))
             {
-                if (customLocationDict != null && customLocationDict.TryGetValue(((short)x, (short)y), out var customTile))
+                if (customLocationDict != null && customLocationDict.TryGetValue((x, y), out var customTile))
                 {
                     string translatedName = Translator.Instance.Translate(customTile.translationKeyOrName, disableWarning: true);
                     return (translatedName, includeCategory ? customTile.category : (CATEGORY?)null);
@@ -491,7 +491,7 @@ namespace stardew_access.Utils
 
             if (staticTilesDataDict != null && staticTilesDataDict.TryGetValue(currentLocationName, out var staticLocationDict))
             {
-                if (staticLocationDict != null && staticLocationDict.TryGetValue(((short)x, (short)y), out var staticTile))
+                if (staticLocationDict != null && staticLocationDict.TryGetValue((x, y), out var staticTile))
                 {
                     string translatedName = Translator.Instance.Translate(staticTile.translationKeyOrName,
                         translationCategory: TranslationCategory.StaticTiles,
@@ -527,6 +527,64 @@ namespace stardew_access.Utils
         {
             var (name, category) = GetTileInfoAt(x, y, currentLocationName, includeCategory: true);
             return (name, category ?? CATEGORY.Others);
+        }
+
+        /// <summary>
+        /// Retrieves static tiles for a given location and category as a Dictionary.
+        /// </summary>
+        /// <param name="category">The category of tiles to search for.</param>
+        /// <param name="location">The game location to search for static tiles. Defaults to Game1.currentLocation.</param>
+        /// <param name="suffix">Optional string to append to the item name, I.E. "door" when lessInfo is false.</param>
+        /// <returns>
+        /// A Dictionary containing tile coordinates as keys and their names as values.
+        /// </returns>
+        public static Dictionary<(int x, int y), string> GetTilesByCategory(CATEGORY category, GameLocation? location = null, string? suffix = null)
+        {
+            location ??= Game1.currentLocation;
+            Dictionary<(int x, int y), string> tilesDict = new();
+            
+            string locationName = location.NameOrUniqueName;
+            
+            // First, check the staticTilesDataDict
+            if (staticTilesDataDict != null && staticTilesDataDict.TryGetValue(locationName, out var staticLocationDict))
+            {
+                foreach (var tile in staticLocationDict)
+                {
+                    if (tile.Value.category == category)
+                    {
+                        tilesDict[tile.Key] = $"{tile.Value.translationKeyOrName}{(string.IsNullOrEmpty(suffix) ? string.Empty : $" {suffix}")}";
+                    }
+                }
+            }
+            
+            // Next, check the customTilesDataDict and potentially overwrite entries
+            if (customTilesDataDict != null && customTilesDataDict.TryGetValue(locationName, out var customLocationDict))
+            {
+                foreach (var tile in customLocationDict)
+                {
+                    if (tile.Value.category == category)
+                    {
+                        tilesDict[tile.Key] = $"{tile.Value.translationKeyOrName}{(string.IsNullOrEmpty(suffix) ? string.Empty : $" {suffix}")}"; // Overwrite if already exists
+                    }
+                }
+            }
+                        return tilesDict;
+        }
+
+        /// <summary>
+        /// Retrieves static tiles for a given location and category (as a string) as a Dictionary.
+        /// This is an overload that accepts category as a string and converts it to a CATEGORY enum value.
+        /// </summary>
+        /// <param name="categoryString">The category (as a string) of tiles to search for.</param>
+        /// <param name="location">The game location to search for static tiles. Defaults to Game1.currentLocation.</param>
+        /// <param name="suffix">Optional string to append to the item name, I.E. "door" when lessInfo is false.</param>
+        /// <returns>
+        /// A Dictionary containing tile coordinates as keys and their names as values.
+        /// </returns>
+        public static Dictionary<(int x, int y), string> GetTilesByCategory(string categoryString, GameLocation? location = null, string? suffix = null)
+        {
+            CATEGORY category = CATEGORY.FromString(categoryString);
+            return GetTilesByCategory(category, location, suffix);
         }
     }
 }
