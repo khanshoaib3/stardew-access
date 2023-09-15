@@ -10,27 +10,27 @@
       "y": [12],
       "type": "interactable"
     },
-    "static_tile-adventure_guild-gil": {
+    "static_tile-npc-gil": {
       "x": [11],
       "y": [12],
       "type": "npc"
     },
-    "static_tile-adventure_guild-stool[1]": {
+    "static_tile-common-stool[1]": {
       "x": [2],
       "y": [13],
       "type": "furniture"
     },
-    "static_tile-adventure_guild-stool[2]": {
+    "static_tile-common-stool[2]": {
       "x": [11],
       "y": [16],
       "type": "furniture"
     },
-    "static_tile-adventure_guild-stool[3]": {
+    "static_tile-common-stool[3]": {
       "x": [9],
       "y": [17],
       "type": "furniture"
     },
-    "static_tile-adventure_guild-stool[4]": {
+    "static_tile-common-stool[4]": {
       "x": [11],
       "y": [18],
       "type": "furniture"
@@ -77,12 +77,12 @@
       "y": [13],
       "type": "door"
     },
-    "static_tile-animal_shop-fridge": {
+    "static_tile-common-fridge": {
       "x": [28],
       "y": [14],
       "type": "decoration"
     },
-    "static_tile-animal_shop-oven": {
+    "static_tile-common-oven": {
       "x": [24],
       "y": [14],
       "type": "decoration"
@@ -164,7 +164,7 @@
       "y": [9],
       "type": "interactable"
     },
-    "static_tile-archaeology_house-stool[1]": {
+    "static_tile-common-stool[1]": {
       "x": [1],
       "y": [10],
       "type": "furniture"
@@ -333,17 +333,17 @@
       "y": [0],
       "type": "door"
     },
-    "static_tile-bathhouse_pool-bench[1]": {
+    "static_tile-common-bench[1]": {
       "x": [11],
       "y": [9],
       "type": "furniture"
     },
-    "static_tile-bathhouse_pool-bench[2]": {
+    "static_tile-common-bench[2]": {
       "x": [13],
       "y": [9],
       "type": "furniture"
     },
-    "static_tile-bathhouse_pool-bench[3]": {
+    "static_tile-common-bench[3]": {
       "x": [16],
       "y": [9],
       "type": "furniture"
@@ -404,12 +404,12 @@
       "y": [31],
       "type": "door"
     },
-    "static_tile-desert-desert_trader": {
+    "static_tile-npc-desert_trader": {
       "x": [14],
       "y": [37],
       "type": "npc"
     },
-    "static_tile-beach_night_market-famous_painter_lupini": {
+    "static_tile-npc-famous_painter_lupini": {
       "x": [43],
       "y": [34],
       "type": "npc"
@@ -419,7 +419,7 @@
       "y": [30],
       "type": "interactable"
     },
-    "static_tile-beach_night_market-shrouded_figure": {
+    "static_tile-npc-shrouded_figure": {
       "x": [32],
       "y": [34],
       "type": "npc"
@@ -478,7 +478,7 @@
       "y": [11],
       "type": "interactable"
     },
-    "static_tile-bus_stop-minecart": {
+    "static_tile-common-minecart": {
       "x": [4, 5],
       "y": [3],
       "type": "interactable"
@@ -522,17 +522,17 @@
       "y": [7, 9],
       "type": "interactable"
     },
-    "static_tile-club-man": {
+    "static_tile-npc-man": {
       "x": [13],
       "y": [11],
       "type": "npc"
     },
-    "static_tile-club-welwick": {
+    "static_tile-npc-welwick": {
       "x": [18],
       "y": [9],
       "type": "npc"
     },
-    "static_tile-club-unknown_person": {
+    "static_tile-npc-unknown_person": {
       "x": [16],
       "y": [4],
       "type": "npc"
@@ -604,12 +604,12 @@
       "y": [27],
       "type": "interactable"
     },
-    "static_tile-desert-camel": {
+    "static_tile-npc-camel": {
       "x": [38],
       "y": [24],
       "type": "npc"
     },
-    "static_tile-desert-desert_trader": {
+    "static_tile-npc-desert_trader": {
       "x": [42],
       "y": [23],
       "type": "interactable"
@@ -634,7 +634,7 @@
       "y": [35, 36],
       "type": "decoration"
     },
-    "static_tile-desert-bench": {
+    "static_tile-common-bench": {
       "x": [43, 44],
       "y": [54],
       "type": "furniture"
@@ -756,7 +756,7 @@
       "y": [15],
       "type": "decoration"
     },
-    "static_tile-haley_house-fridge": {
+    "static_tile-common-fridge": {
       "x": [21],
       "y": [15],
       "type": "decoration"
@@ -783,12 +783,12 @@
     }
   },
   "harveyroom": {
-    "static_tile-harvey_room-fridge": {
+    "static_tile-common-fridge": {
       "x": [21],
       "y": [6],
       "type": "decoration"
     },
-    "static_tile-harvey_room-oven": {
+    "static_tile-common-oven": {
       "x": [19],
       "y": [6],
       "type": "decoration"
@@ -839,7 +839,7 @@
     }
   },
   "islandfarmcave": {
-    "static_tile-island_farm_cave-gourmand_frog": {
+    "static_tile-npc-gourmand_frog": {
       "x": [5],
       "y": [4],
       "type": "npc"
@@ -1550,12 +1550,12 @@
       "y": [20],
       "type": "decoration"
     },
-    "static_tile-josh_house-bookshelf": {
+    "static_tile-common-bookshelf": {
       "x": [17, 18],
       "y": [16],
       "type": "decoration"
     },
-    "static_tile-josh_house-fridge": {
+    "static_tile-common-fridge": {
       "x": [5],
       "y": [16],
       "type": "decoration"
@@ -1671,7 +1671,7 @@
     }
   },
   "mine": {
-    "static_tile-mine-minecart": {
+    "static_tile-common-minecart": {
       "x": [11, 12],
       "y": [10],
       "type": "interactable"
@@ -1693,7 +1693,7 @@
       "y": [26],
       "type": "bridge"
     },
-    "static_tile-mountain-minecart": {
+    "static_tile-common-minecart": {
       "x": [124, 125],
       "y": [11],
       "type": "interactable"
@@ -1735,7 +1735,7 @@
       "y": [3],
       "type": "door"
     },
-    "static_tile-movie_theater-crane_man": {
+    "static_tile-npc-crane_man": {
       "x": [2],
       "y": [9],
       "type": "npc"
@@ -1779,7 +1779,7 @@
       "y": [35],
       "type": "decoration"
     },
-    "static_tile-railroad-bench": {
+    "static_tile-common-bench": {
       "x": [38, 39, 40],
       "y": [40],
       "type": "furniture"
@@ -1871,32 +1871,32 @@
       "y": [18],
       "type": "furniture"
     },
-    "static_tile-saloon-stool[1]": {
+    "static_tile-common-stool[1]": {
       "x": [3],
       "y": [19],
       "type": "furniture"
     },
-    "static_tile-saloon-stool[2]": {
+    "static_tile-common-stool[2]": {
       "x": [4],
       "y": [21],
       "type": "furniture"
     },
-    "static_tile-saloon-stool[3]": {
+    "static_tile-common-stool[3]": {
       "x": [9],
       "y": [21],
       "type": "furniture"
     },
-    "static_tile-saloon-stool[4]": {
+    "static_tile-common-stool[4]": {
       "x": [2],
       "y": [22],
       "type": "furniture"
     },
-    "static_tile-saloon-stool[5]": {
+    "static_tile-common-stool[5]": {
       "x": [12],
       "y": [22],
       "type": "furniture"
     },
-    "static_tile-saloon-stool[6]": {
+    "static_tile-common-stool[6]": {
       "x": [16],
       "y": [23],
       "type": "furniture"
@@ -1953,12 +1953,12 @@
       "y": [12],
       "type": "decoration"
     },
-    "static_tile-sam_house-bookshelf": {
+    "static_tile-common-bookshelf": {
       "x": [17, 18],
       "y": [12],
       "type": "decoration"
     },
-    "static_tile-sam_house-fridge": {
+    "static_tile-common-fridge": {
       "x": [7],
       "y": [4],
       "type": "decoration"
@@ -2012,7 +2012,7 @@
       "y": [20],
       "type": "decoration"
     },
-    "static_tile-science_house-bookshelf": {
+    "static_tile-common-bookshelf": {
       "x": [16, 17],
       "y": [4],
       "type": "decoration"
@@ -2032,12 +2032,12 @@
       "y": [4],
       "type": "decoration"
     },
-    "static_tile-science_house-fridge": {
+    "static_tile-common-fridge": {
       "x": [27],
       "y": [8],
       "type": "decoration"
     },
-    "static_tile-science_house-oven": {
+    "static_tile-common-oven": {
       "x": [30],
       "y": [10],
       "type": "decoration"
@@ -2086,7 +2086,7 @@
       "y": [17],
       "type": "decoration"
     },
-    "static_tile-seed_shop-fridge": {
+    "static_tile-common-fridge": {
       "x": [39],
       "y": [4],
       "type": "decoration"
@@ -2154,7 +2154,7 @@
     }
   },
   "submarine": {
-    "static_tile-submarine-captain": {
+    "static_tile-npc-captain": {
       "x": [2],
       "y": [9],
       "type": "npc"
@@ -2181,7 +2181,7 @@
       "y": [92],
       "type": "interactable"
     },
-    "static_tile-town-minecart": {
+    "static_tile-common-minecart": {
       "x": [105, 106],
       "y": [79],
       "type": "interactable"
@@ -2271,42 +2271,42 @@
       "y": [4, 5],
       "type": "bridge"
     },
-    "static_tile-town-bench[1]": {
+    "static_tile-common-bench[1]": {
       "x": [25, 26, 27],
       "y": [21],
       "type": "furniture"
     },
-    "static_tile-town-bench[2]": {
+    "static_tile-common-bench[2]": {
       "x": [20],
       "y": [26, 27],
       "type": "furniture"
     },
-    "static_tile-town-bench[3]": {
+    "static_tile-common-bench[3]": {
       "x": [33],
       "y": [26, 27],
       "type": "furniture"
     },
-    "static_tile-town-bench[4]": {
+    "static_tile-common-bench[4]": {
       "x": [16],
       "y": [57, 58],
       "type": "furniture"
     },
-    "static_tile-town-bench[5]": {
+    "static_tile-common-bench[5]": {
       "x": [17, 18],
       "y": [63],
       "type": "furniture"
     },
-    "static_tile-town-bench[6]": {
+    "static_tile-common-bench[6]": {
       "x": [42, 43, 44, 45],
       "y": [77],
       "type": "furniture"
     },
-    "static_tile-town-bench[7]": {
+    "static_tile-common-bench[7]": {
       "x": [41],
       "y": [78, 79],
       "type": "furniture"
     },
-    "static_tile-town-bench[8]": {
+    "static_tile-common-bench[8]": {
       "x": [46],
       "y": [78, 79],
       "type": "furniture"
@@ -2328,7 +2328,7 @@
       "y": [7],
       "type": "door"
     },
-    "static_tile-trailer-bookshelf": {
+    "static_tile-common-bookshelf": {
       "x": [5, 6],
       "y": [4],
       "type": "decoration"
