@@ -51,7 +51,7 @@ namespace stardew_access.Utils
             if (name == null)
                 return (null, CATEGORY.Others);
 
-            return (Translator.Instance.Translate(name, true), category);
+            return (Translator.Instance.Translate(name, disableWarning: true), category);
         }
 
         public static (string? name, CATEGORY? category) GetTranslationKeyWithCategoryAtTile(Vector2 tile, GameLocation? currentLocation, bool lessInfo = false)

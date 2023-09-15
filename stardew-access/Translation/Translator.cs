@@ -9,6 +9,7 @@ namespace stardew_access.Translation
         Menu,
         MiniGames,
         CharacterCreationMenu,
+        StaticTiles,
     }
 
     internal class Translator
@@ -18,6 +19,7 @@ namespace stardew_access.Translation
         private IFluent<string>? MenuEntries { get; set; }
         private IFluent<string>? MiniGamesEntries { get; set; }
         private IFluent<string>? CharacterCreationMenuEntries { get; set; }
+        private IFluent<string>? StaticTilesEntries { get; set; }
         private static readonly object InstanceLock = new();
 
         private Translator()
@@ -50,6 +52,7 @@ namespace stardew_access.Translation
                 MenuEntries = fluentApi.GetLocalizations(fluentApi.CurrentLocale, modManifest, "menu");
                 MiniGamesEntries = fluentApi.GetLocalizations(fluentApi.CurrentLocale, modManifest, "mini_games");
                 CharacterCreationMenuEntries = fluentApi.GetLocalizations(fluentApi.CurrentLocale, modManifest, "character_creation_menu");
+                StaticTilesEntries = fluentApi.GetLocalizations(fluentApi.CurrentLocale, modManifest, "static_tiles");
                 
 #if DEBUG
                 Log.Verbose("Registering custom fluent functions");
@@ -149,6 +152,7 @@ namespace stardew_access.Translation
                 TranslationCategory.Menu => MenuEntries,
                 TranslationCategory.MiniGames => MiniGamesEntries,
                 TranslationCategory.CharacterCreationMenu => CharacterCreationMenuEntries,
+                TranslationCategory.StaticTiles => StaticTilesEntries,
                 _ => null
             };
     }

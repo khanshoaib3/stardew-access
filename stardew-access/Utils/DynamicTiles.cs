@@ -812,7 +812,7 @@ namespace stardew_access.Utils
             if (translationKeyOrName == null)
                 return (null, null);
 
-            translationKeyOrName = Translator.Instance.Translate(translationKeyOrName, true);
+            translationKeyOrName = Translator.Instance.Translate(translationKeyOrName, disableWarning: true);
 
             return (translationKeyOrName, category);
         }
