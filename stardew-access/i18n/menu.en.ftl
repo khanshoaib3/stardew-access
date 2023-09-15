@@ -30,12 +30,6 @@ common-ui-equipment_slots = {$slot_name ->
     *[1] {EMPTYSTRING()}
   }
 
-### Inventory Util 
-
-# FIXME fix key conventions
-menu-inventory-empty_slot-name = Empty Slot
-menu-inventory-not_usable-suffix = , not usable here
-
 ### Options Element
 
 options_element-button_info = {$label} button

@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 using stardew_access.Translation;
 using StardewValley;
 using StardewValley.Menus;
@@ -44,11 +45,11 @@ namespace stardew_access.Patches
 
                 if (Game1.player.team.acceptedSpecialOrderTypes.Contains(__instance.GetOrderType()))
                 {
-                    if (__instance.leftOrder.questState.Value == SpecialOrder.QuestState.InProgress || __instance.rightOrder.questState.Value == SpecialOrder.QuestState.InProgress)
+                    if (__instance.leftOrder.questState.Value == SpecialOrder.QuestState.InProgress)
                     {
                         MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-special_orders_board-quest_in_progress", true, new
                         {
-                            quest_details = GetQuestDetails((__instance.leftOrder.questState.Value == SpecialOrder.QuestState.InProgress) ? __instance.leftOrder : __instance.rightOrder)
+                            quest_details = GetQuestDetails((IsInProgress(__instance.leftOrder, __instance)) ? __instance.leftOrder : __instance.rightOrder)
                         });
                     }
                     return;
@@ -86,5 +87,36 @@ namespace stardew_access.Patches
                 money = order.GetMoneyReward()
             },
             TranslationCategory.Menu);
+
+        private static bool IsInProgress(SpecialOrder order, SpecialOrdersBoard __instance)
+        {
+            bool flag1 = false;
+            bool flag2 = false;
+            foreach (SpecialOrder specialOrder in Game1.player.team.specialOrders)
+            {
+                if (specialOrder.questState.Value == SpecialOrder.QuestState.InProgress)
+                {
+                    foreach (SpecialOrder availableSpecialOrder in Game1.player.team.availableSpecialOrders)
+                    {
+                        if (!(availableSpecialOrder.orderType.Value != __instance.GetOrderType()) &&
+                            specialOrder.questKey.Value == availableSpecialOrder.questKey.Value)
+                        {
+                            if (order.questKey != specialOrder.questKey)
+                                flag1 = true;
+                            flag2 = true;
+                            break;
+                        }
+                    }
+
+                    if (flag2)
+                        break;
+                }
+            }
+
+            if (!flag2 && Game1.player.team.acceptedSpecialOrderTypes.Contains(__instance.GetOrderType()))
+                flag1 = true;
+
+            return !flag1;
+        }
     }
 }

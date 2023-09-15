@@ -58,6 +58,7 @@ tile_name-mail_box = Mail Box
 tile_name-stove = Stove
 tile_name-sink = Sink
 tile-railroad-witch_statue-name = Witch Statue
+dynamic_tile-qi_nut_room-collection_box = Collection box
 
 ## Entrances
 
@@ -68,6 +69,11 @@ tile-mine_elevator-name = Elevator
 tile-town_festival_exit-name = Exit Festival
 
 # ---------------------------------
+
+# Inventory Util 
+
+menu-inventory-empty_slot-name = Empty Slot
+menu-inventory-not_usable-suffix = , not usable here
 
 # Items
 

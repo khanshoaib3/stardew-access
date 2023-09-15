@@ -26,6 +26,7 @@ namespace stardew_access.Patches
                 new ForgeMenuPatch(),
                 new GeodeMenuPatch(),
                 new ItemGrabMenuPatch(),
+                new QuestContainerMenuPatch(),
                 new ShopMenuPatch(),
                 new TailoringMenuPatch(),
                 // Misc Patches

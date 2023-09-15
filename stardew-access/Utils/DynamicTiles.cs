@@ -539,6 +539,15 @@ namespace stardew_access.Utils
 
             // Implement specific logic for named  IslandLocations here, if necessary
 
+            if (locationType.ToString()!.Contains("qinutroom", StringComparison.OrdinalIgnoreCase))
+            {
+                if (Game1.player.team.SpecialOrderActive("QiChallenge12") && x == 1 && y == 4)
+                {
+                    return ("dynamic_tile-qi_nut_room-collection_box", CATEGORY.Interactables);
+                }
+                return (null, null);
+            }
+            
             // Unimplemented locations are logged.
             // Check if the location has already been logged
             if (!loggedLocations.Contains(locationType))

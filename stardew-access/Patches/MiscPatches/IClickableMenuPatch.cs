@@ -32,7 +32,8 @@ namespace stardew_access.Patches
             typeof(ShopMenu),
             typeof(TailoringMenu),
             typeof(SpecialOrdersBoard),
-            typeof(NumberSelectionMenu)
+            typeof(NumberSelectionMenu),
+            typeof(QuestContainerMenu)
         };
 
         private static readonly HashSet<Type> SkipGameMenuPageTypes = new()
