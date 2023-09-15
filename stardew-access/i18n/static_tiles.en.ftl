@@ -143,10 +143,6 @@ static_tile-club-high_stakes_calico_jack_table = High Stakes Calico Jack Table
 static_tile-club-low_stakes_calico_jack_table = Low Stakes Calico Jack Table
 static_tile-club-stats_checker = Stats Checker
 
-# Coops
-
-static_tile-coop-incubator = Incubator
-
 # Desert
 
 static_tile-desert-bus = Bus

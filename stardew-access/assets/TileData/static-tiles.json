@@ -555,11 +555,6 @@
       "x": [3],
       "y": [3],
       "type": "interactable"
-    },
-    "static_tile-coop-incubator": {
-      "x": [2],
-      "y": [3],
-      "type": "machine"
     }
   },
   "big coop": {
@@ -567,11 +562,6 @@
       "x": [3],
       "y": [3],
       "type": "interactable"
-    },
-    "static_tile-coop-incubator": {
-      "x": [2],
-      "y": [3],
-      "type": "machine"
     }
   },
   "coop3": {
@@ -579,11 +569,6 @@
       "x": [3],
       "y": [3],
       "type": "interactable"
-    },
-    "static_tile-coop-incubator": {
-      "x": [2],
-      "y": [3],
-      "type": "machine"
     }
   },
   "deluxe coop": {
@@ -591,11 +576,6 @@
       "x": [3],
       "y": [3],
       "type": "interactable"
-    },
-    "static_tile-coop-incubator": {
-      "x": [2],
-      "y": [3],
-      "type": "machine"
     }
   },
   "desert": {
