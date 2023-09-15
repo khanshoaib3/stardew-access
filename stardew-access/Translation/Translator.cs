@@ -3,18 +3,34 @@ using StardewModdingAPI;
 
 namespace stardew_access.Translation
 {
+    public enum TranslationCategory
+    {
+        Default,
+        Menu,
+        MiniGames,
+        CharacterCreationMenu,
+    }
+
     internal class Translator
     {
-        private static Translator? instance = null;
-        private IFluent<string>? Fluent { get; set; }
-        private static readonly object instanceLock = new   ();
-        private Translator() { }
+        private static Translator? instance;
+        private IFluent<string>? DefaultEntries { get; set; }
+        private IFluent<string>? MenuEntries { get; set; }
+        private IFluent<string>? MiniGamesEntries { get; set; }
+        private IFluent<string>? CharacterCreationMenuEntries { get; set; }
+        private static readonly object InstanceLock = new();
+
+        private Translator()
+        {
+        }
+
         internal CustomFluentFunctions? CustomFunctions;
 
         public static Translator Instance
-        {                                               get
+        {
+            get
             {
-                lock (instanceLock)
+                lock (InstanceLock)
                 {
                     instance ??= new Translator();
                     return instance;
@@ -24,23 +40,27 @@ namespace stardew_access.Translation
 
         public void Initialize(IManifest modManifest)
         {
-            #if DEBUG
+#if DEBUG
             Log.Debug("Initializing FluentApi");
-            #endif
+#endif
             IFluentApi? fluentApi = MainClass.ModHelper?.ModRegistry.GetApi<IFluentApi>("Shockah.ProjectFluent");
             if (fluentApi != null)
             {
-                Fluent = fluentApi.GetLocalizationsForCurrentLocale(modManifest);
-                #if DEBUG
+                DefaultEntries = fluentApi.GetLocalizations(fluentApi.CurrentLocale, modManifest);
+                MenuEntries = fluentApi.GetLocalizations(fluentApi.CurrentLocale, modManifest, "menu");
+                MiniGamesEntries = fluentApi.GetLocalizations(fluentApi.CurrentLocale, modManifest, "mini_games");
+                CharacterCreationMenuEntries = fluentApi.GetLocalizations(fluentApi.CurrentLocale, modManifest, "character_creation_menu");
+                
+#if DEBUG
                 Log.Verbose("Registering custom fluent functions");
-                #endif
+#endif
                 CustomFunctions = new CustomFluentFunctions(modManifest, fluentApi);
-                foreach ( var (mod, name, function) in CustomFunctions.GetAll())
+                foreach (var (mod, name, function) in CustomFunctions.GetAll())
                 {
-                    fluentApi.RegisterFunction( mod, name, function);
-                    #if DEBUG
+                    fluentApi.RegisterFunction(mod, name, function);
+#if DEBUG
                     Log.Verbose($"Registered function \"{name}\"");
-                    #endif
+#endif
                 }
             }
             else
@@ -49,20 +69,23 @@ namespace stardew_access.Translation
             }
         }
 
-        public string Translate(string translationKey, bool disableWarning = false)
+        public string Translate(string translationKey,
+            TranslationCategory translationCategory = TranslationCategory.Default, bool disableWarning = false)
         {
-            if (Fluent == null)
+            IFluent<string>? requiredEntries = GetEntriesFromCategory(translationCategory);
+
+            if (requiredEntries == null)
             {
                 Log.Error("Fluent not initialized!", true);
                 return translationKey;
             }
 
-            if (Fluent.ContainsKey(translationKey))
+            if (requiredEntries.ContainsKey(translationKey))
             {
-                #if DEBUG
-                Log.Verbose($"Translate: found translation key \"{translationKey}\"");
-                #endif
-                return Fluent.Get(translationKey);
+#if DEBUG
+                Log.Verbose($"Translate: found translation key \"{translationKey}\"", true);
+#endif
+                return requiredEntries.Get(translationKey);
             }
 
             if (!disableWarning)
@@ -73,31 +96,41 @@ namespace stardew_access.Translation
             return translationKey;
         }
 
-        public string Translate(string translationKey, object? tokens, bool disableWarning = false)
+        public string Translate(string translationKey, object? tokens,
+            TranslationCategory translationCategory = TranslationCategory.Default, bool disableWarning = false)
         {
-            if (Fluent == null)
+            IFluent<string>? requiredEntries = GetEntriesFromCategory(translationCategory);
+
+            if (requiredEntries == null)
             {
                 Log.Error("Fluent not initialized!", true);
                 return translationKey;
             }
 
-            if (Fluent.ContainsKey(translationKey))
+            if (requiredEntries.ContainsKey(translationKey))
             {
-                #if DEBUG
+#if DEBUG
                 if (tokens is Dictionary<string, object> dictTokens)
                 {
-                    Log.Verbose($"Translate with tokens: found translation key \"{translationKey}\" with tokens: {string.Join(", ", dictTokens.Select(kv => $"{kv.Key}: {kv.Value}"))}");
+                    Log.Verbose(
+                        $"Translate with tokens: found translation key \"{translationKey}\" with tokens: {string.Join(", ", dictTokens.Select(kv => $"{kv.Key}: {kv.Value}"))}",
+                        true);
                 }
                 else
                 {
-                    var tokenStr = tokens is not null ? string.Join(", ", tokens.GetType().GetProperties().Select(prop => $"{prop.Name}: {prop.GetValue(tokens)}")) : "null";
-                    Log.Verbose($"Translate with tokens: found translation key \"{translationKey}\" with tokens: {tokenStr}");
+                    var tokenStr = tokens is not null
+                        ? string.Join(", ",
+                            tokens.GetType().GetProperties().Select(prop => $"{prop.Name}: {prop.GetValue(tokens)}"))
+                        : "null";
+                    Log.Verbose(
+                        $"Translate with tokens: found translation key \"{translationKey}\" with tokens: {tokenStr}",
+                        true);
                 }
-                #endif
-                var result = Fluent.Get(translationKey, tokens);
-                #if DEBUG
-                Log.Verbose($"Translated to: {result}");
-                #endif
+#endif
+                var result = requiredEntries.Get(translationKey, tokens);
+#if DEBUG
+                Log.Verbose($"Translated to: {result}", true);
+#endif
                 return result;
             }
 
@@ -108,5 +141,15 @@ namespace stardew_access.Translation
 
             return translationKey;
         }
+
+        private IFluent<string>? GetEntriesFromCategory(TranslationCategory translationCategory) =>
+            translationCategory switch
+            {
+                TranslationCategory.Default => DefaultEntries,
+                TranslationCategory.Menu => MenuEntries,
+                TranslationCategory.MiniGames => MiniGamesEntries,
+                TranslationCategory.CharacterCreationMenu => CharacterCreationMenuEntries,
+                _ => null
+            };
     }
 }

@@ -1,73 +1,45 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class AdvancedGameOptionsPatch
+    internal class AdvancedGameOptionsPatch : IPatch
     {
-        internal static void DrawPatch(AdvancedGameOptions __instance)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(AdvancedGameOptions), nameof(AdvancedGameOptions.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(AdvancedGameOptionsPatch), nameof(AdvancedGameOptionsPatch.DrawPatch))
+            );
+        }
+
+        private static void DrawPatch(AdvancedGameOptions __instance)
         {
             try
             {
                 int currentItemIndex = Math.Max(0, Math.Min(__instance.options.Count - 7, __instance.currentItemIndex));
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
 
+                // FIXME The menu auto focuses on ok button when it is opened which causes the menu to automatically close when it is opened. Possible solution: add a delay on menu open.
+                MouseUtils.SimulateMouseClicks(
+                    (x, y) => __instance.receiveLeftClick(x, y),
+                    (x, y) => __instance.receiveRightClick(x, y)
+                );
+
                 if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
                 {
-                    string toSpeak = "OK Button";
-                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+                    MainClass.ScreenReader.TranslateAndSayWithMenuChecker("common-ui-ok_button", true);
                     return;
                 }
 
-                for (int i = 0; i < __instance.optionSlots.Count; i++)
-                {
-                    if (!__instance.optionSlots[i].bounds.Contains(x, y)
-                            || currentItemIndex + i >= __instance.options.Count
-                            || !__instance.options[currentItemIndex + i].bounds.Contains(x - __instance.optionSlots[i].bounds.X, y - __instance.optionSlots[i].bounds.Y))
-                        continue;
-
-                    OptionsElement optionsElement = __instance.options[currentItemIndex + i];
-                    string toSpeak = optionsElement.label;
-
-                    switch (optionsElement)
-                    {
-                        case OptionsButton _:
-                            toSpeak = $" {toSpeak} Button";
-                            break;
-                        case OptionsCheckbox checkbox:
-                            toSpeak = $"{(checkbox.isChecked ? "Enabled" : "Disabled")} {toSpeak} Checkbox";
-                            break;
-                        case OptionsDropDown dropdown:
-                            toSpeak = $"{toSpeak} Dropdown, option {dropdown.dropDownDisplayOptions[dropdown.selectedOption]} selected";
-                            break;
-                        case OptionsSlider slider:
-                            toSpeak = $"{slider.value}% {toSpeak} Slider";
-                            break;
-                        case OptionsPlusMinus plusMinus:
-                            toSpeak = $"{plusMinus.displayOptions[plusMinus.selected]} selected of {toSpeak}";
-                            break;
-                        case OptionsInputListener inputListener:
-                            string buttons = "";
-                            inputListener.buttonNames.ForEach(name => { buttons += $", {name}"; });
-                            toSpeak = $"{toSpeak} is bound to {buttons}. Left click to change.";
-                            break;
-                        case OptionsTextEntry _:
-                            toSpeak = $"Seed text box";
-                            break;
-                        default:
-                            if (toSpeak.Contains(":"))
-                                toSpeak = toSpeak.Replace(":", "");
-                            toSpeak = $"{toSpeak} Options:";
-                            break;
-                    }
-
-                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
-                    return;
-                }
+                OptionsElementUtils.NarrateOptionsElementSlots(__instance.optionSlots, __instance.options, currentItemIndex);
             }
             catch (Exception e)
             {
-                Log.Error($"An error occured in advanced game menu patch:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in advanced game menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
     }

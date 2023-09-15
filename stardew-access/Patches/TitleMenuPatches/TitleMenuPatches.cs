@@ -1,13 +1,22 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class TitleMenuPatch
+    internal class TitleMenuPatch : IPatch
     {
-        private static string titleMenuQueryKey = "";
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(TitleMenu), nameof(TitleMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                    postfix: new HarmonyMethod(typeof(TitleMenuPatch), nameof(TitleMenuPatch.DrawPatch))
+            );
+        }
 
-        internal static void DrawPatch(TitleMenu __instance, bool ___isTransitioningButtons)
+        private static void DrawPatch(TitleMenu __instance, bool ___isTransitioningButtons)
         {
             try
             {
@@ -15,67 +24,71 @@ namespace stardew_access.Patches
                     return;
 
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                string toSpeak = "";
+                string translationKey = "";
+                object? translationTokens = null;
 
-                if (__instance.muteMusicButton.containsPoint(x, y))
+                if (TitleMenu.subMenu == null)
                 {
-                    toSpeak = "Mute Music Button";
-                }
-                else if (__instance.aboutButton.containsPoint(x, y))
-                {
-                    toSpeak = "About Button";
-                }
-                else if (__instance.languageButton.containsPoint(x, y))
-                {
-                    toSpeak = "Language Button";
-                }
-                else if (__instance.windowedButton.containsPoint(x, y))
-                {
-                    toSpeak = "Fullscreen: " + ((Game1.isFullscreen) ? "enabled" : "disabled");
-                }
-                else if (TitleMenu.subMenu != null && __instance.backButton.containsPoint(x, y))
-                {
-                    string text = "Back Button";
-                    MainClass.ScreenReader.SayWithChecker(text, true);
-                }
-                else
-                {
-                    __instance.buttons.ForEach(component =>
+                    if (__instance.muteMusicButton.containsPoint(x, y))
                     {
-                        if (!component.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
-                            return;
-
-                        string name = component.name;
-                        string label = component.label;
-                        toSpeak = $"{name} {label} Button";
-                    });
-                }
-
-                // Fix for back button not working using keyboard
-                if (TitleMenu.subMenu is CharacterCustomization characterCustomization && characterCustomization.backButton.containsPoint(x, y))
-                {
-                    // Perform Left Click
-                    if (MainClass.Config.LeftClickMainKey.JustPressed())
+                        translationKey = "menu-title-mute_music_button";
+                    }
+                    else if (__instance.aboutButton.containsPoint(x, y))
                     {
-                        __instance.backButtonPressed();
+                        translationKey = "menu-title-about_button";
+                    }
+                    else if (__instance.languageButton.containsPoint(x, y))
+                    {
+                        translationKey = "menu-title-language_button";
+                    }
+                    else if (__instance.windowedButton.containsPoint(x, y))
+                    {
+                        translationKey = "menu-title-fullscreen_button";
+                        translationTokens = new
+                        {
+                            is_enabled = Game1.isFullscreen ? 1 : 0
+                        };
+                    }
+                    else
+                    {
+                        foreach (var button in __instance.buttons)
+                        {
+                            if (!button.containsPoint(x, y))
+                                continue;
+
+                            translationKey = GetTranslationKeyForButton(button.name);
+                            break;
+                        }
+                    }
+                }
+                else if (TitleMenu.subMenu != null)
+                {
+                    if (__instance.backButton.containsPoint(x, y) && TitleMenu.subMenu is not CharacterCustomization)
+                    {
+                        translationKey = "common-ui-back_button";
+                        MouseUtils.SimulateMouseClicks(
+                            (_, _) => __instance.backButtonPressed(),
+                            null
+                        );
                     }
                 }
 
-                if (TitleMenu.subMenu == null && titleMenuQueryKey!=toSpeak)
-                {
-                    titleMenuQueryKey = toSpeak;
-                    MainClass.ScreenReader.Say(toSpeak, true);
-                }
+                MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens);
             }
             catch (Exception e)
             {
-                Log.Error($"An error occured in title menu patch:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in title menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
-        
-        internal static void Cleanup()
+
+        private static string GetTranslationKeyForButton(string buttonName) => buttonName.ToLower() switch
         {
-            titleMenuQueryKey = "";
-        }
+            "new" => "menu-title-new_game_button",
+            "co-op" => "menu-title-co_op_button",
+            "load" => "menu-title-load_button",
+            "exit" => "menu-title-exit_button",
+            "invite" => "menu-title-invite_button",
+            _ => ""
+        };
     }
 }

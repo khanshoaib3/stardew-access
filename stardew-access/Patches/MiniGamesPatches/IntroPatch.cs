@@ -1,36 +1,44 @@
+using HarmonyLib;
 using StardewValley.Minigames;
 using stardew_access.Translation;
 
 namespace stardew_access.Patches
 {
-    public class IntroPatch
+    public class IntroPatch : IPatch
     {
-        internal static string introQuery = " ";
+        private static string introQuery = " ";
 
-        internal static void DrawPatch(Intro __instance, int ___currentState)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.DeclaredMethod(typeof(Intro), "draw"),
+                postfix: new HarmonyMethod(typeof(IntroPatch), nameof(DrawPatch))
+            );
+        }
+
+        private static void DrawPatch(Intro __instance, int ___currentState)
         {
             try
             {
                 if (MainClass.ModHelper == null)
                     return;
 
-                string toSpeak = " ";
+                string translationKey = "";
 
                 if (___currentState == 3)
                 {
-                    toSpeak = Translator.Instance.Translate("intro-scene3");
+                    translationKey = "intro-scene3";
                 }
                 else if (___currentState == 4)
                 {
-                    toSpeak = Translator.Instance.Translate("intro-scene4");
+                    translationKey = "intro-scene4";
                 }
 
-                if (toSpeak != " " && introQuery != toSpeak)
-                {
-                    introQuery = toSpeak;
-                    MainClass.ScreenReader.Say(toSpeak, false);
-                    return;
-                }
+                if (introQuery == translationKey) return;
+                introQuery = translationKey;
+
+                MainClass.ScreenReader.TranslateAndSay(translationKey, false,
+                    translationCategory: TranslationCategory.MiniGames);
             }
             catch (System.Exception e)
             {

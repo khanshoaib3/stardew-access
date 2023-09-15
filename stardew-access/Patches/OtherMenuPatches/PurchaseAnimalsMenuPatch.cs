@@ -1,17 +1,27 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Translation;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class PurchaseAnimalsMenuPatch
+    internal class PurchaseAnimalsMenuPatch : IPatch
     {
         internal static FarmAnimal? animalBeingPurchased = null;
         internal static bool isOnFarm = false;
-        internal static string purchaseAnimalMenuQuery = "";
         internal static PurchaseAnimalsMenu? purchaseAnimalsMenu;
         internal static bool firstTimeInNamingMenu = true;
 
-        internal static void DrawPatch(PurchaseAnimalsMenu __instance, bool ___onFarm, bool ___namingAnimal, TextBox ___textBox, FarmAnimal ___animalBeingPurchased)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(PurchaseAnimalsMenu), nameof(PurchaseAnimalsMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                    prefix: new HarmonyMethod(typeof(PurchaseAnimalsMenuPatch), nameof(PurchaseAnimalsMenuPatch.DrawPatch))
+            );
+        }
+
+        private static void DrawPatch(PurchaseAnimalsMenu __instance, bool ___onFarm, bool ___namingAnimal, TextBox ___textBox, FarmAnimal ___animalBeingPurchased)
         {
             try
             {
@@ -38,44 +48,42 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in purchase animal menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
         private static void NarrateNamingMenu(PurchaseAnimalsMenu __instance, TextBox ___textBox, int x, int y)
         {
-            string toSpeak = "";
+            string translationKey = "";
+            object? translationTokens = null;
             if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
             {
-                toSpeak = "Cancel Button";
+                translationKey = "common-ui-cancel_button";
             }
             else if (__instance.doneNamingButton != null && __instance.doneNamingButton.containsPoint(x, y))
             {
-                toSpeak = "OK Button";
+                translationKey = "common-ui-ok_button";
             }
             else if (__instance.randomButton != null && __instance.randomButton.containsPoint(x, y))
             {
-                toSpeak = "Random Name Button";
+                translationKey = "menu-purchase_animal-random_name_button";
             }
             else if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
             {
-                toSpeak = "Name Text Box";
-                string? name = ___textBox.Text;
-                if (name != null)
-                    toSpeak = $"{toSpeak}, Value: {name}";
+                translationKey = "menu-purchase_animal-animal_name_text_box";
+                translationTokens = new
+                {
+                    value = string.IsNullOrEmpty(___textBox.Text) ? "null" : ___textBox.Text
+                };
             }
-
-            if (purchaseAnimalMenuQuery == toSpeak) return;
-
-            purchaseAnimalMenuQuery = toSpeak;
 
             if (firstTimeInNamingMenu)
             {
-                toSpeak = $"Enter the name of animal in the name text box. {toSpeak}";
+                MainClass.ScreenReader.MenuPrefixNoQueryText = Translator.Instance.Translate("menu-purchase_animal-first_time_in_menu_info", TranslationCategory.Menu);
                 firstTimeInNamingMenu = false;
             }
 
-            MainClass.ScreenReader.Say(toSpeak, true);
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens);
         }
 
         private static void NarratePurchasingMenu(PurchaseAnimalsMenu __instance)
@@ -83,10 +91,11 @@ namespace stardew_access.Patches
             if (__instance.hovered == null)
                 return;
 
-            string toSpeak = "";
+            string translationKey = "";
+            object? translationTokens = null;
             if (((StardewValley.Object)__instance.hovered.item).Type != null)
             {
-                toSpeak = ((StardewValley.Object)__instance.hovered.item).Type;
+                translationKey = ((StardewValley.Object)__instance.hovered.item).Type;
             }
             else
             {
@@ -94,18 +103,20 @@ namespace stardew_access.Patches
                 int price = __instance.hovered.item.salePrice();
                 string description = PurchaseAnimalsMenu.getAnimalDescription(__instance.hovered.hoverText);
 
-                toSpeak = $"{displayName}, Price: {price}g, Description: {description}";
+                translationKey = "menu-purchase_animal-animal_info";
+                translationTokens = new
+                {
+                    name = displayName,
+                    price,
+                    description
+                };
             }
 
-            if (purchaseAnimalMenuQuery == toSpeak) return;
-
-            purchaseAnimalMenuQuery = toSpeak;
-            MainClass.ScreenReader.Say(toSpeak, true);
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens);
         }
 
         internal static void Cleanup()
         {
-            purchaseAnimalMenuQuery = "";
             firstTimeInNamingMenu = true;
             purchaseAnimalsMenu = null;
         }

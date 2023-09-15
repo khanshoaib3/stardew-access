@@ -1,95 +1,109 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Translation;
+using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class LetterViwerMenuPatch
+    internal class LetterViewerMenuPatch : IPatch
     {
-        private static string currentLetterText = "";
+        private static string letterViewerQueryText = "";
 
-        internal static void DrawPatch(LetterViewerMenu __instance)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(LetterViewerMenu), nameof(LetterViewerMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                    postfix: new HarmonyMethod(typeof(LetterViewerMenuPatch), nameof(LetterViewerMenuPatch.DrawPatch))
+            );
+        }
+
+        private static void DrawPatch(LetterViewerMenu __instance)
         {
             try
             {
                 if (!__instance.IsActive())
                     return;
 
-                NarrateLetterContent(__instance);
+                NarrateMenu(__instance);
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in letter viewer menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
-        internal static void NarrateLetterContent(LetterViewerMenu __instance)
+        internal static void NarrateMenu(LetterViewerMenu __instance)
         {
             int x = Game1.getMousePosition().X, y = Game1.getMousePosition().Y;
-            #region Texts in the letter
-            string message = __instance.mailMessage[__instance.page];
 
-            string toSpeak = $"{message}";
+            NarrateLetterContent(__instance, x, y);
+            NarrateHoveredButtons(__instance, x, y);
+        }
 
-            if (__instance.ShouldShowInteractable())
+        private static void NarrateLetterContent(LetterViewerMenu __instance, int x, int y)
+        {
+            string translationKey = "menu-letter_viewer-letter_message";
+            object? translationTokens = new
             {
-                if (__instance.moneyIncluded > 0)
-                {
-                    string moneyText = Game1.content.LoadString("Strings\\UI:LetterViewer_MoneyIncluded", __instance.moneyIncluded);
-                    toSpeak += $"\t\n\t ,Included money: {moneyText}";
-                }
-                else if (__instance.learnedRecipe != null && __instance.learnedRecipe.Length > 0)
-                {
-                    string recipeText = Game1.content.LoadString("Strings\\UI:LetterViewer_LearnedRecipe", __instance.cookingOrCrafting);
-                    toSpeak += $"\t\n\t ,Learned Recipe: {recipeText}";
-                }
+                message_content = __instance.mailMessage[__instance.page],
+                is_money_included = (__instance.ShouldShowInteractable() && __instance.moneyIncluded > 0) ? 1 : 0,
+                received_money = __instance.moneyIncluded,
+                learned_any_recipe = (__instance.ShouldShowInteractable() && __instance.learnedRecipe != null && __instance.learnedRecipe.Length > 0) ? 1 : 0,
+                learned_recipe = Game1.content.LoadString("Strings\\UI:LetterViewer_LearnedRecipe", __instance.cookingOrCrafting),
+                is_quest = (__instance.acceptQuestButton != null && __instance.questID != -1) ? 1 : 0,
+            };
+
+            string toSpeak = Translator.Instance.Translate(translationKey, translationTokens, TranslationCategory.Menu);
+
+            if (__instance.mailMessage.Count > 1)
+            {
+                toSpeak = Translator.Instance.Translate("menu-letter_viewer-pagination_text-prefix", new
+                    {
+                        current_page = __instance.page + 1,
+                        total_pages = __instance.mailMessage.Count,
+                        content = toSpeak
+                    },
+                    TranslationCategory.Menu);
             }
 
-            if (currentLetterText != toSpeak)
-            {
-                currentLetterText = toSpeak;
+            if (!MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true)) return;
+            // snap mouse to accept quest button
+            if (__instance.acceptQuestButton != null && __instance.questID != -1)
+                __instance.acceptQuestButton.snapMouseCursorToCenter();
+        }
 
-                // snap mouse to accept quest button
-                if (__instance.acceptQuestButton != null && __instance.questID != -1)
-                {
-                    toSpeak += "\t\n Left click to accept quest.";
-                    __instance.acceptQuestButton.snapMouseCursorToCenter();
-                }
-                if (__instance.mailMessage.Count > 1)
-                    toSpeak = $"Page {__instance.page + 1} of {__instance.mailMessage.Count}:\n\t{toSpeak}";
-
-                MainClass.ScreenReader.Say(toSpeak, true);
-            }
-            #endregion
-
-            #region Narrate items given in the mail
-            if (__instance.ShouldShowInteractable())
+        private static void NarrateHoveredButtons(LetterViewerMenu __instance, int x, int y)
+        {
+            if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
+                CheckAndSpeak(Translator.Instance.Translate("common-ui-previous_page_button", TranslationCategory.Menu));
+            else if (__instance.forwardButton != null && __instance.forwardButton.visible && __instance.forwardButton.containsPoint(x, y))
+                CheckAndSpeak(Translator.Instance.Translate("common-ui-next_page_button", TranslationCategory.Menu));
+            else if (__instance.ShouldShowInteractable())
             {
                 foreach (ClickableComponent c in __instance.itemsToGrab)
                 {
-                    if (c.item == null)
+                    if (c.item == null || !c.containsPoint(x, y))
                         continue;
 
-                    string name = c.item.DisplayName;
-
-                    if (c.containsPoint(x, y))
-                        MainClass.ScreenReader.SayWithChecker($"Left click to collect {name}", false);
+                    object? token = new { name = InventoryUtils.GetPluralNameOfItem(c.item) };
+                    CheckAndSpeak(Translator.Instance.Translate("menu-letter_viewer-grabbable_item_text", token, TranslationCategory.Menu));
                 }
             }
-            #endregion
+        }
 
-            #region Narrate buttons
-            if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
-                MainClass.ScreenReader.SayWithChecker($"Previous page button", false);
+        private static void CheckAndSpeak(string toSpeak)
+        {
+            if (toSpeak == letterViewerQueryText) return;
 
-            if (__instance.forwardButton != null && __instance.forwardButton.visible && __instance.forwardButton.containsPoint(x, y))
-                MainClass.ScreenReader.SayWithChecker($"Next page button", false);
-
-            #endregion
+            letterViewerQueryText = toSpeak;
+            MainClass.ScreenReader.Say(toSpeak, false);
         }
 
         internal static void Cleanup()
         {
-            currentLetterText = "";
+            letterViewerQueryText = "";
         }
     }
 }

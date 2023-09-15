@@ -2,13 +2,24 @@ using StardewValley;
 using stardew_access.Utils;
 using StardewValley.Menus;
 using StardewValley.Objects;
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace stardew_access.Patches
 {
-    internal class CraftingPagePatch
+    internal class CraftingPagePatch : IPatch
     {
-        internal static int currentSelectedCraftingRecipe = -1;
-        internal static bool isSelectingRecipe = false;
+        private static int _currentSelectedSnapComponent = -1;
+        private static int _previouslyActivePage = 0;
+        private static bool _isSelectingRecipe = false;
+
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(CraftingPage), nameof(CraftingPage.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(CraftingPagePatch), nameof(CraftingPagePatch.DrawPatch))
+            );
+        }
 
         internal static void DrawPatch(CraftingPage __instance, CraftingRecipe ___hoverRecipe, int ___currentCraftingPage)
         {
@@ -28,58 +39,66 @@ namespace stardew_access.Patches
                     return;
                 }
 
-                InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y);
+                InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory, __instance.inventory.actualInventory, __instance.inventory);
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in crafting page patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
         private static void HandleKeyBinds(CraftingPage __instance, int ___currentCraftingPage)
         {
+            bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
+
             if (MainClass.Config.SnapToFirstSecondaryInventorySlotKey.JustPressed() && __instance.pagesOfCraftingRecipes[___currentCraftingPage].Count > 0)
             {
                 // snap to first crafting recipe
                 __instance.setCurrentlySnappedComponentTo(__instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(0).Key.myID);
                 __instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(0).Key.snapMouseCursorToCenter();
-                currentSelectedCraftingRecipe = 0;
+                _currentSelectedSnapComponent = 0;
             }
             else if (MainClass.Config.SnapToFirstInventorySlotKey.JustPressed() && __instance.inventory.inventory.Count > 0)
             {
                 // snap to first inventory slot
                 __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
                 __instance.inventory.inventory[0].snapMouseCursorToCenter();
-                currentSelectedCraftingRecipe = -1;
+                _currentSelectedSnapComponent = -1;
             }
-            else if (MainClass.Config.CraftingMenuCycleThroughRecipiesKey.JustPressed() && !isSelectingRecipe)
+            else if (MainClass.Config.CraftingMenuCycleThroughRecipesKey.JustPressed() && !isLeftShiftPressed && !_isSelectingRecipe)
             {
-                isSelectingRecipe = true;
-                CycleThroughRecipes(__instance.pagesOfCraftingRecipes, ___currentCraftingPage, __instance);
-                Task.Delay(200).ContinueWith(_ => { isSelectingRecipe = false; });
+                _isSelectingRecipe = true;
+                CycleThroughRecipes(___currentCraftingPage, __instance, true);
+                Task.Delay(200).ContinueWith(_ => { _isSelectingRecipe = false; });
+            }
+            else if (MainClass.Config.CraftingMenuCycleThroughRecipesKey.JustPressed() && isLeftShiftPressed && !_isSelectingRecipe)
+            {
+                _isSelectingRecipe = true;
+                CycleThroughRecipes(___currentCraftingPage, __instance, false);
+                Task.Delay(200).ContinueWith(_ => { _isSelectingRecipe = false; });
             }
         }
 
         private static bool NarrateMenuButtons(CraftingPage __instance, int x, int y)
         {
-            string? toSpeak = null;
+            string? translationKey = null;
             bool isDropItemButton = false;
 
             if (__instance.upButton != null && __instance.upButton.containsPoint(x, y))
             {
-                toSpeak = "Previous Recipe List";
+                translationKey = "menu-crafting_page-previous_recipe_list_button";
             }
             else if (__instance.downButton != null && __instance.downButton.containsPoint(x, y))
             {
-                toSpeak = "Next Recipe List";
+                translationKey = "menu-crafting_page-next_recipe_list_button";
             }
             else if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
             {
-                toSpeak = "Trash Can";
+                translationKey = "common-ui-trashcan_button";
             }
             else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
             {
-                toSpeak = "Drop Item";
+                translationKey = "common-ui-drop_item_button";
                 isDropItemButton = true;
             }
             else
@@ -87,8 +106,8 @@ namespace stardew_access.Patches
                 return false;
             }
 
-            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
-            if (isDropItemButton) Game1.playSound("drop_item");
+            if (MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true))
+                if (isDropItemButton) Game1.playSound("drop_item");
 
             return true;
         }
@@ -110,97 +129,83 @@ namespace stardew_access.Patches
                 if (!isRecipeInFocus)
                     return false;
 
-                string query = $"unknown recipe:{__instance.getCurrentlySnappedComponent().myID}";
-
-                MainClass.ScreenReader.SayWithMenuChecker("unknown recipe", true);
+                MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-crafting_page-unknown_recipe", true);
                 return true;
             }
 
-            string name = ___hoverRecipe.DisplayName;
-            int numberOfProduce = ___hoverRecipe.numberProducedPerCraft;
-            string description = "";
-            string ingredients = "";
-            string buffs = "";
-            string craftable = "";
-
-            description = $"Description:\n{___hoverRecipe.description}";
-            craftable = ___hoverRecipe.doesFarmerHaveIngredientsInInventory(GetContainerContents(__instance._materialContainers)) ? "Craftable" : "Not Craftable";
-
-            #region Crafting ingredients
-            ingredients = "Ingredients:\n";
-            for (int i = 0; i < ___hoverRecipe.recipeList.Count; i++)
-            {
-                int recipeCount = ___hoverRecipe.recipeList.ElementAt(i).Value;
-                int recipeItem = ___hoverRecipe.recipeList.ElementAt(i).Key;
-                string recipeName = ___hoverRecipe.getNameFromIndex(recipeItem);
-
-                ingredients += $" ,{recipeCount} {recipeName}";
-            }
-            #endregion
-
-            #region Health & stamina and buff items (effects like +1 walking speed)
             Item producesItem = ___hoverRecipe.createItem();
-            if (producesItem is StardewValley.Object producesItemObject)
-            {
-                if (producesItemObject.Edibility != -300)
+            string translationKey = "menu-crafting_page-recipe_info";
+            object translationTokens = new
                 {
-                    int stamina_recovery = producesItemObject.staminaRecoveredOnConsumption();
-                    buffs += $"{stamina_recovery} Energy";
-                    if (stamina_recovery >= 0)
-                    {
-                        int health_recovery = producesItemObject.healthRecoveredOnConsumption();
-                        buffs += $"\n{health_recovery} Health";
-                    }
-                }
-                // These variables are taken from the game's code itself (IClickableMenu.cs -> 1016 line)
-                bool edibleItem = producesItem != null && (int)producesItemObject.Edibility != -300;
-                string[]? buffIconsToDisplay = (producesItem != null && edibleItem && Game1.objectInformation[producesItemObject.ParentSheetIndex].Split('/').Length > 7)
-                    ? producesItem.ModifyItemBuffs(Game1.objectInformation[producesItemObject.ParentSheetIndex].Split('/')[7].Split(' '))
-                    : null;
+                    produce_count = ___hoverRecipe.numberProducedPerCraft,
+                    name = ___hoverRecipe.DisplayName,
+                    is_craftable = ___hoverRecipe.doesFarmerHaveIngredientsInInventory(GetContainerContents(__instance._materialContainers)) ? 1 : 0,
+                    ingredients = InventoryUtils.GetIngredientsFromRecipe(___hoverRecipe),
+                    description = ___hoverRecipe.description,
+                    buffs = $"{InventoryUtils.GetHealthNStaminaFromItem(producesItem)}, {InventoryUtils.GetBuffsFromItem(producesItem)}"
+                };
 
-                if (buffIconsToDisplay != null)
-                {
-                    for (int j = 0; j < buffIconsToDisplay.Length; j++)
-                    {
-                        string buffName = ((Convert.ToInt32(buffIconsToDisplay[j]) > 0) ? "+" : "") + buffIconsToDisplay[j] + " ";
-                        if (j <= 11)
-                        {
-                            buffName = Game1.content.LoadString("Strings\\UI:ItemHover_Buff" + j, buffName);
-                        }
-                        try
-                        {
-                            int count = int.Parse(buffName[..buffName.IndexOf(' ')]);
-                            if (count != 0)
-                                buffs += $"{buffName}\n";
-                        }
-                        catch (Exception) { }
-                    }
-
-                    buffs = $"Buffs and boosts:\n {buffs}";
-                }
-            }
-            #endregion
-
-
-            string toSpeak = $"{numberOfProduce} {name}, {craftable}, \n\t{ingredients}, \n\t{description} \n\t{buffs}";
-
-            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens);
 
             return true;
         }
 
-        private static void CycleThroughRecipes(List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes, int ___currentCraftingPage, CraftingPage __instance)
+        private static void CycleThroughRecipes(int ___currentCraftingPage,
+                                                CraftingPage __instance,
+                                                bool goForward)
         {
-            currentSelectedCraftingRecipe++;
-            if (currentSelectedCraftingRecipe < 0 || currentSelectedCraftingRecipe >= pagesOfCraftingRecipes[0].Count)
-                currentSelectedCraftingRecipe = 0;
+            _currentSelectedSnapComponent += goForward ? 1 : -1;
+            if (_currentSelectedSnapComponent < -1)
+            {
+                _currentSelectedSnapComponent = __instance.pagesOfCraftingRecipes[___currentCraftingPage].Count;
+            }
+            else if (_currentSelectedSnapComponent > __instance.pagesOfCraftingRecipes[___currentCraftingPage].Count)
+            {
+                _currentSelectedSnapComponent = -1;
+            }
 
-            __instance.setCurrentlySnappedComponentTo(pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(currentSelectedCraftingRecipe).Key.myID);
-            pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(currentSelectedCraftingRecipe).Key.snapMouseCursorToCenter();
+            if (_previouslyActivePage != ___currentCraftingPage)
+            {
+                _previouslyActivePage = ___currentCraftingPage;
+                _currentSelectedSnapComponent = 0;
+            }
+
+            // Snaps to the previous recipe list button if visible
+            if (_currentSelectedSnapComponent == -1)
+            {
+                if (__instance.upButton != null && ___currentCraftingPage > 0)
+                {
+                    __instance.setCurrentlySnappedComponentTo(__instance.upButton.myID);
+                    __instance.upButton.snapMouseCursorToCenter();
+                }
+                else
+                {
+                    CycleThroughRecipes(___currentCraftingPage, __instance, goForward);
+                }
+                return;
+            }
+
+            // Snaps to the next recipe list button if visible
+            if (_currentSelectedSnapComponent == __instance.pagesOfCraftingRecipes[___currentCraftingPage].Count)
+            {
+                if (__instance.downButton != null && ___currentCraftingPage < __instance.pagesOfCraftingRecipes.Count - 1)
+                {
+                    __instance.setCurrentlySnappedComponentTo(__instance.downButton.myID);
+                    __instance.downButton.snapMouseCursorToCenter();
+                }
+                else
+                {
+                    CycleThroughRecipes(___currentCraftingPage, __instance, goForward);
+                }
+                return;
+            }
+
+            __instance.setCurrentlySnappedComponentTo(__instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(_currentSelectedSnapComponent).Key.myID);
+            __instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(_currentSelectedSnapComponent).Key.snapMouseCursorToCenter();
 
             // Skip if recipe is not unlocked/unknown
-            if (pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(currentSelectedCraftingRecipe).Key.hoverText.Equals("ghosted"))
-                CycleThroughRecipes(pagesOfCraftingRecipes, ___currentCraftingPage, __instance);
+            if (__instance.pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(_currentSelectedSnapComponent).Key.hoverText.Equals("ghosted"))
+                CycleThroughRecipes(___currentCraftingPage, __instance, goForward);
         }
 
         // This method is used to get the inventory items to check if the player has enough ingredients for a recipe
@@ -221,8 +226,9 @@ namespace stardew_access.Patches
 
         internal static void Cleanup()
         {
-            currentSelectedCraftingRecipe = -1;
-            isSelectingRecipe = false;
+            _currentSelectedSnapComponent = -1;
+            _previouslyActivePage = 0;
+            _isSelectingRecipe = false;
         }
     }
 }

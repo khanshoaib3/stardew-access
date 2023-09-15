@@ -1,3 +1,5 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
@@ -5,11 +7,17 @@ using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class ForgeMenuPatch
+    internal class ForgeMenuPatch : IPatch
     {
-        private static string forgeMenuQuery = "";
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(ForgeMenu), nameof(ForgeMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(ForgeMenuPatch), nameof(ForgeMenuPatch.DrawPatch))
+            );
+        }
 
-        internal static void DrawPatch(ForgeMenu __instance)
+        private static void DrawPatch(ForgeMenu __instance)
         {
             try
             {
@@ -17,10 +25,7 @@ namespace stardew_access.Patches
 
                 if (NarrateHoveredButton(__instance, x, y)) return;
 
-                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
-                {
-                    Cleanup();
-                }
+                InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory, __instance.inventory.actualInventory, __instance.inventory);
 
             }
             catch (System.Exception e)
@@ -31,87 +36,84 @@ namespace stardew_access.Patches
 
         private static bool NarrateHoveredButton(ForgeMenu __instance, int x, int y)
         {
-            string toSpeak = "";
+            string translationKey = "";
+            object? translationTokens = null;
             bool isDropItemButton = false;
 
             if (__instance.leftIngredientSpot != null && __instance.leftIngredientSpot.containsPoint(x, y))
             {
-                if (__instance.leftIngredientSpot.item == null)
+                translationKey = "menu-forge-weapon_input_slot";
+                Item? item = __instance.leftIngredientSpot.item;
+                translationTokens = new
                 {
-                    toSpeak = "Input weapon or tool here";
-                }
-                else
-                {
-                    Item item = __instance.leftIngredientSpot.item;
-                    toSpeak = $"Weapon slot: {Translator.Instance.Translate("common-util-pluralize_name", new {item_count = item.Stack, name = item.DisplayName})}";
-                }
+                    is_empty = (item == null) ? 1 : 0,
+                    item_name = (item == null) ? "" : InventoryUtils.GetPluralNameOfItem(item)
+                };
             }
             else if (__instance.rightIngredientSpot != null && __instance.rightIngredientSpot.containsPoint(x, y))
             {
-                if (__instance.rightIngredientSpot.item == null)
+                translationKey = "menu-forge-gemstone_input_slot";
+                Item? item = __instance.rightIngredientSpot.item;
+                translationTokens = new
                 {
-                    toSpeak = "Input gemstone here";
-                }
-                else
-                {
-                    Item item = __instance.rightIngredientSpot.item;
-                    toSpeak = $"Gemstone slot: {Translator.Instance.Translate("common-util-pluralize_name", new {item_count = item.Stack, name = item.DisplayName})}";
-                }
+                    is_empty = (item == null) ? 1 : 0,
+                    item_name = (item == null) ? "" : InventoryUtils.GetPluralNameOfItem(item)
+                };
             }
             else if (__instance.startTailoringButton != null && __instance.startTailoringButton.containsPoint(x, y))
             {
-                toSpeak = "Star forging button";
+                translationKey = "menu-forge-start_forging_button";
             }
             else if (__instance.unforgeButton != null && __instance.unforgeButton.containsPoint(x, y))
             {
-                toSpeak = "Unforge button";
+                translationKey = "menu-forge-unforge_button";
             }
             else if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
             {
-                toSpeak = "Trashcan";
+                translationKey = "common-ui-trashcan_button";
             }
             else if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
             {
-                toSpeak = "ok button";
+                translationKey = "common-ui-ok_button";
             }
             else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
             {
-                toSpeak = "drop item";
+                translationKey = "common-ui-drop_item_button";
                 isDropItemButton = true;
             }
             else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[0].containsPoint(x, y))
             {
-                toSpeak = "Left ring Slot";
-
-                if (Game1.player.leftRing.Value != null)
-                    toSpeak = $"{toSpeak}: {Game1.player.leftRing.Value.DisplayName}";
+                translationKey = "common-ui-equipment_slots";
+                Item? item = Game1.player.leftRing.Value;
+                translationTokens = new
+                {
+                    slot_name = "left_ring",
+                    is_empty = (item == null) ? 1 : 0,
+                    item_name = (item == null) ? "" : InventoryUtils.GetPluralNameOfItem(item),
+                    item_description = ""
+                };
             }
             else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[1].containsPoint(x, y))
             {
-                toSpeak = "Right ring Slot";
-
-                if (Game1.player.rightRing.Value != null)
-                    toSpeak = $"{toSpeak}: {Game1.player.rightRing.Value.DisplayName}";
+                translationKey = "common-ui-equipment_slots";
+                Item? item = Game1.player.rightRing.Value;
+                translationTokens = new
+                {
+                    slot_name = "right_ring",
+                    is_empty = (item == null) ? 1 : 0,
+                    item_name = (item == null) ? "" : InventoryUtils.GetPluralNameOfItem(item),
+                    item_description = ""
+                };
             }
             else
             {
                 return false;
             }
 
-            if (forgeMenuQuery != toSpeak)
-            {
-                forgeMenuQuery = toSpeak;
-                MainClass.ScreenReader.Say(toSpeak, true);
-
+            if (MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens))
                 if (isDropItemButton) Game1.playSound("drop_item");
-            }
 
             return true;
-        }
-
-        internal static void Cleanup()
-        {
-            forgeMenuQuery = "";
         }
     }
 }

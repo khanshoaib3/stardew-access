@@ -1,15 +1,25 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Translation;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class PondQueryMenuPatch
+    internal class PondQueryMenuPatch : IPatch
     {
-        private static string pondQueryMenuQuery = "";
         private static bool isNarratingPondInfo = false;
 
-        internal static void DrawPatch(PondQueryMenu __instance, StardewValley.Object ____fishItem, FishPond ____pond, string ____statusText, bool ___confirmingEmpty)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(PondQueryMenu), nameof(PondQueryMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(PondQueryMenuPatch), nameof(PondQueryMenuPatch.DrawPatch))
+            );
+        }
+
+        private static void DrawPatch(PondQueryMenu __instance, StardewValley.Object ____fishItem, FishPond ____pond, string ____statusText, bool ___confirmingEmpty)
         {
             try
             {
@@ -20,9 +30,9 @@ namespace stardew_access.Patches
                 if (___confirmingEmpty)
                 {
                     if (__instance.yesButton != null && __instance.yesButton.containsPoint(x, y))
-                        toSpeak = "Confirm button";
+                        toSpeak = Translator.Instance.Translate("common-ui-confirm_button", TranslationCategory.Menu);
                     else if (__instance.noButton != null && __instance.noButton.containsPoint(x, y))
-                        toSpeak = "Cancel button";
+                        toSpeak = Translator.Instance.Translate("common-ui-cancel_button", TranslationCategory.Menu);
                 }
                 else
                 {
@@ -36,36 +46,38 @@ namespace stardew_access.Patches
                         if (has_unresolved_needs && ____pond.neededItem.Value != null)
                             bring_text = Game1.content.LoadString("Strings\\UI:PondQuery_StatusRequest_Bring") + $": {____pond.neededItemCount} {____pond.neededItem.Value.DisplayName}";
 
-                        extra = $"{pond_name_text} {population_text} {bring_text} Status: {____statusText}";
-                        pondQueryMenuQuery = "";
+                        object translationTokens = new
+                        {
+                            pond_name = pond_name_text,
+                            population_info = population_text,
+                            required_item_info = bring_text,
+                            status = ____statusText
+                        };
+                        extra = Translator.Instance.Translate("menu-pond_query-pond_info", translationTokens, TranslationCategory.Menu);
+                        MainClass.ScreenReader.PrevMenuQueryText = "";
 
                         isNarratingPondInfo = true;
                         Task.Delay(200).ContinueWith(_ => { isNarratingPondInfo = false; });
                     }
 
                     if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
-                        toSpeak = "Ok button";
+                        toSpeak = Translator.Instance.Translate("common-ui-ok_button", TranslationCategory.Menu);
                     else if (__instance.changeNettingButton != null && __instance.changeNettingButton.containsPoint(x, y))
-                        toSpeak = "Change netting button";
+                        toSpeak = Translator.Instance.Translate("menu-pond_query-change_netting_button", TranslationCategory.Menu);
                     else if (__instance.emptyButton != null && __instance.emptyButton.containsPoint(x, y))
-                        toSpeak = "Empty pond button";
+                        toSpeak = Translator.Instance.Translate("menu-pond_query-empty_pond_button", TranslationCategory.Menu);
                 }
 
-                if (pondQueryMenuQuery != toSpeak)
-                {
-                    pondQueryMenuQuery = toSpeak;
-                    MainClass.ScreenReader.Say(extra + " \n\t" + toSpeak, true);
-                }
+                MainClass.ScreenReader.SayWithMenuChecker(string.Join("\n", new List<string>(){extra, toSpeak}), true);
             }
             catch (System.Exception e)
             {
-                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in pond query menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
         internal static void Cleanup()
         {
-            pondQueryMenuQuery = "";
             isNarratingPondInfo = false;
         }
     }

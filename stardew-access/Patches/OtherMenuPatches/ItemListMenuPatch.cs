@@ -1,55 +1,66 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class ItemListMenuPatch
+    internal class ItemListMenuPatch : IPatch
     {
-        private static string itemListMenuQuery = "";
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(ItemListMenu), nameof(ItemListMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(ItemListMenuPatch), nameof(ItemListMenuPatch.DrawPatch))
+            );
+        }
 
-        internal static void DrawPatch(ItemListMenu __instance, string ___title, int ___currentTab, int ___totalValueOfItems, List<Item> ___itemsToList)
+        private static void DrawPatch(ItemListMenu __instance, string ___title, int ___currentTab, int ___totalValueOfItems, List<Item> ___itemsToList)
         {
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                string toSpeak = "", currentList = "";
-
-                for (int i = ___currentTab * __instance.itemsPerCategoryPage; i < ___currentTab * __instance.itemsPerCategoryPage + __instance.itemsPerCategoryPage; i++)
-                {
-                    if (i == 0) currentList = ___title;
-                    if (___itemsToList.Count <= i) continue;
-                    
-                    if (___itemsToList[i] == null)
-                    {
-                        currentList = $"{currentList}, \n" + Game1.content.LoadString("Strings\\UI:ItemList_ItemsLostValue", ___totalValueOfItems);
-                        continue;
-                    }
-
-                    currentList = $"{currentList}, \n {___itemsToList[i].Stack} {___itemsToList[i].DisplayName}";
-                }
+                string translationKey = "";
+                object? translationTokens = null;
 
                 if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
-                    toSpeak = $"Page {___currentTab + 1} of {((int)___itemsToList.Count / __instance.itemsPerCategoryPage) + 1} \n {currentList} \n ok button";
-                else if (__instance.forwardButton != null && __instance.forwardButton.containsPoint(x, y))
-                    toSpeak = "Next page button";
-                else if (__instance.backButton != null && __instance.backButton.containsPoint(x, y))
-                    toSpeak = "Previous page button";
-
-                if (itemListMenuQuery != toSpeak)
                 {
-                    itemListMenuQuery = toSpeak;
-                    MainClass.ScreenReader.Say(toSpeak, true);
+                    List<string> currentList = new();
+
+                    for (int i = ___currentTab * __instance.itemsPerCategoryPage; i < ___currentTab * __instance.itemsPerCategoryPage + __instance.itemsPerCategoryPage; i++)
+                    {
+                        if (___itemsToList.Count <= i) continue;
+
+                        currentList.Add((___itemsToList[i] == null)
+                                ? Game1.content.LoadString("Strings\\UI:ItemList_ItemsLostValue", ___totalValueOfItems)
+                                : InventoryUtils.GetPluralNameOfItem(___itemsToList[i]));
+                    }
+
+                    translationKey = "menu-item_list-ok_button";
+                    translationTokens = new
+                    {
+                        title = ___title,
+                        current_page = ___currentTab + 1,
+                        total_pages = ((int)___itemsToList.Count / __instance.itemsPerCategoryPage) + 1,
+                        item_list = string.Join(", ", currentList)
+                    };
                 }
+                else if (__instance.forwardButton != null && __instance.forwardButton.containsPoint(x, y))
+                {
+                    translationKey = "common-ui-next_page_button";
+                }
+                else if (__instance.backButton != null && __instance.backButton.containsPoint(x, y))
+                {
+                    translationKey = "common-ui-previous_page_button";
+                }
+
+                MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens);
             }
             catch (System.Exception e)
             {
-                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in item list menu patch:\n{e.Message}\n{e.StackTrace}");
             }
-        }
-
-        internal static void Cleanup()
-        {
-            itemListMenuQuery = "";
         }
     }
 }

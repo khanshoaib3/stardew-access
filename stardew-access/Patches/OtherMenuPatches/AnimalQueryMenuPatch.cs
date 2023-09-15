@@ -1,18 +1,26 @@
 using StardewValley;
 using StardewValley.Menus;
 using stardew_access.Translation;
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace stardew_access.Patches
 {
-    internal class AnimalQueryMenuPatch
+    internal class AnimalQueryMenuPatch : IPatch
     {
         internal static bool isNarratingAnimalInfo = false;
-        internal static string animalQueryMenuQuery = "";
         internal static AnimalQueryMenu? animalQueryMenu;
         internal static FarmAnimal? animalBeingMoved = null;
         internal static bool isOnFarm = false;
 
         private static double loveLevel;
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(AnimalQueryMenu), nameof(AnimalQueryMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(AnimalQueryMenuPatch), nameof(AnimalQueryMenuPatch.DrawPatch))
+            );
+        }
 
         internal static void DrawPatch(
             AnimalQueryMenu __instance,
@@ -56,6 +64,8 @@ namespace stardew_access.Patches
             if (!isPrimaryInfoKeyPressed | isNarratingAnimalInfo)
                 return;
 
+            isNarratingAnimalInfo = true;
+            
             string name = ___animal.displayName;
             string type = ___animal.displayType;
             int age = (___animal.GetDaysOwned() + 1) / 28 + 1;
@@ -79,20 +89,17 @@ namespace stardew_access.Patches
                 heartCount += 0.5;
             }
 
-            string toSpeak = Translator.Instance.Translate( "animal_query_menu-animal_info",
-                new {
+            MainClass.ScreenReader.TranslateAndSay("animal_query_menu-animal_info", true, new
+                {
                     name,
                     type,
                     is_baby = ___animal.isBaby() ? 1 : 0,
                     heart_count = heartCount,
                     age,
                     parent_name = parent
-                }
-            );
-
-            isNarratingAnimalInfo = true;
-            Task.Delay(200) .ContinueWith(_ => { isNarratingAnimalInfo = false; }); // Adds delay
-            MainClass.ScreenReader.Say(toSpeak, true);
+                },
+                TranslationCategory.Menu);
+            Task.Delay(200).ContinueWith(_ => { isNarratingAnimalInfo = false; }); // Adds delay
         }
 
         private static void NarrateHoveredButton(
@@ -103,34 +110,35 @@ namespace stardew_access.Patches
             int y
         )
         {
-            string toSpeak = "";
-            if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
-                toSpeak = Translator.Instance.Translate("common-ui-ok_button");
-            else if (__instance.sellButton != null && __instance.sellButton.containsPoint(x, y))
-                toSpeak = Translator.Instance.Translate( "animal_query_menu-ui-selling_button", new { price = ___animal.getSellPrice() });
-            else if ( ___confirmingSell && __instance.yesButton != null && __instance.yesButton.containsPoint(x, y))
-                toSpeak = Translator.Instance.Translate( "animal_query_menu-ui-confirm_selling_button");
-            else if ( ___confirmingSell && __instance.noButton != null && __instance.noButton.containsPoint(x, y))
-                toSpeak = Translator.Instance.Translate( "animal_query_menu-ui-cancel_selling_button");
-            else if ( __instance.moveHomeButton != null && __instance.moveHomeButton.containsPoint(x, y))
-                toSpeak = Translator.Instance.Translate("animal_query_menu-ui-move_home_button");
-            else if ( __instance.allowReproductionButton != null && __instance.allowReproductionButton.containsPoint(x, y))
-                toSpeak = Translator.Instance.Translate( "animal_query_menu-ui-allow_reproduction_button",
-                    new { checkbox_value = (___animal.allowReproduction.Value ? 1 : 0) }
-                );
-            else if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
-                toSpeak = Translator.Instance.Translate("animal_query_menu-ui-text_box");
+            string translationKey = "";
+            object? translationTokens = null;
 
-            if (animalQueryMenuQuery != toSpeak)
+            if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                translationKey = "common-ui-ok_button";
+            else if (__instance.sellButton != null && __instance.sellButton.containsPoint(x, y))
             {
-                animalQueryMenuQuery = toSpeak;
-                MainClass.ScreenReader.Say($"{toSpeak}", true);
+                translationKey = "menu-animal_query-selling_button";
+                translationTokens = new { price = ___animal.getSellPrice() };
             }
+            else if (___confirmingSell && __instance.yesButton != null && __instance.yesButton.containsPoint(x, y))
+                translationKey = "menu-animal_query-confirm_selling_button";
+            else if (___confirmingSell && __instance.noButton != null && __instance.noButton.containsPoint(x, y))
+                translationKey = "menu-animal_query-cancel_selling_button";
+            else if (__instance.moveHomeButton != null && __instance.moveHomeButton.containsPoint(x, y))
+                translationKey = "menu-animal_query-move_home_button";
+            else if (__instance.allowReproductionButton != null && __instance.allowReproductionButton.containsPoint(x, y))
+            {
+                translationKey = "menu-animal_query-allow_reproduction_button";
+                translationTokens = new { checkbox_value = (___animal.allowReproduction.Value ? 1 : 0) };
+            }
+            else if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
+                translationKey = "menu-animal_query-text_box";
+
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens);
         }
 
         internal static void Cleanup()
         {
-            AnimalQueryMenuPatch.animalQueryMenuQuery = "";
             AnimalQueryMenuPatch.animalQueryMenu = null;
         }
     }

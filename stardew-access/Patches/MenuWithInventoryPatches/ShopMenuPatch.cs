@@ -1,15 +1,23 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class ShopMenuPatch
+    internal class ShopMenuPatch : IPatch
     {
-        internal static string shopMenuQueryKey = "";
-        internal static string hoveredItemQueryKey = "";
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(ShopMenuPatch), nameof(ShopMenuPatch.DrawPatch))
+            );
+        }
 
-        internal static void DrawPatch(ShopMenu __instance)
+        private static void DrawPatch(ShopMenu __instance)
         {
             try
             {
@@ -28,9 +36,8 @@ namespace stardew_access.Patches
 
                 if (NarrateHoveredButton(__instance, x, y)) return;
 
-                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, hoverPrice: __instance.hoverPrice))
+                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory, __instance.inventory.actualInventory, inventoryMenu: __instance.inventory, hoverPrice: __instance.hoverPrice))
                 {
-                    shopMenuQueryKey = "";
                     return;
                 }
 
@@ -38,39 +45,35 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in shop menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
         private static bool NarrateHoveredButton(ShopMenu __instance, int x, int y)
         {
-            string toSpeak = "";
+            string translationKey = "";
             bool isDropItemButton = false;
 
             if (__instance.inventory.dropItemInvisibleButton != null && __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
             {
-                toSpeak = "Drop Item";
+                translationKey = "common-ui-drop_item_button";
                 isDropItemButton = true;
             }
             else if (__instance.upArrow != null && __instance.upArrow.containsPoint(x, y))
             {
-                toSpeak = "Up Arrow Button";
+                translationKey = "common-ui-scroll_up_button";
             }
             else if (__instance.downArrow != null && __instance.downArrow.containsPoint(x, y))
             {
-                toSpeak = "Down Arrow Button";
+                translationKey = "common-ui-scroll_down_button";
             }
             else
             {
                 return false;
             }
 
-            if (shopMenuQueryKey == toSpeak) return true;
-
-            shopMenuQueryKey = toSpeak;
-            hoveredItemQueryKey = "";
-            MainClass.ScreenReader.Say(toSpeak, true);
-            if (isDropItemButton) Game1.playSound("drop_item");
+            if (MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true))
+                if (isDropItemButton) Game1.playSound("drop_item");
 
             return true;
         }
@@ -80,42 +83,21 @@ namespace stardew_access.Patches
             if (__instance.hoveredItem == null) return;
 
             string name = __instance.hoveredItem.DisplayName;
-            string price = $"Buy Price: {__instance.hoverPrice} g";
+            string price = Translator.Instance.Translate("menu-shop-buy_price_info", new { price = __instance.hoverPrice }, TranslationCategory.Menu);
             string description = __instance.hoveredItem.getDescription();
-            string requirements = "";
 
-            #region get required items for item
-            int itemIndex = -1, itemAmount = 5;
+            int itemIndex = (__instance.itemPriceAndStock[__instance.hoveredItem].Length > 2)
+                ? __instance.itemPriceAndStock[__instance.hoveredItem][2]
+                : -1;
 
-            if (__instance.itemPriceAndStock[__instance.hoveredItem].Length > 2)
-                itemIndex = __instance.itemPriceAndStock[__instance.hoveredItem][2];
+            int itemAmount = (__instance.itemPriceAndStock[__instance.hoveredItem].Length > 3)
+                ? __instance.itemPriceAndStock[__instance.hoveredItem][3]
+                : 5;
 
-            if (__instance.itemPriceAndStock[__instance.hoveredItem].Length > 3)
-                itemAmount = __instance.itemPriceAndStock[__instance.hoveredItem][3];
+            string requirements = InventoryUtils.GetExtraItemInfo(itemIndex, itemAmount);
 
-            if (itemIndex != -1)
-            {
-                string itemName = Game1.objectInformation[itemIndex].Split('/')[0];
-
-                if (itemAmount != -1)
-                    requirements = $"Required: {itemAmount} {itemName}";
-                else
-                    requirements = $"Required: {itemName}";
-            }
-            #endregion
-
-            string toSpeak = $"{name}, {requirements}, {price}, \n\t{description}";
-            if (shopMenuQueryKey == toSpeak) return;
-
-            shopMenuQueryKey = toSpeak;
-            hoveredItemQueryKey = "";
-            MainClass.ScreenReader.Say(toSpeak, true);
-        }
-
-        internal static void Cleanup()
-        {
-            shopMenuQueryKey = "";
-            hoveredItemQueryKey = "";
+            string toSpeak = $"{name}, {requirements}, {price}, {description}";
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
         }
     }
 }

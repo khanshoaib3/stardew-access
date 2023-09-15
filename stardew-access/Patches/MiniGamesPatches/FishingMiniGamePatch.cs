@@ -1,14 +1,24 @@
+using HarmonyLib;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class FishingMiniGamePatch
+    internal class FishingMiniGamePatch : IPatch
     {
         private static ICue? bobberSound = null;
         private static float previousDistanceFromCatching = 0f;
 
-        internal static void BobberBarPatch(BobberBar __instance, ref float ___difficulty, ref int ___motionType, float ___distanceFromCatching, float ___bobberPosition, float ___bobberBarPos, float ___bobberBarSpeed, bool ___bobberInBar, int ___bobberBarHeight, bool ___fadeOut, bool ___fadeIn)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(BobberBar), nameof(BobberBar.update)),
+                postfix: new HarmonyMethod(typeof(FishingMiniGamePatch), nameof(BobberBarPatch))
+            );
+
+        }
+
+        private static void BobberBarPatch(BobberBar __instance, ref float ___difficulty, ref int ___motionType, float ___distanceFromCatching, float ___bobberPosition, float ___bobberBarPos, float ___bobberBarSpeed, bool ___bobberInBar, int ___bobberBarHeight, bool ___fadeOut, bool ___fadeIn)
         {
             try
             {

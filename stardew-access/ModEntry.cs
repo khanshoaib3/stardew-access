@@ -17,6 +17,7 @@ namespace stardew_access
         #region Global Vars & Properties
 
         private static int prevDate = -99;
+        private static LocalizedContentManager.LanguageCode previousLanguageCode;
         private static bool FirstRun = true;
         private static ModConfig? config;
         private Harmony? harmony;
@@ -143,7 +144,7 @@ namespace stardew_access
             CustomCommands.Initialize();
 
             harmony = new Harmony(ModManifest.UniqueID);
-            HarmonyPatches.Initialize(harmony);
+            PatchManager.PatchAll(harmony);
 
             //Initialize marked locations
             for (int i = 0; i < BuildingOperations.marked.Length; i++)
@@ -157,19 +158,16 @@ namespace stardew_access
             }
             #endregion
 
-            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.Input.ButtonsChanged += OnButtonsChanged;
             helper.Events.Player.Warped += OnPlayerWarped;
-            helper.Events.Display.WindowResized += OnFirstWindowResized;
+            helper.Events.Display.Rendering += OnRenderingStart;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
             helper.Events.Display.MenuChanged += OnMenuChanged;
             AppDomain.CurrentDomain.DomainUnload += OnExit;
             AppDomain.CurrentDomain.ProcessExit += OnExit;
         }
-
-        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) => Translator.Instance.Initialize(ModManifest);
 
         /// <summary>Returns the Screen Reader class for other mods to use.</summary>
         public override object GetApi() => new API();
@@ -190,6 +188,8 @@ namespace stardew_access
 
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
+            RefreshTranslationsOnLocaleChange();
+            
             // The event with id 13 is the Haley's six heart event, the one at the beach requiring the player to find the bracelet
             // *** Exiting here will cause GridMovement and ObjectTracker functionality to not work during this event, making the bracelet impossible to track ***
             if (!Context.IsPlayerFree && !(Game1.CurrentEvent is not null && Game1.CurrentEvent.id == 13))
@@ -252,6 +252,15 @@ namespace stardew_access
                 }
             }
 
+            void RefreshTranslationsOnLocaleChange()
+            {
+                if (previousLanguageCode == Game1.content.GetCurrentLanguage()) return;
+                
+                Log.Trace("Locale changed! Refreshing translations...");
+                previousLanguageCode = Game1.content.GetCurrentLanguage();
+                Translator.Instance.Initialize(ModManifest);
+            }
+
             void RunGridMovementFeatureIfEnabled()
             {
                 if (LastGridMovementButtonPressed.HasValue)
@@ -277,14 +286,16 @@ namespace stardew_access
             }
         }
 
-        private void OnFirstWindowResized(object? sender, WindowResizedEventArgs e)
+        private void OnRenderingStart(object? sender, RenderingEventArgs renderingEventArgs)
         { 
             if (FirstRun)
             {
                 Log.Trace("First WindowResized.");
+                previousLanguageCode = Game1.content.GetCurrentLanguage();
+                Translator.Instance.Initialize(ModManifest);
                 Translator.Instance.CustomFunctions!.LoadLanguageHelper();
                 FirstRun = false;
-                ModHelper!.Events.Display.WindowResized -= OnFirstWindowResized;
+                ModHelper!.Events.Display.Rendering -= OnRenderingStart;
                 Log.Trace("Removed OnFirstWindowResized");
             }
         }
@@ -323,14 +334,14 @@ namespace stardew_access
             {
                 if (Game1.activeClickableMenu != null)
                 {
-                    SimulateMouseClicks(
+                    MouseUtils.SimulateMouseClicks(
                         (x, y) => Game1.activeClickableMenu.receiveLeftClick(x, y),
                         (x, y) => Game1.activeClickableMenu.receiveRightClick(x, y)
                     );
                 }
                 else if (Game1.currentMinigame != null)
                 {
-                    SimulateMouseClicks(
+                    MouseUtils.SimulateMouseClicks(
                         (x, y) => Game1.currentMinigame.receiveLeftClick(x, y),
                         (x, y) => Game1.currentMinigame.receiveRightClick(x, y)
                     );
@@ -372,6 +383,7 @@ namespace stardew_access
                 if (ModHelper == null)
                     return;
 
+                // TODO unify translation keys
                 string toSpeak = Config.HealthNStaminaInPercentage
                     ? Translator.Instance.Translate(
                         "feature-speak_health_n_stamina-in_percentage_format",
@@ -431,27 +443,6 @@ namespace stardew_access
             HandleGridMovement();
 
             // local functions
-            void SimulateMouseClicks(Action<int, int> leftClickHandler, Action<int, int> rightClickHandler)
-            {
-                int mouseX = Game1.getMouseX(true);
-                int mouseY = Game1.getMouseY(true);
-
-                if (Config.LeftClickMainKey.JustPressed() || Config.LeftClickAlternateKey.JustPressed())
-                {
-                    #if DEBUG
-                    Log.Debug("Simulating left mouse click");
-                    #endif
-                    leftClickHandler(mouseX, mouseY);
-                }
-                else if (Config.RightClickMainKey.JustPressed() || Config.RightClickAlternateKey.JustPressed())
-                {
-                    #if DEBUG
-                    Log.Debug("Simulating right mouse click");
-                    #endif
-                    rightClickHandler(mouseX, mouseY);
-                }
-            }
-
             void Narrate(string message) => MainClass.ScreenReader.Say(message, true);
 
             bool IsMovementKey(SButton button)

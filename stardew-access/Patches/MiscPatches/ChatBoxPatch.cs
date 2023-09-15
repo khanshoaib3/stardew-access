@@ -1,13 +1,23 @@
+﻿using HarmonyLib;
+using Microsoft.Xna.Framework;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class ChatBoxPatch
+    internal class ChatBoxPatch : IPatch
     {
         private static int currentChatMessageIndex = 0;
         private static bool isChatRunning = false;
 
-        internal static void UpdatePatch(ChatBox __instance, List<ChatMessage> ___messages)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(ChatBox), nameof(ChatBox.update), new Type[] { typeof(GameTime) }),
+                    postfix: new HarmonyMethod(typeof(ChatBoxPatch), nameof(ChatBoxPatch.UpdatePatch))
+                );
+        }
+
+        private static void UpdatePatch(ChatBox __instance, List<ChatMessage> ___messages)
         {
             try
             {
@@ -49,7 +59,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in chat box patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 

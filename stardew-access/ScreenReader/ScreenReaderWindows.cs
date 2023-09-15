@@ -2,54 +2,11 @@ using DavyKager;
 
 namespace stardew_access.ScreenReader
 {
-    public class ScreenReaderWindows : IScreenReader
+    public class ScreenReaderWindows : ScreenReaderAbstract
     {
         private bool isLoaded = false;
-        public string prevText = "", prevTextTile = "", prevChatText = "", prevMenuText = "";
-        private string menuPrefixText = "";
-        private string prevMenuPrefixText = "";
-        private string menuSuffixText = "";
-        private string prevMenuSuffixText = "";
-        private string menuPrefixNoQueryText = "";
-        private string menuSuffixNoQueryText = "";
 
-        public string PrevTextTile
-        {
-            get => prevTextTile;
-            set => prevTextTile = value;
-        }
-
-        public string PrevMenuQueryText
-        {
-            get => prevMenuText;
-            set => prevMenuText = value;
-        }
-
-        public string MenuPrefixText
-        {
-            get => menuPrefixText;
-            set => menuPrefixText = value;
-        }
-
-        public string MenuSuffixText
-        {
-            get => menuSuffixText;
-            set => menuSuffixText = value;
-        }
-
-        public string MenuPrefixNoQueryText
-        {
-            get => menuPrefixNoQueryText;
-            set => menuPrefixNoQueryText = value;
-        }
-
-        public string MenuSuffixNoQueryText
-        {
-            get => menuSuffixNoQueryText;
-            set => menuSuffixNoQueryText = value;
-        }
-
-        public void InitializeScreenReader()
+        public override void InitializeScreenReader()
         {
             if (MainClass.ModHelper is not null)
             {
@@ -76,7 +33,7 @@ namespace stardew_access.ScreenReader
             }
         }
 
-        public void CloseScreenReader()
+        public override void CloseScreenReader()
         {
             if (isLoaded)
             {
@@ -85,70 +42,27 @@ namespace stardew_access.ScreenReader
             }
         }
 
-        public void Say(string text, bool interrupt)
+        public override bool Say(string text, bool interrupt)
         {
-            if (string.IsNullOrWhiteSpace(text)) return;
-            if (!isLoaded) return;
-            if (!MainClass.Config.TTS) return;
+            if (string.IsNullOrWhiteSpace(text)) return false;
+            if (!isLoaded) return false;
+            if (!MainClass.Config.TTS) return false;
 
             if (text.Contains('^')) text = text.Replace('^', '\n');
 
             if (!Tolk.Output(text, interrupt))
             {
                 Log.Error($"Failed to output text: {text}");
+                return false;
             }
-            #if DEBUG
             else
             {
+                #if DEBUG
                 Log.Verbose($"Speaking(interrupt: {interrupt}) = {text}");
-            }
-            #endif
-
-        }
-
-        public void SayWithChecker(string text, bool interrupt)
-        {
-            if (prevText != text)
-            {
-                prevText = text;
-                Say(text, interrupt);
+                #endif
+                return true;
             }
         }
 
-        public void SayWithMenuChecker(string text, bool interrupt)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-                return;
-
-            if (prevMenuText == text && prevMenuSuffixText == MenuSuffixText && prevMenuPrefixText == MenuPrefixText)
-                return;
-
-            prevMenuText = text;
-            prevMenuSuffixText = MenuSuffixText;
-            prevMenuPrefixText = MenuPrefixText;
-            Say($"{MenuPrefixNoQueryText}{MenuPrefixText}{text}{MenuSuffixText}{MenuSuffixNoQueryText}", interrupt);
-            MenuPrefixNoQueryText = "";
-            MenuSuffixNoQueryText = "";
-        }
-
-        public void SayWithChatChecker(string text, bool interrupt)
-        {
-            if (prevChatText != text)
-            {
-                prevChatText = text;
-                Say(text, interrupt);
-            }
-        }
-
-        public void SayWithTileQuery(string text, int x, int y, bool interrupt)
-        {
-            string query = $"{text} x:{x} y:{y}";
-
-            if (prevTextTile != query)
-            {
-                prevTextTile = query;
-                Say(text, interrupt);
-            }
-        }
     }
 }

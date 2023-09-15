@@ -1,15 +1,24 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class InventoryPagePatch
+    internal class InventoryPagePatch : IPatch
     {
-        internal static string inventoryPageQueryKey = "";
-        internal static string hoveredItemQueryKey = "";
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(InventoryPage), nameof(InventoryPage.draw),
+                    new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(InventoryPagePatch), nameof(InventoryPagePatch.DrawPatch))
+            );
+        }
 
-        internal static void DrawPatch(InventoryPage __instance)
+        private static void DrawPatch(InventoryPage __instance)
         {
             try
             {
@@ -27,18 +36,15 @@ namespace stardew_access.Patches
                     return;
                 }
 
-                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y, true))
+                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory,
+                        __instance.inventory.actualInventory, __instance.inventory, giveExtraDetails: true))
                 {
-                    inventoryPageQueryKey = "";
                     return;
                 }
-
-                // If no slot or button is hovered
-                Cleanup();
             }
             catch (Exception e)
             {
-                Log.Error($"An error occurred in InventoryPagePatch()->DrawPatch():\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in inventory page patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -48,68 +54,61 @@ namespace stardew_access.Patches
                 return;
 
             string farmName = Game1.content.LoadString("Strings\\UI:Inventory_FarmName", Game1.player.farmName.Value);
-            string currentFunds = Game1.content.LoadString("Strings\\UI:Inventory_CurrentFunds" + (Game1.player.useSeparateWallets ? "_Separate" : ""), Utility.getNumberWithCommas(Game1.player.Money));
-            string totalEarnings = Game1.content.LoadString("Strings\\UI:Inventory_TotalEarnings" + (Game1.player.useSeparateWallets ? "_Separate" : ""), Utility.getNumberWithCommas((int)Game1.player.totalMoneyEarned));
+            string currentFunds = Game1.content.LoadString(
+                "Strings\\UI:Inventory_CurrentFunds" + (Game1.player.useSeparateWallets ? "_Separate" : ""),
+                Utility.getNumberWithCommas(Game1.player.Money));
+            string totalEarnings = Game1.content.LoadString(
+                "Strings\\UI:Inventory_TotalEarnings" + (Game1.player.useSeparateWallets ? "_Separate" : ""),
+                Utility.getNumberWithCommas((int)Game1.player.totalMoneyEarned));
             int festivalScore = Game1.player.festivalScore;
             int walnut = Game1.netWorldState.Value.GoldenWalnuts.Value;
             int qiGems = Game1.player.QiGems;
             int qiCoins = Game1.player.clubCoins;
 
-            string toSpeak = $"{farmName}\n{currentFunds}\n{totalEarnings}";
 
-            if (festivalScore > 0)
-                toSpeak = $"{toSpeak}\nFestival Score: {festivalScore}";
-
-            if (walnut > 0)
-                toSpeak = $"{toSpeak}\nGolden Walnut: {walnut}";
-
-            if (qiGems > 0)
-                toSpeak = $"{toSpeak}\nQi Gems: {qiGems}";
-
-            if (qiCoins > 0)
-                toSpeak = $"{toSpeak}\nQi Club Coins: {qiCoins}";
-
-            MainClass.ScreenReader.Say(toSpeak, true);
+            MainClass.ScreenReader.TranslateAndSay("menu-inventory_page-money_info_key", true, new
+                {
+                    farm_name = farmName,
+                    current_funds = currentFunds,
+                    total_earnings = totalEarnings,
+                    festival_score = festivalScore,
+                    golden_walnut_count = walnut,
+                    qi_gem_count = qiGems,
+                    qi_club_coins = qiCoins
+                },
+                TranslationCategory.Menu);
         }
 
         private static bool NarrateHoveredButton(InventoryPage __instance, int x, int y)
         {
-            string? toSpeak = null;
+            string? translationKey = null;
             bool isDropItemButton = false;
 
-            if (__instance.inventory.dropItemInvisibleButton != null && __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
+            if (__instance.inventory.dropItemInvisibleButton != null &&
+                __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
             {
-                toSpeak = "Drop Item";
+                translationKey = "common-ui-drop_item_button";
                 isDropItemButton = true;
             }
             else if (__instance.organizeButton != null && __instance.organizeButton.containsPoint(x, y))
             {
-                toSpeak = "Organize Inventory Button";
+                translationKey = "common-ui-organize_inventory_button";
             }
             else if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
             {
-                toSpeak = "Trash Can";
-            }
-            else if (__instance.organizeButton != null && __instance.organizeButton.containsPoint(x, y))
-            {
-                toSpeak = "Organize Button";
+                translationKey = "common-ui-trashcan_button";
             }
             else if (__instance.junimoNoteIcon != null && __instance.junimoNoteIcon.containsPoint(x, y))
             {
-                toSpeak = "Community Center Button";
+                translationKey = "common-ui-community_center_button";
             }
             else
             {
                 return false;
             }
 
-            if (toSpeak != null && inventoryPageQueryKey != toSpeak)
-            {
-                inventoryPageQueryKey = toSpeak;
-                hoveredItemQueryKey = "";
-                MainClass.ScreenReader.Say(toSpeak, true);
-                if (isDropItemButton) Game1.playSound("drop_item");
-            }
+            if (!MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true)) return true;
+            if (isDropItemButton) Game1.playSound("drop_item");
 
             return true;
         }
@@ -121,14 +120,8 @@ namespace stardew_access.Patches
                 if (!__instance.equipmentIcons[i].containsPoint(mouseX, mouseY))
                     continue;
 
-                string toSpeak = GetNameAndDescriptionOfItem(__instance.equipmentIcons[i].name);
-
-                if (inventoryPageQueryKey != toSpeak)
-                {
-                    inventoryPageQueryKey = toSpeak;
-                    hoveredItemQueryKey = "";
-                    MainClass.ScreenReader.Say(toSpeak, true);
-                }
+                MainClass.ScreenReader.SayWithMenuChecker(
+                    GetNameAndDescriptionOfItem(__instance.equipmentIcons[i].name.ToLower().Replace(" ", "_")), true);
 
                 return true;
             }
@@ -136,22 +129,29 @@ namespace stardew_access.Patches
             return false;
         }
 
-        private static string GetNameAndDescriptionOfItem(string slotName) => slotName switch
+        private static string GetNameAndDescriptionOfItem(string slotName)
         {
-            "Hat" => (Game1.player.hat.Value != null) ? $"{Game1.player.hat.Value.DisplayName}, {Game1.player.hat.Value.getDescription()}" : "Hat slot",
-            "Left Ring" => (Game1.player.leftRing.Value != null) ? $"{Game1.player.leftRing.Value.DisplayName}, {Game1.player.leftRing.Value.getDescription()}" : "Left Ring slot",
-            "Right Ring" => (Game1.player.rightRing.Value != null) ? $"{Game1.player.rightRing.Value.DisplayName}, {Game1.player.rightRing.Value.getDescription()}" : "Right ring slot",
-            "Boots" => (Game1.player.boots.Value != null) ? $"{Game1.player.boots.Value.DisplayName}, {Game1.player.boots.Value.getDescription()}" : "Boots slot",
-            "Shirt" => (Game1.player.shirtItem.Value != null) ? $"{Game1.player.shirtItem.Value.DisplayName}, {Game1.player.shirtItem.Value.getDescription()}" : "Shirt slot",
-            "Pants" => (Game1.player.pantsItem.Value != null) ? $"{Game1.player.pantsItem.Value.DisplayName}, {Game1.player.pantsItem.Value.getDescription()}" : "Pants slot",
-            _ => "unkown slot"
-        };
+            Item? item = slotName switch
+            {
+                "hat" => Game1.player.hat.Value,
+                "left_ring" => Game1.player.leftRing.Value,
+                "right_ring" => Game1.player.rightRing.Value,
+                "boots" => Game1.player.boots.Value,
+                "shirt" => Game1.player.shirtItem.Value,
+                "pants" => Game1.player.pantsItem.Value,
+                _ => null
+            };
 
-        internal static void Cleanup()
-        {
-            InventoryUtils.Cleanup();
-            inventoryPageQueryKey = "";
-            hoveredItemQueryKey = "";
+            return Translator.Instance.Translate(
+                "common-ui-equipment_slots",
+                new
+                {
+                    slot_name = slotName,
+                    is_empty = (item == null) ? 1 : 0,
+                    item_name = (item == null) ? "" : item.DisplayName,
+                    item_description = (item == null) ? "" : item.getDescription()
+                },
+                TranslationCategory.Menu);
         }
     }
 }

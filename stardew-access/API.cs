@@ -105,24 +105,27 @@ namespace stardew_access
         /// <summary>Speaks the text via the loaded screen reader (if any).</summary>
         /// <param name="text">The text to be narrated.</param>
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        public void Say(String text, Boolean interrupt)
+        /// <returns>true if the text was spoken otherwise false.</returns>
+        public bool Say(String text, Boolean interrupt)
         {
             if (MainClass.ScreenReader == null)
-                return;
+                return false;
 
-            MainClass.ScreenReader.Say(text, interrupt);
+            return MainClass.ScreenReader.Say(text, interrupt);
         }
 
         /// <summary>Speaks the text via the loaded screen reader (if any).
         /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.</summary>
         /// <param name="text">The text to be narrated.</param>
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        public void SayWithChecker(String text, Boolean interrupt)
+        /// <param name="customQuery">If set, uses this instead of <paramref name="text"/> as query to check whether to speak the text or not.</param>
+        /// <returns>true if the text was spoken otherwise false.</returns>
+        public bool SayWithChecker(String text, Boolean interrupt, String? customQuery = null)
         {
             if (MainClass.ScreenReader == null)
-                return;
+                return false;
 
-            MainClass.ScreenReader.SayWithChecker(text, interrupt);
+            return MainClass.ScreenReader.SayWithChecker(text, interrupt, customQuery);
         }
 
         /// <summary>Speaks the text via the loaded screen reader (if any).
@@ -130,12 +133,14 @@ namespace stardew_access
         /// <br/><br/>Use this when narrating hovered component in menus to avoid interference.</summary>
         /// <param name="text">The text to be narrated.</param>
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        public void SayWithMenuChecker(String text, Boolean interrupt)
+        /// <param name="customQuery">If set, uses this instead of <paramref name="text"/> as query to check whether to speak the text or not.</param>
+        /// <returns>true if the text was spoken otherwise false.</returns>
+        public bool SayWithMenuChecker(String text, Boolean interrupt, String? customQuery = null)
         {
             if (MainClass.ScreenReader == null)
-                return;
+                return false;
 
-            MainClass.ScreenReader.SayWithMenuChecker(text, interrupt);
+            return MainClass.ScreenReader.SayWithMenuChecker(text, interrupt, customQuery);
         }
 
         /// <summary>Speaks the text via the loaded screen reader (if any).
@@ -143,12 +148,13 @@ namespace stardew_access
         /// <br/><br/>Use this when narrating chat messages to avoid interference.</summary>
         /// <param name="text">The text to be narrated.</param>
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        public void SayWithChatChecker(String text, Boolean interrupt)
+        /// <returns>true if the text was spoken otherwise false.</returns>
+        public bool SayWithChatChecker(String text, Boolean interrupt)
         {
             if (MainClass.ScreenReader == null)
-                return;
+                return false;
 
-            MainClass.ScreenReader.SayWithChatChecker(text, interrupt);
+            return MainClass.ScreenReader.SayWithChatChecker(text, interrupt);
         }
 
         /// <summary>Speaks the text via the loaded screen reader (if any).
@@ -158,12 +164,13 @@ namespace stardew_access
         /// <param name="x">The X location of tile.</param>
         /// <param name="y">The Y location of tile.</param>
         /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        public void SayWithTileQuery(String text, int x, int y, Boolean interrupt)
+        /// <returns>true if the text was spoken otherwise false.</returns>
+        public bool SayWithTileQuery(String text, int x, int y, Boolean interrupt)
         {
             if (MainClass.ScreenReader == null)
-                return;
+                return false;
 
-            MainClass.ScreenReader.SayWithTileQuery(text, x, y, interrupt);
+            return MainClass.ScreenReader.SayWithTileQuery(text, x, y, interrupt);
         }
 
         /// <summary>

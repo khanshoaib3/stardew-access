@@ -1,11 +1,23 @@
+﻿using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using stardew_access.Translation;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
 {
-    internal class GameMenuPatch
+    internal class GameMenuPatch : IPatch
     {
-        internal static void DrawPatch(GameMenu __instance)
+        public void Apply(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GameMenu), nameof(GameMenu.draw),
+                    new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(GameMenuPatch), nameof(GameMenuPatch.DrawPatch))
+            );
+        }
+
+        private static void DrawPatch(GameMenu __instance)
         {
             try
             {
@@ -20,14 +32,17 @@ namespace stardew_access.Patches
                     if (!__instance.tabs[i].containsPoint(x, y))
                         continue;
 
-                    string toSpeak = $"{GameMenu.getLabelOfTabFromIndex(i)} Tab" + ((i == __instance.currentTab) ? " Active" : "");
-                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+                    MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-game_menu-tab_names", true, new
+                    {
+                        tab_name = GameMenu.getLabelOfTabFromIndex(i),
+                        is_active = (i == __instance.currentTab) ? 1 : 0
+                    });
                     return;
                 }
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in game menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
     }
