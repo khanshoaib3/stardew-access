@@ -17,19 +17,26 @@ namespace stardew_access.Utils
         /// </summary>
         public static void NarrateCurrentSlot()
         {
-            currentSlotItem = Game1.player.CurrentItem;
+            try
+            {
+                currentSlotItem = Game1.player.CurrentItem;
 
-            if (currentSlotItem == null)
-                return;
+                if (currentSlotItem == null)
+                    return;
 
-            if (previousSlotItem == currentSlotItem)
-                return;
+                if (previousSlotItem == currentSlotItem)
+                    return;
 
-            previousSlotItem = currentSlotItem;
-            MainClass.ScreenReader.Say(
-                Translator.Instance.Translate( "feature-speak_selected_slot_item_name", new { slot_item_name = currentSlotItem.DisplayName }),
-                true
-            );
+                previousSlotItem = currentSlotItem;
+                MainClass.ScreenReader.Say(
+                    Translator.Instance.Translate( "feature-speak_selected_slot_item_name", new { slot_item_name = currentSlotItem.DisplayName }),
+                    true
+                );
+            }
+            catch (Exception e)
+            {
+                Log.Error($"An error occurred in narrating the current slot item:\n{e.Message}\n{e.StackTrace}");
+            }
         }
 
 
@@ -38,19 +45,26 @@ namespace stardew_access.Utils
         /// </summary>
         public static void NarrateCurrentLocation()
         {
-            currentLocation = Game1.currentLocation;
+            try
+            {
+                currentLocation = Game1.currentLocation;
 
-            if (currentLocation == null)
-                return;
+                if (currentLocation == null)
+                    return;
 
-            if (previousLocation == currentLocation)
-                return;
+                if (previousLocation == currentLocation)
+                    return;
 
-            previousLocation = currentLocation;
-            MainClass.ScreenReader.Say(
-                Translator.Instance.Translate( "feature-speak_location_name", new { location_name = currentLocation.Name }),
-                true
-            );
+                previousLocation = currentLocation;
+                MainClass.ScreenReader.Say(
+                    Translator.Instance.Translate( "feature-speak_location_name", new { location_name = currentLocation.Name }),
+                    true
+                );
+            }
+            catch (Exception e)
+            {
+                Log.Error($"An error occurred in narrating the current location:\n{e.Message}\n{e.StackTrace}");
+            }
         }
 
         /// <summary>
@@ -82,7 +96,7 @@ namespace stardew_access.Utils
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to narrate hud messages:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occurred in narrating the hud messages:\n{e.Message}\n{e.StackTrace}");
             }
         }
     }
