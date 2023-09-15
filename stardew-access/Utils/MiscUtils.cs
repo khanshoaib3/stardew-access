@@ -1,6 +1,7 @@
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewValley;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace stardew_access.Utils
 {
@@ -51,6 +52,21 @@ namespace stardew_access.Utils
                 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             }
             return false;
+        }
+
+        public static T? GetPrivateField<T>(object obj, string fieldName)
+        {
+            FieldInfo? field = obj.GetType().GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
+            if (field != null)
+            {
+                return (T?)field.GetValue(obj);
+            }
+            return default;
+        }
+
+        public static MethodInfo? GetPrivateMethod(object obj, string methodName)
+        {
+            return obj.GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
         }
 
         public static void UpdateAndRunIfChanged(ref int storedValue, int currentValue, OnMismatchAction action)
