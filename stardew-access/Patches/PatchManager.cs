@@ -37,6 +37,7 @@ namespace stardew_access.Patches
                 new NPCPatch(),
                 new TextBoxPatch(),
                 new TextEntryMenuPatch(),
+                new TileMapPatch(),
                 new TrashBearPatch(),
                 // Other Menu Patches
                 new AnimalQueryMenuPatch(),

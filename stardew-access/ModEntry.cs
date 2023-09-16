@@ -1,6 +1,7 @@
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Locations;
 using HarmonyLib;
 using   stardew_access.Features;
 using stardew_access.Patches;
@@ -519,9 +520,9 @@ namespace stardew_access
 
         private void OnPlayerWarped(object? sender, WarpedEventArgs e)
         {
+            TileUtils.CleanupMaps();
             GridMovementFeature?.PlayerWarped(sender, e);
             ObjectTrackerFeature?.GetLocationObjects(resetFocus: true);
         }
-
     }
 }

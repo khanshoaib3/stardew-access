@@ -108,12 +108,26 @@ namespace stardew_access.Features
                             #if DEBUG
                             if (manuallyTriggered)
                             {
-                                var backTileIndex = Game1.currentLocation.Map.GetLayer("Back")?.Tiles[x, y]?.TileIndex ?? -1;
-                                var buildingsTileIndex = Game1.currentLocation.Map.GetLayer("Buildings")?.Tiles[x, y]?.TileIndex ?? -1;
-                                var pathsTileIndex = Game1.currentLocation.Map.GetLayer("Paths")?.Tiles[x, y]?.TileIndex ?? -1;
-                                var frontTileIndex = Game1.currentLocation.Map.GetLayer("Front")?.Tiles[x, y]?.TileIndex ?? -1;
-                                var alwaysFrontTileIndex = Game1.currentLocation.Map.GetLayer("AlwaysFront")?.Tiles[x, y]?.TileIndex ?? -1;
-                                MainClass.ScreenReader?.Say($"Tile indexes: back {backTileIndex}, buildings {buildingsTileIndex}, paths {pathsTileIndex}, front {frontTileIndex}, always front {alwaysFrontTileIndex}", false);
+                                var coords = (x, y);
+                                Dictionary<string, int>? layerAndIndex = TileUtils.GetTileLayers(coords);
+
+                                if (layerAndIndex is not null &&layerAndIndex.Count > 0)
+                                {
+                                    string output = "Tile indexes: ";
+                                    foreach (var kvp in layerAndIndex)
+                                    {
+                                        output += $"{kvp.Key} {kvp.Value}, ";
+                                    }
+
+                                    // Trim the trailing comma and space
+                                    output = output[..^2];
+
+                                    MainClass.ScreenReader?.Say(output, false);
+                                }
+                                else
+                                {
+                                    MainClass.ScreenReader?.Say("No tiles found at the given coordinates.", false);
+                                }
                             }
                             #endif
                     #endregion
