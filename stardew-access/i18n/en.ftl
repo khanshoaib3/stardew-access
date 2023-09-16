@@ -59,6 +59,13 @@ tile_name-stove = Stove
 tile_name-sink = Sink
 tile-railroad-witch_statue-name = Witch Statue
 dynamic_tile-qi_nut_room-collection_box = Collection box
+dynamic_tile-farm-grandpa_shrine = Grandpa's Shrine{SIGNOFNUMBER($candles) ->
+    [positive] : {$candles} {$candles -> 
+      [1] Candle
+      *[other] Candles
+    } lit
+    *[other] {EMPTYSTRING()}
+  }
 
 ## Entrances
 

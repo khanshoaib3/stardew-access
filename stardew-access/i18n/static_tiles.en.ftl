@@ -160,7 +160,6 @@ static_tile-elliott_house-piano_key_4 = Piano Key 4
 
 # Farm
 
-static_tile-farm-grandpa_shrine = Grandpa's Shrine
 static_tile-farm-lumber_pile = Lumber Pile
 
 # Forest

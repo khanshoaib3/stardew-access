@@ -643,11 +643,6 @@
     }
   },
   "farm": {
-    "static_tile-farm-grandpa_shrine": {
-      "x": [8],
-      "y": [7],
-      "type": "interactable"
-    },
     "static_tile-farm-lumber_pile": {
       "x": [60, 61],
       "y": [14],
