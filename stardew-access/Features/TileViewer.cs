@@ -281,7 +281,7 @@ namespace stardew_access.Features
         {
             var currentLocation = Game1.currentLocation;
             // Check whether the position is a warp point, if so then return true, sometimes warp points are 1 tile off the map for example in coops and barns
-            if (TileInfo.IsWarpPointAtTile(currentLocation, (int)(position.X / Game1.tileSize), (int)(position.Y / Game1.tileSize))) return true;
+            if (DoorUtils.IsWarpAtTile(((int)(position.X / Game1.tileSize), (int)(position.Y / Game1.tileSize)), currentLocation)) return true;
 
             //position does not take viewport into account since the entire map needs to be checked.
             Map map = currentLocation.map;

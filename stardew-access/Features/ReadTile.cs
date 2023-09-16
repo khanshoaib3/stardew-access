@@ -108,6 +108,7 @@ namespace stardew_access.Features
                             #if DEBUG
                             if (manuallyTriggered)
                             {
+                                MainClass.ObjectTrackerFeature?.GetLocationObjects(resetFocus: true);
                                 var coords = (x, y);
                                 Dictionary<string, int>? layerAndIndex = TileUtils.GetTileLayers(coords);
 

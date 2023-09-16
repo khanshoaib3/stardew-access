@@ -113,6 +113,12 @@ namespace stardew_access.Utils
                 return (farmAnimal, CATEGORY.FarmAnimals);
             }
 
+            string? door = GetDoorAtTile(currentLocation, x, y);
+            if (door != null)
+            {
+                return (door, CATEGORY.Doors);
+            }
+
             (string? name, CATEGORY category) staticTile = StaticTiles.GetStaticTileInfoAtWithCategory(x, y, currentLocation.Name);
             if (staticTile.name != null)
             {
@@ -155,33 +161,6 @@ namespace stardew_access.Utils
             if (bush != null)
             {
                 return (bush, CATEGORY.Bush);
-            }
-
-            string? door = GetDoorAtTile(currentLocation, x, y);
-            string? warp = GetWarpPointAtTile(currentLocation, x, y);
-            if (warp != null || door != null)
-            {
-                return (warp ?? door, CATEGORY.Doors);
-            }
-
-            if (IsMineDownLadderAtTile(currentLocation, x, y))
-            {
-                return ("tile-mine_ladder-name", CATEGORY.Doors);
-            }
-
-            if (IsMineUpLadderAtTile(currentLocation, x, y))
-            {
-                return ("tile-mine_up_ladder-name", CATEGORY.Doors);
-            }
-
-            if (IsShaftAtTile(currentLocation, x, y))
-            {
-                return ("tile-mine_shaft-name", CATEGORY.Doors);
-            }
-
-            if (IsElevatorAtTile(currentLocation, x, y))
-            {
-                return ("tile-mine_elevator-name", CATEGORY.Doors);
             }
 
             string? junimoBundle = GetJunimoBundleAt(currentLocation, x, y);
@@ -278,48 +257,8 @@ namespace stardew_access.Utils
             // Return the result of the logical comparison directly, inlining operations
             // Check if the tile is NOT a warp point and if it collides with an object or terrain feature
             // OR if the tile has stumps in a Woods location
-            return !IsWarpPointAtTile(currentLocation, x, y) &&
+            return !DoorUtils.IsWarpAtTile((x, y), currentLocation) &&
                    (currentLocation.isCollidingPosition(new Rectangle(x * 64 + 1, y * 64 + 1, 62, 62), Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: true));
-        }
-
-        /// <summary>
-        /// Returns the Warp object at the specified tile coordinates or null if not found.
-        /// </summary>
-        private static Warp? GetWarpAtTile(GameLocation currentLocation, int x, int y)
-        {
-            if (currentLocation is null) return null;
-
-            int warpsCount = currentLocation.warps.Count;
-            for (int i = 0; i < warpsCount; i++)
-            {
-                if (currentLocation.warps[i].X == x && currentLocation.warps[i].Y == y)
-                    return currentLocation.warps[i];
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Returns the name of the warp point at the specified tile coordinates, or null if not found.
-        /// </summary>
-        public static string? GetWarpPointAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false)
-        {
-            Warp? warpPoint = GetWarpAtTile(currentLocation, x, y);
-
-            if (warpPoint != null)
-            {
-                return lessInfo ? warpPoint.TargetName : $"{warpPoint.TargetName} Entrance";
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Returns true if there's a warp point at the specified tile coordinates, or false otherwise.
-        /// </summary>
-        public static bool IsWarpPointAtTile(GameLocation currentLocation, int x, int y)
-        {
-            return GetWarpAtTile(currentLocation, x, y) != null;
         }
 
         /// <summary>
@@ -489,81 +428,20 @@ namespace stardew_access.Utils
         #endregion  
 
         /// <summary>
-        /// Check if a tile with the specified index exists at the given coordinates in the specified location.
-        /// </summary>
-        /// <param name="currentLocation">The current game location.</param>
-        /// <param name="x">The X coordinate of the tile.</param>
-        /// <param name="y">The Y coordinate of the tile.</param>
-        /// <param name="targetTileIndex">The target tile index to check for.</param>
-        /// <returns>True if a tile with the specified index exists at the given coordinates, false otherwise.</returns>
-        private static bool CheckTileIndex(GameLocation currentLocation, int x, int y, int targetTileIndex)
-        {
-            var tile = currentLocation.Map.GetLayer("Buildings").Tiles[x, y];
-            return tile != null && tile.TileIndex == targetTileIndex;
-        }
-
-        /// <summary>
-        /// Determines if a mine down ladder is present at the specified tile location.
-        /// </summary>
-        /// <param name="currentLocation">The current GameLocation instance.</param>
-        /// <param name="x">The x-coordinate of the tile.</param>
-        /// <param name="y">The y-coordinate of the tile.</param>
-        /// <returns>True if a mine down ladder is found at the specified tile, otherwise false.</returns>
-        public static bool IsMineDownLadderAtTile(GameLocation currentLocation, int x, int y)
-        {
-            return (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave") 
-                && CheckTileIndex(currentLocation, x, y, 173);
-        }
-
-        /// <summary>
-        /// Determines if a mine shaft is present at the specified tile location.
-        /// </summary>
-        /// <param name="currentLocation">The current GameLocation instance.</param>
-        /// <param name="x">The x-coordinate of the tile.</param>
-        /// <param name="y">The y-coordinate of the tile.</param>
-        /// <returns>True if a mine shaft is found at the specified tile, otherwise false.</returns>
-        public static bool IsShaftAtTile(GameLocation currentLocation, int x, int y)
-        {
-            return (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
-                && CheckTileIndex(currentLocation, x, y, 174);
-        }
-
-        /// <summary>
-        /// Determines if a mine up ladder is present at the specified tile location.
-        /// </summary>
-        /// <param name="currentLocation">The current GameLocation instance.</param>
-        /// <param name="x">The x-coordinate of the tile.</param>
-        /// <param name="y">The y-coordinate of the tile.</param>
-        /// <returns>True if a mine up ladder is found at the specified tile, otherwise false.</returns>
-        public static bool IsMineUpLadderAtTile(GameLocation currentLocation, int x, int y)
-        {
-            return (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
-                && CheckTileIndex(currentLocation, x, y, 115);
-        }
-
-        /// <summary>
-        /// Determines if an elevator is present at the specified tile location.
-        /// </summary>
-        /// <param name="currentLocation">The current GameLocation instance.</param>
-        /// <param name="x">The x-coordinate of the tile.</param>
-        /// <param name="y">The y-coordinate of the tile.</param>
-        /// <returns>True if an elevator is found at the specified tile, otherwise false.</returns>
-        public static bool IsElevatorAtTile(GameLocation currentLocation, int x, int y)
-        {
-            return (currentLocation is Mine or MineShaft || currentLocation.Name == "SkullCave")
-                && CheckTileIndex(currentLocation, x, y, 112);
-        }
-
-        /// <summary>
         /// Gets the door information at the specified tile coordinates in the given location.
         /// </summary>
         /// <param name="currentLocation">The GameLocation where the door might be found.</param>
         /// <param name="x">The x-coordinate of the tile to check.</param>
         /// <param name="y">The y-coordinate of the tile to check.</param>
         /// <returns>A string containing the door information if a door is found at the specified tile; null if no door is found.</returns>
-        public static string? GetDoorAtTile(GameLocation currentLocation, int x, int y)
+        public static string? GetDoorAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false)
         {
-            // Create a Point object from the given tile coordinates
+            if (DoorUtils.GetAllDoors(Game1.currentLocation, lessInfo).TryGetValue((x, y), out var doorName))
+            {
+                return doorName!;
+            }
+            return null;
+            /*// Create a Point object from the given tile coordinates
             Point tilePoint = new(x, y);
 
             // Access the doorList in the current location
@@ -577,7 +455,7 @@ namespace stardew_access.Utils
             }
 
             // No matching door found
-            return null;
+            return null;*/
         }
 
         /// <summary>
