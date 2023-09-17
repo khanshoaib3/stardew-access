@@ -381,6 +381,17 @@ namespace stardew_access.Utils
                     }
                 }
             }
+            else if (obj is Fence fence && fence.isGate.Value)
+            {
+                // The `gatePosition` only has two values, 0 (indicating gate is closed) and 88.
+                toReturn.name = Translator.Instance.Translate("tile-fence_gate-suffix", new
+                {
+                    is_open = fence.gatePosition.Value != 0 ? 1 : 0,
+                    less_info = lessInfo ? 1 : 0,
+                    name = toReturn.name
+                });
+                toReturn.category = CATEGORY.Doors;
+            }
             else if (correctNameAndCategory.name != null)
             {
                 toReturn = correctNameAndCategory;

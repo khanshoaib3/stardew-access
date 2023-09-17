@@ -323,7 +323,12 @@ namespace stardew_access.Utils
             // Check if the position matches the animal door. In case of barns, as the animal door is 2 tiles wide, the following if condition checks for both animal door tiles.
             else if ((building.animalDoor.Value.X == offsetX || (building is Barn && building.animalDoor.Value.X == offsetX - 1)) && building.animalDoor.Value.Y == offsetY)
             {
-                return (Translator.Instance.Translate("suffix-building_animal_door", new {content = name, is_open = (building.animalDoorOpen.Value) ? 1 : 0}), CATEGORY.Doors);
+                return (Translator.Instance.Translate("tile-building_animal_door-suffix", new
+                {
+                    name = name,
+                    is_open = (building.animalDoorOpen.Value) ? 1 : 0,
+                    less_info = lessInfo ? 1 : 0
+                }), CATEGORY.Doors);
             }
             // Check if the position matches the building's top-left corner
             else if (offsetX == 0 && offsetY == 0)

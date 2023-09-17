@@ -12,10 +12,6 @@ building_operations-move_building-building_moved = {$building_name} moved to {$x
 prefix-repair = Repair {$content}
 
 suffix-building_door = {$content} Door
-suffix-building_animal_door = {$content } Animal Door {$is_open ->
-    [0] Closed
-    *[1] Opened
-  }
 suffix-mill_input = {$content} Input
 suffix-mill_output = {$content} Output
 
@@ -40,6 +36,20 @@ tile-lava-name = Lava
 tile-grass-name = Grass
 tile-sprinkler-pressure_nozzle-prefix = Pressurized {$content}
 tile-sprinkler-enricher-prefix = Enriching {$content}
+tile-fence_gate-suffix = {$name} {$is_open ->
+    [0] {$less_info ->
+      [0] Closed
+      *[1] {EMPTYSTRING()}
+    }
+    *[1] Opened
+  }
+tile-building_animal_door-suffix = {$name} Animal Door {$is_open ->
+    [0] {$less_info ->
+      [0] Closed
+      *[1] {EMPTYSTRING()}
+    }
+    *[1] Opened
+  }
 
 ## Interactable Tiles
 
