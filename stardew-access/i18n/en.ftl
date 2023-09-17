@@ -89,8 +89,7 @@ tile-town_festival_exit-name = Exit Festival
 
 # Inventory Util 
 
-menu-inventory-empty_slot-name = Empty Slot
-menu-inventory-not_usable-suffix = , not usable here
+inventory_util-empty_slot = Empty Slot
 
 # Items
 
@@ -99,7 +98,7 @@ item_name-magic_ink = Magic Ink
 item-haley_bracelet-name = Haley's Bracelet
 item-lost_book-name = Lost Book
 item-suffix-book = {$content} Book
-item-suffix-not_usable_here = {$content} not usable here
+item-suffix-not_usable_here = {$content}, not usable here
 item-quality_type = {$quality_index -> 
     [1] Silver
     [2] Gold
