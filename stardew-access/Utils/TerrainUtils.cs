@@ -96,18 +96,18 @@ namespace stardew_access.Utils
             return GetFruitTreeInfoString(fruitTreeDetails);
         }
 
-        public static (int TreeType, int GrowthStage, string SeedName) GetTreeInfo(Tree tree)
+        public static (int TreeType, int GrowthStage, string SeedName, bool IsFertilized) GetTreeInfo(Tree tree)
         {
             int treeStage = tree.growthStage.Value;
             string seedName = "";
-
+            
             if (tree.treeType.Value <= 3 || tree.treeType.Value == 8)
                 seedName = GetObjectById(308 + (tree.treeType.Value == 8 ? -16 : tree.treeType.Value));
 
-            return (tree.treeType.Value, treeStage, seedName);
+            return (tree.treeType.Value, treeStage, seedName, tree.fertilized.Value);
         }
 
-        public static string GetTreeInfoString((int TreeType, int GrowthStage, string SeedName) treeDetails)
+        public static string GetTreeInfoString((int TreeType, int GrowthStage, string SeedName, bool IsFertilized) treeDetails)
         {
             string treeType = treeDetails.TreeType switch
             {
@@ -131,11 +131,11 @@ namespace stardew_access.Utils
             {
                 if (treeDetails.TreeType == 1 || treeDetails.TreeType == 2 || treeDetails.TreeType == 3 || treeDetails.TreeType == 8)
                 {
-                    return treeDetails.SeedName;
+                    return (treeDetails.IsFertilized ? "Fertilized ":"") + treeDetails.SeedName;
                 }
                 else
                 {
-                    return $"{treeType} seedling";
+                    return (treeDetails.IsFertilized ? "Fertilized ":"") + $"{treeType} seedling";
                 }
             }
 
@@ -148,7 +148,7 @@ namespace stardew_access.Utils
                 _ => "tree",
             };
 
-            return $"{treeType} {growthStage}";
+            return (treeDetails.IsFertilized ? "Fertilized ":"") + $"{treeType} {growthStage}";
         }
 
         public static string GetTreeInfoString(Tree tree)
