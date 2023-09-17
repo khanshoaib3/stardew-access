@@ -333,7 +333,10 @@ namespace stardew_access.Utils
             }
             else if (obj is IndoorPot indoorPot)
             {
-                toReturn.name = $"{obj.DisplayName}, {TerrainUtils.GetDirtInfoString(indoorPot.hoeDirt.Value, true)}";
+                string potContent = indoorPot.bush.Value != null
+                    ? TerrainUtils.GetBushInfoString(indoorPot.bush.Value)
+                    : TerrainUtils.GetDirtInfoString(indoorPot.hoeDirt.Value, true);
+                toReturn.name = $"{obj.DisplayName}, {potContent}";
             }
             else if (obj is Sign sign && sign.displayItem.Value != null)
             {

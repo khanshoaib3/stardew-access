@@ -179,7 +179,7 @@ namespace stardew_access.Utils
             return "tile-grass-name";
         }
 
-        public static (bool IsTownBush, bool IsGreenhouseBush, bool IsHarvestable, int ShakeOff) GetBushInfo(Bush bush)
+        public static (bool IsTownBush, bool IsGreenhouseBush, bool IsHarvestable, int BushType, int Age, int ShakeOff) GetBushInfo(Bush bush)
         {
             // Local function to get shake off object value
             int GetBushShakeOff(string season)
@@ -206,10 +206,10 @@ namespace stardew_access.Utils
 
             bool isHarvestable = !bush.townBush.Value && bush.tileSheetOffset.Value == 1 && bush.inBloom(season, Game1.dayOfMonth);
 
-            return (bush.townBush.Value, bush.greenhouseBush.Value, isHarvestable, shakeOff);
+            return (bush.townBush.Value, bush.greenhouseBush.Value, isHarvestable, bush.size.Value, bush.getAge(), shakeOff);
         }
 
-        public static string GetBushInfoString((bool IsTownBush, bool IsGreenhouseBush, bool IsHarvestable, int ShakeOff) bushInfo)
+        public static string GetBushInfoString((bool IsTownBush, bool IsGreenhouseBush, bool IsHarvestable, int BushType, int Age, int ShakeOff) bushInfo)
         {
             StringBuilder bushInfoString = new();
 
@@ -230,8 +230,19 @@ namespace stardew_access.Utils
                 bushInfoString.Append("Greenhouse ");
             }
 
-            // Append the word "Bush" to all
-            bushInfoString.Append("Bush");
+            bushInfoString.Append(bushInfo.BushType switch
+            {
+                Bush.smallBush => "Small ",
+                Bush.mediumBush => "Medium ",
+                Bush.largeBush => "Large ",
+                Bush.greenTeaBush => "Tea " + (bushInfo.Age < Bush.daysToMatureGreenTeaBush ? "Sapling" : "Bush"),
+                Bush.walnutBush => "Golden Walnut ",
+                _ => ""
+            });
+            
+            // Append the word "Bush" to all except for tea bush
+            if (bushInfo.BushType != Bush.greenTeaBush)
+                bushInfoString.Append("Bush");
 
             return bushInfoString.ToString().Trim();
         }
