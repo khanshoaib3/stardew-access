@@ -318,7 +318,7 @@ namespace stardew_access.Utils
             // Check if the position matches the human door
             if (building.humanDoor.Value.X == offsetX && building.humanDoor.Value.Y == offsetY)
             {
-                return (Translator.Instance.Translate("suffix-building_door", new {content = name}), CATEGORY.Buildings);
+                return (Translator.Instance.Translate("suffix-building_door", new {content = name}), CATEGORY.Doors);
             }
             // Check if the position matches the animal door
             else if (building.animalDoor.Value.X == offsetX && building.animalDoor.Value.Y == offsetY)
