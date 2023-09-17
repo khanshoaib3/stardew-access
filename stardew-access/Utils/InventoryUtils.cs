@@ -69,7 +69,7 @@ namespace stardew_access.Utils
                 if ((i + 1) > actualInventory.Count || actualInventory[i] == null)
                 {
                     // For empty slot
-                    CheckAndSpeak(Translator.Instance.Translate("menu-inventory-empty_slot-name"), i);
+                    CheckAndSpeak(Translator.Instance.Translate("menu-inventory-empty_slot-name", translationCategory: TranslationCategory.Menu), i);
                     prevSlotIndex = i;
                     return i;
                 }
