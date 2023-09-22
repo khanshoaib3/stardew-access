@@ -151,10 +151,22 @@ namespace stardew_access.Utils
                 }
                 else
                 {
-                    foreach (var child in element.EnumerateObject())
+
+                    if (element.ValueKind == JsonValueKind.Array)
                     {
-                        var newPath = new List<string>(path) { child.Name };
-                        ProcessJsonElement(newPath, child.Value, remainingLevels - 1, res);
+                        int index = 0;
+                        foreach (var arrayElement in element.EnumerateArray())
+                        {
+                            var newPath = new List<string>(path) { index.ToString() };
+                            ProcessJsonElement(newPath, arrayElement, remainingLevels - 1, res);
+                            index++;
+                        }
+                    } else {
+                        foreach (var child in element.EnumerateObject())
+                        {
+                            var newPath = new List<string>(path) { child.Name };
+                            ProcessJsonElement(newPath, child.Value, remainingLevels - 1, res);
+                        }
                     }
                     #if DEBUG
                     Log.Verbose("[ProcessJsonElement] Completed iteration over child elements.");
