@@ -1,0 +1,102 @@
+{
+  "farm": [
+    {
+      "NameOrTranslationKey": "static_tile-farm-grandpa_shrine",
+      "X": [8],
+      "Y": [7],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-farm-lumber_pile",
+      "X": [
+        60,
+        61
+      ],
+      "Y": [
+        14
+      ],
+      "Category": "decoration"
+    }
+  ],
+  "fishshop": [
+    {
+      "NameOrTranslationKey": "static_tile-common-shop_counter",
+      "X": [
+        4,
+        5,
+        6
+      ],
+      "Y": [
+        5
+      ],
+      "Category": "interactable"
+    }
+  ],
+  "forest": [
+    {
+      "NameOrTranslationKey": "static_tile-forest-bridge_1",
+      "X": [
+        77,
+        82
+      ],
+      "Y": [
+        49
+      ],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-forest-bridge_2",
+      "X": [
+        87
+      ],
+      "Y": [
+        52,
+        56
+      ],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-forest-bridge_3",
+      "X": [
+        65,
+        62
+      ],
+      "Y": [
+        70
+      ],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-forest-bridge_4",
+      "X": [
+        41
+      ],
+      "Y": [
+        79,
+        82
+      ],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-forest-bridge_5",
+      "X": [
+        38
+      ],
+      "Y": [
+        85,
+        87
+      ],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-forest-abandoned_house",
+      "X": [
+        34
+      ],
+      "Y": [
+        95
+      ],
+      "Category": "interactable"
+    }
+  ]
+}
