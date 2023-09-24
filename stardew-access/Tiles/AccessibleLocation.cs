@@ -6,15 +6,43 @@ namespace stardew_access.Tiles
 {
     public class AccessibleLocation
     {
-        // Dictionary to map coordinate vectors to tiles
-        public Dictionary<Vector2, AccessibleTile> Tiles { get; set; } = new();
+        // OverlayedDictionary to map coordinate vectors to tiles
+        internal readonly OverlayedDictionary<Vector2, AccessibleTile> Tiles;
 
         // Dictionary to map categories to HashSets of tiles
-        public Dictionary<string, HashSet<AccessibleTile>> CategoryTileMap { get; set; } = new();
+        internal readonly Dictionary<string, HashSet<AccessibleTile>> CategoryTileMap = new();
 
-        public void AddTile(AccessibleTile tile)
+        public AccessibleLocation(string baseLayerName, IDictionary<Vector2, AccessibleTile>? baseLayer = null)
         {
-            if (Tiles.TryAdd(tile.Coordinates, tile))
+            baseLayer ??= new Dictionary<Vector2, AccessibleTile>();
+            Tiles = new OverlayedDictionary<Vector2, AccessibleTile>(baseLayer, baseLayerName);
+        }
+
+        public void AddLayer(string layerName, IDictionary<Vector2, AccessibleTile>? newLayer = null)
+        {
+            Tiles.AddLayer(newLayer ?? new Dictionary<Vector2, AccessibleTile>(), layerName);
+        }
+
+        public IDictionary<Vector2, AccessibleTile>? GetLayer(string layerName)
+        {
+            return Tiles.GetLayer(layerName);
+        }
+
+        public void RemoveLayer(string layerName)
+        {
+            Tiles.RemoveLayer(layerName);
+        }
+
+        public void AddTile(AccessibleTile tile, string? layerName = null)
+        {
+            bool result = false;
+            if (layerName != null)
+            {
+                result = Tiles.TryAdd(tile.Coordinates, tile, layerName);
+            } else {
+                result = Tiles.TryAdd(tile.Coordinates, tile);
+            }
+            if (result)
             {
                 if (!CategoryTileMap.ContainsKey(tile.Category.ToString()))
                 {
@@ -27,7 +55,7 @@ namespace stardew_access.Tiles
         public void RemoveTile(AccessibleTile tile)
         {
             // Remove tile from the Tiles dictionary
-            Tiles.Remove(tile.Coordinates);
+            Tiles.Remove(tile.Coordinates, true);
 
             // Remove tile from the CategoryTileMap
             if (CategoryTileMap.ContainsKey(tile.Category.ToString()))

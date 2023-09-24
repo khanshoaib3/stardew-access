@@ -6,8 +6,8 @@ namespace stardew_access.Tiles
 {
     public class AccessibleTileManager
     {
-        // Dictionary to map location names to AccessibleLocations
-        private Dictionary<string, AccessibleLocation> LocationMap { get; set; } = new();
+        // Dictionary to map location names to Accessiblelocations
+        private Dictionary<string, AccessibleLocation> Locations { get; set; } = new();
 
         // Private instance variable
         private static AccessibleTileManager? _instance;
@@ -40,7 +40,7 @@ namespace stardew_access.Tiles
                 "assets/TileData"))
             {
                 // Assign the loaded data to the class-level variable
-                LocationMap = tileData;
+                Locations = tileData;
                 Log.Info("Successfully initialized tile data.");
             }
             else
@@ -52,52 +52,113 @@ namespace stardew_access.Tiles
 
         private void TileDataProcessor(List<string> path, JsonElement element, ref Dictionary<string, AccessibleLocation> result)
         {
-            string locationName = path[0]; // The location name should be at index 0
+            string locationName = path[0];
             #if DEBUG
-            string arrayIndex = path[1]; // The array index as a string should be at index 1
+            string arrayIndex = path[1];
             Log.Verbose($"Attempting to add tile at index {arrayIndex} to location {locationName}");
             #endif
 
             if (!result.ContainsKey(locationName))
             {
-                // Create a new AccessibleLocation if it doesn't already exist for this location
                 #if DEBUG
                 Log.Verbose($"AccessibleTileManager: creating new AccessibleLocation instance \"{locationName}\"");
                 #endif
-                result[locationName] = new AccessibleLocation();
+                result[locationName] = new AccessibleLocation("Static");
             }
 
-            // Get the AccessibleLocation instance for this location
             AccessibleLocation location = result[locationName];
+            
+            // Initialize variables to store values from JSON
+            string? nameOrTranslationKey = null, dynamicNameOrTranslationKey = null, dynamicCoordinates = null, category = "Other";
+            int[] xArray = Array.Empty<int>(), yArray = Array.Empty<int>();
+            bool isEvent = false;
+            string[] withMods = Array.Empty<string>(), conditions = Array.Empty<string>();
 
-            // Parse individual elements from JSON
-            string? nameOrTranslationKey = element.GetProperty("NameOrTranslationKey").GetString();
-            JsonElement? xElement = element.GetProperty("X");
-            JsonElement? yElement = element.GetProperty("Y");
-            string category = element.GetProperty("Category").GetString() ?? "Other";
+            // Try to get each property
+            // Load name and/or name generating function
+            bool hasStaticName = element.TryGetProperty("NameOrTranslationKey", out JsonElement nameElement) && nameElement.ValueKind != JsonValueKind.Null;
+            if (hasStaticName)
+                nameOrTranslationKey = nameElement.GetString();
 
-            // Convert the JSON arrays to int arrays
-            int[] xArray = xElement != null ? xElement.Value.EnumerateArray().Select(x => x.GetInt32()).ToArray() : Array.Empty<int>();
-            int[] yArray = yElement != null ? yElement.Value.EnumerateArray().Select(y => y.GetInt32()).ToArray() : Array.Empty<int>();
+            bool hasDynamicName = element.TryGetProperty("DynamicNameOrTranslationKey", out JsonElement dynamicNameElement) && dynamicNameElement.ValueKind != JsonValueKind.Null;
+            if (hasDynamicName)
+                dynamicNameOrTranslationKey = dynamicNameElement.GetString();
 
-            // Create AccessibleTile instances for each combination of X and Y coordinates
+            // Validate at least one of them is set; both is ok.
+            if (!(hasStaticName || hasDynamicName))
+                throw new InvalidOperationException("Either NameOrTranslationKey or DynamicNameOrTranslationKey must be set.");
+
+            // Load coordinates or coordinates generating function
+            bool hasStaticXCoordinates = element.TryGetProperty("X", out JsonElement xElement) && xElement.ValueKind != JsonValueKind.Null;
+            if (hasStaticXCoordinates)
+                xArray = xElement.EnumerateArray().Select(x => x.GetInt32()).ToArray() ?? Array.Empty<int>();
+
+            bool hasStaticYCoordinates = element.TryGetProperty("Y", out JsonElement yElement) && yElement.ValueKind != JsonValueKind.Null;
+            if (hasStaticYCoordinates)
+                yArray = yElement.EnumerateArray().Select(y => y.GetInt32()).ToArray() ?? Array.Empty<int>();
+
+            bool hasStaticCoordinates = hasStaticXCoordinates && hasStaticYCoordinates && xArray?.Length > 0 && yArray?.Length > 0;
+
+            bool hasDynamicCoordinates = element.TryGetProperty("DynamicCoordinates", out JsonElement dynamicCoordinatesElement) && dynamicCoordinatesElement.ValueKind != JsonValueKind.Null;
+            if (hasDynamicCoordinates)
+                dynamicCoordinates = dynamicCoordinatesElement.GetString();
+
+            // Validate coordinates; one and only one must be set
+            if (!(hasStaticCoordinates ^ hasDynamicCoordinates))
+                throw new InvalidOperationException("exactly one of (X and Y arrays) or DynamicCoordinates must be set.");
+
+            if (element.TryGetProperty("Category", out JsonElement categoryElement) && categoryElement.ValueKind != JsonValueKind.Null)
+                category = categoryElement.GetString() ?? "Other";
+
+            if (element.TryGetProperty("WithMods", out JsonElement withModsElement) && withModsElement.ValueKind != JsonValueKind.Null)
+                withMods = withModsElement.EnumerateArray().Select(m => m.GetString()).Where(m => m != null).Select(m => m!).ToArray();
+
+            if (element.TryGetProperty("Event", out JsonElement eventElement) && eventElement.ValueKind != JsonValueKind.Null)
+                isEvent = eventElement.GetBoolean();
+
+            if (	element.TryGetProperty("Conditions", out JsonElement conditionsElement) && conditionsElement.ValueKind != JsonValueKind.Null)
+                conditions = conditionsElement.EnumerateArray().Select(c => c.GetString()).Where(c => c != null).Select(c => c!).ToArray();
+
+            // Logic to determine the layer to add tiles to
+            
+            if (hasStaticCoordinates)
+            {
+                AddTilesToStaticLayer(location, nameOrTranslationKey, xArray!, yArray!, category, withMods, conditions, isEvent);
+            }
+        }
+
+        private static void AddTilesToStaticLayer(AccessibleLocation location, string? nameOrTranslationKey, int[] xArray, int[] yArray, string category, string[] withMods, string[] conditions, bool isEvent)
+        {
             foreach (int y in yArray)
             {
                 foreach (int x in xArray)
                 {
-                    AccessibleTile tile = new(nameOrTranslationKey, new Vector2(x, y), CATEGORY.FromString(category));
-                    location.AddTile(tile);
+                    AccessibleTile tile = new(nameOrTranslationKey!, new Vector2(x, y), CATEGORY.FromString(category));
+                    location.AddTile(tile, "Static");
                 }
             }
         }
 
-        // Method to get an AccessibleLocation by name
-        public AccessibleLocation? GetLocation(string locationName)
+        // Get an AccessibleLocation by name
+        public AccessibleLocation? GetLocation(string locationName, bool create = false)
         {
-            if (LocationMap.TryGetValue(locationName, out AccessibleLocation? location))
+            if (string.IsNullOrEmpty(locationName))
+            {
+                throw new ArgumentException("Location name cannot be null or empty", nameof(locationName));
+            }
+
+            if (Locations.TryGetValue(locationName, out AccessibleLocation? location))
             {
                 return location;
             }
+
+            if (create)
+            {
+                location = new AccessibleLocation("Static");
+                Locations.Add(locationName, location);
+                return location;
+            }
+
             return null;
         }
 
