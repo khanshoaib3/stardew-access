@@ -520,7 +520,7 @@ namespace stardew_access
 
         private void OnPlayerWarped(object? sender, WarpedEventArgs e)
         {
-            TileUtils.CleanupMaps();
+            TileUtils.CleanupMaps(e.OldLocation, e.NewLocation);
             GridMovementFeature?.PlayerWarped(sender, e);
             ObjectTrackerFeature?.GetLocationObjects(resetFocus: true);
         }

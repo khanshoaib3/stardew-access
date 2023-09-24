@@ -11,6 +11,7 @@ namespace stardew_access.Utils
     {
         private static readonly Dictionary<Map, TileMapData> SortedTiles = new();
         private static readonly Dictionary<TileArray, Layer> layersByArray = new();
+        public static readonly Dictionary<Map, string> MapNames = new();
 
         /// <summary>
         /// Updates tile information in the SortedTiles dictionary.
@@ -40,13 +41,22 @@ namespace stardew_access.Utils
             tileMapData.UpdateTile(tileCoords, value, layer.Id);
         }
 
-        internal static void CleanupMaps()
+        internal static void CleanupMaps(params GameLocation[] locations)
         {
             // Step 1: Create a set from the keys in SortedTiles dictionary
             HashSet<Map> mapsToRemove = new(SortedTiles.Keys);
 
-            // Step 2: Create a set from the .map properties of GameLocation instances and active mines
-            HashSet<Map> validMaps = new(Game1.locations.Concat(MineShaft.activeMines).Select(location => location.map));
+            // Step 2: Create a set from the .map properties of GameLocation instances, active mines, buildings, and the provided locations
+            HashSet<Map> validMaps = new(
+                Game1.locations
+                .Concat(MineShaft.activeMines)
+                .Concat(Game1.getFarm().buildings
+                    .Where(building => building != null /*&& building.indoors != null*/ && building.indoors.Value != null)
+                    .Select(building => building.indoors.Value))
+                .Concat(locations)
+                    .Select(location => location.map)
+            );
+
 
             // Step 3: Perform set difference to get the maps to be removed
             mapsToRemove.ExceptWith(validMaps);
@@ -56,6 +66,13 @@ namespace stardew_access.Utils
             foreach (Map map in mapsToRemove)
             {
                 SortedTiles.Remove(map);
+                if (MapNames.ContainsKey(map))
+                {
+                    #if DEBUG
+                    Log.Verbose($"Removed map {map}, \"{MapNames[map]}\"");
+                    #endif
+                    MapNames.Remove(map);
+                }
             }
         }
 

@@ -33,6 +33,7 @@ namespace stardew_access.Patches
                 new ChatBoxPatch(),
                 new DialogueBoxPatch(),
                 new Game1Patch(),
+                new GameLocationPatch(),
                 new IClickableMenuPatch(),
                 new InstanceGamePatch(),
                 new NPCPatch(),
