@@ -60,10 +60,31 @@ namespace stardew_access.Tiles
         private void TileDataProcessor(List<string> path, JsonElement element, ref Dictionary<string, AccessibleLocation> result)
         {
             string locationName = path[0];
-            #if DEBUG
             string arrayIndex = path[1];
+            #if DEBUG
             Log.Verbose($"Attempting to add tile at index {arrayIndex} to location {locationName}");
             #endif
+
+            // Check if `locationName` is actually multiple location names.
+            if (locationName.Contains(','))
+            {
+                // Split the locationName by commas and remove any whitespace.
+                var locationNames = locationName.Split(',')
+                                                .Select(name => name.Trim())
+                                                .ToList();
+
+                // Recursively call the function for each individual location name.
+                foreach (var singleLocationName in locationNames)
+                {
+                    // Create a new `path` for the recursive calls
+                    var newPath = new List<string>(path)
+                    {
+                        [0] = singleLocationName // but update the locationName 
+                    };
+                    TileDataProcessor(newPath, element, ref result);
+                }
+                return;
+            }
 
             // Initialize variables to store values from JSON
             string? nameOrTranslationKey = null, dynamicNameOrTranslationKey = null, dynamicCoordinates = null, category = "Other";
@@ -90,8 +111,13 @@ namespace stardew_access.Tiles
                 // Add settings to the locationSettings dict if no entry exists
                 if (!locationSettings.TryAdd(locationName, (withMods, conditions, isEvent)))
                 {
-                    // Settings already exist!!! Can't have two copies.
-                    throw new InvalidOperationException($"Duplicate 'IsLocationSettings' found for location {locationName}. Each location can only have one settings object.");
+                    // Settings already exist; merge new settings
+                    var (existingWithMods, existingConditions, _) = locationSettings[locationName];
+                    // Append the new array to the old one, excluding duplicate entries
+                    var updatedWithMods = existingWithMods.Concat(withMods.Except(existingWithMods)).ToArray();
+                    var updatedConditions = existingConditions.Concat(conditions.Except(existingConditions)).ToArray();
+                    // Just use new isEvent value; it's either the same or it isn't.
+                    locationSettings[locationName] = (updatedWithMods, updatedConditions, isEvent);
                 }
                 // Settings added
                 return;
