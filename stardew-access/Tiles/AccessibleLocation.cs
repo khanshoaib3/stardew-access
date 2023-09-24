@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using stardew_access.Utils;
+using StardewValley;
 using System.Collections.Generic;
 
 namespace stardew_access.Tiles
@@ -12,8 +13,12 @@ namespace stardew_access.Tiles
         // Dictionary to map categories to HashSets of tiles
         internal readonly Dictionary<string, HashSet<AccessibleTile>> CategoryTileMap = new();
 
-        public AccessibleLocation(string baseLayerName, IDictionary<Vector2, AccessibleTile>? baseLayer = null)
+        // The GameLocation this instance corresponds to
+        internal readonly GameLocation Location;
+
+        public AccessibleLocation(GameLocation location, string baseLayerName, IDictionary<Vector2, AccessibleTile>? baseLayer = null)
         {
+            Location = location;
             baseLayer ??= new Dictionary<Vector2, AccessibleTile>();
             Tiles = new OverlayedDictionary<Vector2, AccessibleTile>(baseLayer, baseLayerName);
         }

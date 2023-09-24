@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using stardew_access.Utils;
+using StardewValley;
 using System.Text.Json;
 
 namespace stardew_access.Tiles
@@ -8,6 +9,9 @@ namespace stardew_access.Tiles
     {
         // Dictionary to map location names to Accessiblelocations
         private Dictionary<string, AccessibleLocation> Locations { get; set; } = new();
+
+        // Dictionary to hold parsed and validated json data for static tiles
+        private readonly Dictionary<string, List<(string? nameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] xArray, int[] yArray, string category, string[] withMods, string[] conditions, bool isEvent)>> staticTileData = new();
 
         // Private instance variable
         private static AccessibleTileManager? _instance;
@@ -58,16 +62,6 @@ namespace stardew_access.Tiles
             Log.Verbose($"Attempting to add tile at index {arrayIndex} to location {locationName}");
             #endif
 
-            if (!result.ContainsKey(locationName))
-            {
-                #if DEBUG
-                Log.Verbose($"AccessibleTileManager: creating new AccessibleLocation instance \"{locationName}\"");
-                #endif
-                result[locationName] = new AccessibleLocation("Static");
-            }
-
-            AccessibleLocation location = result[locationName];
-            
             // Initialize variables to store values from JSON
             string? nameOrTranslationKey = null, dynamicNameOrTranslationKey = null, dynamicCoordinates = null, category = "Other";
             int[] xArray = Array.Empty<int>(), yArray = Array.Empty<int>();
@@ -123,7 +117,12 @@ namespace stardew_access.Tiles
             
             if (hasStaticCoordinates)
             {
-                AddTilesToStaticLayer(location, nameOrTranslationKey, xArray!, yArray!, category, withMods, conditions, isEvent);
+                if (!staticTileData.ContainsKey(locationName))
+                {
+                    staticTileData[locationName] = new List<(string? nameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] xArray, int[] yArray, string category, string[] withMods, string[] conditions, bool isEvent)>();
+                }
+                (string? nameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] xArray, int[] yArray, string category, string[] withMods, string[] conditions, bool isEvent) staticData = (nameOrTranslationKey, dynamicNameOrTranslationKey, xArray!, yArray!, category, withMods, conditions, isEvent);
+                staticTileData[locationName].Add(staticData);
             }
         }
 
@@ -139,27 +138,60 @@ namespace stardew_access.Tiles
             }
         }
 
+        // Create a new AccessibleLocation
+        public AccessibleLocation CreateLocation(GameLocation gameLocation)
+        {
+            // Create new AccessibleLocation and initialize with base layer "Static"
+            AccessibleLocation location = new(gameLocation, "Static");
+
+            string locationName = gameLocation.NameOrUniqueName;
+
+            // Add it to the Locations dictionary
+            Locations.Add(locationName, location);
+
+            // Check if there's corresponding data in the staticTileData dictionary
+            if (staticTileData.TryGetValue(locationName, out List<(string? NameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] XArray, int[] YArray, string Category, string[] WithMods, string[] Conditions, bool IsEvent)>? tileDataList))
+            {
+                // Loop and load static tiles
+                foreach (var (NameOrTranslationKey, dynamicNameOrTranslationKey, XArray, YArray, Category, WithMods, Conditions, IsEvent) in tileDataList)
+                {
+                    AddTilesToStaticLayer(location, NameOrTranslationKey, XArray, YArray, Category, WithMods, Conditions, IsEvent);
+                }
+            }
+
+            return location;
+        }
+
         // Get an AccessibleLocation by name
-        public AccessibleLocation? GetLocation(string locationName, bool create = false)
+        public AccessibleLocation? GetLocation(string locationName)
         {
             if (string.IsNullOrEmpty(locationName))
             {
                 throw new ArgumentException("Location name cannot be null or empty", nameof(locationName));
             }
 
+            EnsureLocationLoaded(Game1.currentLocation);
+
             if (Locations.TryGetValue(locationName, out AccessibleLocation? location))
             {
                 return location;
             }
 
-            if (create)
-            {
-                location = new AccessibleLocation("Static");
-                Locations.Add(locationName, location);
-                return location;
-            }
-
             return null;
+        }
+
+        public void EnsureLocationLoaded(GameLocation gameLocation)
+        {
+            if (gameLocation == null) return;
+
+            string locationName = gameLocation.NameOrUniqueName;
+
+                        // Use negated TryGetValue to create an AccessibleLocation instance if it doesn't exist
+            if (!Locations.TryGetValue(locationName, out _))
+            {
+                CreateLocation(gameLocation);
+                Log.Trace($"Created AccessibleLocation for {locationName}.");
+            }
         }
 
         // Any other methods for refreshing data, querying across locations, etc.

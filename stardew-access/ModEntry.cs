@@ -1,15 +1,16 @@
+using HarmonyLib;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using   stardew_access.Features;
+using stardew_access.Patches;
+using stardew_access.ScreenReader;
+using stardew_access.Tiles;
+using stardew_access.Translation;
+using stardew_access.Utils;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
-using HarmonyLib;
-using   stardew_access.Features;
-using stardew_access.Patches;
-using stardew_access.ScreenReader;
-using stardew_access.Translation;
-using stardew_access.Utils;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace stardew_access
 {
@@ -106,6 +107,14 @@ namespace stardew_access
         internal static int? LastGridMovementDirection = null;
         internal static InputButton? LastGridMovementButtonPressed = null;
 
+        internal static AccessibleTileManager TileManager
+        {
+            get
+            {
+                return AccessibleTileManager.Instance;
+            }
+        }
+
         internal static ObjectTracker ObjectTrackerFeature
         {
             get
@@ -182,6 +191,7 @@ namespace stardew_access
 
         private void OnDayStarted(object? sender, DayStartedEventArgs? e)
         {
+            TileManager.EnsureLocationLoaded(Game1.currentLocation);
             StaticTiles.LoadTilesFiles();
             StaticTiles.SetupTilesDicts();
             ObjectTrackerFeature.GetLocationObjects();
@@ -520,6 +530,7 @@ namespace stardew_access
 
         private void OnPlayerWarped(object? sender, WarpedEventArgs e)
         {
+            TileManager.EnsureLocationLoaded(e.NewLocation);
             TileUtils.CleanupMaps(e.OldLocation, e.NewLocation);
             GridMovementFeature?.PlayerWarped(sender, e);
             ObjectTrackerFeature?.GetLocationObjects(resetFocus: true);
