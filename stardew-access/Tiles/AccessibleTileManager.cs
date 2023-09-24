@@ -7,6 +7,9 @@ namespace stardew_access.Tiles
 {
     public class AccessibleTileManager
     {
+        // Dictionary of location specific settings
+        private readonly Dictionary<string, (string[] withMods, string[] conditions, bool isEvent)> locationSettings = new();
+
         // Dictionary to map location names to Accessiblelocations
         private Dictionary<string, AccessibleLocation> Locations { get; set; } = new();
 
@@ -69,6 +72,33 @@ namespace stardew_access.Tiles
             string[] withMods = Array.Empty<string>(), conditions = Array.Empty<string>();
 
             // Try to get each property
+
+            // Shared properties
+            // Used by both AccessibleLocation and AccessibleTile
+            if (element.TryGetProperty("WithMods", out JsonElement withModsElement) && withModsElement.ValueKind != JsonValueKind.Null)
+                withMods = withModsElement.EnumerateArray().Select(m => m.GetString()).Where(m => m != null).Select(m => m!).ToArray();
+
+            if (	element.TryGetProperty("Conditions", out JsonElement conditionsElement) && conditionsElement.ValueKind != JsonValueKind.Null)
+                conditions = conditionsElement.EnumerateArray().Select(c => c.GetString()).Where(c => c != null).Select(c => c!).ToArray();
+
+            if (element.TryGetProperty("Event", out JsonElement eventElement) && eventElement.ValueKind != JsonValueKind.Null)
+                isEvent = eventElement.GetBoolean();
+
+            // Check if this is the locationSettings entry
+            if (element.TryGetProperty("IsLocationSettings", out JsonElement isLocationSettingsElement) && isLocationSettingsElement.GetBoolean())
+            {
+                // Add settings to the locationSettings dict if no entry exists
+                if (!locationSettings.TryAdd(locationName, (withMods, conditions, isEvent)))
+                {
+                    // Settings already exist!!! Can't have two copies.
+                    throw new InvalidOperationException($"Duplicate 'IsLocationSettings' found for location {locationName}. Each location can only have one settings object.");
+                }
+                // Settings added
+                return;
+            }
+
+            // Handle Tile specific properties
+
             // Load name and/or name generating function
             bool hasStaticName = element.TryGetProperty("NameOrTranslationKey", out JsonElement nameElement) && nameElement.ValueKind != JsonValueKind.Null;
             if (hasStaticName)
@@ -103,15 +133,6 @@ namespace stardew_access.Tiles
 
             if (element.TryGetProperty("Category", out JsonElement categoryElement) && categoryElement.ValueKind != JsonValueKind.Null)
                 category = categoryElement.GetString() ?? "Other";
-
-            if (element.TryGetProperty("WithMods", out JsonElement withModsElement) && withModsElement.ValueKind != JsonValueKind.Null)
-                withMods = withModsElement.EnumerateArray().Select(m => m.GetString()).Where(m => m != null).Select(m => m!).ToArray();
-
-            if (element.TryGetProperty("Event", out JsonElement eventElement) && eventElement.ValueKind != JsonValueKind.Null)
-                isEvent = eventElement.GetBoolean();
-
-            if (	element.TryGetProperty("Conditions", out JsonElement conditionsElement) && conditionsElement.ValueKind != JsonValueKind.Null)
-                conditions = conditionsElement.EnumerateArray().Select(c => c.GetString()).Where(c => c != null).Select(c => c!).ToArray();
 
             // Logic to determine the layer to add tiles to
             
