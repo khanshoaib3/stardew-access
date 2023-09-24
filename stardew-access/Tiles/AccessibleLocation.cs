@@ -16,11 +16,10 @@ namespace stardew_access.Tiles
         // The GameLocation this instance corresponds to
         internal readonly GameLocation Location;
 
-        public AccessibleLocation(GameLocation location, string baseLayerName, IDictionary<Vector2, AccessibleTile>? baseLayer = null)
+        public AccessibleLocation(GameLocation location)
         {
             Location = location;
-            baseLayer ??= new Dictionary<Vector2, AccessibleTile>();
-            Tiles = new OverlayedDictionary<Vector2, AccessibleTile>(baseLayer, baseLayerName);
+            Tiles = new OverlayedDictionary<Vector2, AccessibleTile>("Static");
         }
 
         public void AddLayer(string layerName, IDictionary<Vector2, AccessibleTile>? newLayer = null)
@@ -69,6 +68,28 @@ namespace stardew_access.Tiles
                 if (CategoryTileMap[tile.Category.ToString()].Count == 0)
                 {
                     CategoryTileMap.Remove(tile.Category.ToString());
+                }
+            }
+        }
+
+        internal void LoadStaticTiles(List<(string? NameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] XArray, int[] YArray, string Category, string[] WithMods, string[] Conditions, bool IsEvent)>? tileDataList)
+        {
+            if (tileDataList == null) return;
+            // Loop and load static tiles
+            foreach (var (NameOrTranslationKey, dynamicNameOrTranslationKey, XArray, YArray, Category, WithMods, Conditions, IsEvent) in tileDataList)
+            {
+                AddTilesToStaticLayer(NameOrTranslationKey, XArray, YArray, Category, WithMods, Conditions, IsEvent);
+            }
+        }
+
+        private void AddTilesToStaticLayer(string? nameOrTranslationKey, int[] xArray, int[] yArray, string category, string[] withMods, string[] conditions, bool isEvent)
+        {
+            foreach (int y in yArray)
+            {
+                foreach (int x in xArray)
+                {
+                    AccessibleTile tile = new(nameOrTranslationKey!, new Vector2(x, y), CATEGORY.FromString(category));
+                    AddTile(tile, "Static");
                 }
             }
         }

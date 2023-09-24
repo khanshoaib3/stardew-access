@@ -126,23 +126,11 @@ namespace stardew_access.Tiles
             }
         }
 
-        private static void AddTilesToStaticLayer(AccessibleLocation location, string? nameOrTranslationKey, int[] xArray, int[] yArray, string category, string[] withMods, string[] conditions, bool isEvent)
-        {
-            foreach (int y in yArray)
-            {
-                foreach (int x in xArray)
-                {
-                    AccessibleTile tile = new(nameOrTranslationKey!, new Vector2(x, y), CATEGORY.FromString(category));
-                    location.AddTile(tile, "Static");
-                }
-            }
-        }
-
         // Create a new AccessibleLocation
         public AccessibleLocation CreateLocation(GameLocation gameLocation)
         {
             // Create new AccessibleLocation and initialize with base layer "Static"
-            AccessibleLocation location = new(gameLocation, "Static");
+            AccessibleLocation location = new(gameLocation);
 
             string locationName = gameLocation.NameOrUniqueName;
 
@@ -152,11 +140,7 @@ namespace stardew_access.Tiles
             // Check if there's corresponding data in the staticTileData dictionary
             if (staticTileData.TryGetValue(locationName, out List<(string? NameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] XArray, int[] YArray, string Category, string[] WithMods, string[] Conditions, bool IsEvent)>? tileDataList))
             {
-                // Loop and load static tiles
-                foreach (var (NameOrTranslationKey, dynamicNameOrTranslationKey, XArray, YArray, Category, WithMods, Conditions, IsEvent) in tileDataList)
-                {
-                    AddTilesToStaticLayer(location, NameOrTranslationKey, XArray, YArray, Category, WithMods, Conditions, IsEvent);
-                }
+                location.LoadStaticTiles(tileDataList);
             }
 
             return location;
