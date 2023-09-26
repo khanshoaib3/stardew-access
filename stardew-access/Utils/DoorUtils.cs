@@ -110,7 +110,7 @@ namespace stardew_access.Utils
             location ??= Game1.currentLocation;
             suffix ??= CATEGORY.Doors.ToString();
             CheckAndInvalidateCache(location);
-            staticDoorsCache ??= StaticTiles.GetTilesByCategory(CATEGORY.Doors, location, lessInfo ? null : suffix);
+            staticDoorsCache ??= MainClass.TileManager.GetTilesByCategory(CATEGORY.Doors, "Static").ToDictionary(tile => ((int)tile.Coordinates.X, (int)tile.Coordinates.Y), tile => $"{tile.NameOrTranslationKey.Trim()} {suffix}");
             return staticDoorsCache;
         }
 

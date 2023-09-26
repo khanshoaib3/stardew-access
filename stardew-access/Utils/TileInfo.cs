@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
-using static stardew_access.Utils.MachineUtils;
+using stardew_access.Tiles;
 using stardew_access.Translation;
+using static stardew_access.Utils.MachineUtils;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
@@ -119,9 +120,12 @@ namespace stardew_access.Utils
                 return (door, CATEGORY.Doors);
             }
 
-            (string? name, CATEGORY category) staticTile = StaticTiles.GetStaticTileInfoAtWithCategory(x, y, currentLocation.Name);
-            if (staticTile.name != null)
+            (string? name, CATEGORY? category) staticTile = MainClass.TileManager.GetNameAndCategoryAt((x, y), "Static", currentLocation);
+                        if (staticTile.name != null)
             {
+                #if DEBUG
+                Log.Verbose($"TileInfo: Got static tile {staticTile} from TileManager");
+                #endif
                 return (staticTile.name, staticTile.category);
             }
 

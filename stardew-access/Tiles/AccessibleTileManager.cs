@@ -8,13 +8,13 @@ namespace stardew_access.Tiles
     public class AccessibleTileManager
     {
         // Dictionary of location specific settings
-        private readonly Dictionary<string, (string[] withMods, string[] conditions, bool isEvent)> locationSettings = new();
+        private readonly Dictionary<string, (string[] withMods, string[] conditions, bool isEvent)> locationSettings = new(StringComparer.OrdinalIgnoreCase);
 
         // Dictionary to map location names to Accessiblelocations
-        private Dictionary<string, AccessibleLocation> Locations { get; set; } = new();
+        private Dictionary<string, AccessibleLocation> Locations { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
         // Dictionary to hold parsed and validated json data for static tiles
-        private readonly Dictionary<string, List<(string? nameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] xArray, int[] yArray, string category, string[] withMods, string[] conditions, bool isEvent)>> staticTileData = new();
+        private readonly Dictionary<string, List<(string? nameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] xArray, int[] yArray, string category, string[] withMods, string[] conditions, bool isEvent)>> staticTileData = new(StringComparer.OrdinalIgnoreCase);
 
         // Private instance variable
         private static AccessibleTileManager? _instance;
@@ -33,10 +33,10 @@ namespace stardew_access.Tiles
         private AccessibleTileManager()
         {
             // Call the Initialize method to load data
-            Initialize();
+            //Initialize();
         }
 
-        private void Initialize()
+        internal void Initialize()
         {
             Log.Trace("Initializing     AccessibleTileManager");
             if (JsonLoader.TryLoadNestedJson(
@@ -167,9 +167,13 @@ namespace stardew_access.Tiles
                 if (!staticTileData.ContainsKey(locationName))
                 {
                     staticTileData[locationName] = new List<(string? nameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] xArray, int[] yArray, string category, string[] withMods, string[] conditions, bool isEvent)>();
+                    Log.Trace($"AccessibleTileManager.TileDataProcessor: created new staticTileData entry for {locationName}");
                 }
                 (string? nameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] xArray, int[] yArray, string category, string[] withMods, string[] conditions, bool isEvent) staticData = (nameOrTranslationKey, dynamicNameOrTranslationKey, xArray!, yArray!, category, withMods, conditions, isEvent);
                 staticTileData[locationName].Add(staticData);
+                #if DEBUG
+                Log.Verbose($"AccessibleTileManager: Loaded static tile info for location {locationName}: {staticData}");
+                #endif
             }
         }
 
@@ -177,9 +181,9 @@ namespace stardew_access.Tiles
         public AccessibleLocation CreateLocation(GameLocation gameLocation)
         {
             // Create new AccessibleLocation and initialize with base layer "Static"
-            AccessibleLocation location = new(gameLocation);
-
             string locationName = gameLocation.NameOrUniqueName;
+            Log.Trace($"AccessibleTileManager.CreateLocation: Creating new AccessibleLocation {locationName}");
+            AccessibleLocation location = new(gameLocation);
 
             // Add it to the Locations dictionary
             Locations.Add(locationName, location);
@@ -187,18 +191,25 @@ namespace stardew_access.Tiles
             // Check if there's corresponding data in the staticTileData dictionary
             if (staticTileData.TryGetValue(locationName, out List<(string? NameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] XArray, int[] YArray, string Category, string[] WithMods, string[] Conditions, bool IsEvent)>? tileDataList))
             {
+                Log.Trace($"AccessibleTileManager: found static data for location {locationName}");
                 location.LoadStaticTiles(tileDataList);
+            } 
+            #if DEBUG
+            else
+            {
+                Log.Debug($"AccessibleTileManager.CreateLocation: Unable to find static tile data for \"{locationName}\". Keys are:\n\t{string.Join(", ", staticTileData.Keys)}", true);
             }
+            #endif
 
             return location;
         }
 
         // Get an AccessibleLocation by name
-        public AccessibleLocation? GetLocation(string locationName)
+        public AccessibleLocation? GetLocation(string? locationName)
         {
             if (string.IsNullOrEmpty(locationName))
             {
-                throw new ArgumentException("Location name cannot be null or empty", nameof(locationName));
+                locationName = Game1.currentLocation.NameOrUniqueName;
             }
 
             EnsureLocationLoaded(Game1.currentLocation);
@@ -211,6 +222,13 @@ namespace stardew_access.Tiles
             return null;
         }
 
+        // Get an AccessibleLocation by GameLocation
+        public AccessibleLocation? GetLocation(GameLocation? location = null)
+        {
+            location ??= Game1.currentLocation;
+            return GetLocation(location!.NameOrUniqueName);
+        }
+
         public void EnsureLocationLoaded(GameLocation gameLocation)
         {
             if (gameLocation == null) return;
@@ -221,10 +239,24 @@ namespace stardew_access.Tiles
             if (!Locations.TryGetValue(locationName, out _))
             {
                 CreateLocation(gameLocation);
-                Log.Trace($"Created AccessibleLocation for {locationName}.");
+                Log.Trace($"AccessibleTileManager.EnsureLocationLoaded: Created AccessibleLocation for {locationName}.");
             }
         }
 
-        // Any other methods for refreshing data, querying across locations, etc.
+        public (string? nameOrTranslationKey, CATEGORY? category) GetNameAndCategoryAt(Vector2 coordinates, string? layerName = null, string? locationName = null)
+        {
+            locationName ??= Game1.currentLocation.NameOrUniqueName;
+            return GetLocation(locationName)?.GetNameAndCategoryAt(coordinates, layerName) ?? (null, null);
+        }
+
+        public (string? nameOrTranslationKey, CATEGORY? category) GetNameAndCategoryAt(Vector2 coordinates, string? layerName = null) => GetNameAndCategoryAt(coordinates, layerName, Game1.currentLocation.NameOrUniqueName);
+        public (string? nameOrTranslationKey, CATEGORY? category) GetNameAndCategoryAt(Vector2 coordinates, string? layerName = null, GameLocation? location = null) => GetNameAndCategoryAt(coordinates, layerName, location?.NameOrUniqueName);
+        public (string? nameOrTranslationKey, CATEGORY? category) GetNameAndCategoryAt((int x, int y) coordinates, string? layerName = null, string? locationName = null) => GetNameAndCategoryAt(new Vector2(coordinates.x, coordinates.y), layerName, locationName);
+        public (string? nameOrTranslationKey, CATEGORY? category) GetNameAndCategoryAt((int x, int y) coordinates, string? layerName = null, GameLocation? location = null) => GetNameAndCategoryAt(new Vector2(coordinates.x, coordinates.y), layerName, location?.NameOrUniqueName);
+
+        public HashSet<AccessibleTile> GetTilesByCategory(CATEGORY category, string? layerName = null) => GetLocation()?.GetTilesByCategory(category, layerName) ?? new();
+        public HashSet<AccessibleTile> GetTilesByCategory(CATEGORY category, string? layerName = null, string? locationName = null) => GetLocation(locationName)?.GetTilesByCategory(category, layerName) ?? new();
+        public HashSet<AccessibleTile> GetTilesByCategory(CATEGORY category, string? layerName = null, GameLocation? location = null) => GetLocation(location)?.GetTilesByCategory(category, layerName) ?? new();
+
     }
 }

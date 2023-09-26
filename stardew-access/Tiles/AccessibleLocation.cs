@@ -11,7 +11,7 @@ namespace stardew_access.Tiles
         internal readonly OverlayedDictionary<Vector2, AccessibleTile> Tiles;
 
         // Dictionary to map categories to HashSets of tiles
-        internal readonly Dictionary<string, HashSet<AccessibleTile>> CategoryTileMap = new();
+        internal readonly Dictionary<CATEGORY, Dictionary<string, HashSet<AccessibleTile>>> CategoryTileMap = new();
 
         // The GameLocation this instance corresponds to
         internal readonly GameLocation Location;
@@ -20,6 +20,9 @@ namespace stardew_access.Tiles
         {
             Location = location;
             Tiles = new OverlayedDictionary<Vector2, AccessibleTile>("Static");
+            #if DEBUG
+            Log.Verbose($"AccessibleLocation: initialized \"{location.NameOrUniqueName}\"");
+            #endif
         }
 
         public void AddLayer(string layerName, IDictionary<Vector2, AccessibleTile>? newLayer = null)
@@ -43,16 +46,27 @@ namespace stardew_access.Tiles
             if (layerName != null)
             {
                 result = Tiles.TryAdd(tile.Coordinates, tile, layerName);
+                #if DEBUG
+                Log.Verbose($"Adding tile {tile.NameOrTranslationKey} at {tile.Coordinates} to layer {layerName} of location {Location.NameOrUniqueName}");
+                #endif
             } else {
                 result = Tiles.TryAdd(tile.Coordinates, tile);
+                #if DEBUG
+                Log.Verbose($"Adding tile {tile.NameOrTranslationKey} at {tile.Coordinates} to location {Location.NameOrUniqueName}");
+                #endif
             }
             if (result)
             {
-                if (!CategoryTileMap.ContainsKey(tile.Category.ToString()))
+                if (!CategoryTileMap.ContainsKey(tile.Category))
                 {
-                    CategoryTileMap[tile.Category.ToString()] = new HashSet<AccessibleTile>();
+                    CategoryTileMap[tile.Category] = new Dictionary<string, HashSet<AccessibleTile>>();
                 }
-                CategoryTileMap[tile.Category.ToString()].Add(tile);
+                if (!CategoryTileMap[tile.Category].ContainsKey(layerName ?? ""))
+                {
+                    CategoryTileMap[tile.Category][layerName ?? ""] = new HashSet<AccessibleTile>();
+                }
+                
+                CategoryTileMap[tile.Category][layerName ?? ""].Add(tile);
             }
         }
 
@@ -62,19 +76,74 @@ namespace stardew_access.Tiles
             Tiles.Remove(tile.Coordinates, true);
 
             // Remove tile from the CategoryTileMap
-            if (CategoryTileMap.ContainsKey(tile.Category.ToString()))
+            if (CategoryTileMap.ContainsKey(tile.Category))
             {
-                CategoryTileMap[tile.Category.ToString()].Remove(tile);
-                if (CategoryTileMap[tile.Category.ToString()].Count == 0)
+                foreach(var pair in CategoryTileMap[tile.Category])
                 {
-                    CategoryTileMap.Remove(tile.Category.ToString());
+                    pair.Value.Remove(tile);
+                    if (pair.Value.Count == 0)
+                    {
+                        CategoryTileMap[tile.Category].Remove(pair.Key);
+                    }
+                }
+                if (CategoryTileMap[tile.Category].Count == 0)
+                {
+                    CategoryTileMap.Remove(tile.Category);
                 }
             }
         }
 
+        public (string? nameOrTranslationKey, CATEGORY? category) GetNameAndCategoryAt(Vector2 coordinates, string? layerName = null)
+        {
+            IDictionary<Vector2, AccessibleTile> tiles = (layerName == null ? Tiles : Tiles.GetLayer(layerName!))!;
+            if (tiles.TryGetValue(coordinates, out AccessibleTile? tile))
+            {
+                return tile!.NameAndCategory;
+            }
+            return (null, null);
+        }
+
+        public HashSet<AccessibleTile> GetTilesByCategory(CATEGORY category, string? layerName = null)
+        {
+            // Create an empty HashSet to store the result
+            HashSet<AccessibleTile> resultSet = new();
+
+            // Check if the category exists in the CategoryTileMap
+            if (CategoryTileMap.TryGetValue(category, out var layerDict))
+            {
+                if (layerName != null)
+                {
+                    // If layerName is specified, try to get that specific HashSet
+                    if (layerDict.TryGetValue(layerName, out var tileSet))
+                    {
+                        return tileSet;
+                    }
+                }
+                else
+                {
+                    // If layerName is null, merge all HashSets together
+                    foreach (var tileSet in layerDict.Values)
+                    {
+                        resultSet.UnionWith(tileSet);
+                    }
+                    return resultSet;
+                }
+            }
+
+            // If we get here, either the category or the layerName doesn't exist, so return an empty HashSet
+            return resultSet;
+        }
+
         internal void LoadStaticTiles(List<(string? NameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] XArray, int[] YArray, string Category, string[] WithMods, string[] Conditions, bool IsEvent)>? tileDataList)
         {
-            if (tileDataList == null) return;
+            if (tileDataList == null)
+            {
+                #if DEBUG
+                Log.Debug($"tileDataList is null; exiting.");
+                #endif
+                return;
+            }
+            Log.Trace($"Loading {tileDataList.Count} static tile entries for {Location.NameOrUniqueName}");
             // Loop and load static tiles
             foreach (var (NameOrTranslationKey, dynamicNameOrTranslationKey, XArray, YArray, Category, WithMods, Conditions, IsEvent) in tileDataList)
             {
@@ -88,6 +157,9 @@ namespace stardew_access.Tiles
             {
                 foreach (int x in xArray)
                 {
+                    #if DEBUG
+                    Log.Verbose($"Adding tile {nameOrTranslationKey!} at ({x}, {y})");
+                    #endif
                     AccessibleTile tile = new(nameOrTranslationKey!, new Vector2(x, y), CATEGORY.FromString(category));
                     AddTile(tile, "Static");
                 }
@@ -119,20 +191,16 @@ namespace stardew_access.Tiles
         // Indexer 4: Retrieve by category string
         public HashSet<AccessibleTile>? this[string category]
         {
-            get
-            {
-                if (CategoryTileMap.TryGetValue(category, out HashSet<AccessibleTile>? tiles))
-                {
-                    return tiles!;
-                }
-                return null;
-            }
+            get => this[CATEGORY.FromString(category)];
         }
 
         // Indexer 5: Retrieve by CATEGORY
         public HashSet<AccessibleTile>? this[CATEGORY categoryInstance]
         {
-            get => this[categoryInstance.ToString()];
+            get
+            {
+                return GetTilesByCategory(categoryInstance);
+            }
         }
 
     }

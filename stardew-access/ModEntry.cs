@@ -172,6 +172,7 @@ namespace stardew_access
             helper.Events.Input.ButtonsChanged += OnButtonsChanged;
             helper.Events.Player.Warped += OnPlayerWarped;
             helper.Events.Display.Rendering += OnRenderingStart;
+            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
             helper.Events.Display.MenuChanged += OnMenuChanged;
@@ -189,11 +190,14 @@ namespace stardew_access
             ScreenReader?.CloseScreenReader();
         }
 
+        private void OnGameLaunched(object? sender, GameLaunchedEventArgs? e)
+        {
+            TileManager.Initialize();
+        }
+
         private void OnDayStarted(object? sender, DayStartedEventArgs? e)
         {
             TileManager.EnsureLocationLoaded(Game1.currentLocation);
-            StaticTiles.LoadTilesFiles();
-            StaticTiles.SetupTilesDicts();
             ObjectTrackerFeature.GetLocationObjects();
         }
 

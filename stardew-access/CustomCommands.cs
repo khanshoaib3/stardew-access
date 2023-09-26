@@ -461,13 +461,14 @@ namespace stardew_access
                 Log.Info("Mod Config refreshed!");
             });
 
-            helper.ConsoleCommands.Add("refst", "Refresh static tiles", (string command, string[] args) =>
+            // TODO: add Refresh functionality to `AccessibleTileManager and restore this
+            /*helper.ConsoleCommands.Add("refst", "Refresh static tiles", (string command, string[] args) =>
             {
                 StaticTiles.LoadTilesFiles();
                 StaticTiles.SetupTilesDicts();
 
                 Log.Info("Static tiles refreshed!");
-            });
+            });*/
 
             helper.ConsoleCommands.Add("hnspercent", "Toggle between speaking in percentage or full health and stamina.", (string command, string[] args) =>
             {

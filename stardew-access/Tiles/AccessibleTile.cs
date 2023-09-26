@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using stardew_access.Translation;
 using stardew_access.Utils;
 using System;
 using System.Collections.Generic;
@@ -171,6 +172,21 @@ namespace stardew_access.Tiles
             bool isEvent = false
         ) : this (staticNameOrTranslationKey, dynamicNameOrTranslationKey, null, dynamicCoordinates, category, conditions, isEvent)
         {
+        }
+
+        public (string nameOrTranslationKey, CATEGORY category) NameAndCategory
+        {
+            get
+            {
+                return (
+                    Translator.Instance.Translate(
+                        NameOrTranslationKey, 
+                        translationCategory: TranslationCategory.StaticTiles,
+                        disableWarning: true
+                    ),
+                    Category
+                );
+            }
         }
 
 
