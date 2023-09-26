@@ -1,3 +1,5 @@
+using stardew_access.Translation;
+
 namespace stardew_access.Utils
 {
     /// <summary>
@@ -28,7 +30,10 @@ namespace stardew_access.Utils
 
         public override string ToString()
         {
-            return _typeKeyWord;
+            if (!Translator.Instance.IsAvailable($"object_category-{_typeKeyWord}"))
+                return _typeKeyWord;
+
+            return Translator.Instance.Translate($"object_category-{_typeKeyWord}");
         }
 
         public static IReadOnlyDictionary<string, CATEGORY> Categories => _categories;
@@ -45,8 +50,8 @@ namespace stardew_access.Utils
             {"tree", new CATEGORY("tree")},
             {"bush", new CATEGORY("bush")},
             {"building", new CATEGORY("building")},
-            {"mine item", new CATEGORY("mine item")},
-            {"resource clump", new CATEGORY("resource clump")},
+            {"mine_item", new CATEGORY("mine_item")},
+            {"resource_clump", new CATEGORY("resource_clump")},
             {"container", new CATEGORY("container")},
             {"bundle", new CATEGORY("bundle")},
             {"door", new CATEGORY("door")},
@@ -55,7 +60,7 @@ namespace stardew_access.Utils
             {"decoration", new CATEGORY("decoration")},
             {"machine", new CATEGORY("machine")},
             {"bridge", new CATEGORY("bridge")},
-            {"dropped item", new CATEGORY("dropped item")},
+            {"dropped_item", new CATEGORY("dropped_item")},
             {"fishing", new CATEGORY("fishing")},
             {"other", new CATEGORY("other")}
         };
@@ -122,8 +127,8 @@ namespace stardew_access.Utils
         public static CATEGORY Trees => FromString("tree");
         public static CATEGORY Bush => FromString("bush");
         public static CATEGORY Buildings => FromString("building");
-        public static CATEGORY MineItems => FromString("mine item");
-        public static CATEGORY ResourceClumps => FromString("resource clump");
+        public static CATEGORY MineItems => FromString("mine_item");
+        public static CATEGORY ResourceClumps => FromString("resource_clump");
         public static CATEGORY Containers => FromString("container");
         public static CATEGORY JunimoBundle => FromString("bundle");
         public static CATEGORY Doors => FromString("door");
@@ -132,7 +137,7 @@ namespace stardew_access.Utils
         public static CATEGORY Decor => FromString("decoration");
         public static CATEGORY Machines => FromString("machine");
         public static CATEGORY Bridges => FromString("bridge");
-        public static CATEGORY DroppedItems => FromString("dropped item");
+        public static CATEGORY DroppedItems => FromString("dropped_item");
         public static CATEGORY Fishing => FromString("fishing");
         public static CATEGORY Others => FromString("other");
     }

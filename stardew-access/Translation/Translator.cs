@@ -164,6 +164,25 @@ namespace stardew_access.Translation
             return translationKey;
         }
 
+        /// <summary>
+        /// Checks whether the translation is available for the given translation key.
+        /// </summary>
+        /// <param name="translationKey">The key to check for availability.</param>
+        /// <param name="translationCategory">The key's category or the translation sub-file to check for.</param>
+        /// <returns>true if the key is available otherwise false.</returns>
+        public bool IsAvailable(string translationKey, TranslationCategory translationCategory = TranslationCategory.Default)
+        {
+            IFluent<string>? requiredEntries = GetEntriesFromCategory(translationCategory);
+
+            if (requiredEntries == null)
+            {
+                Log.Error("Fluent not initialized!", true);
+                return false;
+            }
+
+            return requiredEntries.ContainsKey(translationKey);
+        }
+
         private IFluent<string>? GetEntriesFromCategory(TranslationCategory translationCategory) =>
             translationCategory switch
             {

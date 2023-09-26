@@ -179,6 +179,30 @@ event_tile-feast_of_the_winter_star_shop-name = Feast of the Winter Star Shop
 patch-trash_bear-wanted_item = {$trash_bear_name} wants {$item_name}!
 
 
+# Object Categories
+
+object_category-farmer = Farmer
+object_category-animal = Animal
+object_category-npc = NPC
+object_category-furniture = Furniture
+object_category-flooring = Flooring
+object_category-debris = Debris
+object_category-crop = Crop
+object_category-tree = Tree
+object_category-bush = Bush
+object_category-building = Building
+object_category-mine_item = Mine item
+object_category-resource_clump = Resource clump
+object_category-container = Container
+object_category-bundle = Bundle
+object_category-door = Door
+object_category-water = Water
+object_category-interactable = Interactable
+object_category-decoration = Decoration
+object_category-machine = Machine
+object_category-bridge = Bridge
+object_category-dropped_item = Dropped item
+object_category-other = Other
 
 common-unknown = Unknown
 
