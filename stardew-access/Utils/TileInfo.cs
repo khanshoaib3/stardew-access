@@ -452,28 +452,14 @@ namespace stardew_access.Utils
         /// <param name="x">The x-coordinate of the tile to check.</param>
         /// <param name="y">The y-coordinate of the tile to check.</param>
         /// <returns>A string containing the door information if a door is found at the specified tile; null if no door is found.</returns>
-        public static string? GetDoorAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false)
+        public static string? GetDoorAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false, bool ignoreWarps = false)
         {
-            if (DoorUtils.GetAllDoors(Game1.currentLocation, lessInfo).TryGetValue((x, y), out var doorName))
+            var doors = ignoreWarps ? DoorUtils.GetDoors(Game1.currentLocation, lessInfo) : DoorUtils.GetAllDoors(Game1.currentLocation, lessInfo);
+            if (doors.TryGetValue((x, y), out var doorName))
             {
                 return doorName!;
             }
             return null;
-            /*// Create a Point object from the given tile coordinates
-            Point tilePoint = new(x, y);
-
-            // Access the doorList in the current location
-            StardewValley.Network.NetPointDictionary<string, Netcode.NetString> doorList = currentLocation.doors;
-
-            // Check if the doorList contains the given tile point
-            if (doorList.TryGetValue(tilePoint, out string? doorName))
-            {
-                // Return the door information with the name if available, otherwise use "door"
-                return doorName != null ? $"{doorName} door" : "door";
-            }
-
-            // No matching door found
-            return null;*/
         }
 
         /// <summary>

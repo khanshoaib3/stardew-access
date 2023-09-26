@@ -77,6 +77,14 @@ namespace stardew_access
         public Boolean GridMovementActive { get; set; } = true;
         public KeybindList ToggleGridMovementKey { get; set; } = KeybindList.Parse("I");
         public KeybindList GridMovementOverrideKey { get; set; } = KeybindList.Parse("LeftControl");
+        private double _GridMovementSpeed = 100d;
+        public double GridMovementSpeed
+        {
+                get { return Math.Clamp(_GridMovementSpeed, 0.0d, 100.0d); }
+                set { _GridMovementSpeed = Math.Clamp(value, 0.0d, 100.0d); }
+        }
+        public int GridMovementTilesPerStep { get; set; } = 1;
+        public int GridMovementDelayAfterDirectionChange { get; set; } = 250;
         #endregion
 
         # region ObjectTracker

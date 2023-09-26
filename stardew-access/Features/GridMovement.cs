@@ -16,11 +16,15 @@ namespace stardew_access.Features
 	internal class GridMovement
 	{
 		private const int TimerInterval = 1000;
+		// These aren't backwards! Higher number means slower speed.
+		private const int SpeedMinimum = 2000;
+		private const int SpeedMaximum = 640;
+		private int StepCounter = 0;
 		public Boolean is_warping = false;
 		public Boolean is_moving = false;
 
 		//stop player from moving too fast
-		public int minMillisecondsBetweenSteps = 300;
+		//public int minMillisecondsBetweenSteps = 300;
 		readonly System.Timers.Timer timer = new();
 
 		// Define a dictionary that maps the direction to the corresponding vector
@@ -35,7 +39,7 @@ namespace stardew_access.Features
 		public GridMovement()
 		{
 			//set is_moving after x time to allow the next grid movement
-			timer.Interval = minMillisecondsBetweenSteps;
+			timer.Interval = SpeedMaximum;
 			timer.Elapsed += Timer_Elapsed;
 		}
 
@@ -53,7 +57,8 @@ namespace stardew_access.Features
 		{
 			Farmer player = Game1.player;
 			GameLocation location = Game1.currentLocation;
-			timer.Interval = minMillisecondsBetweenSteps - (player.addedSpeed * (minMillisecondsBetweenSteps / 9));
+			timer.Interval = (SpeedMinimum - (SpeedMinimum - SpeedMaximum) * (MainClass.Config.GridMovementSpeed / 100d)) / player.getMovementSpeed();
+			StepCounter = 0;
 
 			MainClass.LastGridMovementButtonPressed = pressedButton;
 			MainClass.LastGridMovementDirection = direction;
@@ -76,7 +81,9 @@ namespace stardew_access.Features
 				tileLocation = Vector2.Add(tileLocation, directionVectors[direction]);
 			}
 
-			Log.Debug($"Move To: {tileLocation}");
+			#if DEBUG
+			Log.Verbose($"Move To: {tileLocation}");
+			#endif
 
 			Rectangle position = new((int)tileLocation.X * Game1.tileSize, (int)tileLocation.Y * Game1.tileSize, Game1.tileSize, Game1.tileSize);
 			Warp warp = location.isCollidingWithWarpOrDoor(position, Game1.player);
@@ -98,11 +105,15 @@ namespace stardew_access.Features
 			Game1.player.faceDirection(direction);
 			Game1.playSound("dwop");
 			is_moving = true;
+			
+			// This effects the time between changing direction and taking the first step.
+			// Interval will be updated after first step if key is held.
+			timer.Interval = MainClass.Config.GridMovementDelayAfterDirectionChange;
 			timer.Start();
 			return true;
 		}
 
-		private static void HandlePlayerMovement(Vector2 tileLocation, int direction)
+		private void HandlePlayerMovement(Vector2 tileLocation, int direction)
 		{
 			Farmer player = Game1.player;
 			GameLocation location = Game1.currentLocation;
@@ -111,22 +122,30 @@ namespace stardew_access.Features
 			if (pathfinder.pathToEndPoint != null) {
 				//valid point
 				player.Position = tileLocation * Game1.tileSize;
-				location.playTerrainSound(tileLocation);
+				if (++StepCounter % MainClass.Config.GridMovementTilesPerStep == 0)
+					location.playTerrainSound(tileLocation);
 				CenterPlayer();
 			}
 		}
 
 		private void HandleWarpInteraction(Warp warp, GameLocation location, Vector2 tileLocation)
 		{
-			if (TileInfo.GetDoorAtTile(location, (int)tileLocation.X, (int)tileLocation.Y) is not null)
+			#if DEBUG
+			Log.Verbose($"GridMovement.HandleWarpInteraction: Handling Warp {warp} from location {location} at {tileLocation}");
+			#endif
+			if (TileInfo.GetDoorAtTile(location, (int)tileLocation.X, (int)tileLocation.Y, true, true) is not null)
 			{
 				// Manually check for door and pressActionButton() method instead of warping (warping also works when the door is locked, for example it warps to the Pierre's shop before it's opening time)
-				Log.Debug("Collides with Door");
+				#if DEBUG
+				Log.Verbose("Collides with Door");
+				#endif
 				Game1.pressActionButton(Game1.GetKeyboardState(), Game1.input.GetMouseState(), Game1.input.GetGamePadState());
 			}
 			else
 			{
-				Log.Debug("Collides with Warp");
+				#if DEBUG
+				Log.Verbose("Collides with Warp");
+				#endif
 
 				if (location.checkAction(new Location((int)tileLocation.X * Game1.tileSize, (int)tileLocation.Y * Game1.tileSize), Game1.viewport, Game1.player))
 				{
