@@ -112,12 +112,14 @@ namespace stardew_access.Utils
             NestedItemProcessor<TKey, TValue> nestedItemProcessor,
             out Dictionary<TKey, TValue> result,
             int nestingLevel,
-            string subdir = DefaultDir
+            string subdir = DefaultDir,
+            bool caseInsensitive = false
         ) where TKey : notnull
         {
             Log.Verbose($"[TryLoadNestedJson] Starting to load {fileName} with nesting level {nestingLevel}");
 
-            result = new Dictionary<TKey, TValue>();
+            // Create the dictionary with StringComparer.OrdinalIgnoreCase if TKey is string and caseInsensitive is true
+            result = (typeof(TKey) == typeof(string) && caseInsensitive) ? new Dictionary<TKey, TValue>((IEqualityComparer<TKey>)StringComparer.OrdinalIgnoreCase) : new Dictionary<TKey, TValue>();
 
             if (TryLoadJsonFile(fileName, out JsonDocument document, subdir) && document != null)
             {
