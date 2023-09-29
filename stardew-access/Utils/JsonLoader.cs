@@ -5,6 +5,8 @@ namespace stardew_access.Utils
     public static class JsonLoader
     {
         public delegate void NestedItemProcessor<TKey, TValue>(List<string> path, JsonElement element, ref Dictionary<TKey, TValue> res) where TKey : notnull;
+        public delegate void NestedItemProcessorWithUserFile<TKey, TValue>(List<string> path, JsonElement element, ref Dictionary<TKey, TValue> res, bool isUserFile) where TKey : notnull;
+
 
         private const string DefaultDir = "assets";
         private static string GetFilePath(string fileName, string subdir)
@@ -110,64 +112,58 @@ namespace stardew_access.Utils
         public static bool TryLoadNestedJson<TKey, TValue>(
             string fileName,
             NestedItemProcessor<TKey, TValue> nestedItemProcessor,
-            out Dictionary<TKey, TValue> result,
+            ref Dictionary<TKey, TValue> result,
             int nestingLevel,
-            string subdir = DefaultDir,
-            bool caseInsensitive = false
+            string subdir = DefaultDir
         ) where TKey : notnull
         {
             Log.Verbose($"[TryLoadNestedJson] Starting to load {fileName} with nesting level {nestingLevel}");
 
-            // Create the dictionary with StringComparer.OrdinalIgnoreCase if TKey is string and caseInsensitive is true
-            result = (typeof(TKey) == typeof(string) && caseInsensitive) ? new Dictionary<TKey, TValue>((IEqualityComparer<TKey>)StringComparer.OrdinalIgnoreCase) : new Dictionary<TKey, TValue>();
-
             if (TryLoadJsonFile(fileName, out JsonDocument document, subdir) && document != null)
             {
                 #if DEBUG
-                Log.Verbose("[TryLoadNestedJson] Successfully loaded JSON file. Starting to process root element.");
+                Log.Verbose($"TryLoadNestedJson: Successfully loaded file {fileName}. Starting to process root element.");
                 #endif
 
-                ProcessJsonElement(new List<string>(), document.RootElement, nestingLevel, result);
+                int processed = 0;
+                ProcessJsonElement(new List<string>(), document.RootElement, nestingLevel, result, ref processed);
+                Log.Trace($"TryLoadNestedJson: Loaded {processed} entries from {fileName}.");
 
-                #if DEBUG
-                Log.Verbose("[TryLoadNestedJson] Finished processing root element.");
-                #endif
-                Log.Trace($"[TryLoadNestedJson] Loaded {result.Count} entries from {fileName}.");
                 return true;
             }
             Log.Warn($"[TryLoadNestedJson] Failed to load or parse {fileName}", true);
             return false;
 
-            void ProcessJsonElement(List<string> path, JsonElement element, int remainingLevels, Dictionary<TKey, TValue> res)
+            void ProcessJsonElement(List<string> path, JsonElement element, int remainingLevels, Dictionary<TKey, TValue> res, ref int processed)
             {
-                 #if DEBUG
+                #if DEBUG
                 Log.Verbose($"[ProcessJsonElement] Processing element at path: {string.Join(" -> ", path)} with remaining levels: {remainingLevels}");
                 #endif
 
                 if (remainingLevels == 0)
                 {
                     nestedItemProcessor(path, element, ref res);
+                    processed++;
                     #if DEBUG
                     Log.Verbose("[ProcessJsonElement] Processed element and populated result dictionary.");
                     #endif
                 }
                 else
                 {
-
                     if (element.ValueKind == JsonValueKind.Array)
                     {
                         int index = 0;
                         foreach (var arrayElement in element.EnumerateArray())
                         {
                             var newPath = new List<string>(path) { index.ToString() };
-                            ProcessJsonElement(newPath, arrayElement, remainingLevels - 1, res);
+                            ProcessJsonElement(newPath, arrayElement, remainingLevels - 1, res, ref processed);
                             index++;
                         }
                     } else {
                         foreach (var child in element.EnumerateObject())
                         {
                             var newPath = new List<string>(path) { child.Name };
-                            ProcessJsonElement(newPath, child.Value, remainingLevels - 1, res);
+                            ProcessJsonElement(newPath, child.Value, remainingLevels - 1, res, ref processed);
                         }
                     }
                     #if DEBUG
@@ -175,6 +171,59 @@ namespace stardew_access.Utils
                     #endif
                 }
             }
+        }
+
+        public static bool TryLoadNestedJson<TKey, TValue>(
+            string fileName,
+            NestedItemProcessor<TKey, TValue> nestedItemProcessor,
+            out Dictionary<TKey, TValue> result,
+            int nestingLevel,
+            string subdir = DefaultDir,
+            bool caseInsensitive = false
+        ) where TKey : notnull
+        {
+            // Create the dictionary with StringComparer.OrdinalIgnoreCase if TKey is string and caseInsensitive is true
+            result = (typeof(TKey) == typeof(string) && caseInsensitive) ? new Dictionary<TKey, TValue>((IEqualityComparer<TKey>)StringComparer.OrdinalIgnoreCase) : new Dictionary<TKey, TValue>();
+            return TryLoadNestedJson(fileName, nestedItemProcessor, ref result, nestingLevel, subdir);
+        }
+
+        public static bool TryLoadNestedJsonWithUserFile<TKey, TValue>(
+            string fileName,
+            NestedItemProcessorWithUserFile<TKey, TValue> nestedItemProcessorWithUserFile,
+            out Dictionary<TKey, TValue> result,
+            int nestingLevel,
+            string subdir = DefaultDir,
+            bool caseInsensitive = false
+        ) where TKey : notnull
+        {
+            // First, load the base file
+            if (TryLoadNestedJson(
+                fileName,
+                (List<string> path, JsonElement element, ref Dictionary<TKey, TValue> res) => nestedItemProcessorWithUserFile(path, element, ref res, false),
+                out result,
+                nestingLevel,
+                subdir,
+                caseInsensitive
+            ))
+            {
+                // Successfully loaded base file
+                // Modify the file name to check for a user file
+                string userFileName = $"{System.IO.Path.GetFileNameWithoutExtension(fileName)}_user{System.IO.Path.GetExtension(fileName)}";
+
+                // Try to load the user file.
+                if (TryLoadNestedJson(
+                    userFileName,
+                    (List<string> path, JsonElement element, ref Dictionary<TKey, TValue> res) => nestedItemProcessorWithUserFile(path, element, ref res, true),
+                    ref result,
+                    nestingLevel,
+                    subdir
+                ))
+                {
+                    Log.Info($"Loaded {fileName}");
+                }
+                return true;
+            } 
+            return false;
         }
 
         public static bool TryLoadJsonAsArray(string fileName, out List<object?> result, string subdir = DefaultDir)
