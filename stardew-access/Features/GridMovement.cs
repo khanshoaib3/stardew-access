@@ -20,6 +20,7 @@ namespace stardew_access.Features
 		private const int SpeedMinimum = 2000;
 		private const int SpeedMaximum = 640;
 		private int StepCounter = 0;
+		private int tilesPerStep = MainClass.Config.GridMovementTilesPerStep;
 		public Boolean is_warping = false;
 		public Boolean is_moving = false;
 
@@ -58,7 +59,6 @@ namespace stardew_access.Features
 			Farmer player = Game1.player;
 			GameLocation location = Game1.currentLocation;
 			timer.Interval = (SpeedMinimum - (SpeedMinimum - SpeedMaximum) * (MainClass.Config.GridMovementSpeed / 100d)) / player.getMovementSpeed();
-			StepCounter = 0;
 
 			MainClass.LastGridMovementButtonPressed = pressedButton;
 			MainClass.LastGridMovementDirection = direction;
@@ -122,7 +122,7 @@ namespace stardew_access.Features
 			if (pathfinder.pathToEndPoint != null) {
 				//valid point
 				player.Position = tileLocation * Game1.tileSize;
-				if (++StepCounter % MainClass.Config.GridMovementTilesPerStep == 0)
+				if (++StepCounter % tilesPerStep == 0)
 					location.playTerrainSound(tileLocation);
 				CenterPlayer();
 			}
@@ -170,6 +170,7 @@ namespace stardew_access.Features
 		internal void PlayerWarped(object? sender, WarpedEventArgs e)
 		{
 			this.HandleFinishedWarping();
+			StepCounter = 0;
 		}
 
 		private void HandleFinishedWarping(bool failWarp = false)
