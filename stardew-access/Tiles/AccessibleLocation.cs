@@ -5,6 +5,30 @@ using System.Collections.Generic;
 
 namespace stardew_access.Tiles
 {
+    public struct AccessibleLocationData
+    {
+        public string[] WithMods { get; set; }
+        public string[] Conditions { get; set; }
+        public bool IsEvent { get; set; }
+        public OverlayedDictionary<Vector2, AccessibleTile> Tiles { get; set; }
+
+        public AccessibleLocationData()
+        {
+            this.WithMods = Array.Empty<string>();
+            this.Conditions = Array.Empty<string>();
+            this.IsEvent = false;
+
+            this.Tiles = new OverlayedDictionary<Vector2, AccessibleTile>(
+                new List<IDictionary<Vector2, AccessibleTile>>
+                {
+                    new Dictionary<Vector2, AccessibleTile>(),
+                    new Dictionary<Vector2, AccessibleTile>()
+                },
+                new List<string?> { "stardew-access", "user" }
+            );
+        }
+    }
+
     public class AccessibleLocation
     {
         // OverlayedDictionary to map coordinate vectors to tiles
@@ -16,10 +40,15 @@ namespace stardew_access.Tiles
         // The GameLocation this instance corresponds to
         internal readonly GameLocation Location;
 
-        public AccessibleLocation(GameLocation location)
+        public AccessibleLocation(GameLocation location, OverlayedDictionary<Vector2, AccessibleTile>? staticTiles = null)
         {
             Location = location;
-            Tiles = new OverlayedDictionary<Vector2, AccessibleTile>("Static");
+            if (staticTiles != null)
+            {
+                Tiles = new OverlayedDictionary<Vector2, AccessibleTile>(staticTiles, "Static");
+            } else {
+                Tiles = new OverlayedDictionary<Vector2, AccessibleTile>("Static");
+            }
             #if DEBUG
             Log.Verbose($"AccessibleLocation: initialized \"{location.NameOrUniqueName}\"");
             #endif
@@ -47,12 +76,12 @@ namespace stardew_access.Tiles
             {
                 result = Tiles.TryAdd(tile.Coordinates, tile, layerName);
                 #if DEBUG
-                Log.Verbose($"Adding tile {tile.NameOrTranslationKey} at {tile.Coordinates} to layer {layerName} of location {Location.NameOrUniqueName}");
+                Log.Verbose($"Adding tile {tile} to layer {layerName} of location {Location.NameOrUniqueName}");
                 #endif
             } else {
                 result = Tiles.TryAdd(tile.Coordinates, tile);
                 #if DEBUG
-                Log.Verbose($"Adding tile {tile.NameOrTranslationKey} at {tile.Coordinates} to location {Location.NameOrUniqueName}");
+                Log.Verbose($"Adding tile {tile} to location {Location.NameOrUniqueName}");
                 #endif
             }
             if (result)
@@ -132,38 +161,6 @@ namespace stardew_access.Tiles
 
             // If we get here, either the category or the layerName doesn't exist, so return an empty HashSet
             return resultSet;
-        }
-
-        internal void LoadStaticTiles(List<(string? NameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] XArray, int[] YArray, string Category, string[] WithMods, string[] Conditions, bool IsEvent)>? tileDataList)
-        {
-            if (tileDataList == null)
-            {
-                #if DEBUG
-                Log.Debug($"tileDataList is null; exiting.");
-                #endif
-                return;
-            }
-            Log.Trace($"Loading {tileDataList.Count} static tile entries for {Location.NameOrUniqueName}");
-            // Loop and load static tiles
-            foreach (var (NameOrTranslationKey, dynamicNameOrTranslationKey, XArray, YArray, Category, WithMods, Conditions, IsEvent) in tileDataList)
-            {
-                AddTilesToStaticLayer(NameOrTranslationKey, XArray, YArray, Category, WithMods, Conditions, IsEvent);
-            }
-        }
-
-        private void AddTilesToStaticLayer(string? nameOrTranslationKey, int[] xArray, int[] yArray, string category, string[] withMods, string[] conditions, bool isEvent)
-        {
-            foreach (int y in yArray)
-            {
-                foreach (int x in xArray)
-                {
-                    #if DEBUG
-                    Log.Verbose($"Adding tile {nameOrTranslationKey!} at ({x}, {y})");
-                    #endif
-                    AccessibleTile tile = new(nameOrTranslationKey!, new Vector2(x, y), CATEGORY.FromString(category));
-                    AddTile(tile, "Static");
-                }
-            }
         }
 
         // Indexer 1: Retrieve by Vector2

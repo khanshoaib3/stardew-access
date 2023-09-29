@@ -3,6 +3,7 @@ using stardew_access.Translation;
 using stardew_access.Utils;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace stardew_access.Tiles
 {
@@ -172,6 +173,17 @@ namespace stardew_access.Tiles
             bool isEvent = false
         ) : this (staticNameOrTranslationKey, dynamicNameOrTranslationKey, null, dynamicCoordinates, category, conditions, isEvent)
         {
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new();
+            sb.Append("AccessibleTile { ");
+            sb.Append($"{NameOrTranslationKey}:{Category} ");
+            sb.Append($"at ({StaticCoordinates.X}, {StaticCoordinates.Y})");
+            // ... append other properties or fields ...
+            sb.Append(" }");
+            return sb.ToString();
         }
 
         public (string nameOrTranslationKey, CATEGORY category) NameAndCategory

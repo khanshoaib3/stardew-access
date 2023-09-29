@@ -7,14 +7,11 @@ namespace stardew_access.Tiles
 {
     public class AccessibleTileManager
     {
-        // Dictionary of location specific settings
-        private readonly Dictionary<string, (string[] withMods, string[] conditions, bool isEvent)> locationSettings = new(StringComparer.OrdinalIgnoreCase);
+        // Dictionary to hold parsed and validated json data for static tiles
+        private Dictionary<string, AccessibleLocationData> LocationData = new(StringComparer.OrdinalIgnoreCase);
 
         // Dictionary to map location names to Accessiblelocations
         private Dictionary<string, AccessibleLocation> Locations { get; set; } = new(StringComparer.OrdinalIgnoreCase);
-
-        // Dictionary to hold parsed and validated json data for static tiles
-        private readonly Dictionary<string, List<(string? nameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] xArray, int[] yArray, string category, string[] withMods, string[] conditions, bool isEvent)>> staticTileData = new(StringComparer.OrdinalIgnoreCase);
 
         // Private instance variable
         private static AccessibleTileManager? _instance;
@@ -39,15 +36,15 @@ namespace stardew_access.Tiles
         internal void Initialize()
         {
             Log.Trace("Initializing     AccessibleTileManager");
-            if (JsonLoader.TryLoadNestedJson(
+            if (JsonLoader.TryLoadNestedJsonWithUserFile(
                 "tiles.json", 
                 TileDataProcessor, 
-                out Dictionary<string, AccessibleLocation> tileData, 
+                out LocationData, 
                 2, 
-                "assets/TileData"))
+                "assets/TileData",
+                true
+            ))
             {
-                // Assign the loaded data to the class-level variable
-                Locations = tileData;
                 Log.Info("Successfully initialized tile data.");
             }
             else
@@ -57,7 +54,7 @@ namespace stardew_access.Tiles
             }
         }
 
-        private void TileDataProcessor(List<string> path, JsonElement element, ref Dictionary<string, AccessibleLocation> result)
+        private void TileDataProcessor(List<string> path, JsonElement element, ref Dictionary<string, AccessibleLocationData> result, bool isUserFile)
         {
             string locationName = path[0];
             string arrayIndex = path[1];
@@ -81,10 +78,20 @@ namespace stardew_access.Tiles
                     {
                         [0] = singleLocationName // but update the locationName 
                     };
-                    TileDataProcessor(newPath, element, ref result);
+                    TileDataProcessor(newPath, element, ref result, isUserFile);
                 }
                 return;
             }
+
+            // Initialize an AccessibleLocationData instance
+
+            if (!result.TryGetValue(locationName, out AccessibleLocationData locationData))
+            {
+                locationData = new AccessibleLocationData();
+                result[locationName] = locationData;
+            }
+
+            // Populate the AccessibleLocationData instance with JSON data
 
             // Initialize variables to store values from JSON
             string? nameOrTranslationKey = null, dynamicNameOrTranslationKey = null, dynamicCoordinates = null, category = "Other";
@@ -108,17 +115,10 @@ namespace stardew_access.Tiles
             // Check if this is the locationSettings entry
             if (element.TryGetProperty("IsLocationSettings", out JsonElement isLocationSettingsElement) && isLocationSettingsElement.GetBoolean())
             {
-                // Add settings to the locationSettings dict if no entry exists
-                if (!locationSettings.TryAdd(locationName, (withMods, conditions, isEvent)))
-                {
-                    // Settings already exist; merge new settings
-                    var (existingWithMods, existingConditions, _) = locationSettings[locationName];
-                    // Append the new array to the old one, excluding duplicate entries
-                    var updatedWithMods = existingWithMods.Concat(withMods.Except(existingWithMods)).ToArray();
-                    var updatedConditions = existingConditions.Concat(conditions.Except(existingConditions)).ToArray();
-                    // Just use new isEvent value; it's either the same or it isn't.
-                    locationSettings[locationName] = (updatedWithMods, updatedConditions, isEvent);
-                }
+                // update the withMods and conditions lists with new entries
+                locationData.WithMods = locationData.WithMods.Concat(withMods.Except(locationData.WithMods)).ToArray();
+                locationData.Conditions = locationData.Conditions.Concat(conditions.Except(locationData.Conditions)).ToArray();
+                locationData.IsEvent = isEvent;
                 // Settings added
                 return;
             }
@@ -164,16 +164,17 @@ namespace stardew_access.Tiles
             
             if (hasStaticCoordinates)
             {
-                if (!staticTileData.ContainsKey(locationName))
+                string layerName = isUserFile ? "user" : "stardew-access";
+                foreach (int y in yArray!)
                 {
-                    staticTileData[locationName] = new List<(string? nameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] xArray, int[] yArray, string category, string[] withMods, string[] conditions, bool isEvent)>();
-                    Log.Trace($"AccessibleTileManager.TileDataProcessor: created new staticTileData entry for {locationName}");
+                    foreach (int x in xArray!)
+                    {
+                        Vector2 position = new(x, y);
+                        AccessibleTile tile = new(nameOrTranslationKey!, position, CATEGORY.FromString(category));
+                        Log.Debug($"AccessibleTileManager: Adding tile {tile} to layer {layerName}.");
+                        locationData.Tiles.Add(position, tile, layerName);
+                    }
                 }
-                (string? nameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] xArray, int[] yArray, string category, string[] withMods, string[] conditions, bool isEvent) staticData = (nameOrTranslationKey, dynamicNameOrTranslationKey, xArray!, yArray!, category, withMods, conditions, isEvent);
-                staticTileData[locationName].Add(staticData);
-                #if DEBUG
-                Log.Verbose($"AccessibleTileManager: Loaded static tile info for location {locationName}: {staticData}");
-                #endif
             }
         }
 
@@ -183,23 +184,22 @@ namespace stardew_access.Tiles
             // Create new AccessibleLocation and initialize with base layer "Static"
             string locationName = gameLocation.NameOrUniqueName;
             Log.Trace($"AccessibleTileManager.CreateLocation: Creating new AccessibleLocation {locationName}");
-            AccessibleLocation location = new(gameLocation);
-
-            // Add it to the Locations dictionary
-            Locations.Add(locationName, location);
-
-            // Check if there's corresponding data in the staticTileData dictionary
-            if (staticTileData.TryGetValue(locationName, out List<(string? NameOrTranslationKey, string? dynamicNameOrTranslationKey, int[] XArray, int[] YArray, string Category, string[] WithMods, string[] Conditions, bool IsEvent)>? tileDataList))
+            // Check if there's corresponding data in the AccessibleLocationData dictionary
+            if (LocationData.TryGetValue(locationName, out var locationData))
             {
                 Log.Trace($"AccessibleTileManager: found static data for location {locationName}");
-                location.LoadStaticTiles(tileDataList);
             } 
             #if DEBUG
             else
             {
-                Log.Debug($"AccessibleTileManager.CreateLocation: Unable to find static tile data for \"{locationName}\". Keys are:\n\t{string.Join(", ", staticTileData.Keys)}", true);
+                Log.Debug($"AccessibleTileManager.CreateLocation: Unable to find static data for \"{locationName}\". Keys are:\n\t{string.Join(", ", LocationData.Keys)}", true);
             }
             #endif
+
+            AccessibleLocation location = new(gameLocation, locationData.Tiles);
+
+            // Add it to the Locations dictionary
+            Locations.Add(locationName, location);
 
             return location;
         }
