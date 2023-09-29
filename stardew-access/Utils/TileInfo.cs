@@ -121,7 +121,7 @@ namespace stardew_access.Utils
             }
 
             (string? name, CATEGORY? category) staticTile = MainClass.TileManager.GetNameAndCategoryAt((x, y), "Static", currentLocation);
-                        if (staticTile.name != null)
+            if (staticTile.name != null)
             {
                 #if DEBUG
                 Log.Verbose($"TileInfo: Got static tile {staticTile} from TileManager");

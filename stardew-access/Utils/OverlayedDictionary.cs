@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text;
 
 namespace stardew_access.Utils
 {
@@ -165,7 +166,7 @@ namespace stardew_access.Utils
         #region Dictionary Interface
         public static explicit operator Dictionary<TKey, TValue>(OverlayedDictionary<TKey, TValue> overlayed)
         {
-            return overlayed.Snapshot; // or whatever you end up naming the property
+            return overlayed.Snapshot;
         }
 
         public override void Add(TKey key, TValue value)
@@ -293,12 +294,39 @@ namespace stardew_access.Utils
             return false;
         }
 
+        public override string ToString()
+        {
+            StringBuilder sb = new();
+            sb.AppendLine("OverlayedDictionary {");
+            sb.AppendLine($"\tNumber of Layers: {layers.Count}");
+            sb.AppendLine($"\tNamed Layers: {string.Join(", ", layersByName.Keys)}");
+
+            for (int i = 0; i < layers.Count; i++)
+            {
+                var layer = layers[i];
+                string name = GetLayerName(layer) ?? "";
+                if (name != "") name = $" ({name})";
+                sb.AppendLine($"\tLayer {i}{name}:");
+                string layerType = layer is OverlayedDictionary<TKey, TValue> ? "OverlayedDictionary" : "Dictionary";
+                sb.AppendLine($"\t\tType: {layerType}");
+
+                foreach (var keyValuePair in layer)
+                {
+                    sb.AppendLine($"\t\tKey: {keyValuePair.Key}, Value: {keyValuePair.Value}");
+                }
+            }
+
+            sb.Append('}');
+            return sb.ToString();
+        }
+
         public bool TryAdd(TKey key, TValue value, string layerName) => GetReadableLayer(layerName).TryAdd(key, value);
 
         public override bool TryGetValue(TKey key, out TValue value)
         {
-            foreach (IDictionary<TKey, TValue> dict in layers)
+            for (int i = layers.Count-1; i>=0; i--)
             {
+                IDictionary<TKey, TValue> dict = layers[i];
                 // possible null value is expected here
                 #pragma warning disable CS8601 // Possible null reference assignment.
                 if (dict.TryGetValue(key, out value))
