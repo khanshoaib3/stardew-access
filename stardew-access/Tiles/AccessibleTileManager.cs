@@ -36,6 +36,9 @@ namespace stardew_access.Tiles
         internal void Initialize()
         {
             Log.Trace("Initializing     AccessibleTileManager");
+            // First try converting the old custom-tiles.json
+            if (ConvertOldCustomTilesFormat())
+                Log.Info($"Your custom-tiles.json file was updated to the new format,. You can find the new file under assets/TileData/tiles_user.json. Your original file was renamed to custom-tiles.old.json.");
             if (JsonLoader.TryLoadNestedJsonWithUserFile(
                 "tiles.json", 
                 TileDataProcessor, 
@@ -176,6 +179,78 @@ namespace stardew_access.Tiles
                     }
                 }
             }
+        }
+
+        private static void ProcessCustomTileEntry(List<string> path, JsonElement element, ref Dictionary<string, List<object>> tiles)
+        {
+            string location = path[0];
+            string NameOrTranslationKey = path[1]; // Assuming second element in path is the key
+            if (!tiles.TryGetValue(location, out List<object>? entries) || entries == null)
+            {
+                entries = new List<object>();
+                tiles[location] = entries;
+            }
+
+            int[] X = Array.Empty<int>(), Y = Array.Empty<int>();
+            if (element.TryGetProperty("x", out JsonElement xElement) && xElement.ValueKind == JsonValueKind.Array)
+            {
+                X = xElement.EnumerateArray().Select(x => x.GetInt32()).ToArray();
+            }
+
+            if (element.TryGetProperty("y", out JsonElement yElement) && yElement.ValueKind == JsonValueKind.Array)
+            {
+                Y = yElement.EnumerateArray().Select(y => y.GetInt32()).ToArray();
+            }
+
+            string Category = element.TryGetProperty("type", out JsonElement typeElement) && typeElement.ValueKind != JsonValueKind.Null
+                ? typeElement.GetString() ?? "Other"
+                : "Other";
+
+            var tileEntry = new { NameOrTranslationKey, X, Y, Category };
+            entries.Add(tileEntry);
+                    }
+
+        internal static bool ConvertOldCustomTilesFormat()
+        {
+            string newLocation = Path.Combine(MainClass.ModHelper!.DirectoryPath, "assets", "TileData", "custom-tiles.json");
+            string oldLocation = Path.Combine(MainClass.ModHelper!.DirectoryPath, "assets", "custom-tiles.json");
+            string userFileLocation = Path.Combine(MainClass.ModHelper!.DirectoryPath, "assets", "TileData", "tiles_user.json");
+
+            string? subdir = null;
+            string? fileToProcess = null;  // Add this line
+            
+            // Check for file in new location
+            if (File.Exists(newLocation))
+            {
+                subdir = "assets/TileData";
+                fileToProcess = newLocation;  // Set fileToProcess
+            }
+            // If not found, check for file in old location
+            else if (File.Exists(oldLocation))
+            {
+                subdir = "assets";
+                fileToProcess = oldLocation;  // Set fileToProcess
+            }
+
+            if (subdir != null && fileToProcess != null)
+            {
+                Dictionary<string, List<object>> tiles = new();
+                if (JsonLoader.TryLoadNestedJson("custom-tiles.json", ProcessCustomTileEntry, out tiles, 2, subdir))
+                {
+                    // Serialize the dictionary
+                    string serializedTiles = JsonSerializer.Serialize(tiles, new JsonSerializerOptions { WriteIndented = true });
+                    
+                    // Save it to tiles_user.json in new location
+                    File.WriteAllText(userFileLocation, serializedTiles);
+                    
+                    // Rename the processed file to custom-tiles.old.json
+                    string oldFileName = Path.Combine(subdir, "custom-tiles.json");
+                    string newFileName = Path.Combine(subdir, "custom-tiles.old.json");
+                    File.Move(fileToProcess, Path.Combine(MainClass.ModHelper!.DirectoryPath, newFileName));
+                }
+                return true;
+            }
+            return false;
         }
 
         // Create a new AccessibleLocation
