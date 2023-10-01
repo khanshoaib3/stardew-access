@@ -796,6 +796,15 @@
       "Conditions": ["HasQuest:5"]
     }
   ],
+  "FarmHouse": [
+    {
+      "NameOrTranslationKey": "static_tile-farmhouse-cellar_door",
+      "X": [4, 5],
+      "Y": [25],
+      "Category": "door",
+      "Conditions": ["FarmHouse:3"]
+    }
+  ],
   "FishShop": [
     {
       "NameOrTranslationKey": "static_tile-common-shop_counter",

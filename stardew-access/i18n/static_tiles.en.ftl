@@ -168,6 +168,10 @@ static_tile-elliott_house-piano_key_4 = Piano Key 4
 
 static_tile-farm-lumber_pile = Lumber Pile
 
+# FarmHouse
+
+static_tile-farmhouse-cellar_door = cellar
+
 # Forest
 
 static_tile-forest-bridge_1 = Bridge 1
