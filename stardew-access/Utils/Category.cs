@@ -56,6 +56,7 @@ namespace stardew_access.Utils
             {"machine", new CATEGORY("machine")},
             {"bridge", new CATEGORY("bridge")},
             {"dropped item", new CATEGORY("dropped item")},
+            {"fishing", new CATEGORY("fishing")},
             {"other", new CATEGORY("other")}
         };
 
@@ -74,7 +75,17 @@ namespace stardew_access.Utils
                 throw new ArgumentException("Category name cannot be null or empty.", nameof(name));
             }
 
-            return Categories.TryGetValue(name, out CATEGORY? category) ? category ?? CATEGORY.Others : CATEGORY.Others;
+            if (Categories.TryGetValue(name, out CATEGORY? category) && category != null)
+            {
+                return category;
+            } else {
+                if (AddNewCategory(name))
+                {
+                    if (Categories.TryGetValue(name, out var newCategory) && category != null)
+                        return newCategory;
+                }
+            }
+            return Others;
         }
 
         /// <summary>
@@ -122,6 +133,7 @@ namespace stardew_access.Utils
         public static CATEGORY Machines => FromString("machine");
         public static CATEGORY Bridges => FromString("bridge");
         public static CATEGORY DroppedItems => FromString("dropped item");
+        public static CATEGORY Fishing => FromString("fishing");
         public static CATEGORY Others => FromString("other");
     }
 }
