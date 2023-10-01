@@ -64,9 +64,9 @@ namespace stardew_access.Tiles
         }
 
         // Retrieval methods for each category
-        public static Func<ConditionalBase, string>? GetNameHelper(string name)
+        public static bool TryGetNameHelper(string name, out Func<ConditionalBase, string>? nameFunc)
         {
-            return NameHelpers.GetValueOrDefault(name);
+            return NameHelpers.TryGetValue(name, out nameFunc);
         }
 
         public static bool TryGetConditionHelper(string name, out Func<ConditionalBase, bool>? conditionFunc)
@@ -74,14 +74,14 @@ namespace stardew_access.Tiles
             return ConditionHelpers.TryGetValue(name, out conditionFunc);
         }
 
-        public static Func<ConditionalBase, Vector2>? GetCoordinateHelper(string name)
+        public static bool TryGetCoordinateHelper(string name, out Func<ConditionalBase, Vector2>? coordinateFunc)
         {
-            return CoordinateHelpers.GetValueOrDefault(name);
+            return CoordinateHelpers.TryGetValue(name, out coordinateFunc);
         }
 
-        public static Func<ConditionalBase, Dictionary<Vector2, string>>? GetCoordinatesHelper(string name)
+        public static bool TryGetCoordinatesHelper(string name, out Func<ConditionalBase, Dictionary<Vector2, string>>? coordinatesFunc)
         {
-            return CoordinatesHelpers.GetValueOrDefault(name);
+            return CoordinatesHelpers.TryGetValue(name, out coordinatesFunc);
         }
 
         // helpers
