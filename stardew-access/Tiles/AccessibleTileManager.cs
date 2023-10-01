@@ -38,7 +38,7 @@ namespace stardew_access.Tiles
             Log.Trace("Initializing     AccessibleTileManager");
             // First try converting the old custom-tiles.json
             if (ConvertOldCustomTilesFormat())
-                Log.Info($"Your custom-tiles.json file was updated to the new format,. You can find the new file under assets/TileData/tiles_user.json. Your original file was renamed to custom-tiles.old.json.");
+                Log.Alert($"Your custom-tiles.json file was updated to the new format,. You can find the new file under assets/TileData/tiles_user.json. Your original file was renamed to custom-tiles.old.json.");
             if (JsonLoader.TryLoadNestedJsonWithUserFile(
                 "tiles.json", 
                 TileDataProcessor, 
