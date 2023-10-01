@@ -105,32 +105,33 @@ namespace stardew_access.Features
                                 MainClass.ScreenReader.Say(Translator.Instance.Translate("feature-read_tile-manually_triggered_info", new {tile_name = name, tile_category = category}), true);
                             else
                                 MainClass.ScreenReader.SayWithTileQuery(name, x, y, true);
-                            #if DEBUG
-                            if (manuallyTriggered)
+                            if (MainClass.Config.ReadTileIndexes)
                             {
-                                MainClass.ObjectTrackerFeature?.GetLocationObjects(resetFocus: true);
-                                var coords = (x, y);
-                                Dictionary<string, int>? layerAndIndex = TileUtils.GetTileLayers(coords);
-
-                                if (layerAndIndex is not null &&layerAndIndex.Count > 0)
+                                if (manuallyTriggered)
                                 {
-                                    string output = "Tile indexes: ";
-                                    foreach (var kvp in layerAndIndex)
+                                    MainClass.ObjectTrackerFeature?.GetLocationObjects(resetFocus: true);
+                                    var coords = (x, y);
+                                    Dictionary<string, int>? layerAndIndex = TileUtils.GetTileLayers(coords);
+
+                                    if (layerAndIndex is not null &&layerAndIndex.Count > 0)
                                     {
-                                        output += $"{kvp.Key} {kvp.Value}, ";
+                                        string output = "Tile indexes: ";
+                                        foreach (var kvp in layerAndIndex)
+                                        {
+                                            output += $"{kvp.Key} {kvp.Value}, ";
+                                        }
+
+                                        // Trim the trailing comma and space
+                                        output = output[..^2];
+
+                                        MainClass.ScreenReader?.Say(output, false);
                                     }
-
-                                    // Trim the trailing comma and space
-                                    output = output[..^2];
-
-                                    MainClass.ScreenReader?.Say(output, false);
-                                }
-                                else
-                                {
-                                    MainClass.ScreenReader?.Say("No tiles found at the given coordinates.", false);
+                                    else
+                                    {
+                                        MainClass.ScreenReader?.Say("No tiles found at the given coordinates.", false);
+                                    }
                                 }
                             }
-                            #endif
                     #endregion
 
                     #region Play colliding sound effect
