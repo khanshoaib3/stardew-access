@@ -766,7 +766,8 @@
       "NameOrTranslationKey": "static_tile-farm-lumber_pile",
       "X": [60, 61],
       "Y": [14],
-      "Category": "decoration"
+      "Category": "decoration",
+      "Conditions": ["HasQuest:5"]
     }
   ],
   "fishshop": [

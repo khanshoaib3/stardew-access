@@ -7,10 +7,10 @@ using System.Text;
 
 namespace stardew_access.Tiles
 {
-    public class AccessibleTile
+    public class AccessibleTile : ConditionalBase
     {
         private readonly string? StaticNameOrTranslationKey;
-        private readonly Func<object?, string>? DynamicNameOrTranslationKey;
+        private readonly Func<ConditionalBase, string>? DynamicNameOrTranslationKey;
         public string NameOrTranslationKey
         {
             get
@@ -25,13 +25,13 @@ namespace stardew_access.Tiles
                 }
                 else
                 {
-                    throw new InvalidOperationException("Neither static nor dynamic name is set.");
+                    return "Unnamed";
                 }
             }
         }
 
         private readonly Vector2 StaticCoordinates;
-        private readonly Func<object?, Vector2>? DynamicCoordinates;
+        private readonly Func<ConditionalBase, Vector2>? DynamicCoordinates;
         public Vector2 Coordinates
         {
             get
@@ -46,51 +46,26 @@ namespace stardew_access.Tiles
                 }
                 else
                 {
-                    throw new InvalidOperationException("Neither static nor dynamic coordinates are set.");
+                    return Vector2.Zero;
                 }
             }
         }
 
         public readonly CATEGORY Category;
-        
-        private readonly Func<object?, bool>[] Conditions;
-        public bool Visible
-        {
-            get
-            {
-                // If Conditions array is empty, return true
-                if (Conditions.Length == 0)
-                {
-                    return true;
-                }
-
-                // Iterate over each condition function and evaluate it
-                foreach (var condition in Conditions)
-                {
-                    // If any condition returns false, the whole property should return false
-                    if (!condition(this))
-                    {
-                        return false;
-                    }
-                }
-
-                // If we made it this far, all conditions returned true
-                return true;
-            }
-        }
 
         public readonly bool IsEvent ;
 
         // Super constructor
         public AccessibleTile(
             string? staticNameOrTranslationKey = null,
-            Func<object?, string>? dynamicNameOrTranslationKey = null,
+            Func<ConditionalBase, string>? dynamicNameOrTranslationKey = null,
             Vector2? staticCoordinates = null,
-            Func<object?, Vector2>? dynamicCoordinates = null,
+            Func<ConditionalBase, Vector2>? dynamicCoordinates = null,
             CATEGORY? category = null,
-            Func<object?, bool>[]? conditions = null,
+            string[]? conditions = null,
+            string[]? withMods = null,
             bool isEvent = false
-        )
+        ) : base(conditions, withMods)
         {
             // Error handling for invalid combinations
             if (staticNameOrTranslationKey == null && dynamicNameOrTranslationKey == null)
@@ -109,69 +84,74 @@ namespace stardew_access.Tiles
             StaticCoordinates = staticCoordinates ?? Vector2.Zero;
             DynamicCoordinates = dynamicCoordinates;
             Category = category ?? CATEGORY.Others;
-            Conditions = conditions ?? Array.Empty<Func<object?, bool>>();
             IsEvent = isEvent;
         }
 
         public AccessibleTile(
             string? staticNameOrTranslationKey,
             Vector2? staticCoordinates,
-            CATEGORY? category = null,
-            Func<object?, bool>[]? conditions = null,
+            CATEGORY category,
+            string[]? conditions = null,
+            string[]? withMods = null,
             bool isEvent = false
-        ) : this (staticNameOrTranslationKey, null, staticCoordinates, null, category, conditions, isEvent)
+        ) : this (staticNameOrTranslationKey, null, staticCoordinates, null, category, conditions, withMods, isEvent)
         {
         }
 
         public AccessibleTile(
             string? staticNameOrTranslationKey,
-            Func<object?, Vector2>? dynamicCoordinates,
-            CATEGORY? category = null,
-            Func<object?, bool>[]? conditions = null,
+            Func<ConditionalBase, Vector2>? dynamicCoordinates,
+            CATEGORY category,
+            string[]? conditions = null,
+            string[]? withMods = null,
             bool isEvent = false
-        ) : this (staticNameOrTranslationKey, null, null, dynamicCoordinates, category, conditions, isEvent)
+        ) : this (staticNameOrTranslationKey, null, null, dynamicCoordinates, category, conditions, withMods, isEvent)
         {
         }
 
         public AccessibleTile(
-            Func<object?, string>? dynamicNameOrTranslationKey,
+            Func<ConditionalBase, string> dynamicNameOrTranslationKey,
             Vector2? staticCoordinates,
-            CATEGORY? category = null,
-            Func<object?, bool>[]? conditions = null,
+            CATEGORY category,
+            string[]? conditions = null,
+            string[]? withMods = null,
             bool isEvent = false
-        ) : this (null, dynamicNameOrTranslationKey, staticCoordinates, null, category, conditions, isEvent)
+        ) : this (null, dynamicNameOrTranslationKey, staticCoordinates, null, category, conditions, withMods, isEvent)
         {
         }
 
         public AccessibleTile(
-            Func<object?, string>? dynamicNameOrTranslationKey,
-            Func<object?, Vector2>? dynamicCoordinates,
-            CATEGORY? category = null,
-            Func<object?, bool>[]? conditions = null,
+            Func<ConditionalBase, string> dynamicNameOrTranslationKey,
+            Func<ConditionalBase, Vector2>? dynamicCoordinates,
+            CATEGORY category,
+            string[]? conditions = null,
+            string[]? withMods = null,
             bool isEvent = false
-        ) : this (null, dynamicNameOrTranslationKey, null, dynamicCoordinates, category, conditions, isEvent)
+        ) : this (null, dynamicNameOrTranslationKey, null, dynamicCoordinates, category, conditions, withMods, isEvent)
         {
         }
 
         public AccessibleTile(
             string? staticNameOrTranslationKey,
-            Func<object?, string>? dynamicNameOrTranslationKey,
+            Func<ConditionalBase, string> dynamicNameOrTranslationKey,
             Vector2? staticCoordinates,
-            CATEGORY? category = null,
-            Func<object?, bool>[]? conditions = null,
+            CATEGORY category,
+            string[]? conditions = null,
+            string[]? withMods = null,
             bool isEvent = false
-        ) : this (staticNameOrTranslationKey, dynamicNameOrTranslationKey, staticCoordinates, null, category, conditions, isEvent)
+        ) : this (staticNameOrTranslationKey, dynamicNameOrTranslationKey, staticCoordinates, null, category, conditions, withMods, isEvent)
         {
         }
 
         public AccessibleTile(
             string? staticNameOrTranslationKey,
-            Func<object?, string>? dynamicNameOrTranslationKey,
-            Func<object?, Vector2>? dynamicCoordinates,
-            CATEGORY? category = null,
-            Func<object?, bool>[]? conditions = null,
+            Func<ConditionalBase, string> dynamicNameOrTranslationKey,
+            Func<ConditionalBase, Vector2>? dynamicCoordinates,
+            CATEGORY category,
+            string[]? conditions = null,
+            string[]? withMods = null,
             bool isEvent = false
-        ) : this (staticNameOrTranslationKey, dynamicNameOrTranslationKey, null, dynamicCoordinates, category, conditions, isEvent)
+        ) : this (staticNameOrTranslationKey, dynamicNameOrTranslationKey, null, dynamicCoordinates, category, conditions, withMods, isEvent)
         {
         }
 
@@ -200,7 +180,5 @@ namespace stardew_access.Tiles
                 );
             }
         }
-
-
     }
 }

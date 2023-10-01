@@ -125,7 +125,7 @@ namespace stardew_access.Tiles
         public (string? nameOrTranslationKey, CATEGORY? category) GetNameAndCategoryAt(Vector2 coordinates, string? layerName = null)
         {
             IDictionary<Vector2, AccessibleTile> tiles = (layerName == null ? Tiles : Tiles.GetLayer(layerName!))!;
-            if (tiles.TryGetValue(coordinates, out AccessibleTile? tile))
+            if (tiles.TryGetValue(coordinates, out AccessibleTile? tile) && tile.Visible)
             {
                 return tile!.NameAndCategory;
             }
@@ -145,7 +145,7 @@ namespace stardew_access.Tiles
                     // If layerName is specified, try to get that specific HashSet
                     if (layerDict.TryGetValue(layerName, out var tileSet))
                     {
-                        return tileSet;
+                        return new HashSet<AccessibleTile>(tileSet.Where(tile => tile.Visible));
                     }
                 }
                 else
@@ -155,7 +155,7 @@ namespace stardew_access.Tiles
                     {
                         resultSet.UnionWith(tileSet);
                     }
-                    return resultSet;
+                    return new HashSet<AccessibleTile>(resultSet.Where(tile => tile.Visible));
                 }
             }
 
@@ -168,8 +168,10 @@ namespace stardew_access.Tiles
         {
             get
             {
-                Tiles.TryGetValue(coordinates, out AccessibleTile? tile);
-                return tile;
+                if (Tiles.TryGetValue(coordinates, out AccessibleTile? tile) && tile != null && tile.Visible
+                    )
+                    return tile;
+                return null;
             }
         }
 

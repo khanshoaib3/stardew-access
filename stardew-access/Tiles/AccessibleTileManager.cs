@@ -173,7 +173,7 @@ namespace stardew_access.Tiles
                     foreach (int x in xArray!)
                     {
                         Vector2 position = new(x, y);
-                        AccessibleTile tile = new(nameOrTranslationKey!, position, CATEGORY.FromString(category));
+                        AccessibleTile tile = new(nameOrTranslationKey!, position, CATEGORY.FromString(category), conditions: conditions, withMods: withMods);
                         Log.Debug($"AccessibleTileManager: Adding tile {tile} to layer {layerName}.");
                         locationData.Tiles.Add(position, tile, layerName);
                     }
