@@ -32,7 +32,8 @@ namespace stardew_access.Utils
             }         
             catch (FileNotFoundException ex)
             {
-                Log.Error($"{fileName} file not found: {ex.Message}");
+                // Caller should decide if this is an error.
+                Log.Trace($"{fileName} file not found: {ex.Message}");
             }
             catch (JsonException ex)
             {
