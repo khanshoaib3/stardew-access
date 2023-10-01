@@ -8,6 +8,10 @@ static_tile-common-fridge = Fridge
 static_tile-common-oven = Oven
 static_tile-common-bench = Bench
 static_tile-common-bookshelf = Bookshelf
+static_tile-common-dark_pool = Dark Pool
+static_tile-common-pond = Pond
+static_tile-common-lake = Lake
+static_tile-common-river = River
 
 # NPCs
 
@@ -106,6 +110,8 @@ static_tile-bathhouse_pool-southeast_steps = Southeast Steps
 
 static_tile-beach-beach_warp_statue = Beach Warp Statue
 static_tile-beach-willys_barrel = Willy's Barrel
+static_tile-beach-east_pier = East Pier
+static_tile-beach-west_pier = West Pier
 
 # Beach night market
 
@@ -170,6 +176,7 @@ static_tile-forest-bridge_3 = Bridge 3
 static_tile-forest-bridge_4 = Bridge 4
 static_tile-forest-bridge_5 = Bridge 5
 static_tile-forest-abandoned_house = Abandoned House
+static_tile-forest-sewage_pipe = sewage pipe
 
 # Greenhouse
 
@@ -230,6 +237,7 @@ static_tile-island_shrine-south_pedestal = South Pedestal
 static_tile-island_south-ginger_island_warp_statue = Ginger Island Warp Statue
 static_tile-island_south-docks_parrot_express = Docks Parrot Express
 static_tile-island_south-return_boat = Return Boat
+static_tile-island_south-south_coast = south coast
 
 ## Island West
 
@@ -383,6 +391,8 @@ static_tile-mermaid_house-clam_shell_5 = Clam Shell 5
 # Mine
 
 static_tile-mine-quarry_mine_ladder = Quarry Mine Ladder
+static_tile-mine-icy_pool = Icy Pool
+static_tile-mine-lava_pool = Lava Pool
 
 # Mountain
 
@@ -471,6 +481,7 @@ static_tile-seed_shop-living_area_door = Living Area Door
 static_tile-sewer-exit_ladder = Exit Ladder
 static_tile-sewer-statue_of_uncertainty = Statue Of Uncertainty
 static_tile-sewer-mutant_bug_lair = Mutant Bug Lair
+static_tile-sewer-sewage_pool = sewage pool
 
 # Scull Cavern Entrance
 
@@ -482,6 +493,10 @@ static_tile-slime_hutch-water_trough_1 = Water Trough 1
 static_tile-slime_hutch-water_trough_2 = Water Trough 2
 static_tile-slime_hutch-water_trough_3 = Water Trough 3
 static_tile-slime_hutch-water_trough_4 = Water Trough 4
+
+# Submarine
+
+static_tile-submarine-deep_ocean = deep ocean
 
 # Town
 
