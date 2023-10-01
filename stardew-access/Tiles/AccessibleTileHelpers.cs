@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -85,6 +86,42 @@ namespace stardew_access.Tiles
         }
 
         // helpers
+        public static bool Condition_Farm(ConditionalBase obj)
+        {
+            if (obj.ConditionArgs.TryGetValue("Farm", out string? args) && !string.IsNullOrEmpty(args))
+            {
+                // Map the farm names to indexes
+                int farmTypeIndex = args.ToLower() switch
+                {
+                    "standard" => 0,
+                    "riverland" => 1,
+                    "forest" => 2,
+                    "hill-top" => 3,
+                    "wilderness" => 4,
+                    "fourcorners" => 5,
+                    "beach" => 6,
+                    _ => 7,
+                };
+                // Return true if current farm matches args; false otherwise.
+                return farmTypeIndex == Game1.whichFarm;
+            }
+            throw new ArgumentException($"Farm name for Farm condition on {obj} must be non-empty and one of 'default', 'riverland', 'forest', 'hill-top', 'wilderness', 'fourcorners', or 'beach'");
+        }
+
+        public static bool Condition_FarmHouse(ConditionalBase obj)
+        {
+            if (obj.ConditionArgs.TryGetValue("FarmHouse", out string? args) && !string.IsNullOrEmpty(args))
+            {
+                // args should be digits
+                if (int.TryParse(args, out int level))
+                {
+                    FarmHouse house = Utility.getHomeOfFarmer(Game1.player!);
+                    return house.upgradeLevel >= level;
+                }
+            }
+            throw new ArgumentException($"Level for FarmHouse on {obj} must be a non-empty, valid integer");
+        }
+
         public static bool Condition_HasQuest(ConditionalBase obj)
         {
             if (obj.ConditionArgs.TryGetValue("HasQuest", out string? args) && !string.IsNullOrEmpty(args))
@@ -94,12 +131,15 @@ namespace stardew_access.Tiles
                 {
                     return Game1.player!.hasQuest(id);
                 }
-                else
-                {
-                    throw new ArgumentException("ID for HasQuest must be a non-empty, valid integer");
-                }
             }
-            return false;
+            throw new ArgumentException($"ID for HasQuest on {obj} must be a non-empty, valid integer");
         }
+
+        public static bool Condition_JojaMember(ConditionalBase _)
+        {
+            // Return true if the player has the "JojaMember" mail, otherwise false
+            return Game1.MasterPlayer.mailReceived.Contains("JojaMember");
+        }
+
     }
 }
