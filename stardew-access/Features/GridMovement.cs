@@ -20,7 +20,7 @@ namespace stardew_access.Features
 		private const int SpeedMinimum = 2000;
 		private const int SpeedMaximum = 640;
 		private int StepCounter = 0;
-		private int tilesPerStep = MainClass.Config.GridMovementTilesPerStep;
+		private readonly int tilesPerStep = MainClass.Config.GridMovementTilesPerStep;
 		public Boolean is_warping = false;
 		public Boolean is_moving = false;
 

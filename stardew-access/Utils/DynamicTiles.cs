@@ -325,7 +325,7 @@ namespace stardew_access.Utils
             {
                 return (Translator.Instance.Translate("tile-building_animal_door-suffix", new
                 {
-                    name = name,
+                    name, // using inferred member name; silences IDE0037
                     is_open = (building.animalDoorOpen.Value) ? 1 : 0,
                     less_info = lessInfo ? 1 : 0
                 }), CATEGORY.Doors);

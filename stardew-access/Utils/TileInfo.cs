@@ -395,7 +395,7 @@ namespace stardew_access.Utils
                 {
                     is_open = fence.gatePosition.Value != 0 ? 1 : 0,
                     less_info = lessInfo ? 1 : 0,
-                    name = toReturn.name
+                    toReturn.name // using inferred member name; silences IDE0037
                 });
                 toReturn.category = CATEGORY.Doors;
             }
