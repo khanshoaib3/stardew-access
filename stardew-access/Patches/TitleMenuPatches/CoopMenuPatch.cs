@@ -64,7 +64,7 @@ namespace stardew_access.Patches
                 {
                     translationKey = "common-ui-scroll_up_button";
                 }
-                else if (__instance.downArrow != null && __instance.downArrow.containsPoint(x, y))
+                else if (___currentTab == CoopMenu.Tab.JOIN_TAB && __instance.downArrow != null && __instance.downArrow.containsPoint(x, y))
                 {
                     translationKey = "common-ui-scroll_down_button";
                 }
@@ -79,9 +79,18 @@ namespace stardew_access.Patches
 
         private static void LabeledSlot_DrawPatch(int i, CoopMenu ___menu, string ___message)
         {
+            var ___currentTab = MainClass.ModHelper!.Reflection.GetField<CoopMenu.Tab>(___menu, "currentTab").GetValue();
             try
             {
-                if (!___menu.slotButtons[i].visible || !___menu.slotButtons[i].containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
+                if (!___menu.slotButtons[i].visible 
+                    || !___menu.slotButtons[i].containsPoint(x, y)
+                    || ___menu.joinTab.containsPoint(x, y)
+                    || ___menu.hostTab.containsPoint(x, y)
+                    || (___currentTab == CoopMenu.Tab.JOIN_TAB && ___menu.refreshButton.containsPoint(x, y))
+                    || (___currentTab == CoopMenu.Tab.JOIN_TAB && ___menu.upArrow != null && ___menu.upArrow.containsPoint(x, y))
+                    || (___currentTab == CoopMenu.Tab.JOIN_TAB && ___menu.downArrow != null && ___menu.downArrow.containsPoint(x, y))
+                )
                     return;
 
                 MainClass.ScreenReader.SayWithMenuChecker(___message, true);
