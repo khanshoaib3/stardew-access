@@ -70,7 +70,11 @@ namespace stardew_access.Patches
             try
             {
                 #region Skip narrating hover text for certain menus
-                if (Game1.activeClickableMenu != null && SkipMenuTypes.Contains(Game1.activeClickableMenu.GetType()))
+                var activeClickableMenu = Game1.activeClickableMenu.GetType();
+                var activeGameMenuPage = Game1.activeClickableMenu is GameMenu gameMenu ? gameMenu.GetCurrentPage().GetType() : null;
+                // Check both sets as game menu pages can sometimes be stand alone menus
+                // E.G. CraftingPage is stand alone menu at stove.
+                if (SkipMenuTypes.Contains(activeClickableMenu) || SkipGameMenuPageTypes.Contains(activeClickableMenu))
                 {
                     return;
                 }
@@ -80,7 +84,7 @@ namespace stardew_access.Patches
                     return;
                 }
 
-                if (Game1.activeClickableMenu is GameMenu gameMenu && SkipGameMenuPageTypes.Contains(gameMenu.GetCurrentPage().GetType()))
+                if (activeGameMenuPage != null && (SkipGameMenuPageTypes.Contains(activeGameMenuPage)))
                 {
                     return;
                 }
