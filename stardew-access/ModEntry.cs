@@ -197,12 +197,12 @@ namespace stardew_access
 
         private void OnDayStarted(object? sender, DayStartedEventArgs? e)
         {
-            TileManager.EnsureLocationLoaded(Game1.currentLocation);
             ObjectTrackerFeature.GetLocationObjects();
         }
 
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
+            TileManager.EnsureLocationLoaded(Game1.currentLocation);
             RefreshTranslationsOnLocaleChange();
             
             // The event with id 13 is the Haley's six heart event, the one at the beach requiring the player to find the bracelet
@@ -534,7 +534,6 @@ namespace stardew_access
 
         private void OnPlayerWarped(object? sender, WarpedEventArgs e)
         {
-            TileManager.EnsureLocationLoaded(e.NewLocation);
             TileUtils.CleanupMaps(e.OldLocation, e.NewLocation);
             GridMovementFeature?.PlayerWarped(sender, e);
             ObjectTrackerFeature?.GetLocationObjects(resetFocus: true);
