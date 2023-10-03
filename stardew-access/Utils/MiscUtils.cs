@@ -85,40 +85,6 @@ namespace stardew_access.Utils
         }
 
         /// <summary>
-        /// Retrieves the value of a private field from an object.
-        /// </summary>
-        /// <typeparam name="T">The type of the field.</typeparam>
-        /// <param name="obj">The object from which to retrieve the field.</param>
-        /// <param name="fieldName">The name of the field to retrieve.</param>
-        /// <returns>The value of the private field if found, otherwise default value of type T.</returns>
-        /// <remarks>
-        /// This method uses reflection to access private fields.
-        /// </remarks>
-        public static T? GetPrivateField<T>(object obj, string fieldName)
-        {
-            FieldInfo? field = obj.GetType().GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
-            if (field != null)
-            {
-                return (T?)field.GetValue(obj);
-            }
-            return default;
-        }
-
-        /// <summary>
-        /// Retrieves a private method from an object.
-        /// </summary>
-        /// <param name="obj">The object from which to retrieve the method.</param>
-        /// <param name="methodName">The name of the method to retrieve.</param>
-        /// <returns>The MethodInfo for the private method if found, otherwise null.</returns>
-        /// <remarks>
-        /// This method uses reflection to access private methods.
-        /// </remarks>
-        public static MethodInfo? GetPrivateMethod(object obj, string methodName)
-        {
-            return obj.GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
-        }
-
-        /// <summary>
         /// Checks if a value has changed and runs an action if so.
         /// </summary>
         /// <param name="storedValue">The stored value to compare.</param>

@@ -26,7 +26,7 @@ namespace stardew_access.Utils
             #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
             {
-                layer = MiscUtils.GetPrivateField<Layer>(__instance, "m_layer") ?? throw new Exception("Failed to get layer instance");
+                layer = MainClass.ModHelper!.Reflection.GetField<Layer>(__instance, "m_layer").GetValue() ?? throw new Exception("Failed to get layer instance");
                 layersByArray[__instance] = layer;
             }
 
