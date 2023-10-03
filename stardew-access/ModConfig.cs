@@ -119,6 +119,7 @@ public Boolean ReadTileIndexes { get; set; } = false; // Toggle this feature.
         public Boolean TTS { get; set; } = true; // Toggles the screen reader/tts.
         public Boolean TrackDroppedItems {get; set;} = true; // Toggles detecting the dropped items.
         public Boolean DisableInventoryVerbosity {get; set;} = false; // If enabled, does not speaks 'not usable here' and 'donatable' in inventories
+        public Boolean DisableBushVerbosity {get; set;} = false; // If enabled, does not speak bush type or size; only harvestable.
         public Single MacSpeechRate {get; set;} = 220; // Sets speech rate for the Mac TTS.
         #endregion
 

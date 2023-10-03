@@ -221,25 +221,32 @@ namespace stardew_access.Utils
             }
 
             // Add the type of the bush
-            if (bushInfo.IsTownBush)
+            if (!MainClass.Config!.DisableBushVerbosity)
             {
-                bushInfoString.Append("Town ");
-            }
-            else if (bushInfo.IsGreenhouseBush)
-            {
-                bushInfoString.Append("Greenhouse ");
+                if (bushInfo.IsTownBush)
+                {
+                    bushInfoString.Append("Town ");
+                }
+                else if (bushInfo.IsGreenhouseBush)
+                {
+                    bushInfoString.Append("Greenhouse ");
+                }
+
+                bushInfoString.Append(bushInfo.BushType switch
+                {
+                    Bush.smallBush => "Small ",
+                    Bush.mediumBush => "Medium ",
+                    Bush.largeBush => "Large ",
+                    Bush.greenTeaBush => "Tea " + (bushInfo.Age < Bush.daysToMatureGreenTeaBush ? "Sapling" : "Bush"),
+                    Bush.walnutBush => "Golden Walnut ",
+                    _ => ""
+                });
+            } else {
+                // only name Tea bushes as they're plantable / harvestable
+                if (bushInfo.BushType == Bush.greenTeaBush)
+                    bushInfoString.Append("Tea " + (bushInfo.Age < Bush.daysToMatureGreenTeaBush ? "Sapling" : "Bush"));
             }
 
-            bushInfoString.Append(bushInfo.BushType switch
-            {
-                Bush.smallBush => "Small ",
-                Bush.mediumBush => "Medium ",
-                Bush.largeBush => "Large ",
-                Bush.greenTeaBush => "Tea " + (bushInfo.Age < Bush.daysToMatureGreenTeaBush ? "Sapling" : "Bush"),
-                Bush.walnutBush => "Golden Walnut ",
-                _ => ""
-            });
-            
             // Append the word "Bush" to all except for tea bush
             if (bushInfo.BushType != Bush.greenTeaBush)
                 bushInfoString.Append("Bush");
