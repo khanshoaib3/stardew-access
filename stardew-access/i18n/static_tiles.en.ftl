@@ -474,10 +474,10 @@ static_tile-sebastian_room-computer = Computer
 # Pierre's General Store
 
 static_tile-seed_shop-backpack_upgrade = Backpack Upgrade
-static_tile-seed_shop-pierre_bin = Pierre's Bin
+static_tile-seed_shop-pierre's_bin = Pierre's Bin
 static_tile-seed_shop-shrine_of_yoba = Shrine of Yoba
-static_tile-seed_shop-abigail_room_door = Abigail's Room Door
-static_tile-seed_shop-pierre_and_caroline_room_door = Pierre and Caroline's Room Door
+static_tile-seed_shop-abigail's_room_door = Abigail's Room Door
+static_tile-seed_shop-pierre_and_caroline's_room_door = Pierre and Caroline's Room Door
 static_tile-seed_shop-living_area_door = Living Area Door
 
 # Sewer
