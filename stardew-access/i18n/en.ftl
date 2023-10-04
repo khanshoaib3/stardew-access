@@ -202,6 +202,7 @@ object_category-decoration = Decoration
 object_category-machine = Machine
 object_category-bridge = Bridge
 object_category-dropped_item = Dropped item
+object_category-fishing = Fishing
 object_category-other = Other
 
 common-unknown = Unknown

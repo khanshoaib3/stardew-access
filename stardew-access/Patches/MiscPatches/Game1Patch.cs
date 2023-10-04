@@ -28,6 +28,7 @@ namespace stardew_access.Patches
         {
             try
             {
+                if (Game1.activeClickableMenu == null) return;
                 Log.Debug($"Closing {Game1.activeClickableMenu.GetType()} menu, performing cleanup...");
                 IClickableMenuPatch.Cleanup(Game1.activeClickableMenu);
             }
