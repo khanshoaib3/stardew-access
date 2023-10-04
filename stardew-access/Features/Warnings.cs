@@ -6,12 +6,22 @@ namespace stardew_access.Features
     /// <summary>
     /// Warns the player when their health or stamina/energy is low. Also warns when its past midnight.
     /// </summary>
-    internal class Warnings
+    public class Warnings : FeatureBase
     {
         // Store the previously checked value
         private int prevStamina;
         private int prevHealth;
         private int prevHour;
+
+        private static Warnings? instance;
+        public new static Warnings Instance
+        {
+            get
+            {
+                instance ??= new Warnings();
+                return instance;
+            }
+        }
 
         public Warnings()
         {
@@ -20,8 +30,10 @@ namespace stardew_access.Features
             prevHour = 6;
         }
 
-        public void Update()
+        public override void Update()
         {
+            if (!MainClass.Config.Warning) return;
+            
             this.CheckForHealth();
             this.CheckForStamina();
             this.CheckForTimeOfDay();
@@ -45,7 +57,7 @@ namespace stardew_access.Features
                     true
                 );
                 // Pause the read tile feature to prevent interruption in warning message
-                MainClass.ReadTileFeature.PauseUntil();
+                ReadTile.Instance.PauseUntil();
             }
 
             prevHour = hours;
@@ -71,7 +83,7 @@ namespace stardew_access.Features
                     true
                 );
                 // Pause the read tile feature to prevent interruption in warning message
-                MainClass.ReadTileFeature.PauseUntil();
+                ReadTile.Instance.PauseUntil();
             }
 
             prevStamina = stamina;
@@ -97,7 +109,7 @@ namespace stardew_access.Features
                     true
                 );
                 // Pause the read tile feature to prevent interruption in warning message
-                MainClass.ReadTileFeature.PauseUntil();
+                ReadTile.Instance.PauseUntil();
             }
 
             prevHealth = health;

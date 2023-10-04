@@ -22,13 +22,10 @@ namespace stardew_access
         private static LocalizedContentManager.LanguageCode previousLanguageCode;
         private static bool FirstRun = true;
         private static ModConfig? config;
-        private Harmony? harmony;
         private static Radar? radarFeature;
         private static IScreenReader? screenReader;
         private static IModHelper? modHelper;
         private static TileViewer? tileViewer;
-        private static Warnings? warnings;
-        private static ReadTile? readTile;
         private static GridMovement? gridMovement;
         private static ObjectTracker? objectTracker;
 
@@ -37,10 +34,7 @@ namespace stardew_access
             get => config ?? throw new InvalidOperationException("Config has not been initialized.");
             set => config = value;
         }
-        internal static IModHelper? ModHelper
-        {
-            get => modHelper;
-        }
+        internal static IModHelper? ModHelper => modHelper;
 
         internal static Radar RadarFeature
         {
@@ -74,25 +68,6 @@ namespace stardew_access
             {
                 tileViewer ??= new TileViewer();
                 return tileViewer;
-            }
-        }
-
-        internal static ReadTile ReadTileFeature
-        {
-            get
-            {
-                readTile ??= new ReadTile();
-                return readTile;
-            }
-        }
-
-        internal static Warnings WarningsFeature
-        {
-            get
-            {
-                warnings ??= new Warnings();
-
-                return warnings;
             }
         }
 
@@ -153,8 +128,7 @@ namespace stardew_access
 
             CustomCommands.Initialize();
 
-            harmony = new Harmony(ModManifest.UniqueID);
-            PatchManager.PatchAll(harmony);
+            PatchManager.PatchAll(new Harmony(ModManifest.UniqueID));
 
             //Initialize marked locations
             for (int i = 0; i < BuildingOperations.marked.Length; i++)
@@ -209,6 +183,8 @@ namespace stardew_access
             // *** Exiting here will cause GridMovement and ObjectTracker functionality to not work during this event, making the bracelet impossible to track ***
             if (!Context.IsPlayerFree && !(Game1.CurrentEvent is not null && Game1.CurrentEvent.id == 13))
                 return;
+            
+            FeatureManager.UpdateAll();
 
             // Narrates currently selected inventory slot
             GameStateNarrator.NarrateCurrentSlot();
@@ -216,12 +192,6 @@ namespace stardew_access
             GameStateNarrator.NarrateCurrentLocation();
             //handle TileCursor update logic
             TileViewerFeature.Update();
-
-            if (Config.Warning)
-                WarningsFeature.Update();
-
-            if (Config.ReadTile)
-                ReadTileFeature.Update();
 
             RunRadarFeatureIfEnabled();
 
@@ -430,11 +400,11 @@ namespace stardew_access
 
             // Manual read tile at player's position
             if (Config.ReadStandingTileKey.JustPressed())
-                ReadTileFeature.Run(manuallyTriggered: true, playersPosition: true);
+                ReadTile.Instance.Run(manuallyTriggered: true, playersPosition: true);
 
             // Manual read tile at looking tile
             if (Config.ReadTileKey.JustPressed())
-                ReadTileFeature.Run(manuallyTriggered: true);
+                ReadTile.Instance.Run(manuallyTriggered: true);
 
             // Tile viewing cursor keys
             TileViewerFeature.HandleInput();

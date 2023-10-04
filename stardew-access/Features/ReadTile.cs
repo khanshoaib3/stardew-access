@@ -10,12 +10,22 @@ namespace stardew_access.Features
     /// <summary>
     /// Reads the name and information about a tile.
     /// </summary>
-    internal class ReadTile
+    internal class ReadTile : FeatureBase
     {
         private bool isBusy; // To pause execution of run method between fixed intervals
         private readonly int delay; // Length of each interval (in ms)
         private bool shouldPause; // To pause the execution
         private Vector2 prevTile;
+        
+        private static ReadTile? instance;
+        public new static ReadTile Instance
+        {
+            get
+            {
+                instance ??= new ReadTile();
+                return instance;
+            }
+        }
 
         public ReadTile()
         {
@@ -23,8 +33,11 @@ namespace stardew_access.Features
             delay = 100;
         }
 
-        public void Update()
+        public override void Update()
         {
+            if (!MainClass.Config.ReadTile)
+                return;
+            
             if (this.isBusy)
                 return;
 
