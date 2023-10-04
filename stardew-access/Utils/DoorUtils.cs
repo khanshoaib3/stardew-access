@@ -22,7 +22,7 @@ namespace stardew_access.Utils
         private static Dictionary<(int x, int y), string>? warpsCache = null;
         private static Dictionary<(int x, int y), string>? doorsCache = null;
         private static GameLocation? lastLocation = null;
-        private static Dictionary<string, Dictionary<int, string>> DoorTileIndexes = new();
+        private static Dictionary<string, Dictionary<int, string>> DoorTileIndexes = new(StringComparer.OrdinalIgnoreCase);
 
         static DoorUtils()
         {
@@ -168,7 +168,7 @@ namespace stardew_access.Utils
                     (int x, int y) coords = (warp.X, warp.Y);
                     if (!staticDoors.TryGetValue(coords, out string? warpName))
                         warpName = lessInfo ? warp.TargetName : $"{warp.TargetName} Entrance";
-                    warpDict.Add(coords, warpName);
+                    warpDict.TryAdd(coords, warpName);
                 }
 
                 warpsCache = warpDict;
@@ -238,7 +238,7 @@ namespace stardew_access.Utils
                         lastUnnamedDoorName = null; // Reset the last unnamed door name
                     }
 
-                    doorDict.Add(coords, lastUnnamedDoorName ?? doorName!);
+                    doorDict.TryAdd(coords, lastUnnamedDoorName ?? doorName!);
                 }
 
                 doorsCache = doorDict;
@@ -297,7 +297,7 @@ namespace stardew_access.Utils
                 }
 
                 string doorState = isOpen ? "Opened " : "Closed ";
-                interiorDoorDict.Add(coords, $"{(lastUnnamedDoorName ?? doorName!)}{(lessInfo ? string.Empty : $": {doorState}")}");
+                interiorDoorDict.TryAdd(coords, $"{(lastUnnamedDoorName ?? doorName!)}{(lessInfo ? string.Empty : $": {doorState}")}");
             }
 
             return interiorDoorDict;
