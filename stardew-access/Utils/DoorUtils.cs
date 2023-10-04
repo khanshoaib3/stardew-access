@@ -1,3 +1,4 @@
+using stardew_access.Translation;
 using StardewValley;
 using System.Text.Json;
 using System.Text.RegularExpressions; 
@@ -110,7 +111,7 @@ namespace stardew_access.Utils
             location ??= Game1.currentLocation;
             suffix ??= CATEGORY.Doors.ToString();
             CheckAndInvalidateCache(location);
-            staticDoorsCache ??= MainClass.TileManager.GetTilesByCategory(CATEGORY.Doors, "Static").ToDictionary(tile => ((int)tile.Coordinates.X, (int)tile.Coordinates.Y), tile => $"{tile.NameOrTranslationKey.Trim()} {suffix}");
+            staticDoorsCache ??= MainClass.TileManager.GetTilesByCategory(CATEGORY.Doors, "Static").ToDictionary(tile => ((int)tile.Coordinates.X, (int)tile.Coordinates.Y), tile => $"{Translator.Instance.Translate(tile.NameOrTranslationKey, TranslationCategory.StaticTiles)} {suffix}");
             return staticDoorsCache;
         }
 
