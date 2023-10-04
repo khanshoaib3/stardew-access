@@ -37,7 +37,7 @@ namespace stardew_access.Utils
 			footstepTimer.Elapsed += FootstepTimer_Elapsed;
 		}
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
 			checkPathingTimer.Dispose();
 			footstepTimer.Dispose();

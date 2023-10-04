@@ -97,9 +97,10 @@ namespace stardew_access.Features
 
         private void StopPathfinding(Vector2? lastTargetedTile)
         {
-            ReadCurrentlySelectedObject();
             FixCharacterMovement();
             if (lastTargetedTile != null) FacePlayerToTargetTile  (lastTargetedTile.Value);
+            ReadCurrentlySelectedObject();
+            pathfinder?.Dispose();
         }
 
         private bool IsFocusValid()
@@ -347,6 +348,7 @@ namespace stardew_access.Features
             if (closestTile != null)
             {
                 MainClass.ScreenReader.Say($"Moving to {closestTile.Value.X}-{closestTile.Value.Y}.", true);
+                pathfinder?.Dispose();
                 pathfinder = new(RetryPathfinding, StopPathfinding);
                 pathfinder.StartPathfinding(player, Game1.currentLocation, closestTile.Value.ToPoint());
             }
