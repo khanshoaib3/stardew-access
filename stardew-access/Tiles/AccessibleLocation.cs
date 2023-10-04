@@ -31,6 +31,8 @@ namespace stardew_access.Tiles
 
     public class AccessibleLocation
     {
+        // Name of the static layer
+        private const string StaticLayerName = "Static";
         // OverlayedDictionary to map coordinate vectors to tiles
         internal readonly OverlayedDictionary<Vector2, AccessibleTile> Tiles;
 
@@ -45,9 +47,13 @@ namespace stardew_access.Tiles
             Location = location;
             if (staticTiles != null)
             {
-                Tiles = new OverlayedDictionary<Vector2, AccessibleTile>(staticTiles, "Static");
+                Tiles = new OverlayedDictionary<Vector2, AccessibleTile>(staticTiles, StaticLayerName);
+                foreach (AccessibleTile tile in staticTiles.Values)
+                {
+                    AddTileToCategoryMap(tile, StaticLayerName);
+                }
             } else {
-                Tiles = new OverlayedDictionary<Vector2, AccessibleTile>("Static");
+                Tiles = new OverlayedDictionary<Vector2, AccessibleTile>(StaticLayerName);
             }
             #if DEBUG
             Log.Verbose($"AccessibleLocation: initialized \"{location.NameOrUniqueName}\"");
@@ -84,19 +90,22 @@ namespace stardew_access.Tiles
                 Log.Verbose($"Adding tile {tile} to location {Location.NameOrUniqueName}");
                 #endif
             }
-            if (result)
+            if (result) AddTileToCategoryMap(tile, layerName ?? "");
+        }
+
+        private void AddTileToCategoryMap(AccessibleTile tile, string layerName)
+        {
+            if (this[tile.Coordinates] != tile) return;
+            if (!CategoryTileMap.ContainsKey(tile.Category))
             {
-                if (!CategoryTileMap.ContainsKey(tile.Category))
-                {
-                    CategoryTileMap[tile.Category] = new Dictionary<string, HashSet<AccessibleTile>>();
-                }
-                if (!CategoryTileMap[tile.Category].ContainsKey(layerName ?? ""))
-                {
-                    CategoryTileMap[tile.Category][layerName ?? ""] = new HashSet<AccessibleTile>();
-                }
-                
-                CategoryTileMap[tile.Category][layerName ?? ""].Add(tile);
+                CategoryTileMap[tile.Category] = new Dictionary<string, HashSet<AccessibleTile>>(StringComparer.OrdinalIgnoreCase);
             }
+            if (!CategoryTileMap[tile.Category].ContainsKey(layerName))
+            {
+                CategoryTileMap[tile.Category][layerName] = new HashSet<AccessibleTile>();
+            }
+            
+            CategoryTileMap[tile.Category][layerName].Add(tile);
         }
 
         public void RemoveTile(AccessibleTile tile)
