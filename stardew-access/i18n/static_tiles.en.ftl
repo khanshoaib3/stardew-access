@@ -56,10 +56,10 @@ static_tile-adventure_guild-house_plant = House Plant
 
 # Animals Shop
 
-static_tile-animal_shop-marnies_room_door = Marnie's Room Door
-static_tile-animal_shop-jass_room_door = Jas's Room Door
-static_tile-animal_shop-shanes_room_door = Shane's Room Door
-static_tile-animal_shop-marnies_barn_door = Marnie's Barn Door
+static_tile-animal_shop-marnies_room_door = Marnie's Room
+static_tile-animal_shop-jass_room_door = Jas's Room
+static_tile-animal_shop-shanes_room_door = Shane's Room
+static_tile-animal_shop-marnies_barn_door = Marnie's Barn
 static_tile-animal_shop-mega_station = Mega Station
 static_tile-animal_shop-shanes_radio = Shane's Radio
 static_tile-animal_shop-marnies_dresser = Marnie's Dresser
@@ -94,13 +94,13 @@ static_tile-archaeology_house-childrens_book = Children's Book
 
 ## Men/Women locker room
 
-static_tile-bathhouse_locker-entry_room_door = Entry Room Door
+static_tile-bathhouse_locker-entry_room_door = Entry Room
 static_tile-bathhouse_locker-pool_entrance = Pool Entrance
 
 ## Pool
 
-static_tile-bathhouse_pool-womens_locker_room_door = Women's Locker Room Door
-static_tile-bathhouse_pool-mens_locker_room_door = Men's Locker Room Door
+static_tile-bathhouse_pool-womens_locker_room_door = Women's Locker Room
+static_tile-bathhouse_pool-mens_locker_room_door = Men's Locker Room
 static_tile-bathhouse_pool-northwest_steps = Northwest Steps
 static_tile-bathhouse_pool-northeast_steps = Northeast Steps
 static_tile-bathhouse_pool-southwest_steps = Southwest Steps
@@ -115,8 +115,8 @@ static_tile-beach-west_pier = West Pier
 
 # Beach night market
 
-static_tile-beach_night_market-fishing_submarine_door = Fishing Submarine Door
-static_tile-beach_night_market-mermaid_boat_door = Mermaid Boat Door
+static_tile-beach_night_market-fishing_submarine_door = Fishing Submarine
+static_tile-beach_night_market-mermaid_boat_door = Mermaid Boat
 static_tile-beach_night_market-famous_painter_lupini = Famous Painter Lupini
 static_tile-beach_night_market-travelling_cart = Travelling Cart
 static_tile-beach_night_market-shrouded_figure = Shrouded Figure
@@ -125,7 +125,7 @@ static_tile-beach_night_market-magic_shop_boat = Magic Shop Boat
 
 # Blacksmith
 
-static_tile-blacksmith-clints_room_door = Clint's Room Door
+static_tile-blacksmith-clints_room_door = Clint's Room
 static_tile-blacksmith-clints_furnace = Clint's Furnace
 static_tile-blacksmith-blueprints = Blueprints
 static_tile-blacksmith-anvil = Anvil
@@ -190,12 +190,12 @@ static_tile-greenhouse-water_trough = Water Trough
 
 static_tile-haley_house-sewing_machine = Sewing Machine
 static_tile-haley_house-dye_pots = Dye Pots
-static_tile-haley_house-emilys_room_door = Emily's Room Door
+static_tile-haley_house-emilys_room_door = Emily's Room
 static_tile-haley_house-emilys_computer = Emily's Computer
 static_tile-haley_house-emilys_pet_parrot = Emily's Pet Parrot
 static_tile-haley_house-magazine = Magazine
 static_tile-haley_house-globe = Globe
-static_tile-haley_house-haleys_room_door = Haley's Room Door
+static_tile-haley_house-haleys_room_door = Haley's Room
 static_tile-haley_house-futan_bear = Futan Bear
 static_tile-haley_house-diary = Diary
 static_tile-haley_house-haleys_camera = Haley's Camera
@@ -208,8 +208,8 @@ static_tile-harvey_room-cassette_deck = Cassette Deck
 
 # Harvey's clinic
 
-static_tile-hospital-harveys_room_entrance_door = Harvey's Room Entrance Door
-static_tile-hospital-main_area_door = Main Area Door
+static_tile-hospital-harveys_room_entrance_door = Harvey's Room Entrance
+static_tile-hospital-main_area_door = Main Area
 
 # Ginger Island
 
@@ -247,14 +247,14 @@ static_tile-island_south-south_coast = south coast
 
 static_tile-island_west-farm_parrot_express = Farm Parrot Express
 static_tile-island_west-bridge_1 = Bridge 1
-static_tile-island_west-qis_walnut_room_door = Qi's Walnut Room Door
+static_tile-island_west-qis_walnut_room_door = Qi's Walnut Room
 static_tile-island_west-door_to_shipwreck_interior = Door to Shipwreck Interior
 static_tile-island_west-hole_1 = Hole 1
 static_tile-island_west-hole_2 = Hole 2
 static_tile-island_west-hole_3 = Hole 3
 static_tile-island_west-hole_4 = Hole 4
 static_tile-island_west-bridge_2 = Bridge 2
-static_tile-island_west-island_farm_house_door = Island Farm House Door
+static_tile-island_west-island_farm_house_door = Island Farm House
 
 ## Island West Cave 1
 
@@ -364,8 +364,8 @@ static_tile-jojamart-corn_flour = Corn Floue
 # 1 River Road (home of George, Evelyn, and Alex)
 
 static_tile-josh_house-tv = TV
-static_tile-josh_house-evelyn_and_georges_room_door = Evelyn and George's Room Door
-static_tile-josh_house-alexs_room_door = Alex's Room Door
+static_tile-josh_house-evelyn_and_georges_room_door = Evelyn and George's Room
+static_tile-josh_house-alexs_room_door = Alex's Room
 static_tile-josh_house-radio = Radio
 static_tile-josh_house-magazine = Magazine
 static_tile-josh_house-alexs_bookshelf = Alex's Bookshelf
@@ -380,7 +380,7 @@ static_tile-josh_house-evelyns_stove = Evelyn's Stove
 static_tile-manor_house-town_ledger_book = Town Ledger Book
 static_tile-manor_house-marriage_log_book = Marriage Log Book
 static_tile-manor_house-lost_and_found_box = Lost and Found Box
-static_tile-manor_house-mayors_room_door = Mayor's Room Door
+static_tile-manor_house-mayors_room_door = Mayor's Room
 static_tile-manor_house-mayors_oven = Mayor's Oven
 static_tile-manor_house-mayors_fridge = Mayor's Fridge
 
@@ -405,13 +405,13 @@ static_tile-mountain-quarry_bridge = Quarry Bridge
 static_tile-mountain-bridge_1 = Bridge 1
 static_tile-mountain-bridge_2 = Bridge 2
 static_tile-mountain-mountain_warp_statue = Mountain Warp Statue
-static_tile-mountain-science_house_secondary_door = Science House Secondary Door
+static_tile-mountain-science_house_secondary_door = Science House Secondary
 
 # Movie Theater
 
 static_tile-movie_theater-concessions_counter = Concessions Counter
 static_tile-movie_theater-crane_game = Crane Game
-static_tile-movie_theater-theater_door = Theater Door
+static_tile-movie_theater-theater_door = Theater
 
 # Qi's Walnut Room
 
@@ -434,9 +434,9 @@ static_tile-saloon-junimo_kart_arcade = Junimo Kart Arcade
 static_tile-saloon-joja_vending_machine = Joja Vending Machine
 static_tile-saloon-jukebox = Jukebox
 static_tile-saloon-gus_fridge = Gus's Fridge
-static_tile-saloon-gus_room_door = Gus's Room Door
-static_tile-saloon-dining_room_door = Dining Room Door
-static_tile-saloon-living_area_door = Living Area Door
+static_tile-saloon-gus_room_door = Gus's Room
+static_tile-saloon-dining_room_door = Dining Room
+static_tile-saloon-living_area_door = Living Area
 static_tile-saloon-gus_radio = Gus's Radio
 static_tile-saloon-lockbox = Lockbox
 static_tile-saloon-barstool = Barstool
@@ -445,10 +445,10 @@ static_tile-saloon-table = Table
 # 1 Willow Lane (address of Jodi, Kent, Sam and Vincent)
 
 static_tile-sam_house-radio = Radio
-static_tile-sam_house-vincent_room_door = Vincent's Room Door
+static_tile-sam_house-vincent_room_door = Vincent's Room
 static_tile-sam_house-toy_chest = Toy Chest
-static_tile-sam_house-sam_room_door = Sam's Room Door
-static_tile-sam_house-jodi_room_door = Jodi's Room Door
+static_tile-sam_house-sam_room_door = Sam's Room
+static_tile-sam_house-jodi_room_door = Jodi's Room
 static_tile-sam_house-sam_drawer = Sam's Drawer
 
 # 24 Mountain Road (Carpenter's Shop, home of Robin, Demetrius, Maru, and Sebastian)
@@ -466,7 +466,7 @@ static_tile-science_house-computer = Computer
 
 ## Sebastian's Room
 
-static_tile-sebastian_room-room_door = Room Door
+static_tile-sebastian_room-room_door = Room
 static_tile-sebastian_room-sebastian_radio = Sebastian's Radio
 static_tile-sebastian_room-graphic_novel = Graphic Novel
 static_tile-sebastian_room-computer = Computer
@@ -474,11 +474,11 @@ static_tile-sebastian_room-computer = Computer
 # Pierre's General Store
 
 static_tile-seed_shop-backpack_upgrade = Backpack Upgrade
-static_tile-seed_shop-pierre's_bin = Pierre's Bin
+static_tile-seed_shop-pierres_bin = Pierre's Bin
 static_tile-seed_shop-shrine_of_yoba = Shrine of Yoba
-static_tile-seed_shop-abigail's_room_door = Abigail's Room Door
-static_tile-seed_shop-pierre_and_caroline's_room_door = Pierre and Caroline's Room Door
-static_tile-seed_shop-living_area_door = Living Area Door
+static_tile-seed_shop-abigails_room_door = Abigail's Room
+static_tile-seed_shop-pierre_and_carolines_room_door = Pierre and Caroline's Room
+static_tile-seed_shop-living_area_door = Living Area
 
 # Sewer
 
@@ -489,7 +489,7 @@ static_tile-sewer-sewage_pool = sewage pool
 
 # Scull Cavern Entrance
 
-static_tile-skull_cave-skull_cavern_door = Skull Cavern Door
+static_tile-skull_cave-skull_cavern_door = Skull Cavern
 
 # Slime Hutch
 
@@ -530,7 +530,7 @@ static_tile-town-fountain = Fountain
 
 # Trailer (home of Pam and Penny)
 
-static_tile-trailer-penny_room_door = Penny's Room Door
+static_tile-trailer-penny_room_door = Penny's Room
 static_tile-trailer-book = Book
 static_tile-trailer-magazine = Magazine
 static_tile-trailer-pam_kitchen = Pam's Kitchen
@@ -545,13 +545,13 @@ static_tile-witch_hut-dark_shrine_of_selfishness = Dark Shrine of Selfishness
 # Witch's Swamp
 
 static_tile-witch_swamp-witch_cave_rune = Witch's Cave Rune
-static_tile-witch_swamp-witch_hut_door = Witch's Hut Door
+static_tile-witch_swamp-witch_hut_door = Witch's Hut
 
 static_tile-witch_warp_cave-witch_swamp_rune = Witch's Swamp Rune
 
 # Wizard's House
 
-static_tile-wizard_house-basement_door = Basement Door
+static_tile-wizard_house-basement_door = Basement
 static_tile-wizard_house-magic_buildings_book = Magic Buildings Book
 
 static_tile-wizard_house_basement-exit_ladder = Exit Ladder
