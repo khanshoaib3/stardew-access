@@ -25,7 +25,6 @@ namespace stardew_access
         private static Radar? radarFeature;
         private static IScreenReader? screenReader;
         private static IModHelper? modHelper;
-        private static TileViewer? tileViewer;
         private static GridMovement? gridMovement;
         private static ObjectTracker? objectTracker;
 
@@ -60,15 +59,6 @@ namespace stardew_access
                 return screenReader;
             }
             set => screenReader = value;
-        }
-
-        internal static TileViewer TileViewerFeature
-        {
-            get
-            {
-                tileViewer ??= new TileViewer();
-                return tileViewer;
-            }
         }
 
         internal static GridMovement GridMovementFeature
@@ -190,8 +180,6 @@ namespace stardew_access
             GameStateNarrator.NarrateCurrentSlot();
             // Narrate current location's name
             GameStateNarrator.NarrateCurrentLocation();
-            //handle TileCursor update logic
-            TileViewerFeature.Update();
 
             RunRadarFeatureIfEnabled();
 
@@ -346,8 +334,8 @@ namespace stardew_access
             // Code only run during game play below this line 
             
             // Stops the auto walk   controller if any movement key(WASD) is pressed
-            if (TileViewerFeature.isAutoWalking && IsMovementKey(e.Button))
-                TileViewerFeature.StopAutoWalking(wasForced: true);
+            if (TileViewer.Instance.IsAutoWalking && IsMovementKey(e.Button))
+                TileViewer.Instance.StopAutoWalking(wasForced: true);
 
             // Narrate Current Location
             if (Config.LocationKey.JustPressed())
@@ -407,7 +395,7 @@ namespace stardew_access
                 ReadTile.Instance.Run(manuallyTriggered: true);
 
             // Tile viewing cursor keys
-            TileViewerFeature.HandleInput();
+            TileViewer.Instance.HandleInput();
 
             // GridMovement 
             if (Game1.player.controller is not null || (GridMovementFeature != null && GridMovementFeature.is_warping))

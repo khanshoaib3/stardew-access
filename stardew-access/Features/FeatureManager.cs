@@ -8,6 +8,7 @@ public class FeatureManager
         {
             ReadTile.Instance,
             Warnings.Instance,
+            TileViewer.Instance,
         };
 
         foreach (FeatureBase feature in allFeatures)

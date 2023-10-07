@@ -10,18 +10,29 @@ namespace stardew_access.Features
     /// <summary>
     /// Allows browsing of the map and snapping mouse to tiles with the arrow keys
     /// </summary>
-    internal class TileViewer
+    internal class TileViewer : FeatureBase
     {
 
         //None of these positions take viewport into account; other functions are responsible later
-        private Vector2 ViewingOffset = Vector2.Zero;
-        private Vector2 relativeOffsetLockPosition = Vector2.Zero;
-        private Boolean relativeOffsetLock = false;
-        private Vector2 prevPlayerPosition = Vector2.Zero, prevFacing = Vector2.Zero;
-        private Vector2 finalTile = Vector2.Zero;
-        private Vector2 prevTile = Vector2.Zero;
+        private Vector2 _viewingOffset = Vector2.Zero;
+        private Vector2 _relativeOffsetLockPosition = Vector2.Zero;
+        private Boolean _relativeOffsetLock = false;
+        private Vector2 _prevPlayerPosition = Vector2.Zero, _prevFacing = Vector2.Zero;
+        private Vector2 _finalTile = Vector2.Zero;
+        private Vector2 _prevTile = Vector2.Zero;
 
-        public Boolean isAutoWalking = false;
+        public Boolean IsAutoWalking = false;
+        
+        private static TileViewer? instance;
+        public new static TileViewer Instance
+        {
+            get
+            {
+                instance ??= new TileViewer();
+                return instance;
+            }
+        }
+
 
         private static Vector2 PlayerFacingVector
         {
@@ -55,13 +66,13 @@ namespace stardew_access.Features
         public Vector2 GetTileCursorPosition()
         {
             Vector2 target = PlayerPosition;
-            if (this.relativeOffsetLock)
+            if (this._relativeOffsetLock)
             {
-                target += this.relativeOffsetLockPosition;
+                target += this._relativeOffsetLockPosition;
             }
             else
             {
-                target += PlayerFacingVector + this.ViewingOffset;
+                target += PlayerFacingVector + this._viewingOffset;
             }
             return target;
         }
@@ -73,7 +84,7 @@ namespace stardew_access.Features
         public Vector2 GetViewingTile()
         {
             Vector2 position = this.GetTileCursorPosition();
-            return new Vector2((int)position.X / Game1.tileSize, (int)position.Y / Game1.tileSize);
+            return new Vector2((int)(position.X / Game1.tileSize), (int)(position.Y / Game1.tileSize));
         }
 
         /// <summary>
@@ -83,16 +94,16 @@ namespace stardew_access.Features
         {
             if (MainClass.Config.ToggleRelativeCursorLockKey.JustPressed())
             {
-                this.relativeOffsetLock = !this.relativeOffsetLock;
-                if (this.relativeOffsetLock)
+                this._relativeOffsetLock = !this._relativeOffsetLock;
+                if (this._relativeOffsetLock)
                 {
-                    this.relativeOffsetLockPosition = PlayerFacingVector + this.ViewingOffset;
+                    this._relativeOffsetLockPosition = PlayerFacingVector + this._viewingOffset;
                 }
                 else
                 {
-                    this.relativeOffsetLockPosition = Vector2.Zero;
+                    this._relativeOffsetLockPosition = Vector2.Zero;
                 }
-                MainClass.ScreenReader.Say("Relative cursor lock " + (this.relativeOffsetLock ? "enabled" : "disabled") + ".", true);
+                MainClass.ScreenReader.Say("Relative cursor lock " + (this._relativeOffsetLock ? "enabled" : "disabled") + ".", true);
             }
             else if (MainClass.Config.TileCursorPreciseUpKey.JustPressed())
             {
@@ -141,14 +152,14 @@ namespace stardew_access.Features
             if (controller.pathToEndPoint != null && controller.pathToEndPoint.Count > 0)
             {
                 Game1.player.controller = controller;
-                this.isAutoWalking = true;
-                this.finalTile = this.GetViewingTile();
+                this.IsAutoWalking = true;
+                this._finalTile = this.GetViewingTile();
                 ReadTile.Instance.Pause();
-                MainClass.ScreenReader.Say($"Moving to {this.finalTile.X}x {this.finalTile.Y}y", true);
+                MainClass.ScreenReader.Say($"Moving to {this._finalTile.X}x {this._finalTile.Y}y", true);
             }
             else
             {
-                MainClass.ScreenReader.Say($"Cannot move to {this.finalTile.X}x {this.finalTile.Y}y", true);
+                MainClass.ScreenReader.Say($"Cannot move to {this._finalTile.X}x {this._finalTile.Y}y", true);
             }
         }
 
@@ -158,8 +169,8 @@ namespace stardew_access.Features
         /// <param name="wasForced">Narrates a message if set to true.</param>
         public void StopAutoWalking(bool wasForced = false)
         {
-            this.finalTile = Vector2.Zero;
-            this.isAutoWalking = false;
+            this._finalTile = Vector2.Zero;
+            this.IsAutoWalking = false;
             Game1.player.controller = null;
             ReadTile.Instance.Resume();
             if (wasForced)
@@ -174,7 +185,7 @@ namespace stardew_access.Features
             String? name = TileInfo.GetNameAtTile(tile);
 
             // Prepend the player's name if the viewing tile is occupied by the player itself
-            if (CurrentPlayer.PositionX == tile.X && CurrentPlayer.PositionY == tile.Y)
+            if (CurrentPlayer.PositionX == (int)tile.X && CurrentPlayer.PositionY == (int)tile.Y)
             {
                 name = $"{Game1.player.displayName}, {name}";
             }
@@ -207,13 +218,13 @@ namespace stardew_access.Features
             if (!IsPositionOnMap(dest)) return false;
             if ((MainClass.Config.LimitTileCursorToScreen && Utility.isOnScreen(dest, 0)) || !MainClass.Config.LimitTileCursorToScreen)
             {
-                if (this.relativeOffsetLock)
+                if (this._relativeOffsetLock)
                 {
-                    this.relativeOffsetLockPosition += delta;
+                    this._relativeOffsetLockPosition += delta;
                 }
                 else
                 {
-                    this.ViewingOffset += delta;
+                    this._viewingOffset += delta;
                 }
                 return true;
             }
@@ -231,27 +242,27 @@ namespace stardew_access.Features
         /// <summary>
         /// Handle tile viewer logic.
         /// </summary>
-        public void Update()
+        public override void Update()
         {
             //Reset the viewing cursor to the player when they turn or move. This will not reset the locked offset relative cursor position.
-            if (this.prevFacing != PlayerFacingVector || this.prevPlayerPosition != PlayerPosition)
+            if (this._prevFacing != PlayerFacingVector || this._prevPlayerPosition != PlayerPosition)
             {
-                this.ViewingOffset = Vector2.Zero;
+                this._viewingOffset = Vector2.Zero;
             }
-            this.prevFacing = PlayerFacingVector;
-            this.prevPlayerPosition = PlayerPosition;
+            this._prevFacing = PlayerFacingVector;
+            this._prevPlayerPosition = PlayerPosition;
             if (MainClass.Config.SnapMouse)
                 this.SnapMouseToPlayer();
 
-            if (this.isAutoWalking)
+            if (this.IsAutoWalking)
             {
-                if (Vector2.Distance(this.prevTile, CurrentPlayer.Position) >= 2f)
+                if (Vector2.Distance(this._prevTile, CurrentPlayer.Position) >= 2f)
                 {
-                    prevTile = CurrentPlayer.Position;
+                    _prevTile = CurrentPlayer.Position;
                     Game1.player.checkForFootstep();
                 }
 
-                if (this.finalTile != Vector2.Zero && this.finalTile == CurrentPlayer.Position)
+                if (this._finalTile != Vector2.Zero && this._finalTile == CurrentPlayer.Position)
                 {
                     MainClass.ScreenReader.Say("Reached destination", true);
                     this.StopAutoWalking();
