@@ -46,8 +46,6 @@ namespace stardew_access
             set => radarFeature = value;
         }
 
-        internal static string hudMessageQueryKey = "";
-        internal static bool isNarratingHudMessage = false;
         internal static bool radarDebug = false;
 
         internal static IScreenReader ScreenReader
@@ -176,14 +174,7 @@ namespace stardew_access
             
             FeatureManager.UpdateAll();
 
-            // Narrates currently selected inventory slot
-            GameStateNarrator.NarrateCurrentSlot();
-            // Narrate current location's name
-            GameStateNarrator.NarrateCurrentLocation();
-
             RunRadarFeatureIfEnabled();
-
-            RunHudMessageNarration();
 
             RefreshBuildListIfRequired();
 
@@ -198,17 +189,6 @@ namespace stardew_access
                     RadarFeature.Run();
                     await Task.Delay(RadarFeature.delay);
                     RadarFeature.isRunning = false;
-                }
-            }
-
-            async void RunHudMessageNarration()
-            {
-                if (!isNarratingHudMessage)
-                {
-                    isNarratingHudMessage = true;
-                    GameStateNarrator.NarrateHudMessages();
-                    await Task.Delay(300);
-                    isNarratingHudMessage = false;
                 }
             }
 
