@@ -10,6 +10,7 @@ public class FeatureManager
             Warnings.Instance,
             TileViewer.Instance,
             GameStateNarrator.Instance,
+            Radar.Instance,
         };
 
         foreach (FeatureBase feature in allFeatures)

@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using stardew_access.Features;
 using stardew_access.Utils;
 using stardew_access.Patches;
 using StardewModdingAPI;
@@ -54,9 +55,9 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("rdebug", "Toggle debugging in radar feature.", (string command, string[] args) =>
             {
-                MainClass.radarDebug = !MainClass.radarDebug;
+                Radar.RadarDebug = !Radar.RadarDebug;
 
-                Log.Info("Radar debugging " + (MainClass.radarDebug ? "on" : "off"));
+                Log.Info("Radar debugging " + (Radar.RadarDebug ? "on" : "off"));
             });
 
             helper.ConsoleCommands.Add("rstereo", "Toggle stereo sound in radar feature.", (string command, string[] args) =>
@@ -69,7 +70,7 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("rfocus", "Toggle focus mode in radar feature.", (string command, string[] args) =>
             {
-                bool focus = MainClass.RadarFeature.ToggleFocus();
+                bool focus = Radar.Instance.ToggleFocus();
 
                 Log.Info("Focus mode is " + (focus ? "on" : "off"));
             });
@@ -87,9 +88,9 @@ namespace stardew_access
 
                     if (isParsable)
                     {
-                        MainClass.RadarFeature.delay = delay;
+                        Radar.Instance.Delay = delay;
                         if (delay >= 1000)
-                            Log.Info($"Delay set to {MainClass.RadarFeature.delay} milliseconds.");
+                            Log.Info($"Delay set to {Radar.Instance.Delay} milliseconds.");
                         else
                             Log.Info($"Delay should be atleast 1 second or 1000 millisecond long.");
                     }
@@ -119,9 +120,9 @@ namespace stardew_access
 
                     if (isParsable)
                     {
-                        MainClass.RadarFeature.range = range;
+                        Radar.Instance.Range = range;
                         if (range >= 2 && range <= 10)
-                            Log.Info($"Range set to {MainClass.RadarFeature.range}.");
+                            Log.Info($"Range set to {Radar.Instance.Range}.");
                         else
                             Log.Info($"Range should be atleast 2 and maximum 10.");
                     }
@@ -149,9 +150,9 @@ namespace stardew_access
                     if (keyToAdd != null)
                     {
                         keyToAdd = keyToAdd.Trim().ToLower();
-                        if (!MainClass.RadarFeature.exclusions.Contains(keyToAdd))
+                        if (!Radar.Instance.Exclusions.Contains(keyToAdd))
                         {
-                            MainClass.RadarFeature.exclusions.Add(keyToAdd);
+                            Radar.Instance.Exclusions.Add(keyToAdd);
                             Log.Info($"Added {keyToAdd} key to exclusions list.");
                         }
                         else
@@ -174,9 +175,9 @@ namespace stardew_access
                 if (keyToAdd != null)
                 {
                     keyToAdd = keyToAdd.Trim().ToLower();
-                    if (MainClass.RadarFeature.exclusions.Contains(keyToAdd))
+                    if (Radar.Instance.Exclusions.Contains(keyToAdd))
                     {
-                        MainClass.RadarFeature.exclusions.Remove(keyToAdd);
+                        Radar.Instance.Exclusions.Remove(keyToAdd);
                         Log.Info($"Removed {keyToAdd} key from exclusions list.");
                     }
                     else
@@ -192,12 +193,12 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("relist", "List all the exclusions in the radar feature.", (string command, string[] args) =>
             {
-                if (MainClass.RadarFeature.exclusions.Count > 0)
+                if (Radar.Instance.Exclusions.Count > 0)
                 {
                     string toPrint = "";
-                    for (int i = 0; i < MainClass.RadarFeature.exclusions.Count; i++)
+                    for (int i = 0; i < Radar.Instance.Exclusions.Count; i++)
                     {
-                        toPrint = $"{toPrint}\t{i + 1}: {MainClass.RadarFeature.exclusions[i]}";
+                        toPrint = $"{toPrint}\t{i + 1}: {Radar.Instance.Exclusions[i]}";
                     }
                     Log.Info(toPrint);
                 }
@@ -209,13 +210,13 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("reclear", "Clear the focus exclusions in the radar featrure.", (string command, string[] args) =>
             {
-                MainClass.RadarFeature.exclusions.Clear();
+                Radar.Instance.Exclusions.Clear();
                 Log.Info($"Cleared the focus list in the exclusions feature.");
             });
 
             helper.ConsoleCommands.Add("recount", "Number of exclusions in the radar feature.", (string command, string[] args) =>
             {
-                Log.Info($"There are {MainClass.RadarFeature.exclusions.Count} exclusiond in the radar feature.");
+                Log.Info($"There are {Radar.Instance.Exclusions.Count} exclusiond in the radar feature.");
             });
             #endregion
 
@@ -229,9 +230,9 @@ namespace stardew_access
                     if (keyToAdd != null)
                     {
                         keyToAdd = keyToAdd.Trim().ToLower();
-                        if (!MainClass.RadarFeature.focus.Contains(keyToAdd))
+                        if (!Radar.Instance.Focus.Contains(keyToAdd))
                         {
-                            MainClass.RadarFeature.focus.Add(keyToAdd);
+                            Radar.Instance.Focus.Add(keyToAdd);
                             Log.Info($"Added {keyToAdd} key to focus list.");
                         }
                         else
@@ -254,9 +255,9 @@ namespace stardew_access
                 if (keyToAdd != null)
                 {
                     keyToAdd = keyToAdd.Trim().ToLower();
-                    if (MainClass.RadarFeature.focus.Contains(keyToAdd))
+                    if (Radar.Instance.Focus.Contains(keyToAdd))
                     {
-                        MainClass.RadarFeature.focus.Remove(keyToAdd);
+                        Radar.Instance.Focus.Remove(keyToAdd);
                         Log.Info($"Removed {keyToAdd} key from focus list.");
                     }
                     else
@@ -272,12 +273,12 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("rflist", "List all the exclusions in the radar feature.", (string command, string[] args) =>
             {
-                if (MainClass.RadarFeature.focus.Count > 0)
+                if (Radar.Instance.Focus.Count > 0)
                 {
                     string toPrint = "";
-                    for (int i = 0; i < MainClass.RadarFeature.focus.Count; i++)
+                    for (int i = 0; i < Radar.Instance.Focus.Count; i++)
                     {
-                        toPrint = $"{toPrint}\t{i + 1}): {MainClass.RadarFeature.focus[i]}";
+                        toPrint = $"{toPrint}\t{i + 1}): {Radar.Instance.Focus[i]}";
                     }
                     Log.Info(toPrint);
                 }
@@ -289,13 +290,13 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("rfclear", "Clear the focus list in the radar featrure.", (string command, string[] args) =>
             {
-                MainClass.RadarFeature.focus.Clear();
+                Radar.Instance.Focus.Clear();
                 Log.Info($"Cleared the focus list in the radar feature.");
             });
 
             helper.ConsoleCommands.Add("rfcount", "Number of list in the radar feature.", (string command, string[] args) =>
             {
-                Log.Info($"There are {MainClass.RadarFeature.focus.Count} objects in the focus list in the radar feature.");
+                Log.Info($"There are {Radar.Instance.Focus.Count} objects in the focus list in the radar feature.");
             });
             #endregion
 

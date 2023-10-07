@@ -1,7 +1,7 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using   stardew_access.Features;
+using stardew_access.Features;
 using stardew_access.Patches;
 using stardew_access.ScreenReader;
 using stardew_access.Tiles;
@@ -10,7 +10,6 @@ using stardew_access.Utils;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Locations;
 
 namespace stardew_access
 {
@@ -34,19 +33,6 @@ namespace stardew_access
             set => config = value;
         }
         internal static IModHelper? ModHelper => modHelper;
-
-        internal static Radar RadarFeature
-        {
-            get
-            {
-                radarFeature ??= new Radar();
-
-                return radarFeature;
-            }
-            set => radarFeature = value;
-        }
-
-        internal static bool radarDebug = false;
 
         internal static IScreenReader ScreenReader
         {
@@ -174,23 +160,10 @@ namespace stardew_access
             
             FeatureManager.UpdateAll();
 
-            RunRadarFeatureIfEnabled();
-
             RefreshBuildListIfRequired();
 
             RunGridMovementFeatureIfEnabled();
             RunObjectTrackerFeatureIfEnabled();
-
-            async void RunRadarFeatureIfEnabled()
-            {
-                if (!RadarFeature.isRunning && Config.Radar)
-                {
-                    RadarFeature.isRunning = true;
-                    RadarFeature.Run();
-                    await Task.Delay(RadarFeature.delay);
-                    RadarFeature.isRunning = false;
-                }
-            }
 
             void RefreshBuildListIfRequired()
             {
