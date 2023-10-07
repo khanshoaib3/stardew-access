@@ -7,9 +7,10 @@ public class FeatureManager
         List<FeatureBase> allFeatures = new()
         {
             ReadTile.Instance,
-            Warnings.Instance,
+            GridMovement.Instance,
             TileViewer.Instance,
             GameStateNarrator.Instance,
+            Warnings.Instance,
             Radar.Instance,
         };
 

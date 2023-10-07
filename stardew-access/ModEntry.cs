@@ -21,10 +21,8 @@ namespace stardew_access
         private static LocalizedContentManager.LanguageCode previousLanguageCode;
         private static bool FirstRun = true;
         private static ModConfig? config;
-        private static Radar? radarFeature;
         private static IScreenReader? screenReader;
         private static IModHelper? modHelper;
-        private static GridMovement? gridMovement;
         private static ObjectTracker? objectTracker;
 
         internal static ModConfig Config
@@ -44,17 +42,6 @@ namespace stardew_access
             }
             set => screenReader = value;
         }
-
-        internal static GridMovement GridMovementFeature
-        {
-            get
-            {
-                gridMovement ??= new GridMovement();
-                return gridMovement;
-            }
-        }
-        internal static int? LastGridMovementDirection = null;
-        internal static InputButton? LastGridMovementButtonPressed = null;
 
         internal static AccessibleTileManager TileManager
         {
@@ -162,7 +149,6 @@ namespace stardew_access
 
             RefreshBuildListIfRequired();
 
-            RunGridMovementFeatureIfEnabled();
             RunObjectTrackerFeatureIfEnabled();
 
             void RefreshBuildListIfRequired()
@@ -187,22 +173,6 @@ namespace stardew_access
                 Translator.Instance.Initialize(ModManifest);
             }
 
-            void RunGridMovementFeatureIfEnabled()
-            {
-                if (LastGridMovementButtonPressed.HasValue)
-                {
-                    SButton button = LastGridMovementButtonPressed.Value.ToSButton();
-                    bool isButtonDown = Helper.Input.IsDown(button) || Helper.Input.IsSuppressed(button);
-                    bool? isGridMovementActive = Config?.GridMovementActive;
-                    bool? isGridMovementMoving = GridMovementFeature?.is_moving;
-
-                    if (LastGridMovementDirection is not null && Game1.activeClickableMenu == null && isGridMovementActive == true && isGridMovementMoving == false && Config?.GridMovementOverrideKey.IsDown() == false && isButtonDown)
-                    {
-                        GridMovementFeature?.HandleGridMovement(LastGridMovementDirection.Value, LastGridMovementButtonPressed.Value);
-                    }
-                }
-            }
-            
             void RunObjectTrackerFeatureIfEnabled()
             {
                 if (e.IsMultipleOf(15) && Config != null && Config.OTAutoRefreshing)
@@ -351,7 +321,7 @@ namespace stardew_access
             TileViewer.Instance.HandleInput();
 
             // GridMovement 
-            if (Game1.player.controller is not null || (GridMovementFeature != null && GridMovementFeature.is_warping))
+            if (Game1.player.controller is not null || (GridMovement.Instance.is_warping))
             {
                 Helper.Input.Suppress(e.Button);
                 #if DEBUG
@@ -397,14 +367,6 @@ namespace stardew_access
                     return;
                 }
 
-                if (GridMovementFeature == null)
-                {
-                    #if DEBUG
-                    Log.Verbose("HandleGridMovement: : returning due to 'gridMovement' being null");
-                    #endif
-                    return;
-                }
-
                 e.Button.TryGetStardewInput(out InputButton keyboardButton);
                 e.Button.TryGetController(out Buttons controllerButton);
 
@@ -420,7 +382,7 @@ namespace stardew_access
                 {
                     if (keyboardButton.Equals(mapping.Key.Item1) || controllerButton.Equals(mapping.Key.Item2))
                     {
-                        GridMovementFeature!.HandleGridMovement(mapping.Value, keyboardButton);
+                        GridMovement.Instance.HandleGridMovement(mapping.Value, keyboardButton);
                         Helper.Input.Suppress(e.Button);
                         break;
                     }
@@ -446,7 +408,7 @@ namespace stardew_access
         private void OnPlayerWarped(object? sender, WarpedEventArgs e)
         {
             TileUtils.CleanupMaps(e.OldLocation, e.NewLocation);
-            GridMovementFeature?.PlayerWarped(sender, e);
+            GridMovement.Instance.PlayerWarped(sender, e);
             ObjectTrackerFeature?.GetLocationObjects(resetFocus: true);
         }
     }
