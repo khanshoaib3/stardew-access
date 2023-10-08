@@ -1,7 +1,6 @@
-using StardewModdingAPI.Events;
-
 namespace stardew_access.Features;
 
+using StardewModdingAPI.Events;
 using System.Text.RegularExpressions;
 using Translation;
 using StardewValley;

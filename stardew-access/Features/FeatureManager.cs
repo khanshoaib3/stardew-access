@@ -11,6 +11,7 @@ public class FeatureManager
             ReadTile.Instance,
             GridMovement.Instance,
             TileViewer.Instance,
+            ObjectTracker.Instance,
             GameStateNarrator.Instance,
             Warnings.Instance,
             Radar.Instance,

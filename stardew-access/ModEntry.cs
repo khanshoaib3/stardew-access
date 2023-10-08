@@ -23,7 +23,6 @@ namespace stardew_access
         private static ModConfig? config;
         private static IScreenReader? screenReader;
         private static IModHelper? modHelper;
-        private static ObjectTracker? objectTracker;
 
         internal static ModConfig Config
         {
@@ -50,17 +49,6 @@ namespace stardew_access
                 return AccessibleTileManager.Instance;
             }
         }
-
-        internal static ObjectTracker ObjectTrackerFeature
-        {
-            get
-            {
-                objectTracker ??= new ObjectTracker();
-                return objectTracker;
-            }
-        }
-        internal static Boolean IsUsingPathfinding = false;
-
         #endregion
 
         /*********
@@ -132,7 +120,7 @@ namespace stardew_access
 
         private void OnDayStarted(object? sender, DayStartedEventArgs? e)
         {
-            ObjectTrackerFeature.GetLocationObjects();
+            ObjectTracker.Instance.GetLocationObjects();
         }
 
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
@@ -423,14 +411,14 @@ namespace stardew_access
                 MainClass.ScreenReader.Say(output, true);
                 return;
             } 
-            ObjectTrackerFeature?.HandleKeys(sender, e);
+            ObjectTracker.Instance.HandleKeys(sender, e);
         }
 
         private void OnPlayerWarped(object? sender, WarpedEventArgs e)
         {
             TileUtils.CleanupMaps(e.OldLocation, e.NewLocation);
             GridMovement.Instance.PlayerWarped(sender, e);
-            ObjectTrackerFeature?.GetLocationObjects(resetFocus: true);
+            ObjectTracker.Instance.GetLocationObjects(resetFocus: true);
         }
     }
 }

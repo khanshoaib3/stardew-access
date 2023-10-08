@@ -390,5 +390,4 @@ internal class ObjectTracker : FeatureBase
             MainClass.ScreenReader.Say("Could not find path to object.", true);
         }
     }
-    }
 }
