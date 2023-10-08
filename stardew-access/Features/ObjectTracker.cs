@@ -317,14 +317,29 @@ namespace stardew_access.Features
 
             if (pathfinder != null && pathfinder.IsActive)
             {
-                if (MiscUtils.IsAnyMovementKeyActive())
+                if (InputUtils.IsAnyMovementKeyPressed())
                 {
+                    #if DEBUG
+                    Log.Verbose("ObjectTracker->HandleKeys: movement key pressed, canceling auto walking for object tracker.");
+                    #endif
                     pathfinder.StopPathfinding();
                 }
-                else if (MiscUtils.IsUseToolKeyActive())
+                else if (InputUtils.IsUseToolKeyActive())
                 {
+                    #if DEBUG
+                    Log.Verbose("ObjectTracker->HandleKeys: use tool button pressed, canceling auto walking for object tracker.");
+                    #endif
                     pathfinder.StopPathfinding();
                     Game1.pressUseToolButton();
+                }
+                else if (InputUtils.IsDoActionKeyActive())
+                {
+                    #if DEBUG
+                    Log.Verbose("ObjectTracker->HandleKeys: action button pressed, canceling auto walking for object tracker.");
+                    #endif
+                    pathfinder.StopPathfinding();
+                    Game1.pressActionButton(Game1.input.GetKeyboardState(), Game1.input.GetMouseState(),
+                        Game1.input.GetGamePadState());
                 }
             }
         }

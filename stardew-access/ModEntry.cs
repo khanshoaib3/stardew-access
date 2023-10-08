@@ -208,15 +208,6 @@ namespace stardew_access
 
         private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
         {
-            if (Game1.player.controller is not null && Config!.OTCancelAutoWalking.JustPressed())
-            {
-                #if DEBUG
-                Log.Verbose("OnButtonPressed: canceling OTAutoWalking.");
-                #endif
-                Game1.player.controller.endBehaviorFunction(Game1.player, Game1.currentLocation);
-                Helper.Input.Suppress(e.Button);
-            }
-
             if (Config is null)
             {
                 #if DEBUG
@@ -256,10 +247,6 @@ namespace stardew_access
 
             // Code only run during game play below this line 
             
-            // Stops the auto walk   controller if any movement key(WASD) is pressed
-            if (TileViewer.Instance.IsAutoWalking && IsMovementKey(e.Button))
-                TileViewer.Instance.StopAutoWalking(wasForced: true);
-
             // Narrate Current Location
             if (Config.LocationKey.JustPressed())
                 Narrate(Game1.currentLocation.Name);
@@ -320,15 +307,67 @@ namespace stardew_access
             // Tile viewing cursor keys
             TileViewer.Instance.HandleInput();
 
+            // Suppresses button presses (excluding certain buttons) if object tracker/tile viewer is path finding
+            if (Game1.player.controller is not null)
+            {
+                if (TileViewer.Instance.IsAutoWalking)
+                {
+                    if (Config.OTCancelAutoWalking.JustPressed())
+                    {
+                        #if DEBUG
+                        Log.Verbose("OnButtonPressed: cancel auto walking button pressed, canceling auto walking for tile viewer.");
+                        #endif
+                        Game1.player.controller.endBehaviorFunction(Game1.player, Game1.currentLocation);
+                        Helper.Input.Suppress(e.Button);
+                    }
+                    else if (InputUtils.IsAnyMovementKey(e.Button))
+                    {
+                        #if DEBUG
+                        Log.Verbose("OnButtonPressed: movement key pressed, canceling auto walking for tile viewer.");
+                        #endif
+                        TileViewer.Instance.StopAutoWalking(wasForced: true);
+                    }
+                    else if (SButtonExtensions.IsUseToolButton(e.Button))
+                    {
+                        #if DEBUG
+                        Log.Verbose("OnButtonPressed: use tool button pressed, canceling auto walking for tile viewer.");
+                        #endif
+                        TileViewer.Instance.StopAutoWalking(wasForced: true);
+                        Game1.pressUseToolButton();
+                    }
+                    else if (SButtonExtensions.IsActionButton(e.Button))
+                    {
+                        #if DEBUG
+                        Log.Verbose("OnButtonPressed: action button pressed, canceling auto walking for tile viewer.");
+                        #endif
+                        TileViewer.Instance.StopAutoWalking(wasForced: true);
+                        Game1.pressActionButton(Game1.input.GetKeyboardState(), Game1.input.GetMouseState(),
+                            Game1.input.GetGamePadState());
+                    }
+                }
+
+                if (!InputUtils.IsAnyInventorySlotButton(e.Button)
+                    && !InputUtils.IsToolbarSwapButton(e.Button)
+                    && !e.Button.Equals(SButton.LeftControl))
+                {
+                    #if DEBUG
+                    Log.Verbose($"OnButtonPressed: suppressing '{e.Button.ToString()}' for object tracker/tile viewer auto walking as it is neither any inventory slot button nor the toolbar swap button");
+                    #endif
+                    Helper.Input.Suppress(e.Button);
+                }
+                return;
+            }
+            
             // GridMovement 
-            if (Game1.player.controller is not null || (GridMovement.Instance.is_warping))
+            if (GridMovement.Instance.is_warping)
             {
                 Helper.Input.Suppress(e.Button);
                 #if DEBUG
-                Log.Verbose("OnButtonPressed: returning due to Game1.player.controller not being null or GridMovementFeature.is_warping being true");
+                Log.Verbose("OnButtonPressed: returning due to GridMovementFeature.is_warping being true");
                 #endif
                 return;
             }
+
             if (!Context.CanPlayerMove)
             {
                 #if DEBUG
@@ -340,14 +379,6 @@ namespace stardew_access
 
             // local functions
             void Narrate(string message) => MainClass.ScreenReader.Say(message, true);
-
-            bool IsMovementKey(SButton button)
-            {
-                return button.Equals(SButtonExtensions.ToSButton(Game1.options.moveUpButton[0]))
-                    || button.Equals(SButtonExtensions.ToSButton(Game1.options.moveDownButton[0]))
-                    || button.Equals(SButtonExtensions.ToSButton(Game1.options.moveLeftButton[0]))
-                    || button.Equals(SButtonExtensions.ToSButton(Game1.options.moveRightButton[0]));
-            }
 
             void HandleGridMovement()
             {
