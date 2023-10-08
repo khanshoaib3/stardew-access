@@ -1,5 +1,6 @@
 using stardew_access.Utils;
 using stardew_access.Translation;
+using StardewModdingAPI.Events;
 
 namespace stardew_access.Features
 {
@@ -30,7 +31,7 @@ namespace stardew_access.Features
             prevHour = 6;
         }
 
-        public override void Update()
+        public override void Update(object? sender, UpdateTickedEventArgs e)
         {
             if (!MainClass.Config.Warning) return;
             

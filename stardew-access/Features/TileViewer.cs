@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using xTile;
 using stardew_access.Utils;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -242,7 +243,7 @@ namespace stardew_access.Features
         /// <summary>
         /// Handle tile viewer logic.
         /// </summary>
-        public override void Update()
+        public override void Update(object? sender, UpdateTickedEventArgs e)
         {
             //Reset the viewing cursor to the player when they turn or move. This will not reset the locked offset relative cursor position.
             if (this._prevFacing != PlayerFacingVector || this._prevPlayerPosition != PlayerPosition)

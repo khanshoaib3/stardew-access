@@ -1,3 +1,5 @@
+using StardewModdingAPI.Events;
+
 namespace stardew_access.Features;
 
 using System.Text.RegularExpressions;
@@ -26,7 +28,7 @@ internal class GameStateNarrator : FeatureBase
         }
     }
 
-    public override void Update()
+    public override void Update(object? sender, UpdateTickedEventArgs e)
     {
         NarrateCurrentSlot();
         NarrateCurrentLocation();

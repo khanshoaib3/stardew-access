@@ -3,6 +3,7 @@ using static stardew_access.Log;
 using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 
 namespace stardew_access.Features
@@ -33,7 +34,7 @@ namespace stardew_access.Features
             delay = 100;
         }
 
-        public override void Update()
+        public override void Update(object? sender, UpdateTickedEventArgs e)
         {
             if (!MainClass.Config.ReadTile)
                 return;

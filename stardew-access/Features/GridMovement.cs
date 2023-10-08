@@ -56,7 +56,7 @@ internal class GridMovement : FeatureBase
 		timer.Elapsed += Timer_Elapsed;
 	}
 
-	public override void Update()
+	public override void Update(object? sender, UpdateTickedEventArgs e)
 	{
 		if (MainClass.ModHelper == null) return;
 		if (!LastGridMovementButtonPressed.HasValue) return;

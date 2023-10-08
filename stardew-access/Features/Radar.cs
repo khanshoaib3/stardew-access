@@ -1,3 +1,5 @@
+using StardewModdingAPI.Events;
+
 namespace stardew_access.Features;
 
 using Microsoft.Xna.Framework;
@@ -79,7 +81,7 @@ internal class Radar : FeatureBase
          */
     }
 
-    public override void Update()
+    public override void Update(object? sender, UpdateTickedEventArgs e)
     {
         RunRadarFeatureIfEnabled();
 

@@ -1,8 +1,10 @@
+using StardewModdingAPI.Events;
+
 namespace stardew_access.Features;
 
 public class FeatureManager
 {
-    public static void UpdateAll()
+    public static void UpdateAll(object? sender, UpdateTickedEventArgs e)
     {
         List<FeatureBase> allFeatures = new()
         {
@@ -18,11 +20,11 @@ public class FeatureManager
         {
             try
             {
-                feature.Update();
+                feature.Update(sender, e);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Log.Error( $"An error occurred while updating {feature.GetType().FullName} feature:\n{e.Message}\n{e.StackTrace}");
+                Log.Error( $"An error occurred while updating {feature.GetType().FullName} feature:\n{exception.Message}\n{exception.StackTrace}");
                 throw;
             }
         }

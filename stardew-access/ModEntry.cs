@@ -145,11 +145,9 @@ namespace stardew_access
             if (!Context.IsPlayerFree && !(Game1.CurrentEvent is not null && Game1.CurrentEvent.id == 13))
                 return;
             
-            FeatureManager.UpdateAll();
+            FeatureManager.UpdateAll(sender, e);
 
             RefreshBuildListIfRequired();
-
-            RunObjectTrackerFeatureIfEnabled();
 
             void RefreshBuildListIfRequired()
             {
@@ -171,14 +169,6 @@ namespace stardew_access
                 Log.Trace("Locale changed! Refreshing translations...");
                 previousLanguageCode = Game1.content.GetCurrentLanguage();
                 Translator.Instance.Initialize(ModManifest);
-            }
-
-            void RunObjectTrackerFeatureIfEnabled()
-            {
-                if (e.IsMultipleOf(15) && Config != null && Config.OTAutoRefreshing)
-                {
-                    ObjectTrackerFeature.Tick();
-                }
             }
         }
 
