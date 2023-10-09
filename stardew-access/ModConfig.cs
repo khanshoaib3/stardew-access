@@ -1,4 +1,5 @@
 using StardewModdingAPI.Utilities;
+// ReSharper disable InconsistentNaming
 
 namespace stardew_access
 {
@@ -98,8 +99,6 @@ public Boolean ReadTileIndexes { get; set; } = false; // Toggle this feature.
         public KeybindList OTReadSelectedObjectTileLocation { get; set; } = KeybindList.Parse("End");
         public KeybindList OTCancelAutoWalking { get; set; } = KeybindList.Parse("Escape");
         public KeybindList OTSwitchSortingMode { get; set; } = KeybindList.Parse("OemTilde");
-        public string OTReadSelectedObjectText { get; set; } = "{object} is {direction} {distance} at {objectX}-{objectY}, player at {playerX}-{playerY}";
-        public string OTReadSelectedObjectTileText { get; set; } = "{object} at {objectX}-{objectY}, player at {playerX}-{playerY}";
         public Boolean OTAutoRefreshing { get; set; } = true;
         public Boolean OTSortByProximity { get; set; } = true;
         public Boolean OTWrapLists { get; set; } = false;

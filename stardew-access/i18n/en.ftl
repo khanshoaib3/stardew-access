@@ -140,6 +140,30 @@ building-parrot_perch-upgrade_state_complete = Request completed
 
 entrance_name-secret_woods_entrance = Secret Woods Entrance
 
+# Features
+
+## Object Tracker
+
+feature-object_tracker-sort_by_proximity = Sort by Proximity: {$is_enabled ->
+[0] Disabled
+*[1] Enabled
+  }
+feature-object_tracker-read_selected_object = {$object_name} {$only_tile ->
+[0] is {$direction} {$distance}
+*[1] {EMPTYSTRING()}
+  } at {$object_x}-{$object_y}, player at {$player_x}-{$player_y}
+feature-object_tracker-moving_to = Moving to {$object_x}-{$object_y}.
+feature-object_tracker-could_not_find_path = Could not find path to object.
+feature-object_tracker-no_objects_found = No objects found.
+feature-object_tracker-no_categories_found = No categories found.
+feature-object_tracker-end_of_list = End of list.
+feature-object_tracker-start_of_list = Start of list.
+feature-object_tracker-no_object = No Object
+feature-object_tracker-no_category = No Category
+feature-object_tracker-no_selected_object = No selected object
+
+## Other
+
 feature-speak_selected_slot_item_name = {$slot_item_name} Selected
 feature-speak_location_name = {$location_name} Entered
 feature-read_tile-manually_triggered_info = {$tile_name}, Category: {$tile_category}

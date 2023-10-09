@@ -3,6 +3,7 @@ namespace stardew_access.Features;
 using Microsoft.Xna.Framework;
 using Tracker;
 using Utils;
+using Translation;
 using static Utils.MiscUtils;
 using static Utils.InputUtils;
 using static Utils.MovementHelpers;
@@ -156,16 +157,20 @@ internal class ObjectTracker : FeatureBase
             {
                 string direction = GetDirection(playerTile, sObjectTile.Value);
                 string distance = GetDistance(playerTile, sObjectTile).ToString();
-                MainClass.ScreenReader.Say((readTileOnly ? MainClass.Config.OTReadSelectedObjectTileText : MainClass.Config.OTReadSelectedObjectText).FormatWith(new Dictionary<string, object>
+                object? translationTokens = new
                 {
-                    { "object", SelectedObject ?? "No selected object"},
-                    { "objectX", sObjectTile?.X.ToString() ?? "0" },
-                    { "objectY", sObjectTile?.Y.ToString() ?? "0" },
-                    { "playerX", playerTile.X.ToString() },
-                    { "playerY", playerTile.Y.ToString() },
-                    { "direction", direction },
-                    { "distance", distance }
-                }), true);
+                    object_name = SelectedObject ??
+                                  Translator.Instance.Translate("feature-object_tracker-no_selected_object"),
+                    only_tile = readTileOnly ? 1 : 0,
+                    object_x = (int)sObjectTile.Value.X,
+                    object_y = (int)sObjectTile.Value.Y,
+                    player_x = (int)playerTile.X,
+                    player_y = (int)playerTile.Y,
+                    direction = direction,
+                    distance = distance
+                };
+                MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-read_selected_object", true,
+                    translationTokens: translationTokens);
             }
         }
     }
@@ -175,13 +180,13 @@ internal class ObjectTracker : FeatureBase
         var objects = trackedObjects?.GetObjects();
         if (objects == null || !objects.Any())
         {
-            MainClass.ScreenReader.Say("No objects found.", true);
+            MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-no_objects_found", true);
             return;
         }
 
         if (!objects.Keys.Any())
         {
-            MainClass.ScreenReader.Say("No categories found.", true);
+            MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-no_categories_found", true);
             return;
         }
 
@@ -243,6 +248,10 @@ internal class ObjectTracker : FeatureBase
 
         var objects = trackedObjects?.GetObjects();
         string suffixText = string.Empty;
+        string endOfList = Translator.Instance.Translate("feature-object_tracker-end_of_list");
+        string startOfList = Translator.Instance.Translate("feature-object_tracker-start_of_list");
+        string noObject = Translator.Instance.Translate("feature-object_tracker-no_object");
+        string noCategory = Translator.Instance.Translate("feature-object_tracker-no_category");
 
         void CycleHelper(ref string? selectedItem, string[] items)
         {
@@ -257,7 +266,7 @@ internal class ObjectTracker : FeatureBase
 
                 var (selected, edgeOfList) = MiscUtils.Cycle(items, ref index, back, wrapAround);
                 selectedItem = selected;
-                suffixText = edgeOfList ? (wrapAround ? (back ? "End of list." : "Start of list.") : (back ? "Start of list." : "End of list.")) : string.Empty;
+                suffixText = edgeOfList ? (wrapAround ? (back ? endOfList : startOfList) : (back ? startOfList : endOfList)) : string.Empty;
             }
         }
 
@@ -277,8 +286,8 @@ internal class ObjectTracker : FeatureBase
 
         suffixText = suffixText.Length > 0 ? ", " + suffixText : string.Empty;
         string spokenText = cycleCategories
-            ? $"{SelectedCategory ?? "No Category"}, {SelectedObject ?? "No Object"}" + suffixText
-            : $"{SelectedObject ?? "No Object"}" + suffixText;
+            ? $"{SelectedCategory ?? noCategory}, {SelectedObject ?? noObject}" + suffixText
+            : $"{SelectedObject ?? noObject}" + suffixText;
 
         MainClass.ScreenReader.Say(spokenText, true);
     }
@@ -316,7 +325,8 @@ internal class ObjectTracker : FeatureBase
             if (switchSortingModePressed)
             {
                 sortByProximity = !sortByProximity;
-                MainClass.ScreenReader.Say("Sort By Proximity: " + (sortByProximity ? "Enabled" : "Disabled"), true);
+                MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-sort_by_proximity", true,
+                    translationTokens: new { is_enabled = sortByProximity ? 1 : 0 });
             }
             GetLocationObjects(resetFocus: false);
             if (readSelectedObjectPressed)
@@ -380,14 +390,19 @@ internal class ObjectTracker : FeatureBase
 
         if (closestTile != null)
         {
-            MainClass.ScreenReader.Say($"Moving to {closestTile.Value.X}-{closestTile.Value.Y}.", true);
+            MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-moving_to", true,
+                translationTokens: new
+                {
+                    object_x = (int)closestTile.Value.X,
+                    object_y = (int)closestTile.Value.Y
+                });
             pathfinder?.Dispose();
             pathfinder = new(RetryPathfinding, StopPathfinding);
             pathfinder.StartPathfinding(player, Game1.currentLocation, closestTile.Value.ToPoint());
         }
         else
         {
-            MainClass.ScreenReader.Say("Could not find path to object.", true);
+            MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-could_not_find_path", true);
         }
     }
 }
