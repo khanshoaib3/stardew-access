@@ -1,11 +1,63 @@
-# TODO don't use `-name` in future and remove it from the keys that already use it, only use `-prefix` or `-postfix`.
+# Features
+
+## Object Tracker
+
+feature-object_tracker-sort_by_proximity = Sort by Proximity: {$is_enabled ->
+[0] Disabled
+*[1] Enabled
+  }
+feature-object_tracker-read_selected_object = {$object_name} {$only_tile ->
+[0] is {$direction} {$distance}
+*[1] {EMPTYSTRING()}
+  } at {$object_x}-{$object_y}, player at {$player_x}-{$player_y}
+feature-object_tracker-moving_to = Moving to {$object_x}-{$object_y}.
+feature-object_tracker-could_not_find_path = Could not find path to object.
+feature-object_tracker-no_objects_found = No objects found.
+feature-object_tracker-no_categories_found = No categories found.
+feature-object_tracker-end_of_list = End of list.
+feature-object_tracker-start_of_list = Start of list.
+feature-object_tracker-no_object = No Object
+feature-object_tracker-no_category = No Category
+feature-object_tracker-no_selected_object = No selected object
+
+## Tile Viewer
+
+feature-tile_viewer-relative_cursor_lock_info = Relative cursor lock: {$is_enabled ->
+[0] Disabled
+*[1] Enabled
+  }
+feature-tile_viewer-moving_to = Moving to {$tile_x}-{$tile_y}.
+feature-tile_viewer-cannot_move_to = Cannot move to {$tile_x}-{$tile_y}.
+feature-tile_viewer-stopped_moving = Stopped moving
+feature-tile_viewer-reached = Reached destination
+feature-tile_viewer-blocked_tile_name = blocked
+feature-tile_viewer-empty_tile_name = empty
+
+## Read Tile
+
+feature-read_tile-manually_triggered_info = {$tile_name}, Category: {$tile_category}
+feature-read_tile-no_tile_found = No tiles found at the given coordinates.
+feature-read_tile-tile_indexes = Tile indexes:
+
+## Other
+
+feature-speak_selected_slot_item_name = {$slot_item_name} Selected
+feature-speak_location_name = {$location_name} Entered
+feature-speak_health_n_stamina-in_percentage_format = Health is {$health} % and Stamina is {$stamina} %
+feature-speak_health_n_stamina-in_normal_format = Health is {$health} and Stamina is {$stamina}
+feature-warnings-health = Warning! Health is at {$value} percent!
+feature-warnings-stamina = Warning! Stamina is at {$value} percent!
+feature-warnings-time = Warning! Time is {$value}
+
+
+# Building operations
 
 building_operations-move_building-under_construction = Cannot move building! Under construction.
 building_operations-move_building-no_permission = You don't have permission to move this building!
 building_operations-move_building-cannot_move = Cannot move building to {$x_position}x {$y_position}y
 building_operations-move_building-building_moved = {$building_name} moved to {$x_position}x {$y_position}y
-
-
+building_operations-no_building_to_demolish = No building to demolish.
+building_operations-building_failed = Building failed
 
 
 # FIXME update naming convention
@@ -76,6 +128,12 @@ dynamic_tile-farm-grandpa_shrine = Grandpa's Shrine{SIGNOFNUMBER($candles) ->
     } lit
     *[other] {EMPTYSTRING()}
   }
+tile-bundles-suffix = {$content} bundle
+tile-harvestable-prefix = Harvestable {$content}
+tile-busy-prefix = Busy {$content}
+tile_name-stepping_stone = Stepping stone
+tile_name-pathway = Pathway
+tile_name-flooring = Flooring
 
 ## Entrances
 
@@ -84,12 +142,12 @@ tile-mine_up_ladder-name = Up Ladder
 tile-mine_shaft-name = Shaft
 tile-mine_elevator-name = Elevator
 tile-town_festival_exit-name = Exit Festival
-
-# ---------------------------------
-
-# Inventory Util 
-
-inventory_util-empty_slot = Empty Slot
+entrance_name-secret_woods_entrance = Secret Woods Entrance
+tile-entrance = Entrance
+tile-door = Door
+tile-door_state-opened = Opened
+tile-door_state-closed = Closed
+tile-interior_door = Interior door
 
 # Items
 
@@ -138,53 +196,7 @@ building-parrot_perch-upgrade_state_start_building = Parrots started building re
 building-parrot_perch-upgrade_state_building = Parrots building request
 building-parrot_perch-upgrade_state_complete = Request completed
 
-entrance_name-secret_woods_entrance = Secret Woods Entrance
-
-# Features
-
-## Object Tracker
-
-feature-object_tracker-sort_by_proximity = Sort by Proximity: {$is_enabled ->
-    [0] Disabled
-    *[1] Enabled
-  }
-feature-object_tracker-read_selected_object = {$object_name} {$only_tile ->
-    [0] is {$direction} {$distance}
-    *[1] {EMPTYSTRING()}
-  } at {$object_x}-{$object_y}, player at {$player_x}-{$player_y}
-feature-object_tracker-moving_to = Moving to {$object_x}-{$object_y}.
-feature-object_tracker-could_not_find_path = Could not find path to object.
-feature-object_tracker-no_objects_found = No objects found.
-feature-object_tracker-no_categories_found = No categories found.
-feature-object_tracker-end_of_list = End of list.
-feature-object_tracker-start_of_list = Start of list.
-feature-object_tracker-no_object = No Object
-feature-object_tracker-no_category = No Category
-feature-object_tracker-no_selected_object = No selected object
-
-## Tile Viewer
-
-feature-tile_viewer-relative_cursor_lock_info = Relative cursor lock: {$is_enabled ->
-    [0] Disabled
-    *[1] Enabled
-  }
-feature-tile_viewer-moving_to = Moving to {$tile_x}-{$tile_y}.
-feature-tile_viewer-cannot_move_to = Cannot move to {$tile_x}-{$tile_y}.
-feature-tile_viewer-stopped_moving = Stopped moving
-feature-tile_viewer-reached = Reached destination
-feature-tile_viewer-blocked_tile_name = blocked
-feature-tile_viewer-empty_tile_name = empty
-
-## Other
-
-feature-speak_selected_slot_item_name = {$slot_item_name} Selected
-feature-speak_location_name = {$location_name} Entered
-feature-read_tile-manually_triggered_info = {$tile_name}, Category: {$tile_category}
-feature-speak_health_n_stamina-in_percentage_format = Health is {$health} % and Stamina is {$stamina} %
-feature-speak_health_n_stamina-in_normal_format = Health is {$health} and Stamina is {$stamina}
-feature-warnings-health = Warning! Health is at {$value} percent!
-feature-warnings-stamina = Warning! Stamina is at {$value} percent!
-feature-warnings-time = Warning! Time is {$value}
+# NPCs
 
 npc_name-old_mariner = Old Mariner
 npc_name-island_trader = Island Trader
@@ -194,6 +206,10 @@ npc_name-ruby_gem_bird = Ruby Gem Bird
 npc_name-amethyst_gem_bird = Amethyst Gem Bird
 npc_name-topaz_gem_bird = Topaz Gem Bird
 npc_name-gem_bird_common = Gem Bird
+npc-farm_animal_info = {$name}, {$type}, {$age} {$age ->
+    [1] month
+    *[other] months
+  }
 
 # Event Tiles
 
@@ -241,6 +257,18 @@ object_category-bridge = Bridge
 object_category-dropped_item = Dropped item
 object_category-fishing = Fishing
 object_category-other = Other
+
+direction-north = North
+direction-south = South
+direction-east = East
+direction-west = West
+direction-north_west = Northwest
+direction-north_east = Northeast
+direction-south_west = Southwest
+direction-south_east = Southeast
+direction-current_tile = Current tile
+
+inventory_util-empty_slot = Empty Slot
 
 common-unknown = Unknown
 

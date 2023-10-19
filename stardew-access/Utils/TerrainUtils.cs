@@ -2,6 +2,7 @@ using static stardew_access.Utils.ObjectUtils;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using System.Text;
+using stardew_access.Translation;
 
 namespace stardew_access.Utils
 {
@@ -168,8 +169,8 @@ namespace stardew_access.Utils
         {
             bool isPathway = flooring.isPathway.Get();
             bool isSteppingStone = flooring.isSteppingStone.Get();
-            string description = isPathway ? "Pathway" : (isSteppingStone ? "Stepping Stone" : "Flooring");
-            return description;
+            string description = isPathway ? "tile_name-pathway" : (isSteppingStone ? "tile_name-stepping_stone" : "tile_name-flooring");
+            return Translator.Instance.Translate(description);
         }
 
         public static string GetGrassInfoString(Grass grass)

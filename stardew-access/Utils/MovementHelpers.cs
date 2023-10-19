@@ -1,6 +1,7 @@
 using StardewValley;
 using StardewValley.Tools;
 using Microsoft.Xna.Framework;
+using stardew_access.Translation;
 
 namespace stardew_access.Utils
 {
@@ -32,19 +33,19 @@ namespace stardew_access.Utils
         internal static void FacePlayerToTargetTile(Vector2 targetTile)
         {
             var player = Game1.player;
-            string faceDirection = GetDirection(player.getTileLocation(), targetTile);
+            string faceDirection = GetDirectionTranslationKey(player.getTileLocation(), targetTile);
             switch (faceDirection)
             {
-                case "North":
+                case "direction-north":
                     player.faceDirection(0);
                     break;
-                case "East":
+                case "direction-east":
                     player.faceDirection(1);
                     break;
-                case "South":
+                case "direction-south":
                     player.faceDirection(2);
                     break;
-                case "West":
+                case "direction-west":
                     player.faceDirection(3);
                     break;
             }
@@ -107,8 +108,13 @@ namespace stardew_access.Utils
 
             return null;
         }
-
+        
         internal static string GetDirection(Vector2 start, Vector2 end)
+        {
+            return Translator.Instance.Translate(GetDirectionTranslationKey(start, end));
+        }
+
+        internal static string GetDirectionTranslationKey(Vector2 start, Vector2 end)
         {
             double tan_Pi_div_8 = Math.Sqrt(2.0) - 1.0;
             double dx = end.X - start.X;
@@ -116,22 +122,22 @@ namespace stardew_access.Utils
 
             if (Math.Abs(dx) > Math.Abs(dy)) {
                 if (Math.Abs(dy / dx) <= tan_Pi_div_8) {
-                    return dx > 0 ? "East" : "West";
+                    return dx > 0 ? "direction-east" : "direction-west";
                 } else if (dx > 0) {
-                    return dy > 0 ? "Northeast" : "Southeast";
+                    return dy > 0 ? "direction-north_east" : "direction-south_east";
                 } else {
-                    return dy > 0 ? "Northwest" : "Southwest";
+                    return dy > 0 ? "direction-north_west" : "direction-south_west";
                 }
             } else if (Math.Abs(dy) > 0) {
                 if (Math.Abs(dx / dy) <= tan_Pi_div_8) {
-                    return dy > 0 ? "North" : "South";
+                    return dy > 0 ? "direction-north" : "direction-south";
                 } else if (dy > 0) {
-                    return dx > 0 ? "Northeast" : "Northwest";
+                    return dx > 0 ? "direction-north_east" : "direction-north_west";
                 } else {
-                    return dx > 0 ? "Southeast" : "Southwest";
+                    return dx > 0 ? "direction-south_east" : "direction-south_west";
                 }
             } else {
-                return "Current Tile";
+                return "direction-current_tile";
             }
         }
 

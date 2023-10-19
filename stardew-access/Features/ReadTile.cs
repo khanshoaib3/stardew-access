@@ -126,7 +126,7 @@ internal class ReadTile : FeatureBase
 
                         if (layerAndIndex is not null &&layerAndIndex.Count > 0)
                         {
-                            string output = "Tile indexes: ";
+                            string output = Translator.Instance.Translate("feature-read_tile-tile_indexes");
                             foreach (var kvp in layerAndIndex)
                             {
                                 output += $"{kvp.Key} {kvp.Value}, ";
@@ -139,7 +139,7 @@ internal class ReadTile : FeatureBase
                         }
                         else
                         {
-                            MainClass.ScreenReader.Say("No tiles found at the given coordinates.", false);
+                            MainClass.ScreenReader.TranslateAndSay("feature-read_tile-no_tile_found", false);
                         }
                     }
                 }

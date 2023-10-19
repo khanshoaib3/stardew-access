@@ -162,13 +162,13 @@ namespace stardew_access.Utils
             static Dictionary<(int x, int y), string> LoadWarps(GameLocation location, bool lessInfo)
             {
                 Dictionary<(int x, int y), string> warpDict = new();
-                var staticDoors = GetStaticDoors(location, lessInfo, "Entrance");
+                var staticDoors = GetStaticDoors(location, lessInfo, Translator.Instance.Translate("tile-entrance"));
 
                 foreach (Warp warp in location.warps)
                 {
                     (int x, int y) coords = (warp.X, warp.Y);
                     if (!staticDoors.TryGetValue(coords, out string? warpName))
-                        warpName = lessInfo ? warp.TargetName : $"{warp.TargetName} Entrance";
+                        warpName = lessInfo ? warp.TargetName : $"{warp.TargetName} {Translator.Instance.Translate("tile-entrance")}";
                     warpDict.TryAdd(coords, warpName);
                 }
 
@@ -217,7 +217,7 @@ namespace stardew_access.Utils
                         // If door has a name provided, use that instead of custom name.
                         if (door.Value != null)
                         {
-                            doorName = lessInfo ? door.Value : $"{door.Value} door";
+                            doorName = lessInfo ? door.Value : $"{door.Value} {Translator.Instance.Translate("tile-door")}";
                             lastUnnamedDoorCoords = null;  // Reset since this door has a name
                             lastUnnamedDoorName = null; // Reset the last unnamed door name
                         }
@@ -228,7 +228,7 @@ namespace stardew_access.Utils
 
                             if (!isAdjacentToLastUnnamedDoor)
                             {
-                                lastUnnamedDoorName = $"Door{++unnamedDoorCount}"; // Update the last unnamed door name
+                                lastUnnamedDoorName = $"{Translator.Instance.Translate("tile-door")}{++unnamedDoorCount}"; // Update the last unnamed door name
                                 lastUnnamedDoorCoords = coords;  // Update last coordinates
                             }
                         }
@@ -286,7 +286,7 @@ namespace stardew_access.Utils
 
                     if (!isAdjacentToLastUnnamedDoor)
                     {
-                        lastUnnamedDoorName = $"Interior Door {++unnamedDoorCount}";
+                        lastUnnamedDoorName = $"{Translator.Instance.Translate("tile-interior_door")} {++unnamedDoorCount}";
                         lastUnnamedDoorCoords = (x, y);
                     }
                 }
@@ -297,8 +297,8 @@ namespace stardew_access.Utils
                     lastUnnamedDoorName = null;
                 }
 
-                string doorState = isOpen ? "Opened " : "Closed ";
-                interiorDoorDict.TryAdd(coords, $"{(lastUnnamedDoorName ?? doorName!)}{(lessInfo ? string.Empty : $": {doorState}")}");
+                string doorState = Translator.Instance.Translate("tile-door_state-" + (isOpen ? "opened" : "closed"));
+                interiorDoorDict.TryAdd(coords, $"{(lastUnnamedDoorName ?? doorName!)}{(lessInfo ? string.Empty : $": {doorState} ")}");
             }
 
             return interiorDoorDict;

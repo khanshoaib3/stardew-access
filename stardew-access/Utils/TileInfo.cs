@@ -235,12 +235,12 @@ namespace stardew_access.Utils
                     {
                         if (communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(bundleName)))
                         {
-                            return $"{bundleName} bundle";
+                            return Translator.Instance.Translate("tile-bundles-suffix", new { content = bundleName });
                         }
                     }
                     else if (currentLocation is AbandonedJojaMart)
                     {
-                        return $"{bundleName} bundle";
+                        return Translator.Instance.Translate("tile-bundles-suffix", new { content = bundleName });
                     }
                 }
             }
@@ -283,11 +283,16 @@ namespace stardew_access.Utils
                 return null;
 
             string name = foundAnimal.displayName;
-            int age = foundAnimal.age.Value;
+            int age = (foundAnimal.GetDaysOwned() + 1) / 28 + 1;
             string type = foundAnimal.displayType;
 
-            // TODO: Better age info
-            return $"{name}, {type}, age {age}";
+            object? translationCategory = new
+            {
+                name,
+                type,
+                age
+            };
+            return Translator.Instance.Translate("npc-farm_animal_info", translationCategory);
         }
 
         /// <summary>
@@ -418,9 +423,9 @@ namespace stardew_access.Utils
             {
                 MachineState machineState = GetMachineState(obj);
                 if (machineState == MachineState.Ready)
-                    toReturn.name = $"Harvestable {toReturn.name}";
+                    toReturn.name = Translator.Instance.Translate("tile-harvestable-prefix", new { content = toReturn.name });
                 else if (machineState == MachineState.Busy)
-                    toReturn.name = $"Busy {toReturn.name}";
+                    toReturn.name = Translator.Instance.Translate("tile-busy-prefix", new { content = toReturn.name });
             }
 
             return toReturn;
