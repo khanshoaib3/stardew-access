@@ -118,7 +118,6 @@ static_tile-beach-west_pier = West Pier
 static_tile-beach_night_market-fishing_submarine_door = Fishing Submarine
 static_tile-beach_night_market-mermaid_boat_door = Mermaid Boat
 static_tile-beach_night_market-famous_painter_lupini = Famous Painter Lupini
-static_tile-beach_night_market-travelling_cart = Travelling Cart
 static_tile-beach_night_market-shrouded_figure = Shrouded Figure
 static_tile-beach_night_market-decoration_boat = Decoration Boat
 static_tile-beach_night_market-magic_shop_boat = Magic Shop Boat

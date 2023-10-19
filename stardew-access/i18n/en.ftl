@@ -109,6 +109,7 @@ tile_name-ticket_machine = Ticket Machine
 tile_name-movie_ticket_machine = Movie Ticket Machine
 tile_name-missed_reward_chest = Missed Reward Chest
 tile_name-traveling_cart = Traveling Cart
+tile_name-traveling_cart_pig = Merchant's pig
 tile_name-feeding_bench = {$is_empty ->
     [1] Empty
     *[0] {EMPTYSTRING()}
@@ -226,7 +227,6 @@ event_tile-fortune_teller-name = Fortune Teller
 event_tile-grange_display-name = Grange Display
 event_tile-strength_game-name = Strength Game
 event_tile-free_burgers-name = Free Burgers
-event_tile-travelling_cart-name = Travelling Cart
 event_tile-feast_of_the_winter_star_shop-name = Feast of the Winter Star Shop
 
 patch-trash_bear-wanted_item = {$trash_bear_name} wants {$item_name}!

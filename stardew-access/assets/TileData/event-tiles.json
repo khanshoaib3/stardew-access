@@ -23,7 +23,7 @@
     "26,33": "event_tile-free_burgers-name"
   },
   "Festival of Ice": {
-    "55,31": "event_tile-travelling_cart-name"
+    "55,31": "tile_name-traveling_cart"
   },
   "Feast of the Winter Star": {
     "18,61": "event_tile-feast_of_the_winter_star_shop-name"

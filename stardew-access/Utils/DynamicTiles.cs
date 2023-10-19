@@ -433,6 +433,10 @@ namespace stardew_access.Utils
             {
                 return ("tile_name-traveling_cart", CATEGORY.Interactables);
             }
+            else if (forest.travelingMerchantDay && x == 23 && y == 11)
+            {
+                return ("tile_name-traveling_cart_pig", CATEGORY.NPCs);
+            }
             else if (forest.log != null && x == 2 && y == 7)
             {
                 return ("item_name-log", CATEGORY.Interactables);

@@ -505,7 +505,7 @@
       "Category": "npc"
     },
     {
-      "NameOrTranslationKey": "static_tile-beach_night_market-travelling_cart",
+      "NameOrTranslationKey": "tile_name-traveling_cart",
       "X": [39],
       "Y": [30],
       "Category": "interactable"
