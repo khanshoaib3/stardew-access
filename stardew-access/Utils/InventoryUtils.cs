@@ -2,6 +2,7 @@ using StardewValley;
 using StardewValley.Menus;
 using stardew_access.Translation;
 using System.Diagnostics.CodeAnalysis;
+using StardewValley.Tools;
 
 namespace stardew_access.Utils
 {
@@ -118,17 +119,18 @@ namespace stardew_access.Utils
             string description = item.getDescription();
             string price = GetPrice(hoverPrice);
             string requirements = GetExtraItemInfo(extraItemToShowIndex, extraItemToShowAmount);
+            string enchants = GetEnchantmentsFromItem(item);
 
             string details;
             string toReturn = name;
             // TODO remove , from here and buffs
             if (giveExtraDetails)
             {
-                details = string.Join(", ", new string[] { quality, requirements, price, description, healthNStamina, buffs }.Where(c => !string.IsNullOrEmpty(c)));
+                details = string.Join(", ", new string[] { quality, enchants, requirements, price, description, healthNStamina, buffs }.Where(c => !string.IsNullOrEmpty(c)));
             }
             else
             {
-                details = string.Join(", ", new string[] { quality, requirements, price }.Where(c => !string.IsNullOrEmpty(c)));
+                details = string.Join(", ", new string[] { quality, enchants, requirements, price }.Where(c => !string.IsNullOrEmpty(c)));
             }
             if (!string.IsNullOrEmpty(details))
                 toReturn = $"{toReturn}, {details}";
@@ -179,6 +181,22 @@ namespace stardew_access.Utils
                 return "";
 
             return Translator.Instance.Translate("item-quality_type", new { quality_index = qualityIndex });
+        }
+
+        internal static string GetEnchantmentsFromItem(Item item)
+        {
+            if (item is not MeleeWeapon && item is not Tool)
+                return "";
+            
+            List<string> enchantNames = new();
+
+            var enchantList = (item is MeleeWeapon) ? (item as MeleeWeapon)!.enchantments : (item as Tool)!.enchantments;
+            foreach (var enchantment in enchantList)
+            {
+                enchantNames.Add(enchantment.GetDisplayName());
+            }
+
+            return string.Join(", ", enchantNames);
         }
 
         internal static string GetHealthNStaminaFromItem(Item item)
