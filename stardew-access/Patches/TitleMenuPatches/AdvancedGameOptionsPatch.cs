@@ -8,6 +8,8 @@ namespace stardew_access.Patches
 {
     internal class AdvancedGameOptionsPatch : IPatch
     {
+        private static bool firstTimeInMenu = true;
+        
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
@@ -23,11 +25,16 @@ namespace stardew_access.Patches
                 int currentItemIndex = Math.Max(0, Math.Min(__instance.options.Count - 7, __instance.currentItemIndex));
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
 
-                // FIXME The menu auto focuses on ok button when it is opened which causes the menu to automatically close when it is opened. Possible solution: add a delay on menu open.
-                MouseUtils.SimulateMouseClicks(
-                    (x, y) => __instance.receiveLeftClick(x, y),
-                    (x, y) => __instance.receiveRightClick(x, y)
-                );
+                if (!(__instance.okButton != null && __instance.okButton.containsPoint(x, y) && firstTimeInMenu))
+                {
+                    MouseUtils.SimulateMouseClicks(
+                        (x, y) => __instance.receiveLeftClick(x, y),
+                        (x, y) => __instance.receiveRightClick(x, y)
+                    );
+                } else if (__instance.okButton != null && !__instance.okButton.containsPoint(x, y) && firstTimeInMenu)
+                {
+                    firstTimeInMenu = false;
+                }
 
                 if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
                 {
@@ -41,6 +48,11 @@ namespace stardew_access.Patches
             {
                 Log.Error($"An error occurred in advanced game menu patch:\n{e.Message}\n{e.StackTrace}");
             }
+        }
+
+        public static void Cleanup()
+        {
+            firstTimeInMenu = true;
         }
     }
 }

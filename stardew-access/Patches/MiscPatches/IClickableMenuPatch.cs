@@ -181,6 +181,11 @@ namespace stardew_access.Patches
                     break;
             }
 
+            if (TitleMenu.subMenu is AdvancedGameOptions)
+            {
+                AdvancedGameOptionsPatch.Cleanup();
+            }
+
             MainClass.ScreenReader.Cleanup();
             InventoryUtils.Cleanup();
             TextBoxPatch.activeTextBoxes = "";
