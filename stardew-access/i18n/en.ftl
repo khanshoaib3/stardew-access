@@ -145,12 +145,12 @@ entrance_name-secret_woods_entrance = Secret Woods Entrance
 ## Object Tracker
 
 feature-object_tracker-sort_by_proximity = Sort by Proximity: {$is_enabled ->
-[0] Disabled
-*[1] Enabled
+    [0] Disabled
+    *[1] Enabled
   }
 feature-object_tracker-read_selected_object = {$object_name} {$only_tile ->
-[0] is {$direction} {$distance}
-*[1] {EMPTYSTRING()}
+    [0] is {$direction} {$distance}
+    *[1] {EMPTYSTRING()}
   } at {$object_x}-{$object_y}, player at {$player_x}-{$player_y}
 feature-object_tracker-moving_to = Moving to {$object_x}-{$object_y}.
 feature-object_tracker-could_not_find_path = Could not find path to object.
@@ -161,6 +161,19 @@ feature-object_tracker-start_of_list = Start of list.
 feature-object_tracker-no_object = No Object
 feature-object_tracker-no_category = No Category
 feature-object_tracker-no_selected_object = No selected object
+
+## Tile Viewer
+
+feature-tile_viewer-relative_cursor_lock_info = Relative cursor lock: {$is_enabled ->
+    [0] Disabled
+    *[1] Enabled
+  }
+feature-tile_viewer-moving_to = Moving to {$tile_x}-{$tile_y}.
+feature-tile_viewer-cannot_move_to = Cannot move to {$tile_x}-{$tile_y}.
+feature-tile_viewer-stopped_moving = Stopped moving
+feature-tile_viewer-reached = Reached destination
+feature-tile_viewer-blocked_tile_name = blocked
+feature-tile_viewer-empty_tile_name = empty
 
 ## Other
 

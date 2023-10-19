@@ -1,11 +1,12 @@
-namespace stardew_access.Features;
-
 using Microsoft.Xna.Framework;
 using xTile;
-using Utils;
+using stardew_access.Utils;
+using stardew_access.Translation;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
+
+namespace stardew_access.Features;
 
 /// <summary>
 /// Allows browsing of the map and snapping mouse to tiles with the arrow keys
@@ -103,7 +104,10 @@ internal class TileViewer : FeatureBase
             {
                 _relativeOffsetLockPosition = Vector2.Zero;
             }
-            MainClass.ScreenReader.Say("Relative cursor lock " + (_relativeOffsetLock ? "enabled" : "disabled") + ".", true);
+            MainClass.ScreenReader.TranslateAndSay("feature-tile_viewer-relative_cursor_lock_info", true, new
+            {
+                is_enabled = _relativeOffsetLock ? 1 : 0
+            });
         }
         else if (MainClass.Config.TileCursorPreciseUpKey.JustPressed())
         {
@@ -155,11 +159,19 @@ internal class TileViewer : FeatureBase
             IsAutoWalking = true;
             _finalTile = GetViewingTile();
             ReadTile.Instance.Pause();
-            MainClass.ScreenReader.Say($"Moving to {_finalTile.X}x {_finalTile.Y}y", true);
+            MainClass.ScreenReader.TranslateAndSay("feature-tile_viewer-moving_to", true, new
+            {
+                tile_x = _finalTile.X,
+                tile_y = _finalTile.Y
+            });
         }
         else
         {
-            MainClass.ScreenReader.Say($"Cannot move to {_finalTile.X}x {_finalTile.Y}y", true);
+            MainClass.ScreenReader.TranslateAndSay("feature-tile_viewer-cannot_move_to", true, new
+            {
+                tile_x = _finalTile.X,
+                tile_y = _finalTile.Y
+            });
         }
     }
 
@@ -174,7 +186,7 @@ internal class TileViewer : FeatureBase
         Game1.player.controller = null;
         ReadTile.Instance.Resume();
         if (wasForced)
-            MainClass.ScreenReader.Say("Stopped moving", true);
+            MainClass.ScreenReader.TranslateAndSay("feature-tile_viewer-stopped_moving", true);
     }
 
     private void CursorMoveInput(Vector2 delta, Boolean precise = false)
@@ -195,11 +207,11 @@ internal class TileViewer : FeatureBase
             // Report if a tile is empty or blocked if there is nothing on it
             if (TileInfo.IsCollidingAtTile(Game1.currentLocation, (int)tile.X, (int)tile.Y))
             {
-                name = "blocked";
+                name = Translator.Instance.Translate("feature-tile_viewer-blocked_tile_name");
             }
             else
             {
-                name = "empty";
+                name = Translator.Instance.Translate("feature-tile_viewer-empty_tile_name");
             }
         }
         if (precise)
@@ -264,7 +276,7 @@ internal class TileViewer : FeatureBase
 
             if (_finalTile != Vector2.Zero && _finalTile == CurrentPlayer.Position)
             {
-                MainClass.ScreenReader.Say("Reached destination", true);
+                MainClass.ScreenReader.TranslateAndSay("feature-tile_viewer-reached", true);
                 StopAutoWalking();
             }
         }
