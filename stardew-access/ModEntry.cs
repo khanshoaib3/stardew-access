@@ -1,6 +1,7 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using stardew_access.Commands;
 using stardew_access.Features;
 using stardew_access.Patches;
 using stardew_access.ScreenReader;
@@ -76,6 +77,7 @@ namespace stardew_access
             CustomSoundEffects.Initialize();
 
             CustomCommands.Initialize();
+            CommandManager.AddAll(helper);
 
             PatchManager.PatchAll(new Harmony(ModManifest.UniqueID));
 

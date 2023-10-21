@@ -18,32 +18,6 @@ namespace stardew_access
             if (helper == null)
                 return;
 
-            #region Read Tile
-            helper.ConsoleCommands.Add("readtile", "Toggle read tile feature.", (string command, string[] args) =>
-                        {
-                            MainClass.Config.ReadTile = !MainClass.Config.ReadTile;
-                            helper.WriteConfig(MainClass.Config);
-
-                            Log.Info("Read Tile is " + (MainClass.Config.ReadTile ? "on" : "off"));
-                        });
-
-            helper.ConsoleCommands.Add("flooring", "Toggle flooring in read tile.", (string command, string[] args) =>
-            {
-                MainClass.Config.ReadFlooring = !MainClass.Config.ReadFlooring;
-                helper.WriteConfig(MainClass.Config);
-
-                Log.Info("Flooring is " + (MainClass.Config.ReadFlooring ? "on" : "off"));
-            });
-
-            helper.ConsoleCommands.Add("watered", "Toggle speaking watered or unwatered for crops.", (string command, string[] args) =>
-            {
-                MainClass.Config.WateredToggle = !MainClass.Config.WateredToggle;
-                helper.WriteConfig(MainClass.Config);
-
-                Log.Info("Watered toggle is " + (MainClass.Config.WateredToggle ? "on" : "off"));
-            });
-            #endregion
-
             #region Radar Feature
             helper.ConsoleCommands.Add("radar", "Toggle radar feature.", (string command, string[] args) =>
             {
