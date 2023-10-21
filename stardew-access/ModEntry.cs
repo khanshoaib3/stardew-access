@@ -76,7 +76,6 @@ namespace stardew_access
 
             CustomSoundEffects.Initialize();
 
-            CustomCommands.Initialize();
             CommandManager.AddAll(helper);
 
             PatchManager.PatchAll(new Harmony(ModManifest.UniqueID));

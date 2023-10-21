@@ -10,6 +10,7 @@ public class CommandManager
         {
             new ReadTileCommands(),
             new TileMarkingCommands(),
+            new OtherCommands(),
             new RadarCommands(),
         };
 
