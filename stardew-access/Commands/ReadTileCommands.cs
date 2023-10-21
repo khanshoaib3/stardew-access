@@ -1,3 +1,4 @@
+using stardew_access.Translation;
 using StardewModdingAPI;
 
 namespace stardew_access.Commands;
@@ -20,7 +21,8 @@ public class ReadTileCommands : ICustomCommand
         MainClass.Config.ReadFlooring = !MainClass.Config.ReadFlooring;
         _modHelper!.WriteConfig(MainClass.Config);
 
-        Log.Info("Flooring is " + (MainClass.Config.ReadFlooring ? "on" : "off"));
+        Log.Info(Translator.Instance.Translate("commands-read_tile-flooring_toggle",
+            new { is_enabled = MainClass.Config.ReadFlooring ? 1 : 0 }, TranslationCategory.CustomCommands));
     }
 
     private void Watered(string command, string[] args)
@@ -28,7 +30,8 @@ public class ReadTileCommands : ICustomCommand
         MainClass.Config.WateredToggle = !MainClass.Config.WateredToggle;
         _modHelper!.WriteConfig(MainClass.Config);
 
-        Log.Info("Watered toggle is " + (MainClass.Config.WateredToggle ? "on" : "off"));
+        Log.Info(Translator.Instance.Translate("commands-read_tile-watered_toggle",
+            new { is_enabled = MainClass.Config.WateredToggle ? 1 : 0 }, TranslationCategory.CustomCommands));
     }
 
     void ReadTile(string command, string[] args)
@@ -36,6 +39,7 @@ public class ReadTileCommands : ICustomCommand
         MainClass.Config.ReadTile = !MainClass.Config.ReadTile;
         _modHelper!.WriteConfig(MainClass.Config);
 
-        Log.Info("Read Tile is " + (MainClass.Config.ReadTile ? "on" : "off"));
+        Log.Info(Translator.Instance.Translate("commands-read_tile-read_tile_toggle",
+            new { is_enabled = MainClass.Config.ReadTile ? 1 : 0 }, TranslationCategory.CustomCommands));
     }
 }
