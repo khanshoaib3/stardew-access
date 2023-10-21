@@ -9,6 +9,7 @@ public class CommandManager
         List<ICustomCommand> allCommands = new List<ICustomCommand>()
         {
             new ReadTileCommands(),
+            new TileMarkingCommands(),
             new RadarCommands(),
         };
 

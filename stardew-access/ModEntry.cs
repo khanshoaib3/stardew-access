@@ -147,7 +147,7 @@ namespace stardew_access
                     {
                         prevDate = CurrentPlayer.Date;
                         Log.Debug("Refreshing buildlist...");
-                        CustomCommands.OnBuildListCalled();
+                        TileMarkingCommands.BuildList();
                     }
                 }
             }
