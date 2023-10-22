@@ -228,7 +228,10 @@ namespace stardew_access
             
             // Narrate Current Location
             if (Config.LocationKey.JustPressed())
+            {
                 Narrate(Game1.currentLocation.Name);
+                return;
+            }
 
             // Narrate Position
             if (Config.PositionKey.JustPressed())
@@ -237,6 +240,7 @@ namespace stardew_access
                     ? $"X: {CurrentPlayer.PositionX}, Y: {CurrentPlayer.PositionY}"
                     : $"{CurrentPlayer.PositionX}, {CurrentPlayer.PositionY}";
                 Narrate(toSpeak);
+                return;
             }
 
             // Narrate health and stamina
@@ -265,23 +269,36 @@ namespace stardew_access
                     );
 
                 Narrate(toSpeak);
+                return;
             }
 
             // Narrate money at hand
             if (Config.MoneyKey.JustPressed())
+            {
                 Narrate($"You have {CurrentPlayer.Money}g");
+                return;
+            }
 
             // Narrate time and season
             if (Config.TimeNSeasonKey.JustPressed())
+            {
                 Narrate($"Time is {CurrentPlayer.TimeOfDay} and it is {CurrentPlayer.Day} {CurrentPlayer.Date} of {CurrentPlayer.Season}");
+                return;
+            }
 
             // Manual read tile at player's position
             if (Config.ReadStandingTileKey.JustPressed())
+            {
                 ReadTile.Instance.Run(manuallyTriggered: true, playersPosition: true);
+                return;
+            }
 
             // Manual read tile at looking tile
             if (Config.ReadTileKey.JustPressed())
+            {
                 ReadTile.Instance.Run(manuallyTriggered: true);
+                return;
+            }
 
             // Tile viewing cursor keys
             TileViewer.Instance.HandleInput();
