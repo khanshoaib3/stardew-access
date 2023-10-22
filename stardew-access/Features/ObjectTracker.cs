@@ -302,6 +302,7 @@ internal class ObjectTracker : FeatureBase
         bool switchSortingModePressed = MainClass.Config.OTSwitchSortingMode.JustPressed();
         bool moveToSelectedObjectPressed = MainClass.Config.OTMoveToSelectedObject.JustPressed();
         bool readSelectedObjectTileLocationPressed = MainClass.Config.OTReadSelectedObjectTileLocation.JustPressed();
+        bool cancelAutoWalkingPressed = MainClass.Config.OTCancelAutoWalking.JustPressed();
 
         if (cycleUpCategoryPressed)
         {
@@ -345,7 +346,14 @@ internal class ObjectTracker : FeatureBase
 
         if (pathfinder != null && pathfinder.IsActive)
         {
-            if (IsAnyMovementKeyPressed())
+            if (cancelAutoWalkingPressed)
+            {
+                #if DEBUG
+                Log.Verbose("ObjectTracker->HandleKeys: cancel auto walking pressed, canceling auto walking for object tracker.");
+                #endif
+                pathfinder.StopPathfinding();
+            }
+            else if (IsAnyMovementKeyPressed())
             {
                 #if DEBUG
                 Log.Verbose("ObjectTracker->HandleKeys: movement key pressed, canceling auto walking for object tracker.");

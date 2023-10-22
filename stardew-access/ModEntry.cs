@@ -296,7 +296,7 @@ namespace stardew_access
                         #if DEBUG
                         Log.Verbose("OnButtonPressed: cancel auto walking button pressed, canceling auto walking for tile viewer.");
                         #endif
-                        Game1.player.controller.endBehaviorFunction(Game1.player, Game1.currentLocation);
+                        TileViewer.Instance.StopAutoWalking(wasForced: true);
                         Helper.Input.Suppress(e.Button);
                     }
                     else if (InputUtils.IsAnyMovementKey(e.Button))
