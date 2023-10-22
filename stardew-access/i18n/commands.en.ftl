@@ -38,3 +38,24 @@ commands-tile_marking-build_sel-marked_index_not_entered = Enter the index of ma
 commands-tile_marking-build_sel-wrong_index = Index can only be a number.
 commands-tile_marking-build_sel-no_building_found = No building found with index {$index}. Use buildlist.
 commands-tile_marking-build_sel-no_marked_position_found = No marked position found at {$index} index.
+
+# Other Commands
+
+commands-other-tts_toggle = TTS is {$is_enabled ->
+    [0] off.
+    *[1] on.
+  }
+commands-other-warnings_toggle = Warnings is {$is_enabled ->
+    [0] off.
+    *[1] on.
+  }
+commands-other-snap_mouse_toggle = Snap Mouse is {$is_enabled ->
+    [0] off.
+    *[1] on.
+  }
+commands-other-hns_percentage_toggle = Speaking health and stamina in {$is_enabled ->
+    [0] normal
+    *[1] percentage
+  } format
+commands-other-refresh_mod_config = Mod configs refreshed!
+commands-other-refresh_screen_reader = Screen reader refreshed!

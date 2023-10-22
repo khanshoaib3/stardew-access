@@ -1,3 +1,4 @@
+using stardew_access.Translation;
 using StardewModdingAPI;
 
 namespace stardew_access.Commands;
@@ -36,14 +37,16 @@ public class OtherCommands : ICustomCommand
     {
         MainClass.ScreenReader.InitializeScreenReader();
 
-        Log.Info("Screen Reader refreshed!");
+        Log.Info(Translator.Instance.Translate("commands-other-refresh_screen_reader",
+            translationCategory: TranslationCategory.CustomCommands));
     }
 
     private void RefreshModConfig(string command, string[] args)
     {
         MainClass.Config = _modHelper!.ReadConfig<ModConfig>();
 
-        Log.Info("Mod Config refreshed!");
+        Log.Info(Translator.Instance.Translate("commands-other-refresh_mod_config",
+            translationCategory: TranslationCategory.CustomCommands));
     }
 
     private void HnsPercentageToggle(string command, string[] args)
@@ -51,7 +54,9 @@ public class OtherCommands : ICustomCommand
         MainClass.Config.HealthNStaminaInPercentage = !MainClass.Config.HealthNStaminaInPercentage;
         _modHelper!.WriteConfig(MainClass.Config);
 
-        Log.Info("Speaking in percentage is " + (MainClass.Config.HealthNStaminaInPercentage ? "on" : "off"));
+        Log.Info(Translator.Instance.Translate("commands-other-hns_percentage_toggle",
+            new {is_enabled = MainClass.Config.HealthNStaminaInPercentage ? 1 : 0 },
+            translationCategory: TranslationCategory.CustomCommands));
     }
 
     private void SnapMouseToggle(string command, string[] args)
@@ -59,7 +64,9 @@ public class OtherCommands : ICustomCommand
         MainClass.Config.SnapMouse = !MainClass.Config.SnapMouse;
         _modHelper!.WriteConfig(MainClass.Config);
 
-        Log.Info("Snap Mouse is " + (MainClass.Config.SnapMouse ? "on" : "off"));
+        Log.Info(Translator.Instance.Translate("commands-other-snap_mouse_toggle",
+            new {is_enabled = MainClass.Config.SnapMouse ? 1 : 0 },
+            translationCategory: TranslationCategory.CustomCommands));
     }
 
     private void WarningsToggle(string command, string[] args)
@@ -67,7 +74,9 @@ public class OtherCommands : ICustomCommand
         MainClass.Config.Warning = !MainClass.Config.Warning;
         _modHelper!.WriteConfig(MainClass.Config);
 
-        Log.Info("Warnings is " + (MainClass.Config.Warning ? "on" : "off"));
+        Log.Info(Translator.Instance.Translate("commands-other-warnings_toggle",
+            new {is_enabled = MainClass.Config.Warning ? 1 : 0 },
+            translationCategory: TranslationCategory.CustomCommands));
     }
 
     private void TtsToggle(string command, string[] args)
@@ -75,6 +84,8 @@ public class OtherCommands : ICustomCommand
         MainClass.Config.TTS = !MainClass.Config.TTS;
         _modHelper!.WriteConfig(MainClass.Config);
 
-        Log.Info("TTS is " + (MainClass.Config.TTS ? "on" : "off"));
+        Log.Info(Translator.Instance.Translate("commands-other-tts_toggle",
+            new {is_enabled = MainClass.Config.TTS ? 1 : 0 },
+            translationCategory: TranslationCategory.CustomCommands));
     }
 }
