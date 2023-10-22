@@ -74,7 +74,6 @@ namespace stardew_access.Utils
                     };
                     break;
                 case OptionsTextEntry textEntry:
-                    Log.Debug(textEntry.textBox.TitleText);
                     translationKey = "options_element-text_box_info";
                     tokens = new
                     {
