@@ -15,12 +15,8 @@ namespace stardew_access.Utils
                 IsFertilized: dirt.fertilizer.Value != HoeDirt.noFertilizer,
                 CropType: dirt.crop != null
                     ? dirt.crop.forageCrop.Value
-                        ? dirt.crop.whichForageCrop.Value switch
-                        {
-                            1 => "Spring onion",
-                            2 => "Ginger",
-                            _ => "Forageable crop",
-                        }
+                        ? Translator.Instance.Translate("terrain_util-forage_crop_types", new
+                            { type = dirt.crop.whichForageCrop.Value })
                         : GetObjectById(dirt.crop.indexOfHarvest.Value)
                     : null,
                 IsReadyForHarvest: dirt.crop != null && dirt.readyForHarvest(),
@@ -38,25 +34,25 @@ namespace stardew_access.Utils
         {
             StringBuilder detailString = new();
 
-            if (MainClass.Config.WateredToggle)
-            {
-                detailString.Append(dirtDetails.IsWatered ? "Watered " : "Unwatered ");
-            }
+            if (MainClass.Config.WateredToggle && dirtDetails.IsWatered)
+                detailString.Append($"{Translator.Instance.Translate("terrain_util-crop-watered")} ");
+            else if (!MainClass.Config.WateredToggle && !dirtDetails.IsWatered)
+                detailString.Append($"{Translator.Instance.Translate("terrain_util-crop-unwatered")} ");
 
             if (dirtDetails.IsFertilized)
-                detailString.Append("Fertilized ");
+                detailString.Append($"{Translator.Instance.Translate("terrain_util-fertilized")} ");
 
             if (dirtDetails.CropType != null)
             {
                 if (dirtDetails.IsReadyForHarvest)
-                    detailString.Append("Harvestable ");
+                    detailString.Append($"{Translator.Instance.Translate("terrain_util-harvestable")} ");
                 if (dirtDetails.IsDead)
-                    detailString.Append("Dead ");
+                    detailString.Append($"{Translator.Instance.Translate("terrain_util-crop-dead")} ");
                 detailString.Append(dirtDetails.CropType);
             }
             else if (!ignoreIfEmpty)
             {
-                detailString.Append("Soil");
+                detailString.Append(Translator.Instance.Translate("terrain_util-crop-soil"));
             }
 
             return detailString.ToString().Trim();
@@ -74,19 +70,13 @@ namespace stardew_access.Utils
 
         public static string GetFruitTreeInfoString((string TreeType, int GrowthStage, bool IsHarvestable) fruitTreeDetails)
         {
-            string growthStage = fruitTreeDetails.GrowthStage switch
-            {
-                0 => "seed",
-                1 => "sprout",
-                2 => "sapling",
-                3 => "bush",
-                _ => "tree"
-            };
+            string growthStage = Translator.Instance.Translate("terrain_util-fruit_tree_growth_stage",
+                new { stage = fruitTreeDetails.GrowthStage });
 
             string result = $"{fruitTreeDetails.TreeType} {growthStage}";
             if (fruitTreeDetails.IsHarvestable)
             {
-                result = $"Harvestable {result}";
+                result = $"{Translator.Instance.Translate("terrain_util-harvestable")} {result}";
             }
             return result;
         }
@@ -110,19 +100,8 @@ namespace stardew_access.Utils
 
         public static string GetTreeInfoString((int TreeType, int GrowthStage, string SeedName, bool IsFertilized) treeDetails)
         {
-            string treeType = treeDetails.TreeType switch
-            {
-                1 => "Oak",
-                2 => "Maple",
-                3 => "Pine",
-                4 => "Winter Tree",
-                5 => "Winter Tree",
-                6 => "Palm Tree",
-                7 => "Mushroom Tree",
-                8 => "Mahogany",
-                9 => "Palm Tree",
-                _ => $"Unknown tree type number {treeDetails.TreeType}"
-            };
+            string treeType = Translator.Instance.Translate("terrain_util-tree_type",
+                new { type = treeDetails.TreeType });
             # if debug
             if (treeDetails.TreeType == 5 || treeDetails.TreeType == 9)
                 treeType = $"{treeType} 2";
@@ -130,26 +109,25 @@ namespace stardew_access.Utils
 
             if (treeDetails.GrowthStage == 0)
             {
-                if (treeDetails.TreeType == 1 || treeDetails.TreeType == 2 || treeDetails.TreeType == 3 || treeDetails.TreeType == 8)
+                if (treeDetails.TreeType == 1 || treeDetails.TreeType == 2 || treeDetails.TreeType == 3 ||
+                    treeDetails.TreeType == 8)
                 {
-                    return (treeDetails.IsFertilized ? "Fertilized ":"") + treeDetails.SeedName;
+                    return (treeDetails.IsFertilized
+                        ? $"{Translator.Instance.Translate("terrain_util-fertilized")} "
+                        : "") + treeDetails.SeedName;
                 }
                 else
                 {
-                    return (treeDetails.IsFertilized ? "Fertilized ":"") + $"{treeType} seedling";
+                    return (treeDetails.IsFertilized
+                            ? $"{Translator.Instance.Translate("terrain_util-fertilized")} "
+                            : "") + $"{treeType} {Translator.Instance.Translate("terrain_util-tree-seedling")}";
                 }
             }
 
-            string growthStage = treeDetails.GrowthStage switch
-            {
-                1 => "sprout",
-                2 => "sapling",
-                3 => "bush",
-                4 => "bush",
-                _ => "tree",
-            };
+            string growthStage = Translator.Instance.Translate("terrain_util-tree_growth_stage",
+                new { stage = treeDetails.GrowthStage });
 
-            return (treeDetails.IsFertilized ? "Fertilized ":"") + $"{treeType} {growthStage}";
+            return (treeDetails.IsFertilized ? $"{Translator.Instance.Translate("terrain_util-fertilized")} ":"") + $"{treeType} {growthStage}";
         }
 
         public static string GetTreeInfoString(Tree tree)
@@ -218,7 +196,7 @@ namespace stardew_access.Utils
             if (bushInfo.IsHarvestable)
             {
                 //string harvestableItemName = ObjectUtils.GetObjectById(shakeOff);
-                bushInfoString.Append($"Harvestable {GetObjectById(bushInfo.ShakeOff)} ");
+                bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-harvestable")} {GetObjectById(bushInfo.ShakeOff)} ");
             }
 
             // Add the type of the bush
@@ -226,31 +204,25 @@ namespace stardew_access.Utils
             {
                 if (bushInfo.IsTownBush)
                 {
-                    bushInfoString.Append("Town ");
+                    bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-bush-town")} ");
                 }
                 else if (bushInfo.IsGreenhouseBush)
                 {
-                    bushInfoString.Append("Greenhouse ");
+                    bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-bush-greenhouse")} ");
                 }
 
-                bushInfoString.Append(bushInfo.BushType switch
-                {
-                    Bush.smallBush => "Small ",
-                    Bush.mediumBush => "Medium ",
-                    Bush.largeBush => "Large ",
-                    Bush.greenTeaBush => "Tea " + (bushInfo.Age < Bush.daysToMatureGreenTeaBush ? "Sapling" : "Bush"),
-                    Bush.walnutBush => "Golden Walnut ",
-                    _ => ""
-                });
+                bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-bush_type",
+                    new { type = bushInfo.BushType, has_matured = (bushInfo.Age < Bush.daysToMatureGreenTeaBush) ? 1 : 0 })} ");
             } else {
                 // only name Tea bushes as they're plantable / harvestable
                 if (bushInfo.BushType == Bush.greenTeaBush)
-                    bushInfoString.Append("Tea " + (bushInfo.Age < Bush.daysToMatureGreenTeaBush ? "Sapling" : "Bush"));
+                    bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-bush_type",
+                        new { type = 3, has_matured = (bushInfo.Age < Bush.daysToMatureGreenTeaBush) ? 1 : 0 })} ");
             }
 
             // Append the word "Bush" to all except for tea bush
             if (bushInfo.BushType != Bush.greenTeaBush)
-                bushInfoString.Append("Bush");
+                bushInfoString.Append(Translator.Instance.Translate("terrain_util-bush"));
 
             return bushInfoString.ToString().Trim();
         }

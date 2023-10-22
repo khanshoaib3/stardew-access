@@ -231,6 +231,61 @@ event_tile-feast_of_the_winter_star_shop-name = Feast of the Winter Star Shop
 
 patch-trash_bear-wanted_item = {$trash_bear_name} wants {$item_name}!
 
+# Terrain Utils
+
+terrain_util-forage_crop_types = {$type ->
+    [1] Spring onion
+    [2] Ginger
+    *[other] Forageable crop
+  }
+terrain_util-fruit_tree_growth_stage = {$stage ->
+    [0] seed
+    [1] sprout
+    [2] sapling
+    [3] bush
+    *[other] tree
+  }
+terrain_util-tree_type = {$type ->
+    [1] Oak
+    [2] Maple
+    [3] Pine
+    [4] Winter Tree
+    [5] Winter Tree
+    [6] Palm Tree
+    [7] Mushroom Tree
+    [8] Mahogany
+    [9] Palm Tree
+    *[other] Unknown tree type number {$type}
+  }
+terrain_util-tree-seedling = seedling
+terrain_util-tree_growth_stage = {$stage ->
+    [1] sprout
+    [2] sapling
+    [3] bush
+    [4] bush
+    *[other] tree
+  }
+terrain_util-bush_type = {$type ->
+    [0] Small
+    [1] Medium
+    [2] Large
+    [3] Tea {$has_matured ->
+      [0] Sapling
+      *[1] Bush
+    }
+    [4] Golden Walnut 
+    *[other] unknown
+  }
+terrain_util-bush = Bush
+terrain_util-bush-town = Town
+terrain_util-bush-greenhouse = Greenhouse
+terrain_util-crop-watered = Watered
+terrain_util-crop-unwatered = Unwatered
+terrain_util-crop-dead = Dead
+terrain_util-crop-soil = Soil
+terrain_util-harvestable = Harvestable
+terrain_util-fertilized = Fertilized
+
 
 # Object Categories
 
