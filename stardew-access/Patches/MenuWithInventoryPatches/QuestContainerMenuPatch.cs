@@ -32,11 +32,10 @@ public class QuestContainerMenuPatch : IPatch
                 __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
             }
 
-            if (InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory, __instance.inventory.actualInventory))
+            if (InventoryUtils.NarrateHoveredSlot(__instance.inventory))
                 return;
 
-            if (InventoryUtils.NarrateHoveredSlot(__instance.ItemsToGrabMenu.inventory,
-                    __instance.ItemsToGrabMenu.actualInventory))
+            if (InventoryUtils.NarrateHoveredSlot(__instance.ItemsToGrabMenu))
                 return;
 
             if (__instance.okButton is { visible: true } &&
