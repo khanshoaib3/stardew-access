@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using stardew_access.Features;
 using stardew_access.Translation;
 using stardew_access.Utils;
+using StardewValley.Menus;
 
 namespace stardew_access
 {
@@ -9,8 +10,10 @@ namespace stardew_access
     {
         // Note to future self, don't make these static, it won't give errors in sv access but it will in other mods if they try to use the stardew access api.
         //Setting Pragma to disable warning CA1822 prompting to make fields static.
-        public API() { }
-        #pragma warning disable CA1822 // Mark members as static
+        public API()
+        {
+        }
+#pragma warning disable CA1822 // Mark members as static
         public string PrevMenuQueryText
         {
             get => MainClass.ScreenReader.PrevMenuQueryText;
@@ -53,13 +56,13 @@ namespace stardew_access
         )
         {
             /*
-            * How to use the Dictionary to get the name and category of a tile:-
-            *
-            * string tileName = detectedTiles.GetValueOrDefault(tilePosition).name;
-            * string tileCategory = detectedTiles.GetValueOrDefault(tilePosition).category;
-            *
-            * Here detectedTiles is the Dictionary returned by this method
-            */
+             * How to use the Dictionary to get the name and category of a tile:-
+             *
+             * string tileName = detectedTiles.GetValueOrDefault(tilePosition).name;
+             * string tileCategory = detectedTiles.GetValueOrDefault(tilePosition).category;
+             *
+             * Here detectedTiles is the Dictionary returned by this method
+             */
 
             return new Radar().SearchNearbyTiles(center, limit, false);
         }
@@ -71,13 +74,13 @@ namespace stardew_access
         public Dictionary<Vector2, (string name, string category)> SearchLocation()
         {
             /*
-            * How to use the Dictionary to get the name and category of a tile:-
-            *
-            * string tileName = detectedTiles.GetValueOrDefault(tilePosition).name;
-            * string tileCategory = detectedTiles.GetValueOrDefault(tilePosition).category;
-            *
-            * Here detectedTiles is the Dictionary returned by this method
-            */
+             * How to use the Dictionary to get the name and category of a tile:-
+             *
+             * string tileName = detectedTiles.GetValueOrDefault(tilePosition).name;
+             * string tileCategory = detectedTiles.GetValueOrDefault(tilePosition).category;
+             *
+             * Here detectedTiles is the Dictionary returned by this method
+             */
 
             return Radar.SearchLocation();
         }
@@ -101,6 +104,40 @@ namespace stardew_access
         {
             return TileInfo.GetNameAtTile(tile, null);
         }
+
+        /// <summary>
+        /// Speaks the hovered inventory slot from the provided <see cref="InventoryMenu"/>.
+        /// In case there is nothing in a slot, then it will speak "Empty Slot".
+        /// Also plays a sound if the slot is grayed out, like tools in <see cref="GeodeMenu">geode menu</see>.
+        /// </summary>
+        /// <param name="inventoryMenu">The object of <see cref="InventoryMenu"/> whose inventory is to be spoken.</param>
+        /// <param name="giveExtraDetails">(Optional) Whether to speak extra details about the item in slot or not. Default to null in which case it uses <see cref="ModConfig.DisableInventoryVerbosity"/> to get whether to speak extra details or not.</param>
+        /// <param name="hoverPrice">(Optional) The price of the hovered item, generally used in <see cref="ShopMenu"/>.</param>
+        /// <param name="extraItemToShowIndex">(Optional) The index (probably parentSheetIndex) of the extra item which is generally a requirement for the hovered item in certain menus.</param>
+        /// <param name="extraItemToShowAmount">(Optional) The amount or quantity of the extra item which is generally a requirement for the hovered item in certain menus.</param>
+        /// <param name="highlightedItemPrefix">(Optional) The prefix to add to the spoken hovered item's details if it is highlighted i.e., not grayed out.</param>
+        /// <param name="highlightedItemSuffix">(Optional) The suffix to add to the spoken hovered item's details if it is highlighted i.e., not grayed out.</param>
+        /// <param name="hoverX">(Optional) The X position on screen to check. Default to null, in which case it uses the mouse's X position.</param>
+        /// <param name="hoverY">(Optional) The Y position on screen to check. Default to null, in which case it uses the mouse's Y position.</param>
+        /// <returns>true if any inventory slot was hovered or found at the <paramref name="hoverX"/> and <paramref name="hoverY"/>.</returns>
+        public bool SpeakHoveredInventorySlot(InventoryMenu? inventoryMenu,
+            bool? giveExtraDetails = null,
+            int hoverPrice = -1,
+            int extraItemToShowIndex = -1,
+            int extraItemToShowAmount = -1,
+            string highlightedItemPrefix = "",
+            string highlightedItemSuffix = "",
+            int? hoverX = null,
+            int? hoverY = null) =>
+            InventoryUtils.NarrateHoveredSlot(inventoryMenu,
+                giveExtraDetails,
+                hoverPrice,
+                extraItemToShowIndex,
+                extraItemToShowAmount,
+                highlightedItemPrefix,
+                highlightedItemSuffix,
+                hoverX,
+                hoverY);
 
         /// <summary>Speaks the text via the loaded screen reader (if any).</summary>
         /// <param name="text">The text to be narrated.</param>
@@ -183,11 +220,11 @@ namespace stardew_access
         /// </remarks>
         public void RegisterLanguageHelper(string locale, Type helperType)
         {
-            #if DEBUG
+#if DEBUG
             Log.Trace($"Registered language helper for locale '{locale}': Type: {helperType.Name}");
-            #endif
+#endif
             CustomFluentFunctions.RegisterLanguageHelper(locale, helperType);
         }
-        #pragma warning restore CA1822 // Mark members as static
+#pragma warning restore CA1822 // Mark members as static
     }
 }

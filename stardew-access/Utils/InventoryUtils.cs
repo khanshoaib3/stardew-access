@@ -69,7 +69,7 @@ internal static class InventoryUtils
                 return i;
             }
 
-            bool? isHighlighted = inventoryMenu?.highlightMethod(actualInventory[i]);
+            bool? isHighlighted = inventoryMenu.highlightMethod(actualInventory[i]);
 
             string itemDetails = GetItemDetails(actualInventory[i],
                 i,
@@ -110,7 +110,7 @@ internal static class InventoryUtils
         string healthNStamina = GetHealthNStaminaFromItem(item);
         string buffs = (customBuffs is not null)
             ? string.Join(", ", customBuffs)
-            : buffs = GetBuffsFromItem(item);
+            : GetBuffsFromItem(item);
         string description = item.getDescription();
         string price = GetPrice(hoverPrice);
         string requirements = GetExtraItemInfo(extraItemToShowIndex, extraItemToShowAmount);
