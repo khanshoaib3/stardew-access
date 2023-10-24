@@ -211,13 +211,11 @@ namespace stardew_access.Utils
                     bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-bush-greenhouse")} ");
                 }
 
-                bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-bush_type",
-                    new { type = bushInfo.BushType, has_matured = (bushInfo.Age < Bush.daysToMatureGreenTeaBush) ? 1 : 0 })} ");
+                bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-bush_type", new { type = bushInfo.BushType, has_matured = (bushInfo.Age < Bush.daysToMatureGreenTeaBush) ? 1 : 0 })} ");
             } else {
                 // only name Tea bushes as they're plantable / harvestable
                 if (bushInfo.BushType == Bush.greenTeaBush)
-                    bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-bush_type",
-                        new { type = 3, has_matured = (bushInfo.Age < Bush.daysToMatureGreenTeaBush) ? 1 : 0 })} ");
+                    bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-bush_type", new { type = 3, has_matured = (bushInfo.Age < Bush.daysToMatureGreenTeaBush) ? 1 : 0 })} ");
             }
 
             // Append the word "Bush" to all except for tea bush
