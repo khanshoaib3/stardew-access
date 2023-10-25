@@ -2,7 +2,9 @@ using Microsoft.Xna.Framework;
 using stardew_access.Features;
 using stardew_access.Translation;
 using stardew_access.Utils;
+using StardewValley;
 using StardewValley.Menus;
+// ReSharper disable UnusedMember.Global
 
 namespace stardew_access
 {
@@ -14,6 +16,9 @@ namespace stardew_access
         {
         }
 #pragma warning disable CA1822 // Mark members as static
+
+        #region Screen reader related
+        
         public string PrevMenuQueryText
         {
             get => MainClass.ScreenReader.PrevMenuQueryText;
@@ -44,6 +49,56 @@ namespace stardew_access
             set => MainClass.ScreenReader.MenuSuffixNoQueryText = value;
         }
 
+        /// <summary>Speaks the text via the loaded screen reader (if any).</summary>
+        /// <param name="text">The text to be narrated.</param>
+        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
+        /// <returns>true if the text was spoken otherwise false.</returns>
+        public bool Say(String text, Boolean interrupt)
+            => MainClass.ScreenReader.Say(text, interrupt);
+
+        /// <summary>Speaks the text via the loaded screen reader (if any).
+        /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.</summary>
+        /// <param name="text">The text to be narrated.</param>
+        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
+        /// <param name="customQuery">If set, uses this instead of <paramref name="text"/> as query to check whether to speak the text or not.</param>
+        /// <returns>true if the text was spoken otherwise false.</returns>
+        public bool SayWithChecker(String text, Boolean interrupt, String? customQuery = null)
+            => MainClass.ScreenReader.SayWithChecker(text, interrupt, customQuery);
+
+        /// <summary>Speaks the text via the loaded screen reader (if any).
+        /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
+        /// <br/><br/>Use this when narrating hovered component in menus to avoid interference.</summary>
+        /// <param name="text">The text to be narrated.</param>
+        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
+        /// <param name="customQuery">If set, uses this instead of <paramref name="text"/> as query to check whether to speak the text or not.</param>
+        /// <returns>true if the text was spoken otherwise false.</returns>
+        public bool SayWithMenuChecker(String text, Boolean interrupt, String? customQuery = null)
+            => MainClass.ScreenReader.SayWithMenuChecker(text, interrupt, customQuery);
+
+        /// <summary>Speaks the text via the loaded screen reader (if any).
+        /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
+        /// <br/><br/>Use this when narrating chat messages to avoid interference.</summary>
+        /// <param name="text">The text to be narrated.</param>
+        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
+        /// <returns>true if the text was spoken otherwise false.</returns>
+        public bool SayWithChatChecker(String text, Boolean interrupt)
+            => MainClass.ScreenReader.SayWithChatChecker(text, interrupt);
+
+        /// <summary>Speaks the text via the loaded screen reader (if any).
+        /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
+        /// <br/><br/>Use this when narrating texts based on tile position to avoid interference.</summary>
+        /// <param name="text">The text to be narrated.</param>
+        /// <param name="x">The X location of tile.</param>
+        /// <param name="y">The Y location of tile.</param>
+        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
+        /// <returns>true if the text was spoken otherwise false.</returns>
+        public bool SayWithTileQuery(String text, int x, int y, Boolean interrupt)
+            => MainClass.ScreenReader.SayWithTileQuery(text, x, y, interrupt);
+
+        #endregion
+
+        #region Tiles related
+
         /// <summary>
         /// Search the area using Breadth First Search algorithm(BFS).
         /// </summary>
@@ -53,37 +108,13 @@ namespace stardew_access
         public Dictionary<Vector2, (string name, string category)> SearchNearbyTiles(
             Vector2 center,
             int limit
-        )
-        {
-            /*
-             * How to use the Dictionary to get the name and category of a tile:-
-             *
-             * string tileName = detectedTiles.GetValueOrDefault(tilePosition).name;
-             * string tileCategory = detectedTiles.GetValueOrDefault(tilePosition).category;
-             *
-             * Here detectedTiles is the Dictionary returned by this method
-             */
-
-            return new Radar().SearchNearbyTiles(center, limit, false);
-        }
+        ) => new Radar().SearchNearbyTiles(center, limit, false);
 
         /// <summary>
         /// Search the entire location using Breadth First Search algorithm(BFS).
         /// </summary>
         /// <returns>A dictionary with all the detected tiles along with the name of the object on it and it's category.</returns>
-        public Dictionary<Vector2, (string name, string category)> SearchLocation()
-        {
-            /*
-             * How to use the Dictionary to get the name and category of a tile:-
-             *
-             * string tileName = detectedTiles.GetValueOrDefault(tilePosition).name;
-             * string tileCategory = detectedTiles.GetValueOrDefault(tilePosition).category;
-             *
-             * Here detectedTiles is the Dictionary returned by this method
-             */
-
-            return Radar.SearchLocation();
-        }
+        public Dictionary<Vector2, (string name, string category)> SearchLocation() => Radar.SearchLocation();
 
         /// <summary>
         /// Check the tile for any object
@@ -100,10 +131,11 @@ namespace stardew_access
         /// </summary>
         /// <param name="tile">The tile where we want to check the name and category of object if any</param>
         /// <returns>Name of the object. Returns null if no object found.</returns>
-        public string? GetNameAtTile(Vector2 tile)
-        {
-            return TileInfo.GetNameAtTile(tile, null);
-        }
+        public string? GetNameAtTile(Vector2 tile) => TileInfo.GetNameAtTile(tile, null);
+        
+        #endregion
+
+        #region Inventory and Item related
 
         /// <summary>
         /// Speaks the hovered inventory slot from the provided <see cref="InventoryMenu"/>.
@@ -139,76 +171,27 @@ namespace stardew_access
                 hoverX,
                 hoverY);
 
-        /// <summary>Speaks the text via the loaded screen reader (if any).</summary>
-        /// <param name="text">The text to be narrated.</param>
-        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        /// <returns>true if the text was spoken otherwise false.</returns>
-        public bool Say(String text, Boolean interrupt)
-        {
-            if (MainClass.ScreenReader == null)
-                return false;
+        /// <summary>
+        /// Get the details (name, description, quality, etc.) of an <see cref="Item"/>.
+        /// </summary>
+        /// <param name="item">The <see cref="Item"/>'s object that we want to get details of.</param>
+        /// <param name="giveExtraDetails">(Optional) Whether to also return extra details or not. These include: description, health, stamina and other buffs.</param>
+        /// <param name="price">(Optional) Generally the selling price of the item.</param>
+        /// <param name="extraItemToShowIndex">(Optional) The index of the extra item which is generally the required item for the given item.</param>
+        /// <param name="extraItemToShowAmount">(Optional) The amount or quantity of the extra item.</param>
+        /// <returns>The details of the given <paramref name="item"/>.</returns>
+        public string GetDetailsOfItem(Item item,
+            bool giveExtraDetails = false,
+            int price = -1,
+            int extraItemToShowIndex = -1,
+            int extraItemToShowAmount = -1)
+            => InventoryUtils.GetItemDetails(item,
+                giveExtraDetails: giveExtraDetails,
+                hoverPrice: price,
+                extraItemToShowIndex: extraItemToShowIndex,
+                extraItemToShowAmount: extraItemToShowAmount);
 
-            return MainClass.ScreenReader.Say(text, interrupt);
-        }
-
-        /// <summary>Speaks the text via the loaded screen reader (if any).
-        /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.</summary>
-        /// <param name="text">The text to be narrated.</param>
-        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        /// <param name="customQuery">If set, uses this instead of <paramref name="text"/> as query to check whether to speak the text or not.</param>
-        /// <returns>true if the text was spoken otherwise false.</returns>
-        public bool SayWithChecker(String text, Boolean interrupt, String? customQuery = null)
-        {
-            if (MainClass.ScreenReader == null)
-                return false;
-
-            return MainClass.ScreenReader.SayWithChecker(text, interrupt, customQuery);
-        }
-
-        /// <summary>Speaks the text via the loaded screen reader (if any).
-        /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
-        /// <br/><br/>Use this when narrating hovered component in menus to avoid interference.</summary>
-        /// <param name="text">The text to be narrated.</param>
-        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        /// <param name="customQuery">If set, uses this instead of <paramref name="text"/> as query to check whether to speak the text or not.</param>
-        /// <returns>true if the text was spoken otherwise false.</returns>
-        public bool SayWithMenuChecker(String text, Boolean interrupt, String? customQuery = null)
-        {
-            if (MainClass.ScreenReader == null)
-                return false;
-
-            return MainClass.ScreenReader.SayWithMenuChecker(text, interrupt, customQuery);
-        }
-
-        /// <summary>Speaks the text via the loaded screen reader (if any).
-        /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
-        /// <br/><br/>Use this when narrating chat messages to avoid interference.</summary>
-        /// <param name="text">The text to be narrated.</param>
-        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        /// <returns>true if the text was spoken otherwise false.</returns>
-        public bool SayWithChatChecker(String text, Boolean interrupt)
-        {
-            if (MainClass.ScreenReader == null)
-                return false;
-
-            return MainClass.ScreenReader.SayWithChatChecker(text, interrupt);
-        }
-
-        /// <summary>Speaks the text via the loaded screen reader (if any).
-        /// <br/>Skips the text narration if the previously narrated text was the same as the one provided.
-        /// <br/><br/>Use this when narrating texts based on tile position to avoid interference.</summary>
-        /// <param name="text">The text to be narrated.</param>
-        /// <param name="x">The X location of tile.</param>
-        /// <param name="y">The Y location of tile.</param>
-        /// <param name="interrupt">Whether to skip the currently speaking text or not.</param>
-        /// <returns>true if the text was spoken otherwise false.</returns>
-        public bool SayWithTileQuery(String text, int x, int y, Boolean interrupt)
-        {
-            if (MainClass.ScreenReader == null)
-                return false;
-
-            return MainClass.ScreenReader.SayWithTileQuery(text, x, y, interrupt);
-        }
+        #endregion
 
         /// <summary>
         /// Registers a language helper to be used for a specific locale.
