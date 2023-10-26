@@ -45,6 +45,8 @@ namespace stardew_access.Patches
             typeof(SocialPage)
         };
 
+        internal static HashSet<string> ManuallyPatchedCustomMenus = new();
+
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
@@ -69,6 +71,19 @@ namespace stardew_access.Patches
         {
             try
             {
+                #region Skip narrating hover info for manually patched custom menus
+
+                if (Game1.activeClickableMenu != null)
+                {
+                    foreach (var fullNameOfCustomMenu in ManuallyPatchedCustomMenus)
+                    {
+                        if (Game1.activeClickableMenu.GetType().FullName == fullNameOfCustomMenu)
+                            return;
+                    }
+                }
+
+                #endregion
+                
                 #region Skip narrating hover text for certain menus
                 var activeClickableMenu = Game1.activeClickableMenu.GetType();
                 var activeGameMenuPage = Game1.activeClickableMenu is GameMenu gameMenu ? gameMenu.GetCurrentPage().GetType() : null;

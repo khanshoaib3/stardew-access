@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using stardew_access.Features;
+using stardew_access.Patches;
 using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
@@ -192,6 +193,24 @@ namespace stardew_access
                 extraItemToShowAmount: extraItemToShowAmount);
 
         #endregion
+
+        /// <summary>
+        /// Necessary to be called once if you have manually made a custom menu of your mod accessible.
+        /// This will skip stardew access' patch that speaks the hover info in that menu.
+        /// </summary>
+        /// <param name="fullNameOfClass">The full name of the menu's class.
+        /// <example>typeof(MyCustomMenu).FullName</example>
+        /// </param>
+        public void RegisterCustomMenuAsAccessible(string? fullNameOfClass)
+        {
+            if (string.IsNullOrWhiteSpace(fullNameOfClass))
+            {
+                Log.Error("fullNameOfClass cannot be null or empty!");
+                return;
+            }
+            
+            IClickableMenuPatch.ManuallyPatchedCustomMenus.Add(fullNameOfClass);
+        }
 
         /// <summary>
         /// Registers a language helper to be used for a specific locale.
