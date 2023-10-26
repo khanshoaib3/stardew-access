@@ -194,6 +194,9 @@ namespace stardew_access.Patches
                 case NumberSelectionMenu:
                     NumberSelectionMenuPatch.Cleanup();
                     break;
+                case NamingMenu:
+                    NamingMenuPatch.Cleanup();
+                    break;
             }
 
             MainClass.ScreenReader.Cleanup();
