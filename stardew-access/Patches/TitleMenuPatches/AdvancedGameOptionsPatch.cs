@@ -53,7 +53,7 @@ internal class AdvancedGameOptionsPatch : IPatch
                 $"An error occurred in advanced game menu patch [ReceiveLeftClickPatch]:\n{e.Message}\n{e.StackTrace}");
         }
 
-        return false;
+        return true;
     }
 
     private static void DrawPatch(AdvancedGameOptions __instance)
