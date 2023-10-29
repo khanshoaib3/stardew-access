@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 
 namespace stardew_access.Features;
@@ -74,7 +75,94 @@ internal class GridMovement : FeatureBase
 			HandleGridMovement(LastGridMovementDirection.Value, LastGridMovementButtonPressed.Value);
 		}
 	}
-            
+
+	public override bool OnButtonPressed(object? sender, ButtonPressedEventArgs e)
+	{
+        // Exit if in a menu
+        if (Game1.activeClickableMenu != null)
+        {
+            #if DEBUG
+            Log.Verbose("OnButtonPressed: returning due to 'Game1.activeClickableMenu' not being null AKA in a menu");
+            #endif
+            return false;
+        }
+
+		// GridMovement 
+		if (is_warping)
+		{
+			MainClass.ModHelper!.Input.Suppress(e.Button);
+			#if DEBUG
+			Log.Verbose("OnButtonPressed: returning due to GridMovementFeature.is_warping being true");
+			#endif
+			return true;
+		}
+
+		if (!Context.CanPlayerMove)
+		{
+			#if DEBUG
+			Log.Verbose("OnButtonPressed: returning due to 'Context.CanPlayerMove' being false");
+			#endif
+			return true;
+		}
+
+		if (MainClass.Config.GridMovementOverrideKey.IsDown())
+		{
+			#if DEBUG
+			Log.Verbose(
+				"HandleGridMovement: returning due to 'Config.GridMovementOverrideKey.IsDown()' being true");
+			#endif
+			return true;
+		}
+
+		if (!MainClass.Config.GridMovementActive)
+		{
+			#if DEBUG
+			Log.Verbose("HandleGridMovement: returning due to 'Config.GridMovementActive' being false");
+			#endif
+			return true;
+		}
+
+		e.Button.TryGetStardewInput(out InputButton keyboardButton);
+		e.Button.TryGetController(out Buttons controllerButton);
+
+		var directionMappings = new Dictionary<(InputButton, Buttons), int>
+		{
+			{ (Game1.options.moveUpButton[0], Buttons.DPadUp), 0 },
+			{ (Game1.options.moveRightButton[0], Buttons.DPadRight), 1 },
+			{ (Game1.options.moveDownButton[0], Buttons.DPadDown), 2 },
+			{ (Game1.options.moveLeftButton[0], Buttons.DPadLeft), 3 }
+		};
+
+		foreach (var mapping in directionMappings)
+		{
+			if (keyboardButton.Equals(mapping.Key.Item1) || controllerButton.Equals(mapping.Key.Item2))
+			{
+				HandleGridMovement(mapping.Value, keyboardButton);
+				MainClass.ModHelper!.Input.Suppress(e.Button);
+				break;
+			}
+		}
+
+		return false;
+	}
+
+	public override void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
+	{
+		if (!Context.IsPlayerFree)
+			return;
+
+		if (MainClass.Config.ToggleGridMovementKey.JustPressed())
+		{
+			MainClass.Config.GridMovementActive = !MainClass.Config.GridMovementActive;
+			// TODO Internationalise this!
+			string output = "Grid Movement Status: " + (MainClass.Config.GridMovementActive ? "Active" : "Inactive");
+			MainClass.ScreenReader.Say(output, true);
+			return;
+		}
+
+		base.OnButtonsChanged(sender, e);
+	}
+
 	private void Timer_Elapsed(object sender, ElapsedEventArgs e)
 	{
 		is_moving = false;

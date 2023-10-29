@@ -1,6 +1,5 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using stardew_access.Commands;
 using stardew_access.Features;
 using stardew_access.Patches;
@@ -92,8 +91,8 @@ namespace stardew_access
             }
             #endregion
 
-            helper.Events.Input.ButtonPressed += OnButtonPressed;
-            helper.Events.Input.ButtonsChanged += OnButtonsChanged;
+            helper.Events.Input.ButtonPressed += FeatureManager.OnButtonPressedEvent;
+            helper.Events.Input.ButtonsChanged += FeatureManager.OnButtonsChangedEvent;
             helper.Events.Player.Warped += OnPlayerWarped;
             helper.Events.Display.Rendering += OnRenderingStart;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
@@ -134,7 +133,7 @@ namespace stardew_access
             if (!Context.IsPlayerFree && !(Game1.CurrentEvent is not null && Game1.CurrentEvent.id == 13))
                 return;
             
-            FeatureManager.UpdateAll(sender, e);
+            FeatureManager.UpdateEvent(sender, e);
 
             RefreshBuildListIfRequired();
 
@@ -183,253 +182,6 @@ namespace stardew_access
                 Log.Debug($"Switched from {e.OldMenu.GetType()} menu, performing cleanup...");
                 IClickableMenuPatch.Cleanup(e.OldMenu);
             }
-        }
-
-        private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
-        {
-            if (Config is null)
-            {
-                #if DEBUG
-                Log.Verbose("OnButtonPressed: returning due to 'Config' being null");
-                #endif
-                return;
-            }
-
-            #region Simulate left and right clicks
-            if (!TextBoxPatch.IsAnyTextBoxActive)
-            {
-                if (Game1.activeClickableMenu != null)
-                {
-                    MouseUtils.SimulateMouseClicks(
-                        (x, y) => Game1.activeClickableMenu.receiveLeftClick(x, y),
-                        (x, y) => Game1.activeClickableMenu.receiveRightClick(x, y)
-                    );
-                }
-                else if (Game1.currentMinigame != null)
-                {
-                    MouseUtils.SimulateMouseClicks(
-                        (x, y) => Game1.currentMinigame.receiveLeftClick(x, y),
-                        (x, y) => Game1.currentMinigame.receiveRightClick(x, y)
-                    );
-                }
-            }
-            #endregion
-
-            // Exit if in a menu
-            if (Game1.activeClickableMenu != null)
-            {
-                #if DEBUG
-                Log.Verbose("OnButtonPressed: returning due to 'Game1.activeClickableMenu' not being null AKA in a menu");
-                #endif
-                return;
-            }
-
-            // Code only run during game play below this line 
-            
-            // Narrate Current Location
-            if (Config.LocationKey.JustPressed())
-            {
-                Narrate(Game1.currentLocation.Name);
-                return;
-            }
-
-            // Narrate Position
-            if (Config.PositionKey.JustPressed())
-            {
-                string toSpeak = Config.VerboseCoordinates
-                    ? $"X: {CurrentPlayer.PositionX}, Y: {CurrentPlayer.PositionY}"
-                    : $"{CurrentPlayer.PositionX}, {CurrentPlayer.PositionY}";
-                Narrate(toSpeak);
-                return;
-            }
-
-            // Narrate health and stamina
-            if (Config.HealthNStaminaKey.JustPressed())
-            {
-                if (ModHelper == null)
-                    return;
-
-                // TODO unify translation keys
-                string toSpeak = Config.HealthNStaminaInPercentage
-                    ? Translator.Instance.Translate(
-                        "feature-speak_health_n_stamina-in_percentage_format",
-                        new
-                        {
-                            health = CurrentPlayer.PercentHealth,
-                            stamina = CurrentPlayer.PercentStamina
-                        }
-                    )
-                    : Translator.Instance.Translate(
-                        "feature-speak_health_n_stamina-in_normal_format",
-                        new
-                        {
-                            health = CurrentPlayer.CurrentHealth,
-                            stamina = CurrentPlayer.CurrentStamina
-                        }
-                    );
-
-                Narrate(toSpeak);
-                return;
-            }
-
-            // Narrate money at hand
-            if (Config.MoneyKey.JustPressed())
-            {
-                Narrate($"You have {CurrentPlayer.Money}g");
-                return;
-            }
-
-            // Narrate time and season
-            if (Config.TimeNSeasonKey.JustPressed())
-            {
-                Narrate($"Time is {CurrentPlayer.TimeOfDay} and it is {CurrentPlayer.Day} {CurrentPlayer.Date} of {CurrentPlayer.Season}");
-                return;
-            }
-
-            // Manual read tile at player's position
-            if (Config.ReadStandingTileKey.JustPressed())
-            {
-                ReadTile.Instance.Run(manuallyTriggered: true, playersPosition: true);
-                return;
-            }
-
-            // Manual read tile at looking tile
-            if (Config.ReadTileKey.JustPressed())
-            {
-                ReadTile.Instance.Run(manuallyTriggered: true);
-                return;
-            }
-
-            // Tile viewing cursor keys
-            TileViewer.Instance.HandleInput();
-
-            // Suppresses button presses (excluding certain buttons) if object tracker/tile viewer is path finding
-            if (Game1.player.controller is not null)
-            {
-                if (TileViewer.Instance.IsAutoWalking)
-                {
-                    if (Config.OTCancelAutoWalking.JustPressed())
-                    {
-                        #if DEBUG
-                        Log.Verbose("OnButtonPressed: cancel auto walking button pressed, canceling auto walking for tile viewer.");
-                        #endif
-                        TileViewer.Instance.StopAutoWalking(wasForced: true);
-                        Helper.Input.Suppress(e.Button);
-                    }
-                    else if (InputUtils.IsAnyMovementKey(e.Button))
-                    {
-                        #if DEBUG
-                        Log.Verbose("OnButtonPressed: movement key pressed, canceling auto walking for tile viewer.");
-                        #endif
-                        TileViewer.Instance.StopAutoWalking(wasForced: true);
-                    }
-                    else if (SButtonExtensions.IsUseToolButton(e.Button))
-                    {
-                        #if DEBUG
-                        Log.Verbose("OnButtonPressed: use tool button pressed, canceling auto walking for tile viewer.");
-                        #endif
-                        TileViewer.Instance.StopAutoWalking(wasForced: true);
-                        Game1.pressUseToolButton();
-                    }
-                    else if (SButtonExtensions.IsActionButton(e.Button))
-                    {
-                        #if DEBUG
-                        Log.Verbose("OnButtonPressed: action button pressed, canceling auto walking for tile viewer.");
-                        #endif
-                        TileViewer.Instance.StopAutoWalking(wasForced: true);
-                        Game1.pressActionButton(Game1.input.GetKeyboardState(), Game1.input.GetMouseState(),
-                            Game1.input.GetGamePadState());
-                    }
-                }
-
-                if (!InputUtils.IsAnyInventorySlotButton(e.Button)
-                    && !InputUtils.IsToolbarSwapButton(e.Button)
-                    && !e.Button.Equals(SButton.LeftControl))
-                {
-                    #if DEBUG
-                    Log.Verbose($"OnButtonPressed: suppressing '{e.Button.ToString()}' for object tracker/tile viewer auto walking as it is neither any inventory slot button nor the toolbar swap button");
-                    #endif
-                    Helper.Input.Suppress(e.Button);
-                }
-                return;
-            }
-            
-            // GridMovement 
-            if (GridMovement.Instance.is_warping)
-            {
-                Helper.Input.Suppress(e.Button);
-                #if DEBUG
-                Log.Verbose("OnButtonPressed: returning due to GridMovementFeature.is_warping being true");
-                #endif
-                return;
-            }
-
-            if (!Context.CanPlayerMove)
-            {
-                #if DEBUG
-                Log.Verbose("OnButtonPressed: returning due to 'Context.CanPlayerMove' being false");
-                #endif
-                return;
-            }
-            HandleGridMovement();
-
-            // local functions
-            void Narrate(string message) => MainClass.ScreenReader.Say(message, true);
-
-            void HandleGridMovement()
-            {
-                if (Config!.GridMovementOverrideKey.IsDown())
-                {
-                    #if DEBUG
-                    Log.Verbose("HandleGridMovement: returning due to 'Config.GridMovementOverrideKey.IsDown()' being true");
-                    #endif
-                    return;
-                }
-
-                if (!Config!.GridMovementActive)
-                {
-                    #if DEBUG
-                    Log.Verbose("HandleGridMovement: returning due to 'Config.GridMovementActive' being false");
-                    #endif
-                    return;
-                }
-
-                e.Button.TryGetStardewInput(out InputButton keyboardButton);
-                e.Button.TryGetController(out Buttons controllerButton);
-
-                var directionMappings = new Dictionary<(InputButton, Buttons), int>
-                {
-                    {(Game1.options.moveUpButton[0], Buttons.DPadUp), 0},
-                    {(Game1.options.moveRightButton[0], Buttons.DPadRight), 1},
-                    {(Game1.options.moveDownButton[0], Buttons.DPadDown), 2},
-                    {(Game1.options.moveLeftButton[0], Buttons.DPadLeft), 3}
-                };
-
-                foreach (var mapping in directionMappings)
-                {
-                    if (keyboardButton.Equals(mapping.Key.Item1) || controllerButton.Equals(mapping.Key.Item2))
-                    {
-                        GridMovement.Instance.HandleGridMovement(mapping.Value, keyboardButton);
-                        Helper.Input.Suppress(e.Button);
-                        break;
-                    }
-                }
-            }
-        }
-
-        private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
-        {
-            if (!Context.IsPlayerFree)
-                return;
-
-            if(Config!.ToggleGridMovementKey.JustPressed())
-            {
-                Config!.GridMovementActive = !Config!.GridMovementActive;
-                string output = "Grid Movement Status: " + (Config!.GridMovementActive ? "Active" : "Inactive");
-                MainClass.ScreenReader.Say(output, true);
-                return;
-            } 
-            ObjectTracker.Instance.HandleKeys(sender, e);
         }
 
         private void OnPlayerWarped(object? sender, WarpedEventArgs e)

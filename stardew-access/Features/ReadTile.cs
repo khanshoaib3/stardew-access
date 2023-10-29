@@ -27,7 +27,7 @@ internal class ReadTile : FeatureBase
         }
     }
 
-    public ReadTile()
+    private ReadTile()
     {
         _isBusy = false;
         _delay = 100;
@@ -47,6 +47,34 @@ internal class ReadTile : FeatureBase
         _isBusy = true;
         Run();
         Task.Delay(_delay).ContinueWith(_ => { _isBusy = false; });
+    }
+
+    public override bool OnButtonPressed(object? sender, ButtonPressedEventArgs e)
+    {
+        // Exit if in a menu
+        if (Game1.activeClickableMenu != null)
+        {
+            #if DEBUG
+            Log.Verbose("OnButtonPressed: returning due to 'Game1.activeClickableMenu' not being null AKA in a menu");
+            #endif
+            return false;
+        }
+
+        // Manual read tile at player's position
+        if (MainClass.Config.ReadStandingTileKey.JustPressed())
+        {
+            ReadTile.Instance.Run(manuallyTriggered: true, playersPosition: true);
+            return true;
+        }
+
+        // Manual read tile at looking tile
+        if (MainClass.Config.ReadTileKey.JustPressed())
+        {
+            ReadTile.Instance.Run(manuallyTriggered: true);
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>

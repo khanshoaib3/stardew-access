@@ -1,3 +1,6 @@
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
+
 namespace stardew_access.Features;
 
 using Microsoft.Xna.Framework;
@@ -8,7 +11,6 @@ using static Utils.MiscUtils;
 using static Utils.InputUtils;
 using static Utils.MovementHelpers;
 using static Utils.NPCUtils;
-using StardewModdingAPI.Events;
 using StardewValley;
 
 internal class ObjectTracker : FeatureBase
@@ -52,6 +54,15 @@ internal class ObjectTracker : FeatureBase
         if (!e.IsMultipleOf(15) || !MainClass.Config.OTAutoRefreshing) return;
         
         Tick();
+    }
+
+    public override void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
+    {
+        base.OnButtonsChanged(sender, e);
+        
+        if (!Context.IsPlayerFree)
+            return;
+        Instance.HandleKeys(sender, e);
     }
 
     public void Tick()

@@ -1,23 +1,27 @@
+using stardew_access.Patches;
+using stardew_access.Utils;
 using StardewModdingAPI.Events;
+using StardewValley;
 
 namespace stardew_access.Features;
 
 public class FeatureManager
 {
-    public static void UpdateAll(object? sender, UpdateTickedEventArgs e)
+    private static readonly List<FeatureBase> AllFeatures = new()
     {
-        List<FeatureBase> allFeatures = new()
-        {
-            ReadTile.Instance,
-            GridMovement.Instance,
-            TileViewer.Instance,
-            ObjectTracker.Instance,
-            GameStateNarrator.Instance,
-            Warnings.Instance,
-            Radar.Instance,
-        };
+        PlayerTriggered.Instance,
+        ReadTile.Instance,
+        GridMovement.Instance,
+        TileViewer.Instance,
+        ObjectTracker.Instance,
+        GameStateNarrator.Instance,
+        Warnings.Instance,
+        Radar.Instance,
+    };
 
-        foreach (FeatureBase feature in allFeatures)
+    public static void UpdateEvent(object? sender, UpdateTickedEventArgs e)
+    {
+        foreach (FeatureBase feature in AllFeatures)
         {
             try
             {
@@ -25,7 +29,64 @@ public class FeatureManager
             }
             catch (Exception exception)
             {
-                Log.Error( $"An error occurred while updating {feature.GetType().FullName} feature:\n{exception.Message}\n{exception.StackTrace}");
+                Log.Error(
+                    $"An error occurred while updating {feature.GetType().FullName} feature:\n{exception.Message}\n{exception.StackTrace}");
+                throw;
+            }
+        }
+    }
+
+    public static void OnButtonPressedEvent(object? sender, ButtonPressedEventArgs e)
+    {
+        #region Simulate left and right clicks
+
+        if (!TextBoxPatch.IsAnyTextBoxActive)
+        {
+            if (Game1.activeClickableMenu != null)
+            {
+                MouseUtils.SimulateMouseClicks(
+                    (x, y) => Game1.activeClickableMenu.receiveLeftClick(x, y),
+                    (x, y) => Game1.activeClickableMenu.receiveRightClick(x, y)
+                );
+            }
+            else if (Game1.currentMinigame != null)
+            {
+                MouseUtils.SimulateMouseClicks(
+                    (x, y) => Game1.currentMinigame.receiveLeftClick(x, y),
+                    (x, y) => Game1.currentMinigame.receiveRightClick(x, y)
+                );
+            }
+        }
+
+        #endregion
+
+        foreach (FeatureBase feature in AllFeatures)
+        {
+            try
+            {
+                if (feature.OnButtonPressed(sender, e)) break;
+            }
+            catch (Exception exception)
+            {
+                Log.Error(
+                    $"An error occurred in OnButtonPressed of {feature.GetType().FullName} feature:\n{exception.Message}\n{exception.StackTrace}");
+                throw;
+            }
+        }
+    }
+
+    public static void OnButtonsChangedEvent(object? sender, ButtonsChangedEventArgs e)
+    {
+        foreach (FeatureBase feature in AllFeatures)
+        {
+            try
+            {
+                feature.OnButtonsChanged(sender, e);
+            }
+            catch (Exception exception)
+            {
+                Log.Error(
+                    $"An error occurred in OnButtonChangedEvent of {feature.GetType().FullName} feature:\n{exception.Message}\n{exception.StackTrace}");
                 throw;
             }
         }

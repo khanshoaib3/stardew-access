@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using xTile;
 using stardew_access.Utils;
 using stardew_access.Translation;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
@@ -91,8 +92,17 @@ internal class TileViewer : FeatureBase
     /// <summary>
     /// Handle keyboard input related to the tile viewer.
     /// </summary>
-    public void HandleInput()
+    public override bool OnButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
+        // Exit if in a menu
+        if (Game1.activeClickableMenu != null)
+        {
+            #if DEBUG
+            Log.Verbose("OnButtonPressed: returning due to 'Game1.activeClickableMenu' not being null AKA in a menu");
+            #endif
+            return false;
+        }
+
         if (MainClass.Config.ToggleRelativeCursorLockKey.JustPressed())
         {
             _relativeOffsetLock = !_relativeOffsetLock;
@@ -104,6 +114,7 @@ internal class TileViewer : FeatureBase
             {
                 _relativeOffsetLockPosition = Vector2.Zero;
             }
+
             MainClass.ScreenReader.TranslateAndSay("feature-tile_viewer-relative_cursor_lock_info", true, new
             {
                 is_enabled = _relativeOffsetLock ? 1 : 0
@@ -141,10 +152,62 @@ internal class TileViewer : FeatureBase
         {
             CursorMoveInput(new Vector2(-Game1.tileSize, 0));
         }
-        else if (MainClass.Config.AutoWalkToTileKey.JustPressed() && StardewModdingAPI.Context.IsPlayerFree)
+        else if (MainClass.Config.AutoWalkToTileKey.JustPressed() && Context.IsPlayerFree)
         {
             StartAutoWalking();
         }
+
+        // Suppresses button presses (excluding certain buttons) if tile viewer is path finding
+        if (Game1.player.controller is null) return false;
+        if (!Instance.IsAutoWalking) return false;
+        
+        if (MainClass.Config.OTCancelAutoWalking.JustPressed())
+        {
+            #if DEBUG
+            Log.Verbose(
+                "OnButtonPressed: cancel auto walking button pressed, canceling auto walking for tile viewer.");
+            #endif
+            StopAutoWalking(wasForced: true);
+            MainClass.ModHelper!.Input.Suppress(e.Button);
+        }
+        else if (InputUtils.IsAnyMovementKey(e.Button))
+        {
+            #if DEBUG
+            Log.Verbose("OnButtonPressed: movement key pressed, canceling auto walking for tile viewer.");
+            #endif
+            StopAutoWalking(wasForced: true);
+        }
+        else if (SButtonExtensions.IsUseToolButton(e.Button))
+        {
+            #if DEBUG
+            Log.Verbose(
+                "OnButtonPressed: use tool button pressed, canceling auto walking for tile viewer.");
+            #endif
+            StopAutoWalking(wasForced: true);
+            Game1.pressUseToolButton();
+        }
+        else if (SButtonExtensions.IsActionButton(e.Button))
+        {
+            #if DEBUG
+            Log.Verbose("OnButtonPressed: action button pressed, canceling auto walking for tile viewer.");
+            #endif
+            StopAutoWalking(wasForced: true);
+            Game1.pressActionButton(Game1.input.GetKeyboardState(), Game1.input.GetMouseState(),
+                Game1.input.GetGamePadState());
+        }
+
+        if (!InputUtils.IsAnyInventorySlotButton(e.Button)
+            && !InputUtils.IsToolbarSwapButton(e.Button)
+            && !e.Button.Equals(SButton.LeftControl))
+        {
+            #if DEBUG
+            Log.Verbose(
+                $"OnButtonPressed: suppressing '{e.Button.ToString()}' for object tracker/tile viewer auto walking as it is neither any inventory slot button nor the toolbar swap button");
+            #endif
+            MainClass.ModHelper!.Input.Suppress(e.Button);
+        }
+
+        return true;
     }
 
     private void StartAutoWalking()
