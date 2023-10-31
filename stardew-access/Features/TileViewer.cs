@@ -154,7 +154,8 @@ internal class TileViewer : FeatureBase
         }
         else if (MainClass.Config.AutoWalkToTileKey.JustPressed() && Context.IsPlayerFree)
         {
-            StartAutoWalking();
+            // StartAutoWalking();
+            Game1.activeClickableMenu = new TileInfoMenu();
         }
 
         // Suppresses button presses (excluding certain buttons) if tile viewer is path finding

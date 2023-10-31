@@ -11,8 +11,8 @@ public class FeatureManager
     {
         PlayerTriggered.Instance,
         ReadTile.Instance,
-        GridMovement.Instance,
         TileViewer.Instance,
+        GridMovement.Instance,
         ObjectTracker.Instance,
         GameStateNarrator.Instance,
         Warnings.Instance,
