@@ -45,36 +45,12 @@ public class TileInfoMenu : DialogueBox
         {
             case "tile_info_menu-mark_tile":
             {
-                if (Game1.currentLocation is not Farm)
-                {
-                    MainClass.ScreenReader.TranslateAndSay("commands-tile_marking-mark-not_in_farm",
-                        true,
-                        translationCategory: TranslationCategory.CustomCommands);
-                    exitThisMenu();
-                }
-                else
-                {
-                    // TODO i18n
-                    NumberSelectionMenu numberSelectionMenu = new NumberSelectionMenu("Select index",
-                        (i, _, _) =>
-                        {
-                            BuildingOperations.marked[i] = new Vector2(_tileX, _tileY);
-                            MainClass.ScreenReader.TranslateAndSay("commands-tile_marking-mark-location_marked",
-                                true,
-                                translationTokens: new
-                                {
-                                    x_position = Game1.player.getTileX(),
-                                    y_position = Game1.player.getTileY(),
-                                    index = i
-                                }, translationCategory: TranslationCategory.CustomCommands);
-                            exitThisMenu();
-                        },
-                        minValue: 0,
-                        maxValue: 9,
-                        defaultNumber: 0);
-                    SetChildMenu(numberSelectionMenu);
-                }
-
+                HandleTileMarkingOption();
+                break;
+            }
+            case "tile_info_menu-add_to_custom_tiles":
+            {
+                MainClass.ScreenReader.Say("Custom tile.", true);
                 break;
             }
             case "tile_info_menu-detailed_tile_info":
@@ -83,14 +59,40 @@ public class TileInfoMenu : DialogueBox
                     TileInfo.GetNameAtTileWithBlockedOrEmptyIndication(new Vector2(_tileX, _tileY)), true);
                 break;
             }
-            case "tile_info_menu-add_to_custom_tiles":
-            {
-                MainClass.ScreenReader.Say("Custom tile.", true);
-                break;
-            }
         }
 
         base.receiveLeftClick(x, y);
+    }
+
+    private void HandleTileMarkingOption()
+    {
+        if (Game1.currentLocation is not Farm)
+        {
+            MainClass.ScreenReader.TranslateAndSay("commands-tile_marking-mark-not_in_farm",
+                true,
+                translationCategory: TranslationCategory.CustomCommands);
+            exitThisMenu();
+            return;
+        }
+
+        // TODO i18n
+        NumberSelectionMenu numberSelectionMenu = new NumberSelectionMenu("Select index",
+            (i, _, _) => OnNumberSelect(i),
+            minValue: 0,
+            maxValue: 9,
+            defaultNumber: 0);
+        SetChildMenu(numberSelectionMenu);
+        return;
+
+        void OnNumberSelect(int i)
+        {
+            BuildingOperations.marked[i] = new Vector2(_tileX, _tileY);
+            MainClass.ScreenReader.TranslateAndSay("commands-tile_marking-mark-location_marked", true,
+                translationTokens: new
+                    { x_position = Game1.player.getTileX(), y_position = Game1.player.getTileY(), index = i },
+                translationCategory: TranslationCategory.CustomCommands);
+            exitThisMenu();
+        }
     }
 
     public override void receiveKeyPress(Keys key)
