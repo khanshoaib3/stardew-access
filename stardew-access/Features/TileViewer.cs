@@ -154,8 +154,11 @@ internal class TileViewer : FeatureBase
         }
         else if (MainClass.Config.AutoWalkToTileKey.JustPressed() && Context.IsPlayerFree)
         {
-            // StartAutoWalking();
-            Game1.activeClickableMenu = new TileInfoMenu();
+            StartAutoWalking();
+        }
+        else if (MainClass.Config.OpenTileInfoMenuKey.JustPressed() && Context.IsPlayerFree)
+        {
+            Game1.activeClickableMenu = new TileInfoMenu((int)GetViewingTile().X, (int)GetViewingTile().Y);
         }
 
         // Suppresses button presses (excluding certain buttons) if tile viewer is path finding
@@ -257,35 +260,11 @@ internal class TileViewer : FeatureBase
     {
         if (!TryMoveTileView(delta)) return;
         Vector2 position = GetTileCursorPosition();
-        Vector2 tile = GetViewingTile();
-        String? name = TileInfo.GetNameAtTile(tile);
-
-        // Prepend the player's name if the viewing tile is occupied by the player itself
-        if (CurrentPlayer.PositionX == (int)tile.X && CurrentPlayer.PositionY == (int)tile.Y)
-        {
-            name = $"{Game1.player.displayName}, {name}";
-        }
-
-        if (name == null)
-        {
-            // Report if a tile is empty or blocked if there is nothing on it
-            if (TileInfo.IsCollidingAtTile(Game1.currentLocation, (int)tile.X, (int)tile.Y))
-            {
-                name = Translator.Instance.Translate("feature-tile_viewer-blocked_tile_name");
-            }
-            else
-            {
-                name = Translator.Instance.Translate("feature-tile_viewer-empty_tile_name");
-            }
-        }
-        if (precise)
-        {
-            MainClass.ScreenReader.Say($"{name}, {position.X}, {position.Y}", true);
-        }
-        else
-        {
-            MainClass.ScreenReader.Say($"{name}, {(int)(position.X / Game1.tileSize)}, {(int)(position.Y / Game1.tileSize)}", true);
-        }
+        string name = TileInfo.GetNameAtTileWithBlockedOrEmptyIndication(GetViewingTile());
+        
+        MainClass.ScreenReader.Say(precise
+            ? $"{name}, {position.X}, {position.Y}"
+            : $"{name}, {(int)(position.X / Game1.tileSize)}, {(int)(position.Y / Game1.tileSize)}", true);
     }
 
     private bool TryMoveTileView(Vector2 delta)

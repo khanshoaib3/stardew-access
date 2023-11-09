@@ -31,7 +31,7 @@ public class PlayerTriggered : FeatureBase
             return false;
         }
 
-        // TODO Add missing translations
+        // TODO i18n: Add missing translations
 
         // Narrate Current Location
         if (MainClass.Config.LocationKey.JustPressed())

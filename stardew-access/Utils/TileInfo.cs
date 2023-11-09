@@ -84,6 +84,23 @@ namespace stardew_access.Utils
             return GetNameWithCategoryAtTile(tile, currentLocation).name;
         }
 
+        public static string GetNameAtTileWithBlockedOrEmptyIndication(Vector2 tile)
+        {
+            String? name = GetNameAtTile(tile);
+
+            // Prepend the player's name if the viewing tile is occupied by the player itself
+            if (CurrentPlayer.PositionX == (int)tile.X && CurrentPlayer.PositionY == (int)tile.Y)
+            {
+                name = $"{Game1.player.displayName}, {name}";
+            }
+
+            // Report if a tile is empty or blocked if there is nothing on it
+            return name ?? Translator.Instance.Translate(
+                IsCollidingAtTile(Game1.currentLocation, (int)tile.X, (int)tile.Y)
+                    ? "feature-tile_viewer-blocked_tile_name"
+                    : "feature-tile_viewer-empty_tile_name");
+        }
+
         ///<summary>Returns the name of the object at tile alongwith it's category</summary>
         public static (string? name, CATEGORY? category) GetNameWithCategoryAtTile(Vector2 tile, GameLocation? currentLocation, bool lessInfo = false)
         {
