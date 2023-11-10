@@ -50,7 +50,7 @@ public class TileInfoMenu : DialogueBox
             }
             case "tile_info_menu-add_to_custom_tiles":
             {
-                MainClass.ScreenReader.Say("Custom tile.", true);
+                SetChildMenu(new CustomTilesEditorMenu(_tileX, _tileY));
                 break;
             }
             case "tile_info_menu-detailed_tile_info":

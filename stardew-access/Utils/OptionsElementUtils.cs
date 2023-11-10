@@ -21,6 +21,21 @@ namespace stardew_access.Utils
             return false;
         }
 
+        internal static bool NarrateOptionsElements(List<OptionsElement> options)
+        {
+            int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
+            for (int i = 0; i < options.Count; i++)
+            {
+                if (!options[i].bounds.Contains(x, y))
+                    continue;
+
+                MainClass.ScreenReader.SayWithMenuChecker(GetNameOfElement(options[i]), true);
+                return true;
+            }
+
+            return false;
+        }
+
         internal static string GetNameOfElement(OptionsElement optionsElement)
         {
             string translationKey;
