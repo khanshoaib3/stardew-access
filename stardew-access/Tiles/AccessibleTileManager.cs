@@ -161,7 +161,7 @@ namespace stardew_access.Tiles
                 throw new InvalidOperationException("exactly one of (X and Y arrays) or DynamicCoordinates must be set.");
 
             if (element.TryGetProperty("Category", out JsonElement categoryElement) && categoryElement.ValueKind != JsonValueKind.Null)
-                category = categoryElement.GetString() ?? "Other";
+                category = categoryElement.GetString() ?? CATEGORY.Others.ToString();
 
             // Logic to determine the layer to add tiles to
             

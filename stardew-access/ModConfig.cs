@@ -37,12 +37,12 @@ public Boolean ReadTileIndexes { get; set; } = false; // Toggle this feature.
         public KeybindList TileCursorPreciseRightKey { get; set; } = KeybindList.Parse("LeftShift + Right"); // Move the cursor right by precision i.e. pixel by pixel
         public KeybindList TileCursorPreciseDownKey { get; set; } = KeybindList.Parse("LeftShift + Down"); // Move the cursor down by precision i.e. pixel by pixel
         public KeybindList TileCursorPreciseLeftKey { get; set; } = KeybindList.Parse("LeftShift + Left"); // Move the cursor left by precision i.e. pixel by pixel
-        public KeybindList ToggleRelativeCursorLockKey { get; set; } = KeybindList.Parse("L"); // Toggles realative cursor lock i.e. if enabled, the cursor will reset when player moves.
+        public KeybindList ToggleRelativeCursorLockKey { get; set; } = KeybindList.Parse("L"); // Toggles relative cursor lock i.e. if enabled, the cursor will reset when player moves.
         public KeybindList AutoWalkToTileKey { get; set; } = KeybindList.Parse("LeftControl + Enter"); // Auto walk to the tile
         /// <summary>
-        /// Opens the Tile Info menu for the active tile. Default is `LeftAlt + Enter`.
+        /// Opens the Tile Info menu for the active tile. Default is `LeftShift + Enter`.
         /// </summary>
-        public KeybindList OpenTileInfoMenuKey { get; set; } = KeybindList.Parse("LeftAlt + Enter");
+        public KeybindList OpenTileInfoMenuKey { get; set; } = KeybindList.Parse("LeftShift + Enter");
         public bool LimitTileCursorToScreen { get; set; } = false; // #TODO add command for this // Toggle whether to prevent cursor from going out of screen.
         public int TileCursorPreciseMovementDistance { get; set; } = 8;  // Specifies the number of pixels the cursor should move when using precision movement i.e. with *left shift*.
         #endregion

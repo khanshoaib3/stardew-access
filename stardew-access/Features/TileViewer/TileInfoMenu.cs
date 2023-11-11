@@ -57,6 +57,7 @@ public class TileInfoMenu : DialogueBox
             {
                 MainClass.ScreenReader.Say(
                     TileInfo.GetNameAtTileWithBlockedOrEmptyIndication(new Vector2(_tileX, _tileY)), true);
+                exitThisMenu();
                 break;
             }
         }
