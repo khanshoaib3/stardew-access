@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Newtonsoft.Json.Linq;
 using stardew_access.Patches;
+using stardew_access.Tiles;
 using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Locations;
@@ -15,7 +16,7 @@ public class CustomTilesEditorMenu : IClickableMenu
 {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         // ReSharper disable UnusedAutoPropertyAccessor.Local
-    private class TileEntryFormat
+    private class TileInfoFormat
     {
         public string NameOrTranslationKey { get; set; }
         public int[] X { get; set; }
@@ -81,7 +82,7 @@ public class CustomTilesEditorMenu : IClickableMenu
             return currentBounds;
         }
 
-        OptionsElement headingLabel = new OptionsElement($"Tile {_tileX}x {_tileY}y in {Game1.currentLocation.Name}")
+        OptionsElement headingLabel = new OptionsElement($"Tile {_tileX}x {_tileY}y in {Game1.currentLocation.NameOrUniqueName}")
         {
             style = OptionsElement.Style.OptionLabel,
             whichOption = (int)OptionsIdentifiers.HeadingLabel,
@@ -253,10 +254,58 @@ public class CustomTilesEditorMenu : IClickableMenu
             return;
         }
 
+        GetEnteredTileInformation(out var tileInfo);
+        if (tileInfo == null) return;
+        AddTileInfoToJson(tileInfo);
+    }
+
+    private void AddTileInfoToJson(TileInfoFormat jsonInfoForTile)
+    {
+        JObject root;
+        if (File.Exists(JsonLoader.GetFilePath("tiles_user.json", "assets/TileData")))
+        {
+            Log.Trace("Loading existing tiles_user.json");
+            if (!JsonLoader.TryLoadJsonFile("tiles_user.json", out JsonDocument jsonDocument, "assets/TileData"))
+            {
+                MainClass.ScreenReader.Say("Unable to parse tiles_user.json", true);
+                return;
+            }
+
+            root = JObject.Parse(JsonSerializer.Serialize(jsonDocument));
+        }
+        else
+        {
+            Log.Trace("tiles_user.json not found, creating a new one...");
+            root = new JObject();
+        }
+
+        if (!root.TryGetValue(Game1.currentLocation.NameOrUniqueName, out JToken? locationToken))
+        {
+            // Creates the location property if not exists
+            Log.Trace($"Entry for location {Game1.currentLocation.NameOrUniqueName} not found, adding one...");
+            locationToken = new JProperty(Game1.currentLocation.NameOrUniqueName, new JArray());
+            root.Add(locationToken);
+        }
+
+        JArray locationValueArray = locationToken.Type == JTokenType.Property
+            ? (JArray)locationToken.Value<JProperty>()!.Value
+            : locationToken.Value<JArray>()!;
+
+        locationValueArray.Add(JObject.FromObject(jsonInfoForTile));
+
+        JsonLoader.SaveJsonFile("tiles_user.json", JsonSerializer.Deserialize<JsonElement>(root.ToString()),
+            "assets/TileData");
+        MainClass.TileManager.Initialize();
+        exitThisMenu();
+    }
+
+    private void GetEnteredTileInformation(out TileInfoFormat? tileInfo)
+    {
         string? tileName = null;
         string category = "other";
         List<string> withMods = new();
         List<string> conditions = new();
+        tileInfo = null;
 
         bool questAdded = false;
         foreach (OptionsElement optionsElement in _options)
@@ -326,53 +375,19 @@ public class CustomTilesEditorMenu : IClickableMenu
         if (string.IsNullOrEmpty(tileName))
         {
             MainClass.ScreenReader.Say("Tile name cannot be empty or null", true);
+            exitThisMenu();
             return;
         }
 
-        var jsonEntryForTile = new TileEntryFormat
+        tileInfo = new TileInfoFormat
         {
             NameOrTranslationKey = tileName,
-            X = new []{_tileX},
-            Y = new []{_tileY},
+            X = new[] { _tileX },
+            Y = new[] { _tileY },
             Category = category,
             WithMods = withMods.Count > 0 ? withMods.ToArray() : null,
-            Conditions = conditions.Count > 0? conditions.ToArray() : null,
+            Conditions = conditions.Count > 0 ? conditions.ToArray() : null,
         };
-
-        JObject root;
-        if (File.Exists(JsonLoader.GetFilePath("tiles_user.json", "assets/TileData")))
-        {
-            Log.Trace("Loading existing tiles_user.json");
-            if (!JsonLoader.TryLoadJsonFile("tiles_user.json", out JsonDocument jsonDocument, "assets/TileData"))
-            {
-                MainClass.ScreenReader.Say("Unable to parse tiles_user.json", true);
-                return;
-            }
-
-            root = JObject.Parse(JsonSerializer.Serialize(jsonDocument));
-        }
-        else
-        {
-            Log.Trace("tiles_user.json not found, creating a new one...");
-            root = new JObject();
-        }
-
-        if (!root.TryGetValue(Game1.currentLocation.Name, out JToken? locationToken))
-        {
-            // Creates the location property if not exists
-            Log.Trace($"Entry for location {Game1.currentLocation.Name} not found, adding one...");
-            locationToken = new JProperty(Game1.currentLocation.Name, new JArray());
-            root.Add(locationToken);
-        }
-
-        JArray locationValueArray = locationToken.Type == JTokenType.Property
-            ? (JArray)locationToken.Value<JProperty>()!.Value
-            : locationToken.Value<JArray>()!;
-
-        locationValueArray.Add(JObject.FromObject(jsonEntryForTile));
-        
-        JsonLoader.SaveJsonFile("tiles_user.json", JsonSerializer.Deserialize<JsonElement>(root.ToString()), "assets/TileData");
-        exitThisMenu();
     }
 
     public override void leftClickHeld(int x, int y)

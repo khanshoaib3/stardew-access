@@ -36,6 +36,8 @@ namespace stardew_access.Tiles
         internal void Initialize()
         {
             Log.Trace("Initializing     AccessibleTileManager");
+            LocationData.Clear();
+            Locations.Clear();
             // First try converting the old custom-tiles.json
             if (ConvertOldCustomTilesFormat())
                 Log.Alert($"Your custom-tiles.json file was updated to the new format,. You can find the new file under assets/TileData/tiles_user.json. Your original file was renamed to custom-tiles.old.json.");
