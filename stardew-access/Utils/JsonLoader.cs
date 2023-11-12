@@ -6,13 +6,13 @@ namespace stardew_access.Utils
     {
         public delegate void NestedItemProcessor<TKey, TValue>(List<string> path, JsonElement element, ref Dictionary<TKey, TValue> res) where TKey : notnull;
         public delegate void NestedItemProcessorWithUserFile<TKey, TValue>(List<string> path, JsonElement element, ref Dictionary<TKey, TValue> res, bool isUserFile) where TKey : notnull;
-
-
-        private const string DefaultDir = "assets";
-        private static string GetFilePath(string fileName, string subdir)
+        public static string GetFilePath(string fileName, string subdir)
         {
             return Path.Combine(MainClass.ModHelper!.DirectoryPath, subdir, fileName);
         }
+
+
+        private const string DefaultDir = "assets";
 
         /// <summary>
         /// Loads a JSON file from the specified file name in the specified location (defaults to `DefaultDir`).

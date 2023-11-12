@@ -109,7 +109,7 @@ namespace stardew_access.Tiles
             if (element.TryGetProperty("WithMods", out JsonElement withModsElement) && withModsElement.ValueKind != JsonValueKind.Null)
                 withMods = withModsElement.EnumerateArray().Select(m => m.GetString()).Where(m => m != null).Select(m => m!).ToArray();
 
-            if (	element.TryGetProperty("Conditions", out JsonElement conditionsElement) && conditionsElement.ValueKind != JsonValueKind.Null)
+            if (element.TryGetProperty("Conditions", out JsonElement conditionsElement) && conditionsElement.ValueKind != JsonValueKind.Null)
                 conditions = conditionsElement.EnumerateArray().Select(c => c.GetString()).Where(c => c != null).Select(c => c!).ToArray();
 
             if (element.TryGetProperty("Event", out JsonElement eventElement) && eventElement.ValueKind != JsonValueKind.Null)
