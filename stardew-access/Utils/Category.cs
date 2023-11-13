@@ -36,6 +36,9 @@ namespace stardew_access.Utils
             return Translator.Instance.Translate($"object_category-{_typeKeyWord}");
         }
 
+        public string Key => _typeKeyWord;
+        public string Value => ToString();
+
         public static IReadOnlyDictionary<string, CATEGORY> Categories => _categories;
 
         private static readonly Dictionary<string, CATEGORY> _categories = new(StringComparer.OrdinalIgnoreCase)

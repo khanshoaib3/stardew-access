@@ -1,14 +1,22 @@
 using Microsoft.Xna.Framework;
 using stardew_access.Translation;
 using stardew_access.Utils;
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace stardew_access.Tiles
 {
     public class AccessibleTile : ConditionalBase
     {
+        public class JsonSerializerFormat
+        {
+            public string NameOrTranslationKey { get; set; }
+            public int[] X { get; set; }
+            public int[] Y { get; set; }
+            public string Category { get; set; }
+            public string[]? WithMods { get; set; }
+            public string[]? Conditions { get; set; }
+        }
+        
         private readonly string? StaticNameOrTranslationKey;
         private readonly Func<ConditionalBase, string>? DynamicNameOrTranslationKey;
         public string NameOrTranslationKey
@@ -32,6 +40,8 @@ namespace stardew_access.Tiles
 
         private readonly Vector2 StaticCoordinates;
         private readonly Func<ConditionalBase, Vector2>? DynamicCoordinates;
+        private string[]? _withMods;
+        private string[]? _conditions;
         public Vector2 Coordinates
         {
             get
@@ -85,6 +95,8 @@ namespace stardew_access.Tiles
             DynamicCoordinates = dynamicCoordinates;
             Category = category ?? CATEGORY.Others;
             IsEvent = isEvent;
+            _withMods = withMods;
+            _conditions = conditions;
         }
 
         public AccessibleTile(
@@ -165,6 +177,17 @@ namespace stardew_access.Tiles
             sb.Append(" }");
             return sb.ToString();
         }
+
+        public JsonSerializerFormat SerializableFormat =>
+            new()
+            {
+                NameOrTranslationKey = NameOrTranslationKey,
+                X = new []{(int)Coordinates.X},
+                Y = new []{(int)Coordinates.Y},
+                Category = Category.Key,
+                WithMods = _withMods,
+                Conditions = _conditions
+            };
 
         public (string nameOrTranslationKey, CATEGORY category) NameAndCategory
         {

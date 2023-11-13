@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using stardew_access.Patches;
+using stardew_access.Tiles;
 using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
@@ -41,7 +43,7 @@ public class TileInfoMenu : DialogueBox
         if (safetyTimer > 0) return;
         if (selectedResponse == -1) return;
 
-        switch (_responses[selectedResponse].responseKey)
+        switch (responses[selectedResponse].responseKey)
         {
             case "tile_info_menu-mark_tile":
             {
@@ -50,6 +52,21 @@ public class TileInfoMenu : DialogueBox
             }
             case "tile_info_menu-add_to_custom_tiles":
             {
+                if (UserTilesUtils.TryAndGetTileDataAt(out AccessibleTile.JsonSerializerFormat? tileData, _tileX, _tileY))
+                {
+                    responses = new List<Response>()
+                    {
+                        new Response("tile_info_menu-edit_existing_data", "Edit data?"),
+                        new Response("tile_info_menu-delete_data", "Delete data?")
+                    };
+                    selectedResponse = 0;
+                    dialogues = new List<string>()
+                    {
+                        "Tile data already exist, do you want to"
+                    };
+                    DialogueBoxPatch.Cleanup();
+                    break;
+                }
                 SetChildMenu(new CustomTilesEditorMenu(_tileX, _tileY));
                 break;
             }
@@ -58,6 +75,11 @@ public class TileInfoMenu : DialogueBox
                 MainClass.ScreenReader.Say(
                     TileInfo.GetNameAtTileWithBlockedOrEmptyIndication(new Vector2(_tileX, _tileY)), true);
                 exitThisMenu();
+                break;
+            }
+            case "tile_info_menu-delete_data":
+            {
+                UserTilesUtils.RemoveTileDataAt(_tileX, _tileY, Game1.currentLocation.NameOrUniqueName);
                 break;
             }
         }

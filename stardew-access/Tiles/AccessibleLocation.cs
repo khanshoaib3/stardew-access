@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using stardew_access.Utils;
 using StardewValley;
-using System.Collections.Generic;
 
 namespace stardew_access.Tiles
 {
@@ -136,13 +135,15 @@ namespace stardew_access.Tiles
         }
 
         public (string? nameOrTranslationKey, CATEGORY? category) GetNameAndCategoryAt(Vector2 coordinates, string? layerName = null)
+            => GetAccessibleTileAt(coordinates, layerName)?.NameAndCategory ?? (null, null)!;
+
+        public AccessibleTile? GetAccessibleTileAt(Vector2 coordinates, string? layerName = null)
         {
             IDictionary<Vector2, AccessibleTile> tiles = (layerName == null ? Tiles : Tiles.GetLayer(layerName!))!;
             if (tiles.TryGetValue(coordinates, out AccessibleTile? tile) && tile.Visible)
-            {
-                return tile!.NameAndCategory;
-            }
-            return (null, null);
+                return tile;
+
+            return null;
         }
 
         public HashSet<AccessibleTile> GetTilesByCategory(CATEGORY category, string? layerName = null)

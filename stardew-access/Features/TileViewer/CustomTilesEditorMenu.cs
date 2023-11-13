@@ -1,8 +1,6 @@
-using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Newtonsoft.Json.Linq;
 using stardew_access.Patches;
 using stardew_access.Tiles;
 using stardew_access.Utils;
@@ -14,20 +12,6 @@ namespace stardew_access.Features;
 
 public class CustomTilesEditorMenu : IClickableMenu
 {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
-    private class TileInfoFormat
-    {
-        public string NameOrTranslationKey { get; set; }
-        public int[] X { get; set; }
-        public int[] Y { get; set; }
-        public string Category { get; set; }
-        public string[]? WithMods { get; set; }
-        public string[]? Conditions { get; set; }
-    }
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    
     private List<OptionsElement> _options;
     private readonly int _tileX;
     private readonly int _tileY;
@@ -256,50 +240,11 @@ public class CustomTilesEditorMenu : IClickableMenu
 
         GetEnteredTileInformation(out var tileInfo);
         if (tileInfo == null) return;
-        AddTileInfoToJson(tileInfo);
-    }
-
-    private void AddTileInfoToJson(TileInfoFormat jsonInfoForTile)
-    {
-        JObject root;
-        if (File.Exists(JsonLoader.GetFilePath("tiles_user.json", "assets/TileData")))
-        {
-            Log.Trace("Loading existing tiles_user.json");
-            if (!JsonLoader.TryLoadJsonFile("tiles_user.json", out JsonDocument jsonDocument, "assets/TileData"))
-            {
-                MainClass.ScreenReader.Say("Unable to parse tiles_user.json", true);
-                return;
-            }
-
-            root = JObject.Parse(JsonSerializer.Serialize(jsonDocument));
-        }
-        else
-        {
-            Log.Trace("tiles_user.json not found, creating a new one...");
-            root = new JObject();
-        }
-
-        if (!root.TryGetValue(Game1.currentLocation.NameOrUniqueName, out JToken? locationToken))
-        {
-            // Creates the location property if not exists
-            Log.Trace($"Entry for location {Game1.currentLocation.NameOrUniqueName} not found, adding one...");
-            locationToken = new JProperty(Game1.currentLocation.NameOrUniqueName, new JArray());
-            root.Add(locationToken);
-        }
-
-        JArray locationValueArray = locationToken.Type == JTokenType.Property
-            ? (JArray)locationToken.Value<JProperty>()!.Value
-            : locationToken.Value<JArray>()!;
-
-        locationValueArray.Add(JObject.FromObject(jsonInfoForTile));
-
-        JsonLoader.SaveJsonFile("tiles_user.json", JsonSerializer.Deserialize<JsonElement>(root.ToString()),
-            "assets/TileData");
-        MainClass.TileManager.Initialize();
+        UserTilesUtils.AddTileData(tileInfo);
         exitThisMenu();
     }
 
-    private void GetEnteredTileInformation(out TileInfoFormat? tileInfo)
+    private void GetEnteredTileInformation(out AccessibleTile.JsonSerializerFormat? tileInfo)
     {
         string? tileName = null;
         string category = "other";
@@ -379,7 +324,7 @@ public class CustomTilesEditorMenu : IClickableMenu
             return;
         }
 
-        tileInfo = new TileInfoFormat
+        tileInfo = new AccessibleTile.JsonSerializerFormat()
         {
             NameOrTranslationKey = tileName,
             X = new[] { _tileX },
