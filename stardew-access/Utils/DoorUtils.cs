@@ -111,7 +111,21 @@ namespace stardew_access.Utils
             location ??= Game1.currentLocation;
             suffix ??= CATEGORY.Doors.ToString();
             CheckAndInvalidateCache(location);
-            staticDoorsCache ??= MainClass.TileManager.GetTilesByCategory(CATEGORY.Doors, "Static").ToDictionary(tile => ((int)tile.Coordinates.X, (int)tile.Coordinates.Y), tile => $"{Translator.Instance.Translate(tile.NameOrTranslationKey, TranslationCategory.StaticTiles)} {suffix}");
+            if (staticDoorsCache != null) return staticDoorsCache;
+
+            var userAddedDoors = MainClass.TileManager.GetTilesByCategory(CATEGORY.Doors, "user");
+            staticDoorsCache = userAddedDoors.ToDictionary(
+                tile => ((int)tile.Coordinates.X, (int)tile.Coordinates.Y),
+                tile =>
+                    $"{Translator.Instance.Translate(tile.NameOrTranslationKey, TranslationCategory.StaticTiles)} {suffix}");
+            var modAddedDoors = MainClass.TileManager.GetTilesByCategory(CATEGORY.Doors, "stardew-access");
+            foreach (var tile in modAddedDoors.Where(tile => !staticDoorsCache.ContainsKey(((int)tile.Coordinates.X, (int)tile.Coordinates.Y))))
+            {
+                // Add door only if it has not already been added i.e. not added by user
+                staticDoorsCache.Add(((int)tile.Coordinates.X, (int)tile.Coordinates.Y),
+                    $"{Translator.Instance.Translate(tile.NameOrTranslationKey, TranslationCategory.StaticTiles)} {suffix}");
+            }
+
             return staticDoorsCache;
         }
 

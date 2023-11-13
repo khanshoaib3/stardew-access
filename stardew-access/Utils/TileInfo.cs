@@ -137,7 +137,8 @@ namespace stardew_access.Utils
                 return (door, CATEGORY.Doors);
             }
 
-            (string? name, CATEGORY? category) staticTile = MainClass.TileManager.GetNameAndCategoryAt((x, y), "Static", currentLocation);
+            (string? name, CATEGORY? category) staticTile = MainClass.TileManager.GetNameAndCategoryAt((x, y), "user", currentLocation);
+            if(staticTile.name == null) staticTile = MainClass.TileManager.GetNameAndCategoryAt((x, y), "stardew-access", currentLocation);
             if (staticTile.name != null)
             {
                 #if DEBUG

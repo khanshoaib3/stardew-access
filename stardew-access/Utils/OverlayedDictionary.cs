@@ -68,6 +68,8 @@ namespace stardew_access.Utils
             return null;
         }
 
+        public List<IDictionary<TKey, TValue>> GetAllLayers() => layers;
+
         public IDictionary<TKey, TValue>? GetLayer(string layerName)
         {
             layersByName.TryGetValue(layerName, out IDictionary<TKey, TValue>? layer);

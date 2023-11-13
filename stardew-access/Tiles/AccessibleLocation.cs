@@ -24,15 +24,15 @@ namespace stardew_access.Tiles
                     new Dictionary<Vector2, AccessibleTile>(),
                     new Dictionary<Vector2, AccessibleTile>()
                 },
-                new List<string?> { "stardew-access", "user" }
+                new List<string?> { "user", "stardew-access" }
             );
         }
     }
 
     public class AccessibleLocation
     {
-        // Name of the static layer
-        private const string StaticLayerName = "Static";
+        // Name of the default layer
+        private const string DefaultLayerName = "stardew-access";
         // OverlayedDictionary to map coordinate vectors to tiles
         internal readonly OverlayedDictionary<Vector2, AccessibleTile> Tiles;
 
@@ -47,13 +47,17 @@ namespace stardew_access.Tiles
             Location = location;
             if (staticTiles != null)
             {
-                Tiles = new OverlayedDictionary<Vector2, AccessibleTile>(staticTiles, StaticLayerName);
-                foreach (AccessibleTile tile in staticTiles.Values)
+                Tiles = staticTiles;
+                foreach (IDictionary<Vector2, AccessibleTile> layer in staticTiles.GetAllLayers())
                 {
-                    AddTileToCategoryMap(tile, StaticLayerName);
+                    string layerName = staticTiles.GetLayerName(layer)!;
+                    foreach (AccessibleTile tile in layer.Values)
+                    {
+                        AddTileToCategoryMap(tile, layerName);
+                    }
                 }
             } else {
-                Tiles = new OverlayedDictionary<Vector2, AccessibleTile>(StaticLayerName);
+                Tiles = new OverlayedDictionary<Vector2, AccessibleTile>(DefaultLayerName);
             }
             #if DEBUG
             Log.Verbose($"AccessibleLocation: initialized \"{location.NameOrUniqueName}\"");
