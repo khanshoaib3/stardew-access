@@ -22,6 +22,7 @@ public class TileInfoMenu : DialogueBox
 
     private readonly int _tileX;
     private readonly int _tileY;
+    private AccessibleTile.JsonSerializerFormat? _tempDefaultData = null;
 
     public TileInfoMenu(int tileX, int tileY)
         : base("", _responses)
@@ -54,6 +55,7 @@ public class TileInfoMenu : DialogueBox
             {
                 if (UserTilesUtils.TryAndGetTileDataAt(out AccessibleTile.JsonSerializerFormat? tileData, _tileX, _tileY))
                 {
+                    _tempDefaultData = tileData;
                     responses = new List<Response>()
                     {
                         new Response("tile_info_menu-edit_existing_data", "Edit data?"),
@@ -80,6 +82,12 @@ public class TileInfoMenu : DialogueBox
             case "tile_info_menu-delete_data":
             {
                 UserTilesUtils.RemoveTileDataAt(_tileX, _tileY, Game1.currentLocation.NameOrUniqueName);
+                MainClass.TileManager.Initialize();
+                break;
+            }
+            case "tile_info_menu-edit_existing_data":
+            {
+                SetChildMenu(new CustomTilesEditorMenu(_tileX, _tileY, _tempDefaultData));
                 break;
             }
         }

@@ -14,7 +14,7 @@ public class UserTilesUtils
     {
         location ??= Game1.currentLocation;
 
-        tileData = AccessibleTileManager.Instance.GetLocation(location)?.GetAccessibleTileAt(new Vector2(x, y), "user")
+        tileData = AccessibleTileManager.Instance.GetLocation(location)?.GetAccessibleTileAt(new Vector2(x, y), "user", false)
             ?.SerializableFormat;
 
         return tileData != null;
@@ -59,7 +59,6 @@ public class UserTilesUtils
 
         JsonLoader.SaveJsonFile("tiles_user.json", JsonSerializer.Deserialize<JsonElement>(root.ToString()),
             "assets/TileData");
-        MainClass.TileManager.Initialize();
     }
 
     public static void RemoveTileDataAt(int x, int y, string locationName)
@@ -124,6 +123,5 @@ public class UserTilesUtils
         
         JsonLoader.SaveJsonFile("tiles_user.json", JsonSerializer.Deserialize<JsonElement>(root.ToString()),
             "assets/TileData");
-        MainClass.TileManager.Initialize();
     }
 }

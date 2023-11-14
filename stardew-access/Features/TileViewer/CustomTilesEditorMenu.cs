@@ -15,6 +15,7 @@ public class CustomTilesEditorMenu : IClickableMenu
     private List<OptionsElement> _options;
     private readonly int _tileX;
     private readonly int _tileY;
+    private AccessibleTile.JsonSerializerFormat? _defaultData;
 
     private enum OptionsIdentifiers
     {
@@ -32,13 +33,14 @@ public class CustomTilesEditorMenu : IClickableMenu
 
     private ClickableTextureComponent _okButton;
     
-    public CustomTilesEditorMenu(int tileX, int tileY)
+    public CustomTilesEditorMenu(int tileX, int tileY, AccessibleTile.JsonSerializerFormat? defaultData = null)
         : base(Game1.viewport.Width / 2 - (1050 + borderWidth * 2) / 2,
             Game1.viewport.Height / 2 - (700 + borderWidth * 2) / 2 - 64, 1050 + borderWidth * 2,
             700 + borderWidth * 2 + 64)
     {
         _tileX = tileX;
         _tileY = tileY;
+        _defaultData = defaultData;
         _options = new();
         allClickableComponents = new();
         PopulateOptions();
@@ -53,6 +55,36 @@ public class CustomTilesEditorMenu : IClickableMenu
     private void PopulateOptions()
     {
         Rectangle currentBounds = Rectangle.Empty;
+        bool defaultJojaMemberCheckboxState = false;
+        string defaultQuestId = "";
+        string defaultFarmHouseLevel = "none";
+        if (_defaultData != null && _defaultData.Conditions != null && _defaultData.Conditions.Length > 0)
+        {
+            foreach (var condition in _defaultData.Conditions)
+            {
+                string[] parts = condition.Split(':');
+                string functionName = parts[0];
+                string? arg = parts.Length > 1 ? parts[1] : null;
+                switch (functionName)
+                {
+                    case "Farm":
+                        // Change to or add drop down
+                        break;
+                    case "FarmHouse":
+                        defaultFarmHouseLevel = arg ?? "none";
+                        break;
+                    case "HasQuest":
+                        defaultQuestId = arg ?? "";
+                        break;
+                    case "JojaMember":
+                        defaultJojaMemberCheckboxState = true;
+                        break;
+                    case "ActiveEvent":
+                        // Change to or add drop down
+                        break;
+                }
+            }
+        }
 
         Rectangle GetNextBounds()
         {
@@ -80,15 +112,16 @@ public class CustomTilesEditorMenu : IClickableMenu
             {
                 bounds = GetNextBounds()
             };
-        tileNameTextEntry.textBox.Text = "";
+        tileNameTextEntry.textBox.Text = _defaultData?.NameOrTranslationKey ?? "";
         allClickableComponents.Add(new ClickableComponent(tileNameTextEntry.bounds, tileNameTextEntry.label));
         _options.Add(tileNameTextEntry);
 
+        List<string> categoriesList = CATEGORY.Categories.Keys.ToList();
         OptionsDropDown categoryDropDown = new OptionsDropDown($"Category", (int)OptionsIdentifiers.CategoryDropDown)
         {
-            dropDownOptions = CATEGORY.Categories.Keys.ToList(),
-            dropDownDisplayOptions = CATEGORY.Categories.Keys.ToList(),
-            selectedOption = 16,
+            dropDownOptions = categoriesList,
+            dropDownDisplayOptions = categoriesList,
+            selectedOption = (_defaultData is not null) ? categoriesList.IndexOf(_defaultData.Category) : 16,
             bounds = GetNextBounds()
         };
         categoryDropDown.RecalculateBounds();
@@ -104,13 +137,25 @@ public class CustomTilesEditorMenu : IClickableMenu
             if (modInfo.Manifest.UniqueID == MainClass.ModHelper.ModRegistry.ModID) continue;
             dropDownDisplayOptions.Add(modInfo.Manifest.UniqueID);
         }
+        int selectedOption = 0;
+
+        if (_defaultData != null && _defaultData.WithMods != null && _defaultData.WithMods.Length > 0)
+        {
+            foreach (var modsId in _defaultData.WithMods)
+            {
+                if (dropDownDisplayOptions.Contains(modsId)) continue;
+                dropDownDisplayOptions.Insert(0, modsId);
+            }
+
+            selectedOption = dropDownDisplayOptions.IndexOf(_defaultData.WithMods[0]);
+        }
 
         OptionsDropDown modDependencyDropDown =
             new OptionsDropDown("Mod Dependency", (int)OptionsIdentifiers.ModDependencyDropDown)
             {
                 dropDownOptions = dropDownDisplayOptions,
                 dropDownDisplayOptions = dropDownDisplayOptions,
-                selectedOption = 0,
+                selectedOption = selectedOption,
                 bounds = GetNextBounds()
             };
         modDependencyDropDown.RecalculateBounds();
@@ -119,6 +164,7 @@ public class CustomTilesEditorMenu : IClickableMenu
 
         if (Game1.currentLocation.currentEvent != null)
         {
+            // TODO add new condition checker
             string eventCheckboxLabel = Game1.currentLocation.currentEvent.isFestival
                 ? $"Check for festival: {Game1.currentLocation.currentEvent.FestivalName}"
                 : Game1.currentLocation.currentEvent.isWedding
@@ -149,13 +195,14 @@ public class CustomTilesEditorMenu : IClickableMenu
 
         if (Game1.currentLocation is FarmHouse)
         {
+            List<string> upgradeLevelList = new List<string> { "none", "0", "1", "2", "3" };
             OptionsDropDown houseUpgradeLevelDropdown = new OptionsDropDown($"Check for farm house upgrade level",
                 (int)OptionsIdentifiers.FarmHouseUpgradeLevelDropDown)
             {
                 bounds = GetNextBounds(),
-                dropDownDisplayOptions = new List<string> { "none", "0", "1", "2", "3" },
-                dropDownOptions = new List<string> { "none", "0", "1", "2", "3" },
-                selectedOption = 0,
+                dropDownDisplayOptions = upgradeLevelList,
+                dropDownOptions = upgradeLevelList,
+                selectedOption = upgradeLevelList.IndexOf(defaultFarmHouseLevel),
             };
             allClickableComponents.Add(new ClickableComponent(houseUpgradeLevelDropdown.bounds,
                 houseUpgradeLevelDropdown.label));
@@ -188,14 +235,14 @@ public class CustomTilesEditorMenu : IClickableMenu
             {
                 bounds = GetNextBounds(),
             };
-        manualQuestIdTextEntry.textBox.Text = "";
+        manualQuestIdTextEntry.textBox.Text = defaultQuestId;
         allClickableComponents.Add(new ClickableComponent(manualQuestIdTextEntry.bounds, manualQuestIdTextEntry.label));
         _options.Add(manualQuestIdTextEntry);
 
         OptionsCheckbox jojaMemberCheckbox =
             new OptionsCheckbox($"Check if player is Joja member", (int)OptionsIdentifiers.JojaMemberCheckbox)
             {
-                isChecked = false,
+                isChecked = defaultJojaMemberCheckboxState,
                 bounds = GetNextBounds()
             };
         allClickableComponents.Add(new ClickableComponent(jojaMemberCheckbox.bounds, jojaMemberCheckbox.label));
@@ -240,7 +287,9 @@ public class CustomTilesEditorMenu : IClickableMenu
 
         GetEnteredTileInformation(out var tileInfo);
         if (tileInfo == null) return;
+        if (_defaultData != null) UserTilesUtils.RemoveTileDataAt(_tileX, _tileY, Game1.currentLocation.NameOrUniqueName);
         UserTilesUtils.AddTileData(tileInfo);
+        MainClass.TileManager.Initialize();
         exitThisMenu();
     }
 

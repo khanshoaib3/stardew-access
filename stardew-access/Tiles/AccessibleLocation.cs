@@ -137,10 +137,11 @@ namespace stardew_access.Tiles
         public (string? nameOrTranslationKey, CATEGORY? category) GetNameAndCategoryAt(Vector2 coordinates, string? layerName = null)
             => GetAccessibleTileAt(coordinates, layerName)?.NameAndCategory ?? (null, null)!;
 
-        public AccessibleTile? GetAccessibleTileAt(Vector2 coordinates, string? layerName = null)
+        public AccessibleTile? GetAccessibleTileAt(Vector2 coordinates, string? layerName = null, bool getOnlyVisible = true)
         {
             IDictionary<Vector2, AccessibleTile> tiles = (layerName == null ? Tiles : Tiles.GetLayer(layerName!))!;
-            if (tiles.TryGetValue(coordinates, out AccessibleTile? tile) && tile.Visible)
+            if (tiles.TryGetValue(coordinates, out AccessibleTile? tile) 
+                && (!getOnlyVisible || (getOnlyVisible && tile.Visible)))
                 return tile;
 
             return null;
