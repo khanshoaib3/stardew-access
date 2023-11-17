@@ -15,6 +15,7 @@ public class CustomTilesEditorMenu : IClickableMenu
     private List<OptionsElement> _options;
     private readonly int _tileX;
     private readonly int _tileY;
+    private Rectangle _currentBounds = Rectangle.Empty;
     private AccessibleTile.JsonSerializerFormat? _defaultData;
 
     private enum OptionsIdentifiers
@@ -54,7 +55,6 @@ public class CustomTilesEditorMenu : IClickableMenu
 
     private void PopulateOptions()
     {
-        Rectangle currentBounds = Rectangle.Empty;
         bool defaultJojaMemberCheckboxState = false;
         string defaultQuestId = "";
         string defaultFarmHouseLevel = "none";
@@ -86,81 +86,36 @@ public class CustomTilesEditorMenu : IClickableMenu
             }
         }
 
-        Rectangle GetNextBounds()
-        {
-            currentBounds = new Rectangle()
-            {
-                X = xPositionOnScreen + 50,
-                Y = currentBounds == Rectangle.Empty ? yPositionOnScreen + 20 : currentBounds.Y + 80,
-                Width = 400,
-                Height = 50
-            };
-            return currentBounds;
-        }
+        AddLabel($"Tile {_tileX}x {_tileY}y in {Game1.currentLocation.NameOrUniqueName}",
+            (int)OptionsIdentifiers.HeadingLabel);
 
-        OptionsElement headingLabel = new OptionsElement($"Tile {_tileX}x {_tileY}y in {Game1.currentLocation.NameOrUniqueName}")
-        {
-            style = OptionsElement.Style.OptionLabel,
-            whichOption = (int)OptionsIdentifiers.HeadingLabel,
-            bounds = GetNextBounds()
-        };
-        allClickableComponents.Add(new ClickableComponent(headingLabel.bounds, headingLabel.label));
-        _options.Add(headingLabel);
-
-        OptionsTextEntry tileNameTextEntry =
-            new OptionsTextEntry($"Tile name", (int)OptionsIdentifiers.TileNameTextEntry)
-            {
-                bounds = GetNextBounds()
-            };
-        tileNameTextEntry.textBox.Text = _defaultData?.NameOrTranslationKey ?? "";
-        allClickableComponents.Add(new ClickableComponent(tileNameTextEntry.bounds, tileNameTextEntry.label));
-        _options.Add(tileNameTextEntry);
+        AddTextEntry($"Tile name", (int)OptionsIdentifiers.TileNameTextEntry, _defaultData?.NameOrTranslationKey ?? "");
 
         List<string> categoriesList = CATEGORY.Categories.Keys.ToList();
-        OptionsDropDown categoryDropDown = new OptionsDropDown($"Category", (int)OptionsIdentifiers.CategoryDropDown)
-        {
-            dropDownOptions = categoriesList,
-            dropDownDisplayOptions = categoriesList,
-            selectedOption = (_defaultData is not null) ? categoriesList.IndexOf(_defaultData.Category) : 16,
-            bounds = GetNextBounds()
-        };
-        categoryDropDown.RecalculateBounds();
-        allClickableComponents.Add(new ClickableComponent(categoryDropDown.bounds, categoryDropDown.label));
-        _options.Add(categoryDropDown);
+        AddDropDown($"Category", (int)OptionsIdentifiers.CategoryDropDown, categoriesList, (_defaultData is not null) ? categoriesList.IndexOf(_defaultData.Category) : 16);
 
-        List<string> dropDownDisplayOptions = new()
+        List<string> modsIdsList = new()
         {
             "none"
         };
         foreach (var modInfo in MainClass.ModHelper!.ModRegistry.GetAll())
         {
             if (modInfo.Manifest.UniqueID == MainClass.ModHelper.ModRegistry.ModID) continue;
-            dropDownDisplayOptions.Add(modInfo.Manifest.UniqueID);
+            modsIdsList.Add(modInfo.Manifest.UniqueID);
         }
-        int selectedOption = 0;
+        int selectedModsIdIndex = 0;
 
         if (_defaultData != null && _defaultData.WithMods != null && _defaultData.WithMods.Length > 0)
         {
             foreach (var modsId in _defaultData.WithMods)
             {
-                if (dropDownDisplayOptions.Contains(modsId)) continue;
-                dropDownDisplayOptions.Insert(0, modsId);
+                if (modsIdsList.Contains(modsId)) continue;
+                modsIdsList.Insert(0, modsId);
             }
 
-            selectedOption = dropDownDisplayOptions.IndexOf(_defaultData.WithMods[0]);
+            selectedModsIdIndex = modsIdsList.IndexOf(_defaultData.WithMods[0]);
         }
-
-        OptionsDropDown modDependencyDropDown =
-            new OptionsDropDown("Mod Dependency", (int)OptionsIdentifiers.ModDependencyDropDown)
-            {
-                dropDownOptions = dropDownDisplayOptions,
-                dropDownDisplayOptions = dropDownDisplayOptions,
-                selectedOption = selectedOption,
-                bounds = GetNextBounds()
-            };
-        modDependencyDropDown.RecalculateBounds();
-        allClickableComponents.Add(new ClickableComponent(modDependencyDropDown.bounds, modDependencyDropDown.label));
-        _options.Add(modDependencyDropDown);
+        AddDropDown("Mod Dependency", (int)OptionsIdentifiers.ModDependencyDropDown, modsIdsList, selectedModsIdIndex);
 
         if (Game1.currentLocation.currentEvent != null)
         {
@@ -170,83 +125,91 @@ public class CustomTilesEditorMenu : IClickableMenu
                 : Game1.currentLocation.currentEvent.isWedding
                     ? $"Check for wedding"
                     : $"Check for current event with id {Game1.currentLocation.currentEvent.id}";
-            OptionsCheckbox eventCheckbox =
-                new OptionsCheckbox(eventCheckboxLabel, (int)OptionsIdentifiers.EventCheckbox)
-                {
-                    isChecked = false,
-                    bounds = GetNextBounds()
-                };
-            allClickableComponents.Add(new ClickableComponent(eventCheckbox.bounds, eventCheckbox.label));
-            _options.Add(eventCheckbox);
+            AddCheckbox(eventCheckboxLabel, (int)OptionsIdentifiers.EventCheckbox, false);
         }
 
         if (Game1.currentLocation is Farm)
         {
-            OptionsCheckbox farmTypeCheckbox =
-                new OptionsCheckbox($"Check for current farm type: {FarmTypeName(Game1.whichFarm)}",
-                    (int)OptionsIdentifiers.FarmTypeCheckbox)
-                {
-                    isChecked = false,
-                    bounds = GetNextBounds()
-                };
-            allClickableComponents.Add(new ClickableComponent(farmTypeCheckbox.bounds, farmTypeCheckbox.label));
-            _options.Add(farmTypeCheckbox);
+            AddCheckbox($"Check for current farm type: {FarmTypeName(Game1.whichFarm)}", (int)OptionsIdentifiers.FarmTypeCheckbox, false);
         }
 
         if (Game1.currentLocation is FarmHouse)
         {
             List<string> upgradeLevelList = new List<string> { "none", "0", "1", "2", "3" };
-            OptionsDropDown houseUpgradeLevelDropdown = new OptionsDropDown($"Check for farm house upgrade level",
-                (int)OptionsIdentifiers.FarmHouseUpgradeLevelDropDown)
-            {
-                bounds = GetNextBounds(),
-                dropDownDisplayOptions = upgradeLevelList,
-                dropDownOptions = upgradeLevelList,
-                selectedOption = upgradeLevelList.IndexOf(defaultFarmHouseLevel),
-            };
-            allClickableComponents.Add(new ClickableComponent(houseUpgradeLevelDropdown.bounds,
-                houseUpgradeLevelDropdown.label));
-            _options.Add(houseUpgradeLevelDropdown);
+            AddDropDown($"Check for farm house upgrade level", (int)OptionsIdentifiers.FarmHouseUpgradeLevelDropDown,
+                upgradeLevelList, upgradeLevelList.IndexOf(defaultFarmHouseLevel));
         }
 
         List<string> questOptions = new List<string>
         {
             "Enter quest id manually"
         };
-        foreach (var quest in Game1.player.questLog)
+        questOptions.AddRange(Game1.player.questLog.Select(quest => quest.GetName()));
+        AddDropDown("Check if player has quest", (int)OptionsIdentifiers.QuestDropDown, questOptions, 0);
+
+        AddTextEntry("Quest id", (int)OptionsIdentifiers.ManualQuestIdTextBox, defaultQuestId);
+
+        AddCheckbox($"Check if player is Joja member", (int)OptionsIdentifiers.JojaMemberCheckbox, defaultJojaMemberCheckboxState);
+    }
+
+    private Rectangle GetNextBounds()
+    {
+        _currentBounds = new Rectangle()
         {
-            questOptions.Add(quest.GetName());
-        }
+            X = xPositionOnScreen + 50,
+            Y = _currentBounds == Rectangle.Empty ? yPositionOnScreen + 20 : _currentBounds.Y + 80,
+            Width = 400,
+            Height = 50
+        };
+        return _currentBounds;
+    }
 
-        OptionsDropDown questDropDown =
-            new OptionsDropDown("Check if player has quest", (int)OptionsIdentifiers.QuestDropDown)
-            {
-                dropDownOptions = questOptions,
-                dropDownDisplayOptions = questOptions,
-                selectedOption = 0,
-                bounds = GetNextBounds()
-            };
-        questDropDown.RecalculateBounds();
-        allClickableComponents.Add(new ClickableComponent(questDropDown.bounds, questDropDown.label));
-        _options.Add(questDropDown);
+    private void AddLabel(string label, int identifier)
+    {
+        OptionsElement element = new OptionsElement(label)
+        {
+            style = OptionsElement.Style.OptionLabel,
+            whichOption = identifier,
+            bounds = GetNextBounds()
+        };
+        allClickableComponents.Add(new ClickableComponent(element.bounds, element.label));
+        _options.Add(element);
+    }
 
-        OptionsTextEntry manualQuestIdTextEntry =
-            new OptionsTextEntry("Quest id", (int)OptionsIdentifiers.ManualQuestIdTextBox)
-            {
-                bounds = GetNextBounds(),
-            };
-        manualQuestIdTextEntry.textBox.Text = defaultQuestId;
-        allClickableComponents.Add(new ClickableComponent(manualQuestIdTextEntry.bounds, manualQuestIdTextEntry.label));
-        _options.Add(manualQuestIdTextEntry);
+    private void AddCheckbox(string label, int identifier, bool isChecked)
+    {
+        OptionsCheckbox checkbox = new OptionsCheckbox(label, identifier)
+        {
+            isChecked = isChecked,
+            bounds = GetNextBounds()
+        };
+        allClickableComponents.Add(new ClickableComponent(checkbox.bounds, checkbox.label));
+        _options.Add(checkbox);
+    }
 
-        OptionsCheckbox jojaMemberCheckbox =
-            new OptionsCheckbox($"Check if player is Joja member", (int)OptionsIdentifiers.JojaMemberCheckbox)
-            {
-                isChecked = defaultJojaMemberCheckboxState,
-                bounds = GetNextBounds()
-            };
-        allClickableComponents.Add(new ClickableComponent(jojaMemberCheckbox.bounds, jojaMemberCheckbox.label));
-        _options.Add(jojaMemberCheckbox);
+    private void AddTextEntry(string label, int identifier, string defaultText)
+    {
+        OptionsTextEntry textEntry = new OptionsTextEntry(label, identifier)
+        {
+            bounds = GetNextBounds(),
+        };
+        textEntry.textBox.Text = defaultText;
+        allClickableComponents.Add(new ClickableComponent(textEntry.bounds, textEntry.label));
+        _options.Add(textEntry);
+    }
+
+    private void AddDropDown(string label, int identifier, List<string> options, int selectedOption)
+    {
+        OptionsDropDown dropDown = new OptionsDropDown(label, identifier)
+        {
+            dropDownOptions = options,
+            dropDownDisplayOptions = options,
+            selectedOption = selectedOption,
+            bounds = GetNextBounds()
+        };
+        dropDown.RecalculateBounds();
+        allClickableComponents.Add(new ClickableComponent(dropDown.bounds, dropDown.label));
+        _options.Add(dropDown);
     }
 
     private void AssignIDs()
@@ -447,6 +410,13 @@ public class CustomTilesEditorMenu : IClickableMenu
         if (manualQuestIdTextEntry is not null && questDropDown is not null)
         {
             manualQuestIdTextEntry.greyedOut = questDropDown.selectedOption != 0;
+        }
+
+        int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
+        if (_okButton.bounds.Contains(x, y))
+        {
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker("common-ui-ok_button", true);
+            return;
         }
         
         OptionsElementUtils.NarrateOptionsElements(_options);
