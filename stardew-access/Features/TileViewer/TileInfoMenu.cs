@@ -12,20 +12,35 @@ namespace stardew_access.Features;
 
 public class TileInfoMenu : DialogueBox
 { 
-    // TODO i18n
-    private static List<Response> _responses = new()
-    {
-        new Response("tile_info_menu-mark_tile", "Mark this tile"),
-        new Response("tile_info_menu-add_to_custom_tiles", "Add custom tiles entry for this tile"),
-        new Response("tile_info_menu-detailed_tile_info", "Speak detailed tile info"),
-    };
+    private const string MarkTileI18NKey = "menu-tile_info-mark_tile";
+    private static readonly Response MarkTileResponse = new(MarkTileI18NKey,
+        Translator.Instance.Translate(MarkTileI18NKey, TranslationCategory.Menu));
+    
+    private const string AddToUserTilesI18NKey = "menu-tile_info-add_to_user_tiles_data";
+    private static readonly Response AddToUserTilesResponse = new(AddToUserTilesI18NKey,
+        Translator.Instance.Translate(AddToUserTilesI18NKey, TranslationCategory.Menu));
+    
+    private const string SpeakDetailedInfoI18NKey = "menu-tile_info-detailed_tile_info";
+    private static readonly Response SpeakDetailedInfoResponse = new(SpeakDetailedInfoI18NKey,
+        Translator.Instance.Translate(SpeakDetailedInfoI18NKey, TranslationCategory.Menu));
+
+    private const string DeleteExistingI18NKey = "menu-tile_info-delete_existing_data";
+    private static readonly Response DeleteExistingResponse = new(DeleteExistingI18NKey,
+        Translator.Instance.Translate(DeleteExistingI18NKey, TranslationCategory.Menu));
+
+    private const string EditExistingI18NKey = "menu-tile_info-edit_existing_data";
+    private static readonly Response EditExistingResponse = new(EditExistingI18NKey,
+        Translator.Instance.Translate(EditExistingI18NKey, TranslationCategory.Menu));
+
+    private static readonly string DataAlreadyExistMessage =
+        Translator.Instance.Translate("menu-tile_info-data_exists", TranslationCategory.Menu);
 
     private readonly int _tileX;
     private readonly int _tileY;
     private AccessibleTile.JsonSerializerFormat? _tempDefaultData = null;
 
     public TileInfoMenu(int tileX, int tileY)
-        : base("", _responses)
+        : base("", new List<Response> { MarkTileResponse, AddToUserTilesResponse, SpeakDetailedInfoResponse })
     {
         _tileX = tileX;
         _tileY = tileY;
@@ -46,48 +61,47 @@ public class TileInfoMenu : DialogueBox
 
         switch (responses[selectedResponse].responseKey)
         {
-            case "tile_info_menu-mark_tile":
+            case MarkTileI18NKey:
             {
                 HandleTileMarkingOption();
                 break;
             }
-            case "tile_info_menu-add_to_custom_tiles":
+            case AddToUserTilesI18NKey:
             {
                 if (UserTilesUtils.TryAndGetTileDataAt(out AccessibleTile.JsonSerializerFormat? tileData, _tileX, _tileY))
                 {
                     _tempDefaultData = tileData;
-                    responses = new List<Response>()
+                    responses = new List<Response>
                     {
-                        new Response("tile_info_menu-edit_existing_data", "Edit data?"),
-                        new Response("tile_info_menu-delete_data", "Delete data?")
+                        EditExistingResponse, DeleteExistingResponse
                     };
                     selectedResponse = 0;
-                    dialogues = new List<string>()
+                    dialogues = new List<string>
                     {
-                        "Tile data already exist, do you want to"
+                        DataAlreadyExistMessage
                     };
                     DialogueBoxPatch.Cleanup();
                     break;
                 }
-                SetChildMenu(new CustomTilesEditorMenu(_tileX, _tileY));
+                SetChildMenu(new TileDataEntryMenu(_tileX, _tileY));
                 break;
             }
-            case "tile_info_menu-detailed_tile_info":
+            case SpeakDetailedInfoI18NKey:
             {
                 MainClass.ScreenReader.Say(
                     TileInfo.GetNameAtTileWithBlockedOrEmptyIndication(new Vector2(_tileX, _tileY)), true);
                 exitThisMenu();
                 break;
             }
-            case "tile_info_menu-delete_data":
+            case DeleteExistingI18NKey:
             {
                 UserTilesUtils.RemoveTileDataAt(_tileX, _tileY, Game1.currentLocation.NameOrUniqueName);
                 MainClass.TileManager.Initialize();
                 break;
             }
-            case "tile_info_menu-edit_existing_data":
+            case EditExistingI18NKey:
             {
-                SetChildMenu(new CustomTilesEditorMenu(_tileX, _tileY, _tempDefaultData));
+                SetChildMenu(new TileDataEntryMenu(_tileX, _tileY, _tempDefaultData));
                 break;
             }
         }
@@ -106,8 +120,8 @@ public class TileInfoMenu : DialogueBox
             return;
         }
 
-        // TODO i18n
-        NumberSelectionMenu numberSelectionMenu = new NumberSelectionMenu("Select index",
+        NumberSelectionMenu numberSelectionMenu = new NumberSelectionMenu(
+            Translator.Instance.Translate("menu-tile_info-select_marking_index", TranslationCategory.Menu),
             (i, _, _) => OnNumberSelect(i),
             minValue: 0,
             maxValue: 9,

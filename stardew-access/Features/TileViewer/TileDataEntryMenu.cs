@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using stardew_access.Patches;
 using stardew_access.Tiles;
+using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Locations;
@@ -10,7 +11,7 @@ using StardewValley.Menus;
 
 namespace stardew_access.Features;
 
-public class CustomTilesEditorMenu : IClickableMenu
+public class TileDataEntryMenu : IClickableMenu
 {
     private List<OptionsElement> _options;
     private readonly int _tileX;
@@ -33,10 +34,11 @@ public class CustomTilesEditorMenu : IClickableMenu
     }
 
     private ClickableTextureComponent _okButton;
+    private static readonly string None = Translator.Instance.Translate("menu-tile_data_entry-none", TranslationCategory.Menu);
     
-    public CustomTilesEditorMenu(int tileX, int tileY, AccessibleTile.JsonSerializerFormat? defaultData = null)
-        : base(Game1.viewport.Width / 2 - (1050 + borderWidth * 2) / 2,
-            Game1.viewport.Height / 2 - (700 + borderWidth * 2) / 2 - 64, 1050 + borderWidth * 2,
+    public TileDataEntryMenu(int tileX, int tileY, AccessibleTile.JsonSerializerFormat? defaultData = null)
+        : base(Game1.viewport.Width / 2 - (1175 + borderWidth * 2) / 2,
+            Game1.viewport.Height / 2 - (700 + borderWidth * 2) / 2 - 64, 1175 + borderWidth * 2,
             700 + borderWidth * 2 + 64)
     {
         _tileX = tileX;
@@ -46,7 +48,7 @@ public class CustomTilesEditorMenu : IClickableMenu
         allClickableComponents = new();
         PopulateOptions();
         _okButton = new ClickableTextureComponent(
-            new Rectangle(this.xPositionOnScreen + 50, this.yPositionOnScreen + this.height - 84, 64, 64),
+            new Rectangle(xPositionOnScreen + 50, yPositionOnScreen + height - 84, 64, 64),
             Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 46), 1f);
         allClickableComponents.Add(_okButton);
         AssignIDs();
@@ -57,7 +59,7 @@ public class CustomTilesEditorMenu : IClickableMenu
     {
         bool defaultJojaMemberCheckboxState = false;
         string defaultQuestId = "";
-        string defaultFarmHouseLevel = "none";
+        string defaultFarmHouseLevel = None;
         if (_defaultData != null && _defaultData.Conditions != null && _defaultData.Conditions.Length > 0)
         {
             foreach (var condition in _defaultData.Conditions)
@@ -71,7 +73,7 @@ public class CustomTilesEditorMenu : IClickableMenu
                         // Change to or add drop down
                         break;
                     case "FarmHouse":
-                        defaultFarmHouseLevel = arg ?? "none";
+                        defaultFarmHouseLevel = arg ?? None;
                         break;
                     case "HasQuest":
                         defaultQuestId = arg ?? "";
@@ -86,18 +88,19 @@ public class CustomTilesEditorMenu : IClickableMenu
             }
         }
 
-        AddLabel($"Tile {_tileX}x {_tileY}y in {Game1.currentLocation.NameOrUniqueName}",
+        AddLabel( Translator.Instance.Translate("menu-tile_data_entry-heading_label",
+                new { tile_x = _tileX, tile_y = _tileY, location_name = Game1.currentLocation.NameOrUniqueName },
+                TranslationCategory.Menu),
             (int)OptionsIdentifiers.HeadingLabel);
 
-        AddTextEntry($"Tile name", (int)OptionsIdentifiers.TileNameTextEntry, _defaultData?.NameOrTranslationKey ?? "");
+        AddTextEntry("menu-tile_data_entry-tile_name_text_box_label", (int)OptionsIdentifiers.TileNameTextEntry,
+            _defaultData?.NameOrTranslationKey ?? "");
 
-        List<string> categoriesList = CATEGORY.Categories.Keys.ToList();
-        AddDropDown($"Category", (int)OptionsIdentifiers.CategoryDropDown, categoriesList, (_defaultData is not null) ? categoriesList.IndexOf(_defaultData.Category) : 16);
+        List<string> categoriesList = CATEGORY.Categories.Values.Select(category => category.Value).ToList();
+        AddDropDown("menu-tile_data_entry-categories_drop_down_label", (int)OptionsIdentifiers.CategoryDropDown,
+            categoriesList, (_defaultData is not null) ? CATEGORY.Categories.Keys.ToList().IndexOf(_defaultData.Category) : 16);
 
-        List<string> modsIdsList = new()
-        {
-            "none"
-        };
+        List<string> modsIdsList = new() { None };
         foreach (var modInfo in MainClass.ModHelper!.ModRegistry.GetAll())
         {
             if (modInfo.Manifest.UniqueID == MainClass.ModHelper.ModRegistry.ModID) continue;
@@ -115,41 +118,54 @@ public class CustomTilesEditorMenu : IClickableMenu
 
             selectedModsIdIndex = modsIdsList.IndexOf(_defaultData.WithMods[0]);
         }
-        AddDropDown("Mod Dependency", (int)OptionsIdentifiers.ModDependencyDropDown, modsIdsList, selectedModsIdIndex);
+
+        AddDropDown("menu-tile_data_entry-mod_dependency_drop_down_label",
+            (int)OptionsIdentifiers.ModDependencyDropDown, modsIdsList, selectedModsIdIndex);
 
         if (Game1.currentLocation.currentEvent != null)
         {
             // TODO add new condition checker
-            string eventCheckboxLabel = Game1.currentLocation.currentEvent.isFestival
-                ? $"Check for festival: {Game1.currentLocation.currentEvent.FestivalName}"
-                : Game1.currentLocation.currentEvent.isWedding
-                    ? $"Check for wedding"
-                    : $"Check for current event with id {Game1.currentLocation.currentEvent.id}";
-            AddCheckbox(eventCheckboxLabel, (int)OptionsIdentifiers.EventCheckbox, false);
+            object tokens = new
+            {
+                is_festival = Game1.currentLocation.currentEvent.isFestival ? 1 : 0,
+                festival_name = Game1.currentLocation.currentEvent.FestivalName,
+                is_wedding = Game1.currentLocation.currentEvent.isWedding ? 1 : 0,
+                event_id = Game1.currentLocation.currentEvent.id
+            };
+            AddCheckbox(
+                Translator.Instance.Translate("menu-tile_data_entry-event_check_box_label", tokens, TranslationCategory.Menu),
+                (int)OptionsIdentifiers.EventCheckbox, false);
         }
 
         if (Game1.currentLocation is Farm)
         {
-            AddCheckbox($"Check for current farm type: {FarmTypeName(Game1.whichFarm)}", (int)OptionsIdentifiers.FarmTypeCheckbox, false);
+            AddCheckbox(
+                Translator.Instance.Translate("menu-tile_data_entry-farm_type_check_box_label",
+                    new { farm_type = FarmTypeDisplayName(Game1.whichFarm) }, TranslationCategory.Menu),
+                (int)OptionsIdentifiers.FarmTypeCheckbox, false);
         }
 
         if (Game1.currentLocation is FarmHouse)
         {
-            List<string> upgradeLevelList = new List<string> { "none", "0", "1", "2", "3" };
-            AddDropDown($"Check for farm house upgrade level", (int)OptionsIdentifiers.FarmHouseUpgradeLevelDropDown,
+            List<string> upgradeLevelList = new List<string> { None, "0", "1", "2", "3" };
+            AddDropDown("menu-tile_data_entry-farm_house_upgrade_level_drop_down_label",
+                (int)OptionsIdentifiers.FarmHouseUpgradeLevelDropDown,
                 upgradeLevelList, upgradeLevelList.IndexOf(defaultFarmHouseLevel));
         }
 
         List<string> questOptions = new List<string>
         {
-            "Enter quest id manually"
+            Translator.Instance.Translate("menu-tile_data_entry-quest_drop_down-manual_entry_option", TranslationCategory.Menu)
         };
         questOptions.AddRange(Game1.player.questLog.Select(quest => quest.GetName()));
-        AddDropDown("Check if player has quest", (int)OptionsIdentifiers.QuestDropDown, questOptions, 0);
+        AddDropDown("menu-tile_data_entry-quest_drop_down_label", (int)OptionsIdentifiers.QuestDropDown, questOptions,
+            0);
 
-        AddTextEntry("Quest id", (int)OptionsIdentifiers.ManualQuestIdTextBox, defaultQuestId);
+        AddTextEntry("menu-tile_data_entry-manual_quest_id_text_box_label",
+            (int)OptionsIdentifiers.ManualQuestIdTextBox, defaultQuestId);
 
-        AddCheckbox($"Check if player is Joja member", (int)OptionsIdentifiers.JojaMemberCheckbox, defaultJojaMemberCheckboxState);
+        AddCheckbox("menu-tile_data_entry-joja_member_checkbox_label", (int)OptionsIdentifiers.JojaMemberCheckbox,
+            defaultJojaMemberCheckboxState);
     }
 
     private Rectangle GetNextBounds()
@@ -164,9 +180,10 @@ public class CustomTilesEditorMenu : IClickableMenu
         return _currentBounds;
     }
 
-    private void AddLabel(string label, int identifier)
+    private void AddLabel(string labelOrTranslationKey, int identifier)
     {
-        OptionsElement element = new OptionsElement(label)
+        labelOrTranslationKey = Translator.Instance.Translate(labelOrTranslationKey, TranslationCategory.Menu, disableWarning: true);
+        OptionsElement element = new OptionsElement(labelOrTranslationKey)
         {
             style = OptionsElement.Style.OptionLabel,
             whichOption = identifier,
@@ -176,9 +193,10 @@ public class CustomTilesEditorMenu : IClickableMenu
         _options.Add(element);
     }
 
-    private void AddCheckbox(string label, int identifier, bool isChecked)
+    private void AddCheckbox(string labelOrTranslationKey, int identifier, bool isChecked)
     {
-        OptionsCheckbox checkbox = new OptionsCheckbox(label, identifier)
+        labelOrTranslationKey = Translator.Instance.Translate(labelOrTranslationKey, TranslationCategory.Menu, disableWarning: true);
+        OptionsCheckbox checkbox = new OptionsCheckbox(labelOrTranslationKey, identifier)
         {
             isChecked = isChecked,
             bounds = GetNextBounds()
@@ -187,9 +205,10 @@ public class CustomTilesEditorMenu : IClickableMenu
         _options.Add(checkbox);
     }
 
-    private void AddTextEntry(string label, int identifier, string defaultText)
+    private void AddTextEntry(string labelOrTranslationKey, int identifier, string defaultText)
     {
-        OptionsTextEntry textEntry = new OptionsTextEntry(label, identifier)
+        labelOrTranslationKey = Translator.Instance.Translate(labelOrTranslationKey, TranslationCategory.Menu, disableWarning: true);
+        OptionsTextEntry textEntry = new OptionsTextEntry(labelOrTranslationKey, identifier)
         {
             bounds = GetNextBounds(),
         };
@@ -198,9 +217,10 @@ public class CustomTilesEditorMenu : IClickableMenu
         _options.Add(textEntry);
     }
 
-    private void AddDropDown(string label, int identifier, List<string> options, int selectedOption)
+    private void AddDropDown(string labelOrTranslationKey, int identifier, List<string> options, int selectedOption)
     {
-        OptionsDropDown dropDown = new OptionsDropDown(label, identifier)
+        labelOrTranslationKey = Translator.Instance.Translate(labelOrTranslationKey, TranslationCategory.Menu, disableWarning: true);
+        OptionsDropDown dropDown = new OptionsDropDown(labelOrTranslationKey, identifier)
         {
             dropDownOptions = options,
             dropDownDisplayOptions = options,
@@ -259,7 +279,7 @@ public class CustomTilesEditorMenu : IClickableMenu
     private void GetEnteredTileInformation(out AccessibleTile.JsonSerializerFormat? tileInfo)
     {
         string? tileName = null;
-        string category = "other";
+        string category = CATEGORY.Others.Key;
         List<string> withMods = new();
         List<string> conditions = new();
         tileInfo = null;
@@ -276,7 +296,7 @@ public class CustomTilesEditorMenu : IClickableMenu
                     break;
                 case (int)OptionsIdentifiers.CategoryDropDown:
                     var categoryDropDown = (optionsElement as OptionsDropDown)!;
-                    category = categoryDropDown.dropDownDisplayOptions[categoryDropDown.selectedOption];
+                    category = CATEGORY.Categories.Keys.ElementAtOrDefault(categoryDropDown.selectedOption) ?? category;
                     break;
                 case (int)OptionsIdentifiers.ModDependencyDropDown:
                     var modDependencyDropDown = (optionsElement as OptionsDropDown)!;
@@ -331,8 +351,8 @@ public class CustomTilesEditorMenu : IClickableMenu
 
         if (string.IsNullOrEmpty(tileName))
         {
-            MainClass.ScreenReader.Say("Tile name cannot be empty or null", true);
-            exitThisMenu();
+            MainClass.ScreenReader.TranslateAndSay("menu-tile_data_entry-tile_name_empty", true,
+                translationCategory: TranslationCategory.Menu);
             return;
         }
 
@@ -444,6 +464,18 @@ public class CustomTilesEditorMenu : IClickableMenu
         4 => "wilderness",
         5 => "fourcorners",
         6 => "beach",
+        _ => ""
+    };
+
+    private string FarmTypeDisplayName(int whichFarm) => whichFarm switch
+    {
+        0 => Game1.content.LoadString("Strings\\UI:Character_FarmStandard").Split("_")[0],
+        1 => Game1.content.LoadString("Strings\\UI:Character_FarmFishing").Split("_")[0],
+        2 => Game1.content.LoadString("Strings\\UI:Character_FarmForaging").Split("_")[0],
+        3 => Game1.content.LoadString("Strings\\UI:Character_FarmMining").Split("_")[0],
+        4 => Game1.content.LoadString("Strings\\UI:Character_FarmCombat").Split("_")[0],
+        5 => Game1.content.LoadString("Strings\\UI:Character_FarmFourCorners").Split("_")[0],
+        6 => Game1.content.LoadString("Strings\\UI:Character_FarmBeach").Split("_")[0],
         _ => ""
     };
 }
