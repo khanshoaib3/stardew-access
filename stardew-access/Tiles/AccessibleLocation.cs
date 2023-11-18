@@ -139,7 +139,9 @@ namespace stardew_access.Tiles
 
         public AccessibleTile? GetAccessibleTileAt(Vector2 coordinates, string? layerName = null, bool getOnlyVisible = true)
         {
-            IDictionary<Vector2, AccessibleTile> tiles = (layerName == null ? Tiles : Tiles.GetLayer(layerName!))!;
+            IDictionary<Vector2, AccessibleTile>? tiles = (layerName == null ? Tiles : Tiles.GetLayer(layerName));
+            if (tiles == null) return null;
+            
             if (tiles.TryGetValue(coordinates, out AccessibleTile? tile) 
                 && (!getOnlyVisible || (getOnlyVisible && tile.Visible)))
                 return tile;

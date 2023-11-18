@@ -135,6 +135,19 @@ namespace stardew_access.Tiles
             throw new ArgumentException($"ID for HasQuest on {obj} must be a non-empty, valid integer");
         }
 
+        public static bool Condition_ActiveEvent(ConditionalBase obj)
+        {
+            if (obj.ConditionArgs.TryGetValue("ActiveEvent", out string? args) && !string.IsNullOrEmpty(args))
+            {
+                // args should be digits
+                if (int.TryParse(args, out int id))
+                {
+                    return Game1.currentLocation.currentEvent != null && Game1.currentLocation.currentEvent.id == id;
+                }
+            }
+            throw new ArgumentException($"ID for ActiveEvent on {obj} must be a non-empty, valid integer");
+        }
+
         public static bool Condition_JojaMember(ConditionalBase _)
         {
             // Return true if the player has the "JojaMember" mail, otherwise false
