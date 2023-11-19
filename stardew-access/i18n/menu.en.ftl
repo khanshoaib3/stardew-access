@@ -292,7 +292,7 @@ menu-animal_query-animal_info =
   } old, {$parent_name ->
     [null] {EMPTYSTRING()}
     *[other] Parent: {$parent_name}.
-  }
+  }, {$mood}
 menu-animal_query-confirm_selling_button = Confirm selling animal button
 menu-animal_query-cancel_selling_button = Cancel selling animal button
 menu-animal_query-selling_button = Sell for {$price}g button
