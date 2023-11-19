@@ -31,8 +31,6 @@ public class PlayerTriggered : FeatureBase
             return false;
         }
 
-        // TODO i18n: Add missing translations
-
         // Narrate Current Location
         if (MainClass.Config.LocationKey.JustPressed())
         {
@@ -43,10 +41,13 @@ public class PlayerTriggered : FeatureBase
         // Narrate Position
         if (MainClass.Config.PositionKey.JustPressed())
         {
-            string toSpeak = MainClass.Config.VerboseCoordinates
-                ? $"X: {CurrentPlayer.PositionX}, Y: {CurrentPlayer.PositionY}"
-                : $"{CurrentPlayer.PositionX}, {CurrentPlayer.PositionY}";
-            MainClass.ScreenReader.Say(toSpeak, true);
+            MainClass.ScreenReader.TranslateAndSay("feature-speak_position", true,
+                new
+                {
+                    verbose_coordinates = MainClass.Config.VerboseCoordinates ? 1 : 0,
+                    x_pos = CurrentPlayer.PositionX,
+                    y_pos = CurrentPlayer.PositionY
+                });
             return true;
         }
 
@@ -56,7 +57,6 @@ public class PlayerTriggered : FeatureBase
             if (MainClass.ModHelper == null)
                 return true;
 
-            // TODO unify translation keys
             string toSpeak = MainClass.Config.HealthNStaminaInPercentage
                 ? Translator.Instance.Translate(
                     "feature-speak_health_n_stamina-in_percentage_format",
@@ -82,16 +82,23 @@ public class PlayerTriggered : FeatureBase
         // Narrate money at hand
         if (MainClass.Config.MoneyKey.JustPressed())
         {
-            MainClass.ScreenReader.Say($"You have {CurrentPlayer.Money}g", true);
+            MainClass.ScreenReader.TranslateAndSay("feature-speak_money", true, new { money = CurrentPlayer.Money });
             return true;
         }
 
         // Narrate time and season
         if (MainClass.Config.TimeNSeasonKey.JustPressed())
         {
-            MainClass.ScreenReader.Say(
-                $"Time is {CurrentPlayer.TimeOfDay} and it is {CurrentPlayer.Day} {CurrentPlayer.Date} of {CurrentPlayer.Season}",
-                true);
+            MainClass.ScreenReader.TranslateAndSay(
+                "feature-speak_time_and_season",
+                true,
+                new
+                {
+                    time_of_day = CurrentPlayer.TimeOfDay,
+                    day = CurrentPlayer.Day,
+                    date = CurrentPlayer.Date,
+                    season = CurrentPlayer.Season
+                });
             return true;
         }
 

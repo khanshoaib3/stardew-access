@@ -124,7 +124,6 @@ public class TileDataEntryMenu : IClickableMenu
 
         if (Game1.currentLocation.currentEvent != null)
         {
-            // TODO add new condition checker
             object tokens = new
             {
                 is_festival = Game1.currentLocation.currentEvent.isFestival ? 1 : 0,

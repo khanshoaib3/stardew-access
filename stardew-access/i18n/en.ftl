@@ -3,12 +3,12 @@
 ## Object Tracker
 
 feature-object_tracker-sort_by_proximity = Sort by Proximity: {$is_enabled ->
-[0] Disabled
-*[1] Enabled
+    [0] Disabled
+    *[1] Enabled
   }
 feature-object_tracker-read_selected_object = {$object_name} {$only_tile ->
-[0] is {$direction} {$distance}
-*[1] {EMPTYSTRING()}
+    [0] is {$direction} {$distance}
+    *[1] {EMPTYSTRING()}
   } at {$object_x}-{$object_y}, player at {$player_x}-{$player_y}
 feature-object_tracker-moving_to = Moving to {$object_x}-{$object_y}.
 feature-object_tracker-could_not_find_path = Could not find path to object.
@@ -23,8 +23,8 @@ feature-object_tracker-no_selected_object = No selected object
 ## Tile Viewer
 
 feature-tile_viewer-relative_cursor_lock_info = Relative cursor lock: {$is_enabled ->
-[0] Disabled
-*[1] Enabled
+    [0] Disabled
+    *[1] Enabled
   }
 feature-tile_viewer-moving_to = Moving to {$tile_x}-{$tile_y}.
 feature-tile_viewer-cannot_move_to = Cannot move to {$tile_x}-{$tile_y}.
@@ -45,9 +45,19 @@ feature-speak_selected_slot_item_name = {$slot_item_name} Selected
 feature-speak_location_name = {$location_name} Entered
 feature-speak_health_n_stamina-in_percentage_format = Health is {$health} % and Stamina is {$stamina} %
 feature-speak_health_n_stamina-in_normal_format = Health is {$health} and Stamina is {$stamina}
+feature-speak_money = You have {$money}g
+feature-speak_time_and_season = Time is {$time_of_day} and it is {$day} {$date} of {$season}
+feature-speak_position = {$verbose_coordinates ->
+    [0] {$x_pos}, {$y_pos}
+    *[1] X: {$x_pos}, Y: {$y_pos}
+  }
 feature-warnings-health = Warning! Health is at {$value} percent!
 feature-warnings-stamina = Warning! Stamina is at {$value} percent!
 feature-warnings-time = Warning! Time is {$value}
+feature-grid_movement_status = Grid movement status: {$is_active ->
+    [0] Inactive
+    *[1] Active
+  }
 
 
 # Building operations
@@ -328,5 +338,4 @@ inventory_util-empty_slot = Empty Slot
 common-unknown = Unknown
 
 # The $name will be in the respective language i.e., it will be in french for french translation and so on. So use the language specific name in the square brackets except for the one with '*', that can have any value. Variants with '*' are marked as default.
-# TODO add this to more places
 common-util-pluralize_name = {$item_count} {PLURALIZE($item_count, $name)}

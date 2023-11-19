@@ -105,7 +105,6 @@ namespace stardew_access.Patches
                 }
                 #endregion
 
-                // TODO Use InventoryUtils.cs
                 string toSpeak = "";
 
                 if (hoveredItem != null)

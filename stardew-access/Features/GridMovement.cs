@@ -154,9 +154,7 @@ internal class GridMovement : FeatureBase
 		if (MainClass.Config.ToggleGridMovementKey.JustPressed())
 		{
 			MainClass.Config.GridMovementActive = !MainClass.Config.GridMovementActive;
-			// TODO i18n
-			string output = "Grid Movement Status: " + (MainClass.Config.GridMovementActive ? "Active" : "Inactive");
-			MainClass.ScreenReader.Say(output, true);
+			MainClass.ScreenReader.TranslateAndSay("feature-grid_movement_status", true, new {is_active = MainClass.Config.GridMovementActive ? 1 : 0});
 			return;
 		}
 
