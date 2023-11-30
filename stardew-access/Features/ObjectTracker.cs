@@ -56,6 +56,56 @@ internal class ObjectTracker : FeatureBase
         Tick();
     }
 
+    public override bool OnButtonPressed(object? sender, ButtonPressedEventArgs e)
+    {
+        base.OnButtonPressed(sender, e);
+        bool cancelAutoWalkingPressed = MainClass.Config.OTCancelAutoWalking.JustPressed();
+        
+        if (pathfinder != null && pathfinder.IsActive)
+        {
+            if (cancelAutoWalkingPressed)
+            {
+                #if DEBUG
+                Log.Verbose("ObjectTracker->HandleKeys: cancel auto walking pressed, canceling auto walking for object tracker.");
+                #endif
+                pathfinder.StopPathfinding();
+                MainClass.ModHelper.Input.Suppress(e.Button);
+                return true;
+            }
+            else if (IsAnyMovementKeyPressed())
+            {
+                #if DEBUG
+                Log.Verbose("ObjectTracker->HandleKeys: movement key pressed, canceling auto walking for object tracker.");
+                #endif
+                pathfinder.StopPathfinding();
+                MainClass.ModHelper.Input.Suppress(e.Button);
+                return true;
+            }
+            else if (IsUseToolKeyActive())
+            {
+                #if DEBUG
+                Log.Verbose("ObjectTracker->HandleKeys: use tool button pressed, canceling auto walking for object tracker.");
+                #endif
+                pathfinder.StopPathfinding();
+                MainClass.ModHelper.Input.Suppress(e.Button);
+                Game1.pressUseToolButton();
+                return true;
+            }
+            else if (IsDoActionKeyActive())
+            {
+                #if DEBUG
+                Log.Verbose("ObjectTracker->HandleKeys: action button pressed, canceling auto walking for object tracker.");
+                #endif
+                pathfinder.StopPathfinding();
+                MainClass.ModHelper.Input.Suppress(e.Button);
+                Game1.pressActionButton(Game1.input.GetKeyboardState(), Game1.input.GetMouseState(),
+                    Game1.input.GetGamePadState());
+                return true;
+            }
+        }
+        return false;
+    }
+
     public override void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
     {
         base.OnButtonsChanged(sender, e);
@@ -313,7 +363,6 @@ internal class ObjectTracker : FeatureBase
         bool switchSortingModePressed = MainClass.Config.OTSwitchSortingMode.JustPressed();
         bool moveToSelectedObjectPressed = MainClass.Config.OTMoveToSelectedObject.JustPressed();
         bool readSelectedObjectTileLocationPressed = MainClass.Config.OTReadSelectedObjectTileLocation.JustPressed();
-        bool cancelAutoWalkingPressed = MainClass.Config.OTCancelAutoWalking.JustPressed();
 
         if (cycleUpCategoryPressed)
         {
@@ -355,40 +404,6 @@ internal class ObjectTracker : FeatureBase
             }
         }
 
-        if (pathfinder != null && pathfinder.IsActive)
-        {
-            if (cancelAutoWalkingPressed)
-            {
-                #if DEBUG
-                Log.Verbose("ObjectTracker->HandleKeys: cancel auto walking pressed, canceling auto walking for object tracker.");
-                #endif
-                pathfinder.StopPathfinding();
-            }
-            else if (IsAnyMovementKeyPressed())
-            {
-                #if DEBUG
-                Log.Verbose("ObjectTracker->HandleKeys: movement key pressed, canceling auto walking for object tracker.");
-                #endif
-                pathfinder.StopPathfinding();
-            }
-            else if (IsUseToolKeyActive())
-            {
-                #if DEBUG
-                Log.Verbose("ObjectTracker->HandleKeys: use tool button pressed, canceling auto walking for object tracker.");
-                #endif
-                pathfinder.StopPathfinding();
-                Game1.pressUseToolButton();
-            }
-            else if (IsDoActionKeyActive())
-            {
-                #if DEBUG
-                Log.Verbose("ObjectTracker->HandleKeys: action button pressed, canceling auto walking for object tracker.");
-                #endif
-                pathfinder.StopPathfinding();
-                Game1.pressActionButton(Game1.input.GetKeyboardState(), Game1.input.GetMouseState(),
-                    Game1.input.GetGamePadState());
-            }
-        }
     }
 
     private void MoveToCurrentlySelectedObject()
