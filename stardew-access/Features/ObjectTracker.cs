@@ -51,8 +51,18 @@ internal class ObjectTracker : FeatureBase
 
     public override void Update(object? sender, UpdateTickedEventArgs e)
     {
+        if (Game1.activeClickableMenu != null && pathfinder != null && pathfinder.IsActive)
+        {
+            #if DEBUG
+            Log.Verbose(
+                "ObjectTracker->Update: a menu has opened, canceling auto walking.");
+            #endif
+            pathfinder.StopPathfinding();
+            return;
+        }
+
         if (!e.IsMultipleOf(15) || !MainClass.Config.OTAutoRefreshing) return;
-        
+
         Tick();
     }
 
@@ -69,7 +79,7 @@ internal class ObjectTracker : FeatureBase
                 Log.Verbose("ObjectTracker->HandleKeys: cancel auto walking pressed, canceling auto walking for object tracker.");
                 #endif
                 pathfinder.StopPathfinding();
-                MainClass.ModHelper.Input.Suppress(e.Button);
+                MainClass.ModHelper!.Input.Suppress(e.Button);
                 return true;
             }
             else if (IsAnyMovementKeyPressed())
@@ -78,7 +88,7 @@ internal class ObjectTracker : FeatureBase
                 Log.Verbose("ObjectTracker->HandleKeys: movement key pressed, canceling auto walking for object tracker.");
                 #endif
                 pathfinder.StopPathfinding();
-                MainClass.ModHelper.Input.Suppress(e.Button);
+                MainClass.ModHelper!.Input.Suppress(e.Button);
                 return true;
             }
             else if (IsUseToolKeyActive())
@@ -87,7 +97,7 @@ internal class ObjectTracker : FeatureBase
                 Log.Verbose("ObjectTracker->HandleKeys: use tool button pressed, canceling auto walking for object tracker.");
                 #endif
                 pathfinder.StopPathfinding();
-                MainClass.ModHelper.Input.Suppress(e.Button);
+                MainClass.ModHelper!.Input.Suppress(e.Button);
                 Game1.pressUseToolButton();
                 return true;
             }
@@ -97,7 +107,7 @@ internal class ObjectTracker : FeatureBase
                 Log.Verbose("ObjectTracker->HandleKeys: action button pressed, canceling auto walking for object tracker.");
                 #endif
                 pathfinder.StopPathfinding();
-                MainClass.ModHelper.Input.Suppress(e.Button);
+                MainClass.ModHelper!.Input.Suppress(e.Button);
                 Game1.pressActionButton(Game1.input.GetKeyboardState(), Game1.input.GetMouseState(),
                     Game1.input.GetGamePadState());
                 return true;

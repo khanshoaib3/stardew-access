@@ -309,21 +309,24 @@ internal class TileViewer : FeatureBase
         if (MainClass.Config.SnapMouse)
             SnapMouseToPlayer();
 
-        if (IsAutoWalking)
+        if (!IsAutoWalking) return;
+        if (Game1.activeClickableMenu != null)
         {
-            if (Vector2.Distance(_prevTile, CurrentPlayer.Position) >= 2f)
-            {
-                _prevTile = CurrentPlayer.Position;
-                Game1.player.checkForFootstep();
-            }
-
-            if (_finalTile != Vector2.Zero && _finalTile == CurrentPlayer.Position)
-            {
-                MainClass.ScreenReader.TranslateAndSay("feature-tile_viewer-reached", true);
-                StopAutoWalking();
-            }
+            StopAutoWalking();
+            return;
+        }
+        
+        if (Vector2.Distance(_prevTile, CurrentPlayer.Position) >= 2f)
+        {
+            _prevTile = CurrentPlayer.Position;
+            Game1.player.checkForFootstep();
         }
 
+        if (_finalTile != Vector2.Zero && _finalTile == CurrentPlayer.Position)
+        {
+            MainClass.ScreenReader.TranslateAndSay("feature-tile_viewer-reached", true);
+            StopAutoWalking();
+        }
     }
 
     private static bool AllowMouseSnap(Vector2 point)
