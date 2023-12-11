@@ -16,8 +16,9 @@ internal class GridMovement : FeatureBase
 {
 	private const int TimerInterval = 1000;
 	// These aren't backwards! Higher number means slower speed.
+	// The 0-100% span is over the difference ((SpeedMinimum - SpeedMaximum) / 100)
 	private const int SpeedMinimum = 2000;
-	private const int SpeedMaximum = 640;
+	private const int SpeedMaximum = 1040;
 	private int StepCounter = 0;
 	private readonly int tilesPerStep = MainClass.Config.GridMovementTilesPerStep;
 	public Boolean is_warping = false;
@@ -59,33 +60,35 @@ internal class GridMovement : FeatureBase
 
 	public override void Update(object? sender, UpdateTickedEventArgs e)
 	{
+		Farmer player = Game1.player;
 		if (MainClass.ModHelper == null) return;
 		if (!LastGridMovementButtonPressed.HasValue) return;
 		
 		SButton button = LastGridMovementButtonPressed.Value.ToSButton();
 		bool isButtonDown = MainClass.ModHelper.Input.IsDown(button) ||
-		                    MainClass.ModHelper.Input.IsSuppressed(button);
+							MainClass.ModHelper.Input.IsSuppressed(button);
 		bool? isGridMovementActive = MainClass.Config?.GridMovementActive;
 		bool? isGridMovementMoving = is_moving;
 
 		if (LastGridMovementDirection is not null && Game1.activeClickableMenu == null &&
-		    isGridMovementActive == true && isGridMovementMoving == false &&
-		    MainClass.Config?.GridMovementOverrideKey.IsDown() == false && isButtonDown)
+			isGridMovementActive == true && isGridMovementMoving == false &&
+			MainClass.Config?.GridMovementOverrideKey.IsDown() == false && isButtonDown)
 		{
+			timer.Interval = (SpeedMinimum - (SpeedMinimum - SpeedMaximum) * (MainClass.Config.GridMovementSpeedPercent / 100d)) / player.getMovementSpeed();
 			HandleGridMovement(LastGridMovementDirection.Value, LastGridMovementButtonPressed.Value);
 		}
 	}
 
 	public override bool OnButtonPressed(object? sender, ButtonPressedEventArgs e)
 	{
-        // Exit if in a menu
-        if (Game1.activeClickableMenu != null)
-        {
-            #if DEBUG
-            Log.Verbose("OnButtonPressed: returning due to 'Game1.activeClickableMenu' not being null AKA in a menu");
-            #endif
-            return false;
-        }
+		// Exit if in a menu
+		if (Game1.activeClickableMenu != null)
+		{
+			#if DEBUG
+			Log.Verbose("OnButtonPressed: returning due to 'Game1.activeClickableMenu' not being null AKA in a menu");
+			#endif
+			return false;
+		}
 
 		// GridMovement 
 		if (is_warping)
@@ -137,6 +140,15 @@ internal class GridMovement : FeatureBase
 		{
 			if (keyboardButton.Equals(mapping.Key.Item1) || controllerButton.Equals(mapping.Key.Item2))
 			{
+				// This effects the time between changing direction / first step and subsequent steps
+				// Interval will be updated after first step if key is held.
+				if (!timer.Enabled)
+					timer.Interval = MainClass.Config.GridMovementDelayAfterFirstStep;
+                else if (!is_warping)
+                {
+                    is_moving = false;
+                    timer.Stop();
+                }
 				HandleGridMovement(mapping.Value, keyboardButton);
 				MainClass.ModHelper!.Input.Suppress(e.Button);
 				break;
@@ -173,9 +185,8 @@ internal class GridMovement : FeatureBase
 
 	public void HandleGridMovement(int direction, InputButton pressedButton)
 	{
-		Farmer player = Game1.player;
 		GameLocation location = Game1.currentLocation;
-		timer.Interval = (SpeedMinimum - (SpeedMinimum - SpeedMaximum) * (MainClass.Config.GridMovementSpeed / 100d)) / player.getMovementSpeed();
+		Farmer player = Game1.player;
 
 		LastGridMovementButtonPressed = pressedButton;
 		LastGridMovementDirection = direction;
@@ -223,9 +234,6 @@ internal class GridMovement : FeatureBase
 		Game1.playSound("dwop");
 		is_moving = true;
 			
-		// This effects the time between changing direction and taking the first step.
-		// Interval will be updated after first step if key is held.
-		timer.Interval = MainClass.Config.GridMovementDelayAfterDirectionChange;
 		timer.Start();
 		return true;
 	}
