@@ -176,7 +176,9 @@ namespace stardew_access.Tiles
                     {
                         Vector2 position = new(x, y);
                         AccessibleTile tile = new(nameOrTranslationKey!, position, CATEGORY.FromString(category), conditions: conditions, withMods: withMods);
-                        Log.Debug($"AccessibleTileManager: Adding tile {tile} to layer {layerName}.");
+                        #if DEBUG
+                        Log.Verbose($"AccessibleTileManager: Adding tile {tile} to layer {layerName}.");
+                        #endif
                         locationData.Tiles.Add(position, tile, layerName);
                     }
                 }
