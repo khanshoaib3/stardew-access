@@ -5,6 +5,8 @@ The mod uses the [Tolk](https://github.com/ndarilek/tolk) library on windows, [l
 The mod adds several features to help the player gather information regarding the surrounding and the player.
 It also patches the various menus and the fishing mini-game (more mini-games will be patched soon) to make them accessible.
 
+If you are a mod developer and want to integrate your mod with stardew access then checkout the [wiki page](https://github.com/khanshoaib3/stardew-access/wiki).
+
 ## Other Pages
 
 - [Setup](setup.md)

@@ -1,24 +1,19 @@
 <h1 id="features">Features</h1>
 
-<p>This page contains details of all the features that are currently in the mod.
-If you have any suggestion on improvements on any of these features or about a new feature, you can join the discord server (<a href="https://discord.gg/yQjjsDqWQX">here</a>) or post an issue (<a href="https://github.com/khanshoaib3/stardew-access/issues">here</a>).</p>
-
 <h2 id="table-of-contents">Table Of Contents</h2>
 
 <ul>
+  <li><a href="#table-of-contents">Table Of Contents</a></li>
   <li><a href="#feature-list">Feature List</a>
     <ul>
       <li><a href="#read-tile">Read Tile</a></li>
       <li><a href="#tile-viewer">Tile Viewer</a></li>
+      <li><a href="#tile-info-menu">Tile Info Menu</a></li>
+      <li><a href="#object-tracker">Object Tracker</a></li>
+      <li><a href="#grid-movement">Grid Movement</a></li>
       <li><a href="#warning">Warning</a></li>
       <li><a href="#others">Others</a></li>
       <li><a href="#radar">Radar</a></li>
-    </ul>
-  </li>
-  <li><a href="#upcoming-features">Upcoming Features</a>
-    <ul>
-      <li><a href="#translations">Translations</a></li>
-      <li><a href="#tile-viewer-menu">Tile Viewer Menu</a></li>
     </ul>
   </li>
   <li><a href="#other-pages">Other Pages</a></li>
@@ -31,15 +26,57 @@ If you have any suggestion on improvements on any of these features or about a n
 <p>Reads the name and information about the tile the player is currently looking (not the one the player is standing on).
 This feature uses in-game methods/properties to get the name and information of the object on the tile.
 Many tiles don’t have textual information so for that, the mod uses a json file to get the name of the tile.
-You can find this file in the <code>assets</code> folder by the name <code>static-tiles.json</code>.
-You can also create a <code>custom-tiles.json</code> file in the <code>assets</code> folder and add new entries which can also be made to work only when a certain mod is installed.
-More on this in the guides page.</p>
+You can find this file in the <code>assets/TilesData</code> folder by the name <code>tiles.json</code>.
+You can also create a <code>tiles_user.json</code> file in the <code>assets/TilesData</code> folder and add new entries which can also be made
+to work
+only when a certain mod(s) is installed or on a specific farm type, etc.
+You don’t have to manually enter the entries, you can use the Tile Info Menu for that
+but there will be a guide for manually adding entries into the <code>tiles_user.json</code> file soon.</p>
+
+<p>See
+related: <a href="keybindings.html#global-keys">keybindings</a>, <a href="commands.html#read-tile-related">commands</a>, <a href="config.html#read-tile-configs">configs</a>.</p>
 
 <h3 id="tile-viewer">Tile Viewer</h3>
 
 <p>Allows browsing of the map and snapping mouse to tiles with the arrow keys.
 This Feature can be used to place items into the world like calendar.
-We can press the <code>AutoWalkToTileKey</code> (default to left control + enter) to auto walk the player to that tile (if possible).</p>
+We can press the <code>AutoWalkToTileKey</code> (default to left control + enter) to auto walk the player to that tile (if
+possible).
+Pressing the <code>OpenTileInfoMenuKey</code> (default to left shift + enter) to open the tile info menu for the active tile.</p>
+
+<p>See related: <a href="keybindings.html#tile-viewer-keys">keybindings</a>, <a href="config.html#tile-viewer-configs">configs</a>.</p>
+
+<h3 id="tile-info-menu">Tile Info Menu</h3>
+
+<p>Can be opened by using the <code>OpenTileInfoMenuKey</code> (default to Left Shift + Enter) while using the tile viewer.
+The menu contains an option to mark a tile for the various building related operations.
+Another option to add entries in the <code>tiles_user.json</code> for a tile.</p>
+
+<p><strong>Current Limitations:</strong></p>
+
+<ol>
+  <li>The third option, the one that should speak the details about the tile only speaks the tile’s name.</li>
+  <li>We can only have one mod as a dependency although having multiple in the <code>tiles_user.json</code> is supported.</li>
+  <li>We can only set the currently ongoing event or the current farm type as dependency.</li>
+  <li>Festivals are not properly detected.</li>
+</ol>
+
+<h3 id="object-tracker">Object Tracker</h3>
+
+<p>Allows finding and tracking down objects on the map.
+This feature also allows to auto navigate to an object or speaks it’s relative distance from the player.</p>
+
+<p>See related: <a href="keybindings.html#object-tracker-keys">keybindings</a>, <a href="config.html#object-tracker-configs">configs</a>.</p>
+
+<h3 id="grid-movement">Grid Movement</h3>
+
+<p>When enabled, the player moves tile by tile instead of freely.
+This feature is most helpful when planting/harvesting crops or in any case where precise movement is required.</p>
+
+<p><em>Note: If in case you encounter the player moving more than one step or the speed being faster than usual,
+try reducing the speed of grid movement from the config.</em></p>
+
+<p>See related: <a href="keybindings.html#grid-movement-keys">keybindings</a>, <a href="config.html#grid-movement-configs">configs</a>.</p>
 
 <h3 id="warning">Warning</h3>
 
@@ -49,8 +86,10 @@ Also warns when its past midnight.</p>
 <h3 id="others">Others</h3>
 
 <p>Almost all the vanilla menus are patched to be made accessible by the mod.
-For better navigation and mouse button simulation, the mod snaps the cursor to the tile adjacent to the player based on where the player is looking.
-If you switch or minimize the game’s window while it is still not paused, this feature will prevent the cursor from moving.
+For better navigation and mouse button simulation, the mod snaps the cursor to the tile adjacent to the player based on
+where the player is looking.
+If you switch or minimize the game’s window while it is still not paused, this feature will prevent the cursor from
+moving.
 So be sure to pause the game or open any menu before switching/minimizing the window.
 The mod also adds a few keybindings to speak player’s current position, location, health, etc.
 See the keybindings page for these keybinds.</p>
@@ -62,20 +101,7 @@ See the keybindings page for these keybinds.</p>
 <p>Plays a sound at point of interest nearby, like chest, doors, harvestable item, etc.
 The game not supporting stereo sound makes this feature somewhat confusing.</p>
 
-<h2 id="upcoming-features">Upcoming Features</h2>
-
-<h3 id="translations">Translations</h3>
-
-<p>At the moment, the mod only has translations for one or two features.
-We would like to change that and internationalize the entire mod hopefully.</p>
-
-<h3 id="tile-viewer-menu">Tile Viewer Menu</h3>
-
-<p>When Shift + enter, it brings up a menu with options to mark that tile just like using the <code>mark</code> command and an option to add the tile as a new entry to <code>custom-tiles.json</code>.</p>
-
-<h3 id="accessible-tiles">Accessible Tiles</h3>
-
-<p>The <a href="https://github.com/Croutonic-Creations-Stardew/SDV-AccessibleTiles">Accessible Tiles</a> mod will be merged into stardew access in the next update.</p>
+<p>See related: <a href="commands.html#radar-related">commands</a>, <a href="config.html#radar-configs">configs</a>.</p>
 
 <h2 id="other-pages">Other Pages</h2>
 
@@ -85,5 +111,5 @@ We would like to change that and internationalize the entire mod hopefully.</p>
   <li><a href="keybindings.html">Keybindings</a></li>
   <li><a href="commands.html">Commands</a></li>
   <li><a href="config.html">Configs</a></li>
-  <li><a href="guides.html">Guides</a></li>
+  <li><a href="https://github.com/khanshoaib3/stardew-access/tree/master/docs/guides.md">Guides</a></li>
 </ul>

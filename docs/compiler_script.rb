@@ -12,6 +12,7 @@ puts "Searching for files to convert/compile to html...";
 
 markdown_files = Dir.glob("*.md")
 markdown_files.each do|file_name|
+  next if file_name == "guides.md"
   puts "Found: " + file_name + ", compiling..."
 
   source_file_object = File.open(file_name, "r")
