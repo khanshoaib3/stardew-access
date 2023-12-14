@@ -85,7 +85,7 @@ namespace stardew_access.Patches
         private static string GetCurrentBlueprintInfo(BluePrint currentBlueprint, int ___price, List<Item> ___ingredients)
         {
             string ingredients = "";
-            List<string> ingredientsList = new List<string>();
+            List<string> ingredientsList = new();
             ___ingredients.ForEach(ingredient => ingredientsList.Add($"{InventoryUtils.GetPluralNameOfItem(ingredient)} {InventoryUtils.GetQualityFromItem(ingredient)}"));
             ingredients = string.Join(", ", ingredientsList);
 
@@ -97,7 +97,7 @@ namespace stardew_access.Patches
                 ingredients_list = ingredients,
                 width = currentBlueprint.tilesWidth,
                 height = currentBlueprint.tilesHeight,
-                description = currentBlueprint.description,
+                currentBlueprint.description,
             };
 
             return Translator.Instance.Translate(translationKey, translationTokens, TranslationCategory.Menu);

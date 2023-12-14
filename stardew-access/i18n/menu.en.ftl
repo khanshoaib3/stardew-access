@@ -30,12 +30,6 @@ common-ui-equipment_slots = {$slot_name ->
     *[1] {EMPTYSTRING()}
   }
 
-### Inventory Util 
-
-# FIXME fix key conventions
-menu-inventory-empty_slot-name = Empty Slot
-menu-inventory-not_usable-suffix = , not usable here
-
 ### Options Element
 
 options_element-button_info = {$label} button
@@ -51,6 +45,40 @@ options_element-dropdown_info = {$label} dropdown, option {$selected_option} sel
 options_element-slider_info = {$slider_value}% {$label} slider
 options_element-plus_minus_button_info = {$selected_option} selected of {$label}
 options_element-input_listener_info = {$label} is bound to {$buttons_list}. Left click to change.
+
+## Custom Menus
+
+### Tile Info Menu
+
+menu-tile_info-mark_tile = Mark this tile
+menu-tile_info-select_marking_index = Select index
+menu-tile_info-add_to_user_tiles_data = Add this tile to user tiles data
+menu-tile_info-detailed_tile_info = Speak detailed tile info
+menu-tile_info-data_exists = Tile data already exist, do you want to
+menu-tile_info-edit_existing_data = Edit data?
+menu-tile_info-delete_existing_data = Delete data?
+
+### Tile Data Entry Menu
+
+menu-tile_data_entry-none = None
+menu-tile_data_entry-heading_label = Tile {$tile_x}x {$tile_y}y in {$location_name}
+menu-tile_data_entry-tile_name_text_box_label = Tile name
+menu-tile_data_entry-tile_name_empty = Tile name cannot be empty or null
+menu-tile_data_entry-categories_drop_down_label = Category
+menu-tile_data_entry-mod_dependency_drop_down_label = Mod dependency
+menu-tile_data_entry-event_check_box_label = Check for current {$is_festival ->
+    [0] {$is_wedding ->
+        [0] event,
+        *[1] wedding,
+      }
+    *[1] festival: {$festival_name},
+  } id: {$event_id}
+menu-tile_data_entry-farm_type_check_box_label = Check for current farm type: {$farm_type}
+menu-tile_data_entry-farm_house_upgrade_level_drop_down_label = Check for farm house upgrade level
+menu-tile_data_entry-quest_drop_down_label = Check if player has quest
+menu-tile_data_entry-quest_drop_down-manual_entry_option = Enter quest id manually
+menu-tile_data_entry-manual_quest_id_text_box_label = Quest id
+menu-tile_data_entry-joja_member_checkbox_label = Check if player is Joja member
 
 ## Bundle Menus
 
@@ -264,7 +292,7 @@ menu-animal_query-animal_info =
   } old, {$parent_name ->
     [null] {EMPTYSTRING()}
     *[other] Parent: {$parent_name}.
-  }
+  }, {$mood}
 menu-animal_query-confirm_selling_button = Confirm selling animal button
 menu-animal_query-cancel_selling_button = Cancel selling animal button
 menu-animal_query-selling_button = Sell for {$price}g button

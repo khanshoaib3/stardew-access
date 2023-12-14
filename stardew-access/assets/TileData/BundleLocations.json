@@ -1,0 +1,34 @@
+{
+    "CommunityCenter": {
+        "Pantry": [
+            14,
+            5
+        ],
+        "Crafts Room": [
+            14,
+            23
+        ],
+        "Fish Tank": [
+            40,
+            10
+        ],
+        "Boiler Room": [
+            63,
+            14
+        ],
+        "Vault": [
+            55,
+            6
+        ],
+        "Bulletin Board": [
+            46,
+            12
+        ]
+    },
+    "AbandonedJojaMart": {
+        "Missing": [
+            8,
+            8
+        ]
+    }
+}

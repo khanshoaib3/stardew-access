@@ -113,7 +113,7 @@ namespace stardew_access.Patches
 
             MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-social_page-npc_info", true, new
             {
-                name = name,
+                name,
                 has_talked = hasTalked ? 1 : 0,
                 relationship_status = relationshipStatus,
                 heart_level = heartLevel,

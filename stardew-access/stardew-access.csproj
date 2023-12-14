@@ -20,7 +20,8 @@
   <ItemGroup>
     <PackageReference Include="KdTree" Version="1.4.1" />
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
     <Reference Include="./TolkDotNet.dll" />
     <Reference Include="./KdTreeLib.dll" />
     <Reference Include="ProjectFluent">

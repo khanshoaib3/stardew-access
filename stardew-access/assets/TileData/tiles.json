@@ -1,0 +1,3004 @@
+{
+  "AdventureGuild": [
+    {
+      "NameOrTranslationKey": "static_tile-adventure_guild-goals_board",
+      "X": [8],
+      "Y": [10],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-shop_counter",
+      "X": [5],
+      "Y": [12],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-npc-gil",
+      "X": [11],
+      "Y": [12],
+      "Category": "npc"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-stool[1]",
+      "X": [2],
+      "Y": [13],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-stool[2]",
+      "X": [11],
+      "Y": [16],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-stool[3]",
+      "X": [9],
+      "Y": [17],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-stool[4]",
+      "X": [11],
+      "Y": [18],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-adventure_guild-fireplace",
+      "X": [9, 10],
+      "Y": [11],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-adventure_guild-table",
+      "X": [10, 11],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-adventure_guild-house_plant",
+      "X": [12],
+      "Y": [18],
+      "Category": "decoration"
+    }
+  ],
+  "AnimalShop": [
+    {
+      "NameOrTranslationKey": "static_tile-common-shop_counter",
+      "X": [12, 13],
+      "Y": [15],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-marnies_room_door",
+      "X": [15],
+      "Y": [12],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-jass_room_door",
+      "X": [6],
+      "Y": [12],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-shanes_room_door",
+      "X": [21],
+      "Y": [13],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-marnies_barn_door",
+      "X": [30],
+      "Y": [13],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-fridge",
+      "X": [28],
+      "Y": [14],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-oven",
+      "X": [24],
+      "Y": [14],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-mega_station",
+      "X": [22],
+      "Y": [5],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-shanes_radio",
+      "X": [24],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-marnies_dresser",
+      "X": [16],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-marnies_drawer",
+      "X": [17],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-jack_in_the_box",
+      "X": [8],
+      "Y": [5],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-futan_bear",
+      "X": [2, 3],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-colouring_book",
+      "X": [5],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-paint_set",
+      "X": [5],
+      "Y": [7],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-jass_alarm_clock",
+      "X": [8],
+      "Y": [8],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-jass_radio",
+      "X": [4],
+      "Y": [9],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-arts_and_craft",
+      "X": [7],
+      "Y": [6],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-animal_shop-doll_house",
+      "X": [6, 7],
+      "Y": [4],
+      "Category": "decoration"
+    }
+  ],
+  "ArchaeologyHouse": [
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-gunthers_box",
+      "X": [6],
+      "Y": [9],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-collection",
+      "X": [2],
+      "Y": [9],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-counter",
+      "X": [3],
+      "Y": [9],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-stool[1]",
+      "X": [1],
+      "Y": [10],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-chair[1]",
+      "X": [13],
+      "Y": [14],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-chair[2]",
+      "X": [9],
+      "Y": [16],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-chair[3]",
+      "X": [13],
+      "Y": [18],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-chair[4]",
+      "X": [17],
+      "Y": [18],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-table",
+      "X": [17, 18],
+      "Y": [10, 11],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-desk[1]",
+      "X": [9, 10],
+      "Y": [15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-desk[2]",
+      "X": [13, 14],
+      "Y": [15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-desk[3]",
+      "X": [17, 18],
+      "Y": [15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-desk[4]",
+      "X": [9, 10],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-desk[5]",
+      "X": [13, 14],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-desk[6]",
+      "X": [17, 18],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-house_plant[1]",
+      "X": [27],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-house_plant[2]",
+      "X": [26],
+      "Y": [18],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-palm_tree",
+      "X": [38],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-fireplace",
+      "X": [43, 44],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-history_book",
+      "X": [15,16,17,18,19],
+      "Y": [8],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-step_stool[1]",
+      "X": [10],
+      "Y": [9],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-step_stool[2]",
+      "X": [18],
+      "Y": [5],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-teddybear",
+      "X": [20],
+      "Y": [9],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-atlas",
+      "X": [21],
+      "Y": [7, 8],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-archaeology_house-childrens_book",
+      "X": [21],
+      "Y": [9, 10],
+      "Category": "decoration"
+    }
+  ],
+  "Barn": [
+    {
+      "NameOrTranslationKey": "static_tile-common-hay_hopper",
+      "X": [6],
+      "Y": [3],
+      "Category": "interactable"
+    }
+  ],
+  "Barn2": [
+    {
+      "NameOrTranslationKey": "static_tile-common-hay_hopper",
+      "X": [6],
+      "Y": [3],
+      "Category": "interactable"
+    }
+  ],
+  "Big Barn": [
+    {
+      "NameOrTranslationKey": "static_tile-common-hay_hopper",
+      "X": [6],
+      "Y": [3],
+      "Category": "interactable"
+    }
+  ],
+  "Barn3": [
+    {
+      "NameOrTranslationKey": "static_tile-common-hay_hopper",
+      "X": [6],
+      "Y": [3],
+      "Category": "interactable"
+    }
+  ],
+  "Deluxe Barn": [
+    {
+      "NameOrTranslationKey": "static_tile-common-hay_hopper",
+      "X": [6],
+      "Y": [3],
+      "Category": "interactable"
+    }
+  ],
+  "BathHouse_MensLocker": [
+    {
+      "NameOrTranslationKey": "static_tile-bathhouse_locker-entry_room_door",
+      "X": [3],
+      "Y": [27],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-bathhouse_locker-pool_entrance",
+      "X": [15],
+      "Y": [27],
+      "Category": "door"
+    }
+  ],
+  "BathHouse_Pool": [
+    {
+      "NameOrTranslationKey": "static_tile-bathhouse_pool-womens_locker_room_door",
+      "X": [6],
+      "Y": [0],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-bathhouse_pool-mens_locker_room_door",
+      "X": [21],
+      "Y": [0],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bench[1]",
+      "X": [11],
+      "Y": [9],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bench[2]",
+      "X": [13],
+      "Y": [9],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bench[3]",
+      "X": [16],
+      "Y": [9],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-bathhouse_pool-northwest_steps",
+      "X": [6],
+      "Y": [8],
+      "Category": "other"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-bathhouse_pool-northeast_steps",
+      "X": [21],
+      "Y": [8],
+      "Category": "other"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-bathhouse_pool-southwest_steps",
+      "X": [7],
+      "Y": [26],
+      "Category": "other"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-bathhouse_pool-southeast_steps",
+      "X": [20],
+      "Y": [26],
+      "Category": "other"
+    }
+  ],
+  "BathHouse_WomensLocker": [
+    {
+      "NameOrTranslationKey": "static_tile-bathhouse_locker-entry_room_door",
+      "X": [13],
+      "Y": [27],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-bathhouse_locker-pool_entrance",
+      "X": [2],
+      "Y": [27],
+      "Category": "door"
+    }
+  ],
+  "Beach": [
+    {
+      "NameOrTranslationKey": "static_tile-beach-beach_warp_statue",
+      "X": [20],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-beach-willys_barrel",
+      "X": [37],
+      "Y": [33],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-beach-west_pier",
+      "X": [11],
+      "Y": [40],
+      "Category": "Fishing"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-beach-east_pier",
+      "X": [87],
+      "Y": [41],
+      "Category": "Fishing"
+    }
+  ],
+  "BeachNightMarket": [
+    {
+      "NameOrTranslationKey": "static_tile-beach_night_market-fishing_submarine_door",
+      "X": [5],
+      "Y": [34],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-beach_night_market-mermaid_boat_door",
+      "X": [58],
+      "Y": [31],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-npc-desert_trader",
+      "X": [14],
+      "Y": [37],
+      "Category": "npc"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-npc-famous_painter_lupini",
+      "X": [43],
+      "Y": [34],
+      "Category": "npc"
+    },
+    {
+      "NameOrTranslationKey": "tile_name-traveling_cart",
+      "X": [39],
+      "Y": [30],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-npc-shrouded_figure",
+      "X": [32],
+      "Y": [34],
+      "Category": "npc"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-beach_night_market-decoration_boat",
+      "X": [19],
+      "Y": [33],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-beach_night_market-magic_shop_boat",
+      "X": [48],
+      "Y": [34],
+      "Category": "interactable"
+    }
+  ],
+  "BlackSmith": [
+    {
+      "NameOrTranslationKey": "static_tile-common-shop_counter",
+      "X": [3],
+      "Y": [14],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-blacksmith-clints_room_door",
+      "X": [4],
+      "Y": [9],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-blacksmith-clints_furnace",
+      "X": [9, 10],
+      "Y": [12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-blacksmith-blueprints",
+      "X": [13],
+      "Y": [15, 16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-blacksmith-anvil",
+      "X": [12, 13],
+      "Y": [13],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-blacksmith-cassette_deck",
+      "X": [2],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-blacksmith-clints_drawer",
+      "X": [5, 6],
+      "Y": [4],
+      "Category": "decoration"
+    }
+  ],
+  "BugLand": [
+    {
+      "NameOrTranslationKey": "static_tile-common-dark_pool",
+      "X": [10],
+      "Y": [50],
+      "Category": "Fishing"
+    }
+  ],
+  "BusStop": [
+    {
+      "NameOrTranslationKey": "static_tile-bus_stop-ticket_machine",
+      "X": [7],
+      "Y": [11],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-minecart",
+      "X": [4, 5],
+      "Y": [3],
+      "Category": "interactable"
+    }
+  ],
+  "Caldera": [
+    {
+      "NameOrTranslationKey": "static_tile-caldera-rare_chest",
+      "X": [25],
+      "Y": [28],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-caldera-forge",
+      "X": [23],
+      "Y": [21],
+      "Category": "interactable"
+    }
+  ],
+  "Club": [
+    {
+      "NameOrTranslationKey": "static_tile-club-coin_machine",
+      "X": [12],
+      "Y": [4],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-shop_counter",
+      "X": [25],
+      "Y": [3],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-club-calico_spin_machine",
+      "X": [11,13,15],
+      "Y": [8, 10],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-club-high_stakes_calico_jack_table",
+      "X": [23, 24],
+      "Y": [10, 11],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-club-low_stakes_calico_jack_table",
+      "X": [3],
+      "Y": [7, 9],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-npc-man",
+      "X": [13],
+      "Y": [11],
+      "Category": "npc"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-npc-welwick",
+      "X": [18],
+      "Y": [9],
+      "Category": "npc"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-npc-unknown_person",
+      "X": [16],
+      "Y": [4],
+      "Category": "npc"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-club-stats_checker",
+      "X": [3],
+      "Y": [4],
+      "Category": "interactable"
+    }
+  ],
+  "Coop": [
+    {
+      "NameOrTranslationKey": "static_tile-common-hay_hopper",
+      "X": [3],
+      "Y": [3],
+      "Category": "interactable"
+    }
+  ],
+  "Coop2": [
+    {
+      "NameOrTranslationKey": "static_tile-common-hay_hopper",
+      "X": [3],
+      "Y": [3],
+      "Category": "interactable"
+    }
+  ],
+  "Big Coop": [
+    {
+      "NameOrTranslationKey": "static_tile-common-hay_hopper",
+      "X": [3],
+      "Y": [3],
+      "Category": "interactable"
+    }
+  ],
+  "Coop3": [
+    {
+      "NameOrTranslationKey": "static_tile-common-hay_hopper",
+      "X": [3],
+      "Y": [3],
+      "Category": "interactable"
+    }
+  ],
+  "Deluxe Coop": [
+    {
+      "NameOrTranslationKey": "static_tile-common-hay_hopper",
+      "X": [3],
+      "Y": [3],
+      "Category": "interactable"
+    }
+  ],
+  "Desert": [
+    {
+      "NameOrTranslationKey": "static_tile-desert-bus",
+      "X": [18],
+      "Y": [27],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-npc-camel",
+      "X": [38],
+      "Y": [24],
+      "Category": "npc"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-npc-desert_trader",
+      "X": [42],
+      "Y": [23],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-desert-three_pillars",
+      "X": [34,37,40],
+      "Y": [8, 13],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-desert-three_pillars_center",
+      "X": [37],
+      "Y": [11],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-desert-desert_warp_statue",
+      "X": [35],
+      "Y": [43],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-desert-sand_dragon_skull",
+      "X": [9, 10],
+      "Y": [35, 36],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bench",
+      "X": [43, 44],
+      "Y": [54],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-pond",
+      "X": [9],
+      "Y": [11],
+      "Category": "Fishing"
+    }
+  ],
+  "EliottHouse": [
+    {
+      "NameOrTranslationKey": "static_tile-elliott_house-piano_key_1",
+      "X": [7],
+      "Y": [4],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-elliott_house-piano_key_2",
+      "X": [8],
+      "Y": [4],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-elliott_house-piano_key_3",
+      "X": [9],
+      "Y": [4],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-elliott_house-piano_key_4",
+      "X": [10],
+      "Y": [4],
+      "Category": "interactable"
+    }
+  ],
+  "Farm": [
+    {
+      "NameOrTranslationKey": "static_tile-farm-lumber_pile",
+      "X": [60, 61],
+      "Y": [14],
+      "Category": "decoration",
+      "Conditions": ["HasQuest:5"]
+    }
+  ],
+  "FarmHouse": [
+    {
+      "NameOrTranslationKey": "static_tile-farmhouse-cellar_door",
+      "X": [4, 5],
+      "Y": [25],
+      "Category": "door",
+      "Conditions": ["FarmHouse:3"]
+    }
+  ],
+  "FishShop": [
+    {
+      "NameOrTranslationKey": "static_tile-common-shop_counter",
+      "X": [4,5,6],
+      "Y": [5],
+      "Category": "interactable"
+    }
+  ],
+  "Forest": [
+    {
+      "NameOrTranslationKey": "static_tile-forest-bridge_1",
+      "X": [77, 82],
+      "Y": [49],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-forest-bridge_2",
+      "X": [87],
+      "Y": [52, 56],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-forest-bridge_3",
+      "X": [65, 62],
+      "Y": [70],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-forest-bridge_4",
+      "X": [41],
+      "Y": [79, 82],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-forest-bridge_5",
+      "X": [38],
+      "Y": [85, 87],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-forest-abandoned_house",
+      "X": [34],
+      "Y": [95],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-pond",
+      "X": [95],
+      "Y": [51],
+      "Category": "Fishing"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-river",
+      "X": [106],
+      "Y": [37],
+      "Category": "Fishing"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-forest-sewage_pipe",
+      "X": [94],
+      "Y": [103],
+      "Category": "Fishing"
+    }
+  ],
+  "GreenHouse": [
+    {
+      "NameOrTranslationKey": "static_tile-greenhouse-water_trough",
+      "X": [9, 10],
+      "Y": [7],
+      "Category": "water"
+    }
+  ],
+  "HaleyHouse": [
+    {
+      "NameOrTranslationKey": "static_tile-haley_house-sewing_machine",
+      "X": [12, 13],
+      "Y": [23],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-haley_house-dye_pots",
+      "X": [17],
+      "Y": [25],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-haley_house-emilys_room_door",
+      "X": [16],
+      "Y": [12],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-haley_house-emilys_computer",
+      "X": [22],
+      "Y": [6],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-haley_house-emilys_pet_parrot",
+      "X": [14],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-haley_house-magazine",
+      "X": [4],
+      "Y": [22],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-haley_house-globe",
+      "X": [8],
+      "Y": [15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-fridge",
+      "X": [21],
+      "Y": [15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-haley_house-haleys_room_door",
+      "X": [5],
+      "Y": [13],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-haley_house-futan_bear",
+      "X": [8],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-haley_house-diary",
+      "X": [9],
+      "Y": [5],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-haley_house-haleys_camera",
+      "X": [1],
+      "Y": [9],
+      "Category": "decoration"
+    }
+  ],
+  "HarveyRoom": [
+    {
+      "NameOrTranslationKey": "static_tile-common-fridge",
+      "X": [21],
+      "Y": [6],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-oven",
+      "X": [19],
+      "Y": [6],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-harvey_room-airplane_collection",
+      "X": [6, 7],
+      "Y": [3],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-harvey_room-radio_broadcasting_set",
+      "X": [4, 5],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-harvey_room-cassette_deck",
+      "X": [8],
+      "Y": [4],
+      "Category": "decoration"
+    }
+  ],
+  "Hospital": [
+    {
+      "NameOrTranslationKey": "static_tile-hospital-harveys_room_entrance_door",
+      "X": [9,10],
+      "Y": [5],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-hospital-main_area_door",
+      "X": [10],
+      "Y": [13],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-shop_counter",
+      "X": [5,6,7],
+      "Y": [16],
+      "Category": "interactable"
+    }
+  ],
+  "IslandEast": [
+    {
+      "NameOrTranslationKey": "static_tile-island_east-banana_shrine",
+      "X": [16],
+      "Y": [26],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_east-jungle_parrot_express",
+      "X": [28],
+      "Y": [27],
+      "Category": "interactable"
+    }
+  ],
+  "IslandFarmCave": [
+    {
+      "NameOrTranslationKey": "static_tile-npc-gourmand_frog",
+      "X": [5],
+      "Y": [4],
+      "Category": "npc"
+    }
+  ],
+  "IslandFieldOffice": [
+    {
+      "NameOrTranslationKey": "static_tile-island_field_office-counter",
+      "X": [8],
+      "Y": [7],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_field_office-island_survey",
+      "X": [5],
+      "Y": [3],
+      "Category": "interactable"
+    }
+  ],
+  "IslandNorth": [
+    {
+      "NameOrTranslationKey": "static_tile-island_north-dig_site_parrot_express",
+      "X": [5],
+      "Y": [48],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_north-volcano_parrot_express",
+      "X": [60],
+      "Y": [16],
+      "Category": "interactable"
+    }
+  ],
+  "IslandShrine": [
+    {
+      "NameOrTranslationKey": "static_tile-island_shrine-shrine",
+      "X": [24],
+      "Y": [22],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_shrine-north_pedestal",
+      "X": [24],
+      "Y": [25],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_shrine-east_pedestal",
+      "X": [27],
+      "Y": [27],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_shrine-west_pedestal",
+      "X": [21],
+      "Y": [27],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_shrine-south_pedestal",
+      "X": [24],
+      "Y": [28],
+      "Category": "interactable"
+    }
+  ],
+  "IslandSouth": [
+    {
+      "NameOrTranslationKey": "static_tile-island_south-ginger_island_warp_statue",
+      "X": [11],
+      "Y": [11],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_south-docks_parrot_express",
+      "X": [6],
+      "Y": [31],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_south-return_boat",
+      "X": [19],
+      "Y": [43],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_south-south_coast",
+      "X": [21],
+      "Y": [45],
+      "Category": "Fishing"
+    }
+  ],
+  "IslandWest": [
+    {
+      "NameOrTranslationKey": "static_tile-island_west-farm_parrot_express",
+      "X": [74],
+      "Y": [9],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_west-bridge_1",
+      "X": [67, 62],
+      "Y": [16],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_west-qis_walnut_room_door",
+      "X": [20],
+      "Y": [22],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_west-door_to_shipwreck_interior",
+      "X": [60],
+      "Y": [92],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_west-hole_1",
+      "X": [37],
+      "Y": [87],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_west-hole_2",
+      "X": [41],
+      "Y": [86],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_west-hole_3",
+      "X": [45],
+      "Y": [86],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_west-hole_4",
+      "X": [48],
+      "Y": [87],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_west-bridge_2",
+      "X": [55, 52],
+      "Y": [80],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_west-island_farm_house_door",
+      "X": [77],
+      "Y": [39],
+      "Category": "door"
+    }
+  ],
+  "IslandWestCave1": [
+    {
+      "NameOrTranslationKey": "static_tile-island_west_cave_1-lion_statue",
+      "X": [6],
+      "Y": [2],
+      "Category": "other"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_west_cave_1-crystal_1",
+      "X": [3],
+      "Y": [4],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_west_cave_1-crystal_2",
+      "X": [4],
+      "Y": [6],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_west_cave_1-crystal_3",
+      "X": [6],
+      "Y": [7],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_west_cave_1-crystal_4",
+      "X": [8],
+      "Y": [6],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_west_cave_1-crystal_5",
+      "X": [9],
+      "Y": [4],
+      "Category": "interactable"
+    }
+  ],
+  "JojaMart": [
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-morriss_kiosk",
+      "X": [21],
+      "Y": [25],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-shop_counter",
+      "X": [10],
+      "Y": [24, 25],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-salt",
+      "X": [3],
+      "Y": [10, 11],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-multipurpose_sauce",
+      "X": [3],
+      "Y": [12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-marinara_sauce",
+      "X": [3],
+      "Y": [13],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-pesto",
+      "X": [3],
+      "Y": [14],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-vegan_sausage",
+      "X": [3],
+      "Y": [15, 16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-coconut_meat",
+      "X": [3],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-cowboy_sauce",
+      "X": [3],
+      "Y": [18, 19],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-hoisin_sauce[A]",
+      "X": [4],
+      "Y": [10],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-pretzel_snacks",
+      "X": [4],
+      "Y": [11, 12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-honey_sauce[A]",
+      "X": [4],
+      "Y": [13],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-yeast[A]",
+      "X": [4],
+      "Y": [14],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-sugar_cones[A]",
+      "X": [4],
+      "Y": [15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-sugar_stars[A]",
+      "X": [4],
+      "Y": [16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-gummies[A]",
+      "X": [4],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-fruit_snacks[A]",
+      "X": [4],
+      "Y": [18],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-marinated_mushrooms[A]",
+      "X": [4],
+      "Y": [19],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-low_fat_beans[A]",
+      "X": [7],
+      "Y": [11, 12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-white_fungus_soda[A]",
+      "X": [7],
+      "Y": [13],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-powdered_breakfast[A]",
+      "X": [7],
+      "Y": [14, 15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-powdered_wine[A]",
+      "X": [7],
+      "Y": [16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-canned_scrambled_eggs[A]",
+      "X": [7],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-canned_fish[A]",
+      "X": [7],
+      "Y": [18],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-canned_meals[A]",
+      "X": [7],
+      "Y": [19, 20],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-protein_bars",
+      "X": [8],
+      "Y": [10, 11],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-protein_shakes",
+      "X": [8],
+      "Y": [12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-protein_powder",
+      "X": [8],
+      "Y": [13, 14],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-jitter_juice",
+      "X": [8],
+      "Y": [15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-explosion_juice",
+      "X": [8],
+      "Y": [16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-blue_alien_energy",
+      "X": [8],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-hyper_juice",
+      "X": [8],
+      "Y": [18],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-joja_cola_amped",
+      "X": [8],
+      "Y": [19, 20],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-sugar_free_lollipop",
+      "X": [11],
+      "Y": [10, 11],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-drinkable_frosting",
+      "X": [11],
+      "Y": [12, 13],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-cocoa_zeppelins",
+      "X": [11],
+      "Y": [14],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-silly_sauce",
+      "X": [11],
+      "Y": [15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-grape_nibble_pebbles",
+      "X": [11],
+      "Y": [16, 17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-strawberry_lollipops",
+      "X": [11],
+      "Y": [18],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-sugar_orbs",
+      "X": [11],
+      "Y": [19],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-24_grain_bread",
+      "X": [12],
+      "Y": [10, 11],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-11_grain_bread",
+      "X": [12],
+      "Y": [12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-wheat_bread",
+      "X": [12],
+      "Y": [13],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-oat_bread",
+      "X": [12],
+      "Y": [14],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-brown_bread",
+      "X": [12],
+      "Y": [15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-rye_bread",
+      "X": [12],
+      "Y": [16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-sourdough_bread",
+      "X": [12],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-bread",
+      "X": [12],
+      "Y": [18],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-pancakes",
+      "X": [12],
+      "Y": [19],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-maple_sauce",
+      "X": [15],
+      "Y": [10],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-maple_syrup",
+      "X": [15],
+      "Y": [11],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-cooking_oil",
+      "X": [15],
+      "Y": [12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-corn_oil",
+      "X": [15],
+      "Y": [13],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-synthetic_butter",
+      "X": [15],
+      "Y": [14],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-powdered_cream",
+      "X": [15],
+      "Y": [15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-powdered_butter",
+      "X": [15],
+      "Y": [16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-joja_oil",
+      "X": [15],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-canola_oil",
+      "X": [15],
+      "Y": [18],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-olive_oil",
+      "X": [15],
+      "Y": [19, 20],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-marshmallows",
+      "X": [16],
+      "Y": [10],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-hair_gel",
+      "X": [16],
+      "Y": [11, 12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-floss",
+      "X": [16],
+      "Y": [13],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-mouthwash",
+      "X": [16],
+      "Y": [14],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-toothpaste",
+      "X": [16],
+      "Y": [15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-hand_soap",
+      "X": [16],
+      "Y": [16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-multipurpose_detergent",
+      "X": [16],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-laundry_detergent",
+      "X": [16],
+      "Y": [18,19,20],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-taco_sauce_for_babies",
+      "X": [19],
+      "Y": [10],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-grannys_sauce",
+      "X": [19],
+      "Y": [11],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-very_mild_sauce",
+      "X": [19],
+      "Y": [12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-mild_sauce",
+      "X": [19],
+      "Y": [13],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-take_me_to_the_emergency_room_sauce",
+      "X": [19],
+      "Y": [14],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-unbearable_torturous_blaze_sauce",
+      "X": [19],
+      "Y": [15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-searing_pain_sauce",
+      "X": [19],
+      "Y": [16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-inferno_sauce",
+      "X": [19],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-fire_sauce",
+      "X": [19],
+      "Y": [18],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-hot_sauce",
+      "X": [19],
+      "Y": [19],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-hoisin_sauce[B]",
+      "X": [20],
+      "Y": [10],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-churro_kit",
+      "X": [20],
+      "Y": [11, 12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-honey_sauce[B]",
+      "X": [20],
+      "Y": [13],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-yeast[B]",
+      "X": [20],
+      "Y": [14],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-sugar_cones[B]",
+      "X": [20],
+      "Y": [15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-sugar_stars[B]",
+      "X": [20],
+      "Y": [16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-gummies[B]",
+      "X": [20],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-fruit_snacks[B]",
+      "X": [20],
+      "Y": [18],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-marinated_mushrooms[B]",
+      "X": [20],
+      "Y": [19],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-canned_soup",
+      "X": [23],
+      "Y": [10, 11],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-white_bread",
+      "X": [23],
+      "Y": [12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-canned_shrimp",
+      "X": [23],
+      "Y": [13],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-shrimp_snack",
+      "X": [23],
+      "Y": [14],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-budget_wine",
+      "X": [23],
+      "Y": [15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-x-treme_chipz",
+      "X": [23],
+      "Y": [16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-pure_gluten",
+      "X": [23],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-joja_meal",
+      "X": [23],
+      "Y": [18],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-canned_pasta",
+      "X": [23],
+      "Y": [19],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-ranch_chips",
+      "X": [24],
+      "Y": [10, 11],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-smokehouse_chips",
+      "X": [24],
+      "Y": [12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-cinnamon_sugar_chips",
+      "X": [24],
+      "Y": [13],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-sugar_cane_chips",
+      "X": [24],
+      "Y": [14],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-inferno_chips",
+      "X": [24],
+      "Y": [15, 16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-carbo_cones",
+      "X": [24],
+      "Y": [17, 18],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-corn_flour",
+      "X": [24],
+      "Y": [19],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-low_fat_beans[B]",
+      "X": [28],
+      "Y": [11, 12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-white_fungus_soda[B]",
+      "X": [28],
+      "Y": [13],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-powdered_breakfast[B]",
+      "X": [28],
+      "Y": [14, 15],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-powdered_wine[B]",
+      "X": [28],
+      "Y": [16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-canned_scrambled_eggs[B]",
+      "X": [28],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-canned_fish[B]",
+      "X": [28],
+      "Y": [18],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-jojamart-canned_meals[B]",
+      "X": [28],
+      "Y": [19],
+      "Category": "decoration"
+    }
+  ],
+  "JoshHouse": [
+    {
+      "NameOrTranslationKey": "static_tile-josh_house-tv",
+      "X": [15, 16],
+      "Y": [20],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bookshelf",
+      "X": [17, 18],
+      "Y": [16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-fridge",
+      "X": [5],
+      "Y": [16],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-josh_house-evelyn_and_georges_room_door",
+      "X": [5],
+      "Y": [9],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-josh_house-alexs_room_door",
+      "X": [10],
+      "Y": [9],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-josh_house-radio",
+      "X": [3],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-josh_house-magazine",
+      "X": [11],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-josh_house-alexs_bookshelf",
+      "X": [12, 13],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-josh_house-alexs_drawer",
+      "X": [17, 18],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-josh_house-dumbbell",
+      "X": [14],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-josh_house-gridball",
+      "X": [23],
+      "Y": [45],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-josh_house-gridball_helmet",
+      "X": [23],
+      "Y": [6],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-josh_house-evelyns_stove",
+      "X": [3],
+      "Y": [16],
+      "Category": "container"
+    }
+  ],
+  "ManorHouse": [
+    {
+      "NameOrTranslationKey": "static_tile-manor_house-town_ledger_book",
+      "X": [2],
+      "Y": [5],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-manor_house-marriage_log_book",
+      "X": [3],
+      "Y": [5],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-manor_house-lost_and_found_box",
+      "X": [4],
+      "Y": [5],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-manor_house-mayors_room_door",
+      "X": [16],
+      "Y": [9],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-manor_house-mayors_oven",
+      "X": [7],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-manor_house-mayors_fridge",
+      "X": [9],
+      "Y": [4],
+      "Category": "decoration"
+    }
+  ],
+  "MermaidHouse": [
+    {
+      "NameOrTranslationKey": "static_tile-mermaid_house-clam_shell_1",
+      "X": [2],
+      "Y": [6],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mermaid_house-clam_shell_2",
+      "X": [3],
+      "Y": [6],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mermaid_house-clam_shell_3",
+      "X": [4],
+      "Y": [6],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mermaid_house-clam_shell_4",
+      "X": [5],
+      "Y": [6],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mermaid_house-clam_shell_5",
+      "X": [6],
+      "Y": [6],
+      "Category": "interactable"
+    }
+  ],
+  "Mine": [
+    {
+      "NameOrTranslationKey": "static_tile-common-minecart",
+      "X": [11, 12],
+      "Y": [10],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mine-quarry_mine_ladder",
+      "X": [67],
+      "Y": [9],
+      "Category": "door"
+    }
+  ],
+  "Mountain": [
+    {
+      "NameOrTranslationKey": "static_tile-mountain-mine_bridge",
+      "X": [47],
+      "Y": [7],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mountain-quarry_bridge",
+      "X": [90],
+      "Y": [26],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-minecart",
+      "X": [124, 125],
+      "Y": [11],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mountain-bridge_1",
+      "X": [57],
+      "Y": [30],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mountain-bridge_2",
+      "X": [61],
+      "Y": [21],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mountain-mountain_warp_statue",
+      "X": [31],
+      "Y": [20],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mountain-science_house_secondary_door",
+      "X": [8],
+      "Y": [20],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-lake",
+      "X": [61],
+      "Y": [37],
+      "Category": "Fishing"
+    }
+  ],
+  "MovieTheater": [
+    {
+      "NameOrTranslationKey": "static_tile-movie_theater-concessions_counter",
+      "X": [7],
+      "Y": [6],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-movie_theater-crane_game",
+      "X": [1, 2],
+      "Y": [8],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-movie_theater-theater_door",
+      "X": [13],
+      "Y": [3],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-npc-crane_man",
+      "X": [2],
+      "Y": [9],
+      "Category": "npc"
+    }
+  ],
+  "QiNutRoom": [
+    {
+      "NameOrTranslationKey": "static_tile-qi_nut_room-perfection_tracker",
+      "X": [13],
+      "Y": [4],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-qi_nut_room-vending_machine",
+      "X": [11],
+      "Y": [3],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-qi_nut_room-special_order_board",
+      "X": [3],
+      "Y": [3],
+      "Category": "interactable"
+    }
+  ],
+  "RailRoad": [
+    {
+      "NameOrTranslationKey": "static_tile-railroad-empty_box",
+      "X": [45],
+      "Y": [40],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-railroad-dumpster",
+      "X": [28, 29],
+      "Y": [36],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-railroad-boulder",
+      "X": [11],
+      "Y": [38],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-railroad-summit_boulder",
+      "X": [24, 25],
+      "Y": [35],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bench",
+      "X": [38,39,40],
+      "Y": [40],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-railroad-water",
+      "X": [14,15,16],
+      "Y": [54,55,56],
+      "Category": "water"
+    }
+  ],
+  "Saloon": [
+    {
+      "NameOrTranslationKey": "static_tile-common-shop_counter",
+      "X": [14],
+      "Y": [19],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-journey_of_the_prairie_king_arcade",
+      "X": [33],
+      "Y": [17],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-junimo_kart_arcade",
+      "X": [35],
+      "Y": [17],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-joja_vending_machine",
+      "X": [37, 38],
+      "Y": [17],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-jukebox",
+      "X": [1, 2],
+      "Y": [17],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-gus_fridge",
+      "X": [18],
+      "Y": [16],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-gus_room_door",
+      "X": [20],
+      "Y": [9],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-dining_room_door",
+      "X": [11],
+      "Y": [9],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-living_area_door",
+      "X": [3,4],
+      "Y": [16],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-gus_radio",
+      "X": [16],
+      "Y": [6],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-lockbox",
+      "X": [28],
+      "Y": [7],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-barstool[1]",
+      "X": [7],
+      "Y": [19],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-barstool[2]",
+      "X": [13],
+      "Y": [20],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-barstool[3]",
+      "X": [15],
+      "Y": [20],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-barstool[4]",
+      "X": [19],
+      "Y": [20],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-barstool[5]",
+      "X": [20],
+      "Y": [18],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-stool[1]",
+      "X": [3],
+      "Y": [19],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-stool[2]",
+      "X": [4],
+      "Y": [21],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-stool[3]",
+      "X": [9],
+      "Y": [21],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-stool[4]",
+      "X": [2],
+      "Y": [22],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-stool[5]",
+      "X": [12],
+      "Y": [22],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-stool[6]",
+      "X": [16],
+      "Y": [23],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-table[1]",
+      "X": [3, 4],
+      "Y": [20],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-table[2]",
+      "X": [10, 11],
+      "Y": [22],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-table[3]",
+      "X": [1, 2],
+      "Y": [23],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-saloon-table[4]",
+      "X": [17, 18],
+      "Y": [23],
+      "Category": "decoration"
+    }
+  ],
+  "SamHouse": [
+    {
+      "NameOrTranslationKey": "static_tile-sam_house-radio",
+      "X": [6],
+      "Y": [12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-sam_house-vincent_room_door",
+      "X": [11],
+      "Y": [18],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-sam_house-toy_chest",
+      "X": [12],
+      "Y": [21],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-sam_house-sam_room_door",
+      "X": [12],
+      "Y": [14],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-sam_house-jodi_room_door",
+      "X": [17],
+      "Y": [6],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-sam_house-sam_drawer",
+      "X": [7, 8],
+      "Y": [12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bookshelf",
+      "X": [17, 18],
+      "Y": [12],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-fridge",
+      "X": [7],
+      "Y": [4],
+      "Category": "decoration"
+    }
+  ],
+  "SandyHouse": [
+    {
+      "NameOrTranslationKey": "static_tile-common-shop_counter",
+      "X": [2],
+      "Y": [6],
+      "Category": "interactable"
+    }
+  ],
+  "ScienceHouse": [
+    {
+      "NameOrTranslationKey": "static_tile-common-shop_counter",
+      "X": [8],
+      "Y": [19],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-science_house-sebastian_room_entrance",
+      "X": [12],
+      "Y": [21],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-science_house-robin_and_demetrius_room_entrance",
+      "X": [13],
+      "Y": [10],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-science_house-maru_room_entrance",
+      "X": [7],
+      "Y": [10],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-science_house-robin_wood_pile",
+      "X": [11],
+      "Y": [19],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-science_house-beaker_set",
+      "X": [17],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-science_house-microscope",
+      "X": [19],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-science_house-stereo_microscope",
+      "X": [23],
+      "Y": [20],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bookshelf",
+      "X": [16, 17],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-science_house-maru_device",
+      "X": [6],
+      "Y": [6],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-science_house-poster",
+      "X": [6],
+      "Y": [3],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-science_house-computer",
+      "X": [9],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-fridge",
+      "X": [27],
+      "Y": [8],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-oven",
+      "X": [30],
+      "Y": [10],
+      "Category": "decoration"
+    }
+  ],
+  "SebastianRoom": [
+    {
+      "NameOrTranslationKey": "static_tile-sebastian_room-room_door",
+      "X": [1],
+      "Y": [3],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-sebastian_room-sebastian_radio",
+      "X": [3],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-sebastian_room-graphic_novel",
+      "X": [10],
+      "Y": [6],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-sebastian_room-computer",
+      "X": [7],
+      "Y": [4],
+      "Category": "decoration"
+    }
+  ],
+  "SeedShop": [
+    {
+      "NameOrTranslationKey": "static_tile-common-shop_counter",
+      "X": [4, 5],
+      "Y": [18],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-seed_shop-backpack_upgrade",
+      "X": [7],
+      "Y": [18],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-seed_shop-pierres_bin",
+      "X": [19],
+      "Y": [28],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-seed_shop-shrine_of_yoba",
+      "X": [37],
+      "Y": [17],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-fridge",
+      "X": [39],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-seed_shop-abigails_room_door",
+      "X": [13],
+      "Y": [11],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-seed_shop-pierre_and_carolines_room_door",
+      "X": [20],
+      "Y": [11],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-seed_shop-living_area_door",
+      "X": [14],
+      "Y": [16],
+      "Category": "door"
+    }
+  ],
+  "Sewer": [
+    {
+      "NameOrTranslationKey": "static_tile-sewer-exit_ladder",
+      "X": [16],
+      "Y": [10],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-sewer-statue_of_uncertainty",
+      "X": [8],
+      "Y": [20],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-sewer-mutant_bug_lair",
+      "X": [3],
+      "Y": [19],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-sewer-sewage_pool",
+      "X": [17],
+      "Y": [29],
+      "Category": "Fishing"
+    }
+  ],
+  "SkullCave": [
+    {
+      "NameOrTranslationKey": "static_tile-skull_cave-skull_cavern_door",
+      "X": [3],
+      "Y": [3],
+      "Category": "door"
+    }
+  ],
+  "Slime Hutch": [
+    {
+      "NameOrTranslationKey": "static_tile-slime_hutch-water_trough_1",
+      "X": [16],
+      "Y": [6],
+      "Category": "other"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-slime_hutch-water_trough_2",
+      "X": [16],
+      "Y": [7],
+      "Category": "other"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-slime_hutch-water_trough_3",
+      "X": [16],
+      "Y": [8],
+      "Category": "other"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-slime_hutch-water_trough_4",
+      "X": [16],
+      "Y": [9],
+      "Category": "other"
+    }
+  ],
+  "Submarine": [
+    {
+      "NameOrTranslationKey": "static_tile-npc-captain",
+      "X": [2],
+      "Y": [9],
+      "Category": "npc"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-submarine-deep_ocean",
+      "X": [8],
+      "Y": [11],
+      "Category": "Fishing"
+    }
+  ],
+  "Town": [
+    {
+      "NameOrTranslationKey": "static_tile-town-calender_board",
+      "X": [41],
+      "Y": [56],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-daily_quest_board",
+      "X": [42],
+      "Y": [56],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-sewer",
+      "X": [34, 35],
+      "Y": [95, 96],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-ice_cream_stand",
+      "X": [88],
+      "Y": [92],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-minecart",
+      "X": [105, 106],
+      "Y": [79],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-clinic_sign",
+      "X": [37],
+      "Y": [56],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-general_store_sign",
+      "X": [45],
+      "Y": [56],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-faded_gravestone",
+      "X": [42],
+      "Y": [85],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-mona_grave",
+      "X": [47],
+      "Y": [86],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-dwarvish_headstone",
+      "X": [51],
+      "Y": [86],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-unknown_gravestone",
+      "X": [42],
+      "Y": [90],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-brown_box",
+      "X": [100],
+      "Y": [66],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-joja_mart_trash",
+      "X": [110],
+      "Y": [56],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-1_river_road_trash",
+      "X": [52],
+      "Y": [63],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-stardew_saloon_trash",
+      "X": [47],
+      "Y": [70],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-blacksmith_trash",
+      "X": [97],
+      "Y": [80],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-1_willow_lane_trash",
+      "X": [13],
+      "Y": [86],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-manor_trash",
+      "X": [56],
+      "Y": [86],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-2_willow_lane_trash",
+      "X": [19],
+      "Y": [89],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-museum_trash",
+      "X": [108],
+      "Y": [91],
+      "Category": "container"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-river",
+      "X": [94],
+      "Y": [10],
+      "Category": "Fishing"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-joja_bridge",
+      "X": [92,93,94,95,96],
+      "Y": [11],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-beach_bridge",
+      "X": [75,76,77,78,79,80,81,82],
+      "Y": [4, 5],
+      "Category": "bridge"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bench[1]",
+      "X": [25,26,27],
+      "Y": [21],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bench[2]",
+      "X": [20],
+      "Y": [26, 27],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bench[3]",
+      "X": [33],
+      "Y": [26, 27],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bench[4]",
+      "X": [16],
+      "Y": [57, 58],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bench[5]",
+      "X": [17, 18],
+      "Y": [63],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bench[6]",
+      "X": [42,43,44,45],
+      "Y": [77],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bench[7]",
+      "X": [41],
+      "Y": [78, 79],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bench[8]",
+      "X": [46],
+      "Y": [78, 79],
+      "Category": "furniture"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-smelter",
+      "X": [100, 101],
+      "Y": [79, 80],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-fountain",
+      "X": [24,25,26,27,28],
+      "Y": [25,26,27,28],
+      "Category": "water"
+    }
+  ],
+  "Trailer": [
+    {
+      "NameOrTranslationKey": "static_tile-trailer-penny_room_door",
+      "X": [6],
+      "Y": [7],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-bookshelf",
+      "X": [5, 6],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-trailer-book",
+      "X": [2],
+      "Y": [4],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-trailer-magazine",
+      "X": [1],
+      "Y": [9],
+      "Category": "decoration"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-trailer-pam_kitchen",
+      "X": [10],
+      "Y": [6],
+      "Category": "container"
+    }
+  ],
+  "Trailer_Big": [
+    {
+      "NameOrTranslationKey": "static_tile-trailer-pam_kitchen",
+      "X": [10],
+      "Y": [6],
+      "Category": "container"
+    }
+  ],
+  "Tunnel": [
+    {
+      "NameOrTranslationKey": "static_tile-tunnel-safe",
+      "X": [17],
+      "Y": [6],
+      "Category": "container"
+    }
+  ],
+  "UndergroundMine20": [
+    {
+      "NameOrTranslationKey": "static_tile-common-dark_pool",
+      "X": [27],
+      "Y": [13],
+      "Category": "Fishing"
+    }
+  ],
+  "UndergroundMine60": [
+    {
+      "NameOrTranslationKey": "static_tiles-mine-icy_pool", 
+      "X": [27],
+      "Y": [13],
+      "Category": "Fishing"
+    }
+  ],
+  "UndergroundMine100": [
+    {
+      "NameOrTranslationKey": "static_tile-mine-lava_pool",
+      "X": [27],
+      "Y": [13],
+      "Category": "Fishing"
+    }
+  ],
+  "UndergroundMine77377": [
+    {
+      "NameOrTranslationKey": "static_tile-undergroundmine77377-grim_reaper_statue",
+      "X": [29, 30],
+      "Y": [6],
+      "Category": "interactable"
+    }
+  ],
+  "VolcanoDungeon5": [
+    {
+      "NameOrTranslationKey": "static_tile-volcanodungeon5-dwarf_shop",
+      "X": [36],
+      "Y": [30],
+      "Category": "interactable"
+    }
+  ],
+  "WitchHut": [
+    {
+      "NameOrTranslationKey": "static_tile-witch_hut-wizard_basement_rune",
+      "X": [11],
+      "Y": [11],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-witch_hut-dark_shrine_of_memory",
+      "X": [7],
+      "Y": [4, 5],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-witch_hut-dark_shrine_of_night_terrors",
+      "X": [12],
+      "Y": [5, 6],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-witch_hut-dark_shrine_of_selfishness",
+      "X": [2],
+      "Y": [5, 6],
+      "Category": "interactable"
+    }
+  ],
+  "WitchSwamp": [
+    {
+      "NameOrTranslationKey": "static_tile-witch_swamp-witch_cave_rune",
+      "X": [20],
+      "Y": [42],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-witch_swamp-witch_hut_door",
+      "X": [20],
+      "Y": [20],
+      "Category": "door"
+    }
+  ],
+  "WitchWarpCave": [
+    {
+      "NameOrTranslationKey": "static_tile-witch_warp_cave-witch_swamp_rune",
+      "X": [4],
+      "Y": [5],
+      "Category": "door"
+    }
+  ],
+  "WizardHouse": [
+    {
+      "NameOrTranslationKey": "static_tile-wizard_house-basement_door",
+      "X": [4],
+      "Y": [4],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-wizard_house-magic_buildings_book",
+      "X": [2],
+      "Y": [13],
+      "Category": "interactable"
+    }
+  ],
+  "WizardHouseBasement": [
+    {
+      "NameOrTranslationKey": "static_tile-wizard_house_basement-exit_ladder",
+      "X": [4],
+      "Y": [3],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-wizard_house_basement-witch_hut_rune",
+      "X": [2],
+      "Y": [5],
+      "Category": "door"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-wizard_house_basement-shrine_of_illusions",
+      "X": [12],
+      "Y": [4],
+      "Category": "interactable"
+    }
+  ],
+  "Woods": [
+    {
+      "NameOrTranslationKey": "static_tile-woods-old_master_cannoli",
+      "X": [8, 9],
+      "Y": [7],
+      "Category": "interactable"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-common-pond",
+      "X": [12],
+      "Y": [26],
+      "Category": "Fishing"
+    }
+  ]
+}

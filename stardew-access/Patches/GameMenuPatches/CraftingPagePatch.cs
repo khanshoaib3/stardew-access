@@ -39,7 +39,7 @@ namespace stardew_access.Patches
                     return;
                 }
 
-                InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory, __instance.inventory.actualInventory, __instance.inventory);
+                InventoryUtils.NarrateHoveredSlot(__instance.inventory);
             }
             catch (Exception e)
             {
@@ -141,7 +141,7 @@ namespace stardew_access.Patches
                     name = ___hoverRecipe.DisplayName,
                     is_craftable = ___hoverRecipe.doesFarmerHaveIngredientsInInventory(GetContainerContents(__instance._materialContainers)) ? 1 : 0,
                     ingredients = InventoryUtils.GetIngredientsFromRecipe(___hoverRecipe),
-                    description = ___hoverRecipe.description,
+                    ___hoverRecipe.description,
                     buffs = $"{InventoryUtils.GetHealthNStaminaFromItem(producesItem)}, {InventoryUtils.GetBuffsFromItem(producesItem)}"
                 };
 

@@ -16,7 +16,7 @@ namespace stardew_access.Utils
         private static string? CheckDemolishConditions(Building? toDemolish)
         {
             if (toDemolish == null)
-                return "No building to demolish.";
+                return "building_operations-no_building_to_demolish";
 
             if (toDemolish.daysOfConstructionLeft.Value > 0 || toDemolish.daysUntilUpgrade.Value > 0)
             {
@@ -83,7 +83,7 @@ namespace stardew_access.Utils
         {
             if (CarpenterMenuPatch.carpenterMenu != null)
                 DelayedAction.functionAfterDelay(CarpenterMenuPatch.carpenterMenu.returnToCarpentryMenu, 1000);
-            MainClass.ScreenReader.Say("Building failed", true);
+            MainClass.ScreenReader.TranslateAndSay("building_operations-building_failed", true);
         }
 
         public static string? Demolish(Building? toDemolish)
@@ -215,18 +215,22 @@ namespace stardew_access.Utils
 
             if (buildingToMove.daysOfConstructionLeft.Value > 0)
             {
-                return "Building under construction, cannot move";
+                return Translator.Instance.Translate("building_operations-move_building-under_construction");
             }
             if (CarpenterMenuPatch.carpenterMenu != null && !CarpenterMenuPatch.carpenterMenu.hasPermissionsToMove(buildingToMove))
             {
-                return "You don't have permission to move this building";
+                return Translator.Instance.Translate("building_operations-move_building-no_permission");
             }
             Game1.playSound("axchop");
 
             if (!((Farm)Game1.getLocationFromName("Farm")).buildStructure(buildingToMove, position, Game1.player))
             {
                 Game1.playSound("cancel");
-                return $"Cannot move building to {position.X}x {position.Y}y";
+                return Translator.Instance.Translate("building_operations-move_building-cannot_move", new
+                {
+                    x_position = position.X,
+                    y_position = position.Y
+                });
             }
 
             switch (buildingToMove)
@@ -244,7 +248,12 @@ namespace stardew_access.Utils
             DelayedAction.playSoundAfterDelay("dirtyHit", 50);
             DelayedAction.playSoundAfterDelay("dirtyHit", 150);
 
-            return $"{name} moved to {position.X}x {position.Y}y";
+            return Translator.Instance.Translate("building_operations-move_building-building_moved", new
+            {
+                building_name = name,
+                x_position = position.X,
+                y_position = position.Y
+            });
         }
 
         public static void PurchaseAnimal(Building? selection)

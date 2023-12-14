@@ -22,15 +22,30 @@ namespace stardew_access.Translation
             this._irregularsSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             this._consonantOExceptions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             this._modifiedIrregulars = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
-            PopulateHashSetFromJson("irregulars", _irregularsSet);
-            PopulateHashSetFromJson("consonant_o_exceptions", _consonantOExceptions);
-            PopulateDictionaryFromJson("modified_irregulars", _modifiedIrregulars);
+            bool regionalIrregularsLoaded = PopulateHashSetFromJson("irregulars", _irregularsSet);
+            if (regionalIrregularsLoaded)
+                Log.Info($"Loaded {_irregularsSet.Count} regional irregular plural entries.");
+            else
+                Log.Debug("No regional irregular plural entries found.", true);
+
+            bool regionalConsonantOExceptions = PopulateHashSetFromJson("consonant_o_exceptions", _consonantOExceptions);
+            if (regionalConsonantOExceptions)
+                Log.Info($"Loaded {_consonantOExceptions.Count} regional consonant-o exception plural entries.");
+            else
+                Log.Debug("No regional consonant-o exception plural entries found.", true);
+
+            bool regionalModifiedIrregularsLoaded = PopulateDictionaryFromJson("modified_irregulars", _modifiedIrregulars);
+            if (regionalModifiedIrregularsLoaded)
+                Log.Info($"Loaded {_modifiedIrregulars.Count} regional modified irregular plural entries.");
+            else
+                Log.Debug("No regional modified irregular plural entries found.", true);
+
             #if DEBUG
             Log.Verbose("Exiting EnglishHelper constructor");
             #endif
         }
 
-        private void PopulateHashSetFromJson(string key, HashSet<string> set)
+        private bool PopulateHashSetFromJson(string key, HashSet<string> set)
         {
             #if DEBUG
             Log.Verbose($"Entering PopulateHashSetFromJson with key \"{key}\"");
@@ -42,17 +57,20 @@ namespace stardew_access.Translation
 
             Log.Trace($"Added {set.Count - count} locale entries.");
 
-            Log.Trace("Adding local regional data");
+            Log.Trace("Adding regional locale data");
             count = set.Count;
-            AddItemsToSet(LocaleRegionalData, key, set);
-
+            bool regionalDataLoaded = AddItemsToSet(LocaleRegionalData, key, set);
             #if DEBUG
-            Log.Trace($"Total number of items in the set after adding local regional data: {set.Count - count}");
-            Log.Trace($"Final total number of items in the set: {set.Count}");
+            if (regionalDataLoaded)
+            {
+                Log.Trace($"Total number of items in the set after adding locale regional data: {set.Count - count}");
+                Log.Trace($"Final total number of items in the set: {set.Count}");
+            }
             Log.Verbose("Exiting PopulateHashSetFromJson");
             #endif
+            return regionalDataLoaded;
 
-            static void AddItemsToSet(Dictionary<string, object?>? data, string key, HashSet<string> set)
+            static bool AddItemsToSet(Dictionary<string, object?>? data, string key, HashSet<string> set)
             {
                 #if DEBUG
                 Log.Verbose($"Entering AddItemsToSet with key \"{key}\"");
@@ -60,15 +78,15 @@ namespace stardew_access.Translation
 
                 if (data == null)
                 {
-                    Log.Warn($"The data dictionary is null. Skipping adding items for key '{key}'.");
+                    Log.Trace($"The data dictionary is null. Skipping adding items for key '{key}'.");
                 }
                 else if (!data.ContainsKey(key))
                 {
-                    Log.Warn($"The key '{key}' is not found in the JSON file. Skipping.");
+                    Log.Trace($"The key '{key}' is not found in the JSON file. Skipping.");
                 }
                 else if (data[key] is not List<object> list)
                 {
-                    Log.Warn($"The '{key}' key in the JSON file does not contain a list. Skipping.");
+                    Log.Trace($"The '{key}' key in the JSON file does not contain a list. Skipping.");
                 }
                 else
                 {
@@ -80,15 +98,17 @@ namespace stardew_access.Translation
                             set.Add(item_text);
                         }
                     }
+                    return true;
                 }
 
                 #if DEBUG
                 Log.Verbose("Exiting AddItemsToSet");
                 #endif
+                return false;
             }
         }
 
-        private void PopulateDictionaryFromJson(string key, Dictionary<string, HashSet<string>> dict)
+        private bool PopulateDictionaryFromJson(string key, Dictionary<string, HashSet<string>> dict)
         {
             #if DEBUG
             Log.Verbose($"Entering PopulateDictionaryFromJson with key \"{key}\"");
@@ -110,10 +130,28 @@ namespace stardew_access.Translation
                     }
                 }
             }
+            bool regionalDataLoaded = false;
+            if (LocaleRegionalData?.ContainsKey(key) == true && LocaleRegionalData[key] is Dictionary<string, object> regionalData)
+            {
+                foreach (var pair in regionalData)
+                {
+                    string modifier = pair.Key;
+                    if (pair.Value is List<object> words)
+                    {
+                        var nonNullWords = words.ConvertAll(w => w?.ToString() ?? string.Empty).Where(w => !string.IsNullOrEmpty(w));
+                        dict[modifier] = new HashSet<string>(nonNullWords, StringComparer.OrdinalIgnoreCase);
+                        #if DEBUG
+                        Log.Trace($"Added {dict[modifier].Count} items for the key \"{modifier}\".");
+                        #endif
+                    }
+                }
+                regionalDataLoaded = true;
+            }
 
             #if DEBUG
             Log.Verbose("Exiting PopulateDictionaryFromJson");
-            #endif
+#endif
+            return regionalDataLoaded;
         }
 
         public override string Pluralize(int? count, string word, string? prefix = null)

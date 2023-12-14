@@ -77,9 +77,9 @@ namespace stardew_access.Patches
             }
 
             // The loveLevel varies between 0 and 1
-            // 1 indicates 5 hearts and similarily 0 indicates 0 hearts
+            // 1 indicates 5 hearts and similarly 0 indicates 0 hearts
             // the below code multiplies the loveLevel by 10 and
-            // the numeric value of the resultent is divided by 2 to give the number of full hearts and
+            // the numeric value of the resultant is divided by 2 to give the number of full hearts and
             // if its decimal value is above 0.5, then that indicates half a heart
             double heartCount = Math.Floor(loveLevel * 10);
             double remainder = (loveLevel * 10) % 1;
@@ -89,14 +89,15 @@ namespace stardew_access.Patches
                 heartCount += 0.5;
             }
 
-            MainClass.ScreenReader.TranslateAndSay("animal_query_menu-animal_info", true, new
+            MainClass.ScreenReader.TranslateAndSay("menu-animal_query-animal_info", true, new
                 {
                     name,
                     type,
                     is_baby = ___animal.isBaby() ? 1 : 0,
                     heart_count = heartCount,
                     age,
-                    parent_name = parent
+                    parent_name = parent,
+                    mood = ___animal.getMoodMessage()
                 },
                 TranslationCategory.Menu);
             Task.Delay(200).ContinueWith(_ => { isNarratingAnimalInfo = false; }); // Adds delay

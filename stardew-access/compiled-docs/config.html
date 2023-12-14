@@ -1,8 +1,11 @@
 <h1 id="config">Config</h1>
 
-<p>The mod can be configured by a <code>config.json</code> file that can be found in the mod’s folder (if you can’t find it than try running game once).
-The file is a json type so you can edit it using any text editor on your computer or you can use onlne json editors like <a href="https://jsoneditoronline.org/">Json Editor Online</a>.
-For the list of button codes visit <a href="https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Button_codes">this page</a>.</p>
+<p>The mod can be configured by a <code>config.json</code> file that can be found in the mod’s folder (if you can’t find it than try
+running game once).
+The file is a json type so you can edit it using any text editor on your computer or you can use onlne json editors
+like <a href="https://jsoneditoronline.org/">Json Editor Online</a>.
+For the list of button codes
+visit <a href="https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Button_codes">this page</a>.</p>
 
 <h2 id="table-of-contents">Table Of Contents</h2>
 
@@ -12,6 +15,8 @@ For the list of button codes visit <a href="https://stardewvalleywiki.com/Moddin
       <li><a href="#mouse-sim-keys-config">Mouse Sim Keys Config</a></li>
       <li><a href="#read-tile-configs">Read Tile Configs</a></li>
       <li><a href="#tile-viewer-configs">Tile Viewer Configs</a></li>
+      <li><a href="#grid-movement-configs">Grid Movement Configs</a></li>
+      <li><a href="#object-tracker-configs">Object Tracker Configs</a></li>
       <li><a href="#radar-configs">Radar Configs</a></li>
       <li><a href="#menu-keys-configs">Menu Keys Configs</a>
         <ul>
@@ -101,6 +106,11 @@ For the list of button codes visit <a href="https://stardewvalleywiki.com/Moddin
       <td>true</td>
       <td>Toggle speaking watered or unwatered for crops.</td>
     </tr>
+    <tr>
+      <td>ReadTileIndexes</td>
+      <td>false</td>
+      <td>Toggle speaking tile indexes with other info.</td>
+    </tr>
   </tbody>
 </table>
 
@@ -118,12 +128,17 @@ For the list of button codes visit <a href="https://stardewvalleywiki.com/Moddin
     <tr>
       <td>ToggleRelativeCursorLockKey</td>
       <td>L</td>
-      <td>Toggles realative cursor lock i.e. if enabled, the cursor will reset when player moves.</td>
+      <td>Toggles relative cursor lock i.e. if enabled, the cursor will reset when player moves.</td>
     </tr>
     <tr>
       <td>AutoWalkToTileKey</td>
       <td>LeftControl + Enter</td>
       <td>Auto walk to the tile</td>
+    </tr>
+    <tr>
+      <td>OpenTileInfoMenuKey</td>
+      <td>LeftShift + Enter</td>
+      <td>Opens the Tile Info menu for the active tile.</td>
     </tr>
     <tr>
       <td>TileCursorUpKey</td>
@@ -174,6 +189,124 @@ For the list of button codes visit <a href="https://stardewvalleywiki.com/Moddin
       <td>TileCursorPreciseMovementDistance</td>
       <td>8</td>
       <td>Specifies the number of pixels the cursor should move when using precision movement i.e. with <em>left shift</em>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="grid-movement-configs">Grid Movement Configs</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Default Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GridMovementActive</td>
+      <td>true</td>
+      <td>Enable or disable grid movement feature.</td>
+    </tr>
+    <tr>
+      <td>ToggleGridMovementKey</td>
+      <td>I</td>
+      <td>Toggle grid movement.</td>
+    </tr>
+    <tr>
+      <td>GridMovementOverrideKey</td>
+      <td>LeftControl</td>
+      <td>Disable Grid Movement while held</td>
+    </tr>
+    <tr>
+      <td>GridMovementSpeed</td>
+      <td>100</td>
+      <td>Player movement speed (in percentage).</td>
+    </tr>
+    <tr>
+      <td>GridMovementTilesPerStep</td>
+      <td>1</td>
+      <td>Tiles taken per step.</td>
+    </tr>
+    <tr>
+      <td>GridMovementDelayAfterDirectionChange</td>
+      <td>250</td>
+      <td>Delay after changing the player’s facing direction.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="object-tracker-configs">Object Tracker Configs</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Default Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>OTCycleUpCategory</td>
+      <td>LeftControl + PageUp</td>
+      <td>Cycle Up Category</td>
+    </tr>
+    <tr>
+      <td>OTCycleDownCategory</td>
+      <td>LeftControl + PageDown</td>
+      <td>Cycle Down Category</td>
+    </tr>
+    <tr>
+      <td>OTCycleUpObject</td>
+      <td>PageUp</td>
+      <td>Cycle Up Object</td>
+    </tr>
+    <tr>
+      <td>OTCycleDownObject</td>
+      <td>PageDown</td>
+      <td>Cycle Down Object</td>
+    </tr>
+    <tr>
+      <td>OTMoveToSelectedObject</td>
+      <td>LeftControl + Home</td>
+      <td>Move to the currently selected object.</td>
+    </tr>
+    <tr>
+      <td>OTReadSelectedObject</td>
+      <td>Home</td>
+      <td>Read info about the currently selected object.</td>
+    </tr>
+    <tr>
+      <td>OTReadSelectedObjectTileLocation</td>
+      <td>End</td>
+      <td>Read info about the currently selected objects tile location.</td>
+    </tr>
+    <tr>
+      <td>OTCancelAutoWalking</td>
+      <td>Escape</td>
+      <td>Manually stop Auto Walking.</td>
+    </tr>
+    <tr>
+      <td>OTSwitchSortingMode</td>
+      <td>OemTilde</td>
+      <td>Toggle proximity sorting vs alphabetical</td>
+    </tr>
+    <tr>
+      <td>OTSortByProximity</td>
+      <td>true</td>
+      <td>If enabled, the default sorting mode will be proximity.</td>
+    </tr>
+    <tr>
+      <td>OTAutoRefreshing</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>OTWrapLists</td>
+      <td>false</td>
+      <td> </td>
     </tr>
   </tbody>
 </table>
@@ -231,9 +364,9 @@ For the list of button codes visit <a href="https://stardewvalleywiki.com/Moddin
       <td>Snaps to the first slot in secondary inventory i.e., chest inventory, selling inventory, etc.</td>
     </tr>
     <tr>
-      <td>CraftingMenuCycleThroughRecipiesKey</td>
+      <td>CraftingMenuCycleThroughRecipesKey</td>
       <td>C</td>
-      <td>Cycle through the recipies in crafting menu.</td>
+      <td>Cycle through the recipes in crafting menu.</td>
     </tr>
   </tbody>
 </table>
@@ -260,6 +393,11 @@ For the list of button codes visit <a href="https://stardewvalleywiki.com/Moddin
       <td>Go to previous element</td>
     </tr>
     <tr>
+      <td>CharacterCreationMenuDesignToggleKey</td>
+      <td>LeftControl + Space</td>
+      <td>Toggle displaying character design options</td>
+    </tr>
+    <tr>
       <td>CharacterCreationMenuSliderIncreaseKey</td>
       <td>Up</td>
       <td>Increase the slider value by 1</td>
@@ -278,11 +416,6 @@ For the list of button codes visit <a href="https://stardewvalleywiki.com/Moddin
       <td>CharacterCreationMenuSliderLargeDecreaseKey</td>
       <td>PageDown</td>
       <td>Decrease the slider value by 10</td>
-    </tr>
-    <tr>
-      <td>CharacterCreationMenuDesignToggleKey</td>
-      <td>LeftControl + Space</td>
-      <td>Toggle displaying character design options</td>
     </tr>
   </tbody>
 </table>
@@ -446,6 +579,11 @@ For the list of button codes visit <a href="https://stardewvalleywiki.com/Moddin
       <td>If enabled, does not speaks ‘not usable here’ and ‘donatable’ in inventories</td>
     </tr>
     <tr>
+      <td>DisableBushVerbosity</td>
+      <td>false</td>
+      <td>If enabled, does not speak bush type or size; only harvestable.</td>
+    </tr>
+    <tr>
       <td>MacSpeechRate</td>
       <td>220</td>
       <td>Sets speech rate for the Mac TTS.</td>
@@ -455,7 +593,7 @@ For the list of button codes visit <a href="https://stardewvalleywiki.com/Moddin
 
 <h2 id="default-config">Default Config</h2>
 
-<p>This is the default value of the <code>config.json</code> file as per <code>v1.4.0</code>:</p>
+<p>This is the default value of the <code>config.json</code> file as per <code>v1.5.0</code>:</p>
 
 <pre><code class="language-json">{
   "LeftClickMainKey": "LeftControl + Enter",
@@ -469,6 +607,7 @@ For the list of button codes visit <a href="https://stardewvalleywiki.com/Moddin
   "ReadStandingTileKey": "LeftAlt + J",
   "ReadFlooring": false,
   "WateredToggle": true,
+  "ReadTileIndexes": false,
   "TileCursorUpKey": "Up",
   "TileCursorRightKey": "Right",
   "TileCursorDownKey": "Down",
@@ -479,6 +618,7 @@ For the list of button codes visit <a href="https://stardewvalleywiki.com/Moddin
   "TileCursorPreciseLeftKey": "LeftShift + Left",
   "ToggleRelativeCursorLockKey": "L",
   "AutoWalkToTileKey": "LeftControl + Enter",
+  "OpenTileInfoMenuKey": "LeftShift + Enter",
   "LimitTileCursorToScreen": false,
   "TileCursorPreciseMovementDistance": 8,
   "Radar": false,
@@ -498,7 +638,26 @@ For the list of button codes visit <a href="https://stardewvalleywiki.com/Moddin
   "BundleMenuBackButtonKey": "Back",
   "SnapToFirstInventorySlotKey": "I",
   "SnapToFirstSecondaryInventorySlotKey": "LeftShift + I",
-  "CraftingMenuCycleThroughRecipiesKey": "C",
+  "CraftingMenuCycleThroughRecipesKey": "C",
+  "GridMovementActive": true,
+  "ToggleGridMovementKey": "I",
+  "GridMovementOverrideKey": "LeftControl",
+  "GridMovementSpeed": 100.0,
+  "GridMovementTilesPerStep": 1,
+  "GridMovementDelayAfterDirectionChange": 500,
+  "OTCycleUpCategory": "LeftControl + PageUp",
+  "OTCycleDownCategory": "LeftControl + PageDown",
+  "OTCycleUpObject": "PageUp",
+  "OTCycleDownObject": "PageDown",
+  "OTMoveToSelectedObject": "LeftControl + Home",
+  "OTReadSelectedObject": "Home",
+  "OTReadSelectedObjectTileLocation": "End",
+  "OTCancelAutoWalking": "Escape",
+  "OTSwitchSortingMode": "OemTilde",
+  "OTAutoRefreshing": true,
+  "OTSortByProximity": true,
+  "OTWrapLists": false,
+  "OTRememberPosition": true,
   "HealthNStaminaKey": "H",
   "HealthNStaminaInPercentage": true,
   "PositionKey": "K",
@@ -511,7 +670,8 @@ For the list of button codes visit <a href="https://stardewvalleywiki.com/Moddin
   "TTS": true,
   "TrackDroppedItems": true,
   "DisableInventoryVerbosity": false,
-  "MacSpeechRate": 220
+  "DisableBushVerbosity": false,
+  "MacSpeechRate": 220.0,
   "MaximumFishingDifficulty": 999,
   "FixFishingMotionType": 999
 }
@@ -525,5 +685,5 @@ For the list of button codes visit <a href="https://stardewvalleywiki.com/Moddin
   <li><a href="features.html">Features</a></li>
   <li><a href="keybindings.html">Keybindings</a></li>
   <li><a href="commands.html">Commands</a></li>
-  <li><a href="guides.html">Guides</a></li>
+  <li><a href="https://github.com/khanshoaib3/stardew-access/tree/master/docs/guides.md">Guides</a></li>
 </ul>

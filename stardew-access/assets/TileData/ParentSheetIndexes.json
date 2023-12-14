@@ -1,0 +1,36 @@
+{
+  "debris": {
+    "Weed": [313, 314, 315, 316, 317, 318, 452, 674, 675, 676, 677, 678, 679, 750, 784, 785, 786],
+    "Fertile weed": [792, 793, 794],
+    "Ice crystal": [319, 320, 321],
+    "Coloured stone": [32, 34, 36, 38, 40, 42, 48, 50, 52, 54, 56, 58],
+    "Clay stone": [818],
+    "Fossil stone": [816, 817]
+  },
+  "mine_item": {
+    "Barrel": [118, 120, 122, 124],
+    "Item box": [119, 121, 123, 125],
+    "Frozen geode": [76],
+    "Magma geode": [77],
+    "Geode": [75],
+    "Omni geode node": [819],
+    "Mine stone": [668, 670, 845, 846, 847],
+    "Mussel Node": [25],
+    "Radioactive Node": [95],
+    "Cinder shard node": [843, 844],
+    "Amethyst node": [8, 66],
+    "Aquamarine node": [14, 62],
+    "Diamond node": [2, 72],
+    "Emerald node": [12, 60],
+    "Gem node": [44],
+    "Jade node": [6, 70],
+    "Mystic stone": [46],
+    "Prismatic node": [74],
+    "Ruby node": [4, 64],
+    "Topaz node": [10, 68],
+    "Copper node": [751, 849],
+    "Gold node": [764],
+    "Iridium node": [765],
+    "Iron node": [290, 850]
+  }
+}

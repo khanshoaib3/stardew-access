@@ -164,7 +164,7 @@ namespace stardew_access.Utils
         /// </returns>
         private static Dictionary<string, Dictionary<(int x, int y), string>> LoadEventTiles()
         {
-            bool loaded = TryLoadJsonFile("event-tiles.json", out JsonElement json);
+            bool loaded = TryLoadJsonFile("event-tiles.json", out JsonElement json, subdir: "assets/TileData");
 
             if (!loaded || json.ValueKind == JsonValueKind.Undefined)
             {
@@ -318,12 +318,17 @@ namespace stardew_access.Utils
             // Check if the position matches the human door
             if (building.humanDoor.Value.X == offsetX && building.humanDoor.Value.Y == offsetY)
             {
-                return (Translator.Instance.Translate("suffix-building_door", new {content = name}), CATEGORY.Buildings);
+                return (Translator.Instance.Translate("suffix-building_door", new {content = name}), CATEGORY.Doors);
             }
-            // Check if the position matches the animal door
-            else if (building.animalDoor.Value.X == offsetX && building.animalDoor.Value.Y == offsetY)
+            // Check if the position matches the animal door. In case of barns, as the animal door is 2 tiles wide, the following if condition checks for both animal door tiles.
+            else if ((building.animalDoor.Value.X == offsetX || (building is Barn && building.animalDoor.Value.X == offsetX - 1)) && building.animalDoor.Value.Y == offsetY)
             {
-                return (Translator.Instance.Translate("suffix-building_animal_door", new {content = name, is_open = (building.animalDoorOpen.Value) ? 1 : 0}), CATEGORY.Doors);
+                return (Translator.Instance.Translate("tile-building_animal_door-suffix", new
+                {
+                    name, // using inferred member name; silences IDE0037
+                    is_open = (building.animalDoorOpen.Value) ? 1 : 0,
+                    less_info = lessInfo ? 1 : 0
+                }), CATEGORY.Doors);
             }
             // Check if the position matches the building's top-left corner
             else if (offsetX == 0 && offsetY == 0)
@@ -369,6 +374,14 @@ namespace stardew_access.Utils
             else if (building is not null) // Check if there is a building at the current position
             {
                 return GetBuildingInfo(building, x, y, lessInfo);
+            }
+
+            if (x == 8 && y == 7) // Speaks the Grandpa Evaluation score i.e., numbers of candles lit on the shrine after year 3
+            {
+                return (Translator.Instance.Translate("dynamic_tile-farm-grandpa_shrine", new
+                {
+                    candles = farm.grandpaScore.Value
+                }), CATEGORY.Interactables);
             }
 
             return (null, null);
@@ -419,6 +432,10 @@ namespace stardew_access.Utils
             if (forest.travelingMerchantDay && x == 27 && y == 11)
             {
                 return ("tile_name-traveling_cart", CATEGORY.Interactables);
+            }
+            else if (forest.travelingMerchantDay && x == 23 && y == 11)
+            {
+                return ("tile_name-traveling_cart_pig", CATEGORY.NPCs);
             }
             else if (forest.log != null && x == 2 && y == 7)
             {
@@ -539,6 +556,15 @@ namespace stardew_access.Utils
 
             // Implement specific logic for named  IslandLocations here, if necessary
 
+            if (locationType.ToString()!.Contains("qinutroom", StringComparison.OrdinalIgnoreCase))
+            {
+                if (Game1.player.team.SpecialOrderActive("QiChallenge12") && x == 1 && y == 4)
+                {
+                    return ("dynamic_tile-qi_nut_room-collection_box", CATEGORY.Interactables);
+                }
+                return (null, null);
+            }
+            
             // Unimplemented locations are logged.
             // Check if the location has already been logged
             if (!loggedLocations.Contains(locationType))
@@ -812,7 +838,7 @@ namespace stardew_access.Utils
             if (translationKeyOrName == null)
                 return (null, null);
 
-            translationKeyOrName = Translator.Instance.Translate(translationKeyOrName, true);
+            translationKeyOrName = Translator.Instance.Translate(translationKeyOrName, disableWarning: true);
 
             return (translationKeyOrName, category);
         }

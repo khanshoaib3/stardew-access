@@ -1,7 +1,7 @@
 {
   "Name": "Stardew Access",
-  "Author": "Mohammad Shoaib Khan",
-  "Version": "1.5.0-beta.1",
+  "Author": "Mohammad Shoaib Khan and Katie Durden",
+  "Version": "1.5.0",
   "Description": "A mod that improves the accessibility of the game for visually impaired players.",
   "UniqueID": "shoaib.stardewaccess",
   "EntryDll": "stardew-access.dll",
@@ -13,8 +13,7 @@
   "Dependencies": [
     {
       "UniqueID": "Shockah.ProjectFluent",
-      "MinimumVersion": "1.1.0",
-      "IsRequired": false
+      "MinimumVersion": "1.1.0"
     }
   ]
 }

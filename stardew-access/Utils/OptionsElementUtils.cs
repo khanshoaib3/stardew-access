@@ -21,11 +21,26 @@ namespace stardew_access.Utils
             return false;
         }
 
+        internal static bool NarrateOptionsElements(List<OptionsElement> options)
+        {
+            int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
+            for (int i = 0; i < options.Count; i++)
+            {
+                if (!options[i].bounds.Contains(x, y))
+                    continue;
+
+                MainClass.ScreenReader.SayWithMenuChecker(GetNameOfElement(options[i]), true);
+                return true;
+            }
+
+            return false;
+        }
+
         internal static string GetNameOfElement(OptionsElement optionsElement)
         {
             string translationKey;
             string label = optionsElement.label;
-            object? tokens = new { label = label };
+            object? tokens = new { label };
 
             switch (optionsElement)
             {
@@ -36,7 +51,7 @@ namespace stardew_access.Utils
                     translationKey = "options_element-checkbox_info";
                     tokens = new
                     {
-                        label = label,
+                        label,
                         is_checked = checkbox.isChecked ? 1 : 0
                     };
                     break;
@@ -44,7 +59,7 @@ namespace stardew_access.Utils
                     translationKey = "options_element-dropdown_info";
                     tokens = new
                     {
-                        label = label,
+                        label,
                         selected_option = dropdown.dropDownDisplayOptions[dropdown.selectedOption]
                     };
                     break;
@@ -52,7 +67,7 @@ namespace stardew_access.Utils
                     translationKey = "options_element-slider_info";
                     tokens = new
                     {
-                        label = label,
+                        label,
                         slider_value = slider.value
                     };
                     break;
@@ -60,7 +75,7 @@ namespace stardew_access.Utils
                     translationKey = "options_element-plus_minus_button_info";
                     tokens = new
                     {
-                        label = label,
+                        label,
                         selected_option = plusMinus.displayOptions[plusMinus.selected]
                     };
                     break;
@@ -69,16 +84,15 @@ namespace stardew_access.Utils
                     translationKey = "options_element-input_listener_info";
                     tokens = new
                     {
-                        label = label,
+                        label,
                         buttons_list = buttons
                     };
                     break;
                 case OptionsTextEntry textEntry:
-                    Log.Debug(textEntry.textBox.TitleText);
                     translationKey = "options_element-text_box_info";
                     tokens = new
                     {
-                        label = label,
+                        label,
                         value = string.IsNullOrEmpty(textEntry.textBox.Text) ? "null" : textEntry.textBox.Text,
                     };
                     break;

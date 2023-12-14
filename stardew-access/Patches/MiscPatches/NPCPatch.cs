@@ -1,5 +1,7 @@
 using HarmonyLib;
 using StardewValley;
+using StardewValley.BellsAndWhistles;
+using StardewValley.Characters;
 
 namespace stardew_access.Patches
 {
@@ -8,18 +10,28 @@ namespace stardew_access.Patches
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
-                original: AccessTools.Method(typeof(NPC), nameof(NPC.drawAboveAlwaysFrontLayer)),
-                postfix: new HarmonyMethod(typeof(NPCPatch), nameof(NPCPatch.DrawAboveAlwaysFrontLayerPatch))
+                original: AccessTools.DeclaredMethod(typeof(NPC), "drawAboveAlwaysFrontLayer"),
+                postfix: new HarmonyMethod(typeof(NPCPatch), nameof(DrawAboveAlwaysFrontLayerPatch))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.DeclaredMethod(typeof(Junimo), "drawAboveAlwaysFrontLayer"),
+                postfix: new HarmonyMethod(typeof(NPCPatch), nameof(DrawAboveAlwaysFrontLayerPatch))
             );
         }
 
-        private static void DrawAboveAlwaysFrontLayerPatch(NPC __instance, string ___textAboveHead, int ___textAboveHeadTimer)
+        private static void DrawAboveAlwaysFrontLayerPatch(object __instance, string ___textAboveHead, int ___textAboveHeadTimer)
         {
             try
             {
+                if (__instance is not NPC && __instance is not Junimo) return;
+                
                 if (___textAboveHeadTimer > 2900 && ___textAboveHead != null)
                 {
-                    MainClass.ScreenReader.SayWithChecker($"{__instance.displayName} says {___textAboveHead}", true);
+                    string displayName = (__instance is Junimo junimo)
+                        ? junimo.displayName
+                        : ((NPC)__instance).displayName;
+                    MainClass.ScreenReader.SayWithChecker($"{displayName} says {___textAboveHead}", true);
                 }
             }
             catch (Exception e)

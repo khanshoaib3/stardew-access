@@ -36,7 +36,7 @@ namespace stardew_access.Patches
 
                 if (NarrateHoveredButton(__instance, x, y)) return;
 
-                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory.inventory, __instance.inventory.actualInventory, inventoryMenu: __instance.inventory, hoverPrice: __instance.hoverPrice))
+                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, hoverPrice: __instance.hoverPrice))
                 {
                     return;
                 }

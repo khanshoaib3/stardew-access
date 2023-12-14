@@ -83,7 +83,7 @@ menu-character_creation-label-skin = Skin tone
 menu-character_creation-label-hair = Hair style
 menu-character_creation-label-shirt = Shirt
 menu-character_creation-label-pants_style = Pants style
-menu-character_creation-label-acc = Accesory
+menu-character_creation-label-acc = Accessory
 
 menu-character_creation-label-eye_color = Eye color
 menu-character_creation-label-hair_color = Hair color

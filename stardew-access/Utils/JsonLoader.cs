@@ -4,11 +4,15 @@ namespace stardew_access.Utils
 {
     public static class JsonLoader
     {
-        private const string DefaultDir = "assets";
-        private static string GetFilePath(string fileName, string subdir)
+        public delegate void NestedItemProcessor<TKey, TValue>(List<string> path, JsonElement element, ref Dictionary<TKey, TValue> res) where TKey : notnull;
+        public delegate void NestedItemProcessorWithUserFile<TKey, TValue>(List<string> path, JsonElement element, ref Dictionary<TKey, TValue> res, bool isUserFile) where TKey : notnull;
+        public static string GetFilePath(string fileName, string subdir)
         {
             return Path.Combine(MainClass.ModHelper!.DirectoryPath, subdir, fileName);
         }
+
+
+        private const string DefaultDir = "assets";
 
         /// <summary>
         /// Loads a JSON file from the specified file name in the specified location (defaults to `DefaultDir`).
@@ -28,7 +32,8 @@ namespace stardew_access.Utils
             }         
             catch (FileNotFoundException ex)
             {
-                Log.Error($"{fileName} file not found: {ex.Message}");
+                // Caller should decide if this is an error.
+                Log.Trace($"{fileName} file not found: {ex.Message}");
             }
             catch (JsonException ex)
             {
@@ -73,6 +78,22 @@ namespace stardew_access.Utils
             return false;
         }
 
+        public static bool TryLoadJsonDictionary<T>(string fileName, out Dictionary<int, T> result, string subdir = DefaultDir)
+        {
+            bool loaded = TryLoadJsonFile(fileName, out JsonDocument document, subdir);
+            if (loaded && document != null)
+            {
+                var tempResult = JsonSerializer.Deserialize<Dictionary<string, T>>(document.RootElement.GetRawText()) ?? new Dictionary<string, T>();
+                result = tempResult.ToDictionary(kvp => int.Parse(kvp.Key), kvp => kvp.Value);
+                return true;
+            }
+
+            #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+            result = default;
+            #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            return false;
+        }
+
         public static bool TryLoadJsonDictionary<T>(string fileName, out Dictionary<string, T> result, string subdir = DefaultDir)
         {
             bool loaded = TryLoadJsonFile(fileName, out JsonDocument document, subdir);
@@ -86,6 +107,123 @@ namespace stardew_access.Utils
             #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             result = default;
             #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            return false;
+        }
+
+        public static bool TryLoadNestedJson<TKey, TValue>(
+            string fileName,
+            NestedItemProcessor<TKey, TValue> nestedItemProcessor,
+            ref Dictionary<TKey, TValue> result,
+            int nestingLevel,
+            string subdir = DefaultDir
+        ) where TKey : notnull
+        {
+            Log.Verbose($"[TryLoadNestedJson] Starting to load {fileName} with nesting level {nestingLevel}");
+
+            if (TryLoadJsonFile(fileName, out JsonDocument document, subdir) && document != null)
+            {
+                #if DEBUG
+                Log.Verbose($"TryLoadNestedJson: Successfully loaded file {fileName}. Starting to process root element.");
+                #endif
+
+                int processed = 0;
+                ProcessJsonElement(new List<string>(), document.RootElement, nestingLevel, result, ref processed);
+                Log.Trace($"TryLoadNestedJson: Loaded {processed} entries from {fileName}.");
+
+                return true;
+            }
+            Log.Warn($"[TryLoadNestedJson] Failed to load or parse {fileName}", true);
+            return false;
+
+            void ProcessJsonElement(List<string> path, JsonElement element, int remainingLevels, Dictionary<TKey, TValue> res, ref int processed)
+            {
+                #if DEBUG
+                Log.Verbose($"[ProcessJsonElement] Processing element at path: {string.Join(" -> ", path)} with remaining levels: {remainingLevels}");
+                #endif
+
+                if (remainingLevels == 0)
+                {
+                    nestedItemProcessor(path, element, ref res);
+                    processed++;
+                    #if DEBUG
+                    Log.Verbose("[ProcessJsonElement] Processed element and populated result dictionary.");
+                    #endif
+                }
+                else
+                {
+                    if (element.ValueKind == JsonValueKind.Array)
+                    {
+                        int index = 0;
+                        foreach (var arrayElement in element.EnumerateArray())
+                        {
+                            var newPath = new List<string>(path) { index.ToString() };
+                            ProcessJsonElement(newPath, arrayElement, remainingLevels - 1, res, ref processed);
+                            index++;
+                        }
+                    } else {
+                        foreach (var child in element.EnumerateObject())
+                        {
+                            var newPath = new List<string>(path) { child.Name };
+                            ProcessJsonElement(newPath, child.Value, remainingLevels - 1, res, ref processed);
+                        }
+                    }
+                    #if DEBUG
+                    Log.Verbose("[ProcessJsonElement] Completed iteration over child elements.");
+                    #endif
+                }
+            }
+        }
+
+        public static bool TryLoadNestedJson<TKey, TValue>(
+            string fileName,
+            NestedItemProcessor<TKey, TValue> nestedItemProcessor,
+            out Dictionary<TKey, TValue> result,
+            int nestingLevel,
+            string subdir = DefaultDir,
+            bool caseInsensitive = false
+        ) where TKey : notnull
+        {
+            // Create the dictionary with StringComparer.OrdinalIgnoreCase if TKey is string and caseInsensitive is true
+            result = (typeof(TKey) == typeof(string) && caseInsensitive) ? new Dictionary<TKey, TValue>((IEqualityComparer<TKey>)StringComparer.OrdinalIgnoreCase) : new Dictionary<TKey, TValue>();
+            return TryLoadNestedJson(fileName, nestedItemProcessor, ref result, nestingLevel, subdir);
+        }
+
+        public static bool TryLoadNestedJsonWithUserFile<TKey, TValue>(
+            string fileName,
+            NestedItemProcessorWithUserFile<TKey, TValue> nestedItemProcessorWithUserFile,
+            out Dictionary<TKey, TValue> result,
+            int nestingLevel,
+            string subdir = DefaultDir,
+            bool caseInsensitive = false
+        ) where TKey : notnull
+        {
+            // First, load the base file
+            if (TryLoadNestedJson(
+                fileName,
+                (List<string> path, JsonElement element, ref Dictionary<TKey, TValue> res) => nestedItemProcessorWithUserFile(path, element, ref res, false),
+                out result,
+                nestingLevel,
+                subdir,
+                caseInsensitive
+            ))
+            {
+                // Successfully loaded base file
+                // Modify the file name to check for a user file
+                string userFileName = $"{System.IO.Path.GetFileNameWithoutExtension(fileName)}_user{System.IO.Path.GetExtension(fileName)}";
+
+                // Try to load the user file.
+                if (TryLoadNestedJson(
+                    userFileName,
+                    (List<string> path, JsonElement element, ref Dictionary<TKey, TValue> res) => nestedItemProcessorWithUserFile(path, element, ref res, true),
+                    ref result,
+                    nestingLevel,
+                    subdir
+                ))
+                {
+                    Log.Info($"Loaded {fileName}");
+                }
+                return true;
+            } 
             return false;
         }
 
