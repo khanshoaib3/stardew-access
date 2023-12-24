@@ -11,7 +11,7 @@ namespace stardew_access.Tiles;
 public abstract class ConditionalBase
 {
     private readonly (Func<ConditionalBase, bool> func, string name)[] Conditions;
-    internal readonly Dictionary<string, string> ConditionArgs = new();
+    internal readonly Dictionary<string, string> ConditionArgs = [];
     private readonly bool ModsLoaded;
 
     public bool Visible
@@ -66,8 +66,8 @@ public abstract class ConditionalBase
 
     private (Func<ConditionalBase, bool> func, string name)[] BindConditions(string[]? conditions)
     {
-        if (conditions == null || conditions.Length == 0) return Array.Empty<(Func<ConditionalBase, bool> func, string name)>();
-        List<(Func<ConditionalBase, bool> func, string name)> conditionsList = new();
+        if (conditions == null || conditions.Length == 0) return [];
+        List<(Func<ConditionalBase, bool> func, string name)> conditionsList = [];
         foreach (string condition in conditions)
         {
             string[] parts = condition.Split(':');
@@ -91,6 +91,6 @@ public abstract class ConditionalBase
                 Log.Error($"Could not find a condition function named {functionName} for {this}.");
             }
         }
-        return conditionsList.ToArray();
+        return [.. conditionsList];
     }
 }

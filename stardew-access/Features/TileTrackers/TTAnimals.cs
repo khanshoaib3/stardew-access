@@ -4,14 +4,8 @@ using StardewValley;
 using System.Collections.Generic;
 using System.Linq;
 
-internal class TTAnimals : TileTrackerBase
+internal class TTAnimals(object? arg = null) : TileTrackerBase(arg)
 {
-
-    public TTAnimals(object? arg = null) : base(arg)
-    {
-
-    }
-
     public override void FindObjects(object? arg = null)
     {
 
@@ -23,7 +17,7 @@ internal class TTAnimals : TileTrackerBase
         if (location is Farm farm)
             farmAnimals = farm.animals?.Values.ToList();
         else if (location is AnimalHouse)
-            farmAnimals = (location as AnimalHouse)!.animals.Values.ToList();
+            farmAnimals = [.. (location as AnimalHouse)!.animals.Values];
 
         if (farmAnimals != null) {
 

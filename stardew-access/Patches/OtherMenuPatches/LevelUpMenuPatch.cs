@@ -112,7 +112,7 @@ namespace stardew_access.Patches
             if (MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed())
                 __instance.okButtonClicked();
 
-            List<string> recipeInfoList = new();
+            List<string> recipeInfoList = [];
             ___newCraftingRecipes.ForEach(recipe => recipeInfoList.Add(InventoryUtils.GetCraftingRecipeInfo(recipe)));
             string learnedRecipes = string.Join(", ", recipeInfoList);
 

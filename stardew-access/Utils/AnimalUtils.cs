@@ -15,7 +15,7 @@ namespace stardew_access.Utils
 
             if (farmAnimals is null) return null;
 
-            Dictionary<(int x, int y), FarmAnimal> animalByCoordinate = new();
+            Dictionary<(int x, int y), FarmAnimal> animalByCoordinate = [];
 
             // Populate the dictionary
             foreach (FarmAnimal animal in farmAnimals)

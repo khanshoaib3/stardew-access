@@ -206,7 +206,7 @@ internal class TileViewer : FeatureBase
         {
             #if DEBUG
             Log.Verbose(
-                $"OnButtonPressed: suppressing '{e.Button.ToString()}' for object tracker/tile viewer auto walking as it is neither any inventory slot button nor the toolbar swap button");
+                $"OnButtonPressed: suppressing '{e.Button}' for object tracker/tile viewer auto walking as it is neither any inventory slot button nor the toolbar swap button");
             #endif
             MainClass.ModHelper!.Input.Suppress(e.Button);
         }

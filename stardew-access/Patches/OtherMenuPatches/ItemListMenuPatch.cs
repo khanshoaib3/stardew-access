@@ -26,7 +26,7 @@ namespace stardew_access.Patches
 
                 if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
                 {
-                    List<string> currentList = new();
+                    List<string> currentList = [];
 
                     for (int i = ___currentTab * __instance.itemsPerCategoryPage; i < ___currentTab * __instance.itemsPerCategoryPage + __instance.itemsPerCategoryPage; i++)
                     {

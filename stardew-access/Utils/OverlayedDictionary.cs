@@ -17,7 +17,7 @@ namespace stardew_access.Utils
         {
             // Initialize layers
             this.layers = dictionaries;
-            this.layersByName = new();
+            this.layersByName = [];
 
             // If layer names are provided, ensure the counts match
             if (layerNames != null)
@@ -40,7 +40,7 @@ namespace stardew_access.Utils
         }
 
         // Constructor 2: Takes a single dictionary, adds it to a new list, and calls Constructor 1
-        public OverlayedDictionary(IDictionary<TKey, TValue> singleLayer, string? singleLayerName = null) : this(new List<IDictionary<TKey, TValue>> { singleLayer }, singleLayerName == null ? null : new List<string?> { singleLayerName }) { }
+        public OverlayedDictionary(IDictionary<TKey, TValue> singleLayer, string? singleLayerName = null) : this([singleLayer], singleLayerName == null ? null : [singleLayerName]) { }
 
         // Constructor 3: Creates an empty dictionary, then calls Constructor 2, which in turn calls Constructor 1
         public OverlayedDictionary(string? singleLayerName = null) : this(new Dictionary<TKey, TValue>(), singleLayerName) { }
@@ -148,7 +148,7 @@ namespace stardew_access.Utils
         {
             get
             {
-                Dictionary<TKey, TValue> snapshot = new();
+                Dictionary<TKey, TValue> snapshot = [];
 
                 // Loop over the dictionaries in reverse order (top layer first)
                 for (int i = layers.Count - 1; i >= 0; i--)
@@ -208,7 +208,7 @@ namespace stardew_access.Utils
 
         public List<TValue> GetAllValuesForKey(TKey key)
         {
-            List<TValue> values = new();
+            List<TValue> values = [];
             
             // Iterate backwards over the layers to preserve the overlay order
             for (int i = layers.Count - 1; i >= 0; i--)
@@ -224,7 +224,7 @@ namespace stardew_access.Utils
 
         public override IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            HashSet<TKey> seenKeys = new();
+            HashSet<TKey> seenKeys = [];
             for (int i = layers.Count - 1; i >= 0; i--)
             {
                 IDictionary<TKey, TValue> dict = layers[i];

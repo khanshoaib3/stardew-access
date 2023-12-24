@@ -85,7 +85,7 @@ namespace stardew_access.Patches
         private static string GetCurrentBlueprintInfo(BluePrint currentBlueprint, int ___price, List<Item> ___ingredients)
         {
             string ingredients = "";
-            List<string> ingredientsList = new();
+            List<string> ingredientsList = [];
             ___ingredients.ForEach(ingredient => ingredientsList.Add($"{InventoryUtils.GetPluralNameOfItem(ingredient)} {InventoryUtils.GetQualityFromItem(ingredient)}"));
             ingredients = string.Join(", ", ingredientsList);
 

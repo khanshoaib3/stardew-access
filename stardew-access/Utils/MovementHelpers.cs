@@ -7,23 +7,21 @@ namespace stardew_access.Utils
 {
     public static class MovementHelpers
     {
-        private static readonly List<Vector2>[] Stages = new List<Vector2>[]
-        {
-            new List<Vector2>
-            { // directly adjacent
+        private static readonly List<Vector2>[] Stages =
+        [
+            [ // directly adjacent
                 new Vector2(0, -1), // top
                 new Vector2(1, 0), // right
                 new Vector2(0, 1), // bottom
                 new Vector2(-1, 0), // left
-            },
-            new List<Vector2>
-            { // diagonally adjacent
+            ],
+            [ // diagonally adjacent
                 new Vector2(-1, -1), // top left
                 new Vector2(1, -1), // top right
                 new Vector2(1, 1), // bottom right
                 new Vector2(-1, 1), // bottom left
-            }
-        };
+            ]
+        ];
 
         internal static void CenterPlayer()
         {

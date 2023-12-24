@@ -10,10 +10,10 @@ namespace stardew_access.Tiles;
 public static class AccessibleTileHelpers
 {
     // Separate Dictionaries for each category of helper functions
-    private static readonly Dictionary<string, Func<ConditionalBase, string>> NameHelpers = new();
-    private static readonly Dictionary<string, Func<ConditionalBase, bool>> ConditionHelpers = new();
-    private static readonly Dictionary<string, Func<ConditionalBase, Vector2>> CoordinateHelpers = new();
-    private static readonly Dictionary<string, Func<ConditionalBase, Dictionary<Vector2, string>>> CoordinatesHelpers = new();
+    private static readonly Dictionary<string, Func<ConditionalBase, string>> NameHelpers = [];
+    private static readonly Dictionary<string, Func<ConditionalBase, bool>> ConditionHelpers = [];
+    private static readonly Dictionary<string, Func<ConditionalBase, Vector2[]>> CoordinatesHelpers = [];
+    /*private static readonly Dictionary<string, Func<ConditionalBase, Dictionary<Vector2, string>>> CoordinatesHelpers = [];*/
 
     // Register function accepting a category, name, and delegate
     public static void Register(string category, string name, Delegate function)
@@ -29,12 +29,12 @@ public static class AccessibleTileHelpers
             case "Condition":
                 ConditionHelpers[name] = (Func<ConditionalBase, bool>)function;
                 break;
-            case "Coordinate":
-                CoordinateHelpers[name] = (Func<ConditionalBase, Vector2>)function;
-                break;
             case "Coordinates":
-                CoordinatesHelpers[name] = (Func<ConditionalBase, Dictionary<Vector2, string>>)function;
+                CoordinatesHelpers[name] = (Func<ConditionalBase, Vector2[]>)function;
                 break;
+            /*case "Coordinates":
+                CoordinatesHelpers[name] = (Func<ConditionalBase, Dictionary<Vector2, string>>)function;
+                break;*/
             default:
                 throw new ArgumentException("Unknown category");
         }
@@ -75,15 +75,15 @@ public static class AccessibleTileHelpers
         return ConditionHelpers.TryGetValue(name, out conditionFunc);
     }
 
-    public static bool TryGetCoordinateHelper(string name, out Func<ConditionalBase, Vector2>? coordinateFunc)
+    public static bool TryGetCoordinatesHelper(string name, out Func<ConditionalBase, Vector2[]>? coordinateFunc)
     {
-        return CoordinateHelpers.TryGetValue(name, out coordinateFunc);
+        return CoordinatesHelpers.TryGetValue(name, out coordinateFunc);
     }
 
-    public static bool TryGetCoordinatesHelper(string name, out Func<ConditionalBase, Dictionary<Vector2, string>>? coordinatesFunc)
+    /*public static bool TryGetCoordinatesHelper(string name, out Func<ConditionalBase, Dictionary<Vector2, string>>? coordinatesFunc)
     {
         return CoordinatesHelpers.TryGetValue(name, out coordinatesFunc);
-    }
+    }*/
 
     // helpers
     public static bool Condition_Farm(ConditionalBase obj)

@@ -36,7 +36,7 @@ public class TileMarkingCommands : ICustomCommand
         Netcode.NetCollection<Building> buildings = farm.buildings;
         int buildingIndex = 0;
 
-        List<string> buildingInfos = new();
+        List<string> buildingInfos = [];
         foreach (var building in buildings)
         {
             string? name = building.nameOfIndoorsWithoutUnique;
@@ -104,7 +104,7 @@ public class TileMarkingCommands : ICustomCommand
 
     private void ListMarked(string command, string[] args)
     {
-        List<string> markInfos = new();
+        List<string> markInfos = [];
         for (int i = 0; i < BuildingOperations.marked.Length; i++)
         {
             if (BuildingOperations.marked[i] == Vector2.Zero) continue;

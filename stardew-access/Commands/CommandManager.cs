@@ -6,13 +6,13 @@ public class CommandManager
 {
     public static void AddAll(IModHelper modHelper)
     {
-        List<ICustomCommand> allCommands = new List<ICustomCommand>()
-        {
+        List<ICustomCommand> allCommands =
+        [
             new ReadTileCommands(),
             new TileMarkingCommands(),
             new OtherCommands(),
             new RadarCommands(),
-        };
+        ];
 
         foreach (ICustomCommand command in allCommands)
         {

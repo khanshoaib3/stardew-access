@@ -10,8 +10,8 @@ namespace stardew_access.Patches
     // These patches are global, i.e. work on every menus
     internal class IClickableMenuPatch : IPatch
     {
-        private static readonly HashSet<Type> SkipMenuTypes = new()
-        {
+        private static readonly HashSet<Type> SkipMenuTypes =
+        [
             typeof(AnimalQueryMenu),
             typeof(Billboard),
             typeof(CarpenterMenu),
@@ -34,18 +34,18 @@ namespace stardew_access.Patches
             typeof(SpecialOrdersBoard),
             typeof(NumberSelectionMenu),
             typeof(QuestContainerMenu)
-        };
+        ];
 
-        private static readonly HashSet<Type> SkipGameMenuPageTypes = new()
-        {
+        private static readonly HashSet<Type> SkipGameMenuPageTypes =
+        [
             typeof(CraftingPage),
             typeof(ExitPage),
             typeof(InventoryPage),
             typeof(OptionsPage),
             typeof(SocialPage)
-        };
+        ];
 
-        internal static HashSet<string> ManuallyPatchedCustomMenus = new();
+        internal static HashSet<string> ManuallyPatchedCustomMenus = [];
 
         public void Apply(Harmony harmony)
         {
@@ -85,11 +85,11 @@ namespace stardew_access.Patches
                 #endregion
                 
                 #region Skip narrating hover text for certain menus
-                var activeClickableMenu = Game1.activeClickableMenu.GetType();
+                var activeClickableMenu = Game1.activeClickableMenu?.GetType();
                 var activeGameMenuPage = Game1.activeClickableMenu is GameMenu gameMenu ? gameMenu.GetCurrentPage().GetType() : null;
                 // Check both sets as game menu pages can sometimes be stand alone menus
                 // E.G. CraftingPage is stand alone menu at stove.
-                if (SkipMenuTypes.Contains(activeClickableMenu) || SkipGameMenuPageTypes.Contains(activeClickableMenu))
+                if (activeClickableMenu is not null && (SkipMenuTypes.Contains(activeClickableMenu) || SkipGameMenuPageTypes.Contains(activeClickableMenu)))
                 {
                     return;
                 }

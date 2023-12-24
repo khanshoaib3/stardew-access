@@ -4,14 +4,10 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-internal class TTStardewAccess : TileTrackerBase
+internal class TTStardewAccess(object? arg = null) : TileTrackerBase(arg)
 {
 
-    private readonly string[] ignored_categories = { "animal" };
-
-    public TTStardewAccess(object? arg = null) : base(arg) {
-            
-    }
+    private readonly string[] ignored_categories = ["animal"];
 
     public override void FindObjects(object? arg) {
 

@@ -284,7 +284,7 @@ public class RadarCommands : ICustomCommand
     private void Stereo(string command, string[] args)
     {
         MainClass.Config.RadarStereoSound = !MainClass.Config.RadarStereoSound;
-        _modHelper.WriteConfig(MainClass.Config);
+        _modHelper!.WriteConfig(MainClass.Config);
 
         Log.Info("Stereo sound is " + (MainClass.Config.RadarStereoSound ? "on" : "off"));
     }
@@ -299,7 +299,7 @@ public class RadarCommands : ICustomCommand
     private void RadarCommand(string command, string[] args)
     {
         MainClass.Config.Radar = !MainClass.Config.Radar;
-        _modHelper.WriteConfig(MainClass.Config);
+        _modHelper!.WriteConfig(MainClass.Config);
 
         Log.Info("Radar " + (MainClass.Config.Radar ? "on" : "off"));
     }

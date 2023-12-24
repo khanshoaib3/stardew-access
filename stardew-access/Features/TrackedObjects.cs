@@ -9,7 +9,7 @@ class TrackedObjects
     /// <summary>
     /// {column:[{Name, SpecialObject}]}
     /// </summary>
-    private readonly SortedList<string, Dictionary<string, SpecialObject>> Objects = new();
+    private readonly SortedList<string, Dictionary<string, SpecialObject>> Objects = [];
         
     public SortedList<string, Dictionary<string, SpecialObject>> GetObjects()
     {
@@ -22,11 +22,6 @@ class TrackedObjects
         TTStardewAccess StardewAccessObjects = new();
         if (StardewAccessObjects.HasObjects()) {
             AddObjects(StardewAccessObjects.GetObjects());
-        }
-
-        TTSpecialPoints SpecialPointsObjects = new();
-        if (SpecialPointsObjects.HasObjects()) {
-            AddObjects(SpecialPointsObjects.GetObjects());
         }
 
         TTAnimals AnimalObjects = new();
@@ -53,7 +48,7 @@ class TrackedObjects
             string category = kvp.Key;
 
             if (!Objects.ContainsKey(category)) {
-                Objects.Add(category, new());
+                Objects.Add(category, []);
             }
 
             foreach(var obj in kvp.Value) {

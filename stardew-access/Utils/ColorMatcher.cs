@@ -1,6 +1,6 @@
-using System.Text.Json;
 using KdTree;
 using KdTree.Math;
+using Newtonsoft.Json.Linq;
 using static stardew_access.Utils.JsonLoader;
 
 namespace stardew_access.Utils
@@ -102,20 +102,27 @@ namespace stardew_access.Utils
         /// <returns>A dictionary with color codes as keys and color names as values.</returns>
         private static Dictionary<string, string> LoadColors()
         {
+            const string ColorsFileName = "colors.json"; // Assuming the file name is colors.json
             var colorCodeToName = new Dictionary<string, string>();
 
-            bool loaded = TryLoadJsonFile(ColorsFileName, out JsonElement colorJson);
-
-            if (!loaded || colorJson.ValueKind == JsonValueKind.Undefined)
+            if (!JsonLoader.TryLoadJsonFile(ColorsFileName, out JToken? colorToken) || colorToken == null)
             {
                 Log.Warn($"Unable to load assets/{ColorsFileName}.");
                 return colorCodeToName;
             }
-            foreach (var colorCode in colorJson.EnumerateObject())
+
+            if (colorToken.Type != JTokenType.Object)
             {
-                if (colorCode.Value.ValueKind == JsonValueKind.String)
+                Log.Error($"Invalid JSON format in {ColorsFileName}.");
+                return colorCodeToName;
+            }
+
+            var colorJsonObject = (JObject)colorToken;
+            foreach (var colorCode in colorJsonObject.Properties())
+            {
+                if (colorCode.Value.Type == JTokenType.String)
                 {
-                    colorCodeToName[colorCode.Name] = colorCode.Value.GetString()!;
+                    colorCodeToName[colorCode.Name] = colorCode.Value.ToString();
                 }
                 else
                 {
@@ -135,14 +142,14 @@ namespace stardew_access.Utils
         private static KdTree<float, int> CreateColorKDTree(Dictionary<string, string> colorCodeToName, out Dictionary<int, string> colorCodeToIndex)
         {
             var colorTree = new KdTree<float, int>(3, new FloatMath());
-            colorCodeToIndex = new Dictionary<int, string>();
+            colorCodeToIndex = [];
 
             int index = 0;
             foreach (var colorCode in colorCodeToName.Keys)
             {
                 (int r, int g, int b) = RGBStringToInt(colorCode);
 
-                colorTree.Add(new float[] { r, g, b }, index);
+                colorTree.Add([r, g, b], index);
                 colorCodeToIndex[index++] = colorCode;
             }
 

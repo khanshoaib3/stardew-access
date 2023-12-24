@@ -365,7 +365,7 @@ namespace stardew_access.Patches
         {
             string toSpeak = " ";
             int DesignControlsIndex = 0;
-            Dictionary<ClickableComponent, (string translationKey, object? translationTokens)> buttons = new();
+            Dictionary<ClickableComponent, (string translationKey, object? translationTokens)> buttons = [];
 
             #region Add buttons with their names IF they are available
 

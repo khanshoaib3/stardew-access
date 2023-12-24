@@ -7,8 +7,8 @@ namespace stardew_access.Features;
 
 public class FeatureManager
 {
-    private static readonly List<FeatureBase> AllFeatures = new()
-    {
+    private static readonly List<FeatureBase> AllFeatures =
+    [
         PlayerTriggered.Instance,
         ReadTile.Instance,
         TileViewer.Instance,
@@ -17,7 +17,7 @@ public class FeatureManager
         GameStateNarrator.Instance,
         Warnings.Instance,
         Radar.Instance,
-    };
+    ];
 
     public static void UpdateEvent(object? sender, UpdateTickedEventArgs e)
     {

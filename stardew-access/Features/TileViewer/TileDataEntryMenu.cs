@@ -13,11 +13,11 @@ namespace stardew_access.Features;
 
 public class TileDataEntryMenu : IClickableMenu
 {
-    private List<OptionsElement> _options;
+    private readonly List<OptionsElement> _options;
     private readonly int _tileX;
     private readonly int _tileY;
     private Rectangle _currentBounds = Rectangle.Empty;
-    private AccessibleTile.JsonSerializerFormat? _defaultData;
+    private readonly AccessibleTile.JsonSerializerFormat? _defaultData;
 
     private enum OptionsIdentifiers
     {
@@ -33,7 +33,7 @@ public class TileDataEntryMenu : IClickableMenu
         JojaMemberCheckbox
     }
 
-    private ClickableTextureComponent _okButton;
+    private readonly ClickableTextureComponent _okButton;
     private static readonly string None = Translator.Instance.Translate("menu-tile_data_entry-none", TranslationCategory.Menu);
     
     public TileDataEntryMenu(int tileX, int tileY, AccessibleTile.JsonSerializerFormat? defaultData = null)
@@ -44,8 +44,8 @@ public class TileDataEntryMenu : IClickableMenu
         _tileX = tileX;
         _tileY = tileY;
         _defaultData = defaultData;
-        _options = new();
-        allClickableComponents = new();
+        _options = [];
+        allClickableComponents = [];
         PopulateOptions();
         _okButton = new ClickableTextureComponent(
             new Rectangle(xPositionOnScreen + 50, yPositionOnScreen + height - 84, 64, 64),
@@ -98,9 +98,9 @@ public class TileDataEntryMenu : IClickableMenu
 
         List<string> categoriesList = CATEGORY.Categories.Values.Select(category => category.Value).ToList();
         AddDropDown("menu-tile_data_entry-categories_drop_down_label", (int)OptionsIdentifiers.CategoryDropDown,
-            categoriesList, (_defaultData is not null) ? CATEGORY.Categories.Keys.ToList().IndexOf(_defaultData.Category) : 16);
+            categoriesList, (_defaultData is not null) ? CATEGORY.Categories.Keys.ToList().IndexOf(_defaultData.Category!) : 16);
 
-        List<string> modsIdsList = new() { None };
+        List<string> modsIdsList = [None];
         foreach (var modInfo in MainClass.ModHelper!.ModRegistry.GetAll())
         {
             if (modInfo.Manifest.UniqueID == MainClass.ModHelper.ModRegistry.ModID) continue;
@@ -146,17 +146,17 @@ public class TileDataEntryMenu : IClickableMenu
 
         if (Game1.currentLocation is FarmHouse)
         {
-            List<string> upgradeLevelList = new List<string> { None, "0", "1", "2", "3" };
+            List<string> upgradeLevelList = [None, "0", "1", "2", "3"];
             AddDropDown("menu-tile_data_entry-farm_house_upgrade_level_drop_down_label",
                 (int)OptionsIdentifiers.FarmHouseUpgradeLevelDropDown,
                 upgradeLevelList, upgradeLevelList.IndexOf(defaultFarmHouseLevel));
         }
 
-        List<string> questOptions = new List<string>
-        {
-            Translator.Instance.Translate("menu-tile_data_entry-quest_drop_down-manual_entry_option", TranslationCategory.Menu)
-        };
-        questOptions.AddRange(Game1.player.questLog.Select(quest => quest.GetName()));
+        List<string> questOptions =
+        [
+            Translator.Instance.Translate("menu-tile_data_entry-quest_drop_down-manual_entry_option", TranslationCategory.Menu),
+            .. Game1.player.questLog.Select(quest => quest.GetName()),
+        ];
         AddDropDown("menu-tile_data_entry-quest_drop_down_label", (int)OptionsIdentifiers.QuestDropDown, questOptions,
             0);
 
@@ -182,7 +182,7 @@ public class TileDataEntryMenu : IClickableMenu
     private void AddLabel(string labelOrTranslationKey, int identifier)
     {
         labelOrTranslationKey = Translator.Instance.Translate(labelOrTranslationKey, TranslationCategory.Menu, disableWarning: true);
-        OptionsElement element = new OptionsElement(labelOrTranslationKey)
+        OptionsElement element = new(labelOrTranslationKey)
         {
             style = OptionsElement.Style.OptionLabel,
             whichOption = identifier,
@@ -195,7 +195,7 @@ public class TileDataEntryMenu : IClickableMenu
     private void AddCheckbox(string labelOrTranslationKey, int identifier, bool isChecked)
     {
         labelOrTranslationKey = Translator.Instance.Translate(labelOrTranslationKey, TranslationCategory.Menu, disableWarning: true);
-        OptionsCheckbox checkbox = new OptionsCheckbox(labelOrTranslationKey, identifier)
+        OptionsCheckbox checkbox = new(labelOrTranslationKey, identifier)
         {
             isChecked = isChecked,
             bounds = GetNextBounds()
@@ -207,7 +207,7 @@ public class TileDataEntryMenu : IClickableMenu
     private void AddTextEntry(string labelOrTranslationKey, int identifier, string defaultText)
     {
         labelOrTranslationKey = Translator.Instance.Translate(labelOrTranslationKey, TranslationCategory.Menu, disableWarning: true);
-        OptionsTextEntry textEntry = new OptionsTextEntry(labelOrTranslationKey, identifier)
+        OptionsTextEntry textEntry = new(labelOrTranslationKey, identifier)
         {
             bounds = GetNextBounds(),
         };
@@ -219,7 +219,7 @@ public class TileDataEntryMenu : IClickableMenu
     private void AddDropDown(string labelOrTranslationKey, int identifier, List<string> options, int selectedOption)
     {
         labelOrTranslationKey = Translator.Instance.Translate(labelOrTranslationKey, TranslationCategory.Menu, disableWarning: true);
-        OptionsDropDown dropDown = new OptionsDropDown(labelOrTranslationKey, identifier)
+        OptionsDropDown dropDown = new(labelOrTranslationKey, identifier)
         {
             dropDownOptions = options,
             dropDownDisplayOptions = options,
@@ -279,8 +279,8 @@ public class TileDataEntryMenu : IClickableMenu
     {
         string? tileName = null;
         string category = CATEGORY.Others.Key;
-        List<string> withMods = new();
-        List<string> conditions = new();
+        List<string> withMods = [];
+        List<string> conditions = [];
         tileInfo = null;
 
         bool questAdded = false;
@@ -358,11 +358,11 @@ public class TileDataEntryMenu : IClickableMenu
         tileInfo = new AccessibleTile.JsonSerializerFormat()
         {
             NameOrTranslationKey = tileName,
-            X = new[] { _tileX },
-            Y = new[] { _tileY },
+            X = [_tileX],
+            Y = [_tileY],
             Category = category,
-            WithMods = withMods.Count > 0 ? withMods.ToArray() : null,
-            Conditions = conditions.Count > 0 ? conditions.ToArray() : null,
+            WithMods = withMods.Count > 0 ? [.. withMods] : null,
+            Conditions = conditions.Count > 0 ? [.. conditions] : null,
         };
     }
 
@@ -454,7 +454,7 @@ public class TileDataEntryMenu : IClickableMenu
         drawMouse(b);
     }
 
-    private string FarmTypeName(int whichFarm) => whichFarm switch
+    private static string FarmTypeName(int whichFarm) => whichFarm switch
     {
         0 => "standard",
         1 => "riverland",
@@ -466,7 +466,7 @@ public class TileDataEntryMenu : IClickableMenu
         _ => ""
     };
 
-    private string FarmTypeDisplayName(int whichFarm) => whichFarm switch
+    private static string FarmTypeDisplayName(int whichFarm) => whichFarm switch
     {
         0 => Game1.content.LoadString("Strings\\UI:Character_FarmStandard").Split("_")[0],
         1 => Game1.content.LoadString("Strings\\UI:Character_FarmFishing").Split("_")[0],

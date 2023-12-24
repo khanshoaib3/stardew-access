@@ -13,7 +13,7 @@ namespace stardew_access.Patches
         public void Apply(Harmony harmony)
         {
             // Example: using Method to directly patch the setter
-            MethodInfo? setterMethod = typeof(TileArray).GetMethod("set_Item", new[] { typeof(int), typeof(int), typeof(Tile) });
+            MethodInfo? setterMethod = typeof(TileArray).GetMethod("set_Item", [typeof(int), typeof(int), typeof(Tile)]);
 
             if (setterMethod != null)
             {

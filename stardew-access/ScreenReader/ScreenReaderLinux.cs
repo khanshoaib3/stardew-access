@@ -8,16 +8,10 @@ using System.Runtime.InteropServices;
 
 namespace stardew_access.ScreenReader
 {
-    public struct GoString
+    public struct GoString(string msg, long len)
     {
-        public string msg;
-        public long len;
-
-        public GoString(string msg, long len)
-        {
-            this.msg = msg;
-            this.len = len;
-        }
+        public string msg = msg;
+        public long len = len;
     }
 
     public class ScreenReaderLinux : ScreenReaderAbstract

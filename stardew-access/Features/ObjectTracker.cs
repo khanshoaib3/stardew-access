@@ -20,7 +20,7 @@ internal class ObjectTracker : FeatureBase
     private  Pathfinder? pathfinder;
     internal string? SelectedCategory;
     internal string? SelectedObject;
-    private readonly int[] objectCounts = new int[6] { 0, 0, 0, 0, 0, 0 };
+    private readonly int[] objectCounts = [0, 0, 0, 0, 0, 0];
     private readonly List<Action> updateActions;
     private int currentActionIndex = 0;
     private bool countHasChanged = false;
@@ -38,15 +38,15 @@ internal class ObjectTracker : FeatureBase
     public ObjectTracker()
     {
         sortByProximity = MainClass.Config.OTSortByProximity;
-        updateActions = new List<Action>
-        {
+        updateActions =
+        [
             () => UpdateAndRunIfChanged(ref objectCounts[0], Game1.currentLocation.debris.Count, () => { Log.Debug("Debris count has changed."); countHasChanged = true; }),
             () => UpdateAndRunIfChanged(ref objectCounts[1], Game1.currentLocation.objects.Count(), () => { Log.Debug("Objects count has changed."); countHasChanged = true; }),
             () => UpdateAndRunIfChanged(ref objectCounts[2], Game1.currentLocation.furniture.Count, () => { Log.Debug("Furniture count has changed."); countHasChanged = true; }),
             () => UpdateAndRunIfChanged(ref objectCounts[3], Game1.currentLocation.resourceClumps.Count, () => { Log.Debug("ResourceClumps count has changed."); countHasChanged = true; }),
             () => UpdateAndRunIfChanged(ref objectCounts[4], Game1.currentLocation.terrainFeatures.Count(), () => { Log.Debug("TerrainFeatures count has changed."); countHasChanged = true; }),
             () => UpdateAndRunIfChanged(ref objectCounts[5], Game1.currentLocation.largeTerrainFeatures.Count, () => { Log.Debug("LargeTerrainFeatures count has changed."); countHasChanged = true; }),
-        };
+        ];
     }
 
     public override void Update(object? sender, UpdateTickedEventArgs e)
@@ -228,6 +228,7 @@ internal class ObjectTracker : FeatureBase
             {
                 string direction = GetDirection(playerTile, sObjectTile.Value);
                 string distance = GetDistance(playerTile, sObjectTile).ToString();
+                Log.Info($"ASDF: SelecetedObject is {SelectedObject}");
                 object? translationTokens = new
                 {
                     object_name = SelectedObject ??
@@ -237,12 +238,16 @@ internal class ObjectTracker : FeatureBase
                     object_y = (int)sObjectTile.Value.Y,
                     player_x = (int)playerTile.X,
                     player_y = (int)playerTile.Y,
-                    direction = direction,
-                    distance = distance
+                    direction,
+                    distance
                 };
                 MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-read_selected_object", true,
                     translationTokens: translationTokens);
+            } else{
+                Log.Info("WTF2??!?!?!?!!");
             }
+        } else {
+            Log.Info("WTF1??!?!?!?!!");
         }
     }
 
@@ -343,7 +348,7 @@ internal class ObjectTracker : FeatureBase
 
         if (cycleCategories)
         {
-            string[] categories = objects?.Keys.ToArray() ?? Array.Empty<string>();
+            string[] categories = objects?.Keys.ToArray() ?? [];
             CycleHelper(ref SelectedCategory, categories);
             SetFocusToFirstObject(false);
         }
@@ -351,7 +356,7 @@ internal class ObjectTracker : FeatureBase
         {
             string[] objectKeys = SelectedCategory != null && objects?.ContainsKey(SelectedCategory) == true
                 ? objects[SelectedCategory].Keys.ToArray()
-                : Array.Empty<string>();
+                : [];
             CycleHelper(ref SelectedObject, objectKeys);
         }
 

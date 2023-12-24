@@ -10,7 +10,7 @@ using StardewValley.Menus;
 
 namespace stardew_access.Features;
 
-public class TileInfoMenu : DialogueBox
+public class TileInfoMenu(int tileX, int tileY) : DialogueBox("", [MarkTileResponse, AddToUserTilesResponse, SpeakDetailedInfoResponse])
 { 
     private const string MarkTileI18NKey = "menu-tile_info-mark_tile";
     private static readonly Response MarkTileResponse = new(MarkTileI18NKey,
@@ -35,16 +35,9 @@ public class TileInfoMenu : DialogueBox
     private static readonly string DataAlreadyExistMessage =
         Translator.Instance.Translate("menu-tile_info-data_exists", TranslationCategory.Menu);
 
-    private readonly int _tileX;
-    private readonly int _tileY;
+    private readonly int _tileX = tileX;
+    private readonly int _tileY = tileY;
     private AccessibleTile.JsonSerializerFormat? _tempDefaultData = null;
-
-    public TileInfoMenu(int tileX, int tileY)
-        : base("", new List<Response> { MarkTileResponse, AddToUserTilesResponse, SpeakDetailedInfoResponse })
-    {
-        _tileX = tileX;
-        _tileY = tileY;
-    }
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
@@ -71,15 +64,15 @@ public class TileInfoMenu : DialogueBox
                 if (UserTilesUtils.TryAndGetTileDataAt(out AccessibleTile.JsonSerializerFormat? tileData, _tileX, _tileY))
                 {
                     _tempDefaultData = tileData;
-                    responses = new List<Response>
-                    {
+                    responses =
+                    [
                         EditExistingResponse, DeleteExistingResponse
-                    };
+                    ];
                     selectedResponse = 0;
-                    dialogues = new List<string>
-                    {
+                    dialogues =
+                    [
                         DataAlreadyExistMessage
-                    };
+                    ];
                     DialogueBoxPatch.Cleanup();
                     break;
                 }
@@ -120,7 +113,7 @@ public class TileInfoMenu : DialogueBox
             return;
         }
 
-        NumberSelectionMenu numberSelectionMenu = new NumberSelectionMenu(
+        NumberSelectionMenu numberSelectionMenu = new(
             Translator.Instance.Translate("menu-tile_info-select_marking_index", TranslationCategory.Menu),
             (i, _, _) => OnNumberSelect(i),
             minValue: 0,

@@ -14,7 +14,7 @@ namespace stardew_access.Patches
     {
         private static bool isMoving = false;
         private static readonly (int x, int y)[] donationTiles =
-        {
+        [
             (26,5),(26,6),(26,7),(26,8),(26,9),(26,10),(26,11),
             (29,5),(30,5),(31,5),(32,5),(33,5),(34,5),(35,5),(36,5),
             (28,6),(29,6),(30,6),(31,6),(32,6),(33,6),(34,6),(35,6),(36,6),(37,6),
@@ -29,7 +29,7 @@ namespace stardew_access.Patches
             (48,5),(48,6),(48,7),
             (42,15),(43,15),(44,15),(45,15),(46,15),(47,15),
             (42,16),(43,16),(44,16),(45,16),(46,16),(47,16),
-        };
+        ];
 
         public void Apply(Harmony harmony)
         {

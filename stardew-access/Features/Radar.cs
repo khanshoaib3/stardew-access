@@ -38,12 +38,12 @@ internal class Radar : FeatureBase
         Range = 5;
 
         IsRunning = false;
-        _closed = new List<Vector2>();
-        _furniture = new List<Furniture>();
-        _npcs = new List<NPC>();
-        Exclusions = new List<string>();
-        _tempExclusions = new List<string>();
-        Focus = new List<string>();
+        _closed = [];
+        _furniture = [];
+        _npcs = [];
+        Exclusions = [];
+        _tempExclusions = [];
+        Focus = [];
 
         Exclusions.Add("stone");
         Exclusions.Add("weed");
@@ -124,12 +124,12 @@ internal class Radar : FeatureBase
     public Dictionary<Vector2, (string, string)> SearchNearbyTiles(Vector2 center, int limit, bool playSound = true)
     {
         var currentLocation = Game1.currentLocation;
-        Dictionary<Vector2, (string, string)> detectedTiles = new();
+        Dictionary<Vector2, (string, string)> detectedTiles = [];
 
         Queue<Vector2> toSearch = new();
-        HashSet<Vector2> searched = new();
-        int[] dirX = { -1, 0, 1, 0 };
-        int[] dirY = { 0, 1, 0, -1 };
+        HashSet<Vector2> searched = [];
+        int[] dirX = [-1, 0, 1, 0];
+        int[] dirY = [0, 1, 0, -1];
 
         toSearch.Enqueue(center);
         searched.Add(center);
@@ -174,14 +174,14 @@ internal class Radar : FeatureBase
         //var watch = new Stopwatch();
         //watch.Start();
         var currentLocation = Game1.currentLocation;
-        Dictionary<Vector2, (string, string)> detectedTiles = new();
+        Dictionary<Vector2, (string, string)> detectedTiles = [];
         Vector2 position = Vector2.Zero;
         (bool, string? name, string category) tileInfo;
 
         Queue<Vector2> toSearch = new();
-        HashSet<Vector2> searched = new();
-        int[] dirX = { -1, 0, 1, 0 };
-        int[] dirY = { 0, 1, 0, -1 };
+        HashSet<Vector2> searched = [];
+        int[] dirX = [-1, 0, 1, 0];
+        int[] dirY = [0, 1, 0, -1];
         int count = 0;
 
         toSearch.Enqueue(Game1.player.getTileLocation());
@@ -435,13 +435,13 @@ internal class Radar : FeatureBase
 
     public void EnableFocus()
     {
-        _tempExclusions = Exclusions.ToList();
+        _tempExclusions = [.. Exclusions];
         Exclusions.Clear();
     }
 
     public void DisableFocus()
     {
-        Exclusions = _tempExclusions.ToList();
+        Exclusions = [.. _tempExclusions];
         _tempExclusions.Clear();
     }
 }

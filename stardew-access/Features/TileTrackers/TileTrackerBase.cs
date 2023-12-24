@@ -8,7 +8,7 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 internal class TileTrackerBase
 {
 
-    public SortedList<string, Dictionary<string, SpecialObject>> Objects = new();
+    public SortedList<string, Dictionary<string, SpecialObject>> Objects = [];
 
     public TileTrackerBase(object? arg = null)
     {
@@ -34,7 +34,7 @@ internal class TileTrackerBase
     {
 
         if (!Objects.ContainsKey(category)) {
-            Objects.Add(category, new());
+            Objects.Add(category, []);
         }
 
         SpecialObject sObject = new(name, tile);

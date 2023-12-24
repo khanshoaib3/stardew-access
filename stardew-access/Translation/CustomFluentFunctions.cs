@@ -10,7 +10,7 @@ namespace stardew_access.Translation
     {
         private IManifest ModManifest { get; set; }
         private IFluentApi FluentApi { get; set; }
-        private static readonly Dictionary<string, Type> languageHelpers = new();
+        private static readonly Dictionary<string, Type> languageHelpers = [];
         private static ILanguageHelper? currentLanguageHelper = null;
 
         internal CustomFluentFunctions(IManifest ModManifest, IFluentApi FluentApi)

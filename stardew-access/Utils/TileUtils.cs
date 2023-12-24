@@ -9,9 +9,9 @@ namespace stardew_access.Utils
 {
     public static class TileUtils
     {
-        private static readonly Dictionary<Map, TileMapData> SortedTiles = new();
-        private static readonly Dictionary<TileArray, Layer> layersByArray = new();
-        public static readonly Dictionary<Map, string> MapNames = new();
+        private static readonly Dictionary<Map, TileMapData> SortedTiles = [];
+        private static readonly Dictionary<TileArray, Layer> layersByArray = [];
+        public static readonly Dictionary<Map, string> MapNames = [];
 
         /// <summary>
         /// Updates tile information in the SortedTiles dictionary.
@@ -204,8 +204,8 @@ namespace stardew_access.Utils
             /// </summary>
             public TileMapData()
             {
-                this.byLayerAndIndex = new Dictionary<string, Dictionary<int, HashSet<(int x, int y)>>>();
-                this.byTileCoords = new Dictionary<(int x, int y), Dictionary<string, int>>();
+                this.byLayerAndIndex = [];
+                this.byTileCoords = [];
             }
 
             /// <summary>
@@ -221,7 +221,7 @@ namespace stardew_access.Utils
                 // Create a new dictionary and add it if it doesn't exist.
                 if (!byTileCoords.TryGetValue(tileCoords, out var layerDict))
                 {
-                    layerDict = new Dictionary<string, int>();
+                    layerDict = [];
                     byTileCoords[tileCoords] = layerDict;
                 }
 
@@ -240,7 +240,7 @@ namespace stardew_access.Utils
                 // Create a new dictionary and add it if it doesn't exist.
                 if (!byLayerAndIndex.TryGetValue(layer, out var tileIndexDict))
                 {
-                    tileIndexDict = new Dictionary<int, HashSet<(int x, int y)>>();
+                    tileIndexDict = [];
                     byLayerAndIndex[layer] = tileIndexDict;
                 }
 
@@ -248,7 +248,7 @@ namespace stardew_access.Utils
                 // Create a new hash set and add it if it doesn't exist.
                 if (!tileIndexDict.TryGetValue(newIndex, out var tileSet))
                 {
-                    tileSet = new HashSet<(int x, int y)>();
+                    tileSet = [];
                     tileIndexDict[newIndex] = tileSet;
                 }
 

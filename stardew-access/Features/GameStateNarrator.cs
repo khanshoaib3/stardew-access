@@ -33,7 +33,7 @@ internal class GameStateNarrator : FeatureBase
         NarrateCurrentLocation();
         RunHudMessageNarration();
 
-        async void RunHudMessageNarration()
+        static async void RunHudMessageNarration()
         {
             if (!isNarratingHudMessage)
             {
