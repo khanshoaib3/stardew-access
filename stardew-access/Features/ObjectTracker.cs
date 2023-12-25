@@ -426,7 +426,7 @@ internal class ObjectTracker : FeatureBase
         }
         else 
         {
-            if (e.Pressed.Count() > 0) FavoriteKeysReset();
+            if (e.Pressed.Any()) FavoriteKeysReset();
             if (cycleUpCategoryPressed)
             {
                 Cycle(cycleCategories: true, back: true, wrapAround: MainClass.Config?.OTWrapLists ?? false);
@@ -577,10 +577,19 @@ internal class ObjectTracker : FeatureBase
             // Handle single press
             if (isFavoriteSet)
             {
-                string message = $"Favorite {favKeyNum} is {targetObject} ({targetCategory})";
-                MainClass.ScreenReader.Say(message, true);
+                MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-read_favorite", true, 
+                    new {
+                        favorite_number = favKeyNum,
+                        target_object = targetObject,
+                        target_category = targetCategory
+                    }
+                );
             } else {
-                MainClass.ScreenReader.Say($"Favorite {favKeyNum} is unset", true);
+                MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-favorite_unset", true,
+                    new {
+                        favorite_number = favKeyNum
+                    }
+                );
             }
             lastPressTimer.Start();
         }
@@ -596,10 +605,17 @@ internal class ObjectTracker : FeatureBase
                 // Only if `SelectedObject` and `SelectedCategory` are both not null
                 if (SelectedObject != null && SelectedCategory != null)
                 {
-                    MainClass.ScreenReader.Say($"Saving {SelectedObject} ({SelectedCategory}) to {Game1.currentLocation.NameOrUniqueName} favorite {favKeyNum}", true);
                     SaveToFavorites(favKeyNum);
+                    MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-favorite_save", true,
+                        new {
+                            selected_object = SelectedObject,
+                            selected_category = SelectedCategory,
+                            location_name = Game1.currentLocation!.NameOrUniqueName,
+                            favorite_number = favKeyNum
+                        }
+                    );
                 } else {
-                    MainClass.ScreenReader.Say("No destination selected.", true);
+                    MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-no_destination_selected", true);
                 }
             }
         }
@@ -608,7 +624,12 @@ internal class ObjectTracker : FeatureBase
             navigationTimer.Stop();
             navigateToFavorite = -1;
             DeleteFavorite(favKeyNum);
-            MainClass.ScreenReader.Say($"{Game1.currentLocation.NameOrUniqueName} favorite {favKeyNum} cleared.", true);
+            MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-favorite_cleared", true,
+                new {
+                    location_name = Game1.currentLocation!.NameOrUniqueName,
+                    favorite_number = favKeyNum
+                }
+            );
         }
     }
 }

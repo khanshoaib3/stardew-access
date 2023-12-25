@@ -19,7 +19,11 @@ feature-object_tracker-start_of_list = Start of list.
 feature-object_tracker-no_object = No Object
 feature-object_tracker-no_category = No Category
 feature-object_tracker-no_selected_object = No selected object
-
+feature-object_tracker-read_favorite = Favorite {$favorite_number} is {$target_object} ({$target_category})
+feature-object_tracker-favorite_unset = Favorite {$favorite_number} is unset
+feature-object_tracker-favorite_save = Saving {$selected_object} ({$selected_category}) to {$location_name} favorite {$favorite_number}
+feature-object_tracker-no_destination_selected = No destination selected
+feature-object_tracker-favorite_cleared = {$location_name} favorite {$favorite_number} cleared
 ## Tile Viewer
 
 feature-tile_viewer-relative_cursor_lock_info = Relative cursor lock: {$is_enabled ->
