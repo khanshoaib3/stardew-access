@@ -318,8 +318,8 @@ internal class ModConfig
     public KeybindList OTFavorite8 { get; set; } = KeybindList.Parse("LeftAlt + D8, RightAlt + D8");
     public KeybindList OTFavorite9 { get; set; } = KeybindList.Parse("LeftAlt + D9, RightAlt + D9");
     public KeybindList OTFavorite10 { get; set; } = KeybindList.Parse("LeftAlt + D0, RightAlt + D0");
-    public KeybindList OTFavorite11 { get; set; } = KeybindList.Parse("LeftAlt + OemMinus, RightAlt + OemMinus");
-    public KeybindList OTFavorite12 { get; set; } = KeybindList.Parse("LeftAlt + OemPlus, RightAlt + OemPlus");
+    public KeybindList OTFavoriteDecreaseStack { get; set; } = KeybindList.Parse("LeftAlt + OemMinus, RightAlt + OemMinus");
+    public KeybindList OTFavoriteIncreaseStack { get; set; } = KeybindList.Parse("LeftAlt + OemPlus, RightAlt + OemPlus");
 
     /// <summary>
     /// Cycle Up Object
