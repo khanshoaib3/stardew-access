@@ -205,7 +205,9 @@ internal class ModConfig
     /// <summary>
     /// Toggle displaying character design options
     /// </summary>
-    public KeybindList CharacterCreationMenuDesignToggleKey { get; set; } = KeybindList.Parse("LeftControl + Space");
+    public KeybindList CharacterCreationMenuDesignToggleKey { get; set; } = KeybindList.Parse("LeftControl + Space, RightControl + Space");
+    public Boolean CharacterCreationMenuDesignDefaultEnabled { get; set; } = true;
+
 
     // Bundle menu keys
 

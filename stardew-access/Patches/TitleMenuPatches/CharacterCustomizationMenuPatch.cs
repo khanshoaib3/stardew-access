@@ -31,7 +31,7 @@ namespace stardew_access.Patches
         private static string prevPantsColorSaturation = " ";
         private static string prevPantsColorValue = " ";
         private static string prevPet = " ";
-        private static bool characterDesignToggle = false;
+        private static bool characterDesignToggle = MainClass.Config.CharacterCreationMenuDesignDefaultEnabled;
         private static bool characterDesignToggleShouldSpeak = true;
         private static ClickableComponent? currentComponent = null;
 
@@ -105,12 +105,12 @@ namespace stardew_access.Patches
                     Task.Delay(200).ContinueWith(_ => { isRunning = false; });
                 }
 
-                else if (/*Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) &&*/ MainClass.Config.CharacterCreationMenuDesignToggleKey.JustPressed() && !isRunning)
+                else if (MainClass.Config.CharacterCreationMenuDesignToggleKey.JustPressed() && !isRunning)
                 {
                     characterDesignToggle = !characterDesignToggle;
                     saveGameIndex =
                         Math.Min(saveGameIndex, 5); // move to random skin button if focus was beyond that point
-                    toSpeak = string.Format("Character design controls {0}. \n {1}", Translator.Instance.Translate(
+                    toSpeak = string.Format("{0}. \n {1}", Translator.Instance.Translate(
                             "menu-character_creation-character_design_controls_toggle_info", new
                             {
                                 is_enabled = characterDesignToggle ? 1 : 0
