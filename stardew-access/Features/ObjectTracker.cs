@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -21,7 +22,7 @@ internal class ObjectTracker : FeatureBase
     private  Pathfinder? pathfinder;
     internal string? SelectedCategory;
     internal string? SelectedObject;
-    private readonly Dictionary<string, Dictionary<int, (string?, string?)>> favorites = [];
+    private Dictionary<string, Dictionary<int, (string? name, string? category)>> favorites = [];
     private const int PressInterval = 500; // Milliseconds
     private readonly Timer lastPressTimer = new(PressInterval);
     private readonly Timer navigationTimer = new(PressInterval);
@@ -59,6 +60,7 @@ internal class ObjectTracker : FeatureBase
             () => UpdateAndRunIfChanged(ref objectCounts[4], Game1.currentLocation.terrainFeatures.Count(), () => { Log.Debug("TerrainFeatures count has changed."); countHasChanged = true; }),
             () => UpdateAndRunIfChanged(ref objectCounts[5], Game1.currentLocation.largeTerrainFeatures.Count, () => { Log.Debug("LargeTerrainFeatures count has changed."); countHasChanged = true; }),
         ];
+        LoadFavorites();
     }
 
     private void OnLastPressTimerElapsed(object? sender, ElapsedEventArgs? e) => FavoriteKeysReset();
@@ -512,6 +514,7 @@ internal class ObjectTracker : FeatureBase
         }
 
         favorites[location][hotkey] = (SelectedObject, SelectedCategory);
+        SaveFavorites();
     }
 
     public (string?, string?) GetFromFavorites(int hotkey)
@@ -544,6 +547,12 @@ internal class ObjectTracker : FeatureBase
         {
             // Remove the favorite entry if it exists
             locationFavorites.Remove(favoriteNumber);
+            if (locationFavorites.Count == 0)
+            {
+                // If empty, remove the location from the favorites
+                favorites.Remove(currentLocation);
+            }
+            SaveFavorites();
         }
     }
 
@@ -631,5 +640,27 @@ internal class ObjectTracker : FeatureBase
                 }
             );
         }
+    }
+
+    internal void LoadFavorites()
+    {
+        if (JsonLoader.TryLoadJsonFile("favorites.json", out JToken? jsonToken, "assets/TileData") && jsonToken is not null)
+        {
+            favorites = jsonToken.ToObject<Dictionary<string, Dictionary<int, (string?, string?)>>>() ?? [];
+        }
+        else
+        {
+            // Handle the case where the file couldn't be loaded or the JToken is null
+            Log.Warn("Could not load favorites.json or the file is empty.");
+            favorites = [];
+        }
+    }
+
+    internal void SaveFavorites()
+    {
+        #if DEBUG
+        Log.Verbose("Saving favorites");
+        #endif
+        JsonLoader.SaveJsonFile("favorites.json", favorites, "assets/TileData");
     }
 }
