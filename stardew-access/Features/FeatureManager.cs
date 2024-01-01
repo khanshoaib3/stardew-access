@@ -91,4 +91,21 @@ public class FeatureManager
             }
         }
     }
+
+    public static void OnPlayerWarpedEvent(object? sender, WarpedEventArgs e)
+    {
+        foreach (FeatureBase feature in AllFeatures)
+        {
+            try
+            {
+                feature.OnPlayerWarped(sender, e);
+            }
+            catch (Exception exception)
+            {
+                Log.Error(
+                    $"An error occurred in OnButtonChangedEvent of {feature.GetType().FullName} feature:\n{exception.Message}\n{exception.StackTrace}");
+                throw;
+            }
+        }
+    }
 }

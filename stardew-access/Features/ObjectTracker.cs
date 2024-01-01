@@ -158,6 +158,14 @@ internal class ObjectTracker : FeatureBase
         Instance.HandleKeys(sender, e);
     }
 
+    public override void OnPlayerWarped(object? sender, WarpedEventArgs e)
+    {
+        // reset the objects being tracked
+        GetLocationObjects(resetFocus: true);
+        // reset favorites stack to the first stack for new location.
+        FavoriteStack = 0;
+    }
+
     public void Tick()
     {
         if (MainClass.Config.OTAutoRefreshing || Game1.currentLocation == null) return;

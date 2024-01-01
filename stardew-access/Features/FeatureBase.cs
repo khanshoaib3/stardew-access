@@ -17,4 +17,8 @@ public abstract class FeatureBase
     public virtual void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
     {
     }
+
+    public virtual void OnPlayerWarped(object? sender, WarpedEventArgs e)
+    {
+    }
 }

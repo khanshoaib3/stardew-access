@@ -157,6 +157,12 @@ internal class GridMovement : FeatureBase
 		base.OnButtonsChanged(sender, e);
 	}
 
+	public override void OnPlayerWarped(object? sender, WarpedEventArgs e)
+	{
+		HandleFinishedWarping();
+		StepCounter = 0;
+	}
+
 	private void Timer_Elapsed(object sender, ElapsedEventArgs e)
 	{
 		is_moving = false;
@@ -274,12 +280,6 @@ internal class GridMovement : FeatureBase
 				is_warping = true;
 			}
 		}
-	}
-
-	internal void PlayerWarped(object? sender, WarpedEventArgs e)
-	{
-		HandleFinishedWarping();
-		StepCounter = 0;
 	}
 
 	private void HandleFinishedWarping(bool failWarp = false)
