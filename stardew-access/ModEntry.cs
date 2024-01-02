@@ -191,5 +191,13 @@ namespace stardew_access
             TileUtils.CleanupMaps(e.OldLocation, e.NewLocation);
             FeatureManager.OnPlayerWarpedEvent(sender, e);
         }
+
+        internal static string GetCurrentSaveFileName()
+        {
+            string[]? pathParts = Constants.CurrentSavePath?.Split('\\');
+            string currentSave = pathParts?[pathParts.Length - 1] ?? "";
+            return currentSave;
+        }
+
     }
 }

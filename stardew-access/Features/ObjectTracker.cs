@@ -22,7 +22,7 @@ internal class ObjectTracker : FeatureBase
     private  Pathfinder? pathfinder;
     internal string? SelectedCategory;
     internal string? SelectedObject;
-    private Dictionary<string, Dictionary<int, (string? name, string? category)>> favorites = [];
+    private Dictionary<string, Dictionary<string, Dictionary<int, (string? name, string? category)>>> favorites = [];
     private const int PressInterval = 500; // Milliseconds
     private readonly Timer lastPressTimer = new(PressInterval);
     private readonly Timer navigationTimer = new(PressInterval);
@@ -523,21 +523,29 @@ internal class ObjectTracker : FeatureBase
     public void SaveToFavorites(int hotkey)
     {
         string location = Game1.currentLocation.NameOrUniqueName;
-        if (!favorites.ContainsKey(location))
+        string currentSaveFileName = MainClass.GetCurrentSaveFileName();
+        if (!favorites.ContainsKey(currentSaveFileName))
         {
-            favorites[location] = [];
+            favorites[currentSaveFileName] = [];
+        }
+        if (!favorites[currentSaveFileName].ContainsKey(location))
+        {
+            favorites[currentSaveFileName][location] = [];
         }
 
-        favorites[location][hotkey] = (SelectedObject, SelectedCategory);
+        favorites[MainClass.GetCurrentSaveFileName()][location][hotkey] = (SelectedObject, SelectedCategory);
         SaveFavorites();
     }
 
     public (string?, string?) GetFromFavorites(int hotkey)
     {
         string location = Game1.currentLocation.NameOrUniqueName;
-        if (favorites.TryGetValue(location, out var locationFavorites) && locationFavorites.TryGetValue(hotkey, out var value))
+        if (favorites.TryGetValue(MainClass.GetCurrentSaveFileName(), out var saveFileFavorites) && saveFileFavorites != null)
         {
-            return value;
+            if (saveFileFavorites.TryGetValue(location, out var locationFavorites) && locationFavorites.TryGetValue(hotkey, out var value))
+            {
+                return value;
+            }
         }
 
         return (null, null);
@@ -558,16 +566,19 @@ internal class ObjectTracker : FeatureBase
         string currentLocation = Game1.currentLocation.NameOrUniqueName;
 
         // Try to get the sub-dictionary for the current location
-        if (favorites.TryGetValue(currentLocation, out var locationFavorites))
+        if (favorites.TryGetValue(MainClass.GetCurrentSaveFileName(), out var saveFileFavorites) && saveFileFavorites != null)
         {
-            // Remove the favorite entry if it exists
-            locationFavorites.Remove(favoriteNumber);
-            if (locationFavorites.Count == 0)
+            if (saveFileFavorites.TryGetValue(currentLocation, out var locationFavorites))
             {
-                // If empty, remove the location from the favorites
-                favorites.Remove(currentLocation);
+                // Remove the favorite entry if it exists
+                locationFavorites.Remove(favoriteNumber);
+                if (locationFavorites.Count == 0)
+                {
+                    // If empty, remove the location from the favorites
+                    favorites.Remove(currentLocation);
+                }
+                SaveFavorites();
             }
-            SaveFavorites();
         }
     }
 
@@ -695,7 +706,7 @@ internal class ObjectTracker : FeatureBase
     {
         if (JsonLoader.TryLoadJsonFile("favorites.json", out JToken? jsonToken, "assets/TileData") && jsonToken is not null)
         {
-            favorites = jsonToken.ToObject<Dictionary<string, Dictionary<int, (string?, string?)>>>() ?? [];
+            favorites = jsonToken.ToObject<Dictionary<string, Dictionary<string, Dictionary<int, (string?, string?)>>>>() ?? [];
         }
         else
         {
@@ -712,4 +723,5 @@ internal class ObjectTracker : FeatureBase
         #endif
         JsonLoader.SaveJsonFile("favorites.json", favorites, "assets/TileData");
     }
+
 }
