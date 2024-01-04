@@ -188,7 +188,7 @@ public class AccessibleTile : ConditionalBase
         // Convert string arrays to string[]?, handling nulls
         string[]? withMods = jObject["WithMods"]?.ToObject<string[]>();
         string[]? conditions = jObject["Conditions"]?.ToObject<string[]>();
-        bool? isEvent = jObject["IsEvent"]?.Value<bool>();
+        bool? isEvent = jObject["IsEvent"]?.Value<bool?>() ?? false;
 
         // Parse X and Y arrays, handling potential errors and nulls
         int[]? xValues = jObject["X"]?.ToObject<int[]>();
