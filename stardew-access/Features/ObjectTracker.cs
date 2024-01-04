@@ -17,11 +17,12 @@ using static Utils.NPCUtils;
 
 internal class ObjectTracker : FeatureBase
 {
-    private  bool sortByProximity;
+    private  bool SortByProximity;
     private  TrackedObjects? trackedObjects;
     private  Pathfinder? pathfinder;
     internal string? SelectedCategory;
     internal string? SelectedObject;
+    internal Vector2? SelectedCoordinates;
     private Dictionary<string, Dictionary<string, Dictionary<int, (string? name, string? category)>>> favorites = [];
     private const int PressInterval = 500; // Milliseconds
     private readonly Timer lastPressTimer = new(PressInterval);
@@ -35,6 +36,7 @@ internal class ObjectTracker : FeatureBase
         get { return _favoriteStack; }
         set { _favoriteStack = Math.Max(0, value); }
     }
+    bool SaveCoordinatesToggle = false;
 
     private readonly int[] objectCounts = [0, 0, 0, 0, 0, 0];
     private readonly List<Action> updateActions;
@@ -53,7 +55,7 @@ internal class ObjectTracker : FeatureBase
 
     public ObjectTracker()
     {
-        sortByProximity = MainClass.Config.OTSortByProximity;
+        SortByProximity = MainClass.Config.OTSortByProximity;
         lastPressTimer.Elapsed += OnLastPressTimerElapsed;
         lastPressTimer.AutoReset = false; // So it only triggers once per start
         navigationTimer.Elapsed += OnNavigationTimerElapsed;
@@ -269,26 +271,35 @@ internal class ObjectTracker : FeatureBase
             {
                 string direction = GetDirection(playerTile, sObjectTile.Value);
                 string distance = GetDistance(playerTile, sObjectTile).ToString();
-                Log.Info($"ASDF: SelecetedObject is {SelectedObject}");
-                object? translationTokens = new
+                if (SelectedCoordinates != null)
                 {
-                    object_name = SelectedObject ??
-                                  Translator.Instance.Translate("feature-object_tracker-no_selected_object"),
-                    only_tile = readTileOnly ? 1 : 0,
-                    object_x = (int)sObjectTile.Value.X,
-                    object_y = (int)sObjectTile.Value.Y,
-                    player_x = (int)playerTile.X,
-                    player_y = (int)playerTile.Y,
-                    direction,
-                    distance
-                };
-                MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-read_selected_object", true,
-                    translationTokens: translationTokens);
-            } else{
-                Log.Info("WTF2??!?!?!?!!");
+                    object? translationTokens = new
+                    {
+                        coordinates_x = SelectedCoordinates.Value.X.ToString(),
+                        coordinates_y = SelectedCoordinates.Value.Y.ToString(),
+                        only_tile = readTileOnly ? 1 : 0,
+                        player_x = (int)playerTile.X,
+                        player_y = (int)playerTile.Y,
+                        direction,
+                        distance
+                    };
+                } else {
+                    object? translationTokens = new
+                    {
+                        object_name = SelectedObject ??
+                                      Translator.Instance.Translate("feature-object_tracker-no_selected_object"),
+                        only_tile = readTileOnly ? 1 : 0,
+                        object_x = (int)sObjectTile.Value.X,
+                        object_y = (int)sObjectTile.Value.Y,
+                        player_x = (int)playerTile.X,
+                        player_y = (int)playerTile.Y,
+                        direction,
+                        distance
+                    };
+                    MainClass.ScreenReader.TranslateAndSay(SelectedCoordinates != null ? "feature-object_tracker-read_selected_coordinates" : "feature-object_tracker-read_selected_object", true,
+                        translationTokens: translationTokens);
+                }
             }
-        } else {
-            Log.Info("WTF1??!?!?!?!!");
         }
     }
 
@@ -332,7 +343,7 @@ internal class ObjectTracker : FeatureBase
     internal void GetLocationObjects(bool resetFocus = true)
     {
         TrackedObjects tObjects = new();
-        tObjects.FindObjectsInArea(sortByProximity);
+        tObjects.FindObjectsInArea(SortByProximity);
         trackedObjects = tObjects;
 
         var objects = trackedObjects.GetObjects();
@@ -434,6 +445,7 @@ internal class ObjectTracker : FeatureBase
         else if (MainClass.Config.OTFavorite10.JustPressed()) favoriteKeyJustPressed = 10;
         else if (MainClass.Config.OTFavoriteDecreaseStack.JustPressed()) favoriteKeyJustPressed = 11;
         else if (MainClass.Config.OTFavoriteIncreaseStack.JustPressed()) favoriteKeyJustPressed = 12;
+        else if (MainClass.Config.OTFavoriteSaveCoordinatesToggle.JustPressed()) favoriteKeyJustPressed = 13;
 
         if (favoriteKeyJustPressed > 0)
         {
@@ -465,9 +477,9 @@ internal class ObjectTracker : FeatureBase
             {
                 if (switchSortingModePressed)
                 {
-                    sortByProximity = !sortByProximity;
+                    SortByProximity = !SortByProximity;
                     MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-sort_by_proximity", true,
-                        translationTokens: new { is_enabled = sortByProximity ? 1 : 0 });
+                        translationTokens: new { is_enabled = SortByProximity ? 1 : 0 });
                 }
                 GetLocationObjects(resetFocus: false);
                 if (readSelectedObjectPressed)
@@ -500,7 +512,8 @@ internal class ObjectTracker : FeatureBase
         Vector2 playerTile = player.getTileLocation();
         Vector2? sObjectTile = (sObject != null) ? sObject.TileLocation : (Vector2?)null;
 
-        Vector2? closestTile = sObject is not null ? (sObject.PathfindingOverride != null ? GetClosestTilePath((Vector2)sObject.PathfindingOverride) : GetClosestTilePath(sObjectTile)) : null;
+        Vector2? closestTile = SelectedCoordinates ?? (sObject is not null ? (sObject.PathfindingOverride != null ? GetClosestTilePath((Vector2)sObject.PathfindingOverride) : GetClosestTilePath(sObjectTile)) : null);
+        SelectedCoordinates = null;
 
         if (closestTile != null)
         {
@@ -533,7 +546,12 @@ internal class ObjectTracker : FeatureBase
             favorites[currentSaveFileName][location] = [];
         }
 
-        favorites[MainClass.GetCurrentSaveFileName()][location][hotkey] = (SelectedObject, SelectedCategory);
+        if (SaveCoordinatesToggle)
+        {
+            favorites[MainClass.GetCurrentSaveFileName()][location][hotkey] = (Vector2ToString(CurrentPlayer.FacingTile), "coordinates");
+        } else {
+            favorites[MainClass.GetCurrentSaveFileName()][location][hotkey] = (SelectedObject, SelectedCategory);
+        }
         SaveFavorites();
     }
 
@@ -557,6 +575,7 @@ internal class ObjectTracker : FeatureBase
         if (category != null && obj != null)
         {
             SelectedCategory = category;
+            SelectedCoordinates = StringToVector2(obj);
             SelectedObject = obj;
         }
     }
@@ -587,6 +606,7 @@ internal class ObjectTracker : FeatureBase
         lastFavoritePressed = 0;
         sameFavoritePressed = -1;
         lastPressTimer.Stop();
+        SelectedCoordinates = null;
     }
 
     private void HandleFavorite(int favKeyNum)
@@ -597,18 +617,32 @@ internal class ObjectTracker : FeatureBase
             {
                 case 11:
                     FavoriteStack--;
+                    MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-read_favorite_stack", true,
+                        new {
+                            stack_number = FavoriteStack + 1
+                        }
+                    );
                     break;
                 case 12:
                     FavoriteStack++;
+                    MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-read_favorite_stack", true,
+                        new {
+                            stack_number = FavoriteStack + 1
+                        }
+                    );
+                    break;
+                case 13:
+                    SaveCoordinatesToggle = !SaveCoordinatesToggle;
+                    if (!SaveCoordinatesToggle)
+                    {
+                        SetFocusToFirstObject(true);
+                    }
+                    MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-save_coordinates_toggle", true,
+                            translationTokens: new { is_enabled = SaveCoordinatesToggle ? 1 : 0 });
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(favKeyNum), favKeyNum, "The favorite key number cannot be greater than 12.");
             }
-            MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-read_favorite_stack", true,
-                new {
-                    stack_number = FavoriteStack + 1
-                }
-            );
         }
         else
         {
@@ -670,15 +704,27 @@ internal class ObjectTracker : FeatureBase
                     if (SelectedObject != null && SelectedCategory != null)
                     {
                         SaveToFavorites(favorite_number);
-                        MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-favorite_save", true,
-                            new
-                            {
-                                selected_object = SelectedObject,
-                                selected_category = SelectedCategory,
-                                location_name = Game1.currentLocation!.NameOrUniqueName,
-                                favorite_number
-                            }
-                        );
+                        if (SaveCoordinatesToggle)
+                        {
+                            MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-favorite_save_coordinates", true,
+                                new
+                                {
+                                    coordinates = Vector2ToString(CurrentPlayer.FacingTile),
+                                    location_name = Game1.currentLocation!.NameOrUniqueName,
+                                    favorite_number
+                                }
+                            );
+                        } else {
+                            MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-favorite_save", true,
+                                new
+                                {
+                                    selected_object = SelectedObject,
+                                    selected_category = SelectedCategory,
+                                    location_name = Game1.currentLocation!.NameOrUniqueName,
+                                    favorite_number
+                                }
+                            );
+                        }
                     }
                     else
                     {
@@ -722,6 +768,25 @@ internal class ObjectTracker : FeatureBase
         Log.Verbose("Saving favorites");
         #endif
         JsonLoader.SaveJsonFile("favorites.json", favorites, "assets/TileData");
+    }
+    
+    private string Vector2ToString(Vector2 coordinates)
+    {
+        return $"{coordinates.X}, {coordinates.Y}";
+    }   
+
+    private Vector2? StringToVector2(string? input)
+    {
+        if (string.IsNullOrEmpty(input))
+            return null;
+        string[] coordinates = input.Split(',');
+        if (coordinates.Length != 2)
+            return null;
+        if (float.TryParse(coordinates[0].Trim(), out float x) && float.TryParse(coordinates[1].Trim(), out float y))
+        {
+            return new Vector2(x, y);
+        }
+        return null;
     }
 
 }

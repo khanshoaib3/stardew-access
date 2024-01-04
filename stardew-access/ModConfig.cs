@@ -322,7 +322,8 @@ internal class ModConfig
     public KeybindList OTFavorite10 { get; set; } = KeybindList.Parse("LeftAlt + D0, RightAlt + D0");
     public KeybindList OTFavoriteDecreaseStack { get; set; } = KeybindList.Parse("LeftAlt + OemMinus, RightAlt + OemMinus");
     public KeybindList OTFavoriteIncreaseStack { get; set; } = KeybindList.Parse("LeftAlt + OemPlus, RightAlt + OemPlus");
-
+    public KeybindList OTFavoriteSaveCoordinatesToggle { get; set; } = KeybindList.Parse("LeftAlt + OemTilde, RightAlt + OemTilde");
+    
     /// <summary>
     /// Cycle Up Object
     /// </summary>

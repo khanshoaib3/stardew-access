@@ -10,6 +10,11 @@ feature-object_tracker-read_selected_object = {$object_name} {$only_tile ->
     [0] is {$direction} {$distance}
     *[1] {EMPTYSTRING()}
   } at {$object_x}-{$object_y}, player at {$player_x}-{$player_y}
+feature-object_tracker-read_selected_coordinates = Coordinates {$coordinates} {$only_tile ->
+    [0] is {$direction} {$distance}
+    *[1] {EMPTYSTRING()}
+  } player at {$player_x}-{$player_y}
+
 feature-object_tracker-moving_to = Moving to {$object_x}-{$object_y}.
 feature-object_tracker-could_not_find_path = Could not find path to object.
 feature-object_tracker-no_objects_found = No objects found.
@@ -21,8 +26,13 @@ feature-object_tracker-no_category = No Category
 feature-object_tracker-no_selected_object = No selected object
 feature-object_tracker-read_favorite = Favorite {$favorite_number} is {$target_object} ({$target_category})
 feature-object_tracker-read_favorite_stack  = Favorite stack {$stack_number}
+feature-object_tracker-save_coordinates_toggle = Save coordinates: {$is_enabled ->
+    [0] Disabled
+    *[1] Enabled
+  }
 feature-object_tracker-favorite_unset = Favorite {$favorite_number} is unset
 feature-object_tracker-favorite_save = Saving {$selected_object} ({$selected_category}) to {$location_name} favorite {$favorite_number}
+feature-object_tracker-favorite_save_coordinates = Saving coordinates {$coordinates} to {$location_name} favorite {$favorite_number}
 feature-object_tracker-no_destination_selected = No destination selected
 feature-object_tracker-favorite_cleared = {$location_name} favorite {$favorite_number} cleared
 ## Tile Viewer
