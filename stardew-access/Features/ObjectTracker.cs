@@ -446,6 +446,7 @@ internal class ObjectTracker : FeatureBase
         else if (MainClass.Config.OTFavoriteDecreaseStack.JustPressed()) favoriteKeyJustPressed = 11;
         else if (MainClass.Config.OTFavoriteIncreaseStack.JustPressed()) favoriteKeyJustPressed = 12;
         else if (MainClass.Config.OTFavoriteSaveCoordinatesToggle.JustPressed()) favoriteKeyJustPressed = 13;
+        else if (MainClass.Config.OTFavoriteSaveDefault.JustPressed()) favoriteKeyJustPressed = 14;
 
         if (favoriteKeyJustPressed > 0)
         {
@@ -611,6 +612,18 @@ internal class ObjectTracker : FeatureBase
 
     private void HandleFavorite(int favKeyNum)
     {
+        if (lastFavoritePressed == favKeyNum)
+        {
+            sameFavoritePressed++;
+        }
+        else
+        {
+            sameFavoritePressed = 1;
+            lastFavoritePressed = favKeyNum;
+            lastPressTimer.Stop();
+            lastPressTimer.Start();
+        }
+
         if (favKeyNum > 10)
         {
             switch (favKeyNum)
@@ -640,24 +653,16 @@ internal class ObjectTracker : FeatureBase
                     MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-save_coordinates_toggle", true,
                             translationTokens: new { is_enabled = SaveCoordinatesToggle ? 1 : 0 });
                     break;
+                case 14:
+                    if (sameFavoritePressed <= 1)
+                        SetAsDefaultFavorites();
+                    else
+                        ClearDefaultFavorites();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(favKeyNum), favKeyNum, "The favorite key number cannot be greater than 12.");
             }
-        }
-        else
-        {
-
-            if (lastFavoritePressed == favKeyNum)
-            {
-                sameFavoritePressed++;
-            }
-            else
-            {
-                sameFavoritePressed = 1;
-                lastFavoritePressed = favKeyNum;
-                lastPressTimer.Stop();
-                lastPressTimer.Start();
-            }
+        } else {
 
             int favorite_number = favKeyNum + (FavoriteStack * 10);
             string? targetObject, targetCategory;
@@ -753,6 +758,11 @@ internal class ObjectTracker : FeatureBase
         if (JsonLoader.TryLoadJsonFile("favorites.json", out JToken? jsonToken, "assets/TileData") && jsonToken is not null)
         {
             favorites = jsonToken.ToObject<Dictionary<string, Dictionary<string, Dictionary<int, (string?, string?)>>>>() ?? [];
+            if (!favorites.TryGetValue(MainClass.GetCurrentSaveFileName(), out var saveFileFavorites) && (favorites.TryGetValue("", out var defaultFavorites) && defaultFavorites != null))
+            {
+                LoadDefaultFavorites();
+            }
+            
         }
         else
         {
@@ -760,6 +770,30 @@ internal class ObjectTracker : FeatureBase
             Log.Warn("Could not load favorites.json or the file is empty.");
             favorites = [];
         }
+    }
+
+    private void LoadDefaultFavorites()
+    {
+        if (favorites.TryGetValue("", out var defaultFavorites) && defaultFavorites != null)
+        {
+            favorites[MainClass.GetCurrentSaveFileName()] = defaultFavorites;
+        }
+    }
+    
+    private void SetAsDefaultFavorites()
+    {
+        if (favorites.TryGetValue(MainClass.GetCurrentSaveFileName(), out var saveFileFavorites) && saveFileFavorites != null)
+        {
+            favorites[""] = saveFileFavorites;
+            MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-favorite_set_as_default", true);
+            SaveFavorites();
+        }
+    }
+    
+    private void ClearDefaultFavorites()
+    {
+        favorites.Remove("");
+        MainClass.ScreenReader.TranslateAndSay("feature-object_tracker-favorite_default_cleared", true);
     }
 
     internal void SaveFavorites()

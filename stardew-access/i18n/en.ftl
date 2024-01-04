@@ -33,8 +33,11 @@ feature-object_tracker-save_coordinates_toggle = Save coordinates: {$is_enabled 
 feature-object_tracker-favorite_unset = Favorite {$favorite_number} is unset
 feature-object_tracker-favorite_save = Saving {$selected_object} ({$selected_category}) to {$location_name} favorite {$favorite_number}
 feature-object_tracker-favorite_save_coordinates = Saving coordinates {$coordinates} to {$location_name} favorite {$favorite_number}
-feature-object_tracker-no_destination_selected = No destination selected
 feature-object_tracker-favorite_cleared = {$location_name} favorite {$favorite_number} cleared
+feature-object_tracker-favorite_set_as_default = Saving current favorites as default
+feature-object_tracker-favorite_default_cleared = Default favorites cleared
+feature-object_tracker-no_destination_selected = No destination selected
+
 ## Tile Viewer
 
 feature-tile_viewer-relative_cursor_lock_info = Relative cursor lock: {$is_enabled ->
