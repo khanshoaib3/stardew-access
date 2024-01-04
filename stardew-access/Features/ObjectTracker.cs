@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -23,7 +24,9 @@ internal class ObjectTracker : FeatureBase
     internal string? SelectedCategory;
     internal string? SelectedObject;
     internal Vector2? SelectedCoordinates;
-    private Dictionary<string, Dictionary<string, Dictionary<int, (string? name, string? category)>>> favorites = [];
+    private Dictionary<string, Dictionary<string, Dictionary<int, (string? name, string? category)>>>
+    favorites = new Dictionary<string, Dictionary<string, Dictionary<int, (string? name, string? category)>>>(
+        StringComparer.OrdinalIgnoreCase);
     private const int PressInterval = 500; // Milliseconds
     private readonly Timer lastPressTimer = new(PressInterval);
     private readonly Timer navigationTimer = new(PressInterval);
@@ -559,6 +562,11 @@ internal class ObjectTracker : FeatureBase
     public (string?, string?) GetFromFavorites(int hotkey)
     {
         string location = Game1.currentLocation.NameOrUniqueName;
+        if (!favorites.TryGetValue(MainClass.GetCurrentSaveFileName(), out var _saveFileFavorites) || _saveFileFavorites != null)
+        {
+            LoadDefaultFavorites();
+            SaveFavorites();
+        }
         if (favorites.TryGetValue(MainClass.GetCurrentSaveFileName(), out var saveFileFavorites) && saveFileFavorites != null)
         {
             if (saveFileFavorites.TryGetValue(location, out var locationFavorites) && locationFavorites.TryGetValue(hotkey, out var value))
@@ -755,20 +763,48 @@ internal class ObjectTracker : FeatureBase
 
     internal void LoadFavorites()
     {
-        if (JsonLoader.TryLoadJsonFile("favorites.json", out JToken? jsonToken, "assets/TileData") && jsonToken is not null)
+        try
         {
-            favorites = jsonToken.ToObject<Dictionary<string, Dictionary<string, Dictionary<int, (string?, string?)>>>>() ?? [];
-            if (!favorites.TryGetValue(MainClass.GetCurrentSaveFileName(), out var saveFileFavorites) && (favorites.TryGetValue("", out var defaultFavorites) && defaultFavorites != null))
+            if (JsonLoader.TryLoadJsonFile("favorites.json", out JToken? jsonToken, "assets/TileData") && jsonToken is not null)
             {
-                LoadDefaultFavorites();
+                try
+                {
+                    favorites = jsonToken.ToObject<Dictionary<string, Dictionary<string, Dictionary<int, (string?, string?)>>>>() ?? new Dictionary<string, Dictionary<string, Dictionary<int, (string?, string?)>>>();
+                }
+                catch (JsonSerializationException)
+                {
+                    // Attempt to load in the old format
+                    var oldFormatFavorites = jsonToken.ToObject<Dictionary<string, Dictionary<int, (string?, string?)>>>();
+                    if (oldFormatFavorites != null)
+                    {
+                        favorites = new Dictionary<string, Dictionary<string, Dictionary<int, (string?, string?)>>>
+                        {
+                            [""] = oldFormatFavorites
+                        };
+                        Log.Alert("Loaded and converted favorites from the old format to the new format.");
+                        LoadDefaultFavorites();
+                        SaveFavorites();
+                    }
+                    else
+                    {
+                        favorites = new Dictionary<string, Dictionary<string, Dictionary<int, (string?, string?)>>>();
+                    }
+                }
+
+                if (!favorites.TryGetValue(MainClass.GetCurrentSaveFileName(), out var saveFileFavorites) && favorites.TryGetValue("", out var defaultFavorites) && defaultFavorites != null)
+                {
+                    LoadDefaultFavorites();
+                }
             }
-            
+            else
+            {
+                throw new FileNotFoundException("Could not load favorites.json or the file is empty.");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            // Handle the case where the file couldn't be loaded or the JToken is null
-            Log.Warn("Could not load favorites.json or the file is empty.");
-            favorites = [];
+            Log.Warn(ex.Message);
+            favorites = new Dictionary<string, Dictionary<string, Dictionary<int, (string?, string?)>>>();
         }
     }
 
