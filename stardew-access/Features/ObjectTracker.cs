@@ -25,8 +25,7 @@ internal class ObjectTracker : FeatureBase
     internal string? SelectedObject;
     internal Vector2? SelectedCoordinates;
     private Dictionary<string, Dictionary<string, Dictionary<int, (string? name, string? category)>>>
-    favorites = new Dictionary<string, Dictionary<string, Dictionary<int, (string? name, string? category)>>>(
-        StringComparer.OrdinalIgnoreCase);
+    favorites = new(StringComparer.OrdinalIgnoreCase);
     private const int PressInterval = 500; // Milliseconds
     private readonly Timer lastPressTimer = new(PressInterval);
     private readonly Timer navigationTimer = new(PressInterval);
@@ -769,7 +768,7 @@ internal class ObjectTracker : FeatureBase
             {
                 try
                 {
-                    favorites = jsonToken.ToObject<Dictionary<string, Dictionary<string, Dictionary<int, (string?, string?)>>>>() ?? new Dictionary<string, Dictionary<string, Dictionary<int, (string?, string?)>>>();
+                    favorites = jsonToken.ToObject<Dictionary<string, Dictionary<string, Dictionary<int, (string?, string?)>>>>() ?? [];
                 }
                 catch (JsonSerializationException)
                 {
@@ -840,12 +839,12 @@ internal class ObjectTracker : FeatureBase
         JsonLoader.SaveJsonFile("favorites.json", favorites, "assets/TileData");
     }
     
-    private string Vector2ToString(Vector2 coordinates)
+    private static string Vector2ToString(Vector2 coordinates)
     {
         return $"{coordinates.X}, {coordinates.Y}";
     }   
 
-    private Vector2? StringToVector2(string? input)
+    private static Vector2? StringToVector2(string? input)
     {
         if (string.IsNullOrEmpty(input))
             return null;

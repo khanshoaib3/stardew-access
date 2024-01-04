@@ -194,8 +194,13 @@ namespace stardew_access
 
         internal static string GetCurrentSaveFileName()
         {
-            string[]? pathParts = Constants.CurrentSavePath?.Split('\\');
-            string currentSave = pathParts?[pathParts.Length - 1] ?? "";
+            if (string.IsNullOrEmpty(Constants.CurrentSavePath))
+            {
+                return "";
+            }
+
+            string[] pathParts = Constants.CurrentSavePath.Split(Path.DirectorySeparatorChar);
+            string currentSave = pathParts[^1];
             #if DEBUG
             Log.Verbose($"Savefile name is: {currentSave}");
             #endif
