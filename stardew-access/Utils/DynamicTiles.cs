@@ -549,6 +549,23 @@ public class DynamicTiles
             }
         }
 
+
+        // Back[547]: The gate preventing access to the exit {Buildings[0]: Closed & Buildings[-1]:Opened} 
+        // Back[496]: Pressure pad (Unpressed)
+        // Back[497]: Pressure pad (pressed)
+        // Buildings[546]: Left pillar of gate
+        // Buildings[548]: Right pillar of gate
+
+        if (dungeon.getTileIndexAt(new Point(x, y), "Back") is 496 or 497)
+        {
+            return ("Pressure Pad", CATEGORY.Interactables);
+        }
+
+        if (dungeon.getTileIndexAt(new Point(x, y), "Back") is 547 && dungeon.getTileIndexAt(new Point(x, y), "Buildings") is 0)
+        {
+            return ("Gate", CATEGORY.Doors);
+        }
+
         return (null, null);
     }
 

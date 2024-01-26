@@ -83,6 +83,16 @@ public class TileInfoMenu(int tileX, int tileY) : DialogueBox("", [MarkTileRespo
             {
                 MainClass.ScreenReader.Say(
                     TileInfo.GetNameAtTileWithBlockedOrEmptyIndication(new Vector2(_tileX, _tileY)), true);
+
+                Log.Debug($"*******************************************");
+                Log.Debug($"Tile: {_tileX}x {_tileY}y");
+                Log.Debug($"Back: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "Back")}");
+                Log.Debug($"Buildings: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "Buildings")}");
+                Log.Debug($"Paths: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "Paths")}");
+                Log.Debug($"Front: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "Front")}");
+                Log.Debug($"AlwaysFront: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "AlwaysFront")}");
+                Log.Debug($"*******************************************");
+
                 exitThisMenu();
                 break;
             }
