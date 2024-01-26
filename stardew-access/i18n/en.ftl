@@ -163,6 +163,8 @@ tile-busy-prefix = Busy {$content}
 tile_name-stepping_stone = Stepping stone
 tile_name-pathway = Pathway
 tile_name-flooring = Flooring
+tile-volcano_dungeon-pressure_pad = Pressure Pad
+tile-volcano_dungeon-gate = Gate
 
 ## Entrances
 

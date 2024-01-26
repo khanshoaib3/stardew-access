@@ -558,12 +558,12 @@ public class DynamicTiles
 
         if (dungeon.getTileIndexAt(new Point(x, y), "Back") is 496 or 497)
         {
-            return ("Pressure Pad", CATEGORY.Interactables);
+            return ("tile-volcano_dungeon-pressure_pad", CATEGORY.Interactables);
         }
 
         if (dungeon.getTileIndexAt(new Point(x, y), "Back") is 547 && dungeon.getTileIndexAt(new Point(x, y), "Buildings") is 0)
         {
-            return ("Gate", CATEGORY.Doors);
+            return ("tile-volcano_dungeon-gate", CATEGORY.Doors);
         }
 
         return (null, null);
