@@ -24,6 +24,7 @@ using Translation;
 /// - IslandLocation
 /// - LibraryMuseum
 /// - Town
+/// - MineShaft
 ///
 /// And the following Island LocationTypes:
 /// - IslandNorth
@@ -791,6 +792,26 @@ public class DynamicTiles
     }
 
     /// <summary>
+    /// Retrieves information about interactables or other features at a given coordinate in the MineShaft.
+    /// </summary>
+    /// <param name="mineShaft">MineShaft instance for reference</param>
+    /// <param name="x">The x-coordinate to search.</param>
+    /// <param name="y">The y-coordinate to search.</param>
+    /// <param name="lessInfo">Optional. If true, returns information only if the tile coordinates match the resource clump's origin. Default is false.</param>
+    /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
+    private static (string? translationKeyOrName, CATEGORY? category) GetMineShaftInfo(MineShaft mineShaft, int x, int y, bool lessInfo = false)
+    {
+        int buildingsIndex = mineShaft.getTileIndexAt(new Point(x, y), "Buildings");
+        
+        if (buildingsIndex is 194 or 224)
+        {
+            return (mineShaft.mineLevel is >= MineShaft.frostArea and < MineShaft.lavaArea ? "Bag" : "Minecart", CATEGORY.Interactables);
+        }
+
+        return (null, null);
+    }
+
+    /// <summary>
     /// Gets the feeding bench information for barns and coops.
     /// </summary>
     /// <param name="currentLocation">The current GameLocation instance.</param>
@@ -908,6 +929,7 @@ public class DynamicTiles
             LibraryMuseum libraryMuseum => GetLibraryMuseumInfo(libraryMuseum, x, y, lessInfo),
             Town town => GetTownInfo(town, x, y, lessInfo),
             Railroad railroad => GetRailroadInfo(railroad, x, y, lessInfo),
+            MineShaft mineShaft => GetMineShaftInfo(mineShaft, x, y, lessInfo),
             _ => GetLocationByNameInfo(currentLocation, x, y, lessInfo)
         };
     }
