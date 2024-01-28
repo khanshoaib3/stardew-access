@@ -349,7 +349,7 @@ namespace stardew_access.Utils
         {
             // Get the terrain feature from the reference
             var terrainFeature = terrain.Get();
-            return TerrainUtils.GetTerrainFeatureInfoAndCategory(terrainFeature);
+            return TerrainUtils.GetTerrainFeatureInfoAndCategory(terrainFeature, Game1.currentLocation is MineShaft);
         }
         #region Objects
         /// <summary>

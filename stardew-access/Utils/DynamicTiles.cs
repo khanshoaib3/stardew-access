@@ -8,6 +8,9 @@ namespace stardew_access.Utils;
 
 using static JsonLoader;
 using Translation;
+using xTile.Dimensions;
+using StardewValley.TerrainFeatures;
+using xTile.Tiles;
 
 /// <summary>
 /// Provides methods to locate tiles of interest in various game locations that are conditional or unpredictable (I.E. not static).
@@ -801,11 +804,23 @@ public class DynamicTiles
     /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
     private static (string? translationKeyOrName, CATEGORY? category) GetMineShaftInfo(MineShaft mineShaft, int x, int y, bool lessInfo = false)
     {
-        int buildingsIndex = mineShaft.getTileIndexAt(new Point(x, y), "Buildings");
-        
-        if (buildingsIndex is 194 or 224)
+        if (mineShaft.getTileIndexAt(new Point(x, y), "Buildings") is 194 or 224)
         {
-            return (mineShaft.mineLevel is >= MineShaft.frostArea and < MineShaft.lavaArea ? "Bag" : "Minecart", CATEGORY.Interactables);
+            return (mineShaft.getMineArea() is MineShaft.frostArea ? "Bag" : "Minecart", CATEGORY.Interactables);
+        }
+
+        if (mineShaft.doesTileHaveProperty(x, y, "Type", "Back") is "Dirt")
+        {
+            if (mineShaft.doesTileHaveProperty(x, y, "Diggable", "Back") != null)
+            {
+                bool hasAlreadyDug = mineShaft.terrainFeatures.FieldDict.TryGetValue(new Vector2(x, y), out var tf) && tf.Get() is HoeDirt { crop: null };
+                return hasAlreadyDug ? (null, null) : ("Dirt", CATEGORY.Flooring);
+            }
+            
+            if (mineShaft.getTileIndexAt(new Point(x, y), "Back") is 0)
+            {
+                return ("Duggy Hole", CATEGORY.Decor);
+            }
         }
 
         return (null, null);
