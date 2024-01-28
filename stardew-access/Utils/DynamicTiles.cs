@@ -804,9 +804,11 @@ public class DynamicTiles
     /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
     private static (string? translationKeyOrName, CATEGORY? category) GetMineShaftInfo(MineShaft mineShaft, int x, int y, bool lessInfo = false)
     {
-        if (mineShaft.getTileIndexAt(new Point(x, y), "Buildings") is 194 or 224)
+        if (mineShaft.getTileIndexAt(new Point(x, y), "Buildings") is 194 or 195 or 224)
         {
-            return (mineShaft.getMineArea() is MineShaft.frostArea ? "Bag" : "Minecart", CATEGORY.Interactables);
+            return (mineShaft.getMineArea() is MineShaft.frostArea 
+                ? "tile-mine_shaft-coal_bag" 
+                : Translator.Instance.Translate("static_tile-common-minecart", TranslationCategory.StaticTiles), CATEGORY.Interactables);
         }
 
         if (mineShaft.doesTileHaveProperty(x, y, "Type", "Back") is "Dirt")
@@ -814,12 +816,12 @@ public class DynamicTiles
             if (mineShaft.doesTileHaveProperty(x, y, "Diggable", "Back") != null)
             {
                 bool hasAlreadyDug = mineShaft.terrainFeatures.FieldDict.TryGetValue(new Vector2(x, y), out var tf) && tf.Get() is HoeDirt { crop: null };
-                return hasAlreadyDug ? (null, null) : ("Dirt", CATEGORY.Flooring);
+                return hasAlreadyDug ? (null, null) : ("tile-mine_shaft-dirt", CATEGORY.Flooring);
             }
             
             if (mineShaft.getTileIndexAt(new Point(x, y), "Back") is 0)
             {
-                return ("Duggy Hole", CATEGORY.Decor);
+                return ("tile-mine_shaft-duggy_hole", CATEGORY.Decor);
             }
         }
 

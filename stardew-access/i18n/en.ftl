@@ -130,6 +130,9 @@ tile-building_animal_door-suffix = {$name} Animal Door {$is_open ->
     }
     *[1] Opened
   }
+tile-mine_shaft-coal_bag = Bag
+tile-mine_shaft-dirt = Dirt
+tile-mine_shaft-duggy_hole = Duggy Hole
 
 ## Interactable Tiles
 
