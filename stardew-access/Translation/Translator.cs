@@ -151,7 +151,7 @@ namespace stardew_access.Translation
                         true);
                 }
                 #endif
-                var result = requiredEntries.Get(key, tokens);
+                var result = tokens is null ? requiredEntries.Get(key) : requiredEntries.Get(key, tokens);
                 #if DEBUG
                 Log.Verbose($"Translated to: {result}", true);
                 #endif
