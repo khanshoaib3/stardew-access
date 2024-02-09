@@ -2127,7 +2127,7 @@
       "Category": "interactable"
     }
   ],
-  "RailRoad": [
+  "Railroad": [
     {
       "NameOrTranslationKey": "static_tile-railroad-empty_box",
       "X": [45],
