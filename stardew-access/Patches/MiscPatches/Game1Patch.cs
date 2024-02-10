@@ -1,4 +1,5 @@
 using HarmonyLib;
+using stardew_access.Utils;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -55,6 +56,12 @@ namespace stardew_access.Patches
 
                 if (!Game1.player.isMoving())
                     return true;
+
+                if (cueName is "grassyStep" or "sandyStep" or "snowyStep" or "stoneStep" or "thudStep" or "woodyStep"
+                        && TileInfo.IsCollidingAtTile(Game1.currentLocation, (int)CurrentPlayer.FacingTile.X, (int)CurrentPlayer.FacingTile.Y))
+                {
+                    return false;
+                }
             }
             catch (Exception e)
             {
