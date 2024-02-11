@@ -31,7 +31,7 @@ jobs:
           fetch-depth: 0
 
       - name: Checkout pull request
-        run: hub pr checkout ${{ github.event.issue.number }}
+        run: gh pr checkout ${{ github.event.issue.number }}
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
 
