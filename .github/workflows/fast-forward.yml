@@ -1,5 +1,6 @@
 name: Fast-forward
 # https://github.com/orgs/community/discussions/4618#discussioncomment-2795556
+# TODO Incorporate this: https://medium.com/@_samkitjain/override-githubs-merge-strategies-cea7eb789e23
 
 on:
   issue_comment:
@@ -38,6 +39,6 @@ jobs:
       - name: Fast-forward & push
         run: |
           export PR_COMMIT=$(git rev-parse HEAD)
-          git checkout main
+          git checkout development
           git merge --ff-only "$PR_COMMIT"
-          git push origin main
+          git push origin development
