@@ -8,8 +8,8 @@ namespace stardew_access.Patches;
 internal class ChatBoxPatch : IPatch
 {
     private static int currentChatMessageIndex = 0;
-    private static string prevTextBoxMessage = "";
     private static bool isChatRunning = false;
+    private static bool isChatBoxActive = false;
 
     public void Apply(Harmony harmony)
     {
@@ -17,6 +17,21 @@ internal class ChatBoxPatch : IPatch
            original: AccessTools.DeclaredMethod(typeof(ChatBox), "update"),
            postfix: new HarmonyMethod(typeof(ChatBoxPatch), nameof(ChatBoxPatch.UpdatePatch))
         );
+
+        harmony.Patch(
+           original: AccessTools.DeclaredMethod(typeof(KeyboardDispatcher), "Event_TextInput"),
+           prefix: new HarmonyMethod(typeof(ChatBoxPatch), nameof(ChatBoxPatch.KeyboardDispatcher_RecieveTextInputPatch))
+        );
+    }
+
+    private static bool KeyboardDispatcher_RecieveTextInputPatch()
+    {
+        if (!isChatBoxActive) return true;
+        
+        bool isLeftAltPressed = Game1.input.GetKeyboardState().IsKeyDown(Keys.LeftAlt);
+        if (!isLeftAltPressed) return true;
+
+        return false;
     }
 
     private static void UpdatePatch(ChatBox __instance, List<ChatMessage> ___messages)
@@ -25,6 +40,7 @@ internal class ChatBoxPatch : IPatch
         {
             if (__instance.chatBox.Selected)
             {
+                isChatBoxActive = true;
                 bool isLeftAltPressed = Game1.input.GetKeyboardState().IsKeyDown(Keys.LeftAlt);
 
                 bool isPrevButtonPressed = MainClass.Config.ChatMenuNextKey.JustPressed();
@@ -73,16 +89,10 @@ internal class ChatBoxPatch : IPatch
                     CycleThroughChatMessages(true, ___messages);
                     Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
                 }
-
-                // Log.Info($"{__instance.chatBox.Text}");
-                if (prevTextBoxMessage != __instance.chatBox.Text)
-                {
-                    prevTextBoxMessage = __instance.chatBox.Text;
-                    MainClass.ScreenReader.Say(prevTextBoxMessage, true);
-                }
             }
             else
             {
+                isChatBoxActive = false;
                 currentChatMessageIndex = 0;
                 if (___messages.Count > 0)
                 {
