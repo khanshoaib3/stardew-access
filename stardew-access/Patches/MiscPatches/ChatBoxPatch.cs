@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Microsoft.Xna.Framework.Input;
+using stardew_access.Features;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -27,9 +28,10 @@ internal class ChatBoxPatch : IPatch
     private static bool KeyboardDispatcher_RecieveTextInputPatch()
     {
         if (!isChatBoxActive) return true;
-        
+
         bool isLeftAltPressed = Game1.input.GetKeyboardState().IsKeyDown(Keys.LeftAlt);
-        if (!isLeftAltPressed) return true;
+        bool isRightAltPressed = Game1.input.GetKeyboardState().IsKeyDown(Keys.RightAlt);
+        if (!isLeftAltPressed && !isRightAltPressed) return true;
 
         return false;
     }
@@ -42,11 +44,12 @@ internal class ChatBoxPatch : IPatch
             {
                 isChatBoxActive = true;
                 bool isLeftAltPressed = Game1.input.GetKeyboardState().IsKeyDown(Keys.LeftAlt);
+                bool isRightAltPressed = Game1.input.GetKeyboardState().IsKeyDown(Keys.RightAlt);
 
                 bool isPrevButtonPressed = MainClass.Config.ChatMenuNextKey.JustPressed();
                 bool isNextButtonPressed = MainClass.Config.ChatMenuPreviousKey.JustPressed();
 
-                if (isLeftAltPressed && !isChatRunning)
+                if ((isLeftAltPressed || isRightAltPressed) && !isChatRunning)
                 {
                     int pressedNumKey = -1;
                     foreach (var key in Game1.input.GetKeyboardState().GetPressedKeys())
@@ -68,12 +71,23 @@ internal class ChatBoxPatch : IPatch
                         if (pressedNumKey != -1) break;
                     }
 
-                    if (pressedNumKey != -1 && ___messages.Count >= pressedNumKey)
+                    if (pressedNumKey != -1)
                     {
-                        isChatRunning = true;
-                        MainClass.ScreenReader.Say(GetMessage(___messages[^pressedNumKey]), true);
-                        Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
+                        if (isLeftAltPressed && ___messages.Count >= pressedNumKey)
+                        {
+                            isChatRunning = true;
+                            MainClass.ScreenReader.Say(GetMessage(___messages[^pressedNumKey]), true);
+                            Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
+                        }
+
+                        if (isRightAltPressed && GameStateNarrator.HudMessagesBuffer.Count >= pressedNumKey)
+                        {
+                            isChatRunning = true;
+                            MainClass.ScreenReader.Say(GameStateNarrator.HudMessagesBuffer[^pressedNumKey], true);
+                            Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
+                        }
                     }
+
                     return;
                 }
 
