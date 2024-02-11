@@ -40,81 +40,18 @@ internal class ChatBoxPatch : IPatch
     {
         try
         {
-            if (__instance.chatBox.Selected)
+            isChatBoxActive = __instance.isActive();
+
+            if (HandleSpeakingChatAndNotificationHistory(___messages)) return;
+            if (HandleSpeakingNextAndPrevChat(___messages)) return;
+
+            currentChatMessageIndex = 0;
+            if (___messages.Count > 0)
             {
-                isChatBoxActive = true;
-                bool isLeftAltPressed = Game1.input.GetKeyboardState().IsKeyDown(Keys.LeftAlt);
-                bool isRightAltPressed = Game1.input.GetKeyboardState().IsKeyDown(Keys.RightAlt);
-
-                bool isPrevButtonPressed = MainClass.Config.ChatMenuNextKey.JustPressed();
-                bool isNextButtonPressed = MainClass.Config.ChatMenuPreviousKey.JustPressed();
-
-                if ((isLeftAltPressed || isRightAltPressed) && !isChatRunning)
+                string toSpeak = GetMessage(___messages[^1]);
+                if (!string.IsNullOrWhiteSpace(toSpeak))
                 {
-                    int pressedNumKey = -1;
-                    foreach (var key in Game1.input.GetKeyboardState().GetPressedKeys())
-                    {
-                        pressedNumKey = key switch
-                        {
-                            Keys.NumPad1 or Keys.D1 => 1,
-                            Keys.NumPad2 or Keys.D2 => 2,
-                            Keys.NumPad3 or Keys.D3 => 3,
-                            Keys.NumPad4 or Keys.D4 => 4,
-                            Keys.NumPad5 or Keys.D5 => 5,
-                            Keys.NumPad6 or Keys.D6 => 6,
-                            Keys.NumPad7 or Keys.D7 => 7,
-                            Keys.NumPad8 or Keys.D8 => 8,
-                            Keys.NumPad9 or Keys.D9 => 9,
-                            _ => -1,
-                        };
-
-                        if (pressedNumKey != -1) break;
-                    }
-
-                    if (pressedNumKey != -1)
-                    {
-                        if (isLeftAltPressed && ___messages.Count >= pressedNumKey)
-                        {
-                            isChatRunning = true;
-                            MainClass.ScreenReader.Say(GetMessage(___messages[^pressedNumKey]), true);
-                            Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
-                        }
-
-                        if (isRightAltPressed && GameStateNarrator.HudMessagesBuffer.Count >= pressedNumKey)
-                        {
-                            isChatRunning = true;
-                            MainClass.ScreenReader.Say(GameStateNarrator.HudMessagesBuffer[^pressedNumKey], true);
-                            Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
-                        }
-                    }
-
-                    return;
-                }
-
-                if (isNextButtonPressed && !isChatRunning)
-                {
-                    isChatRunning = true;
-                    CycleThroughChatMessages(false, ___messages);
-                    Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
-                }
-                else if (isPrevButtonPressed && !isChatRunning)
-                {
-                    isChatRunning = true;
-                    CycleThroughChatMessages(true, ___messages);
-                    Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
-                }
-            }
-            else
-            {
-                isChatBoxActive = false;
-                currentChatMessageIndex = 0;
-                if (___messages.Count > 0)
-                {
-                    string toSpeak = GetMessage(___messages[^1]);
-                    if (!string.IsNullOrWhiteSpace(toSpeak))
-                    {
-                        MainClass.ScreenReader.SayWithChatChecker(toSpeak, false);
-                    }
+                    MainClass.ScreenReader.SayWithChatChecker(toSpeak, false);
                 }
             }
         }
@@ -122,6 +59,64 @@ internal class ChatBoxPatch : IPatch
         {
             Log.Error($"An error occurred in chat box patch:\n{e.Message}\n{e.StackTrace}");
         }
+    }
+
+    private static bool HandleSpeakingNextAndPrevChat(List<ChatMessage> ___messages)
+    {
+        if (!isChatBoxActive) return false;
+
+        bool isPrevButtonPressed = MainClass.Config.ChatMenuNextKey.JustPressed();
+        bool isNextButtonPressed = MainClass.Config.ChatMenuPreviousKey.JustPressed();
+
+        if (isNextButtonPressed && !isChatRunning)
+        {
+            isChatRunning = true;
+            CycleThroughChatMessages(false, ___messages);
+            Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
+            return true;
+        }
+
+        if (isPrevButtonPressed && !isChatRunning)
+        {
+            isChatRunning = true;
+            CycleThroughChatMessages(true, ___messages);
+            Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
+            return true;
+        }
+
+        return false;
+    }
+
+    private static bool HandleSpeakingChatAndNotificationHistory(List<ChatMessage> ___messages)
+    {
+        if (!isChatBoxActive) return false;
+
+        bool isLeftAltPressed = Game1.input.GetKeyboardState().IsKeyDown(Keys.LeftAlt);
+        bool isRightAltPressed = Game1.input.GetKeyboardState().IsKeyDown(Keys.RightAlt);
+        if ((isLeftAltPressed || isRightAltPressed) && !isChatRunning)
+        {
+            int pressedNumKey = GetPressedNumKey();
+
+            if (pressedNumKey != -1)
+            {
+                if (isLeftAltPressed && ___messages.Count >= pressedNumKey)
+                {
+                    isChatRunning = true;
+                    MainClass.ScreenReader.Say(GetMessage(___messages[^pressedNumKey]), true);
+                    Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
+                }
+
+                if (isRightAltPressed && GameStateNarrator.HudMessagesBuffer.Count >= pressedNumKey)
+                {
+                    isChatRunning = true;
+                    MainClass.ScreenReader.Say(GameStateNarrator.HudMessagesBuffer[^pressedNumKey], true);
+                    Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
+                }
+            }
+
+            return true;
+        }
+        return false;
     }
 
     private static void CycleThroughChatMessages(bool prev, List<ChatMessage> ___messages)
@@ -143,5 +138,29 @@ internal class ChatBoxPatch : IPatch
         string toReturn = "";
         chatMessage.message.ForEach(chatSnippet => toReturn += $"{chatSnippet.message}, ");
         return toReturn;
+    }
+
+    private static int GetPressedNumKey()
+    {
+        int pressedNumKey = -1;
+        foreach (var key in Game1.input.GetKeyboardState().GetPressedKeys())
+        {
+            pressedNumKey = key switch
+            {
+                Keys.NumPad1 or Keys.D1 => 1,
+                Keys.NumPad2 or Keys.D2 => 2,
+                Keys.NumPad3 or Keys.D3 => 3,
+                Keys.NumPad4 or Keys.D4 => 4,
+                Keys.NumPad5 or Keys.D5 => 5,
+                Keys.NumPad6 or Keys.D6 => 6,
+                Keys.NumPad7 or Keys.D7 => 7,
+                Keys.NumPad8 or Keys.D8 => 8,
+                Keys.NumPad9 or Keys.D9 => 9,
+                _ => -1,
+            };
+
+            if (pressedNumKey != -1) break;
+        }
+        return pressedNumKey;
     }
 }
