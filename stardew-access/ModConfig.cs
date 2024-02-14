@@ -78,6 +78,11 @@ internal class ModConfig
     /// </summary>
     public Boolean ReadTileIndexes { get; set; } = false;
 
+    /// <summary>
+    /// Toggle speaking hoed dirt (soil) in mine shafts.
+    /// </summary>
+    public Boolean ReadHoedDirtInMineShafts { get; set; } = false;
+
     #endregion
 
     #region Tile viewer

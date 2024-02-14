@@ -39,14 +39,15 @@ visit [this page](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Binding
 
 ### Read Tile Configs
 
-| Name                | Default Value | Description                                             |
-|---------------------|---------------|---------------------------------------------------------|
-| ReadTile            | true          | Toggle `Read Tile` feature.                             |
-| ReadTileKey         | J             | Speak the contents of the tile player is _looking at_.  |
-| ReadStandingTileKey | LeftAlt + J   | Speak the contents of the tile player is _standing on_. |
-| ReadFlooring        | false         | Toggle reading floorings.                               |
-| WateredToggle       | true          | Toggle speaking watered or unwatered for crops.         |
-| ReadTileIndexes     | false         | Toggle speaking tile indexes with other info.           |
+| Name                     | Default Value | Description                                             |
+|--------------------------|---------------|---------------------------------------------------------|
+| ReadTile                 | true          | Toggle `Read Tile` feature.                             |
+| ReadTileKey              | J             | Speak the contents of the tile player is _looking at_.  |
+| ReadStandingTileKey      | LeftAlt + J   | Speak the contents of the tile player is _standing on_. |
+| ReadFlooring             | false         | Toggle reading floorings.                               |
+| WateredToggle            | true          | Toggle speaking watered or unwatered for crops.         |
+| ReadTileIndexes          | false         | Toggle speaking tile indexes with other info.           |
+| ReadHoedDirtInMineShafts | false         | Toggle speaking hoed dirt (soil) in mine shafts.        |
 
 ### Tile Viewer Configs
 
