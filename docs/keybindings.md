@@ -75,10 +75,12 @@ unselecting the active text box.
 
 ### Chat Menu keys
 
-| Key       | Description                |
-|-----------|----------------------------|
-| Page up   | Read previous chat message |
-| Page down | Read next chat message     |
+| Key                       | Description                                                                                                            |
+|---------------------------|------------------------------------------------------------------------------------------------------------------------|
+| Page up                   | Read previous chat message                                                                                             |
+| Page down                 | Read next chat message                                                                                                 |
+| LeftAlt + Num Keys (1-9)  | Read the previous chat messages according to the number. 1 for the last message, 2 for the second last and so on.      |
+| RightAlt + Num Keys (1-9) | Read the previous notifications according to the number. 1 for the last notification, 2 for the second last and so on. |
 
 ### New Game or Character Customization Menu Keys
 
