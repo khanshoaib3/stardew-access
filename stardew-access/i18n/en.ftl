@@ -282,8 +282,8 @@ terrain_util-tree_type = {$type ->
     [1] Oak
     [2] Maple
     [3] Pine
-    [4] Winter Tree
-    [5] Winter Tree
+    [4] Oak
+    [5] Maple
     [6] Palm Tree
     [7] Mushroom Tree
     [8] Mahogany

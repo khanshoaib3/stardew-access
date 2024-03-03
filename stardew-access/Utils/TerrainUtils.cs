@@ -1,7 +1,8 @@
+using stardew_access.Translation;
 using static stardew_access.Utils.ObjectUtils;
 using StardewValley.TerrainFeatures;
+using StardewValley.TokenizableStrings;
 using System.Text;
-using stardew_access.Translation;
 
 namespace stardew_access.Utils;
 
@@ -89,20 +90,21 @@ public static class TerrainUtils
     {
         var treeStage = tree.growthStage.Value;
         var treeType = tree.treeType.Value;
-        var seedName = GetObjectById(tree.GetData().SeedItemId).DisplayName;
-
+        var seedName = TokenParser.ParseText(GetObjectById(tree.GetData().SeedItemId).DisplayName);
         return (treeType, treeStage, seedName, tree.fertilized.Value);
     }
 
     public static string GetTreeInfoString((string TreeType, int GrowthStage, string SeedName, bool IsFertilized) treeDetails)
     {
-        string treeType = Translator.Instance.Translate("terrain_util-tree_type",
-            new { type = treeDetails.TreeType });
-# if debug
-            if (treeDetails.TreeType == 5 || treeDetails.TreeType == 9)
-                treeType = $"{treeType} 2";
-#endif
-
+        string treeType = "";
+        if (int.TryParse(treeDetails.TreeType, out int treeTypeInt))
+        {
+            treeType = Translator.Instance.Translate("terrain_util-tree_type",
+                new { type = treeTypeInt });
+        } else {
+            treeType = Translator.Instance.Translate("terrain_util-tree_type",
+                new { type = treeDetails.TreeType });
+        }
         if (treeDetails.GrowthStage == 0)
         {
             if (treeDetails.TreeType is Tree.bushyTree or Tree.leafyTree or Tree.pineTree or Tree.mahoganyTree)
