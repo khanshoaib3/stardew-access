@@ -16,8 +16,8 @@ public static class TerrainUtils
             CropType: dirt.crop != null
                 ? dirt.crop.forageCrop.Value
                     ? Translator.Instance.Translate("terrain_util-forage_crop_types", new
-                        { type = dirt.crop.whichForageCrop.Value })
-                    : GetObjectById(dirt.crop.indexOfHarvest.Value).DisplayName
+                        { type = int.Parse(dirt.crop.whichForageCrop.Value) })
+                    : ItemRegistry.GetDataOrErrorItem(dirt.crop.indexOfHarvest.Value).DisplayName
                 : null,
             IsReadyForHarvest: dirt.crop != null && dirt.readyForHarvest(),
             IsDead: dirt.crop?.dead.Value ?? false
@@ -61,7 +61,7 @@ public static class TerrainUtils
     public static (string TreeType, int GrowthStage, bool IsHarvestable) GetFruitTreeInfo(FruitTree fruitTree)
     {
         int stage = fruitTree.growthStage.Value;
-        string treeType = GetObjectById(fruitTree.treeId.Value).DisplayName;
+        string treeType = fruitTree.GetDisplayName();
         bool isHarvestable = fruitTree.fruit.Count > 0;
 
         return (treeType, stage, isHarvestable);

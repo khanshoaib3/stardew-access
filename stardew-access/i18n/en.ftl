@@ -284,10 +284,10 @@ terrain_util-tree_type = {$type ->
     [3] Pine
     [4] Oak
     [5] Maple
-    [6] Palm Tree
-    [7] Mushroom Tree
+    [6] Palm
+    [7] Mushroom
     [8] Mahogany
-    [9] Palm Tree
+    [9] Palm
     *[other] Unknown tree type number {$type}
   }
 terrain_util-tree-seedling = seedling
