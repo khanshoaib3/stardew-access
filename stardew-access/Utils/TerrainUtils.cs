@@ -1,7 +1,7 @@
 using stardew_access.Translation;
 using static stardew_access.Utils.ObjectUtils;
+using StardewValley;
 using StardewValley.TerrainFeatures;
-using StardewValley.TokenizableStrings;
 using System.Text;
 
 namespace stardew_access.Utils;
@@ -90,7 +90,7 @@ public static class TerrainUtils
     {
         var treeStage = tree.growthStage.Value;
         var treeType = tree.treeType.Value;
-        var seedName = TokenParser.ParseText(GetObjectById(tree.GetData().SeedItemId).DisplayName);
+        string seedName = ItemRegistry.GetDataOrErrorItem(tree.GetData().SeedItemId).DisplayName;
         return (treeType, treeStage, seedName, tree.fertilized.Value);
     }
 
@@ -156,43 +156,27 @@ public static class TerrainUtils
         return "tile-grass-name";
     }
 
-    public static (bool IsTownBush, bool IsGreenhouseBush, bool IsHarvestable, int BushType, int Age, int ShakeOff) GetBushInfo(Bush bush)
+    public static (bool IsTownBush, bool IsHarvestable, int BushType, int Age, string ShakeOff) GetBushInfo(Bush bush)
     {
-        // Local function to get shake off object value
-        int GetBushShakeOff(string season)
-        {
-            int shakeOff = season.ToLower() switch
-            {
-                "spring" => 296, // Salmonberry
-                "fall" => 410, // Blackberry
-                _ => -1 // none
-            };
-            return bush.size.Value switch
-            {
-                3 => 815, // Tea Leaves
-                4 => 73, // Golden Walnut
-                _ => shakeOff
-            };
-        }
-
         // TODO i18n
         string season = bush.Location.GetSeason().ToString();
-            
-        int shakeOff = GetBushShakeOff(season);
+
+        string shakeOff = bush.GetShakeOffItem();
 
         bool isHarvestable = !bush.townBush.Value && bush.tileSheetOffset.Value == 1 && bush.inBloom();
+        int bushType = bush.size.Value;
 
-        return (bush.townBush.Value, bush.Location.SeedsIgnoreSeasonsHere(), isHarvestable, bush.size.Value, bush.getAge(), shakeOff);
+        return (bush.townBush.Value, isHarvestable, bushType, bush.getAge(), shakeOff);
     }
 
-    public static string GetBushInfoString((bool IsTownBush, bool IsGreenhouseBush, bool IsHarvestable, int BushType, int Age, int ShakeOff) bushInfo)
+    public static string GetBushInfoString((bool IsTownBush, bool IsHarvestable, int BushType, int Age, string ShakeOff) bushInfo)
     {
         StringBuilder bushInfoString = new();
 
         // Add the harvest status and item name if it's harvestable
         if (bushInfo.IsHarvestable)
         {
-            bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-harvestable")} {GetObjectById(bushInfo.ShakeOff).DisplayName} ");
+            bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-harvestable")} {ItemRegistry.GetDataOrErrorItem(bushInfo.ShakeOff).DisplayName} ");
         }
 
         // Add the type of the bush
@@ -202,12 +186,9 @@ public static class TerrainUtils
             {
                 bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-bush-town")} ");
             }
-            else if (bushInfo.IsGreenhouseBush)
-            {
-                bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-bush-greenhouse")} ");
-            }
 
-            bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-bush_type", new { type = bushInfo.BushType, has_matured = (bushInfo.Age < Bush.daysToMatureGreenTeaBush) ? 1 : 0 })} ");
+            if (!(bushInfo.BushType == 4 && bushInfo.IsHarvestable))
+                bushInfoString.Append($"{Translator.Instance.Translate("terrain_util-bush_type", new { type = bushInfo.BushType, has_matured = (bushInfo.Age < Bush.daysToMatureGreenTeaBush) ? 1 : 0 })} ");
         } else {
             // only name Tea bushes as they're plantable / harvestable
             if (bushInfo.BushType == Bush.greenTeaBush)
@@ -220,7 +201,6 @@ public static class TerrainUtils
 
         return bushInfoString.ToString().Trim();
     }
-
     public static string GetBushInfoString(Bush bush)
     {
         var bushInfo = GetBushInfo(bush);
