@@ -9,6 +9,7 @@
     <LangVersion>preview</LangVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <!-- To generate dlls of nugget packages -->
+    <BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
@@ -23,7 +24,7 @@
     <PackageReference Include="mono.cecil" Version="0.11.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
-    <Reference Include="./TolkDotNet.dll" />
+    <PackageReference Include="TOWK.Utility.CrossSpeak" Version="1.0.0" />
     <Reference Include="./KdTreeLib.dll" />
     <Reference Include="ProjectFluent">
       <HintPath>$(GamePath)\Mods\ProjectFluent\ProjectFluent.dll</HintPath>
@@ -39,25 +40,7 @@
     <None Update="KdTreeLib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="libraries\linux\libspeechdwrapper.so">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="libraries\windows\nvdaControllerClient64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="libraries\windows\SAAPI64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="libraries\windows\Tolk.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="libraries\macos\libspeak.dylib">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="manifest.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TolkDotNet.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
