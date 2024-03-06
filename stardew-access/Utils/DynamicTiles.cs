@@ -321,11 +321,11 @@ public class DynamicTiles
         int buildingTileX = building.tileX.Value;
         int buildingTileY = building.tileY.Value;
 
-        // If the building is a FishPond, prepend the fish name
-        if (building is FishPond fishPond && fishPond.fishType.Value != "0" && fishPond.fishType.Value != "")
-        {
-            name = $"{Game1.objectData[fishPond.fishType.Value].DisplayName} {name}";
-        }
+            // If the building is a FishPond, prepend the fish name
+            if (building is FishPond fishPond && fishPond.fishType.Value != "0" && fishPond.fishType.Value != "")
+            {
+                name = $"{ItemRegistry.GetDataOrErrorItem(fishPond.fishType.Value).DisplayName} {name}";
+            }
 
         // Calculate differences in x and y coordinates
         int offsetX = x - buildingTileX;
