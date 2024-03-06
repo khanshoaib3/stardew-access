@@ -4,6 +4,7 @@ using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.SpecialOrders;
+using StardewValley.TokenizableStrings;
 using stardew_access.Translation;
 using static stardew_access.Utils.JsonLoader;
 
@@ -317,57 +318,76 @@ public class DynamicTiles
     /// <returns>A tuple containing the name and CATEGORY of the door or building found, or (null, null) if no door or building is found.</returns>
     private static (string? name, CATEGORY? category) GetBuildingInfo(Building building, int x, int y, bool lessInfo = false)
     {
-        string name = building.buildingType.Value;
+        // Internal name; never translated. Mill stays "Mill"
+        string type = building.buildingType.Value;
+        // Translated name, E.G> "Mill" becomes "Molino" for Spanish.
+        // not all buildings have translated names, E.G. "Petbowl" and "Farmhouse" remain untranslated.
+        // TODO add translation keys for untranslated building names.
+        string name = TokenParser.ParseText(building.GetData().Name);
         int buildingTileX = building.tileX.Value;
         int buildingTileY = building.tileY.Value;
-
-            // If the building is a FishPond, prepend the fish name
-            if (building is FishPond fishPond && fishPond.fishType.Value != "0" && fishPond.fishType.Value != "")
-            {
-                name = $"{ItemRegistry.GetDataOrErrorItem(fishPond.fishType.Value).DisplayName} {name}";
-            }
-
         // Calculate differences in x and y coordinates
         int offsetX = x - buildingTileX;
         int offsetY = y - buildingTileY;
-
+        
+        // Set default category
+        CATEGORY category = CATEGORY.Buildings;
+        if (type == "Shipping Bin")
+        {
+            category = CATEGORY.Containers;
+        } else if (type == "Pet Bowl") {
+            category = CATEGORY.Interactables;
+        }
+        // If the building is a FishPond, prepend the fish name
+        else if (building is FishPond fishPond && fishPond.fishType.Value != "0" && fishPond.fishType.Value != "")
+        {
+            name = $"{ItemRegistry.GetDataOrErrorItem(fishPond.fishType.Value).DisplayName} {name}";
+        }
         // Check if the position matches the human door
         if (building.humanDoor.Value.X == offsetX && building.humanDoor.Value.Y == offsetY)
         {
-            return (Translator.Instance.Translate("suffix-building_door", new {content = name}), CATEGORY.Doors);
+            name = Translator.Instance.Translate("suffix-building_door", new {content = name});
+            category = CATEGORY.Doors;
         }
         // Check if the position matches the animal door. In case of barns, as the animal door is 2 tiles wide, the following if condition checks for both animal door tiles.
-        else if ((building.animalDoor.Value.X == offsetX || (building is Barn && building.animalDoor.Value.X == offsetX - 1)) && building.animalDoor.Value.Y == offsetY)
+        else if ((building.animalDoor.Value.X == offsetX || (type == "Barn" && building.animalDoor.Value.X == offsetX - 1)) && building.animalDoor.Value.Y == offsetY)
         {
-            return (Translator.Instance.Translate("tile-building_animal_door-suffix", new
+            name = Translator.Instance.Translate("tile-building_animal_door-suffix", new
             {
                 name, // using inferred member name; silences IDE0037
                 is_open = (building.animalDoorOpen.Value) ? 1 : 0,
                 less_info = lessInfo ? 1 : 0
-            }), CATEGORY.Doors);
-        }
-        // Check if the position matches the building's top-left corner
-        else if (offsetX == 0 && offsetY == 0)
-        {
-            return (name, CATEGORY.Buildings);
+            });
+            category = CATEGORY.Doors;
         }
         // Special handling for Mill buildings
-        else if (building is Mill)
+        else if (type == "Mill")
         {
-            // Check if the position matches the input
-            if (offsetX == 1 && offsetY == 1)
+            if ( offsetY == 1)
             {
-                return (Translator.Instance.Translate("suffix-mill_input", new {content = name}), CATEGORY.Buildings);
-            }
-            // Check if the position matches the output
-            else if (offsetX == 3 && offsetY == 1)
-            {
-                return (Translator.Instance.Translate("suffix-mill_output", new {content = name}), CATEGORY.Buildings);
+                // Check if the position matches the input
+                if (offsetX == 1)
+                {
+                    name = Translator.Instance.Translate("suffix-mill_input", new {content = name});
+                    category = CATEGORY.Interactables;
+                }
+                // Check if the position matches the output
+                else if (offsetX == 3)
+                {
+                    name = Translator.Instance.Translate("suffix-mill_output", new {content = name});
+                    category = CATEGORY.Interactables;
+                }
             }
         }
+        // Any building tile not matched will return building's name and Buildings category 
 
-        // Return the building name for any other position within the building's area
-        return (name, CATEGORY.Buildings);
+        if (!building.isTilePassable(new Vector2(x, y)))
+        {
+            return (name, category);
+        } else {
+            // Ignore parts of buildings that are outside, I.E. Farmhouse porch.
+            return (null, null);
+        }
     }
 
     /// <summary>
