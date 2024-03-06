@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using xTile;
 using stardew_access.Utils;
-using stardew_access.Translation;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -234,6 +233,7 @@ internal class TileViewer : FeatureBase
         }
         else
         {
+            _finalTile = GetViewingTile();
             MainClass.ScreenReader.TranslateAndSay("feature-tile_viewer-cannot_move_to", true, new
             {
                 tile_x = _finalTile.X,
