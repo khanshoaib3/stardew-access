@@ -43,28 +43,29 @@ namespace stardew_access.Utils
 
         private static readonly Dictionary<string, CATEGORY> _categories = new(StringComparer.OrdinalIgnoreCase)
         {
-            {"farmer", new CATEGORY("farmer")},
-            {"animal", new CATEGORY("animal")},
-            {"npc", new CATEGORY("npc")},
-            {"furniture", new CATEGORY("furniture")},
-            {"flooring", new CATEGORY("flooring")},
-            {"debris", new CATEGORY("debris")},
-            {"crop", new CATEGORY("crop")},
-            {"tree", new CATEGORY("tree")},
-            {"bush", new CATEGORY("bush")},
-            {"building", new CATEGORY("building")},
-            {"mine_item", new CATEGORY("mine_item")},
-            {"resource_clump", new CATEGORY("resource_clump")},
-            {"container", new CATEGORY("container")},
-            {"bundle", new CATEGORY("bundle")},
-            {"door", new CATEGORY("door")},
-            {"water", new CATEGORY("water")},
-            {"interactable", new CATEGORY("interactable")},
-            {"decoration", new CATEGORY("decoration")},
-            {"machine", new CATEGORY("machine")},
+            {"animals", new CATEGORY("animals")},
             {"bridge", new CATEGORY("bridge")},
+            {"building", new CATEGORY("building")},
+            {"bush", new CATEGORY("bush")},
+            {"bundle", new CATEGORY("bundle")},
+            {"container", new CATEGORY("container")},
+            {"crop", new CATEGORY("crop")},
+            {"debris", new CATEGORY("debris")},
+            {"decoration", new CATEGORY("decoration")},
+            {"door", new CATEGORY("door")},
             {"dropped_item", new CATEGORY("dropped_item")},
+            {"farmer", new CATEGORY("farmer")},
             {"fishing", new CATEGORY("fishing")},
+            {"fishpond", new CATEGORY("fish pond")},
+            {"flooring", new CATEGORY("flooring")},
+            {"furniture", new CATEGORY("furniture")},
+            {"interactable", new CATEGORY("interactable")},
+            {"machine", new CATEGORY("machine")},
+            {"mine_item", new CATEGORY("mine_item")},
+            {"npc", new CATEGORY("npc")},
+            {"resource_clump", new CATEGORY("resource_clump")},
+            {"tree", new CATEGORY("tree")},
+            {"water", new CATEGORY("water")},
             {"other", new CATEGORY("other")}
         };
 
@@ -120,28 +121,29 @@ namespace stardew_access.Utils
             return false;
         }
 
-        public static CATEGORY Farmers => FromString("farmer");
-        public static CATEGORY FarmAnimals => FromString("animal");
-        public static CATEGORY NPCs => FromString("npc");
-        public static CATEGORY Furnitures => FromString("furniture");
-        public static CATEGORY Flooring => FromString("flooring");
-        public static CATEGORY Debris => FromString("debris");
-        public static CATEGORY Crops => FromString("crop");
-        public static CATEGORY Trees => FromString("tree");
-        public static CATEGORY Bush => FromString("bush");
-        public static CATEGORY Buildings => FromString("building");
-        public static CATEGORY MineItems => FromString("mine_item");
-        public static CATEGORY ResourceClumps => FromString("resource_clump");
-        public static CATEGORY Containers => FromString("container");
-        public static CATEGORY JunimoBundle => FromString("bundle");
-        public static CATEGORY Doors => FromString("door");
-        public static CATEGORY WaterTiles => FromString("water");
-        public static CATEGORY Interactables => FromString("interactable");
-        public static CATEGORY Decor => FromString("decoration");
-        public static CATEGORY Machines => FromString("machine");
+        public static CATEGORY Animals => FromString("animals");
         public static CATEGORY Bridges => FromString("bridge");
+        public static CATEGORY Buildings => FromString("building");
+        public static CATEGORY Bundle => FromString("bundle");
+        public static CATEGORY Bush => FromString("bush");
+        public static CATEGORY Crops => FromString("crop");
+        public static CATEGORY Debris => FromString("debris");
+        public static CATEGORY Containers => FromString("container");
+        public static CATEGORY Decor => FromString("decoration");
+        public static CATEGORY Doors => FromString("door");
         public static CATEGORY DroppedItems => FromString("dropped_item");
+        public static CATEGORY Farmers => FromString("farmer");
         public static CATEGORY Fishing => FromString("fishing");
+        public static CATEGORY Fishpond => FromString("fishpond");
+        public static CATEGORY Flooring => FromString("flooring");
+        public static CATEGORY Furniture => FromString("furniture");
+        public static CATEGORY Interactables => FromString("interactable");
+        public static CATEGORY Machines => FromString("machine");
+        public static CATEGORY MineItems => FromString("mine_item");
+        public static CATEGORY NPCs => FromString("npc");
+        public static CATEGORY ResourceClumps => FromString("resource_clump");
+        public static CATEGORY Trees => FromString("tree");
+        public static CATEGORY WaterTiles => FromString("water");
         public static CATEGORY Others => FromString("other");
     }
 }

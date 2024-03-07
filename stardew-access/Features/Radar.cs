@@ -391,13 +391,13 @@ internal class Radar : FeatureBase
 
         if (category == CATEGORY.Farmers) // Villagers and farmers
             soundName = $"npc{soundName}";
-        else if (category == CATEGORY.FarmAnimals) // Farm Animals
+        else if (category == CATEGORY.Animals) // Farm Animals
             soundName = $"npc{soundName}";
         else if (category == CATEGORY.NPCs) // Other npcs, also includes enemies
             soundName = $"npc{soundName}";
         else if (category == CATEGORY.WaterTiles) // Water tiles
             soundName = $"obj{soundName}";
-        else if (category == CATEGORY.Furnitures) // Furnitures
+        else if (category == CATEGORY.Furniture) // Furnitures
             soundName = $"obj{soundName}";
         else if (category == CATEGORY.Others) // Other Objects
             soundName = $"obj{soundName}";
