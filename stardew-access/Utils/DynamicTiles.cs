@@ -342,6 +342,7 @@ public class DynamicTiles
         else if (building is FishPond fishPond && fishPond.fishType.Value != "0" && fishPond.fishType.Value != "")
         {
             name = $"{ItemRegistry.GetDataOrErrorItem(fishPond.fishType.Value).DisplayName} {name}";
+            category = CATEGORY.Fishpond;
         }
         // Check if the position matches the human door
         if (building.humanDoor.Value.X == offsetX && building.humanDoor.Value.Y == offsetY)

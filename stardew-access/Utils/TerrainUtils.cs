@@ -218,7 +218,7 @@ public static class TerrainUtils
             case HoeDirt dirt:
                 return (GetDirtInfoString(dirt, ignoreIfEmpty), CATEGORY.Crops);
             case CosmeticPlant cosmeticPlant:
-                return (GetCosmeticPlantInfoString(cosmeticPlant), CATEGORY.Furnitures);
+                return (GetCosmeticPlantInfoString(cosmeticPlant), CATEGORY.Furniture);
             case Flooring flooring when MainClass.Config.ReadFlooring:
                 return (GetFlooringInfoString(flooring), CATEGORY.Flooring);
             case Flooring _:

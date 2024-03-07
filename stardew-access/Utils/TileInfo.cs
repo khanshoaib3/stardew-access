@@ -181,7 +181,7 @@ public class TileInfo
         string? farmAnimal = GetFarmAnimalAt(currentLocation, x, y);
         if (farmAnimal is not null)
         {
-            return (farmAnimal, CATEGORY.FarmAnimals);
+            return (farmAnimal, CATEGORY.Animals);
         }
 
         string? door = GetDoorAtTile(currentLocation, x, y);
@@ -241,7 +241,7 @@ public class TileInfo
         string? junimoBundle = GetJunimoBundleAt(currentLocation, x, y);
         if (junimoBundle != null)
         {
-            return (junimoBundle, CATEGORY.JunimoBundle);
+            return (junimoBundle, CATEGORY.Bundle);
         }
 
         // Track dropped items
@@ -452,7 +452,7 @@ public class TileInfo
             }
             else
             {
-                toReturn.category = CATEGORY.Furnitures;
+                toReturn.category = CATEGORY.Furniture;
             }
         }
         else if (obj.IsSprinkler() && obj.heldObject.Value != null) // Detect the upgrade attached to the sprinkler
