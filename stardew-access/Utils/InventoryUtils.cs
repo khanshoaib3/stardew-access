@@ -26,7 +26,7 @@ internal static class InventoryUtils
         int? hoverX = null,
         int? hoverY = null)
     {
-        if (NarrateHoveredSlotAndReturnIndex( inventoryMenu,
+        if (NarrateHoveredSlotAndReturnIndex(inventoryMenu,
                 giveExtraDetails,
                 hoverPrice,
                 extraItemToShowIndex,
@@ -42,7 +42,7 @@ internal static class InventoryUtils
         return true;
     }
 
-    internal static int NarrateHoveredSlotAndReturnIndex( InventoryMenu? inventoryMenu,
+    internal static int NarrateHoveredSlotAndReturnIndex(InventoryMenu? inventoryMenu,
         bool? giveExtraDetails = null,
         int hoverPrice = -1,
         string? extraItemToShowIndex = null,
@@ -156,10 +156,10 @@ internal static class InventoryUtils
         string name = item.DisplayName;
         if (stack == prevStack && name == prevName)
         {
-            #if DEBUG
-            Log.Trace( $"Returning cached translation \"{prevTranslatedName}\" for stack \"{stack}\" and name \"{name}\"",
+#if DEBUG
+            Log.Trace($"Returning cached translation \"{prevTranslatedName}\" for stack \"{stack}\" and name \"{name}\"",
                 true);
-            #endif
+#endif
             name = prevTranslatedName;
         }
         else
@@ -172,34 +172,23 @@ internal static class InventoryUtils
                 { "name", name }
             });
             prevTranslatedName = name;
-            #if DEBUG
+#if DEBUG
             Log.Verbose("Updated inventory translation cache");
-            #endif
+#endif
         }
 
         return name;
     }
 
-    internal static string GetQualityFromItem(Item item)
-    {
-        if (item is not StardewValley.Object)
-            return "";
+    internal static string GetQualityFromItem(Item item) => GetQualityFromIndex(item.Quality);
 
-        return GetQualityFromIndex(((StardewValley.Object)item).Quality);
-    }
-
-    internal static string GetQualityFromIndex(int qualityIndex)
-    {
-        if (qualityIndex <= 0)
-            return "";
-
-        return Translator.Instance.Translate("item-quality_type", new { quality_index = qualityIndex });
-    }
+    internal static string GetQualityFromIndex(int qualityIndex) => qualityIndex > 0
+        ? Translator.Instance.Translate("item-quality_type", new { quality_index = qualityIndex })
+        : "";
 
     internal static string GetEnchantmentsFromItem(Item item)
     {
-        if (item is not MeleeWeapon && item is not Tool)
-            return "";
+        if (item is not MeleeWeapon and not Tool) return "";
 
         List<string> enchantNames = [];
 
@@ -234,10 +223,7 @@ internal static class InventoryUtils
 
     internal static string GetBuffsFromItem(Item item)
     {
-        if (item == null) return "";
-        if (item is not StardewValley.Object) return "";
-        if (((StardewValley.Object)item) == null) return "";
-        Log.Trace($"asdf: \"{item.QualifiedItemId}\"");
+        if (item is null or not StardewValley.Object) return "";
 
         string[] buffIconsToDisplay =
             new BuffEffects(ObjectUtils.GetObjectById(item.QualifiedItemId)?.Buff?.CustomAttributes)?.ToLegacyAttributeFormat() ?? new string[0];
@@ -268,8 +254,7 @@ internal static class InventoryUtils
 
     internal static string GetExtraItemInfo(string? itemIndex, int? itemAmount)
     {
-        if (itemIndex is null) return "";
-        if (itemIndex == "-1") return "";
+        if (itemIndex is null or "-1") return "";
 
         string itemName = Game1.objectData[itemIndex].DisplayName;
 
@@ -280,23 +265,17 @@ internal static class InventoryUtils
                     name = Translator.Instance.Translate("common-util-pluralize_name",
                         new { name = itemName, item_count = itemAmount })
                 });
-        
+
         return Translator.Instance.Translate("item-required_item_info", new { name = itemName });
     }
 
-    internal static string GetCraftingRecipeInfo(CraftingRecipe recipe)
-    {
-        if (recipe is null) return "";
-
-        object translationTokens = new
-        {
-            name = recipe.DisplayName,
-            is_cooking_recipe = recipe.isCookingRecipe ? 1 : 0,
-            recipe.description,
-        };
-
-        return Translator.Instance.Translate("item-crafting_recipe_info", translationTokens);
-    }
+    internal static string GetCraftingRecipeInfo(CraftingRecipe recipe) => recipe is null ? ""
+        : Translator.Instance.Translate("item-crafting_recipe_info", new
+            {
+                name = recipe.DisplayName,
+                is_cooking_recipe = recipe.isCookingRecipe ? 1 : 0,
+                recipe.description,
+            });
 
     internal static string GetIngredientsFromRecipe(CraftingRecipe recipe)
     {
@@ -315,12 +294,8 @@ internal static class InventoryUtils
         return string.Join(", ", ingredientList);
     }
 
-    internal static string GetPrice(int price)
-    {
-        if (price == -1) return "";
-
-        return Translator.Instance.Translate("item-sell_price_info", new { price });
-    }
+    internal static string GetPrice(int price) => price is -1 ? ""
+        : Translator.Instance.Translate("item-sell_price_info", new { price });
 
     internal static string HandleHighlightedItemPrefix(bool? isHighlighted, string prefix)
     {
@@ -342,8 +317,7 @@ internal static class InventoryUtils
 
     internal static string HandleUnHighlightedItem(bool? isHighlighted, int hoveredInventoryIndex)
     {
-        if (isHighlighted == null) return "";
-        if (isHighlighted == true) return "";
+        if (isHighlighted is null or true) return "";
 
         if (prevSlotIndex != hoveredInventoryIndex)
             Game1.playSound("invalid-selection");
@@ -358,7 +332,5 @@ internal static class InventoryUtils
     }
 
     private static void CheckAndSpeak(string toSpeak, int hoveredInventoryIndex)
-    {
-        MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, $"{toSpeak}:{hoveredInventoryIndex}");
-    }
+        => MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, $"{toSpeak}:{hoveredInventoryIndex}");
 }
