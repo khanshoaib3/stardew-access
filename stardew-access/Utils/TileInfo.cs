@@ -389,6 +389,26 @@ public class TileInfo
         return -1; // Color not found
     }
 
+    internal static string GetChestColorAndName(Chest chest)
+    {
+        int colorIndex = GetSelectionFromColor(chest.playerChoiceColor.Get());
+        Log.Trace($"colorIndex is {colorIndex}");
+        string chestColor = (!chest.playerChest.Value || colorIndex <= 0)
+            ? ""
+            : Translator.Instance.Translate("menu-item_grab-chest_colors",
+                new { index = colorIndex, is_selected = 0 }, TranslationCategory.Menu);
+        Log.Trace($"chestColor is {chestColor}");
+        Log.Trace($"chest.displayName is {chest.DisplayName}");
+        string displayName = chest.giftbox.Value
+        ? (chest.giftboxIsStarterGift.Value ? "Starter Gift" : "Giftbox")
+        : (chest.fridge.Value
+        ? "Fridge"
+        : (chest.playerChest.Value
+        ? chest.DisplayName
+        : chest.Name));
+        return $"{chestColor} {displayName}";
+    }
+
     /// <summary>
     /// Retrieves the name and category of an object at a specific tile in the game location.
     /// </summary>
@@ -415,22 +435,8 @@ public class TileInfo
         // Check the object type and assign the appropriate name and category
         if (obj is Chest chest)
         {
-            int colorIndex = GetSelectionFromColor(chest.playerChoiceColor.Get());
-            Log.Trace($"colorIndex is {colorIndex}");
-            string chestColor = (!chest.playerChest.Value || colorIndex <= 0)
-                ? ""
-                : Translator.Instance.Translate("menu-item_grab-chest_colors",
-                    new { index = colorIndex, is_selected = 0 }, TranslationCategory.Menu);
-            Log.Trace($"chestColor is {chestColor}");
-            Log.Trace($"chest.displayName is {chest.DisplayName}");
-            string displayName = chest.giftbox.Value
-            ? (chest.giftboxIsStarterGift.Value ? "Starter Gift" : "Giftbox")
-            : (chest.fridge.Value
-            ? "Fridge"
-            : (chest.playerChest.Value
-            ? chest.DisplayName
-            : chest.Name));
-            toReturn = ($"{chestColor} {displayName}", CATEGORY.Containers);
+            string displayColorAndName = GetChestColorAndName(chest);
+            toReturn = (displayColorAndName, CATEGORY.Containers);
         }
         else if (obj is IndoorPot indoorPot)
         {
