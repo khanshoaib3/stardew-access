@@ -60,7 +60,7 @@ namespace stardew_access.Patches
                 "Strings\\UI:Inventory_TotalEarnings" + (Game1.player.useSeparateWallets ? "_Separate" : ""),
                 Utility.getNumberWithCommas((int)Game1.player.totalMoneyEarned));
             int festivalScore = Game1.player.festivalScore;
-            int walnut = Game1.netWorldState.Value.GoldenWalnuts.Value;
+            int walnut = Game1.netWorldState.Value.GoldenWalnuts;
             int qiGems = Game1.player.QiGems;
             int qiCoins = Game1.player.clubCoins;
 

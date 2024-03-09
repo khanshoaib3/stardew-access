@@ -3,6 +3,9 @@ using Newtonsoft.Json.Linq;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
+using StardewValley.SpecialOrders;
+using stardew_access.Translation;
+using static stardew_access.Utils.JsonLoader;
 
 namespace stardew_access.Utils;
 
@@ -223,7 +226,7 @@ public class DynamicTiles
         {
             return (null, null);
         }
-        if (MainClass.ModHelper.Reflection.GetField<NPC>(beach, "oldMariner").GetValue() is NPC mariner && mariner.getTileLocation() == new Vector2(x, y))
+        if (MainClass.ModHelper.Reflection.GetField<NPC>(beach, "oldMariner").GetValue() is NPC mariner && mariner.Tile == new Vector2(x, y))
         {
             return ("npc_name-old_mariner", CATEGORY.NPCs);
         }
@@ -239,11 +242,10 @@ public class DynamicTiles
             }
         }
 
-        if (Game1.CurrentEvent is not null && Game1.CurrentEvent.id == 13 && x == 53 && y == 8)
+        if (Game1.CurrentEvent is not null && Game1.CurrentEvent.id == "13" && x == 53 && y == 8)
         {
             return ("item-haley_bracelet-name", CATEGORY.DroppedItems);
         }
-
         return (null, null);
     }
 
@@ -320,9 +322,9 @@ public class DynamicTiles
         int buildingTileY = building.tileY.Value;
 
         // If the building is a FishPond, prepend the fish name
-        if (building is FishPond fishPond && fishPond.fishType.Value >= 0)
+        if (building is FishPond fishPond && fishPond.fishType.Value != "0" && fishPond.fishType.Value != "")
         {
-            name = $"{Game1.objectInformation[fishPond.fishType.Value].Split('/')[4]} {name}";
+            name = $"{Game1.objectData[fishPond.fishType.Value].DisplayName} {name}";
         }
 
         // Calculate differences in x and y coordinates
@@ -451,11 +453,11 @@ public class DynamicTiles
         {
             return ("tile_name-traveling_cart_pig", CATEGORY.NPCs);
         }
-        else if (forest.log != null && x == 2 && y == 7)
+        else if (forest.obsolete_log != null && x == 2 && y == 7) // TODO Check for conflicts
         {
             return ("item_name-log", CATEGORY.Interactables);
         }
-        else if (forest.log == null && x == 0 && y == 7)
+        else if (forest.obsolete_log == null && x == 0 && y == 7) // TODO Check for conflicts
         {
             return ("entrance_name-secret_woods_entrance", CATEGORY.Doors);
         }
@@ -620,11 +622,11 @@ public class DynamicTiles
         // Use a switch expression to return the appropriate bird name based on the item index value
         return bird.itemIndex.Value switch
         {
-            60 => "npc_name-emerald_gem_bird",
-            62 => "npc_name-aquamarine_gem_bird",
-            64 => "npc_name-ruby_gem_bird",
-            66 => "npc_name-amethyst_gem_bird",
-            68 => "npc_name-topaz_gem_bird",
+            "60" => "npc_name-emerald_gem_bird",
+            "62" => "npc_name-aquamarine_gem_bird",
+            "64" => "npc_name-ruby_gem_bird",
+            "66" => "npc_name-amethyst_gem_bird",
+            "68" => "npc_name-topaz_gem_bird",
             _ => "npc_name-gem_bird", // Default case for when the item index does not match any of the specified values
         };
     }
@@ -673,7 +675,7 @@ public class DynamicTiles
     {
         var nutTracker = Game1.player.team.collectedNutTracker;
         string? parrot = GetParrotPerchAtTile(islandLocation, x, y);
-        if (islandLocation.IsBuriedNutLocation(new Point(x, y)) && !nutTracker.ContainsKey($"Buried_{islandLocation.Name}_{x}_{y}"))
+        if (islandLocation.IsBuriedNutLocation(new Point(x, y)) && !nutTracker.Contains($"Buried_{islandLocation.Name}_{x}_{y}"))
         {
             return ("tile_name-diggable_spot", CATEGORY.Interactables);
         }
@@ -719,14 +721,14 @@ public class DynamicTiles
     /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
     private static (string? name, CATEGORY? category) GetLibraryMuseumInfo(LibraryMuseum libraryMuseum, int x, int y, bool lessInfo = false)
     {
-        if (libraryMuseum.museumPieces.TryGetValue(new Vector2(x, y), out int museumPiece))
+        if (libraryMuseum.museumPieces.TryGetValue(new Vector2(x, y), out string museumPiece))
         {
-            string displayName = Game1.objectInformation[museumPiece].Split('/')[0];
+            string displayName = Game1.objectData[museumPiece].DisplayName;
             return (Translator.Instance.Translate("tile-museum_piece_showcase-suffix", new {content = displayName}), CATEGORY.Interactables);
 
         }
 
-        int booksFound = Game1.netWorldState.Value.LostBooksFound.Value;
+        int booksFound = Game1.netWorldState.Value.LostBooksFound;
         string? action = libraryMuseum.doesTileHaveProperty(x, y, "Action", "Buildings");
         if (action != null && action.Contains("Notes"))
         {
@@ -762,7 +764,7 @@ public class DynamicTiles
             return ("tile_name-special_quest_board", CATEGORY.Interactables);
         }
 
-    if (Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater") && x == 98 && y == 51)
+        if (Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater") && x == 98 && y == 51)
         {
             return ("tile_name-movie_ticket_machine", CATEGORY.Interactables);
         }

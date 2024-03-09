@@ -6,328 +6,365 @@ using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Objects;
 
-namespace stardew_access.Utils
+namespace stardew_access.Utils;
+
+internal class BuildingOperations
 {
-    internal class BuildingOperations
+    internal static Building?[] availableBuildings = new Building[100];
+    internal static Vector2[] marked = new Vector2[10];
+
+    public static string? Demolish(Building? toDemolish)
     {
-        internal static Building?[] availableBuildings = new Building[100];
-        internal static Vector2[] marked = new Vector2[10];
-
-        private static string? CheckDemolishConditions(Building? toDemolish)
+        if (toDemolish == null)
         {
-            if (toDemolish == null)
-                return "building_operations-no_building_to_demolish";
-
-            if (toDemolish.daysOfConstructionLeft.Value > 0 || toDemolish.daysUntilUpgrade.Value > 0)
-            {
-                return Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_DuringConstruction");
-            }
-
-            if (toDemolish.indoors.Value is AnimalHouse animalHouse && animalHouse.animalsThatLiveHere.Count > 0)
-            {
-                return Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_AnimalsHere");
-            }
-
-            if (toDemolish.indoors.Value?.farmers.Any() == true)
-            {
-                return Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere");
-            }
-
-            if (toDemolish.indoors.Value is Cabin cabin)
-            {
-                if (Game1.getAllFarmers().Any(farmer => farmer.currentLocation?.Name == cabin.GetCellarName()))
-                {
-                    return Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere");
-                }
-
-                if (cabin.farmhand.Value.isActive())
-                {
-                    return Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_FarmhandOnline");
-                }
-            }
-
             return null;
         }
 
-        private static void HandleDemolition(Building toDemolish)
+        if (CarpenterMenuPatch.carpenterMenu == null) return null;
+
+        string? response = null;
+
+        GameLocation farm = CarpenterMenuPatch.carpenterMenu.TargetLocation;
+        Building? destroyed = toDemolish;
+        GameLocation interior = destroyed.GetIndoors();
+        Cabin? cabin = interior as Cabin;
+        Action buildingLockFailed = delegate
         {
-            Farm farm = (Farm)Game1.getLocationFromName("Farm");
-            toDemolish.BeforeDemolish();
-            Chest? chest = null;
-            if (toDemolish.indoors.Value is Cabin cabin)
+            if (CarpenterMenuPatch.isDemolishing)
             {
-                List<Item> list = cabin.demolish();
-                if (list.Count > 0)
-                {
-                    chest = new Chest(playerChest: true);
-                    chest.fixLidFrame();
-                    chest.items.Set(list);
-                }
+                response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_LockFailed");
             }
-            if (farm.destroyStructure(toDemolish))
+        };
+        Action continueDemolish = delegate
+        {
+            if (!CarpenterMenuPatch.isDemolishing || destroyed == null || !farm.buildings.Contains(destroyed))
             {
-                Game1.flashAlpha = 1f;
-                toDemolish.showDestroyedAnimation(Game1.getFarm());
-                Game1.playSound("explosion");
-                Utility.spreadAnimalsAround(toDemolish, farm);
-                if (CarpenterMenuPatch.carpenterMenu != null)
+                response = "building_operations-no_building_to_demolish";
+                return;
+            }
+
+            if ((int)destroyed.daysOfConstructionLeft.Value > 0 || (int)destroyed.daysUntilUpgrade.Value > 0)
+            {
+                response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_DuringConstruction");
+                return;
+            }
+            else if (interior is AnimalHouse animalHouse && animalHouse.animalsThatLiveHere.Count > 0)
+            {
+                response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_AnimalsHere");
+                return;
+            }
+            else if (interior != null && interior.farmers.Any())
+            {
+                response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere");
+                return;
+            }
+            else
+            {
+                if (cabin != null)
+                {
+                    foreach (Farmer allFarmer in Game1.getAllFarmers())
+                    {
+                        if (allFarmer.currentLocation != null && allFarmer.currentLocation.Name == cabin.GetCellarName())
+                        {
+                            response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere");
+                            return;
+                        }
+                    }
+                    if (cabin.IsOwnerActivated)
+                    {
+                        response = Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_FarmhandOnline");
+                        return;
+                    }
+                }
+                destroyed.BeforeDemolish();
+                Chest? chest = null;
+                if (cabin != null)
+                {
+                    List<Item> list = cabin.demolish();
+                    if (list.Count > 0)
+                    {
+                        chest = new Chest(playerChest: true);
+                        chest.fixLidFrame();
+                        chest.Items.OverwriteWith(list);
+                    }
+                }
+                if (farm.destroyStructure(destroyed))
+                {
+                    Game1.flashAlpha = 1f;
+                    destroyed.showDestroyedAnimation(CarpenterMenuPatch.carpenterMenu.TargetLocation);
+                    Game1.playSound("explosion");
+                    Utility.spreadAnimalsAround(destroyed, farm);
                     DelayedAction.functionAfterDelay(CarpenterMenuPatch.carpenterMenu.returnToCarpentryMenu, 1500);
-                if (chest != null)
-                {
-                    farm.objects[new Vector2((int)toDemolish.tileX.Value + (int)toDemolish.tilesWide.Value / 2, (int)toDemolish.tileY.Value + (int)toDemolish.tilesHigh.Value / 2)] = chest;
+                    // FIXME Try using ref to change the value
+                    // freeze = true;
+                    if (chest != null)
+                    {
+                        farm.objects[new Vector2((int)destroyed.tileX.Value + (int)destroyed.tilesWide.Value / 2, (int)destroyed.tileY.Value + (int)destroyed.tilesHigh.Value / 2)] = chest;
+                    }
                 }
             }
-        }
-
-        private static void HandleFailedDemolition()
+        };
+        if (destroyed != null)
         {
-            if (CarpenterMenuPatch.carpenterMenu != null)
-                DelayedAction.functionAfterDelay(CarpenterMenuPatch.carpenterMenu.returnToCarpentryMenu, 1000);
-            MainClass.ScreenReader.TranslateAndSay("building_operations-building_failed", true);
-        }
-
-        public static string? Demolish(Building? toDemolish)
-        {
-            if (toDemolish == null)
+            if (cabin != null && !Game1.IsMasterGame)
             {
+                return Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_LockFailed");
+            }
+            if (!CarpenterMenuPatch.carpenterMenu.CanDemolishThis(destroyed))
+            {
+                // TODO add a message
                 return null;
             }
-
-            string? demolishError = CheckDemolishConditions(toDemolish);
-            if (demolishError != null)
+            if (!Game1.IsMasterGame && !CarpenterMenuPatch.carpenterMenu.hasPermissionsToDemolish(destroyed))
             {
-                return demolishError;
+                // TODO add a message
+                return null;
             }
-
-            Game1.player.team.demolishLock.RequestLock(() => HandleDemolition(toDemolish), HandleFailedDemolition);
-
-            return null;
         }
-
-        public static string? Construct(Vector2 position)
+        Cabin? cabin2 = cabin;
+        if (cabin2 != null && cabin2.HasOwner && cabin!.owner.isCustomized.Value)
         {
-            string? response = null;
-            // This code is taken from the game's code (CarpenterMenu.cs::874)
-            Game1.player.team.buildLock.RequestLock(delegate
+            Game1.currentLocation.createQuestionDialogue(Game1.content.LoadString("Strings\\UI:Carpenter_DemolishCabinConfirm", cabin.owner.Name), Game1.currentLocation.createYesNoResponses(), delegate (Farmer f, string answer)
             {
-                if (CarpenterMenuPatch.isOnFarm && Game1.locationRequest == null)
+                if (answer == "Yes")
                 {
-                    if (TryToBuild(position))
-                    {
-                        if (CarpenterMenuPatch.carpenterMenu != null)
-                        {
-                            CarpenterMenuPatch.carpenterMenu.CurrentBlueprint.consumeResources();
-                            DelayedAction.functionAfterDelay(CarpenterMenuPatch.carpenterMenu.returnToCarpentryMenuAfterSuccessfulBuild, 2000);
-                        }
-                        // freeze = true;
-                    }
-                    else
-                    {
-                        response = Game1.content.LoadString("Strings\\UI:Carpenter_CantBuild");
-                    }
-                }
-                Game1.player.team.buildLock.ReleaseLock();
-            });
-
-            return response;
-        }
-
-        public static bool TryToBuild(Vector2 position)
-        {
-            if (CarpenterMenuPatch.carpenterMenu == null)
-                return false;
-            return ((Farm)Game1.getLocationFromName("Farm")).buildStructure(CarpenterMenuPatch.carpenterMenu.CurrentBlueprint, position, Game1.player, CarpenterMenuPatch.isMagicalConstruction);
-        }
-
-        public static string? Upgrade(Building? toUpgrade)
-        {
-            string? response = null;
-            // This code is taken from the game's code (CarpenterMenu.cs::775)
-            if (CarpenterMenuPatch.carpenterMenu != null && toUpgrade != null && CarpenterMenuPatch.carpenterMenu.CurrentBlueprint.name != null && toUpgrade.buildingType.Equals(CarpenterMenuPatch.carpenterMenu.CurrentBlueprint.nameOfBuildingToUpgrade))
-            {
-                CarpenterMenuPatch.carpenterMenu.CurrentBlueprint.consumeResources();
-                toUpgrade.daysUntilUpgrade.Value = 2;
-                toUpgrade.showUpgradeAnimation(Game1.getFarm());
-                Game1.playSound("axe");
-                DelayedAction.functionAfterDelay(CarpenterMenuPatch.carpenterMenu.returnToCarpentryMenuAfterSuccessfulBuild, 1500);
-                // freeze = true;
-                // Game1.multiplayer.globalChatInfoMessage("BuildingBuild", Game1.player.Name, Utility.AOrAn(carpenterMenu.CurrentBlueprint.displayName), carpenterMenu.CurrentBlueprint.displayName, Game1.player.farmName.Value);
-            }
-            else if (toUpgrade != null)
-            {
-                response = Game1.content.LoadString("Strings\\UI:Carpenter_CantUpgrade_BuildingType");
-            }
-            return response;
-        }
-
-        public static string? Paint(Building? toPaint)
-        {
-            string? response = null;
-            // This code is taken from the game's code (CarpenterMenu.cs::793)
-            Farm farm_location = Game1.getFarm();
-            if (toPaint != null)
-            {
-                if (!toPaint.CanBePainted())
-                {
-                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint");
-                    return response;
-                }
-                if (CarpenterMenuPatch.carpenterMenu != null && !CarpenterMenuPatch.carpenterMenu.HasPermissionsToPaint(toPaint))
-                {
-                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint_Permission");
-                    return response;
-                }
-                toPaint.color.Value = Color.White;
-
-                CarpenterMenuPatch.carpenterMenu?.SetChildMenu(new StardewValley.Menus.BuildingPaintMenu(toPaint));
-            }
-            /* TODO Add painting of farm house
-            else if (farm_location.GetHouseRect().Contains(Utility.Vector2ToPoint(new Vector2(toPaint.tileX, toPaint.tileY))))
-            {
-                if (!carpenterMenu.CanPaintHouse())
-                {
-                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint");
-                }
-                else if (!carpenterMenu.HasPermissionsToPaint(null))
-                {
-                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint_Permission");
+                    Game1.activeClickableMenu = CarpenterMenuPatch.carpenterMenu;
+                    Game1.player.team.demolishLock.RequestLock(continueDemolish, buildingLockFailed);
                 }
                 else
                 {
-                    carpenterMenu.SetChildMenu(new BuildingPaintMenu("House", () => (farm_location.paintedHouseTexture != null) ? farm_location.paintedHouseTexture : Farm.houseTextures, farm_location.houseSource.Value, farm_location.housePaintColor.Value));
+                    DelayedAction.functionAfterDelay(CarpenterMenuPatch.carpenterMenu.returnToCarpentryMenu, 500);
                 }
-            }*/
-            return response;
+            });
+        }
+        else if (destroyed != null)
+        {
+            Game1.player.team.demolishLock.RequestLock(continueDemolish, buildingLockFailed);
         }
 
-        public static string? Move(Building? buildingToMove, Vector2 position)
-        {            if (buildingToMove == null)
-            {
-                return null;
-            }
-            if (CarpenterMenuPatch.carpenterMenu != null && !CarpenterMenuPatch.carpenterMenu.hasPermissionsToMove(buildingToMove))
-            {
-                buildingToMove = null;
-                return Translator.Instance.Translate("building_operations-move_building-no_permission");
-            }
-            Game1.playSound("axchop");
-            string name = buildingToMove.nameOfIndoorsWithoutUnique == "null" ? buildingToMove.buildingType.Value : buildingToMove.nameOfIndoorsWithoutUnique;
+        return response;
+    }
 
-            if (buildingToMove.daysOfConstructionLeft.Value > 0)
-            {
-                return Translator.Instance.Translate("building_operations-move_building-under_construction");
-            }
-            if (CarpenterMenuPatch.carpenterMenu != null && !CarpenterMenuPatch.carpenterMenu.hasPermissionsToMove(buildingToMove))
-            {
-                return Translator.Instance.Translate("building_operations-move_building-no_permission");
-            }
-            Game1.playSound("axchop");
+    public static string? Construct(Vector2 position)
+    {
+        if (CarpenterMenuPatch.carpenterMenu == null) return null;
 
-            if (!((Farm)Game1.getLocationFromName("Farm")).buildStructure(buildingToMove, position, Game1.player))
+        string? response = null;
+        // This code is taken from the game's code (CarpenterMenu.cs::receiveleftCick)
+        Game1.player.team.buildLock.RequestLock(delegate
+        {
+            if (CarpenterMenuPatch.isOnFarm && Game1.locationRequest == null)
             {
-                Game1.playSound("cancel");
-                return Translator.Instance.Translate("building_operations-move_building-cannot_move", new
+                if (CarpenterMenuPatch.carpenterMenu.tryToBuild())
                 {
-                    x_position = position.X,
-                    y_position = position.Y
-                });
+                    if (CarpenterMenuPatch.carpenterMenu != null)
+                    {
+                        CarpenterMenuPatch.carpenterMenu.ConsumeResources();
+                        DelayedAction.functionAfterDelay(CarpenterMenuPatch.carpenterMenu.returnToCarpentryMenuAfterSuccessfulBuild, 2000);
+                    }
+                    // TODO try this with ref
+                    // freeze = true;
+                }
+                else
+                {
+                    response = Game1.content.LoadString("Strings\\UI:Carpenter_CantBuild");
+                }
             }
+            Game1.player.team.buildLock.ReleaseLock();
+        });
 
-            switch (buildingToMove)
+        return response;
+    }
+
+    public static string? Upgrade(Building? toUpgrade)
+    {
+        string? response = null;
+        // This code is taken from the game's code (CarpenterMenu.cs::receiveLeftClick)
+        if (CarpenterMenuPatch.carpenterMenu != null && toUpgrade != null && toUpgrade.buildingType.Value == CarpenterMenuPatch.carpenterMenu.Blueprint.UpgradeFrom)
+        {
+            CarpenterMenuPatch.carpenterMenu.ConsumeResources();
+		toUpgrade.upgradeName.Value = CarpenterMenuPatch.carpenterMenu.Blueprint.Id;
+            toUpgrade.daysUntilUpgrade.Value = Math.Max(CarpenterMenuPatch.carpenterMenu.Blueprint.BuildDays, 1);
+            toUpgrade.showUpgradeAnimation(CarpenterMenuPatch.carpenterMenu.TargetLocation);
+            Game1.playSound("axe");
+            DelayedAction.functionAfterDelay(CarpenterMenuPatch.carpenterMenu.returnToCarpentryMenuAfterSuccessfulBuild, 1500);
+            // TODO Try to add these
+            // freeze = true;
+		// Game1.multiplayer.globalChatInfoMessage("BuildingBuild", Game1.player.Name, "aOrAn:" + Blueprint.TokenizedDisplayName, Blueprint.TokenizedDisplayName, Game1.player.farmName);
+		if (CarpenterMenuPatch.carpenterMenu.Blueprint.BuildDays < 1)
+		{
+			toUpgrade.FinishConstruction();
+		}
+		else
+		{
+			Game1.netWorldState.Value.MarkUnderConstruction(CarpenterMenuPatch.carpenterMenu.Builder, toUpgrade);
+		}
+        }
+        else if (toUpgrade != null)
+        {
+            response = Game1.content.LoadString("Strings\\UI:Carpenter_CantUpgrade_BuildingType");
+        }
+        return response;
+    }
+
+    public static string? Paint(Building? toPaint)
+    {
+        string? response = null;
+        /* TODO Add painting of farm house
+        // This code is taken from the game's code (CarpenterMenu.cs::793)
+        Farm farm_location = Game1.getFarm();
+        if (toPaint != null)
+        {
+            if (!toPaint.CanBePainted())
             {
-                case ShippingBin shippingBin:
-                    shippingBin.initLid();
-                    break;
-                case GreenhouseBuilding:
-                    Game1.getFarm().greenhouseMoved.Value = true;
-                    break;
+                response = Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint");
+                return response;
             }
-
-            buildingToMove.performActionOnBuildingPlacement();
-            Game1.playSound("axchop");
-            DelayedAction.playSoundAfterDelay("dirtyHit", 50);
-            DelayedAction.playSoundAfterDelay("dirtyHit", 150);
-
-            return Translator.Instance.Translate("building_operations-move_building-building_moved", new
+            if (CarpenterMenuPatch.carpenterMenu != null && !CarpenterMenuPatch.carpenterMenu.HasPermissionsToPaint(toPaint))
             {
-                building_name = name,
+                response = Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint_Permission");
+                return response;
+            }
+            toPaint.color.Value = Color.White;
+
+            CarpenterMenuPatch.carpenterMenu?.SetChildMenu(new StardewValley.Menus.BuildingPaintMenu(toPaint));
+        }
+        else if (farm_location.GetHouseRect().Contains(Utility.Vector2ToPoint(new Vector2(toPaint.tileX, toPaint.tileY))))
+        {
+            if (!carpenterMenu.CanPaintHouse())
+            {
+                response = Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint");
+            }
+            else if (!carpenterMenu.HasPermissionsToPaint(null))
+            {
+                response = Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint_Permission");
+            }
+            else
+            {
+                carpenterMenu.SetChildMenu(new BuildingPaintMenu("House", () => (farm_location.paintedHouseTexture != null) ? farm_location.paintedHouseTexture : Farm.houseTextures, farm_location.houseSource.Value, farm_location.housePaintColor.Value));
+            }
+        }*/
+        return response;
+    }
+
+    public static string? Move(Building? buildingToMove, Vector2 position)
+    {
+        //TODO Update this!
+        if (buildingToMove == null) return null;
+
+        if (CarpenterMenuPatch.carpenterMenu != null && !CarpenterMenuPatch.carpenterMenu.hasPermissionsToMove(buildingToMove))
+        {
+            buildingToMove = null;
+            return Translator.Instance.Translate("building_operations-move_building-no_permission");
+        }
+        Game1.playSound("axchop");
+        string name = buildingToMove.GetIndoorsName() == "null" ? buildingToMove.buildingType.Value : buildingToMove.GetIndoorsName();
+
+        if (buildingToMove.daysOfConstructionLeft.Value > 0)
+        {
+            return Translator.Instance.Translate("building_operations-move_building-under_construction");
+        }
+        if (CarpenterMenuPatch.carpenterMenu != null && !CarpenterMenuPatch.carpenterMenu.hasPermissionsToMove(buildingToMove))
+        {
+            return Translator.Instance.Translate("building_operations-move_building-no_permission");
+        }
+        Game1.playSound("axchop");
+
+        if (!((Farm)Game1.getLocationFromName("Farm")).buildStructure(buildingToMove, position, Game1.player))
+        {
+            Game1.playSound("cancel");
+            return Translator.Instance.Translate("building_operations-move_building-cannot_move", new
+            {
                 x_position = position.X,
                 y_position = position.Y
             });
         }
 
-        public static void PurchaseAnimal(Building? selection)
+        switch (buildingToMove)
         {
-            if (selection == null)
-                return;
-
-            if (PurchaseAnimalsMenuPatch.purchaseAnimalsMenu == null)
-                return;
-
-            int x = (selection.tileX.Value * Game1.tileSize) - Game1.viewport.X;
-            int y = (selection.tileY.Value * Game1.tileSize) - Game1.viewport.Y;
-
-            if (PurchaseAnimalsMenuPatch.animalBeingPurchased != null && !selection.buildingType.Value.Contains(PurchaseAnimalsMenuPatch.animalBeingPurchased.buildingTypeILiveIn.Value))
-            {
-                string warn = Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11326", PurchaseAnimalsMenuPatch.animalBeingPurchased.displayType);
-                MainClass.ScreenReader.Say(warn, true);
-                return;
-            }
-
-            if (((AnimalHouse)selection.indoors.Value).isFull())
-            {
-                string warn = Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11321");
-                MainClass.ScreenReader.Say(warn, true);
-                return;
-            }
-
-            PurchaseAnimalsMenuPatch.purchaseAnimalsMenu.receiveLeftClick(x, y);
+            case ShippingBin shippingBin:
+                shippingBin.initLid();
+                break;
+            case GreenhouseBuilding:
+                Game1.getFarm().greenhouseMoved.Value = true;
+                break;
         }
 
-        public static void MoveAnimal(Building? selection)
+        buildingToMove.performActionOnBuildingPlacement();
+        Game1.playSound("axchop");
+        DelayedAction.playSoundAfterDelay("dirtyHit", 50);
+        DelayedAction.playSoundAfterDelay("dirtyHit", 150);
+
+        return Translator.Instance.Translate("building_operations-move_building-building_moved", new
         {
-            if (selection == null)
-                return;
+            building_name = name,
+            x_position = position.X,
+            y_position = position.Y
+        });
+    }
 
-            if (AnimalQueryMenuPatch.animalQueryMenu == null)
-                return;
+    public static void PurchaseAnimal(Building? selection)
+    {
+        if (selection == null)
+            return;
 
-            if (AnimalQueryMenuPatch.animalBeingMoved == null)
-                return;
+        if (PurchaseAnimalsMenuPatch.purchaseAnimalsMenu == null)
+            return;
 
-            // The following code is taken from the game's source code [AnimalQueryMenu.cs::receiveLeftClick]
-            if (selection.buildingType.Value.Contains(AnimalQueryMenuPatch.animalBeingMoved.buildingTypeILiveIn.Value))
-            {
-                if (((AnimalHouse)selection.indoors.Value).isFull())
-                {
-                    string warn = Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_BuildingFull");
-                    MainClass.ScreenReader.Say(warn, true);
-                    return;
-                }
-                if (selection.Equals(AnimalQueryMenuPatch.animalBeingMoved.home))
-                {
-                    string warn = Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_AlreadyHome");
-                    MainClass.ScreenReader.Say(warn, true);
-                    return;
-                }
-                ((AnimalHouse)AnimalQueryMenuPatch.animalBeingMoved.home.indoors.Value).animalsThatLiveHere.Remove(AnimalQueryMenuPatch.animalBeingMoved.myID.Value);
-                if (((AnimalHouse)AnimalQueryMenuPatch.animalBeingMoved.home.indoors.Value).animals.ContainsKey(AnimalQueryMenuPatch.animalBeingMoved.myID.Value))
-                {
-                    ((AnimalHouse)selection.indoors.Value).animals.Add(AnimalQueryMenuPatch.animalBeingMoved.myID.Value, AnimalQueryMenuPatch.animalBeingMoved);
-                    ((AnimalHouse)AnimalQueryMenuPatch.animalBeingMoved.home.indoors.Value).animals.Remove(AnimalQueryMenuPatch.animalBeingMoved.myID.Value);
-                }
-                AnimalQueryMenuPatch.animalBeingMoved.home = selection;
-                AnimalQueryMenuPatch.animalBeingMoved.homeLocation.Value = new Vector2((int)selection.tileX.Value, (int)selection.tileY.Value);
-                ((AnimalHouse)selection.indoors.Value).animalsThatLiveHere.Add(AnimalQueryMenuPatch.animalBeingMoved.myID.Value);
-                AnimalQueryMenuPatch.animalBeingMoved.makeSound();
-                Game1.globalFadeToBlack(AnimalQueryMenuPatch.animalQueryMenu.finishedPlacingAnimal);
-            }
-            else
-            {
-                string warn = Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_CantLiveThere");
-                MainClass.ScreenReader.Say(warn, true);
-            }
+        int x = (selection.tileX.Value * Game1.tileSize) - Game1.viewport.X;
+        int y = (selection.tileY.Value * Game1.tileSize) - Game1.viewport.Y;
+
+        if (PurchaseAnimalsMenuPatch.animalBeingPurchased != null && !selection.buildingType.Value.Contains(PurchaseAnimalsMenuPatch.animalBeingPurchased.buildingTypeILiveIn.Value))
+        {
+            string warn = Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11326", PurchaseAnimalsMenuPatch.animalBeingPurchased.displayType);
+            MainClass.ScreenReader.Say(warn, true);
             return;
         }
+
+        if (((AnimalHouse)selection.indoors.Value).isFull())
+        {
+            string warn = Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11321");
+            MainClass.ScreenReader.Say(warn, true);
+            return;
+        }
+
+        PurchaseAnimalsMenuPatch.purchaseAnimalsMenu.receiveLeftClick(x, y);
+    }
+
+    public static void MoveAnimal(Building? selection)
+    {
+        if (selection == null) return;
+        if (AnimalQueryMenuPatch.animalQueryMenu == null) return;
+        if (AnimalQueryMenuPatch.animalBeingMoved == null) return;
+
+        // The following code is taken from the game's source code [AnimalQueryMenu.cs::receiveLeftClick]
+        if (AnimalQueryMenuPatch.animalBeingMoved.CanLiveIn(selection))
+        {
+	    AnimalHouse animalHouse = (AnimalHouse)selection.GetIndoors();
+	    if (animalHouse.isFull())
+            {
+                MainClass.ScreenReader.Say(Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_BuildingFull"), true);
+                return;
+            }
+            if (selection.Equals(AnimalQueryMenuPatch.animalBeingMoved.home))
+            {
+                MainClass.ScreenReader.Say(Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_AlreadyHome"), true);
+                return;
+            }
+	    AnimalHouse obj = (AnimalHouse)AnimalQueryMenuPatch.animalBeingMoved.home.GetIndoors();
+	    obj.animalsThatLiveHere.Remove(AnimalQueryMenuPatch.animalBeingMoved.myID.Value);
+	    if (obj.animals.Remove(AnimalQueryMenuPatch.animalBeingMoved.myID.Value))
+	    {
+	    	animalHouse.adoptAnimal(AnimalQueryMenuPatch.animalBeingMoved);
+	    }
+	    AnimalQueryMenuPatch.animalBeingMoved.makeSound();
+            Game1.globalFadeToBlack(AnimalQueryMenuPatch.animalQueryMenu.finishedPlacingAnimal);
+        }
+        else
+        {
+            string warn = Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_CantLiveThere");
+            MainClass.ScreenReader.Say(warn, true);
+        }
+        return;
     }
 }

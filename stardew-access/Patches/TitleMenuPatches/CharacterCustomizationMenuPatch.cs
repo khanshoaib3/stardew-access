@@ -593,7 +593,7 @@ namespace stardew_access.Patches
             }
 
             currentComponent = buttons.ElementAt(saveGameIndex).Key;
-            currentComponent!.snapMouseCursor();
+            currentComponent!.snapMouseCursorToCenter();
             __instance.setCurrentlySnappedComponentTo(currentComponent!.myID);
 
             (string translationKey, object? translationTokens) = buttons.ElementAt(saveGameIndex).Value;
@@ -732,9 +732,9 @@ namespace stardew_access.Patches
 
         private static string GetCurrentHair(bool lessInfo = false) => GetCurrentAttributeValue("hair", () => Game1.player.hair.Value + 1, lessInfo);
 
-        private static string GetCurrentShirt(bool lessInfo = false) => GetCurrentAttributeValue("shirt", () => Game1.player.shirt.Value + 1, lessInfo);
+        private static string GetCurrentShirt(bool lessInfo = false) => GetCurrentAttributeValue("shirt", () => int.Parse(Game1.player.shirt.Value) + 1, lessInfo);
 
-        private static string GetCurrentPants(bool lessInfo = false) => GetCurrentAttributeValue("pant", () => Game1.player.pants.Value + 1, lessInfo);
+        private static string GetCurrentPants(bool lessInfo = false) => GetCurrentAttributeValue("pant", () => int.Parse(Game1.player.pants.Value) + 1, lessInfo);
 
         private static string GetCurrentAccessory(bool lessInfo = false) => GetCurrentAttributeValue("acc", () => Game1.player.accessory.Value + 2, lessInfo);
 

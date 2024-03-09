@@ -1,16 +1,17 @@
-using Microsoft.Xna.Framework.Input;
-using StardewModdingAPI;
-
-namespace stardew_access.Features;
-
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using System.Timers;
+using StardewValley.Pathfinding;
 using xTile.Dimensions;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
+
+
+namespace stardew_access.Features;
 using Utils;
 using static Utils.MovementHelpers;
+using System.Timers;
 
 internal class GridMovement : FeatureBase
 {
@@ -163,7 +164,7 @@ internal class GridMovement : FeatureBase
 		StepCounter = 0;
 	}
 
-	private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+	private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
 	{
 		is_moving = false;
 		//this is called if it hasn't already naturally been called by the game so the player doesn't freeze if the warp is unsuccessful
@@ -191,7 +192,7 @@ internal class GridMovement : FeatureBase
 
 		Log.Debug($"Move Direction: {direction}");
 
-		Vector2 tileLocation = player.getTileLocation();
+		Vector2 tileLocation = player.Tile;
 
 		// Use the directionVectors dictionary to update the tileLocation
 		if (directionVectors.ContainsKey(direction))

@@ -102,7 +102,7 @@ internal class Radar : FeatureBase
         if (RadarDebug)
             Log.Debug($"\n\nRead Tile started");
 
-        Vector2 currPosition = Game1.player.getTileLocation();
+        Vector2 currPosition = Game1.player.Tile;
 
         _closed.Clear();
         _furniture.Clear();
@@ -184,8 +184,8 @@ internal class Radar : FeatureBase
         int[] dirY = [0, 1, 0, -1];
         int count = 0;
 
-        toSearch.Enqueue(Game1.player.getTileLocation());
-        searched.Add(Game1.player.getTileLocation());
+        toSearch.Enqueue(Game1.player.Tile);
+        searched.Add(Game1.player.Tile);
 
         //watch.Stop();
         //var elapsedMs = watch.ElapsedMilliseconds;
@@ -355,8 +355,8 @@ internal class Radar : FeatureBase
         if (RadarDebug)
             Log.Error($"{RadarFocus}\tObject:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}");
 
-        int px = (int)Game1.player.getTileX(); // Player's X postion
-        int py = (int)Game1.player.getTileY(); // Player's Y postion
+        int px = (int)Game1.player.Tile.X; // Player's X postion
+        int py = (int)Game1.player.Tile.Y; // Player's Y postion
 
         int ox = (int)position.X; // Object's X postion
         int oy = (int)position.Y; // Object's Y postion
@@ -366,19 +366,19 @@ internal class Radar : FeatureBase
 
         if (dy < 0 && (Math.Abs(dy) >= Math.Abs(dx))) // Object is at top
         {
-            currentLocation.localSoundAt(GetSoundName(category, "top"), position);
+            currentLocation.localSound(GetSoundName(category, "top"), position);
         }
         else if (dx > 0 && (Math.Abs(dx) >= Math.Abs(dy))) // Object is at right
         {
-            currentLocation.localSoundAt(GetSoundName(category, "right"), position);
+            currentLocation.localSound(GetSoundName(category, "right"), position);
         }
         else if (dx < 0 && (Math.Abs(dx) > Math.Abs(dy))) // Object is at left
         {
-            currentLocation.localSoundAt(GetSoundName(category, "left"), position);
+            currentLocation.localSound(GetSoundName(category, "left"), position);
         }
         else if (dy > 0 && (Math.Abs(dy) > Math.Abs(dx))) // Object is at bottom
         {
-            currentLocation.localSoundAt(GetSoundName(category, "bottom"), position);
+            currentLocation.localSound(GetSoundName(category, "bottom"), position);
         }
     }
 

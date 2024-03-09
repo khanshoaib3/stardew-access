@@ -54,7 +54,7 @@ internal class TileTrackerBase
     public static SpecialObject GetClosest(SpecialObject item1, SpecialObject item2)
     {
 
-        Vector2 player_tile = Game1.player.getTileLocation();
+        Vector2 player_tile = Game1.player.Tile;
 
         double collide_distance = GetDistance(player_tile, item2.TileLocation);
         double new_distance = GetDistance(player_tile, item1.TileLocation);

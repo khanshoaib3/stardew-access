@@ -79,7 +79,7 @@ namespace stardew_access.Patches
             string responseText = "";
             bool hasResponses = false;
 
-            if (__instance.responses.Count > 0) hasResponses = true;
+            if (__instance.responses.Count() > 0) hasResponses = true;
             if (!hasResponses) return false;
 
             questionText = __instance.getCurrentString();
@@ -102,7 +102,7 @@ namespace stardew_access.Patches
 
         private static string GetCurrentResponseText(DialogueBox __instance)
         {
-            List<Response> responses = __instance.responses;
+            List<Response> responses = __instance.responses.ToList();
             if (__instance.selectedResponse >= 0 && __instance.selectedResponse < responses.Count)
             {
                 return $"{__instance.selectedResponse + 1}: {responses[__instance.selectedResponse].responseText}";

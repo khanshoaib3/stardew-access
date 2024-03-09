@@ -4,6 +4,7 @@ using StardewValley.Menus;
 using StardewValley.Objects;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley.Inventories;
 
 namespace stardew_access.Patches
 {
@@ -210,18 +211,18 @@ namespace stardew_access.Patches
 
         // This method is used to get the inventory items to check if the player has enough ingredients for a recipe
         // Taken from CraftingPage.cs -> 169 line
-        internal static IList<Item>? GetContainerContents(List<Chest> materialContainers)
+        internal static IList<Item>? GetContainerContents(List<IInventory> materialContainers)
         {
             if (materialContainers == null)
             {
                 return null;
             }
-            List<Item> items = [];
-            for (int i = 0; i < materialContainers.Count; i++)
-            {
-                items.AddRange(materialContainers[i].items);
+            List<Item> list = [];
+	    foreach (IInventory materialContainer in materialContainers)
+	    {
+	        list.AddRange(materialContainer);
             }
-            return items;
+            return list;
         }
 
         internal static void Cleanup()

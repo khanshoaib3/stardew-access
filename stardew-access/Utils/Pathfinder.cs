@@ -3,6 +3,7 @@ using System.Timers;
 using Microsoft.Xna.Framework;
 using static stardew_access.Utils.MovementHelpers;
 using StardewValley;
+using StardewValley.Pathfinding;
 using xTile.Dimensions;
 
 namespace stardew_access.Utils
@@ -43,14 +44,14 @@ namespace stardew_access.Utils
 			footstepTimer.Dispose();
 		}
 
-		private void FootstepTimer_Elapsed(object sender, ElapsedEventArgs e)
+		private void FootstepTimer_Elapsed(object? sender, ElapsedEventArgs e)
 		{
 			try
 			{
 				Farmer player = Game1.player;
 				if (player.controller != null)
 				{
-					player.currentLocation.playTerrainSound(player.getTileLocation());
+					player.currentLocation.playTerrainSound(player.Tile);
 				}
 			}
 			catch (Exception ex)
@@ -59,7 +60,7 @@ namespace stardew_access.Utils
 			}
 		}
 
-		private void CheckPathingTimer_Elapsed(object sender, ElapsedEventArgs e)
+		private void CheckPathingTimer_Elapsed(object? sender, ElapsedEventArgs e)
 		{
 			try
 			{

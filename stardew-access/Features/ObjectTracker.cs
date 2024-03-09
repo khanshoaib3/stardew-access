@@ -267,7 +267,7 @@ internal class ObjectTracker : FeatureBase
 
         if (sObject != null)
         {
-            Vector2 playerTile = player.getTileLocation();
+            Vector2 playerTile = player.Tile;
             Vector2? sObjectTile = sObject?.TileLocation;
             if (sObjectTile != null)
             {
@@ -512,7 +512,7 @@ internal class ObjectTracker : FeatureBase
         Farmer player = Game1.player;
         SpecialObject? sObject = GetCurrentlySelectedObject();
 
-        Vector2 playerTile = player.getTileLocation();
+        Vector2 playerTile = player.Tile;
         Vector2? sObjectTile = (sObject != null) ? sObject.TileLocation : (Vector2?)null;
 
         Vector2? closestTile = SelectedCoordinates ?? (sObject is not null ? (sObject.PathfindingOverride != null ? GetClosestTilePath((Vector2)sObject.PathfindingOverride) : GetClosestTilePath(sObjectTile)) : null);

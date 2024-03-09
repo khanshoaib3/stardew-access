@@ -15,7 +15,7 @@ namespace stardew_access.Patches
             );
         }
 
-        private static void CheckActionPatch(TrashBear __instance, bool __result, int ___itemWantedIndex,
+        private static void CheckActionPatch(TrashBear __instance, bool __result, string ___itemWantedIndex,
             int ___showWantBubbleTimer)
         {
             try
@@ -24,7 +24,7 @@ namespace stardew_access.Patches
                     return; // The true `true` value of __result indicates the bear is interactable i.e. when giving the bear the wanted item
                 if (__instance.Sprite.CurrentAnimation != null) return;
 
-                string itemName = Game1.objectInformation[___itemWantedIndex].Split('/')[4];
+                string itemName = Game1.objectData[___itemWantedIndex].DisplayName;
                 MainClass.ScreenReader.Say(
                     Translator.Instance.Translate("patch-trash_bear-wanted_item",
                         new { trash_bear_name = __instance.displayName, item_name = itemName }), true);

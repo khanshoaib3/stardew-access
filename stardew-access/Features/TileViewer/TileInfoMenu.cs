@@ -10,7 +10,7 @@ using StardewValley.Menus;
 
 namespace stardew_access.Features;
 
-public class TileInfoMenu(int tileX, int tileY) : DialogueBox("", [MarkTileResponse, AddToUserTilesResponse, SpeakDetailedInfoResponse])
+public class TileInfoMenu: DialogueBox
 { 
     private const string MarkTileI18NKey = "menu-tile_info-mark_tile";
     private static readonly Response MarkTileResponse = new(MarkTileI18NKey,
@@ -35,9 +35,16 @@ public class TileInfoMenu(int tileX, int tileY) : DialogueBox("", [MarkTileRespo
     private static readonly string DataAlreadyExistMessage =
         Translator.Instance.Translate("menu-tile_info-data_exists", TranslationCategory.Menu);
 
-    private readonly int _tileX = tileX;
-    private readonly int _tileY = tileY;
+    private readonly int _tileX;
+    private readonly int _tileY;
     private AccessibleTile.JsonSerializerFormat? _tempDefaultData = null;
+
+    public TileInfoMenu(int tileX, int tileY)
+        : base("", new Response[] { MarkTileResponse, AddToUserTilesResponse, SpeakDetailedInfoResponse })
+    {
+        _tileX = tileX;
+        _tileY = tileY;
+    }
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
@@ -64,10 +71,10 @@ public class TileInfoMenu(int tileX, int tileY) : DialogueBox("", [MarkTileRespo
                 if (UserTilesUtils.TryAndGetTileDataAt(out AccessibleTile.JsonSerializerFormat? tileData, _tileX, _tileY))
                 {
                     _tempDefaultData = tileData;
-                    responses =
-                    [
+                    responses = new Response[]
+                    {
                         EditExistingResponse, DeleteExistingResponse
-                    ];
+                    };
                     selectedResponse = 0;
                     dialogues =
                     [
@@ -137,7 +144,7 @@ public class TileInfoMenu(int tileX, int tileY) : DialogueBox("", [MarkTileRespo
             BuildingOperations.marked[i] = new Vector2(_tileX, _tileY);
             MainClass.ScreenReader.TranslateAndSay("commands-tile_marking-mark-location_marked", true,
                 translationTokens: new
-                    { x_position = Game1.player.getTileX(), y_position = Game1.player.getTileY(), index = i },
+                    { x_position = Game1.player.Tile.X, y_position = Game1.player.Tile.Y, index = i },
                 translationCategory: TranslationCategory.CustomCommands);
             exitThisMenu();
         }

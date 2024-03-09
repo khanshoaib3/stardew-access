@@ -133,7 +133,7 @@ namespace stardew_access
             
             // The event with id 13 is the Haley's six heart event, the one at the beach requiring the player to find the bracelet
             // *** Exiting here will cause GridMovement and ObjectTracker functionality to not work during this event, making the bracelet impossible to track ***
-            if (!Context.IsPlayerFree && !(Game1.CurrentEvent is not null && Game1.CurrentEvent.id == 13))
+            if (!Context.IsPlayerFree && !(Game1.CurrentEvent is not null && Game1.CurrentEvent.id == "13"))
                 return;
             
             FeatureManager.UpdateEvent(sender, e);

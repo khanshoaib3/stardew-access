@@ -126,12 +126,10 @@ public static class AccessibleTileHelpers
     {
         if (obj.ConditionArgs.TryGetValue("HasQuest", out string? args) && !string.IsNullOrEmpty(args))
         {
-            // args should be digits
-            if (int.TryParse(args, out int id))
-            {
-                return Game1.player!.hasQuest(id);
-            }
+            // TODO Check if previous entries still work or not
+            return Game1.player!.hasQuest(args);
         }
+
         throw new ArgumentException($"ID for HasQuest on {obj} must be a non-empty, valid integer");
     }
 
@@ -139,12 +137,10 @@ public static class AccessibleTileHelpers
     {
         if (obj.ConditionArgs.TryGetValue("ActiveEvent", out string? args) && !string.IsNullOrEmpty(args))
         {
-            // args should be digits
-            if (int.TryParse(args, out int id))
-            {
-                return Game1.currentLocation.currentEvent != null && Game1.currentLocation.currentEvent.id == id;
-            }
+            // TODO Check if previous entries still work or not
+            return Game1.currentLocation.currentEvent != null && Game1.currentLocation.currentEvent.id == args;
         }
+
         throw new ArgumentException($"ID for ActiveEvent on {obj} must be a non-empty, valid integer");
     }
 

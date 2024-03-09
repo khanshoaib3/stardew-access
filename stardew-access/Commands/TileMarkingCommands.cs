@@ -39,7 +39,7 @@ public class TileMarkingCommands : ICustomCommand
         List<string> buildingInfos = [];
         foreach (var building in buildings)
         {
-            string? name = building.nameOfIndoorsWithoutUnique;
+            string? name = building.GetIndoorsName();
             name = (name == "null") ? building.buildingType.Value : name;
 
             BuildingOperations.availableBuildings[buildingIndex] = building;
@@ -93,11 +93,11 @@ public class TileMarkingCommands : ICustomCommand
             return;
         }
 
-        BuildingOperations.marked[index] = new Vector2(Game1.player.getTileX(), Game1.player.getTileY());
+        BuildingOperations.marked[index] = new Vector2(Game1.player.Tile.X, Game1.player.Tile.Y);
         Log.Info(Translator.Instance.Translate("commands-tile_marking-mark-location_marked", new
         {
-            x_position = Game1.player.getTileX(),
-            y_position = Game1.player.getTileY(),
+            x_position = Game1.player.Tile.X,
+            y_position = Game1.player.Tile.Y,
             index
         }, translationCategory: TranslationCategory.CustomCommands));
     }
