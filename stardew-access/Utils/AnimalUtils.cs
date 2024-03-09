@@ -20,7 +20,7 @@ namespace stardew_access.Utils
             // Populate the dictionary
             foreach (FarmAnimal animal in farmAnimals)
             {
-                animalByCoordinate[(animal.getTileX(), animal.getTileY())] = animal;
+                animalByCoordinate[((int x, int y))(animal.Tile.X, animal.Tile.Y)] = animal;
             }
 
             return animalByCoordinate;

@@ -63,7 +63,7 @@ namespace stardew_access.Patches
         private static void DrawHoverTextPatch(string? text,
                                                int moneyAmountToDisplayAtBottom = -1,
                                                string? boldTitleText = null,
-                                               int extraItemToShowIndex = -1,
+                                               string? extraItemToShowIndex = null,
                                                int extraItemToShowAmount = -1,
                                                string[]? buffIconsToDisplay = null,
                                                Item? hoveredItem = null,

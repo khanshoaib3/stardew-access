@@ -12,7 +12,8 @@ namespace stardew_access.Patches
         public void Apply(Harmony harmony)
         {
             harmony.Patch(
-                original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.draw),
+                    new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(ShopMenuPatch), nameof(ShopMenuPatch.DrawPatch))
             );
         }
@@ -23,12 +24,14 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
-                if (MainClass.Config.SnapToFirstSecondaryInventorySlotKey.JustPressed() && __instance.forSaleButtons.Count > 0)
+                if (MainClass.Config.SnapToFirstSecondaryInventorySlotKey.JustPressed() &&
+                    __instance.forSaleButtons.Count > 0)
                 {
                     __instance.forSaleButtons[0].snapMouseCursorToCenter();
                     __instance.setCurrentlySnappedComponentTo(__instance.forSaleButtons[0].myID);
                 }
-                else if (MainClass.Config.SnapToFirstInventorySlotKey.JustPressed() && __instance.inventory.inventory.Count > 0)
+                else if (MainClass.Config.SnapToFirstInventorySlotKey.JustPressed() &&
+                         __instance.inventory.inventory.Count > 0)
                 {
                     __instance.inventory.inventory[0].snapMouseCursorToCenter();
                     __instance.setCurrentlySnappedComponentTo(__instance.inventory.inventory[0].myID);
@@ -54,7 +57,8 @@ namespace stardew_access.Patches
             string translationKey = "";
             bool isDropItemButton = false;
 
-            if (__instance.inventory.dropItemInvisibleButton != null && __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
+            if (__instance.inventory.dropItemInvisibleButton != null &&
+                __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
             {
                 translationKey = "common-ui-drop_item_button";
                 isDropItemButton = true;
@@ -73,7 +77,8 @@ namespace stardew_access.Patches
             }
 
             if (MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true))
-                if (isDropItemButton) Game1.playSound("drop_item");
+                if (isDropItemButton)
+                    Game1.playSound("drop_item");
 
             return true;
         }
@@ -83,18 +88,14 @@ namespace stardew_access.Patches
             if (__instance.hoveredItem == null) return;
 
             string name = __instance.hoveredItem.DisplayName;
-            string price = Translator.Instance.Translate("menu-shop-buy_price_info", new { price = __instance.hoverPrice }, TranslationCategory.Menu);
+            string price = Translator.Instance.Translate("menu-shop-buy_price_info",
+                new { price = __instance.hoverPrice }, TranslationCategory.Menu);
             string description = __instance.hoveredItem.getDescription();
 
-            int itemIndex = (__instance.itemPriceAndStock[__instance.hoveredItem].Length > 2)
-                ? __instance.itemPriceAndStock[__instance.hoveredItem][2]
-                : -1;
+            string itemId = __instance.itemPriceAndStock[__instance.hoveredItem].TradeItem;
+            int? itemCount = __instance.itemPriceAndStock[__instance.hoveredItem].TradeItemCount;
 
-            int itemAmount = (__instance.itemPriceAndStock[__instance.hoveredItem].Length > 3)
-                ? __instance.itemPriceAndStock[__instance.hoveredItem][3]
-                : 5;
-
-            string requirements = InventoryUtils.GetExtraItemInfo(itemIndex, itemAmount);
+            string requirements = InventoryUtils.GetExtraItemInfo(itemId, itemCount);
 
             string toSpeak = $"{name}, {requirements}, {price}, {description}";
             MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);

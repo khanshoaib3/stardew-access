@@ -127,19 +127,19 @@ namespace stardew_access.Patches
             {
                 if (___distanceFromCatching <= 0.2f && previousDistanceFromCatching > 0.2f)
                 {
-                    Game1.playSoundPitched("bobber_progress", -100);
+                    Game1.playSound("bobber_progress", -100);
                 }
                 else if (___distanceFromCatching <= 0.4f && previousDistanceFromCatching > 0.4f)
                 {
-                    Game1.playSoundPitched("bobber_progress", -100);
+                    Game1.playSound("bobber_progress", -100);
                 }
                 else if (___distanceFromCatching <= 0.6f && previousDistanceFromCatching > 0.6f)
                 {
-                    Game1.playSoundPitched("bobber_progress", -100);
+                    Game1.playSound("bobber_progress", -100);
                 }
                 else if (___distanceFromCatching <= 0.8f && previousDistanceFromCatching > 0.8f)
                 {
-                    Game1.playSoundPitched("bobber_progress", -100);
+                    Game1.playSound("bobber_progress", -100);
                 }
 
                 previousDistanceFromCatching = ___distanceFromCatching;
@@ -152,12 +152,12 @@ namespace stardew_access.Patches
             if (estimatedBobberBarPos + (float)___bobberBarHeight > 568f)
             {
                 Log.Debug("Collided with bottom");
-                Game1.playSoundPitched("axchop", -100);
+                Game1.playSound("axchop", -100);
             }
             else if (estimatedBobberBarPos < 0f)
             {
                 Log.Debug("Collided with top");
-                Game1.playSoundPitched("axchop", 1000);
+                Game1.playSound("axchop", 1000);
             }
         }
 

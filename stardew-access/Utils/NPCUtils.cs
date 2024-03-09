@@ -8,7 +8,7 @@ namespace stardew_access.Utils
         {
             if (npc != null && !npc.IsInvisible)
             {
-                if (sameTile && (npc.getTileLocation() != Game1.player.getTileLocation())) return;
+                if (sameTile && (npc.Tile != Game1.player.Tile)) return;
                 npc.IsInvisible = true;
                 _ = UnghostNPC(npc, delay);
             }

@@ -20,8 +20,6 @@ namespace stardew_access.Patches
         {
             try
             {
-                Log.Debug($"Curr page: {__instance.currentPage}\t curr region: {__instance.currentRegion}\t curr tab: {__instance.currentTab}", true);
-
                 if (__instance.currentPage != -1)
                     return;
 

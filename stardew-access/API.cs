@@ -139,6 +139,7 @@ namespace stardew_access
         #region Inventory and Item related
 
         /// <summary>
+        /// (Legacy! Should not be used from v1.6)
         /// Speaks the hovered inventory slot from the provided <see cref="InventoryMenu"/>.
         /// In case there is nothing in a slot, then it will speak "Empty Slot".
         /// Also plays a sound if the slot is grayed out, like tools in <see cref="GeodeMenu">geode menu</see>.
@@ -157,6 +158,40 @@ namespace stardew_access
             bool? giveExtraDetails = null,
             int hoverPrice = -1,
             int extraItemToShowIndex = -1,
+            int extraItemToShowAmount = -1,
+            string highlightedItemPrefix = "",
+            string highlightedItemSuffix = "",
+            int? hoverX = null,
+            int? hoverY = null) =>
+            InventoryUtils.NarrateHoveredSlot(inventoryMenu,
+                giveExtraDetails,
+                hoverPrice,
+                extraItemToShowIndex == -1 ? null : extraItemToShowIndex.ToString(),
+                extraItemToShowAmount,
+                highlightedItemPrefix,
+                highlightedItemSuffix,
+                hoverX,
+                hoverY);
+
+        /// <summary>
+        /// Speaks the hovered inventory slot from the provided <see cref="InventoryMenu"/>.
+        /// In case there is nothing in a slot, then it will speak "Empty Slot".
+        /// Also plays a sound if the slot is grayed out, like tools in <see cref="GeodeMenu">geode menu</see>.
+        /// </summary>
+        /// <param name="inventoryMenu">The object of <see cref="InventoryMenu"/> whose inventory is to be spoken.</param>
+        /// <param name="giveExtraDetails">(Optional) Whether to speak extra details about the item in slot or not. Default to null in which case it uses <see cref="ModConfig.DisableInventoryVerbosity"/> to get whether to speak extra details or not.</param>
+        /// <param name="hoverPrice">(Optional) The price of the hovered item, generally used in <see cref="ShopMenu"/>.</param>
+        /// <param name="extraItemToShowIndex">(Optional) The index (probably parentSheetIndex) of the extra item which is generally a requirement for the hovered item in certain menus.</param>
+        /// <param name="extraItemToShowAmount">(Optional) The amount or quantity of the extra item which is generally a requirement for the hovered item in certain menus.</param>
+        /// <param name="highlightedItemPrefix">(Optional) The prefix to add to the spoken hovered item's details if it is highlighted i.e., not grayed out.</param>
+        /// <param name="highlightedItemSuffix">(Optional) The suffix to add to the spoken hovered item's details if it is highlighted i.e., not grayed out.</param>
+        /// <param name="hoverX">(Optional) The X position on screen to check. Default to null, in which case it uses the mouse's X position.</param>
+        /// <param name="hoverY">(Optional) The Y position on screen to check. Default to null, in which case it uses the mouse's Y position.</param>
+        /// <returns>true if any inventory slot was hovered or found at the <paramref name="hoverX"/> and <paramref name="hoverY"/>.</returns>
+        public bool SpeakHoveredInventorySlot(InventoryMenu? inventoryMenu,
+            bool? giveExtraDetails = null,
+            int hoverPrice = -1,
+            string? extraItemToShowIndex = null,
             int extraItemToShowAmount = -1,
             string highlightedItemPrefix = "",
             string highlightedItemSuffix = "",
@@ -184,12 +219,33 @@ namespace stardew_access
         public string GetDetailsOfItem(Item item,
             bool giveExtraDetails = false,
             int price = -1,
-            int extraItemToShowIndex = -1,
+            string? extraItemToShowIndex = null,
             int extraItemToShowAmount = -1)
             => InventoryUtils.GetItemDetails(item,
                 giveExtraDetails: giveExtraDetails,
                 hoverPrice: price,
                 extraItemToShowIndex: extraItemToShowIndex,
+                extraItemToShowAmount: extraItemToShowAmount);
+
+        /// <summary>
+        /// (Legacy! Should not be used from v1.6)
+        /// Get the details (name, description, quality, etc.) of an <see cref="Item"/>.
+        /// </summary>
+        /// <param name="item">The <see cref="Item"/>'s object that we want to get details of.</param>
+        /// <param name="giveExtraDetails">(Optional) Whether to also return extra details or not. These include: description, health, stamina and other buffs.</param>
+        /// <param name="price">(Optional) Generally the selling price of the item.</param>
+        /// <param name="extraItemToShowIndex">(Optional) The index of the extra item which is generally the required item for the given item.</param>
+        /// <param name="extraItemToShowAmount">(Optional) The amount or quantity of the extra item.</param>
+        /// <returns>The details of the given <paramref name="item"/>.</returns>
+        public string GetDetailsOfItem(Item item,
+            bool giveExtraDetails = false,
+            int price = -1,
+            int extraItemToShowIndex = -1,
+            int extraItemToShowAmount = -1)
+            => InventoryUtils.GetItemDetails(item,
+                giveExtraDetails: giveExtraDetails,
+                hoverPrice: price,
+                extraItemToShowIndex: extraItemToShowIndex == -1 ? null : extraItemToShowIndex.ToString(),
                 extraItemToShowAmount: extraItemToShowAmount);
 
         #endregion

@@ -206,7 +206,7 @@ namespace stardew_access.Patches
                 currentIngredientListItem
             ];
 
-            Item item = new StardewValley.Object(ingredient.index, ingredient.stack, isRecipe: false, -1,
+            Item item = new StardewValley.Object(ingredient.id, ingredient.stack, isRecipe: false, -1,
                 ingredient.quality);
             bool completed = ___currentPageBundle != null && ___currentPageBundle.ingredients != null
                                                           && currentIngredientListItem < ___currentPageBundle.ingredients.Count

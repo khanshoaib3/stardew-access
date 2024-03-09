@@ -1,6 +1,7 @@
 using StardewValley;
 using StardewValley.Menus;
 using stardew_access.Translation;
+using StardewValley.Buffs;
 using StardewValley.Tools;
 
 namespace stardew_access.Utils;
@@ -18,7 +19,7 @@ internal static class InventoryUtils
     internal static bool NarrateHoveredSlot(InventoryMenu? inventoryMenu,
         bool? giveExtraDetails = null,
         int hoverPrice = -1,
-        int extraItemToShowIndex = -1,
+        string? extraItemToShowIndex = null,
         int extraItemToShowAmount = -1,
         string highlightedItemPrefix = "",
         string highlightedItemSuffix = "",
@@ -44,7 +45,7 @@ internal static class InventoryUtils
     internal static int NarrateHoveredSlotAndReturnIndex( InventoryMenu? inventoryMenu,
         bool? giveExtraDetails = null,
         int hoverPrice = -1,
-        int extraItemToShowIndex = -1,
+        string? extraItemToShowIndex = null,
         int extraItemToShowAmount = -1,
         string highlightedItemPrefix = "",
         string highlightedItemSuffix = "",
@@ -95,7 +96,7 @@ internal static class InventoryUtils
         bool? isHighlighted = null,
         bool giveExtraDetails = false,
         int hoverPrice = -1,
-        int extraItemToShowIndex = -1,
+        string? extraItemToShowIndex = null,
         int extraItemToShowAmount = -1,
         string highlightedItemPrefix = "",
         string highlightedItemSuffix = "",
@@ -236,16 +237,10 @@ internal static class InventoryUtils
         if (item == null) return "";
         if (item is not StardewValley.Object) return "";
         if (((StardewValley.Object)item) == null) return "";
+        Log.Trace($"asdf: \"{item.QualifiedItemId}\"");
 
-        // These variables are taken from the game's code itself (IClickableMenu.cs -> 1016 line)
-        bool edibleItem = (int)((StardewValley.Object)item).Edibility != -300;
-        string[]? buffIconsToDisplay = (edibleItem && Game1.objectInformation[((StardewValley.Object)item).ParentSheetIndex].Split('/').Length > 7)
-                ? item.ModifyItemBuffs(
-                    Game1.objectInformation[((StardewValley.Object)item).ParentSheetIndex].Split('/')[7].Split(' '))
-                : null;
-
-        if (buffIconsToDisplay == null)
-            return "";
+        string[] buffIconsToDisplay =
+            new BuffEffects(ObjectUtils.GetObjectById(item.QualifiedItemId)?.Buff?.CustomAttributes)?.ToLegacyAttributeFormat() ?? new string[0];
 
         string toReturn = "";
         for (int j = 0; j < buffIconsToDisplay.Length; j++)
@@ -271,13 +266,14 @@ internal static class InventoryUtils
         return toReturn;
     }
 
-    internal static string GetExtraItemInfo(int itemIndex, int itemAmount)
+    internal static string GetExtraItemInfo(string? itemIndex, int? itemAmount)
     {
-        if (itemIndex == -1) return "";
+        if (itemIndex is null) return "";
+        if (itemIndex == "-1") return "";
 
-        string itemName = Game1.objectInformation[itemIndex].Split('/')[0];
+        string itemName = Game1.objectData[itemIndex].DisplayName;
 
-        if (itemAmount != -1)
+        if (itemAmount is null or < 0)
             return Translator.Instance.Translate("item-required_item_info",
                 new
                 {
@@ -310,7 +306,7 @@ internal static class InventoryUtils
         for (int i = 0; i < recipe.recipeList.Count; i++)
         {
             int recipeCount = recipe.recipeList.ElementAt(i).Value;
-            int recipeItem = recipe.recipeList.ElementAt(i).Key;
+            string recipeItem = recipe.recipeList.ElementAt(i).Key;
             string recipeName = recipe.getNameFromIndex(recipeItem);
 
             ingredientList.Add($"{recipeCount} {recipeName}");

@@ -52,7 +52,7 @@ namespace stardew_access.Patches
                 received_money = __instance.moneyIncluded,
                 learned_any_recipe = (__instance.ShouldShowInteractable() && __instance.learnedRecipe != null && __instance.learnedRecipe.Length > 0) ? 1 : 0,
                 learned_recipe = Game1.content.LoadString("Strings\\UI:LetterViewer_LearnedRecipe", __instance.cookingOrCrafting),
-                is_quest = (__instance.acceptQuestButton != null && __instance.questID != -1) ? 1 : 0,
+                is_quest = (__instance.acceptQuestButton != null && __instance.questID != "-1") ? 1 : 0,
             };
 
             string toSpeak = Translator.Instance.Translate(translationKey, translationTokens, TranslationCategory.Menu);
@@ -70,7 +70,7 @@ namespace stardew_access.Patches
 
             if (!MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true)) return;
             // snap mouse to accept quest button
-            if (__instance.acceptQuestButton != null && __instance.questID != -1)
+            if (__instance.acceptQuestButton != null && __instance.questID != "-1")
                 __instance.acceptQuestButton.snapMouseCursorToCenter();
         }
 

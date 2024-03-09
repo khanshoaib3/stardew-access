@@ -1,8 +1,10 @@
 using HarmonyLib;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches
@@ -24,7 +26,7 @@ namespace stardew_access.Patches
 
         internal static void DrawPatch(
             CarpenterMenu __instance, bool ___onFarm, List<Item> ___ingredients, int ___price,
-            List<BluePrint> ___blueprints, int ___currentBlueprintIndex, bool ___upgrading, bool ___demolishing, bool ___moving,
+            List<CarpenterMenu.BlueprintEntry> ___blueprints, int ___currentBlueprintIndex, bool ___upgrading, bool ___demolishing, bool ___moving,
             bool ___painting, bool ___magicalConstruction)
         {
             try
@@ -40,7 +42,7 @@ namespace stardew_access.Patches
                     isMoving = false;
                     isConstructing = false;
 
-                    BluePrint currentBlueprint = __instance.CurrentBlueprint;
+                    CarpenterMenu.BlueprintEntry currentBlueprint = __instance.Blueprint;
                     if (currentBlueprint == null)
                         return;
 
@@ -82,7 +84,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static string GetCurrentBlueprintInfo(BluePrint currentBlueprint, int ___price, List<Item> ___ingredients)
+        private static string GetCurrentBlueprintInfo(CarpenterMenu.BlueprintEntry currentBlueprint, int ___price, List<Item> ___ingredients)
         {
             string ingredients = "";
             List<string> ingredientsList = [];
@@ -92,12 +94,12 @@ namespace stardew_access.Patches
             string translationKey = "menu-carpenter-blueprint_info";
             object? translationTokens = new
             {
-                name = currentBlueprint.displayName,
+                name = currentBlueprint.DisplayName,
                 price = ___price,
                 ingredients_list = ingredients,
-                width = currentBlueprint.tilesWidth,
-                height = currentBlueprint.tilesHeight,
-                currentBlueprint.description,
+                width = currentBlueprint.TilesWide,
+                height = currentBlueprint.TilesHigh,
+                currentBlueprint.Description,
             };
 
             return Translator.Instance.Translate(translationKey, translationTokens, TranslationCategory.Menu);
@@ -111,7 +113,7 @@ namespace stardew_access.Patches
             isSayingBlueprintInfo = false;
         }
 
-        private static void NarrateHoveredButton(CarpenterMenu __instance, List<BluePrint> ___blueprints, int ___currentBlueprintIndex, int x, int y)
+        private static void NarrateHoveredButton(CarpenterMenu __instance, List<CarpenterMenu.BlueprintEntry> ___blueprints, int ___currentBlueprintIndex, int x, int y)
         {
             string translationKey = "";
             object? translationTokens = null;
@@ -127,12 +129,12 @@ namespace stardew_access.Patches
             else if (__instance.demolishButton != null && __instance.demolishButton.containsPoint(x, y))
             {
                 translationKey = "menu-carpenter-demolish_building_button";
-                translationTokens = new { can_demolish = __instance.CanDemolishThis(___blueprints[___currentBlueprintIndex]) ? 1 : 0 };
+                translationTokens = new { can_demolish = __instance.CanDemolishThis(Building.CreateInstanceFromId(___blueprints[___currentBlueprintIndex].Id, Vector2.Zero)) ? 1 : 0 };
             }
             else if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
             {
                 translationKey = "menu-carpenter-construct_building_button";
-                translationTokens = new { can_construct = ___blueprints[___currentBlueprintIndex].doesFarmerHaveEnoughResourcesToBuild() ? 1 : 0 };
+                translationTokens = new { can_construct = __instance.DoesFarmerHaveEnoughResourcesToBuild() ? 1 : 0 };
             }
             else if (__instance.moveButton != null && __instance.moveButton.containsPoint(x, y))
             {

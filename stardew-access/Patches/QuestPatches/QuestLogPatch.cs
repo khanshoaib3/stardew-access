@@ -4,6 +4,8 @@ using stardew_access.Translation;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Quests;
+using StardewValley.SpecialOrders;
+using StardewValley.SpecialOrders.Objectives;
 
 namespace stardew_access.Patches
 {

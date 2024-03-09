@@ -1,4 +1,5 @@
 using StardewValley;
+using StardewValley.Pathfinding;
 using StardewValley.Tools;
 using Microsoft.Xna.Framework;
 using stardew_access.Translation;
@@ -31,7 +32,7 @@ namespace stardew_access.Utils
         internal static void FacePlayerToTargetTile(Vector2 targetTile)
         {
             var player = Game1.player;
-            string faceDirection = GetDirectionTranslationKey(player.getTileLocation(), targetTile);
+            string faceDirection = GetDirectionTranslationKey(player.Tile, targetTile);
             switch (faceDirection)
             {
                 case "direction-north":
@@ -71,7 +72,7 @@ namespace stardew_access.Utils
             foreach (var tile in tiles)
             {
                 Vector2 tileLocation = tilePosition.Value + tile;
-                PathFindController controller = new(Game1.player, Game1.currentLocation, tileLocation.ToPoint(), -1, eraseOldPathController: true);
+                PathFindController controller = new(Game1.player, Game1.currentLocation, tileLocation.ToPoint(), -1); //***** , eraseOldPathController: true);
 
                 if (controller.pathToEndPoint != null)
                 {
@@ -93,7 +94,7 @@ namespace stardew_access.Utils
         {
             if (tilePosition == null) return null;
 
-            Vector2 playerLocation = Game1.player.getTileLocation();
+            Vector2 playerLocation = Game1.player.Tile;
 
             foreach (var stage in Stages)
             {

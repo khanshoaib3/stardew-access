@@ -120,10 +120,8 @@ internal class GameStateNarrator : FeatureBase
                 HUDMessage lastMessage = Game1.hudMessages[lastIndex];
                 if (!lastMessage.noIcon)
                 {
-                    string toSpeak = lastMessage.Message;
-                    string searchQuery = toSpeak;
-
-                    searchQuery = (Regex.Replace(toSpeak, @"[\d+]", string.Empty)).Trim();
+                    string toSpeak = lastMessage.message;
+                    var searchQuery = (Regex.Replace(toSpeak, @"[\d+]", string.Empty)).Trim();
 
                     if (hudMessageQueryKey != searchQuery)
                     {
