@@ -37,6 +37,7 @@ namespace stardew_access.Patches
                 new IClickableMenuPatch(),
                 new InstanceGamePatch(),
                 new NPCPatch(),
+                new SoundsHelperPatch(),
                 new TextBoxPatch(),
                 new TextEntryMenuPatch(),
                 new TileMapPatch(),
