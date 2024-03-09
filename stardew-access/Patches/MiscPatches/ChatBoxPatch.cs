@@ -92,31 +92,35 @@ internal class ChatBoxPatch : IPatch
         if (!isChatBoxActive) return false;
 
         bool isLeftAltPressed = Game1.input.GetKeyboardState().IsKeyDown(Keys.LeftAlt);
+        bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Keys.LeftShift);
         bool isRightAltPressed = Game1.input.GetKeyboardState().IsKeyDown(Keys.RightAlt);
-        if ((isLeftAltPressed || isRightAltPressed) && !isChatRunning)
+
+        if (!isLeftAltPressed && !isRightAltPressed || isChatRunning) return false;
+
+        int pressedNumKey = GetPressedNumKey();
+        if (pressedNumKey == -1) return true;
+
+        if (isRightAltPressed || (isLeftAltPressed && isLeftShiftPressed))
         {
-            int pressedNumKey = GetPressedNumKey();
+            if (GameStateNarrator.HudMessagesBuffer.Count < pressedNumKey) return false;
 
-            if (pressedNumKey != -1)
-            {
-                if (isLeftAltPressed && ___messages.Count >= pressedNumKey)
-                {
-                    isChatRunning = true;
-                    MainClass.ScreenReader.Say(GetMessage(___messages[^pressedNumKey]), true);
-                    Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
-                }
-
-                if (isRightAltPressed && GameStateNarrator.HudMessagesBuffer.Count >= pressedNumKey)
-                {
-                    isChatRunning = true;
-                    MainClass.ScreenReader.Say(GameStateNarrator.HudMessagesBuffer[^pressedNumKey], true);
-                    Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
-                }
-            }
-
+            isChatRunning = true;
+            MainClass.ScreenReader.Say(GameStateNarrator.HudMessagesBuffer[^pressedNumKey], true);
+            Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
             return true;
         }
-        return false;
+
+        if (isLeftAltPressed)
+        {
+            if (___messages.Count < pressedNumKey) return false;
+
+            isChatRunning = true;
+            MainClass.ScreenReader.Say(GetMessage(___messages[^pressedNumKey]), true);
+            Task.Delay(200).ContinueWith(_ => { isChatRunning = false; });
+            return true;
+        }
+
+        return true;
     }
 
     private static void CycleThroughChatMessages(bool prev, List<ChatMessage> ___messages)
