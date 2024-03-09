@@ -6,6 +6,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
+using StardewValley.TokenizableStrings;
 
 namespace stardew_access.Commands;
 
@@ -39,14 +40,11 @@ public class TileMarkingCommands : ICustomCommand
         List<string> buildingInfos = [];
         foreach (var building in buildings)
         {
-            string? name = building.GetIndoorsName();
-            name = (name == "null") ? building.buildingType.Value : name;
-
             BuildingOperations.availableBuildings[buildingIndex] = building;
             buildingInfos.Add(Translator.Instance.Translate("commands-tile_marking-build_list-building_info", new
             {
                 index = buildingIndex,
-                name,
+                name = TokenParser.ParseText(building.GetData().Name),
                 x_position = building.tileX.Value,
                 y_position = building.tileY.Value
             }, translationCategory: TranslationCategory.CustomCommands));
