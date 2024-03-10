@@ -253,6 +253,7 @@ menu-item_grab-chest_colors =
 ### Shop menu
 
 menu-shop-buy_price_info = Buy price: {$price}g
+menu-shop-recipe_ingredients_info = Ingredients: {$ingredients_list}
 
 ### Tailoring Menu
 

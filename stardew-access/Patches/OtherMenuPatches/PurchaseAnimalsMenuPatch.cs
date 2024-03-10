@@ -1,9 +1,9 @@
 using HarmonyLib;
-using Microsoft.Xna.Framework.Graphics;
 using stardew_access.Translation;
 using StardewValley;
 using StardewValley.GameData.FarmAnimals;
 using StardewValley.Menus;
+using StardewValley.TokenizableStrings;
 
 namespace stardew_access.Patches;
 
@@ -18,7 +18,7 @@ internal class PurchaseAnimalsMenuPatch : IPatch
     public void Apply(Harmony harmony)
     {
         harmony.Patch(
-            original: AccessTools.Method(typeof(PurchaseAnimalsMenu), nameof(PurchaseAnimalsMenu.draw), new Type[] { typeof(SpriteBatch) }),
+            original: AccessTools.DeclaredMethod(typeof(PurchaseAnimalsMenu), "draw"),
             prefix: new HarmonyMethod(typeof(PurchaseAnimalsMenuPatch), nameof(PurchaseAnimalsMenuPatch.DrawPatch))
         );
     }
@@ -103,9 +103,9 @@ internal class PurchaseAnimalsMenuPatch : IPatch
             translationKey = "menu-purchase_animal-animal_info";
             translationTokens = new
             {
-                name = farmAnimalData.DisplayName,
+                name = TokenParser.ParseText(farmAnimalData.DisplayName),
                 price = __instance.hovered.item.salePrice(),
-                description = farmAnimalData.ShopDescription
+                description = TokenParser.ParseText(farmAnimalData.ShopDescription)
             };
         }
 
