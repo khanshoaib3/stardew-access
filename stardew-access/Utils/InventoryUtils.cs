@@ -226,8 +226,17 @@ internal static class InventoryUtils
 
     internal static string GetBuffsFromItem(string qualifiedItemId)
     {
-        string[] buffIconsToDisplay =
-            new BuffEffects(ObjectUtils.GetObjectById(qualifiedItemId)?.Buff?.CustomAttributes)?.ToLegacyAttributeFormat() ?? new string[0];
+        var buffs = ObjectUtils.GetObjectById(qualifiedItemId)?.Buffs;
+        string[] buffIconsToDisplay;
+        if (buffs != null && buffs.Any())
+        {
+            buffIconsToDisplay = buffs.SelectMany(buff => 
+                new BuffEffects(buff.CustomAttributes).ToLegacyAttributeFormat()).ToArray();
+        }
+        else
+        {
+            buffIconsToDisplay = new string[0];
+        }
 
         string toReturn = "";
         for (int j = 0; j < buffIconsToDisplay.Length; j++)
