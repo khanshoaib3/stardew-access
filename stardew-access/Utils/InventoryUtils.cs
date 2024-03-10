@@ -150,35 +150,34 @@ internal static class InventoryUtils
 
         return toReturn;
     }
+    internal static string GetPluralNameOfItem(Item item) => GetPluralNameOfItem(item.DisplayName, item.Stack);
 
-    internal static string GetPluralNameOfItem(Item item)
+    internal static string GetPluralNameOfItem(string itemName, int itemCount)
     {
-        int stack = item.Stack;
-        string name = item.DisplayName;
-        if (stack == prevStack && name == prevName)
+        if (itemCount == prevStack && itemName == prevName)
         {
 #if DEBUG
-            Log.Trace($"Returning cached translation \"{prevTranslatedName}\" for stack \"{stack}\" and name \"{name}\"",
+            Log.Trace($"Returning cached translation \"{prevTranslatedName}\" for stack \"{itemCount}\" and name \"{itemName}\"",
                 true);
 #endif
-            name = prevTranslatedName;
+            itemName = prevTranslatedName;
         }
         else
         {
-            prevStack = stack;
-            prevName = name;
-            name = Translator.Instance.Translate("common-util-pluralize_name", new Dictionary<string, object>
+            prevStack = itemCount;
+            prevName = itemName;
+            itemName = Translator.Instance.Translate("common-util-pluralize_name", new Dictionary<string, object>
             {
-                { "item_count", stack },
-                { "name", name }
+                { "item_count", itemCount },
+                { "name", itemName }
             });
-            prevTranslatedName = name;
+            prevTranslatedName = itemName;
 #if DEBUG
             Log.Verbose("Updated inventory translation cache");
 #endif
         }
 
-        return name;
+        return itemName;
     }
 
     internal static string GetQualityFromItem(Item item) => GetQualityFromIndex(item.Quality);
@@ -202,9 +201,9 @@ internal static class InventoryUtils
         return string.Join(", ", enchantNames);
     }
 
-    internal static string GetHealthNStaminaFromItem(Item item)
+    internal static string GetHealthNStaminaFromItem(Item? item)
     {
-        if (item is not StardewValley.Object || ((StardewValley.Object)item).Edibility == -300)
+        if (item is null or not StardewValley.Object || ((StardewValley.Object)item).Edibility == -300)
             return "";
 
         int stamina_recovery = ((StardewValley.Object)item).staminaRecoveredOnConsumption();
@@ -222,12 +221,13 @@ internal static class InventoryUtils
         return prev_stamina_and_health_recovery_on_consumption;
     }
 
-    internal static string GetBuffsFromItem(Item item)
-    {
-        if (item is null or not StardewValley.Object) return "";
+    internal static string GetBuffsFromItem(Item? item)
+        => (item is null or not StardewValley.Object) ? "" : GetBuffsFromItem(item.QualifiedItemId);
 
+    internal static string GetBuffsFromItem(string qualifiedItemId)
+    {
         string[] buffIconsToDisplay =
-            new BuffEffects(ObjectUtils.GetObjectById(item.QualifiedItemId)?.Buff?.CustomAttributes)?.ToLegacyAttributeFormat() ?? new string[0];
+            new BuffEffects(ObjectUtils.GetObjectById(qualifiedItemId)?.Buff?.CustomAttributes)?.ToLegacyAttributeFormat() ?? new string[0];
 
         string toReturn = "";
         for (int j = 0; j < buffIconsToDisplay.Length; j++)
@@ -272,7 +272,7 @@ internal static class InventoryUtils
             });
     }
 
-    internal static string GetCraftingRecipeInfo(CraftingRecipe recipe) => recipe is null ? ""
+    internal static string GetCraftingRecipeInfo(CraftingRecipe? recipe) => recipe is null ? ""
         : Translator.Instance.Translate("item-crafting_recipe_info", new
         {
             name = recipe.DisplayName,
@@ -280,7 +280,7 @@ internal static class InventoryUtils
             recipe.description,
         });
 
-    internal static string GetIngredientsFromRecipe(CraftingRecipe recipe)
+    internal static string GetIngredientsFromRecipe(CraftingRecipe? recipe)
     {
         if (recipe is null) return "";
 
@@ -291,7 +291,7 @@ internal static class InventoryUtils
             string recipeItem = recipe.recipeList.ElementAt(i).Key;
             string recipeName = recipe.getNameFromIndex(recipeItem);
 
-            ingredientList.Add($"{recipeCount} {recipeName}");
+            ingredientList.Add(GetPluralNameOfItem(recipeName, recipeCount));
         }
 
         return string.Join(", ", ingredientList);

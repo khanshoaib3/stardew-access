@@ -86,17 +86,26 @@ internal class ShopMenuPatch : IPatch
         if (__instance.hoveredItem == null) return;
 
         string name = __instance.hoveredItem.DisplayName;
-        string price = Translator.Instance.Translate("menu-shop-buy_price_info",
-            new { price = __instance.hoverPrice }, TranslationCategory.Menu);
-        string description = __instance.hoveredItem.getDescription();
+        string price =  __instance.hoverPrice <= 0 ? ""
+            : Translator.Instance.Translate("menu-shop-buy_price_info", new { price = __instance.hoverPrice }, TranslationCategory.Menu);
+        string description = __instance.hoveredItem.IsRecipe
+            ? new CraftingRecipe(__instance.hoveredItem.Name.Replace(" Recipe", "")).description
+            : __instance.hoveredItem.getDescription();
 
         string itemId = __instance.itemPriceAndStock[__instance.hoveredItem].TradeItem;
         int? itemCount = __instance.itemPriceAndStock[__instance.hoveredItem].TradeItemCount;
 
         string requirements = InventoryUtils.GetExtraItemInfo(itemId, itemCount);
+        string healthAndStamina = InventoryUtils.GetHealthNStaminaFromItem(__instance.hoveredItem as Item);
+        string buffs = InventoryUtils.GetBuffsFromItem(__instance.hoveredItem.QualifiedItemId);
+
+        string ingredients = !__instance.hoveredItem.IsRecipe ? ""
+            : InventoryUtils.GetIngredientsFromRecipe(new CraftingRecipe(__instance.hoveredItem.Name.Replace(" Recipe", "")));
+        ingredients = string.IsNullOrWhiteSpace(ingredients) ? ""
+            : Translator.Instance.Translate("menu-shop-recipe_ingredients_info", translationCategory: TranslationCategory.Menu, tokens: new {ingredients_list = ingredients});
 
         string toSpeak = string.Join(", ",
-            new string[] { name, requirements, price, description }.Where(c => !string.IsNullOrEmpty(c)));
+            new string[] { name, requirements, price, description, healthAndStamina, buffs, ingredients}.Where(c => !string.IsNullOrEmpty(c)));
 
         MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
     }
