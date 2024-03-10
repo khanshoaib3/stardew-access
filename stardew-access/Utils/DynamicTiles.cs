@@ -274,13 +274,15 @@ public class DynamicTiles
                 _ => throw new InvalidOperationException("Unexpected (x, y) values"),
             };
 
-            string itemName = (x, y) switch
-            {
-                (4, 9) => "tile_name-ticket_machine",
-                (6, 8) => "tile_name-boat_hull",
-                (8, 9) => "tile_name-boat_anchor",
-                _ => throw new InvalidOperationException("Unexpected (x, y) values"),
-            };
+            string itemName = Translator.Instance.Translate(
+                (x, y) switch
+                {
+                    (4, 9) => "tile_name-ticket_machine",
+                    (6, 8) => "tile_name-boat_hull",
+                    (8, 9) => "tile_name-boat_anchor",
+                    _ => throw new InvalidOperationException("Unexpected (x, y) values"),
+                }
+            );
 
             CATEGORY category = (x, y) == (4, 9) ? CATEGORY.Interactables : (!HasMail(mail) ? CATEGORY.Interactables : CATEGORY.Decor);
 
