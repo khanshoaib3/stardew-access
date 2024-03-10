@@ -3,6 +3,7 @@ using StardewValley.Menus;
 using stardew_access.Translation;
 using StardewValley.Buffs;
 using StardewValley.Tools;
+using StardewValley.TokenizableStrings;
 
 namespace stardew_access.Utils;
 
@@ -256,26 +257,28 @@ internal static class InventoryUtils
     {
         if (itemIndex is null or "-1") return "";
 
-        string itemName = Game1.objectData[itemIndex].DisplayName;
+        string? itemName = ObjectUtils.GetObjectById(itemIndex)?.DisplayName;
+        if (itemName is null) return "";
+        itemName = TokenParser.ParseText(itemName);
 
-        if (itemAmount is null or < 0)
-            return Translator.Instance.Translate("item-required_item_info",
-                new
-                {
-                    name = Translator.Instance.Translate("common-util-pluralize_name",
-                        new { name = itemName, item_count = itemAmount })
-                });
+        if (itemAmount is null or <= 0)
+            return Translator.Instance.Translate("item-required_item_info", new { name = itemName });
 
-        return Translator.Instance.Translate("item-required_item_info", new { name = itemName });
+        return Translator.Instance.Translate("item-required_item_info",
+            new
+            {
+                name = Translator.Instance.Translate("common-util-pluralize_name",
+                    new { name = itemName, item_count = itemAmount })
+            });
     }
 
     internal static string GetCraftingRecipeInfo(CraftingRecipe recipe) => recipe is null ? ""
         : Translator.Instance.Translate("item-crafting_recipe_info", new
-            {
-                name = recipe.DisplayName,
-                is_cooking_recipe = recipe.isCookingRecipe ? 1 : 0,
-                recipe.description,
-            });
+        {
+            name = recipe.DisplayName,
+            is_cooking_recipe = recipe.isCookingRecipe ? 1 : 0,
+            recipe.description,
+        });
 
     internal static string GetIngredientsFromRecipe(CraftingRecipe recipe)
     {
