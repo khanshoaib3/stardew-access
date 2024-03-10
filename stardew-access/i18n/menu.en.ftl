@@ -419,12 +419,9 @@ menu-shipping-money_received_from_category_info = {$money}g received from {$cate
 menu-billboard-calendar-day_info = {$is_current ->
     [0] {EMPTYSTRING()}
     *[1] Current
-  } Day {$day}{$day_name ->
-    [null] {EMPTYSTRING()}
-    *[other] , {$day_name}
-  }{$day ->
-    [1] of {$season} year {$year}
-    *[other] {EMPTYSTRING()}
+  } Day {$day ->
+    [1] {$day} of {$season} year {$year}
+    *[other] {$day}
   }{$extra_info ->
     [null] {EMPTYSTRING()}
     *[other] , {$extra_info}
