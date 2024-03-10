@@ -5,6 +5,7 @@ using stardew_access.Tiles;
 using stardew_access.Translation;
 using static stardew_access.Utils.MachineUtils;
 using StardewValley;
+using StardewValley.Characters;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -175,7 +176,24 @@ public class TileInfo
         if (currentLocation.isCharacterAtTile(tile) is NPC npc)
         {
             CATEGORY category = npc.isVillager() || npc.CanSocialize ? CATEGORY.Farmers : CATEGORY.NPCs;
-            return (npc.displayName, category);
+            string npcName;
+            if (npc is Horse horse)
+            {
+                if (string.IsNullOrEmpty(horse.displayName))
+                {
+                    npcName = Translator.Instance.Translate("npc_name-horse_with_no_name");
+                }
+                else
+                {
+                    npcName = horse.displayName;
+                }
+            }
+            else
+            {
+                npcName = npc.displayName;
+            }
+            
+            return (npcName, category);
         }
 
         string? farmAnimal = GetFarmAnimalAt(currentLocation, x, y);

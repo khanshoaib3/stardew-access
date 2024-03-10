@@ -244,6 +244,7 @@ npc-farm_animal_info = {$name}, {$type}, {$age} {$age ->
     [1] month
     *[other] months
   }
+npc_name-horse_with_no_name = A horse with no name
 
 # Event Tiles
 
