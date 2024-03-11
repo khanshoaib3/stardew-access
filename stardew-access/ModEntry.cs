@@ -20,6 +20,7 @@ namespace stardew_access
         private static int prevDate = -99;
         private static LocalizedContentManager.LanguageCode previousLanguageCode;
         private static bool FirstRun = true;
+        private static bool CheckedMailToday = false;
         private static ModConfig? config;
         private static IScreenReader? screenReader;
         private static IModHelper? modHelper;
@@ -123,6 +124,7 @@ namespace stardew_access
 
         private void OnDayStarted(object? sender, DayStartedEventArgs? e)
         {
+            CheckedMailToday = false;
             ObjectTracker.Instance.GetLocationObjects();
         }
 
@@ -192,6 +194,12 @@ namespace stardew_access
             // exit if warp event is for other players
             if (!e.IsLocalPlayer) return;
             TileUtils.CleanupMaps(e.OldLocation, e.NewLocation);
+            if (!CheckedMailToday && e.NewLocation.NameOrUniqueName == "Farm" && Game1.player.mailbox is not null && Game1.player.mailbox.Count > 0)
+            {
+                //ScreenReader.Say("You've got mail!", true);
+                Game1.playSound("youve_got_mail");
+                CheckedMailToday = true;
+            }
             FeatureManager.OnPlayerWarpedEvent(sender, e);
         }
 

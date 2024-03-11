@@ -23,6 +23,7 @@ namespace stardew_access
                     { "drop_item", TYPE.Sound },
                     { "colliding", TYPE.Sound },
                     { "invalid-selection", TYPE.Sound },
+                    { "youve_got_mail", TYPE.Sound },
 
                     { "bobber_progress", TYPE.Sound },
 
