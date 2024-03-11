@@ -34,7 +34,7 @@ internal class NamingMenuPatch : IPatch
             int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
             if (!string.IsNullOrEmpty(___textBox.Text) && ___textBox.Text != _previousName)
             {    
-                MainClass.ScreenReader.SayWithMenuChecker(___textBox.Text, true);
+                MainClass.ScreenReader.Say(___textBox.Text, true);
                 _previousName = ___textBox.Text;
                 return;
             }
