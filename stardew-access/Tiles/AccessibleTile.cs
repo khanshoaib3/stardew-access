@@ -128,7 +128,7 @@ public class AccessibleTile : ConditionalBase
 			}
 		}
 		
-		Category = category ?? CATEGORY.Others;
+		Category = category ?? CATEGORY.Other;
 		IsEvent = isEvent;
 		_withMods = withMods;
 		_conditions = conditions;
@@ -213,7 +213,7 @@ public class AccessibleTile : ConditionalBase
         // CATEGORY handling
         CATEGORY category = (!string.IsNullOrEmpty(categoryKey))
                             ? CATEGORY.FromString(categoryKey)
-                            : CATEGORY.Others;
+                            : CATEGORY.Other;
 
         // Pass parsed values to the constructor, which will handle invalid combinations
         return new AccessibleTile(

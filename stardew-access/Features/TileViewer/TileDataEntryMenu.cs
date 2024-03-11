@@ -278,7 +278,7 @@ public class TileDataEntryMenu : IClickableMenu
     private void GetEnteredTileInformation(out AccessibleTile.JsonSerializerFormat? tileInfo)
     {
         string? tileName = null;
-        string category = CATEGORY.Others.Key;
+        string category = CATEGORY.Other.Key;
         List<string> withMods = [];
         List<string> conditions = [];
         tileInfo = null;

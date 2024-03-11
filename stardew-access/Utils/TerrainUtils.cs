@@ -216,7 +216,16 @@ public static class TerrainUtils
             case LargeTerrainFeature largeTerrainFeature:
                 return GetTerrainFeatureInfoAndCategory(largeTerrainFeature, ignoreIfEmpty);
             case HoeDirt dirt:
-                return (GetDirtInfoString(dirt, ignoreIfEmpty), CATEGORY.Crops);
+                CATEGORY cropCategory = CATEGORY.Crops;
+                if (dirt.crop != null && dirt.readyForHarvest())
+                {
+                    cropCategory = CATEGORY.Ready;
+                }
+                else if (dirt.state.Value != HoeDirt.watered)
+                { 
+                    cropCategory = CATEGORY.Pending;
+                }
+                return (GetDirtInfoString(dirt, ignoreIfEmpty), cropCategory);
             case CosmeticPlant cosmeticPlant:
                 return (GetCosmeticPlantInfoString(cosmeticPlant), CATEGORY.Furniture);
             case Flooring flooring when MainClass.Config.ReadFlooring:
@@ -224,7 +233,7 @@ public static class TerrainUtils
             case Flooring _:
                 return (null, null);  // Set to None or another suitable default to avoid logging
             case FruitTree fruitTree:
-                return (GetFruitTreeInfoString(fruitTree), CATEGORY.Trees);
+                return (GetFruitTreeInfoString(fruitTree), fruitTree.fruit.Count > 0 ? CATEGORY.Ready : CATEGORY.Trees);
             case Grass grass:
                 return (GetGrassInfoString(grass), CATEGORY.Debris);
             case Tree tree:
@@ -242,7 +251,7 @@ public static class TerrainUtils
         switch (largeTerrainFeature)
         {
             case Bush bush:
-                return (GetBushInfoString(bush), CATEGORY.Bush);
+                return (GetBushInfoString(bush), (!bush.townBush.Value && bush.tileSheetOffset.Value == 1 && bush.inBloom()) ? CATEGORY.Ready : CATEGORY.Bush);
             // Add more cases for other types of LargeTerrainFeature here
             default:
                 Log.Warn($"Unknown LargeTerrainFeature type: {largeTerrainFeature.GetType().Name}", true);

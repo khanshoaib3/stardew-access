@@ -250,9 +250,9 @@ internal class Radar : FeatureBase
     {
         (string? name, CATEGORY? category) = TileInfo.GetNameWithCategoryAtTile(position, currentLocation, lessInfo);
         if (name == null)
-            return (false, null, CATEGORY.Others.ToString());
+            return (false, null, CATEGORY.Other.ToString());
 
-        category ??= CATEGORY.Others;
+        category ??= CATEGORY.Other;
 
         return (true, name, category.ToString());
     }
@@ -290,7 +290,7 @@ internal class Radar : FeatureBase
                 (string? name, CATEGORY? category) = TileInfo.GetNameWithCategoryAtTile(position, currentLocation);
                 if (name != null)
                 {
-                    category ??= CATEGORY.Others;
+                    category ??= CATEGORY.Other;
 
                     PlaySoundAt(position, name, category, currentLocation);
                 }
@@ -395,11 +395,11 @@ internal class Radar : FeatureBase
             soundName = $"npc{soundName}";
         else if (category == CATEGORY.NPCs) // Other npcs, also includes enemies
             soundName = $"npc{soundName}";
-        else if (category == CATEGORY.WaterTiles) // Water tiles
+        else if (category == CATEGORY.Water) // Water tiles
             soundName = $"obj{soundName}";
         else if (category == CATEGORY.Furniture) // Furnitures
             soundName = $"obj{soundName}";
-        else if (category == CATEGORY.Others) // Other Objects
+        else if (category == CATEGORY.Other) // Other Objects
             soundName = $"obj{soundName}";
         else if (category == CATEGORY.Crops) // Crops
             soundName = $"obj{soundName}";
