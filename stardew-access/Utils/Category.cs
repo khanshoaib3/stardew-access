@@ -9,7 +9,7 @@ namespace stardew_access.Utils
     /// `Categories` property or the `FromString` method.
     /// </summary>
     /// <remarks>
-    /// The CATEGORY.Others is used as a default value by the FromString method.
+    /// The CATEGORY.Other is used as a default value by the FromString method.
     /// Use the FromString method to obtain an existing category.
     ///
     /// Examples:
@@ -63,6 +63,8 @@ namespace stardew_access.Utils
             {"machine", new CATEGORY("machine")},
             {"mine_item", new CATEGORY("mine_item")},
             {"npc", new CATEGORY("npc")},
+            {"pending", new CATEGORY("pending")},
+            {"ready", new CATEGORY("ready")},
             {"resource_clump", new CATEGORY("resource_clump")},
             {"tree", new CATEGORY("tree")},
             {"water", new CATEGORY("water")},
@@ -94,7 +96,7 @@ namespace stardew_access.Utils
                         return newCategory;
                 }
             }
-            return Others;
+            return Other;
         }
 
         /// <summary>
@@ -137,13 +139,15 @@ namespace stardew_access.Utils
         public static CATEGORY Fishpond => FromString("fishpond");
         public static CATEGORY Flooring => FromString("flooring");
         public static CATEGORY Furniture => FromString("furniture");
-        public static CATEGORY Interactables => FromString("interactable");
+        public static CATEGORY Interactable => FromString("interactable");
         public static CATEGORY Machines => FromString("machine");
         public static CATEGORY MineItems => FromString("mine_item");
         public static CATEGORY NPCs => FromString("npc");
+        public static CATEGORY Pending => FromString("pending");
+        public static CATEGORY Ready => FromString("ready");
         public static CATEGORY ResourceClumps => FromString("resource_clump");
         public static CATEGORY Trees => FromString("tree");
-        public static CATEGORY WaterTiles => FromString("water");
-        public static CATEGORY Others => FromString("other");
+        public static CATEGORY Water => FromString("water");
+        public static CATEGORY Other => FromString("other");
     }
 }

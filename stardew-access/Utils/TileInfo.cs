@@ -126,7 +126,7 @@ public class TileInfo
     {
         (string? name, CATEGORY? category) = GetNameWithCategoryAtTile(tile, currentLocation);
 
-        category ??= CATEGORY.Others;
+        category ??= CATEGORY.Other;
 
         return (name, category.ToString());
     }
@@ -160,7 +160,7 @@ public class TileInfo
     {
         var (name, category) = GetTranslationKeyWithCategoryAtTile(tile, currentLocation, lessInfo);
         if (name == null)
-            return (null, CATEGORY.Others);
+            return (null, CATEGORY.Other);
 
         return (Translator.Instance.Translate(name, disableWarning: true), category);
     }
@@ -232,7 +232,7 @@ public class TileInfo
 
         if (currentLocation.isWaterTile(x, y) && !lessInfo && IsCollidingAtTile(currentLocation, x, y))
         {
-            return ("tile-water-name", CATEGORY.WaterTiles);
+            return ("tile-water-name", CATEGORY.Water);
         }
 
         string? resourceClump = GetResourceClumpAtTile(currentLocation, x, y, lessInfo);
@@ -284,7 +284,7 @@ public class TileInfo
             }
         }
 
-        return (null, CATEGORY.Others);
+        return (null, CATEGORY.Other);
     }
 
     /// <summary>
@@ -437,7 +437,7 @@ public class TileInfo
     /// <returns>A tuple containing the object's name and category.</returns>
     public static (string? name, CATEGORY category) GetObjectAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false)
     {
-        (string? name, CATEGORY category) toReturn = (null, CATEGORY.Others);
+        (string? name, CATEGORY category) toReturn = (null, CATEGORY.Other);
 
         // Get the object at the specified tile
         StardewValley.Object obj = currentLocation.getObjectAtTile(x, y);
@@ -471,7 +471,7 @@ public class TileInfo
         {
             if (lessInfo && (furniture.TileLocation.X != x || furniture.TileLocation.Y != y))
             {
-                toReturn.category = CATEGORY.Others;
+                toReturn.category = CATEGORY.Other;
                 toReturn.name = null;
             }
             else
@@ -500,14 +500,20 @@ public class TileInfo
         }
         else if ((obj.Type == "Crafting" && obj.bigCraftable.Value) || obj.Name.Equals("crab pot", StringComparison.OrdinalIgnoreCase))
         {
+            // TODO optimize this
             foreach (string machine in trackable_machines)
             {
                 if (obj.Name.Contains(machine, StringComparison.OrdinalIgnoreCase))
                 {
-                    toReturn.name = obj.heldObject.Value is not null
-                        ? $"{obj.DisplayName}, {InventoryUtils.GetItemDetails(obj.heldObject.Value)}"
-                        : obj.DisplayName;
-                    toReturn.category = CATEGORY.Machines;
+                    MachineState machineState = GetMachineState(obj);
+                    if (obj.heldObject.Value is not null)
+                    {
+                        toReturn.name = $"{obj.DisplayName}, {InventoryUtils.GetItemDetails(obj.heldObject.Value)}";
+                        toReturn.category = (machineState == MachineState.Busy) ? CATEGORY.Machines : CATEGORY.Ready;
+                    } else {
+                        toReturn.name = obj.DisplayName;
+                        toReturn.category = CATEGORY.Machines;
+                    }
                 }
             }
         }
@@ -537,7 +543,7 @@ public class TileInfo
         else if (obj.name.Contains("frozen tear", StringComparison.OrdinalIgnoreCase))
             toReturn.category = CATEGORY.MineItems;
 
-        if (toReturn.category == CATEGORY.Machines) // Fix for `Harvestable table` and `Busy nodes`
+        if (toReturn.category == CATEGORY.Machines || toReturn.category == CATEGORY.Ready || toReturn.category == CATEGORY.Pending) // Fix for `Harvestable table` and `Busy nodes`
         {
             MachineState machineState = GetMachineState(obj);
             if (machineState == MachineState.Ready)
@@ -564,7 +570,7 @@ public class TileInfo
         }
 
         // If the index is not found in the ParentSheetIndexes dictionary, return the Others category.
-        return (null, CATEGORY.Others);
+        return (null, CATEGORY.Other);
     }
     #endregion  
 
