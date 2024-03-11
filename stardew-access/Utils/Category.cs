@@ -123,31 +123,31 @@ namespace stardew_access.Utils
             return false;
         }
 
-        public static CATEGORY Animals => FromString("animals");
-        public static CATEGORY Bridges => FromString("bridge");
-        public static CATEGORY Buildings => FromString("building");
-        public static CATEGORY Bundle => FromString("bundle");
-        public static CATEGORY Bush => FromString("bush");
-        public static CATEGORY Crops => FromString("crop");
-        public static CATEGORY Debris => FromString("debris");
-        public static CATEGORY Containers => FromString("container");
-        public static CATEGORY Decor => FromString("decoration");
-        public static CATEGORY Doors => FromString("door");
-        public static CATEGORY DroppedItems => FromString("dropped_item");
-        public static CATEGORY Farmers => FromString("farmer");
-        public static CATEGORY Fishing => FromString("fishing");
-        public static CATEGORY Fishpond => FromString("fishpond");
-        public static CATEGORY Flooring => FromString("flooring");
-        public static CATEGORY Furniture => FromString("furniture");
-        public static CATEGORY Interactable => FromString("interactable");
-        public static CATEGORY Machines => FromString("machine");
-        public static CATEGORY MineItems => FromString("mine_item");
-        public static CATEGORY NPCs => FromString("npc");
-        public static CATEGORY Pending => FromString("pending");
-        public static CATEGORY Ready => FromString("ready");
-        public static CATEGORY ResourceClumps => FromString("resource_clump");
-        public static CATEGORY Trees => FromString("tree");
-        public static CATEGORY Water => FromString("water");
-        public static CATEGORY Other => FromString("other");
+        public static readonly CATEGORY Animals = FromString("animals");
+        public static readonly CATEGORY Bridges = FromString("bridge");
+        public static readonly CATEGORY Buildings = FromString("building");
+        public static readonly CATEGORY Bundle = FromString("bundle");
+        public static readonly CATEGORY Bush = FromString("bush");
+        public static readonly CATEGORY Crops = FromString("crop");
+        public static readonly CATEGORY Debris = FromString("debris");
+        public static readonly CATEGORY Containers = FromString("container");
+        public static readonly CATEGORY Decor = FromString("decoration");
+        public static readonly CATEGORY Doors = FromString("door");
+        public static readonly CATEGORY DroppedItems = FromString("dropped_item");
+        public static readonly CATEGORY Farmers = FromString("farmer");
+        public static readonly CATEGORY Fishing = FromString("fishing");
+        public static readonly CATEGORY Fishpond = FromString("fishpond");
+        public static readonly CATEGORY Flooring = FromString("flooring");
+        public static readonly CATEGORY Furniture = FromString("furniture");
+        public static readonly CATEGORY Interactable = FromString("interactable");
+        public static readonly CATEGORY Machines = FromString("machine");
+        public static readonly CATEGORY MineItems = FromString("mine_item");
+        public static readonly CATEGORY NPCs = FromString("npc");
+        public static readonly CATEGORY Pending = FromString("pending");
+        public static readonly CATEGORY Ready = FromString("ready");
+        public static readonly CATEGORY ResourceClumps = FromString("resource_clump");
+        public static readonly CATEGORY Trees = FromString("tree");
+        public static readonly CATEGORY Water = FromString("water");
+        public static readonly CATEGORY Other = FromString("other");
     }
 }
