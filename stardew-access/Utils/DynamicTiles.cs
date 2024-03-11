@@ -418,7 +418,15 @@ public class DynamicTiles
 
         if (mainMailboxPos.X == x && mainMailboxPos.Y == y)
         {
-            return ("tile_name-mail_box", CATEGORY.Interactable);
+            string mailboxName = Translator.Instance.Translate("tile_name-mail_box");
+            CATEGORY mailboxCategory = CATEGORY.Interactable;
+            var mailbox = Game1.player.mailbox;
+            if (mailbox is not null && mailbox.Count > 0)
+            {
+                mailboxName = $"{mailbox.Count} unread mail in {mailboxName}";
+                mailboxCategory = CATEGORY.Pending;
+            }
+            return (mailboxName, mailboxCategory);
         }
         else if (building is not null) // Check if there is a building at the current position
         {
