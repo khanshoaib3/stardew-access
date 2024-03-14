@@ -1,16 +1,12 @@
 using Microsoft.Xna.Framework;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using stardew_access.Tiles;
 using stardew_access.Translation;
 using static stardew_access.Utils.MachineUtils;
 using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Locations;
-using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using System.Text;
 
 namespace stardew_access.Utils;
 
