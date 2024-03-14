@@ -703,9 +703,9 @@ namespace stardew_access.Patches
                 return "";
             
             return Translator.Instance.Translate(
-                "menu-character_creation-description-" + (Game1.player.catPerson ? "cat" : "dog"), new
+                "menu-character_creation-description-" + (Game1.player.whichPetType.ToLower()), new
                 {
-                    breed = Game1.player.whichPetBreed + 1,
+                    breed = int.Parse(Game1.player.whichPetBreed) + 1,
                     less_info = lessInfo ? 1 : 0
                 },
                 TranslationCategory.CharacterCreationMenu);
