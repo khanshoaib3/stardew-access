@@ -326,24 +326,27 @@ public class DynamicTiles
         // Calculate differences in x and y coordinates
         int offsetX = x - buildingTileX;
         int offsetY = y - buildingTileY;
-        
+
         // Set default category
         CATEGORY category = CATEGORY.Buildings;
         if (type == "Shipping Bin")
         {
             category = CATEGORY.Containers;
-        } else if (building is PetBowl bowl) {
-            if (!bowl.HasPet())
+        }
+        else if (building is PetBowl bowl)
+        {
+            category = bowl.HasPet()
+                ? !bowl.watered.Value
+                    ? CATEGORY.Pending
+                    : CATEGORY.Interactable
+                : CATEGORY.Decor;
+
+            name = Translator.Instance.Translate("tile-pet_bowl-prefix", new
             {
-                name = $"unused {name}";
-                category = CATEGORY.Decor;
-            } else if (!bowl.watered.Value)
-            {
-                name = $"empty {name}";
-                category = CATEGORY.Pending;
-            } else {
-                category = CATEGORY.Interactable;
-            }
+                is_in_use = bowl.HasPet() ? 1 : 0,
+                is_empty = !bowl.watered.Value ? 1 : 0,
+                name = name
+            });
         }
         // If the building is a FishPond, prepend the fish name
         else if (building is FishPond fishPond && fishPond.fishType.Value != "0" && fishPond.fishType.Value != "")
@@ -354,7 +357,7 @@ public class DynamicTiles
         // Check if the position matches the human door
         if (building.humanDoor.Value.X == offsetX && building.humanDoor.Value.Y == offsetY)
         {
-            name = Translator.Instance.Translate("suffix-building_door", new {content = name});
+            name = Translator.Instance.Translate("suffix-building_door", new { content = name });
             category = CATEGORY.Doors;
         }
         // Check if the position matches the animal door. In case of barns, as the animal door is 2 tiles wide, the following if condition checks for both animal door tiles.
@@ -371,18 +374,18 @@ public class DynamicTiles
         // Special handling for Mill buildings
         else if (type == "Mill")
         {
-            if ( offsetY == 1)
+            if (offsetY == 1)
             {
                 // Check if the position matches the input
                 if (offsetX == 1)
                 {
-                    name = Translator.Instance.Translate("suffix-mill_input", new {content = name});
+                    name = Translator.Instance.Translate("suffix-mill_input", new { content = name });
                     category = CATEGORY.Interactable;
                 }
                 // Check if the position matches the output
                 else if (offsetX == 3)
                 {
-                    name = Translator.Instance.Translate("suffix-mill_output", new {content = name});
+                    name = Translator.Instance.Translate("suffix-mill_output", new { content = name });
                     category = CATEGORY.Interactable;
                 }
             }
@@ -392,7 +395,9 @@ public class DynamicTiles
         if (!building.isTilePassable(new Vector2(x, y)))
         {
             return (name, category);
-        } else {
+        }
+        else
+        {
             // Ignore parts of buildings that are outside, I.E. Farmhouse porch.
             return (null, null);
         }
@@ -633,7 +638,7 @@ public class DynamicTiles
             }
             return (null, null);
         }
-        
+
         // Unimplemented locations are logged.
         // Check if the location has already been logged
         if (!loggedLocations.Contains(locationType))
@@ -682,7 +687,7 @@ public class DynamicTiles
         // If a parrot perch was found at the specified tile coordinates
         if (foundPerch != null)
         {
-            string toSpeak = Translator.Instance.Translate("building-parrot_perch-required_nuts", new {item_count = foundPerch.requiredNuts.Value});
+            string toSpeak = Translator.Instance.Translate("building-parrot_perch-required_nuts", new { item_count = foundPerch.requiredNuts.Value });
 
             // Return appropriate string based on the current state of the parrot perch
             return foundPerch.currentState.Value switch
@@ -760,7 +765,7 @@ public class DynamicTiles
         if (libraryMuseum.museumPieces.TryGetValue(new Vector2(x, y), out string museumPiece))
         {
             string displayName = Game1.objectData[museumPiece].DisplayName;
-            return (Translator.Instance.Translate("tile-museum_piece_showcase-suffix", new {content = displayName}), CATEGORY.Interactable);
+            return (Translator.Instance.Translate("tile-museum_piece_showcase-suffix", new { content = displayName }), CATEGORY.Interactable);
 
         }
 
@@ -776,7 +781,7 @@ public class DynamicTiles
                 if (booksFound >= which)
                 {
                     string message = Game1.content.LoadString("Strings\\Notes:" + which);
-                    return (Translator.Instance.Translate("item-suffix-book", new {content = message.Split('\n')[0]}), CATEGORY.Interactable);
+                    return (Translator.Instance.Translate("item-suffix-book", new { content = message.Split('\n')[0] }), CATEGORY.Interactable);
                 }
                 return ("item-lost_book-name", CATEGORY.Other);
             }
@@ -844,8 +849,8 @@ public class DynamicTiles
     {
         if (mineShaft.getTileIndexAt(new Point(x, y), "Buildings") is 194 or 195 or 224)
         {
-            return (mineShaft.getMineArea() is MineShaft.frostArea 
-                ? "tile-mine_shaft-coal_bag" 
+            return (mineShaft.getMineArea() is MineShaft.frostArea
+                ? "tile-mine_shaft-coal_bag"
                 : Translator.Instance.Translate("static_tile-common-minecart", TranslationCategory.StaticTiles), CATEGORY.Interactable);
         }
 
@@ -856,7 +861,7 @@ public class DynamicTiles
                 bool hasAlreadyDug = mineShaft.terrainFeatures.FieldDict.TryGetValue(new Vector2(x, y), out var tf) && tf.Get() is HoeDirt { crop: null };
                 return hasAlreadyDug ? (null, null) : ("tile-mine_shaft-dirt", CATEGORY.Flooring);
             }
-            
+
             if (mineShaft.getTileIndexAt(new Point(x, y), "Back") is 0)
             {
                 return ("tile-mine_shaft-duggy_hole", CATEGORY.Decor);
@@ -900,7 +905,8 @@ public class DynamicTiles
     /// <returns>A tuple of (string? name, CATEGORY? category) for the object in the location, or null if not applicable.</returns>
     private static (string? name, CATEGORY? category) GetLocationByNameInfo(GameLocation currentLocation, int x, int y, bool lessInfo = false)
     {
-        object locationType = currentLocation is not null and GameLocation ? currentLocation.Name ?? "Undefined GameLocation" : currentLocation!.GetType();            string locationName = currentLocation.Name ?? "";
+        object locationType = currentLocation is not null and GameLocation ? currentLocation.Name ?? "Undefined GameLocation" : currentLocation!.GetType();
+        string locationName = currentLocation.Name ?? "";
         if (locationName.Contains("coop", StringComparison.OrdinalIgnoreCase) || locationName.Contains("barn", StringComparison.OrdinalIgnoreCase))
         {
             var feedingBenchInfo = GetFeedingBenchInfo(currentLocation, x, y);
