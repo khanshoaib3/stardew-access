@@ -140,7 +140,7 @@ menu-character_creation-description-skin = {$less_info ->
       [22] Gray
       [23] Pale, yellow undertone
       [24] Pale, ivory undertone
-      *[other] {EMPTYSTRING()}
+      *[other] Undescribed skin tone {$index}
     }
     *[1] Skin: {$index}
   }
@@ -221,126 +221,126 @@ menu-character_creation-description-hair = {$less_info ->
       [116] Middle-part, teased, shoulder length
       [117] Middle-part with bangs, short
       [118] Left-side part with bangs, unkempt, short
-      *[other] {EMPTYSTRING()}
+      *[other] Undescribed hair style {$index}
     }
     *[1] Hair: {$index}
   }
 
 menu-character_creation-description-shirt = {$less_info ->
     [0] {$index ->
-      [1] Red, denim overalls
-      [2] Brown button up
-      [3] Light Green, brown belt
-      [4] Black, gray splat design
-      [5] Black skull design
-      [6] Blue Gray, cloud design
-      [7] Cream, light blue horizontal stripe
-      [8] Green, denim overalls
-      [9] Yellow, brown horizontal zig zag
-      [10] Blue Green, cloud design
-      [11] Black, white letter A
-      [12] Green, collar cinches
-      [13] Lime Green, green stripes
-      [14] Red, white horizontal stripes
-      [15] Black, white ribcage design
-      [16] Brown, Tan, Light Brown stripes
-      [17] Blue, yellow dots
-      [18] Green, brown suspenders
-      [19] Brown jacket, Gray tee
-      [20] White, blue kerchief
-      [21] Green tank, Gray tee
-      [22] Ochre, green horizontal stripe
-      [23] Red button up
-      [24] Green button up
-      [25] Light Blue button up
-      [26] Blue button up
-      [27] Sea Green, horizontal white stripe
-      [28] Purple, light equal sign design
-      [29] Black, purple heart design
-      [30] White vertical gradient
-      [31] Brown jacket, Black shirt
-      [32] Brown Gray, angled button up
-      [33] Red, brown belt
-      [34] Green, strung collar
-      [35] Green bodice, gold belt, brown sleeves
-      [36] Red, white collar, buttoned
-      [37] Light Purple, zippered
-      [38] Gray to Black vertical gradient
-      [39] White, wide collar
-      [40] Sea Green and Brown stripes
-      [41] Purple vertical gradient
-      [42] White, horizontal cream stripe
-      [43] Green vertical gradient, belt
-      [44] Blue vertical gradient
-      [45] Blue, strung collar, white spot
-      [46] Brown vertical gradient
-      [47] Purple Vertical Gradient
-      [48] Brown, silver belt
-      [49] Black, gray bat design
-      [50] Light Purple, purple stripe
-      [51] Light Pink tank, purple shirt
-      [52] Pink tank, light purple tee
-      [53] Purple, vertical rainbow column
-      [54] Black, green belt
-      [55] Sea Green, white shoulder stripe
-      [56] Red, horizontal yellow stripe
-      [57] Lime Green, wide collar
-      [58] White and Gray stripes, red vest
-      [59] Blue, light blue shoulder stripe
-      [60] Ochre, yellow shoulder stripe
-      [61] Blue, wide collar
-      [62] Tan, stripes and dots
-      [63] Blue, white collar and stripe
-      [64] Red, silver collar
-      [65] Patchwork Blue
-      [66] Green, white undershirt
-      [67] Gray, mouse face design
-      [68] Yellow, low overalls
-      [69] Light Green, upper frog face
-      [70] Green, brown belt
-      [71] Fuchsia, light purple stripe
-      [72] White, denim overalls, brown belt
-      [73] Cream crop hoodie, blue tank
-      [74] Dark Blue and Purple horizontal split
-      [75] Blue, red overalls, brown belt
-      [76] Black, green mushroom cloud design
-      [77] Light Purple, brown belt
-      [78] White, tongue out frowny face
-      [79] Purple, white kerchief
-      [80] Black, blue overalls
-      [81] Gray, white shoulder stripe
-      [82] Green, light green waist stripe
-      [83] Dark Blue
-      [84] Black, wide collar
-      [85] Black
-      [86] Red, button up, open neck
-      [87] Teal, brown suspenders
-      [88] White button up, red kerchief
-      [89] Yellow, green vest
-      [90] Purple Bowling Style
-      [91] Black Hoodie
-      [92] Green, collared, white kerchief
-      [93] Pink, light pink shoulder stripe
-      [94] White, black spots
-      [95] Brown, red and yellow tie
-      [96] Yellow, black eyes with blush
-      [97] Green, dark green spots
-      [98] Gray, button up, dark vertical stripe
-      [99] Black peacoat, white shirt collar
-      [100] Purple, black overalls
-      [101] Light Blue, horizontal dark stripe
-      [102] Black, white front
-      [103] Canvas, blond leather belt
-      [104] Gray stripes, black overalls
-      [105] Green and Teal stripes
-      [106] Blue, white letter J
-      [107] Green and Black Horizontal split
-      [108] Fuchsia, white shoulder stripe
-      [109] Brown Orange
-      [110] Purple button up, dark vertical stripe
-      [111] Brown button up, dark vertical stripe
-      [112] Olive green, dark vertical stripe
-      *[other] {EMPTYSTRING()}
+      [1001] Red, denim overalls
+      [1002] Brown button up
+      [1003] Light Green, brown belt
+      [1004] Black, gray splat design
+      [1005] Black skull design
+      [1006] Blue Gray, cloud design
+      [1007] Cream, light blue horizontal stripe
+      [1008] Green, denim overalls
+      [1009] Yellow, brown horizontal zig zag
+      [1010] Blue Green, cloud design
+      [1011] Black, white letter A
+      [1012] Green, collar cinches
+      [1013] Lime Green, green stripes
+      [1014] Red, white horizontal stripes
+      [1015] Black, white ribcage design
+      [1016] Brown, Tan, Light Brown stripes
+      [1017] Blue, yellow dots
+      [1018] Green, brown suspenders
+      [1019] Brown jacket, Gray tee
+      [1020] White, blue kerchief
+      [1021] Green tank, Gray tee
+      [1022] Ochre, green horizontal stripe
+      [1023] Red button up
+      [1024] Green button up
+      [1025] Light Blue button up
+      [1026] Blue button up
+      [1027] Sea Green, horizontal white stripe
+      [1028] Purple, light equal sign design
+      [1029] Black, purple heart design
+      [1030] White vertical gradient
+      [1031] Brown jacket, Black shirt
+      [1032] Brown Gray, angled button up
+      [1033] Red, brown belt
+      [1034] Green, strung collar
+      [1035] Green bodice, gold belt, brown sleeves
+      [1036] Red, white collar, buttoned
+      [1037] Light Purple, zippered
+      [1038] Gray to Black vertical gradient
+      [1039] White, wide collar
+      [1040] Sea Green and Brown stripes
+      [1041] Purple vertical gradient
+      [1042] White, horizontal cream stripe
+      [1043] Green vertical gradient, belt
+      [1044] Blue vertical gradient
+      [1045] Blue, strung collar, white spot
+      [1046] Brown vertical gradient
+      [1047] Purple Vertical Gradient
+      [1048] Brown, silver belt
+      [1049] Black, gray bat design
+      [1050] Light Purple, purple stripe
+      [1051] Light Pink tank, purple shirt
+      [1052] Pink tank, light purple tee
+      [1053] Purple, vertical rainbow column
+      [1054] Black, green belt
+      [1055] Sea Green, white shoulder stripe
+      [1056] Red, horizontal yellow stripe
+      [1057] Lime Green, wide collar
+      [1058] White and Gray stripes, red vest
+      [1059] Blue, light blue shoulder stripe
+      [1060] Ochre, yellow shoulder stripe
+      [1061] Blue, wide collar
+      [1062] Tan, stripes and dots
+      [1063] Blue, white collar and stripe
+      [1064] Red, silver collar
+      [1065] Patchwork Blue
+      [1066] Green, white undershirt
+      [1067] Gray, mouse face design
+      [1068] Yellow, low overalls
+      [1069] Light Green, upper frog face
+      [1070] Green, brown belt
+      [1071] Fuchsia, light purple stripe
+      [1072] White, denim overalls, brown belt
+      [1073] Cream crop hoodie, blue tank
+      [1074] Dark Blue and Purple horizontal split
+      [1075] Blue, red overalls, brown belt
+      [1076] Black, green mushroom cloud design
+      [1077] Light Purple, brown belt
+      [1078] White, tongue out frowny face
+      [1079] Purple, white kerchief
+      [1080] Black, blue overalls
+      [1081] Gray, white shoulder stripe
+      [1082] Green, light green waist stripe
+      [1083] Dark Blue
+      [1084] Black, wide collar
+      [1085] Black
+      [1086] Red, button up, open neck
+      [1087] Teal, brown suspenders
+      [1088] White button up, red kerchief
+      [1089] Yellow, green vest
+      [1090] Purple Bowling Style
+      [1091] Black Hoodie
+      [1092] Green, collared, white kerchief
+      [1093] Pink, light pink shoulder stripe
+      [1094] White, black spots
+      [1095] Brown, red and yellow tie
+      [1096] Yellow, black eyes with blush
+      [1097] Green, dark green spots
+      [1098] Gray, button up, dark vertical stripe
+      [1099] Black peacoat, white shirt collar
+      [1100] Purple, black overalls
+      [1101] Light Blue, horizontal dark stripe
+      [1102] Black, white front
+      [1103] Canvas, blond leather belt
+      [1104] Gray stripes, black overalls
+      [1105] Green and Teal stripes
+      [1106] Blue, white letter J
+      [1107] Green and Black Horizontal split
+      [1108] Fuchsia, white shoulder stripe
+      [1109] Brown Orange
+      [1110] Purple button up, dark vertical stripe
+      [1111] Brown button up, dark vertical stripe
+      [1112] Olive green, dark vertical stripe
+      *[other] Undescribed shirt {$index}
     }
     *[1] Shirt: {$index}
   }
@@ -379,7 +379,7 @@ menu-character_creation-description-acc = {$less_info ->
       [18] Blue necklace
       [19] Gray sunglasses
       [20] Orange beak
-      *[other] {EMPTYSTRING()}
+      *[other] Undescribed accessory {$index}
     }
     *[1] Accessory: {$index}
   }
