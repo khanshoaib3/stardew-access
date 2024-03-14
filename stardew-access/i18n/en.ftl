@@ -156,6 +156,10 @@ tile_name-special_quest_board = Special Quest Board
 tile-museum_piece_showcase-suffix = {$content} Showcase
 tile_name-fridge = Fridge
 tile_name-mail_box = Mail Box
+tile-mail_box-unread_mail_count-prefix = {$mail_count} {$mail_count ->
+    [1] unread mail in
+    *[0] unread mails in
+  } {$content}
 tile_name-stove = Stove
 tile_name-sink = Sink
 tile-railroad-witch_statue-name = Witch Statue

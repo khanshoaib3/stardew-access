@@ -381,7 +381,11 @@ public class DynamicTiles
             var mailbox = Game1.player.mailbox;
             if (mailbox is not null && mailbox.Count > 0)
             {
-                name = $"{mailbox.Count} unread mail in {name}";
+                name = Translator.Instance.Translate("tile-mail_box-unread_mail_count-prefix", new
+                {
+                    mail_count = mailbox.Count,
+                    content = name
+                });
                 category = CATEGORY.Ready;
             }
         }
@@ -472,7 +476,11 @@ public class DynamicTiles
             var mailbox = Game1.player.mailbox;
             if (mailbox is not null && mailbox.Count > 0)
             {
-                mailboxName = $"{mailbox.Count} unread mail in {mailboxName}";
+                mailboxName = Translator.Instance.Translate("tile-mail_box-unread_mail_count-prefix", new
+                {
+                    mail_count = mailbox.Count,
+                    content = mailboxName
+                });
                 mailboxCategory = CATEGORY.Ready;
             }
 
