@@ -348,6 +348,47 @@ public class DynamicTiles
                 name = name
             });
         }
+        else if (building.GetIndoors() is Cabin cabin)
+        {
+            string ownerName = cabin.owner.displayName;
+            if (offsetX is 2 && offsetY is 1)
+            {
+                name = string.IsNullOrWhiteSpace(ownerName)
+                    ? $"{name} {Translator.Instance.Translate("tile-door")}" // Cabin Door
+                    : $"{cabin.owner.Name} {name} {Translator.Instance.Translate("tile-door")}"; // [Owner] Cabin Door
+                category = CATEGORY.Doors;
+                goto PassableTilesCheck;
+            }
+
+            if (offsetX is not 4 || offsetY is not 2)
+            {
+                if (cabin.HasOwner && !cabin.IsOwnedByCurrentPlayer && !string.IsNullOrWhiteSpace(ownerName))
+                    name = $"{cabin.owner.Name} {name}";
+                goto PassableTilesCheck;
+            }
+
+            if (!cabin.IsOwnedByCurrentPlayer)
+            {
+                name = string.IsNullOrWhiteSpace(ownerName)
+                    ? $"{name} {Translator.Instance.Translate("tile_name-mail_box")}" // Cabin Mail Box
+                    : $"{cabin.owner.Name} {Translator.Instance.Translate("tile_name-mail_box")}"; // [Owner] Mail Box
+                goto PassableTilesCheck;
+            }
+
+            // Mail Box (with unread status)
+            name = Translator.Instance.Translate("tile_name-mail_box");
+            category = CATEGORY.Interactable;
+            var mailbox = Game1.player.mailbox;
+            if (mailbox is not null && mailbox.Count > 0)
+            {
+                name = $"{mailbox.Count} unread mail in {name}";
+                category = CATEGORY.Ready;
+            }
+        }
+        else if (building.GetIndoors() is FarmHouse farmHouse && farmHouse.HasOwner && !farmHouse.IsOwnedByCurrentPlayer)
+        {
+            name = $"{farmHouse.owner.displayName} {name}";
+        }
         // If the building is a FishPond, prepend the fish name
         else if (building is FishPond fishPond && fishPond.fishType.Value != "0" && fishPond.fishType.Value != "")
         {
@@ -390,8 +431,9 @@ public class DynamicTiles
                 }
             }
         }
-        // Any building tile not matched will return building's name and Buildings category 
+    // Any building tile not matched will return building's name and Buildings category 
 
+    PassableTilesCheck:
         if (!building.isTilePassable(new Vector2(x, y)))
         {
             return (name, category);
@@ -420,12 +462,20 @@ public class DynamicTiles
         {
             string mailboxName = Translator.Instance.Translate("tile_name-mail_box");
             CATEGORY mailboxCategory = CATEGORY.Interactable;
+
+            if (!(farm.GetMainFarmHouse().GetIndoors() as FarmHouse)!.IsOwnedByCurrentPlayer)
+            {
+                mailboxName = $"{(farm.GetMainFarmHouse().GetIndoors() as FarmHouse)!.owner.displayName} {mailboxName}";
+                return (mailboxName, mailboxCategory);
+            }
+
             var mailbox = Game1.player.mailbox;
             if (mailbox is not null && mailbox.Count > 0)
             {
                 mailboxName = $"{mailbox.Count} unread mail in {mailboxName}";
                 mailboxCategory = CATEGORY.Ready;
             }
+
             return (mailboxName, mailboxCategory);
         }
         else if (building is not null) // Check if there is a building at the current position
