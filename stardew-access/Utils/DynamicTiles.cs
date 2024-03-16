@@ -230,7 +230,7 @@ public class DynamicTiles
         {
             if (!beach.bridgeFixed.Value)
             {
-                return (Translator.Instance.Translate("prefix-repair", new { content = Translator.Instance.Translate("tile_name-bridge") }), CATEGORY.Interactable);
+                return (Translator.Instance.Translate("prefix-repair", new { content = Translator.Instance.Translate("tile_name-bridge") }), CATEGORY.Pending);
             }
             else
             {
@@ -263,7 +263,7 @@ public class DynamicTiles
         {
             string mail = (x, y) switch
             {
-                (4, 9) => "willyBoatFixed",
+                (4, 9) => "willyBoatTicketMachine",
                 (6, 8) => "willyBoatHull",
                 (8, 9) => "willyBoatAnchor",
                 _ => throw new InvalidOperationException("Unexpected (x, y) values"),
@@ -279,7 +279,11 @@ public class DynamicTiles
                 }
             );
 
-            CATEGORY category = (x, y) == (4, 9) ? CATEGORY.Interactable : (!HasMail(mail) ? CATEGORY.Interactable : CATEGORY.Decor);
+            CATEGORY category = (x, y) == (4, 9)
+                ? !HasMail(mail)
+                        ? CATEGORY.Pending
+                        : !HasMail("willyBoatHull") || !HasMail("willyBoatAnchor") ? CATEGORY.Decor : CATEGORY.Interactable
+                : !HasMail(mail) ? CATEGORY.Pending : CATEGORY.Decor;
 
             return ((!HasMail(mail) ? Translator.Instance.Translate("prefix-repair", new { content = itemName }) : itemName), category);
         }
