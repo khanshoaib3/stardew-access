@@ -165,6 +165,7 @@ menu-inventory_page-money_info_key = {$farm_name}, {$current_funds}, {$total_ear
 menu-social_page-npc_info = {$name}{$has_talked ->
     [0] , not talked yet
     *[1] {EMPTYSTRING()}
+    [2] , not met yet
   }{$relationship_status ->
     [null] {EMPTYSTRING()}
     *[other] , {$relationship_status}
@@ -176,6 +177,10 @@ menu-social_page-npc_info = {$name}{$has_talked ->
     *[other] gifts
   } given this week.
 
+menu-social_page-player_info = {$name}{$relationship_status ->
+    [null] {EMPTYSTRING()}
+    *[other] , {$relationship_status}
+  }
 
 ### Crafting Page
 
