@@ -17,7 +17,7 @@ public class TileInfo
     private static readonly Dictionary<int, (string category, string itemName)> ParentSheetIndexes = [];
     private static readonly Dictionary<string, Dictionary<(int, int), string>> BundleLocations = [];
 
-    private static readonly Dictionary<Color, int> colorToSelectionMap = new Dictionary<Color, int>
+    private static readonly Dictionary<Color, int> colorToSelectionMap = new()
     {
         { Color.Black, 0 },
         { new(85, 85, 255), 1 },
@@ -171,7 +171,7 @@ public class TileInfo
 
         if (currentLocation.isCharacterAtTile(tile) is NPC npc)
         {
-            CATEGORY category = npc.isVillager() || npc.CanSocialize ? CATEGORY.Farmers : CATEGORY.NPCs;
+            CATEGORY category = npc.IsVillager || npc.CanSocialize ? CATEGORY.Farmers : CATEGORY.NPCs;
             string npcName;
             if (npc is Horse horse)
             {
