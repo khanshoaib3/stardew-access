@@ -2105,6 +2105,12 @@
       "X": [2],
       "Y": [9],
       "Category": "npc"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-movie_theater-town_entrance",
+      "X": [13, 14],
+      "Y": [16],
+      "Category": "door"
     }
   ],
   "QiNutRoom": [

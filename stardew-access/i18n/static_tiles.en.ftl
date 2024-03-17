@@ -411,6 +411,7 @@ static_tile-mountain-science_house_secondary_door = Science House Secondary
 static_tile-movie_theater-concessions_counter = Concessions Counter
 static_tile-movie_theater-crane_game = Crane Game
 static_tile-movie_theater-theater_door = Theater
+static_tile-movie_theater-town_entrance = Town
 
 # Qi's Walnut Room
 
