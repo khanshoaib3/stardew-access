@@ -1,5 +1,4 @@
 using HarmonyLib;
-using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -10,8 +9,7 @@ internal class SocialPagePatch : IPatch
     public void Apply(Harmony harmony)
     {
         harmony.Patch(
-            original: AccessTools.Method(typeof(SocialPage), nameof(SocialPage.draw),
-                new Type[] { typeof(SpriteBatch) }),
+            original: AccessTools.DeclaredMethod(typeof(SocialPage), "draw"),
             postfix: new HarmonyMethod(typeof(SocialPagePatch), nameof(SocialPagePatch.DrawPatch))
         );
     }

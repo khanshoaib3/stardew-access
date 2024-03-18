@@ -197,6 +197,20 @@ menu-crafting_page-next_recipe_list_button = Next recipe list button
 menu-exit_page-exit_to_title_button = Exit to title button
 menu-exit_page-exit_to_desktop_button = Exit to desktop button
 
+### Skills Page
+
+menu-skills_page-player_info = {$name}, {$title}{$golden_walnut_count ->
+    [0] {EMPTYSTRING()}
+    [1] , 1 Golden Walnut
+    *[other] , {$golden_walnut_count} Golden Walnuts
+  }{$qi_gem_count ->
+    [0] {EMPTYSTRING()}
+    [1] , 1 Qi gem
+    *[other] , {$qi_gem_count} Qi gems
+  }
+menu-skills_page-skill_info = {$name} at level {$level},
+  {$buffs}
+
 ## Menus With Inventory
 
 ### Forge Menu

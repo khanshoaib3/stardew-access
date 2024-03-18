@@ -1,48 +1,44 @@
 using HarmonyLib;
-using Microsoft.Xna.Framework.Graphics;
-using stardew_access.Translation;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace stardew_access.Patches
+namespace stardew_access.Patches;
+
+internal class ExitPagePatch : IPatch
 {
-    internal class ExitPagePatch : IPatch
+    public void Apply(Harmony harmony)
     {
-        public void Apply(Harmony harmony)
+        harmony.Patch(
+            original: AccessTools.DeclaredMethod(typeof(ExitPage), "draw"),
+            postfix: new HarmonyMethod(typeof(ExitPagePatch), nameof(ExitPagePatch.DrawPatch))
+        );
+    }
+
+    private static void DrawPatch(ExitPage __instance)
+    {
+        try
         {
-            harmony.Patch(
-                original: AccessTools.Method(typeof(ExitPage), nameof(ExitPage.draw),
-                    new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(ExitPagePatch), nameof(ExitPagePatch.DrawPatch))
-            );
+            int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
+
+            if (__instance.exitToTitle.visible &&
+                __instance.exitToTitle.containsPoint(x, y))
+            {
+                MainClass.ScreenReader.TranslateAndSayWithMenuChecker(
+                    "menu-exit_page-exit_to_title_button", true);
+                return;
+            }
+
+            if (__instance.exitToDesktop.visible &&
+                __instance.exitToDesktop.containsPoint(x, y))
+            {
+                MainClass.ScreenReader.TranslateAndSayWithMenuChecker(
+                    "menu-exit_page-exit_to_desktop_button", true);
+                return;
+            }
         }
-
-        private static void DrawPatch(ExitPage __instance)
+        catch (Exception e)
         {
-            try
-            {
-                int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
-
-                if (__instance.exitToTitle.visible &&
-                    __instance.exitToTitle.containsPoint(x, y))
-                {
-                    MainClass.ScreenReader.TranslateAndSayWithMenuChecker(
-                        "menu-exit_page-exit_to_title_button", true);
-                    return;
-                }
-
-                if (__instance.exitToDesktop.visible &&
-                    __instance.exitToDesktop.containsPoint(x, y))
-                {
-                    MainClass.ScreenReader.TranslateAndSayWithMenuChecker(
-                        "menu-exit_page-exit_to_desktop_button", true);
-                    return;
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error($"An error occurred in exit page patch:\n{e.Message}\n{e.StackTrace}");
-            }
+            Log.Error($"An error occurred in exit page patch:\n{e.Message}\n{e.StackTrace}");
         }
     }
 }
