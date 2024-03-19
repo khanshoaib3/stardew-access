@@ -85,6 +85,10 @@ internal class TileViewer : FeatureBase
     /// <returns>Vector2</returns>
     public Vector2 GetViewingTile()
     {
+        if (Game1.activeClickableMenu != null || Game1.activeClickableMenu is CarpenterMenu)
+        {
+            return new Vector2((Game1.viewport.X + Game1.getOldMouseX(ui_scale: false)) / 64, (Game1.viewport.Y + Game1.getOldMouseY(ui_scale: false)) / 64);
+        }
         Vector2 position = GetTileCursorPosition();
         return new Vector2((int)(position.X / Game1.tileSize), (int)(position.Y / Game1.tileSize));
     }
@@ -95,11 +99,8 @@ internal class TileViewer : FeatureBase
     public override bool OnButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
         // Exit if in a menu
-        if (Game1.activeClickableMenu != null)
+        if (Game1.activeClickableMenu != null && !(Game1.activeClickableMenu is CarpenterMenu))
         {
-            #if DEBUG
-            Log.Verbose("OnButtonPressed: returning due to 'Game1.activeClickableMenu' not being null AKA in a menu");
-            #endif
             return false;
         }
 
@@ -138,23 +139,42 @@ internal class TileViewer : FeatureBase
         }
         else if (MainClass.Config.TileCursorUpKey.JustPressed())
         {
+            if (Game1.activeClickableMenu != null && Game1.activeClickableMenu is CarpenterMenu)
+                CursorMoveInput(0, -64);
+            else
             CursorMoveInput(new Vector2(0, -Game1.tileSize));
         }
         else if (MainClass.Config.TileCursorRightKey.JustPressed())
         {
-            CursorMoveInput(new Vector2(Game1.tileSize, 0));
+            if (Game1.activeClickableMenu != null && Game1.activeClickableMenu is CarpenterMenu)
+                CursorMoveInput(64, 0);
+            else
+                CursorMoveInput(new Vector2(Game1.tileSize, 0));
         }
         else if (MainClass.Config.TileCursorDownKey.JustPressed())
         {
-            CursorMoveInput(new Vector2(0, Game1.tileSize));
+            if (Game1.activeClickableMenu != null && Game1.activeClickableMenu is CarpenterMenu)
+                CursorMoveInput(0, 64);
+            else
+                CursorMoveInput(new Vector2(0, Game1.tileSize));
         }
         else if (MainClass.Config.TileCursorLeftKey.JustPressed())
         {
-            CursorMoveInput(new Vector2(-Game1.tileSize, 0));
+            if (Game1.activeClickableMenu != null && Game1.activeClickableMenu is CarpenterMenu)
+                CursorMoveInput(-64, 0);
+            else
+                CursorMoveInput(new Vector2(-Game1.tileSize, 0));
         }
         else if (MainClass.Config.AutoWalkToTileKey.JustPressed() && Context.IsPlayerFree)
         {
             StartAutoWalking();
+        }
+        else if (MainClass.Config.AutoWalkToTileKey.JustPressed() && Game1.activeClickableMenu != null && Game1.activeClickableMenu is CarpenterMenu carpenterMenu)
+        {
+            var viewingTile = GetViewingTile();
+            string? response = BuildingOperations.Construct(viewingTile);
+            if (response != null)
+                MainClass.ScreenReader.SayWithMenuChecker(response, true);
         }
         else if (MainClass.Config.OpenTileInfoMenuKey.JustPressed() && Context.IsPlayerFree)
         {
@@ -255,6 +275,17 @@ internal class TileViewer : FeatureBase
         ReadTile.Instance.Resume();
         if (wasForced)
             MainClass.ScreenReader.TranslateAndSay("feature-tile_viewer-stopped_moving", true);
+    }
+
+    private void CursorMoveInput(int x, int y, Boolean precise = false)
+    {
+        Game1.panScreen(x, y);
+        Vector2 position = new Vector2(Game1.viewport.X, Game1.viewport.Y);
+        string name = TileInfo.GetNameAtTileWithBlockedOrEmptyIndication(GetViewingTile());
+        
+        MainClass.ScreenReader.Say(precise
+            ? $"{name}, {position.X}, {position.Y}"
+            : $"{name}, {(int)(position.X / Game1.tileSize)}, {(int)(position.Y / Game1.tileSize)}", true);
     }
 
     private void CursorMoveInput(Vector2 delta, Boolean precise = false)
