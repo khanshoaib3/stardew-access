@@ -17,6 +17,7 @@ common-ui-next_page_button = Next page button
 common-ui-previous_page_button = Previous page button
 common-ui-close_menu_button = Close menu button
 common-ui-back_button = Back button
+common-ui-forward_button = Forward button
 common-ui-equipment_slots = {$slot_name ->
     [hat] Hat
     [left_ring] Left ring
@@ -181,6 +182,17 @@ menu-social_page-player_info = {$name}{$relationship_status ->
     [null] {EMPTYSTRING()}
     *[other] , {$relationship_status}
   }
+
+### Collections Page
+menu-collections_page-tabs = {$tab_name} tab {$is_selected ->
+    [0] {EMPTYSTRING()}
+    *[1] selected
+  }
+menu-collections_page-unachieved = Unachieved
+menu-collections_page-uncaught = Uncaught
+menu-collections_page-uncooked = Uncooked
+menu-collections_page-unfound = Unfound
+menu-collections_page-unshipped = Unshipped
 
 ### Crafting Page
 
