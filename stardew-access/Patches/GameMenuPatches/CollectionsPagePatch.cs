@@ -62,10 +62,7 @@ internal class CollectionsPagePatch : IPatch
                         string name = ItemRegistry.GetDataOrErrorItem(nameParts[0]).DisplayName;
                         switch (__instance.currentTab)
                         {
-                            case 7:
-                                toSpeak = Game1.parseText(c.name[(c.name.IndexOf(' ', c.name.IndexOf(' ') + 1) + 1)..]);
-                                break;
-                            case 4:
+                            case 4: // recipes
                                 if (drawColorFaded)
                                 {
                                     string uncooked = Translator.Instance.Translate("menu-collections_page-uncooked", TranslationCategory.Menu);
@@ -80,7 +77,7 @@ internal class CollectionsPagePatch : IPatch
                                     toSpeak = text;
                                 }
                                 break;
-                            case 5:
+                            case 5: // achievements
                                 if (drawColor)
                                 {    
                                     toSpeak = text;
@@ -93,7 +90,21 @@ internal class CollectionsPagePatch : IPatch
                                     toSpeak = $"{achievement} ({unachieved})";
                                 }
                                 break;
-                            default:
+                            case 6: // secret notes
+                                if (drawColor)
+                                {
+                                    toSpeak = text;
+                                }
+                                else
+                                {
+                                    int index2 = int.Parse(nameParts[0]);
+                                    toSpeak= ((index2 >= GameLocation.JOURNAL_INDEX) ? (Game1.content.LoadString("Strings\\Locations:Journal_Name") + " #" + (index2 - GameLocation.JOURNAL_INDEX)) : (Game1.content.LoadString("Strings\\Locations:Secret_Note_Name") + " #" + index2));
+                                }
+                                break;
+                            case 7: // letters
+                                toSpeak = Game1.parseText(c.name[(c.name.IndexOf(' ', c.name.IndexOf(' ') + 1) + 1)..]);
+                                break;
+                            default: // 0 shipping, 1 fish, 2 artifacts, 3 minerals
                                 if (drawColor)
                                 {
                                     toSpeak = text;

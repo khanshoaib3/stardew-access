@@ -395,6 +395,16 @@ menu-letter_viewer-letter_message = {$message_content}{$is_money_included ->
 menu-letter_viewer-pagination_text-prefix = Page {$current_page} of {$total_pages}
   {$content}
 menu-letter_viewer-grabbable_item_text = Left click to collect {$name}
+menu-letter_viewer-image_note = {$note_id ->
+    [11] note 11 description
+    [16] note 16 description
+    [17] note 17 description
+    [18] note 18 description
+    [19] note 19 description
+    [20] note 20 description
+    [21] note 21 description
+    *[other] Undescribed image {$note_id}
+  }
 
 ### Level Up Menu
 

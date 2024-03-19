@@ -38,7 +38,10 @@ namespace stardew_access.Patches
         {
             int x = Game1.getMousePosition().X, y = Game1.getMousePosition().Y;
 
-            NarrateLetterContent(__instance, x, y);
+            if (__instance.secretNoteImage == -1) // not a secret note image
+                NarrateLetterContent(__instance, x, y);
+            else
+                NarrateSecretNoteImage(__instance);
             NarrateHoveredButtons(__instance, x, y);
         }
 
@@ -72,6 +75,26 @@ namespace stardew_access.Patches
             // snap mouse to accept quest button
             if (__instance.acceptQuestButton != null && __instance.questID != "-1")
                 __instance.acceptQuestButton.snapMouseCursorToCenter();
+        }
+
+        private static void NarrateSecretNoteImage(LetterViewerMenu __instance)
+        {
+            int note_id = __instance.secretNoteImage switch
+            {
+                6 => 11,
+                0 => 16,
+                1 => 17,
+                3 => 18,
+                2 => 19,
+                4 => 20,
+                5 => 21,
+                _ => -1
+            };
+            object tokens = new
+            {
+                note_id,
+            };
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-letter_viewer-image_note", true, tokens, TranslationCategory.Menu);
         }
 
         private static void NarrateHoveredButtons(LetterViewerMenu __instance, int x, int y)
