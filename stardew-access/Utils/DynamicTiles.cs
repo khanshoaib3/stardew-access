@@ -527,7 +527,7 @@ public class DynamicTiles
             }
             else if (kitchenX + 1 == x && kitchenY == y)
             {
-                return ("tile_name-sink", CATEGORY.Other);
+                return ("tile_name-sink", CATEGORY.Water);
             }
             else if (farmHouse.fridgePosition.X == x && farmHouse.fridgePosition.Y == y)
             {

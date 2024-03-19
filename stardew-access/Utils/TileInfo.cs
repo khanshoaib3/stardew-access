@@ -246,10 +246,10 @@ public class TileInfo
             }
         }
 
-        string? bush = GetBushAtTile(currentLocation, x, y, lessInfo);
-        if (bush != null)
+        (string? name, CATEGORY bushCategory) bushInfo = GetBushAtTile(currentLocation, x, y, lessInfo);
+        if (bushInfo.name != null)
         {
-            return (bush, CATEGORY.Bush);
+            return bushInfo;
         }
 
         string? junimoBundle = GetJunimoBundleAt(currentLocation, x, y);
@@ -291,14 +291,14 @@ public class TileInfo
     /// <param name="y">The y-coordinate of the tile to check.</param>
     /// <param name="lessInfo">Whether to return less information about the bush.</param>
     /// <returns>A string describing the bush if one is found at the specified coordinates, otherwise null.</returns>
-    public static string? GetBushAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false)
+    public static (string? name, CATEGORY category) GetBushAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false)
     {
         Bush? bush = (Bush)currentLocation.getLargeTerrainFeatureAt(x, y);
 
         if (bush is null || (lessInfo && ((int)bush.Tile.X != x || (int)bush.Tile.Y != y)))
-            return null;
+            return (null, null);
 
-        return TerrainUtils.GetBushInfoString(bush);
+        return (TerrainUtils.GetBushInfoString(bush), (!bush.townBush.Value && bush.tileSheetOffset.Value == 1 && bush.inBloom()) ? CATEGORY.Ready : CATEGORY.Bush);
     }
 
     /// <summary>
