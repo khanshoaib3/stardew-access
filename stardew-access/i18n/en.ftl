@@ -157,8 +157,8 @@ tile-museum_piece_showcase-suffix = {$content} Showcase
 tile_name-fridge = Fridge
 tile_name-mail_box = Mail Box
 tile-mail_box-unread_mail_count-prefix = {$mail_count} {$mail_count ->
-    [1] unread mail in
-    *[0] unread mails in
+    [1] unread letter in
+    *[0] unread letters in
   } {$content}
 tile_name-stove = Stove
 tile_name-sink = Sink
