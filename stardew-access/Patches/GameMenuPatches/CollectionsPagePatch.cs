@@ -100,6 +100,22 @@ internal class CollectionsPagePatch : IPatch
                                     int index2 = int.Parse(nameParts[0]);
                                     toSpeak= ((index2 >= GameLocation.JOURNAL_INDEX) ? (Game1.content.LoadString("Strings\\Locations:Journal_Name") + " #" + (index2 - GameLocation.JOURNAL_INDEX)) : (Game1.content.LoadString("Strings\\Locations:Secret_Note_Name") + " #" + index2));
                                 }
+                                if (toSpeak.Length >= 2)
+                                {    
+                                    string lastTwoChars = toSpeak[^2..];
+                                    if (int.TryParse(lastTwoChars, out int note_id))
+                                    {
+                                        if (note_id == 11 || (note_id >= 16 && note_id <= 21))
+                                        {
+                                            object token = new
+                                            {
+                                                note_id
+                                            };
+                                            string description = Translator.Instance.Translate("menu-letter_viewer-image_note", token, TranslationCategory.Menu);
+                                            toSpeak = $"{toSpeak}{Environment.NewLine}{Environment.NewLine}{description}";
+                                        }
+                                    }
+                                }
                                 break;
                             case 7: // letters
                                 toSpeak = Game1.parseText(c.name[(c.name.IndexOf(' ', c.name.IndexOf(' ') + 1) + 1)..]);

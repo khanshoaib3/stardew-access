@@ -396,13 +396,13 @@ menu-letter_viewer-pagination_text-prefix = Page {$current_page} of {$total_page
   {$content}
 menu-letter_viewer-grabbable_item_text = Left click to collect {$name}
 menu-letter_viewer-image_note = {$note_id ->
-    [11] note 11 description
-    [16] note 16 description
-    [17] note 17 description
-    [18] note 18 description
-    [19] note 19 description
-    [20] note 20 description
-    [21] note 21 description
+    [11] Image of a young Marnie holding hands with todler Jas. They are surrounded by farm animals on the ranch.
+    [16] A treasure map depicting a large boulder NorthWest of the railroad tracks. A red X is placed to the right of the boulder.
+    [17] A treasure map depicting the river north of Joja Mart with a Red X featured in the North Easternmost Corner
+    [18] A treasure map depicting a bench in the Southeast corner of the Calico desert, featuring a red X to the southwest.
+    [19] A depiction of 1 Willow Lane with a series of arrows. A square marks the space in front of the front door. The sequence reads as left, up, right, up, right, down, left, down, left, down, check mark.
+    [20] a depiction of town square with a series of arrows. The depiction notes an area in the very center of the square. The sequence is as follows, right, down, right, up, right, up, right, down, left, up, left, up, right, up, left, up, left, check mark.
+    [21] A depiction of the large bush to the northwest of the bridge to the beach, at night. A clock displays the time 12:40.
     *[other] Undescribed image {$note_id}
   }
 
