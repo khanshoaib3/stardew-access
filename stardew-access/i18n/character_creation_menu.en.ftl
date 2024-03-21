@@ -99,7 +99,9 @@ menu-character_creation-description-cat = {$less_info ->
       [1] Orange cat
       [2] Gray Tabby cat with white belly
       [3] Yellow cat with purple collar
-      *[other] {EMPTYSTRING()}
+      [4] Cream colored cat
+      [5] Black cat with yellow eyes
+      *[other] Undescribed cat {$breed}
     }
     *[1] Cat {$breed}
   }
@@ -109,7 +111,9 @@ menu-character_creation-description-dog = {$less_info ->
       [1] Golden-brown Hound with blue collar
       [2] Brown Shepherd
       [3] Tan body, brown eared, long furred terrier
-      *[other] {EMPTYSTRING()}
+      [4] Grey and white shepherd with a red bandana
+      [5] Brown retriever
+      *[other] Undescribed dog {$breed}
     }
     *[1] Dog {$breed}
   }
@@ -379,6 +383,17 @@ menu-character_creation-description-acc = {$less_info ->
       [18] Blue necklace
       [19] Gray sunglasses
       [20] Orange beak
+      [21] Five o'clock shadow
+      [22] Bushy beard
+      [23] Pencil mustache
+      [24] Handlebar mustache
+      [25] Tanned face (includes head if bald)
+      [26] Red clown nose
+      [27] Square wire-framed glasses
+      [28] Prominent black eyebrows
+      [29] Blushing cheeks
+      [30] Pink lipstick
+      [31] Bronzer
       *[other] Undescribed accessory {$index}
     }
     *[1] Accessory: {$index}
