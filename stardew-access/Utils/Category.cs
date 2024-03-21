@@ -44,31 +44,33 @@ namespace stardew_access.Utils
         private static readonly Dictionary<string, CATEGORY> _categories = new(StringComparer.OrdinalIgnoreCase)
         {
             {"animals", new CATEGORY("animals")},
-            {"bridge", new CATEGORY("bridge")},
-            {"building", new CATEGORY("building")},
-            {"bush", new CATEGORY("bush")},
-            {"bundle", new CATEGORY("bundle")},
-            {"container", new CATEGORY("container")},
-            {"crop", new CATEGORY("crop")},
+            {"bridges", new CATEGORY("bridges")},
+            {"buildings", new CATEGORY("buildings")},
+            {"bushes", new CATEGORY("bushes")},
+            {"bundles", new CATEGORY("bundles")},
+            {"containers", new CATEGORY("containers")},
+            {"crops", new CATEGORY("crops")},
             {"debris", new CATEGORY("debris")},
-            {"decoration", new CATEGORY("decoration")},
-            {"door", new CATEGORY("door")},
-            {"dropped_item", new CATEGORY("dropped_item")},
-            {"farmer", new CATEGORY("farmer")},
+            {"decor", new CATEGORY("decor")},
+            {"doors", new CATEGORY("doors")},
+            {"dropped_items", new CATEGORY("dropped_items")},
+            {"farmers", new CATEGORY("farmers")},
             {"fishing", new CATEGORY("fishing")},
-            {"fishpond", new CATEGORY("fish pond")},
+            {"fishponds", new CATEGORY("fish ponds")},
             {"flooring", new CATEGORY("flooring")},
             {"furniture", new CATEGORY("furniture")},
-            {"interactable", new CATEGORY("interactable")},
-            {"machine", new CATEGORY("machine")},
-            {"mine_item", new CATEGORY("mine_item")},
-            {"npc", new CATEGORY("npc")},
+            {"interactables", new CATEGORY("interactables")},
+            {"machines", new CATEGORY("machines")},
+            {"mine_items", new CATEGORY("mine_items")},
+            {"npcs", new CATEGORY("npcs")},
+            {"other", new CATEGORY("other")},
             {"pending", new CATEGORY("pending")},
+            {"quest", new CATEGORY("quest")},
             {"ready", new CATEGORY("ready")},
-            {"resource_clump", new CATEGORY("resource_clump")},
-            {"tree", new CATEGORY("tree")},
-            {"water", new CATEGORY("water")},
-            {"other", new CATEGORY("other")}
+            {"resource_clumps", new CATEGORY("resource_clumps")},
+            {"trees", new CATEGORY("trees")},
+            {"unknown", new CATEGORY("unknown")},
+            {"water", new CATEGORY("water")}
         };
 
 
@@ -124,30 +126,32 @@ namespace stardew_access.Utils
         }
 
         public static readonly CATEGORY Animals = FromString("animals");
-        public static readonly CATEGORY Bridges = FromString("bridge");
-        public static readonly CATEGORY Buildings = FromString("building");
-        public static readonly CATEGORY Bundle = FromString("bundle");
-        public static readonly CATEGORY Bush = FromString("bush");
-        public static readonly CATEGORY Crops = FromString("crop");
+        public static readonly CATEGORY Bridges = FromString("bridges");
+        public static readonly CATEGORY Buildings = FromString("buildings");
+        public static readonly CATEGORY Bundles = FromString("bundles");
+        public static readonly CATEGORY Bushes = FromString("bushes");
+        public static readonly CATEGORY Crops = FromString("crops");
         public static readonly CATEGORY Debris = FromString("debris");
-        public static readonly CATEGORY Containers = FromString("container");
-        public static readonly CATEGORY Decor = FromString("decoration");
-        public static readonly CATEGORY Doors = FromString("door");
-        public static readonly CATEGORY DroppedItems = FromString("dropped_item");
-        public static readonly CATEGORY Farmers = FromString("farmer");
+        public static readonly CATEGORY Containers = FromString("containers");
+        public static readonly CATEGORY Decor = FromString("decor");
+        public static readonly CATEGORY Doors = FromString("doors");
+        public static readonly CATEGORY DroppedItems = FromString("dropped_items");
+        public static readonly CATEGORY Farmers = FromString("farmers");
         public static readonly CATEGORY Fishing = FromString("fishing");
-        public static readonly CATEGORY Fishpond = FromString("fishpond");
+        public static readonly CATEGORY Fishponds = FromString("fishponds");
         public static readonly CATEGORY Flooring = FromString("flooring");
         public static readonly CATEGORY Furniture = FromString("furniture");
-        public static readonly CATEGORY Interactable = FromString("interactable");
-        public static readonly CATEGORY Machines = FromString("machine");
-        public static readonly CATEGORY MineItems = FromString("mine_item");
-        public static readonly CATEGORY NPCs = FromString("npc");
-        public static readonly CATEGORY Pending = FromString("pending");
-        public static readonly CATEGORY Ready = FromString("ready");
-        public static readonly CATEGORY ResourceClumps = FromString("resource_clump");
-        public static readonly CATEGORY Trees = FromString("tree");
-        public static readonly CATEGORY Water = FromString("water");
+        public static readonly CATEGORY Interactables = FromString("interactables");
+        public static readonly CATEGORY Machines = FromString("machines");
+        public static readonly CATEGORY MineItems = FromString("mine_items");
+        public static readonly CATEGORY NPCs = FromString("npcs");
         public static readonly CATEGORY Other = FromString("other");
+        public static readonly CATEGORY Pending = FromString("pending");
+        public static readonly CATEGORY Quest = FromString("quest");
+        public static readonly CATEGORY Ready = FromString("ready");
+        public static readonly CATEGORY ResourceClumps = FromString("resource_clumps");
+        public static readonly CATEGORY Trees = FromString("trees");
+        public static readonly CATEGORY Unknown = FromString("unknown");
+        public static readonly CATEGORY Water = FromString("water");
     }
 }

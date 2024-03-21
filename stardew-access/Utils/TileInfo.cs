@@ -208,9 +208,9 @@ public class TileInfo
         staticTile ??= MainClass.TileManager.GetNameAndCategoryAt((x, y), "stardew-access", currentLocation);
         if (staticTile is { } static_tile)
         {
-#if DEBUG
+            #if DEBUG
             Log.Verbose($"TileInfo: Got static tile {static_tile} from TileManager");
-#endif
+            #endif
             return (static_tile.name, static_tile.category);
         }
 
@@ -239,23 +239,24 @@ public class TileInfo
 
         if (terrainFeature.TryGetValue(tile, out var tf))
         {
-            (string? name, CATEGORY? category) = GetTerrainFeatureAtTile(tf);
-            if (name != null)
+            (string? name, CATEGORY? category) tfInfo = (TerrainUtils.GetTerrainFeatureInfoAndCategory(tf.Value, lessInfo));
+            if (tfInfo.name != null)
             {
-                return (name, category);
+                return tfInfo;
             }
         }
 
-        (string? name, CATEGORY bushCategory) bushInfo = GetBushAtTile(currentLocation, x, y, lessInfo);
-        if (bushInfo.name != null)
+        LargeTerrainFeature? ltf = currentLocation.getLargeTerrainFeatureAt(x, y);
+        (string? name, CATEGORY? category) ltfInfo = (TerrainUtils.GetTerrainFeatureInfoAndCategory(ltf, lessInfo));
+        if (ltfInfo.name != null)
         {
-            return bushInfo;
+            return ltfInfo;
         }
 
         string? junimoBundle = GetJunimoBundleAt(currentLocation, x, y);
         if (junimoBundle != null)
         {
-            return (junimoBundle, CATEGORY.Bundle);
+            return (junimoBundle, CATEGORY.Bundles);
         }
 
         // Track dropped items
@@ -281,24 +282,6 @@ public class TileInfo
         }
 
         return (null, CATEGORY.Other);
-    }
-
-    /// <summary>
-    /// Gets the bush at the specified tile coordinates in the provided GameLocation.
-    /// </summary>
-    /// <param name="currentLocation">The GameLocation instance to search for bushes.</param>
-    /// <param name="x">The x-coordinate of the tile to check.</param>
-    /// <param name="y">The y-coordinate of the tile to check.</param>
-    /// <param name="lessInfo">Whether to return less information about the bush.</param>
-    /// <returns>A string describing the bush if one is found at the specified coordinates, otherwise null.</returns>
-    public static (string? name, CATEGORY category) GetBushAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false)
-    {
-        Bush? bush = (Bush)currentLocation.getLargeTerrainFeatureAt(x, y);
-
-        if (bush is null || (lessInfo && ((int)bush.Tile.X != x || (int)bush.Tile.Y != y)))
-            return (null, null);
-
-        return (TerrainUtils.GetBushInfoString(bush), (!bush.townBush.Value && bush.tileSheetOffset.Value == 1 && bush.inBloom()) ? CATEGORY.Ready : CATEGORY.Bush);
     }
 
     /// <summary>
