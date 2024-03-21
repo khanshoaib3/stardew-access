@@ -14,10 +14,14 @@ internal class IClickableMenuPatch : IPatch
 {
     private static readonly HashSet<Type> SkipMenuTypes =
     [
+        typeof(AdvancedGameOptions),
         typeof(AnimalQueryMenu),
         typeof(Billboard),
         typeof(CarpenterMenu),
+        typeof(CharacterCustomization),
         typeof(ConfirmationDialog),
+        typeof(CoopMenu),
+        typeof(FarmhandMenu),
         typeof(FieldOfficeMenu),
         typeof(ForgeMenu),
         typeof(GeodeMenu),
@@ -27,15 +31,16 @@ internal class IClickableMenuPatch : IPatch
         typeof(JunimoNoteMenu),
         typeof(LetterViewerMenu),
         typeof(MuseumMenu),
+        typeof(NumberSelectionMenu),
         typeof(PondQueryMenu),
         typeof(PurchaseAnimalsMenu),
+        typeof(QuestContainerMenu),
         typeof(QuestLog),
         typeof(ReadyCheckDialog),
         typeof(ShopMenu),
-        typeof(TailoringMenu),
         typeof(SpecialOrdersBoard),
-        typeof(NumberSelectionMenu),
-        typeof(QuestContainerMenu)
+        typeof(TailoringMenu),
+        typeof(TitleMenu)
     ];
 
     private static readonly HashSet<Type> SkipGameMenuPageTypes =
