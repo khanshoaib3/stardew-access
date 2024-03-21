@@ -239,8 +239,9 @@ public static class TerrainUtils
             case Tree tree:
                 return (GetTreeInfoString(tree), CATEGORY.Trees);
             default:
-                Log.Warn($"Unknown terrain feature type: {terrainFeature.GetType().Name}", true);
-                return (null, null);
+                string name = terrainFeature.GetType().Name;
+                Log.Warn($"Unknown terrain feature type: {name}", true);
+                return (name, CATEGORY.Unknown);
         }
     }
 
@@ -254,8 +255,9 @@ public static class TerrainUtils
                 return (GetBushInfoString(bush), (!bush.townBush.Value && bush.tileSheetOffset.Value == 1 && bush.inBloom()) ? CATEGORY.Ready : CATEGORY.Bushes);
             // Add more cases for other types of LargeTerrainFeature here
             default:
-                Log.Warn($"Unknown LargeTerrainFeature type: {largeTerrainFeature.GetType().Name}", true);
-                return (null, null);
+                string name = largeTerrainFeature.GetType().Name;
+                Log.Warn($"Unknown LargeTerrainFeature type: {name}", true);
+                return (name, CATEGORY.Unknown);
         }
     }
 }
