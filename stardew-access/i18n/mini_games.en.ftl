@@ -1,4 +1,4 @@
-grandpastory-scene0 = Grandpa, on his deathbedey
+grandpastory-scene0 = Grandpa, on his deathbed
 grandpastory-scene4 = Employees working in Joja corp.
 grandpastory-scene5 = Employees in their cubicles, some of them look exhausted including yourself.
 grandpastory-scene6 = You reach your desk finding grandpa's letter.
