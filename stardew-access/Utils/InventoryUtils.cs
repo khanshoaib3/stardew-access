@@ -230,6 +230,7 @@ internal static class InventoryUtils
         string[] buffIconsToDisplay;
         if (buffs != null && buffs.Any())
         {
+            // TODO: investigate using non-legacy format???
             buffIconsToDisplay = buffs.SelectMany(buff => 
                 new BuffEffects(buff.CustomAttributes).ToLegacyAttributeFormat()).ToArray();
         }
@@ -241,7 +242,12 @@ internal static class InventoryUtils
         string toReturn = "";
         for (int j = 0; j < buffIconsToDisplay.Length; j++)
         {
-            string buffName = ((Convert.ToInt32(buffIconsToDisplay[j]) > 0) ? "+" : "") + buffIconsToDisplay[j] + " ";
+            if (!int.TryParse(buffIconsToDisplay[j], out int buffValue))
+            {
+                buffValue = 0;
+            }
+            string buffName = ((buffValue > 0) ? "+" : "") + buffIconsToDisplay[j] + " ";
+
             if (j <= 11)
             {
                 buffName = Game1.content.LoadString("strings\\UI:ItemHover_Buff" + j, buffName);
