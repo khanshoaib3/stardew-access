@@ -237,6 +237,18 @@ public class TileInfo
             return (resourceClump, CATEGORY.ResourceClumps);
         }
 
+        LargeTerrainFeature? ltf = currentLocation.getLargeTerrainFeatureAt(x, y);
+        (string? name, CATEGORY? category) ltfInfo = (TerrainUtils.GetTerrainFeatureInfoAndCategory(ltf, lessInfo));
+        if (ltfInfo.name != null)
+        {
+            if (ltf is Tent tent && (int)tent.Tile.X == x && (int)tent.Tile.Y == y)
+            {    
+                ltfInfo.name = Translator.Instance.Translate("terrain_util-tent_entrance");
+                ltfInfo.category = CATEGORY.Interactables;
+            }
+            return ltfInfo;
+        }
+
         if (terrainFeature.TryGetValue(tile, out var tf))
         {
             (string? name, CATEGORY? category) tfInfo = (TerrainUtils.GetTerrainFeatureInfoAndCategory(tf.Value, lessInfo));
@@ -244,13 +256,6 @@ public class TileInfo
             {
                 return tfInfo;
             }
-        }
-
-        LargeTerrainFeature? ltf = currentLocation.getLargeTerrainFeatureAt(x, y);
-        (string? name, CATEGORY? category) ltfInfo = (TerrainUtils.GetTerrainFeatureInfoAndCategory(ltf, lessInfo));
-        if (ltfInfo.name != null)
-        {
-            return ltfInfo;
         }
 
         string? junimoBundle = GetJunimoBundleAt(currentLocation, x, y);

@@ -253,6 +253,8 @@ public static class TerrainUtils
         {
             case Bush bush:
                 return (GetBushInfoString(bush), (!bush.townBush.Value && bush.tileSheetOffset.Value == 1 && bush.inBloom()) ? CATEGORY.Ready : CATEGORY.Bushes);
+            case Tent tent:
+                return (Translator.Instance.Translate("terrain_util-tent"), CATEGORY.Buildings);
             // Add more cases for other types of LargeTerrainFeature here
             default:
                 string name = largeTerrainFeature.GetType().Name;
