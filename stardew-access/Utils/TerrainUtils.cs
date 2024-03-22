@@ -151,9 +151,13 @@ public static class TerrainUtils
 
     public static string GetGrassInfoString(Grass grass)
     {
-        // in case we ever need to do more logic with grass; i.E. updates or grass mods
-        // for now just return translation key, as there seems to be no way to get "grass" in translated form from the game.
-        return "tile-grass-name";
+        // Must convert to int for fluent to recognize
+        var grass_type = (int)grass.grassType.Value;
+        object tokens = new
+        {
+            grass_type
+        };
+        return Translator.Instance.Translate("tile-grass-name", tokens);
     }
 
     public static (bool IsTownBush, bool IsHarvestable, int BushType, int Age, string ShakeOff) GetBushInfo(Bush bush)

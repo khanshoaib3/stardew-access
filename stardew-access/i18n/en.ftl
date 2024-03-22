@@ -113,7 +113,15 @@ tile-resource_clump-giant_pumpkin-name = Giant Pumpkin
 tile-water-name = Water
 tile-cooled_lava-name = Cooled Lava
 tile-lava-name = Lava
-tile-grass-name = Grass
+tile-grass-name = {$grass_type ->
+    *[1] Grass
+    [2] Cave Grass
+    [3] Frost Grass
+    [4] Lava Grass
+    [5] Cave Grass
+    [6] Cobweb
+    [7] Blue Grass
+  }
 tile-sprinkler-pressure_nozzle-prefix = Pressurized {$content}
 tile-sprinkler-enricher-prefix = Enriching {$content}
 tile-fence_gate-suffix = {$name} {$is_open ->
