@@ -50,6 +50,7 @@ internal class IClickableMenuPatch : IPatch
         typeof(ExitPage),
         typeof(InventoryPage),
         typeof(OptionsPage),
+        typeof(PowersTab),
         typeof(SkillsPage),
         typeof(SocialPage)
     ];
