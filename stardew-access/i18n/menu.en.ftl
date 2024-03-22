@@ -223,6 +223,20 @@ menu-skills_page-player_info = {$name}, {$title}{$golden_walnut_count ->
 menu-skills_page-skill_info = {$name} at level {$level},
   {$buffs}
 
+### Animal Page
+
+menu-animal_page-animal_info = {$name}, {$type}{$heart_count ->
+    [-1] {EMPTYSTRING()}
+    [1] , 1 heart
+    *[other] , {$heart_count} hearts
+  }{$has_been_pet ->
+    [0] , not pet yet
+    *[other] {EMPTYSTRING()}
+  }{$has_received_animal_cracker ->
+    [0] {EMPTYSTRING()}
+    *[other], eaten animal cracker
+  }
+
 ## Menus With Inventory
 
 ### Forge Menu
@@ -321,10 +335,13 @@ menu-animal_query-animal_info =
   }, {$age ->
     [1] 1 month
     *[other] {$age} months
-  } old, {$parent_name ->
+  } old{$parent_name ->
     [null] {EMPTYSTRING()}
-    *[other] Parent: {$parent_name}.
-  }, {$mood}
+    *[other] , Parent: {$parent_name}.
+  }, {$mood}{$has_received_animal_cracker ->
+    [0] {EMPTYSTRING()}
+    *[other], eaten animal cracker
+  }
 menu-animal_query-confirm_selling_button = Confirm selling animal button
 menu-animal_query-cancel_selling_button = Cancel selling animal button
 menu-animal_query-selling_button = Sell for {$price}g button

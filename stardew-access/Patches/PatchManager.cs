@@ -15,6 +15,7 @@ internal class PatchManager
             new FieldOfficeMenuPatch(),
             new MuseumMenuPatch(),
             // Game Menu Patches
+            new AnimalPagePatch(),
             new CollectionsPagePatch(),
             new CraftingPagePatch(),
             new ExitPagePatch(),

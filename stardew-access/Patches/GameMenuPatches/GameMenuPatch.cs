@@ -28,10 +28,12 @@ internal class GameMenuPatch : IPatch
             {
                 if (!__instance.tabs[i].containsPoint(x, y))
                     continue;
+                string name = GameMenu.getLabelOfTabFromIndex(i);
+                if (string.IsNullOrWhiteSpace(name)) name = Game1.content.LoadString("Strings\\1_6_Strings:GameMenu_Animals");
 
                 MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-game_menu-tab_names", true, new
                 {
-                    tab_name = GameMenu.getLabelOfTabFromIndex(i),
+                    tab_name = name,
                     is_active = (i == __instance.currentTab) ? 1 : 0
                 });
                 return;

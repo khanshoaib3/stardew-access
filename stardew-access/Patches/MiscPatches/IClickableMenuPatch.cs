@@ -45,6 +45,7 @@ internal class IClickableMenuPatch : IPatch
 
     private static readonly HashSet<Type> SkipGameMenuPageTypes =
     [
+        typeof(AnimalPage),
         typeof(CollectionsPage),
         typeof(CraftingPage),
         typeof(ExitPage),
