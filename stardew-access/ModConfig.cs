@@ -456,6 +456,11 @@ internal class ModConfig
     public Boolean DisableBushVerbosity { get; set; } = false;
 
     /// <summary>
+    /// If enabled, does not pluralize inventory with fluent
+    /// </summary>
+    public Boolean DisableInventoryFluentPluralization { get; set; } = false;
+
+    /// <summary>
     /// Sets speech rate for the Mac TTS.
     /// </summary>
     public Single MacSpeechRate { get; set; } = 220;
