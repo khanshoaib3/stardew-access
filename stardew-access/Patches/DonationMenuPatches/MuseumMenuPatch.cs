@@ -1,13 +1,12 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Locations;
 using StardewValley.Menus;
-using Object = StardewValley.Object;
+using StardewValley.TokenizableStrings;
 
 namespace stardew_access.Patches;
 
@@ -157,124 +156,50 @@ internal class MuseumMenuPatch : IPatch
         {
             #region Manually donates the hovered item (MuseumMenu->receiveLeftClick())
 
-            int tileX = x;
-            int tileY = y;
+            if (!__instance.Museum.isTileSuitableForMuseumPiece(x, y) || !__instance.Museum.isItemSuitableForDonation(__instance.inventory.actualInventory[i]))
+                continue;
 
-            ((LibraryMuseum)Game1.currentLocation).museumPieces.Add(new Vector2(tileX, tileY),
-                ((Object)__instance.inventory.actualInventory[i]).ItemId);
-            if (((LibraryMuseum)Game1.currentLocation).isTileSuitableForMuseumPiece(tileX, tileY) &&
-                ((LibraryMuseum)Game1.currentLocation).isItemSuitableForDonation(__instance.inventory
-                    .actualInventory[i]))
+            string qualifiedItemId = __instance.inventory.actualInventory[i].QualifiedItemId;
+            int count = __instance.Museum.getRewardsForPlayer(Game1.player).Count;
+            __instance.Museum.museumPieces.Add(new Vector2(x, y), __instance.inventory.actualInventory[i].ItemId);
+            Game1.playSound("stoneStep");
+            if (__instance.Museum.getRewardsForPlayer(Game1.player).Count > count && !___holdingMuseumPiece)
             {
-                string qualifiedItemId = __instance.inventory.actualInventory[i].QualifiedItemId;
-                int rewardsCount = ((LibraryMuseum)Game1.currentLocation).getRewardsForPlayer(Game1.player).Count; ((LibraryMuseum)Game1.currentLocation).museumPieces.Add(new Vector2(tileX, tileY), ((Object)__instance.inventory.actualInventory[i]).ItemId);
-                Game1.playSound("stoneStep");
-                if (((LibraryMuseum)Game1.currentLocation).getRewardsForPlayer(Game1.player).Count > rewardsCount && !___holdingMuseumPiece)
+                __instance.sparkleText = new SparklingText(Game1.dialogueFont, Game1.content.LoadString("Strings\\StringsFromCSFiles:NewReward"), Color.MediumSpringGreen, Color.White);
+                Game1.playSound("reward");
+                __instance.globalLocationOfSparklingArtifact = new Vector2((float)(x * 64 + 32) - __instance.sparkleText.textWidth / 2f, y * 64 - 48);
+            }
+            else
+            {
+                Game1.playSound("newArtifact");
+            }
+            Game1.player.completeQuest("24");
+            __instance.inventory.actualInventory[i].Stack--;
+            if (__instance.inventory.actualInventory[i].Stack <= 0)
+            {
+                __instance.inventory.actualInventory[i] = null;
+            }
+            int length = __instance.Museum.museumPieces.Length;
+            if (!___holdingMuseumPiece)
+            {
+                Game1.stats.checkForArchaeologyAchievements();
+                if (length == LibraryMuseum.totalArtifacts)
                 {
-                    __instance.sparkleText = new SparklingText(Game1.dialogueFont, Game1.content.LoadString("Strings\\StringsFromCSFiles:NewReward"), Color.MediumSpringGreen, Color.White);
-                    Game1.playSound("reward");
-                    __instance.globalLocationOfSparklingArtifact = new Vector2( tileX * 64 + 32 - __instance.sparkleText.textWidth / 2f, tileY * 64 - 48);
+                    Game1.Multiplayer.globalChatInfoMessage("MuseumComplete", Game1.player.farmName.Value);
+                }
+                else if (length == 40)
+                {
+                    Game1.Multiplayer.globalChatInfoMessage("Museum40", Game1.player.farmName.Value);
                 }
                 else
                 {
-                    Game1.playSound("newArtifact");
+                    Game1.Multiplayer.globalChatInfoMessage("donation", Game1.player.Name, TokenStringBuilder.ItemName(qualifiedItemId));
                 }
-
-                Game1.player.completeQuest("24");
-                --__instance.inventory.actualInventory[i].Stack;
-                if (__instance.inventory.actualInventory[i].Stack <= 0)
-                {
-                    __instance.inventory.actualInventory[i] = null;
-                }
-
-                int pieces = ((LibraryMuseum)Game1.currentLocation).museumPieces.Length;
-                if (!___holdingMuseumPiece)
-                {
-                    Game1.stats.checkForArchaeologyAchievements();
-                    if (pieces == LibraryMuseum.totalArtifacts)
-                        GlobalChatInfoMessage("MuseumComplete", Game1.player.farmName.Value);
-                    else if (pieces == 40)
-                        GlobalChatInfoMessage("Museum40", Game1.player.farmName.Value);
-                    else
-                        GlobalChatInfoMessage("donation", Game1.player.Name, "object:" + qualifiedItemId);
-                }
-
-                __instance.ReturnToDonatableItems();
-                break;
             }
-
-            #endregion
+            __instance.ReturnToDonatableItems();
+            break;
         }
-    }
-
-    #region These methods are taken from the game's source code, https://github.com/veywrn/StardewValley/blob/3ff171b6e9e6839555d7881a391b624ccd820a83/StardewValley/Multiplayer.cs#L1331-L1395
-
-    private static void GlobalChatInfoMessage(string messageKey, params string[] args)
-    {
-        if (!Game1.IsMultiplayer && Game1.multiplayerMode == 0)
-            return;
-        ReceiveChatInfoMessage(Game1.player, messageKey, args);
-        SendChatInfoMessage(messageKey, args);
-    }
-
-    private static void SendChatInfoMessage(string messageKey, params string[] args)
-    {
-        if (Game1.IsClient)
-        {
-            Game1.client.sendMessage(15, messageKey, args);
-        }
-        else
-        {
-            if (!Game1.IsServer) return;
-            foreach (long key in Game1.otherFarmers.Keys)
-                Game1.server.sendMessage(key, 15, Game1.player, messageKey, args);
-        }
-    }
-
-    private static void ReceiveChatInfoMessage(Farmer sourceFarmer, string messageKey, string[] args)
-    {
-        if (Game1.chatBox == null) return;
-        try
-        {
-            string[] array = args.Select((Func<string, string>)(arg =>
-            {
-                if (arg.StartsWith("achievement:"))
-                {
-                    int int32 = Convert.ToInt32(arg.Substring("achievement:".Length));
-                    return DataLoader.Achievements(Game1.content)[int32].Split('^')[0];
-                }
-
-                return arg.StartsWith("object:")
-                    ? ItemRegistry.Create(arg.Substring("object:".Length)).DisplayName
-                    : arg;
-            })).ToArray();
-            Game1.chatBox.addInfoMessage(
-                Game1.content.LoadString("Strings\\UI:Chat_" + messageKey, array));
-        }
-        #if DEBUG
-        catch (ContentLoadException ex)
-        {
-            Log.Debug($"ContentLoadException in ReceiveChatInfoMessage: {ex.Message}");
-        }
-        catch (FormatException ex)
-        {
-            Log.Debug($"FormatException in ReceiveChatInfoMessage: {ex.Message}");
-        }
-        catch (OverflowException ex)
-        {
-            Log.Debug($"OverflowException in ReceiveChatInfoMessage: {ex.Message}");
-        }
-        catch (KeyNotFoundException ex)
-        {
-            Log.Debug($"KeyNotFoundException in ReceiveChatInfoMessage: {ex.Message}");
-        }
-        #else
-        catch (ContentLoadException) { }
-        catch (FormatException) { }
-        catch (OverflowException) { }
-        catch (KeyNotFoundException) { }
-        #endif
-    }
 
         #endregion
     }
+}

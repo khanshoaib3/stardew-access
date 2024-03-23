@@ -826,9 +826,8 @@ public class DynamicTiles
     {
         if (libraryMuseum.museumPieces.TryGetValue(new Vector2(x, y), out string museumPiece))
         {
-            string displayName = Game1.objectData[museumPiece].DisplayName;
+            string displayName = TokenParser.ParseText(Game1.objectData[museumPiece].DisplayName);
             return (Translator.Instance.Translate("tile-museum_piece_showcase-suffix", new { content = displayName }), CATEGORY.Interactables);
-
         }
 
         int booksFound = Game1.netWorldState.Value.LostBooksFound;
