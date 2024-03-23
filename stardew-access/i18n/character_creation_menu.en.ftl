@@ -118,6 +118,15 @@ menu-character_creation-description-dog = {$less_info ->
     *[1] Dog {$breed}
   }
 
+menu-character_creation-description-turtle = {$less_info ->
+    [0] {$breed ->
+      [1] Green Turtle
+      [2] Purple Turtle
+      *[other] Undescribed turtle {$breed}
+    }
+    *[1] Turtle {$breed}
+  }
+
 menu-character_creation-description-skin = {$less_info ->
     [0] {$index ->
       [1] Pale, beige undertone

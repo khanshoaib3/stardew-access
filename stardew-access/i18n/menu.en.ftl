@@ -299,6 +299,7 @@ menu-item_grab-chest_colors =
 
 menu-shop-buy_price_info = Buy price: {$price}g
 menu-shop-recipe_ingredients_info = Ingredients: {$ingredients_list}
+menu-shop-pet_license-suffix = {$content} license
 
 ### Tailoring Menu
 

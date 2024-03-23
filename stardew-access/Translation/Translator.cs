@@ -105,7 +105,7 @@ namespace stardew_access.Translation
 
             if (!disableWarning)
             {
-                Log.Debug($"No translation available for key: {key}", true);
+                Log.Debug($"No translation available for key in {translationCategory} category: {key}", true);
             }
 
             // Unmodified; will still have brackets suffix 
@@ -160,7 +160,7 @@ namespace stardew_access.Translation
 
             if (!disableWarning)
             {
-                Log.Debug($"No translation available for key: {key}", true);
+                Log.Debug($"No translation available for key in {translationCategory} category: {key}", true);
             }
 
             // Unmodified; will still have brackets suffix 

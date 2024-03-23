@@ -86,11 +86,29 @@ internal class ShopMenuPatch : IPatch
         if (__instance.hoveredItem == null) return;
 
         string name = __instance.hoveredItem.DisplayName;
-        string price =  __instance.hoverPrice <= 0 ? ""
+        string price = __instance.hoverPrice <= 0 ? ""
             : Translator.Instance.Translate("menu-shop-buy_price_info", new { price = __instance.hoverPrice }, TranslationCategory.Menu);
         string description = __instance.hoveredItem.IsRecipe
             ? new CraftingRecipe(__instance.hoveredItem.Name.Replace(" Recipe", "")).description
             : __instance.hoveredItem.getDescription();
+
+        if (__instance.ShopId is Game1.shop_petAdoption)
+        {
+            string petType = __instance.hoveredItem.Name.Split("_")[0].ToLower();
+            int breed = int.Parse(__instance.hoveredItem.Name.Split("_")[1]);
+            breed++;
+
+            name = Translator.Instance.Translate($"menu-character_creation-description-{petType}", translationCategory: TranslationCategory.CharacterCreationMenu, tokens: new
+            {
+                breed = breed,
+                less_info = 0
+            });
+
+            name = Translator.Instance.Translate($"menu-shop-pet_license-suffix", translationCategory: TranslationCategory.CharacterCreationMenu, tokens: new
+            {
+                content = name
+            });
+        }
 
         string itemId = __instance.itemPriceAndStock[__instance.hoveredItem].TradeItem;
         int? itemCount = __instance.itemPriceAndStock[__instance.hoveredItem].TradeItemCount;
@@ -102,10 +120,10 @@ internal class ShopMenuPatch : IPatch
         string ingredients = !__instance.hoveredItem.IsRecipe ? ""
             : InventoryUtils.GetIngredientsFromRecipe(new CraftingRecipe(__instance.hoveredItem.Name.Replace(" Recipe", "")));
         ingredients = string.IsNullOrWhiteSpace(ingredients) ? ""
-            : Translator.Instance.Translate("menu-shop-recipe_ingredients_info", translationCategory: TranslationCategory.Menu, tokens: new {ingredients_list = ingredients});
+            : Translator.Instance.Translate("menu-shop-recipe_ingredients_info", translationCategory: TranslationCategory.Menu, tokens: new { ingredients_list = ingredients });
 
         string toSpeak = string.Join(", ",
-            new string[] { name, requirements, price, description, healthAndStamina, buffs, ingredients}.Where(c => !string.IsNullOrEmpty(c)));
+            new string[] { name, requirements, price, description, healthAndStamina, buffs, ingredients }.Where(c => !string.IsNullOrEmpty(c)));
 
         MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
     }

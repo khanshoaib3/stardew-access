@@ -1,5 +1,6 @@
 using stardew_access.Translation;
 using StardewModdingAPI;
+using StardewValley;
 
 namespace stardew_access.Commands;
 
@@ -55,7 +56,7 @@ public class OtherCommands : ICustomCommand
         _modHelper!.WriteConfig(MainClass.Config);
 
         Log.Info(Translator.Instance.Translate("commands-other-hns_percentage_toggle",
-            new {is_enabled = MainClass.Config.HealthNStaminaInPercentage ? 1 : 0 },
+            new { is_enabled = MainClass.Config.HealthNStaminaInPercentage ? 1 : 0 },
             translationCategory: TranslationCategory.CustomCommands));
     }
 
@@ -65,7 +66,7 @@ public class OtherCommands : ICustomCommand
         _modHelper!.WriteConfig(MainClass.Config);
 
         Log.Info(Translator.Instance.Translate("commands-other-snap_mouse_toggle",
-            new {is_enabled = MainClass.Config.SnapMouse ? 1 : 0 },
+            new { is_enabled = MainClass.Config.SnapMouse ? 1 : 0 },
             translationCategory: TranslationCategory.CustomCommands));
     }
 
@@ -75,7 +76,7 @@ public class OtherCommands : ICustomCommand
         _modHelper!.WriteConfig(MainClass.Config);
 
         Log.Info(Translator.Instance.Translate("commands-other-warnings_toggle",
-            new {is_enabled = MainClass.Config.Warning ? 1 : 0 },
+            new { is_enabled = MainClass.Config.Warning ? 1 : 0 },
             translationCategory: TranslationCategory.CustomCommands));
     }
 
@@ -85,7 +86,7 @@ public class OtherCommands : ICustomCommand
         _modHelper!.WriteConfig(MainClass.Config);
 
         Log.Info(Translator.Instance.Translate("commands-other-tts_toggle",
-            new {is_enabled = MainClass.Config.TTS ? 1 : 0 },
+            new { is_enabled = MainClass.Config.TTS ? 1 : 0 },
             translationCategory: TranslationCategory.CustomCommands));
     }
 }
