@@ -3,7 +3,6 @@ using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
-using StardewValley.TokenizableStrings;
 
 namespace stardew_access.Patches;
 
@@ -22,12 +21,16 @@ internal class CarpenterMenuPatch : IPatch
         );
     }
 
-    internal static void DrawPatch( CarpenterMenu __instance, List<Item> ___ingredients)
+    internal static void DrawPatch(CarpenterMenu __instance, List<Item> ___ingredients)
     {
         try
         {
+            if (__instance.GetChildMenu() is BuildingSkinMenu) return;
+
             isOnFarm = __instance.onFarm;
             carpenterMenu = __instance;
+            int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+
             if (!__instance.onFarm)
             {
                 isUpgrading = false;
@@ -39,7 +42,6 @@ internal class CarpenterMenuPatch : IPatch
                 CarpenterMenu.BlueprintEntry currentBlueprint = __instance.Blueprint;
                 if (currentBlueprint == null) return;
 
-                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
                 string blueprintInfo = GetCurrentBlueprintInfo(currentBlueprint, ___ingredients);
 
@@ -87,12 +89,13 @@ internal class CarpenterMenuPatch : IPatch
         string translationKey = "menu-carpenter-blueprint_info";
         object? translationTokens = new
         {
-            name = TokenParser.ParseText(currentBlueprint.Data.Name),
-            price = currentBlueprint.Data.BuildCost,
+            name = currentBlueprint.DisplayName,
+            price = currentBlueprint.BuildCost,
             ingredients_list = ingredients,
             width = currentBlueprint.TilesWide,
             height = currentBlueprint.TilesHigh,
-            description = TokenParser.ParseText(currentBlueprint.Data.Description),
+            description = currentBlueprint.Description,
+            days = currentBlueprint.BuildDays,
         };
 
         return Translator.Instance.Translate(translationKey, translationTokens, TranslationCategory.Menu);
@@ -140,6 +143,10 @@ internal class CarpenterMenuPatch : IPatch
         else if (__instance.cancelButton != null && __instance.cancelButton.containsPoint(x, y))
         {
             translationKey = "common-ui-cancel_button";
+        }
+        else if (__instance.appearanceButton is { visible: true } && __instance.appearanceButton.containsPoint(x, y))
+        {
+            translationKey = "menu-carpenter-appearance_button";
         }
         else
         {

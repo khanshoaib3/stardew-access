@@ -47,6 +47,7 @@ internal class PatchManager
             new TrashBearPatch(),
             // Other Menu Patches
             new AnimalQueryMenuPatch(),
+            new BuildingSkinMenuPatch(),
             new CarpenterMenuPatch(),
             new ChooseFromListMenuPatch(),
             new ConfirmationDialogMenuPatch(),

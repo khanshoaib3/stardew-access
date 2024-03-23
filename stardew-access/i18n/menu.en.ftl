@@ -353,13 +353,45 @@ menu-animal_query-allow_reproduction_button =
     *[1] Enabled
   } allow pregnancy button
 
+### Building Skin Menu
+
+# Cabin skins: [0 = default] [1 = plank] [2 = log] [3 = neighbour] [4 = rustic] [5 = beach] [6 = trailer]
+# Pet bowl skins: [0 = default] [1 = stone] [2 = hay]
+
+menu-building_skin-skin_info = {$type ->
+    [cabin] {$index ->
+        [0] Default Cabin
+        [1] {$id}
+        [2] {$id}
+        [3] {$id}
+        [4] {$id}
+        [5] {$id}
+        [6] {$id}
+        *[other] Uknown Cabin Skin, id:{$id}, index:{$index}
+      }
+    [pet_bowl] {$index ->
+        [0] Default Pet Bowl
+        [1] {$id}
+        [2] {$id}
+        *[other] Uknown Pet Bowl Skin, id:{$id}, index:{$index}
+      }
+    *[other] {$index}: {$id}
+  }
+menu-building_skin-next_skin_button = Next Skin
+menu-building_skin-previous_skin_button = Previous Skin
+
 ### Carpenter Menu
 
-menu-carpenter-blueprint_info = {$name}, Price: {$price}g, Ingredients: {$ingredients_list}, Dimensions: {$width} width and {$height} height, Description: {$description}
+menu-carpenter-blueprint_info = {$name}, Price: {$price}g, Ingredients: {$ingredients_list}, {$days ->
+    [0] builds instantly
+    [1] 1 day to build
+    *[other] {$days} days to build
+  }, Dimensions: {$width} width and {$height} height, Description: {$description}
 menu-carpenter-previous_blueprint_button = Previous blueprint
 menu-carpenter-next_blueprint_button = Next blueprint
 menu-carpenter-move_building_button = Move building
 menu-carpenter-paint_building_button = Paint building
+menu-carpenter-appearance_button = Change Appearance
 menu-carpenter-demolish_building_button = Demolish building{$can_demolish ->
     [0] , cannot demolish building
     *[1] {EMPTYSTRING()}
