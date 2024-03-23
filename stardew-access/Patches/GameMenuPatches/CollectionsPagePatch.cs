@@ -85,9 +85,15 @@ internal class CollectionsPagePatch : IPatch
                                 else
                                 {
                                     string unachieved = Translator.Instance.Translate("menu-collections_page-unachieved", TranslationCategory.Menu);
-                                    int index = int.Parse(nameParts[0]);
-                                    string achievement = Game1.achievements[index].Split('^')[0];
-                                    toSpeak = $"{achievement} ({unachieved})";
+                                    if (nameParts[0] != "???")
+                                    {
+                                        int index = int.Parse(nameParts[0]);
+                                        toSpeak = $"{Game1.achievements[index].Split('^')[0]}, ({unachieved})\n{Game1.achievements[index].Split('^')[1]}";
+                                    }
+                                    else
+                                    {
+                                        toSpeak = Translator.Instance.Translate("common-unknown");
+                                    }
                                 }
                                 break;
                             case 6: // secret notes
