@@ -607,7 +607,7 @@ public class TileInfo
                 {
                     // Log the missing translation key and some info about the clump
                     Log.Warn($"Missing translation key for resource clump with parentSheetIndex {resourceClump.parentSheetIndex.Value}.", true);
-                    return "common-unknown";
+                    return Translator.Instance.Translate("tile-resource_clump-unknown", new { id=resourceClump.parentSheetIndex.Value });
                 }
             }
         }

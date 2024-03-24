@@ -7,7 +7,7 @@
     "Clay stone": [818],
     "Fossil stone": [816, 817]
   },
-  "mine_item": {
+  "mine_items": {
     "Barrel": [118, 120, 122, 124],
     "Item box": [119, 121, 123, 125],
     "Frozen geode": [76],

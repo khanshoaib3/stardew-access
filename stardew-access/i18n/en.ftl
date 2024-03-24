@@ -111,6 +111,7 @@ tile-resource_clump-mine_rock-name = Mine Rock
 tile-resource_clump-giant_cauliflower-name = Giant Cauliflower
 tile-resource_clump-giant_melon-name = Giant Melon
 tile-resource_clump-giant_pumpkin-name = Giant Pumpkin
+tile-resource_clump-unknown = Unknown Resource Clump {$id}
 tile-water-name = Water
 tile-cooled_lava-name = Cooled Lava
 tile-lava-name = Lava
