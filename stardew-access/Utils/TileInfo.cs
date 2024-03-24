@@ -7,6 +7,7 @@ using StardewValley.Characters;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using StardewValley.TokenizableStrings;
 
 namespace stardew_access.Utils;
 
@@ -273,16 +274,19 @@ public class TileInfo
                 {
                     int xPos = ((int)item.Chunks[0].position.Value.X / Game1.tileSize) + 1;
                     int yPos = ((int)item.Chunks[0].position.Value.Y / Game1.tileSize) + 1;
-                    if (xPos != x || yPos != y || item.item == null) continue;
+                    if (xPos != x || yPos != y) continue;
 
-                    string name = item.item.DisplayName;
-                    int count = item.item.Stack;
+                    string name = item.item is null || string.IsNullOrWhiteSpace(item.item.DisplayName)
+                        ? TokenParser.ParseText(ObjectUtils.GetObjectById(item.itemId.Value)?.DisplayName) ?? ""
+                        : item.item.DisplayName;
+                    int count = item.item is null ? item.Chunks.Count : item.item.Stack;
+
                     return (Translator.Instance.Translate("item-dropped_item-info", new { item_count = count, item_name = name}), CATEGORY.DroppedItems);
                 }
             }
             catch (Exception e)
             {
-                Log.Error($"An error occurred while detecting dropped items:\n{e.Message}");
+                Log.Error($"An error occurred while detecting dropped items:\n{e.StackTrace}");
             }
         }
 

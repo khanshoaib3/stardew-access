@@ -6,20 +6,21 @@ using stardew_access.Tiles;
 using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
+using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
 
 namespace stardew_access.Features;
 
-public class TileInfoMenu: DialogueBox
-{ 
+public class TileInfoMenu : DialogueBox
+{
     private const string MarkTileI18NKey = "menu-tile_info-mark_tile";
     private static readonly Response MarkTileResponse = new(MarkTileI18NKey,
         Translator.Instance.Translate(MarkTileI18NKey, TranslationCategory.Menu));
-    
+
     private const string AddToUserTilesI18NKey = "menu-tile_info-add_to_user_tiles_data";
     private static readonly Response AddToUserTilesResponse = new(AddToUserTilesI18NKey,
         Translator.Instance.Translate(AddToUserTilesI18NKey, TranslationCategory.Menu));
-    
+
     private const string SpeakDetailedInfoI18NKey = "menu-tile_info-detailed_tile_info";
     private static readonly Response SpeakDetailedInfoResponse = new(SpeakDetailedInfoI18NKey,
         Translator.Instance.Translate(SpeakDetailedInfoI18NKey, TranslationCategory.Menu));
@@ -62,58 +63,70 @@ public class TileInfoMenu: DialogueBox
         switch (responses[selectedResponse].responseKey)
         {
             case MarkTileI18NKey:
-            {
-                HandleTileMarkingOption();
-                break;
-            }
-            case AddToUserTilesI18NKey:
-            {
-                if (UserTilesUtils.TryAndGetTileDataAt(out AccessibleTile.JsonSerializerFormat? tileData, _tileX, _tileY))
                 {
-                    _tempDefaultData = tileData;
-                    responses = new Response[]
-                    {
-                        EditExistingResponse, DeleteExistingResponse
-                    };
-                    selectedResponse = 0;
-                    dialogues =
-                    [
-                        DataAlreadyExistMessage
-                    ];
-                    DialogueBoxPatch.Cleanup();
+                    HandleTileMarkingOption();
                     break;
                 }
-                SetChildMenu(new TileDataEntryMenu(_tileX, _tileY));
-                break;
-            }
+            case AddToUserTilesI18NKey:
+                {
+                    if (UserTilesUtils.TryAndGetTileDataAt(out AccessibleTile.JsonSerializerFormat? tileData, _tileX, _tileY))
+                    {
+                        _tempDefaultData = tileData;
+                        responses = new Response[]
+                        {
+                        EditExistingResponse, DeleteExistingResponse
+                        };
+                        selectedResponse = 0;
+                        dialogues =
+                        [
+                            DataAlreadyExistMessage
+                        ];
+                        responseCC = new List<ClickableComponent>();
+                        int num = y - (heightForQuestions - height) + SpriteText.getHeightOfString(getCurrentString(), width) + 48;
+                        for (int i = 0; i < responses.Length; i++)
+                        {
+                            responseCC.Add(new ClickableComponent(new Rectangle(x + 8, num, width - 8, SpriteText.getHeightOfString(responses[i].responseText, width) + 16), "")
+                            {
+                                myID = i,
+                                downNeighborID = ((i < responses.Length - 1) ? (i + 1) : (-1)),
+                                upNeighborID = ((i > 0) ? (i - 1) : (-1))
+                            });
+                            num += SpriteText.getHeightOfString(responses[i].responseText, width) + 16;
+                        }
+                        DialogueBoxPatch.Cleanup();
+                        break;
+                    }
+                    SetChildMenu(new TileDataEntryMenu(_tileX, _tileY));
+                    break;
+                }
             case SpeakDetailedInfoI18NKey:
-            {
-                MainClass.ScreenReader.Say(
-                    TileInfo.GetNameAtTileWithBlockedOrEmptyIndication(new Vector2(_tileX, _tileY)), true);
+                {
+                    MainClass.ScreenReader.Say(
+                        TileInfo.GetNameAtTileWithBlockedOrEmptyIndication(new Vector2(_tileX, _tileY)), true);
 
-                Log.Debug($"*******************************************");
-                Log.Debug($"Tile: {_tileX}x {_tileY}y");
-                Log.Debug($"Back: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "Back")}");
-                Log.Debug($"Buildings: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "Buildings")}");
-                Log.Debug($"Paths: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "Paths")}");
-                Log.Debug($"Front: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "Front")}");
-                Log.Debug($"AlwaysFront: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "AlwaysFront")}");
-                Log.Debug($"*******************************************");
+                    Log.Debug($"*******************************************");
+                    Log.Debug($"Tile: {_tileX}x {_tileY}y");
+                    Log.Debug($"Back: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "Back")}");
+                    Log.Debug($"Buildings: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "Buildings")}");
+                    Log.Debug($"Paths: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "Paths")}");
+                    Log.Debug($"Front: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "Front")}");
+                    Log.Debug($"AlwaysFront: {Game1.currentLocation?.getTileIndexAt(new Point(_tileX, _tileY), "AlwaysFront")}");
+                    Log.Debug($"*******************************************");
 
-                exitThisMenu();
-                break;
-            }
+                    exitThisMenu();
+                    break;
+                }
             case DeleteExistingI18NKey:
-            {
-                UserTilesUtils.RemoveTileDataAt(_tileX, _tileY, Game1.currentLocation.NameOrUniqueName);
-                MainClass.TileManager.Initialize();
-                break;
-            }
+                {
+                    UserTilesUtils.RemoveTileDataAt(_tileX, _tileY, Game1.currentLocation.NameOrUniqueName);
+                    MainClass.TileManager.Initialize();
+                    break;
+                }
             case EditExistingI18NKey:
-            {
-                SetChildMenu(new TileDataEntryMenu(_tileX, _tileY, _tempDefaultData));
-                break;
-            }
+                {
+                    SetChildMenu(new TileDataEntryMenu(_tileX, _tileY, _tempDefaultData));
+                    break;
+                }
         }
 
         base.receiveLeftClick(x, y);
@@ -142,10 +155,8 @@ public class TileInfoMenu: DialogueBox
         void OnNumberSelect(int i)
         {
             BuildingOperations.marked[i] = new Vector2(_tileX, _tileY);
-            MainClass.ScreenReader.TranslateAndSay("commands-tile_marking-mark-location_marked", true,
-                translationTokens: new
-                    { x_position = Game1.player.Tile.X, y_position = Game1.player.Tile.Y, index = i },
-                translationCategory: TranslationCategory.CustomCommands);
+            MainClass.ScreenReader.TranslateAndSay("commands-tile_marking-mark-location_marked", true, translationCategory: TranslationCategory.CustomCommands,
+                translationTokens: new { x_position = Game1.player.Tile.X, y_position = Game1.player.Tile.Y, index = i });
             exitThisMenu();
         }
     }
@@ -186,7 +197,7 @@ public class TileInfoMenu: DialogueBox
     {
         if (GetChildMenu() == null)
             base.receiveGamePadButton(b);
-        else 
+        else
             GetChildMenu().receiveGamePadButton(b);
     }
 

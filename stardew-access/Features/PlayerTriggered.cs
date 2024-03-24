@@ -34,7 +34,7 @@ public class PlayerTriggered : FeatureBase
         // Narrate Current Location
         if (MainClass.Config.LocationKey.JustPressed())
         {
-            MainClass.ScreenReader.Say(Game1.currentLocation.Name, true);
+            MainClass.ScreenReader.Say(Game1.currentLocation.GetParentLocation() is Farm  ? Game1.currentLocation.Name : Game1.currentLocation.DisplayName, true);
             return true;
         }
 

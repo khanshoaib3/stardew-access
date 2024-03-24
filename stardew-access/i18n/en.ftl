@@ -231,7 +231,9 @@ item-stamina_and_health_recovery_on_consumption = {SIGNOFNUMBER($stamina_amount)
   }
 item-required_item_info = Requires {$name}
 item-sell_price_info = Sell Price: {$price}g
+# In some cases we can't get the count of the dropped items and it is returned `0`
 item-dropped_item-info = Dropped Item: {$item_count ->
+    [0] {$item_name}
     [1] 1 {$item_name}
     *[other] {$item_count} {$item_name}s
   }

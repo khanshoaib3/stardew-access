@@ -5,8 +5,9 @@ namespace stardew_access.Utils;
 
 public static class ObjectUtils
 {
-    public static ObjectData? GetObjectById(string objectId)
+    public static ObjectData? GetObjectById(string? objectId)
     {
+        if (string.IsNullOrWhiteSpace(objectId)) return null;
         if (objectId.StartsWith("(BC)")) return null;
 
         if (objectId.StartsWith("(O)"))

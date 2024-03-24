@@ -83,7 +83,7 @@ namespace stardew_access.Patches
             string translationKey = "menu-load_game-farm_details";
             object translationTokens = new
             {
-                index = i + 1,
+                index = (TitleMenu.subMenu as LoadGameMenu)?.currentItemIndex + i + 1 ?? i + 1,
                 farm_name = __instance.Farmer.farmName.Value,
                 farmer_name = __instance.Farmer.isCustomized.Value
                                 ? __instance.Farmer.displayName
