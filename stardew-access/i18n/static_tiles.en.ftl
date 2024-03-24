@@ -226,6 +226,7 @@ static_tile-island_field_office-island_survey = Island Survey
 
 static_tile-island_north-dig_site_parrot_express = Dig Site Parrot Express
 static_tile-island_north-volcano_parrot_express = Volcano Parrot Express
+static_tile-island_north-volcano_entrance = Volcano Entrance
 
 ## Island Shrine
 
@@ -263,6 +264,13 @@ static_tile-island_west_cave_1-crystal_2 = Crystal 2
 static_tile-island_west_cave_1-crystal_3 = Crystal 3
 static_tile-island_west_cave_1-crystal_4 = Crystal 4
 static_tile-island_west_cave_1-crystal_5 = Crystal 5
+
+## Volcano
+
+static_tile-volcanodungeon0-island_north_entrance_east = Island North Entrance (east)
+static_tile-volcanodungeon0-island_north_entrance_west = Island North Entrance (west)
+static_tile-volcanodungeon5-dwarf_shop = Dwarf Shop
+
 
 # Joja Mart
 
@@ -393,6 +401,8 @@ static_tile-mermaid_house-clam_shell_5 = Clam Shell 5
 
 # Mine
 
+static_tile-mine-mountain_entrance_east = Mountain Entrance (East)
+static_tile-mine-mountain_entrance_west = Mountain Entrance (West)
 static_tile-mine-quarry_mine_ladder = Quarry Mine Ladder
 static_tile-mine-icy_pool = Icy Pool
 static_tile-mine-lava_pool = Lava Pool
@@ -401,6 +411,7 @@ static_tile-mine-lava_pool = Lava Pool
 
 static_tile-mountain-mine_bridge = Mine Bridge
 static_tile-mountain-quarry_bridge = Quarry Bridge
+static_tile-mountain-quarry_mine_entrance = Quarry Mine Entrance
 static_tile-mountain-bridge_1 = Bridge 1
 static_tile-mountain-bridge_2 = Bridge 2
 static_tile-mountain-mountain_warp_statue = Mountain Warp Statue
@@ -562,5 +573,4 @@ static_tile-wizard_house_basement-shrine_of_illusions = Shrine of Illusions
 
 static_tile-tunnel-safe = Safe
 static_tile-undergroundmine77377-grim_reaper_statue = Grim Reaper Statue
-static_tile-volcanodungeon5-dwarf_shop = Dwarf Shop
 static_tile-woods-old_master_cannoli = Old Master Cannoli

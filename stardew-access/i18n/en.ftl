@@ -92,6 +92,7 @@ building_operations-building_failed = Building failed
 prefix-repair = Repair {$content}
 
 suffix-building_door = {$content} Door
+suffix-map_entrance = {$content} Entrance
 suffix-mill_input = {$content} Input
 suffix-mill_output = {$content} Output
 

@@ -103,7 +103,7 @@ public static class DoorUtils
     /// </summary>
     /// <param name="location">The game location to fetch static doors from. Defaults to the current location if null.</param>
     /// <param name="lessInfo">Whether to provide less information in the output. Defaults to false.</param>
-    /// <param name="suffix">An optional suffix to append to the static door names. Defaults to the category of Doors.</param>
+    /// <param name="suffix">An optional suffix (fluent token) to append to the static door names. Defaults to the category of Doors.</param>
     /// <returns>A dictionary mapping coordinates to static door names.</returns>
     /// <remarks>
     /// This method fetches static doors based on a given category and location. It uses an internal
@@ -112,7 +112,6 @@ public static class DoorUtils
     public static Dictionary<(int x, int y), string> GetStaticDoors(GameLocation? location = null, bool lessInfo = false, string? suffix = null)
     {
         location ??= Game1.currentLocation;
-        suffix ??= CATEGORY.Doors.ToString();
         CheckAndInvalidateCache(location);
         if (staticDoorsCache != null) return staticDoorsCache;
 
@@ -123,6 +122,7 @@ public static class DoorUtils
         // Helper method to add tiles to the cache
         void AddTilesToCache(IEnumerable<AccessibleTile> tiles, string layer)
         {
+            string tileSuffix;
             foreach (var tile in tiles)
             {
                 foreach (var coordinate in tile.Coordinates)
@@ -130,7 +130,16 @@ public static class DoorUtils
                     var key = ((int)coordinate.X, (int)coordinate.Y);
                     if (staticDoorsCache != null &&!staticDoorsCache.ContainsKey(key))
                     {
-                        staticDoorsCache[key] = $"{Translator.Instance.Translate(tile.NameOrTranslationKey, TranslationCategory.StaticTiles)} {suffix}";
+                        string translatedDoorName = Translator.Instance.Translate(tile.NameOrTranslationKey, TranslationCategory.StaticTiles);
+                        tileSuffix = tile.Suffix ?? suffix ?? "suffix-building_door";
+                        if (tileSuffix != "")
+                        {
+                            if (Translator.Instance.IsAvailable(tileSuffix))
+                                translatedDoorName = Translator.Instance.Translate(tileSuffix, new { content = translatedDoorName });
+                            else
+                                translatedDoorName = $"{translatedDoorName} {tileSuffix}";
+                        }
+                        staticDoorsCache[key] = $"{translatedDoorName}";
                     }
                 }
             }
@@ -190,7 +199,7 @@ public static class DoorUtils
         static Dictionary<(int x, int y), string> LoadWarps(GameLocation location, bool lessInfo)
         {
             Dictionary<(int x, int y), string> warpDict = [];
-            var staticDoors = GetStaticDoors(location, lessInfo, Translator.Instance.Translate("tile-entrance"));
+            var staticDoors = GetStaticDoors(location, lessInfo, "suffix-map_entrance");
 
             foreach (Warp warp in location.warps)
             {
