@@ -97,7 +97,7 @@ internal class GameStateNarrator : FeatureBase
             previousLocation = currentLocation;
             MainClass.ScreenReader.Say(
                 Translator.Instance.Translate("feature-speak_location_name",
-                    new { location_name = currentLocation.GetParentLocation() is Farm  ? currentLocation.Name : currentLocation.DisplayName }),
+                    new { location_name = currentLocation.GetParentLocation() is Farm ? currentLocation.Name : currentLocation.DisplayName }),
                 true
             );
         }
@@ -114,23 +114,20 @@ internal class GameStateNarrator : FeatureBase
     {
         try
         {
-            if (Game1.hudMessages.Count > 0)
-            {
-                int lastIndex = Game1.hudMessages.Count - 1;
-                HUDMessage lastMessage = Game1.hudMessages[lastIndex];
-                if (!lastMessage.noIcon)
-                {
-                    string toSpeak = lastMessage.message;
-                    var searchQuery = (Regex.Replace(toSpeak, @"[\d+]", string.Empty)).Trim();
+            if (Game1.hudMessages.Count <= 0)
+                return;
 
-                    if (hudMessageQueryKey != searchQuery)
-                    {
-                        hudMessageQueryKey = searchQuery;
-                        MainClass.ScreenReader.Say(toSpeak, true);
-                        HudMessagesBuffer.Add(toSpeak);
-                        if (HudMessagesBuffer.Count > 9) HudMessagesBuffer.RemoveAt(0);
-                    }
-                }
+            int lastIndex = Game1.hudMessages.Count - 1;
+            HUDMessage lastMessage = Game1.hudMessages[lastIndex];
+            string toSpeak = lastMessage.message;
+            var searchQuery = (Regex.Replace(toSpeak, @"[\d+]", string.Empty)).Trim();
+
+            if (hudMessageQueryKey != searchQuery)
+            {
+                hudMessageQueryKey = searchQuery;
+                MainClass.ScreenReader.Say(toSpeak, true);
+                HudMessagesBuffer.Add(toSpeak);
+                if (HudMessagesBuffer.Count > 9) HudMessagesBuffer.RemoveAt(0);
             }
         }
         catch (Exception e)

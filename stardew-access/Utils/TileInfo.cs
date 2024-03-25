@@ -189,7 +189,7 @@ public class TileInfo
             {
                 npcName = npc.displayName;
             }
-            
+
             return (npcName, category);
         }
 
@@ -209,9 +209,9 @@ public class TileInfo
         staticTile ??= MainClass.TileManager.GetNameAndCategoryAt((x, y), "stardew-access", currentLocation);
         if (staticTile is { } static_tile)
         {
-            #if DEBUG
+#if DEBUG
             Log.Verbose($"TileInfo: Got static tile {static_tile} from TileManager");
-            #endif
+#endif
             return (static_tile.name, static_tile.category);
         }
 
@@ -243,7 +243,7 @@ public class TileInfo
         if (ltfInfo.name != null)
         {
             if (ltf is Tent tent && (int)tent.Tile.X == x && (int)tent.Tile.Y == y)
-            {    
+            {
                 ltfInfo.name = Translator.Instance.Translate("terrain_util-tent_entrance");
                 ltfInfo.category = CATEGORY.Interactables;
             }
@@ -281,7 +281,7 @@ public class TileInfo
                         : item.item.DisplayName;
                     int count = item.item is null ? item.Chunks.Count : item.item.Stack;
 
-                    return (Translator.Instance.Translate("item-dropped_item-info", new { item_count = count, item_name = name}), CATEGORY.DroppedItems);
+                    return (Translator.Instance.Translate("item-dropped_item-info", new { item_count = count, item_name = name }), CATEGORY.DroppedItems);
                 }
             }
             catch (Exception e)
@@ -444,6 +444,14 @@ public class TileInfo
             string displayColorAndName = GetChestColorAndName(chest);
             toReturn = (displayColorAndName, CATEGORY.Containers);
         }
+        else if (obj.ItemId == "TextSign")
+        {
+            if (!string.IsNullOrWhiteSpace(obj.signText.Value))
+            {
+                toReturn.name = $"{toReturn.name}: {obj.signText.Value}";
+            }
+            toReturn.category = CATEGORY.Interactables;
+        }
         else if (obj is IndoorPot indoorPot)
         {
             string potContent = indoorPot.bush.Value != null
@@ -498,7 +506,9 @@ public class TileInfo
                     {
                         toReturn.name = $"{obj.DisplayName}, {InventoryUtils.GetItemDetails(obj.heldObject.Value)}";
                         toReturn.category = (machineState == MachineState.Busy) ? CATEGORY.Machines : CATEGORY.Ready;
-                    } else {
+                    }
+                    else
+                    {
                         toReturn.name = obj.DisplayName;
                         toReturn.category = CATEGORY.Machines;
                     }
@@ -607,7 +617,7 @@ public class TileInfo
                 {
                     // Log the missing translation key and some info about the clump
                     Log.Warn($"Missing translation key for resource clump with parentSheetIndex {resourceClump.parentSheetIndex.Value}.", true);
-                    return Translator.Instance.Translate("tile-resource_clump-unknown", new { id=resourceClump.parentSheetIndex.Value });
+                    return Translator.Instance.Translate("tile-resource_clump-unknown", new { id = resourceClump.parentSheetIndex.Value });
                 }
             }
         }

@@ -40,6 +40,7 @@ internal class PatchManager
             new IClickableMenuPatch(),
             new InstanceGamePatch(),
             new NPCPatch(),
+            new PetBowlPatch(),
             new SoundsHelperPatch(),
             new TextBoxPatch(),
             new TextEntryMenuPatch(),
