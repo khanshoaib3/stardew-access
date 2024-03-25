@@ -428,6 +428,7 @@ public static class DoorUtils
         return doorIndexes;
     }
 
+    // TODO Get dynamically added doors as well
     /// <summary>
     /// Retrieves a comprehensive dictionary of all door-like objects in a specified game location.
     /// </summary>
