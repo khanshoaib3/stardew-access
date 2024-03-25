@@ -104,7 +104,7 @@ internal class ShopMenuPatch : IPatch
                 less_info = 0
             });
 
-            name = Translator.Instance.Translate($"menu-shop-pet_license-suffix", translationCategory: TranslationCategory.CharacterCreationMenu, tokens: new
+            name = Translator.Instance.Translate($"menu-shop-pet_license-suffix", translationCategory: TranslationCategory.Menu, tokens: new
             {
                 content = name
             });
