@@ -249,7 +249,7 @@ internal class GridMovement : FeatureBase
 		#if DEBUG
 		Log.Verbose($"GridMovement.HandleWarpInteraction: Handling Warp {warp} from location {location} at {tileLocation}");
 		#endif
-		if (TileInfo.GetDoorAtTile(location, (int)tileLocation.X, (int)tileLocation.Y, true, false) is not null
+		if (TileInfo.GetDoorAtTile(location, (int)tileLocation.X, (int)tileLocation.Y, true, true) is not null
 			|| DynamicTiles.GetDynamicTileAt(location, (int)tileLocation.X, (int)tileLocation.Y, lessInfo: true).category == CATEGORY.Doors)
 		{
 			// Manually check for door and pressActionButton() method instead of warping (warping also works when the door is locked, for example it warps to the Pierre's shop before it's opening time)
