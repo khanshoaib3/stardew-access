@@ -2916,7 +2916,7 @@
   ],
   "UndergroundMine60": [
     {
-      "NameOrTranslationKey": "static_tiles-mine-icy_pool", 
+      "NameOrTranslationKey": "static_tile-mine-icy_pool", 
       "X": [27],
       "Y": [13],
       "Category": "Fishing"
