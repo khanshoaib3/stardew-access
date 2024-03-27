@@ -61,6 +61,7 @@ internal class PatchManager
             new NamingMenuPatch(),
             new NumberSelectionMenuPatch(),
             new PondQueryMenuPatch(),
+            new PrizeTicketMenuPatch(),
             new PurchaseAnimalsMenuPatch(),
             new ShippingMenuPatch(),
             new TitleTextInputMenuPatch(),

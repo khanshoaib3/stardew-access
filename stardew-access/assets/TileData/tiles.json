@@ -1990,6 +1990,12 @@
       "X": [9],
       "Y": [4],
       "Category": "decor"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-manor_house-prize_ticket_machine",
+      "X": [1],
+      "Y": [5],
+      "Category": "interactables"
     }
   ],
   "MermaidHouse": [

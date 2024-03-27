@@ -33,6 +33,7 @@ internal class IClickableMenuPatch : IPatch
         typeof(MuseumMenu),
         typeof(NumberSelectionMenu),
         typeof(PondQueryMenu),
+        typeof(PrizeTicketMenu),
         typeof(PurchaseAnimalsMenu),
         typeof(QuestContainerMenu),
         typeof(QuestLog),

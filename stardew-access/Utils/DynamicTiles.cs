@@ -495,7 +495,8 @@ public class DynamicTiles
             return GetBuildingInfo(building, x, y, lessInfo);
         }
 
-        if (x == 8 && y == 7) // Speaks the Grandpa Evaluation score i.e., numbers of candles lit on the shrine after year 3
+        // Speaks the Grandpa Evaluation score i.e., numbers of candles lit on the shrine after year 3
+        if (farm.GetGrandpaShrinePosition().X == x && farm.GetGrandpaShrinePosition().Y == y)
         {
             return (Translator.Instance.Translate("dynamic_tile-farm-grandpa_shrine", new
             {

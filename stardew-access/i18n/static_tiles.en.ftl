@@ -390,6 +390,7 @@ static_tile-manor_house-lost_and_found_box = Lost and Found Box
 static_tile-manor_house-mayors_room_door = Mayor's Room
 static_tile-manor_house-mayors_oven = Mayor's Oven
 static_tile-manor_house-mayors_fridge = Mayor's Fridge
+static_tile-manor_house-prize_ticket_machine = Prize Ticket Machine
 
 # Mermaid House
 

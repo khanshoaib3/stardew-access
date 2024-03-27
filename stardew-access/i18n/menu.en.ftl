@@ -484,6 +484,14 @@ menu-pond_query-change_netting_button = Change netting button
 menu-pond_query-empty_pond_button = Empty pond button
 menu-pond_query-pond_info = {$pond_name}, {$population_info}, {$required_item_info}, Status: {$status}
 
+### Prize Ticket Menu
+
+menu-prize_ticket-collect_prize_button = Current prizes: {$prize_items}
+  You have {$prize_ticket_count ->
+    [1] 1 prize ticket
+    *[other] {$prize_ticket_count} prize tickets
+  }, collect prize button
+
 ### Purchase Animal Menu
 
 menu-purchase_animal-animal_info = {$name}, Price: {$price}g, Description: {$description}
