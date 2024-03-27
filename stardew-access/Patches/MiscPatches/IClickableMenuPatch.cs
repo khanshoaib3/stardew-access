@@ -39,6 +39,7 @@ internal class IClickableMenuPatch : IPatch
         typeof(ReadyCheckDialog),
         typeof(ShopMenu),
         typeof(SpecialOrdersBoard),
+        typeof(StorageContainer),
         typeof(TailoringMenu),
         typeof(TitleMenu)
     ];

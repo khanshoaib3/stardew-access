@@ -31,6 +31,7 @@ internal class PatchManager
             new ItemGrabMenuPatch(),
             new QuestContainerMenuPatch(),
             new ShopMenuPatch(),
+            new StorageContainerPatch(),
             new TailoringMenuPatch(),
             // Misc Patches
             new ChatBoxPatch(),

@@ -1,6 +1,5 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
-using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;

@@ -26,8 +26,8 @@ internal class SocialPagePatch : IPatch
                     continue;
                 SocialPage.SocialEntry entry = __instance.GetSocialEntry(i);
                 
-                string name = entry.Character.Name;
-                int has_talked = !entry.IsMet ? 2 : Game1.player.hasPlayerTalkedToNPC(name) ? 1 : 0;
+                string name = entry.Character.displayName;
+                int has_talked = !entry.IsMet ? 2 : Game1.player.hasPlayerTalkedToNPC(entry.Character.Name) ? 1 : 0;
                 string? relationship_status = GetRelationshipStatus(entry) ?? "";
                 int gifts_this_week = entry.Friendship?.GiftsThisWeek ?? 0;
                 int heart_level = entry.HeartLevel;
