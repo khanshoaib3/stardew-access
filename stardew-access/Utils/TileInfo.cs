@@ -475,6 +475,18 @@ public class TileInfo
                 toReturn.category = CATEGORY.Furniture;
             }
         }
+        else if (obj is Torch torch)
+        {
+            if (obj.QualifiedItemId == "(BC)146")
+            {
+                toReturn.name = Translator.Instance.Translate("static_tile-mountain-linus_campfire", TranslationCategory.StaticTiles);
+                toReturn.category = CATEGORY.Decor;
+            }
+            else if (obj.QualifiedItemId == "(BC)278")
+            {
+                toReturn.category = CATEGORY.Interactables;
+            }
+        }
         else if (obj.IsSprinkler() && obj.heldObject.Value != null) // Detect the upgrade attached to the sprinkler
         {
             string heldObjectName = obj.heldObject.Value.Name;

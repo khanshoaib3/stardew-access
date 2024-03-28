@@ -417,6 +417,7 @@ static_tile-mountain-bridge_1 = Bridge 1
 static_tile-mountain-bridge_2 = Bridge 2
 static_tile-mountain-mountain_warp_statue = Mountain Warp Statue
 static_tile-mountain-science_house_secondary_door = Science House Secondary
+static_tile-mountain-linus_campfire = Linus' Campfire
 
 # Movie Theater
 
