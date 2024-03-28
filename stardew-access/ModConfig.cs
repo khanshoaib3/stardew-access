@@ -74,9 +74,9 @@ internal class ModConfig
     public Boolean WateredToggle { get; set; } = true;
 
     /// <summary>
-    /// Toggle speaking tile indexes with other info.
+    /// Toggle speaking tile indexes and object ids with other info.
     /// </summary>
-    public Boolean ReadTileIndexes { get; set; } = false;
+    public Boolean ReadTileDebug { get; set; } = false;
 
     /// <summary>
     /// Toggle speaking hoed dirt (soil) in mine shafts.

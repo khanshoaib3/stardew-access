@@ -550,6 +550,22 @@ public class TileInfo
                 toReturn.name = Translator.Instance.Translate("tile-busy-prefix", new { content = toReturn.name });
         }
 
+        if (MainClass.Config.ReadTileDebug)
+        {
+            if (!string.IsNullOrEmpty(obj.QualifiedItemId))
+                toReturn.name = $"{toReturn.name} ({obj.QualifiedItemId})";
+            Log.Trace($"Owner is {obj.owner}", true);
+            Farmer farmerOwner = Game1.getFarmerMaybeOffline(obj.owner.Value);
+            string ownerName;
+            if (farmerOwner == null)
+                ownerName = "";
+            else if (farmerOwner.UniqueMultiplayerID == Game1.player.UniqueMultiplayerID)
+                ownerName = "you";
+            else
+                ownerName = farmerOwner.Name;
+            if (!string.IsNullOrEmpty(ownerName))
+                toReturn.name = $"{toReturn.name} owned by {ownerName}";
+        }
         return toReturn;
     }
 

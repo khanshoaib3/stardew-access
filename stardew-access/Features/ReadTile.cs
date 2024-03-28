@@ -144,7 +144,7 @@ internal class ReadTile : FeatureBase
                         MainClass.ScreenReader.Say(Translator.Instance.Translate("feature-read_tile-manually_triggered_info", new {tile_name = name, tile_category = category}), true);
                     else
                         MainClass.ScreenReader.SayWithTileQuery(name, x, y, true);
-                if (MainClass.Config.ReadTileIndexes)
+                if (MainClass.Config.ReadTileDebug)
                 {
                     if (manuallyTriggered)
                     {
