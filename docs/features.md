@@ -103,4 +103,4 @@ See related: [commands](commands.md#radar-related), [configs](config.md#radar-co
 - [Keybindings](keybindings.md)
 - [Commands](commands.md)
 - [Configs](config.md)
-- [Guides](https://github.com/khanshoaib3/stardew-access/tree/master/docs/guides.md)
+- [Guides](guides.md)

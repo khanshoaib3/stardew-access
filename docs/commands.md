@@ -75,4 +75,4 @@ For a list of commands added by SMAPI, you can visit the [Console commands](http
 - [Features](features.md)
 - [Keybindings](keybindings.md)
 - [Configs](config.md)
-- [Guides](https://github.com/khanshoaib3/stardew-access/tree/master/docs/guides.md)
+- [Guides](guides.md)

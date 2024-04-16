@@ -133,4 +133,4 @@ It is by default `C` but can be changed from the mod's config file.
 - [Features](features.md)
 - [Commands](commands.md)
 - [Configs](config.md)
-- [Guides](https://github.com/khanshoaib3/stardew-access/tree/master/docs/guides.md)
+- [Guides](guides.md)

@@ -258,8 +258,8 @@ This is the default value of the `config.json` file as per `v1.5.0`:
 ## Other Pages
 
 - [Readme](README.html)
-- [Setup](setup.html)
-- [Features](features.html)
-- [Keybindings](keybindings.html)
-- [Commands](commands.html)
-- [Guides](https://github.com/khanshoaib3/stardew-access/tree/master/docs/guides.md)
+- [Setup](setup.md)
+- [Features](features.md)
+- [Keybindings](keybindings.md)
+- [Commands](commands.md)
+- [Guides](guides.md)
