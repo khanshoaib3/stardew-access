@@ -9,6 +9,7 @@ Information about the controls for Stardew Access and Stardew Valley can be foun
 - [Creating a New Game](#creating-a-new-game)
 - [Saving Your Progress](#saving-your-progress)
 - [Using The Tile Viewer](#using-the-tile-viewer)
+- [Buying and Selling](#buying-and-selling)
 - [Farming](#farming)
     - [Planting Crops](#planting-crops)
     - [Growing Crops](#growing-crops)
@@ -93,7 +94,26 @@ This will open a dialogue which provides you with various options:
 
 This feature can be remapped to a controller/gamepad via the `config.json` file. More info available in [keybindings](keybindings.md#tile-viewer-keys) and [configs](config.md#tile-viewer-configs).
 
-<!--todo: Buying And Selling Stuff-->
+## Buying and Selling
+
+Buying and selling is usually accomplished through shops which are scattered throughout the valley and run by various residents of the town. They all offer different products, services, and have slightly different interfaces but all involve very similar steps. Selling your crops, fish, artisan goods, etc. can either be done at a shop or by putting the items into the shipping bin on your farm.
+
+This guide will use Robin's shop as an example since Robin offers both products and services.
+
+To buy items:
+
+1. Enter the shop during business hours (these will vary from shop to shop. Pierre's is closed on Wednesdays) and approach the shop counter.
+2. Interact with the shop counter to open the shop dialogue.
+3. You can choose various options from the shop dialogue such as constructing farm buildings, upgrading your house, purchasing items, or leaving. Some shops May not offer options and only sell items. In that case, you will be placed immediately in the shop menu.
+4. Assuming you selected "shop" or entered a shop that only sells items, you will be placed in the shop menu which presents a list of items that are sold.
+5. To buy an item, select the desired item and use left mouse click. You can purchase 5 of an item by holding shift and using left mouse click.
+
+To sell items:
+
+1. follow the first 4 steps in the previous list.
+2. Move to your inventory items or press `I`
+3. Find the item you want to sell in your inventory. Only certain items may be sold at certain shops.
+4. Use `left mouse click` on the item to sell the entire stack. Use ` shift + left mouse click` to sell half the stack.
 
 ## Farming
 
