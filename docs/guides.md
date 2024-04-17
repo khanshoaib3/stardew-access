@@ -9,6 +9,10 @@ Information about the controls for Stardew Access and Stardew Valley can be foun
 - [Creating a New Game](#creating-a-new-game)
 - [Saving Your Progress](#saving-your-progress)
 - [Using The Tile Viewer](#using-the-tile-viewer)
+- [Farming](#farming)
+    - [Planting Crops](#planting-crops)
+    - [Growing Crops](#growing-crops)
+    - [Harvesting Crops](#harvesting-crops)
 - [Farm Buildings](#farm-buildings)
     - [Constructing Farm Buildings](#constructing-farm-buildings)
     - [Upgrading Farm Buildings](#upgrading-farm-buildings)
@@ -49,7 +53,7 @@ To use a text box, interact with it using left mouse click, type the desired tex
 To modify the value of a slider, use `up arrow` and `down arrow` or `pageUp` and `pageDown` while focused on the desired slider.
 Some controls allow you to cycle back and forth through a set of options. These controls appear in pairs, one immediately after the other and will include "previous" and "next" in their respective names. Focusing on them will announce the currently selected option. Pressing either will announce the newly-selected option. To hear the currently-selected option again, move focus off of the controls and then move focus onto them again.
 
-Character creation controls are shown by default. To toggle their visibility, Press `Left Control + Space`. This is where you will find sliders for options such as /hair color and eye color. Color sliders appear in sets of 3 and adjust hue, saturation, and value (brightness). They announce their current value in the same fashion as the "next" and "previous" pairs. Their individual values range from 0% to 99%. Below is an explanation of what each slider does. Note that the game may report different names for each unique color that results from a particular slider configuration.
+Character creation controls are shown by default. To toggle their visibility, Press `Left Control + Space`. This is where you will find sliders for options such as hair color and eye color. Color sliders appear in sets of 3 and adjust hue, saturation, and value (brightness). They announce their current value in the same fashion as the "next" and "previous" pairs. Their individual values range from 0% to 99%. Below is an explanation of what each slider does. Note that the game may report different names for each unique color that results from a particular slider configuration.
 
 - Hue spans through the color spectrum from red at the minimum, through the rainbow, and back to red at the maximum.
     - At 99% saturation and 99% value, Hue spans from 0% to 99% as follows: red, orange, yellow, green, blue, indigo, violet, magenta, red
@@ -89,9 +93,37 @@ This will open a dialogue which provides you with various options:
 
 This feature can be remapped to a controller/gamepad via the `config.json` file. More info available in [keybindings](keybindings.md#tile-viewer-keys) and [configs](config.md#tile-viewer-configs).
 
-<!--todo: Planting And Harvesting-->
-
 <!--todo: Buying And Selling Stuff-->
+
+## Farming
+
+Farming, including planting and harvesting crops, is the primary way to make money in Stardew Valley, especially in the early-game. The following guides will cover how to farm.
+
+- [Planting Crops](#planting-crops)
+- [Growing Crops](#growing-crops)
+- [Harvesting Crops](#harvesting-crops)
+
+### Planting Crops
+
+Once you have purchased seeds from Pierre's general store in the town (a.k.a) SeedShop) or otherwise obtained seeds, go to your farm and use your tools to clear a plot of land to plant them. Make sure to clear grass as well.
+Your scythe does not consume any of your energy. Once you have cleared sufficient land to plant your crops, use your hoe to till the soil.
+Next, use your watering can to water the soil and add any [fertilizer](https://stardewvalleywiki.com/Fertilizer) if desired to the soil.
+finally, place your crops in the soil. You may plant your crops before watering, but fertilizers **must** be placed before the crop is placed.
+Tilling individual tiles can be very tedious, so be sure to check Clint's shop in the town (a.k.a Blacksmith) for tool upgrades. Once you upgrade your hoe, you can hold down `tool button` and hoe several tiles at a time.
+
+### Growing crops
+
+Different crops will take different amounts of time to grow. Most crops will only grow during one season, however they will grow during any season in the greenhouse. Growing season and growing time are listed in Pierre's shop as well as on the item's tooltip in your inventory.
+Each season is 28 days long, and it's important to ensure your crop has enough time to grow. If your crop has not been harvested before the start of the next season, it will die unless it also grows in the new season. Most crops only grow in one season. It's important to water your crop daily. Unwatered crops will not die, but they will not grow that day.
+Each day has a chance of rain. If it rains, there is no need to water your crops as the rain will take care of it. Crops grown indoors or in the greenhouse must be watered regardless of rain. Check the TV in your farmhouse for next day's forecast.
+You can walk over most crops safely with the exception of crops that grow on a trellis. You cannot pass through trellis crops at all, so make sure you leave enough room to reach them.
+Some crops, such as green beans, hot peppers, and blueberries, will produce multiple harvests per crop. Once they mature, you can pick the first harvest and continue watering the crops daily as normal and producing more harvests until the end of the season.
+Lastly, you may craft [sprinklers](https://stardewvalleywiki.com/Sprinkler) in order to keep crops watered. There are several tiers of sprinklers which keep progressively more tiles watered.
+
+### Harvesting Crops
+
+To harvest a mature crop, walk up to the crop and press `action button` to harvest it. The tile will be emptied and another crop may be placed. If the crop produces multiple harvests, the crop will remain on the tile and you can continue to water it as normal.
+Be careful that you do not use your pickaxe on crops as doing so will destroy them, undoing all your hard work.
 
 ## Farm Buildings
 
