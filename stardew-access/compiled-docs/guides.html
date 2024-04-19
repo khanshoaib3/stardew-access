@@ -10,6 +10,16 @@ Information about the controls for Stardew Access and Stardew Valley can be foun
   <li><a href="#creating-a-new-game">Creating a New Game</a></li>
   <li><a href="#saving-your-progress">Saving Your Progress</a></li>
   <li><a href="#using-the-tile-viewer">Using The Tile Viewer</a></li>
+  <li><a href="#using-the-object-tracker">Using The Object Tracker</a>
+    <ul>
+      <li><a href="#object-tracker">Object Tracker</a></li>
+      <li><a href="#object-tracker-favorites">Object Tracker Favorites</a>
+        <ul>
+          <li><a href="#tracking-coordinates-with-favorites">Tracking Coordinates With Favorites</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
   <li><a href="#buying-and-selling">Buying and Selling</a></li>
   <li><a href="#farming">Farming</a>
     <ul>
@@ -134,6 +144,43 @@ This will open a dialogue which provides you with various options:</p>
 </ol>
 
 <p>This feature can be remapped to a controller/gamepad via the <code>config.json</code> file. More info available in <a href="keybindings.html#tile-viewer-keys">keybindings</a> and <a href="config.html#tile-viewer-configs">configs</a>.</p>
+
+<h2 id="using-the-object-tracker">Using The Object Tracker</h2>
+
+<p>The object tracker is an extremely helpful feature of Stardew Access. It lets you browse all of the items, NPCs, interactable items, and other points of interest on the current map. For a full list of keys and config options, check out the relevant sections in <a href="keybindings.html#object-tracker-keys">keybinds</a> and <a href="config.html#object-tracker-configs">configs</a>.</p>
+
+<ul>
+  <li><a href="#object-tracker">Object Tracker</a></li>
+  <li><a href="#object-tracker-favorites">Object Tracker Favorites</a>
+    <ul>
+      <li><a href="#tracking-coordinates-with-favorites">Tracking Coordinates With Favorites</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="object-tracker">Object Tracker</h3>
+
+<p>The object tracker does two things: it lists all available objects in their respective categories, and it allows you to get their position and travel to them.
+Categories can be browsed with <code>left ctrl +pageUp</code> and <code>left ctrl + pageDown</code>. They are listed in alphabetical order, so “doors” will always come before “mine items” which will always come before “pending” which will always come before “resources” and so on.
+Not all categories will show up in all locations. The categories will only be visible if there is an object that fits that category on the current map. If you are in the town, the chances of seeing the “mine items” category will be very, very, very low.</p>
+
+<p>To browse objects within a category, use <code>pageUp</code> and <code>pageDown</code>. objects will appear within each category in the order of their proximity to you.
+IF you wish for them to show in alphabetical order, press <code>~ (tilde)</code> to toggle between proximity and alphabetical order. Note that each time the list refreshes, the order of objects will change if proximity is enabled, but categories will not change their order. If a category is visible but all items that pertain to it are removed from the map, that category will disappear once the object list refreshes. Your focus will be moved to a visible category.</p>
+
+<p>To get info on where an object is, use <code>home</code> or <code>end</code>. <code>home</code> will provide both relative directions (north 5) and absolute coordinates of the player and the object. <code>End</code> will only provide absolute coordinates. Pressing either of these keys will refresh the objects list.</p>
+
+<h3 id="object-tracker-favorites">Object Tracker Favorites</h3>
+
+<p>You can set and manage favorite objects on a per-map basis. This portion of the object tracker uses the <code>left alt</code> and <code>right alt</code> keys interchangeably, so this guide will refer to them collectively as <code>alt</code>.</p>
+
+<p>Each map has a set of favorites which can be set by holding <code>alt</code> and double-tapping a number on the number row. Be sure to focus your object tracker on the object which you want to set as the favorite first. Use the numbers on the number row, 1 through 0 to access 10 favorites at a time.
+Once a favorite is set, double-tap that number while holding <code>alt</code> to travel to that object. To hear the object location, single-tap the respective number while holding <code>alt</code>. To erase a favorite object, triple-tap its respective number while holding <code>alt</code>.</p>
+
+<p>To access more than 10 favorite objects, hold <code>alt</code> and press <code>+ (plus)</code> or <code>- (minus)</code> to browse through favorite stacks. Each map can have up to several hundred stacks, giving you access to many thousands of favorites per map.</p>
+
+<h4 id="tracking-coordinates-with-favorites">Tracking coordinates With Favorites</h4>
+
+<p>To track a specific tile coordinate, press <code>tab + ~</code> to toggle saving coordinates. When the feature is enabled, hold <code>alt</code> and double-tap the desired number on an empty favorite to save the coordinate. Don’t worry about what object the object tracker is focused on. To stop saving coordinates and return to normal functionality, disable saving coordinates with the same keystroke.</p>
 
 <h2 id="buying-and-selling">Buying and Selling</h2>
 
