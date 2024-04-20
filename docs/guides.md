@@ -3,6 +3,15 @@
 This page provides guides for playing Stardew Valley with Stardew Access enabled. While Stardew Access attempts to provide its players feature parity with the base game, some activities must be performed differently and/or may not be obvious to new players. This page assumes that you have already installed both Stardew Valley and Stardew Access as well as all required dependencies. Information on how to install both can be found in the [setup page](setup.md).
 Information about the controls for Stardew Access and Stardew Valley can be found in [Keybindings](keybindings.md).
 
+## Guide Version
+
+**This guide file is up to date with Stardew Access [Release v1.5.1](https://github.com/khanshoaib3/stardew-access/releases/tag/v1.5.1).**
+
+To get the most current documentation, check the following links:
+
+- [Stable Release Documentation](https://github.com/khanshoaib3/stardew-access/tree/master/docs)
+- [Beta Release Documentation](https://github.com/khanshoaib3/stardew-access/tree/development/docs#introduction)
+
 ## Table Of Contents
 
 - [Key Terms and Controls](#key-terms-and-controls)
@@ -266,6 +275,8 @@ If you cannot move an animal to a new building, ensure that the following are tr
 3. You are selecting the correct building
 
 <!--todo: more animal guides probably-->
+
+<!--todo: mining guide-->
 
 ## Other Pages
 
