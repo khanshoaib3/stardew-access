@@ -4,7 +4,7 @@
 # The converted html content is saved in the stardew-access/compiled-docs directory.
 # Use the following command to execute this script:
 #   ruby compiler_script.rb
-2# Note that you have to cd into the docs directory before running the above command
+# Note that you have to cd into the docs directory before running the above command
 
 require 'kramdown'
 
@@ -21,7 +21,6 @@ markdown_files.each do|file_name|
   file_contents = source_file_object.read()
   compiled_html_content = Kramdown::Document.new(file_contents).to_html
   compiled_html_content = compiled_html_content.gsub(".md", ".html")
-  compiled_html_content = compiled_html_content.gsub("guides.html", "guides.md")
   compiled_file_object.syswrite(compiled_html_content)
 
   puts "File " + file_name + " compiled and saved at: " + compiled_file_name

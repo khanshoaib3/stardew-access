@@ -257,7 +257,7 @@ This is the default value of the `config.json` file as per `v1.5.0`:
 
 ## Other Pages
 
-- [Readme](README.html)
+- [Readme](README.md)
 - [Setup](setup.md)
 - [Features](features.md)
 - [Keybindings](keybindings.md)
