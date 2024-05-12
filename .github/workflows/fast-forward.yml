@@ -49,9 +49,11 @@ jobs:
       - name: Copy the changelogs from pr message to latest.md
         run: |
           cd ./docs/changelogs
-          echo '${{ github.event.issue.body }}' > pr_msg.txt
+          echo "$ISSUE_BODY" > pr_msg.txt
           python ./copy_changelogs_to.py ./pr_msg.txt ./latest.md
           cd ../../
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
 
 
       - name: Add a commit
@@ -64,5 +66,6 @@ jobs:
           export PR_COMMIT=$(git rev-parse HEAD)
           echo '${{ github.event.pull_request.base.ref }}'
           echo '$PR_COMMIT'
+          echo "$PR_COMMIT"
           echo '${{ github.event.review.state }}'
           git --no-pager log --oneline -n 10
