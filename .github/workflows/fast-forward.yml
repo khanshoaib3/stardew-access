@@ -56,13 +56,21 @@ jobs:
           echo "${{ fromJson(steps.get-pr-details.outputs.data).mergeable }}"
 
       - name: Fast-forward
-        if: ${{ env.MERGE_STATUS == 'clean' }}
         run: |
           git config --global user.email "<>"
           git config --global user.name "GitHub Actions [Bot]"
           git checkout ${{ env.BASE_REF }}
           git pull origin ${{ env.BASE_REF }}
-          git merge --ff-only ${{ env.HEAD_REF }}
+          echo ${{ fromJson(steps.get-pr-details.outputs.data).head.repo.fork }}
+          if ${{ fromJson(steps.get-pr-details.outputs.data).head.repo.fork }}; then
+            USER_NAME=${{ fromJson(steps.get-pr-details.outputs.data).head.user.login }}
+            git remote add $USER_NAME ${{ fromJson(steps.get-pr-details.outputs.data).head.repo.clone_url }}
+            git pull $USER_NAME
+            git merge --ff-only $USER_NAME/${{ env.HEAD_REF }}
+          else
+            git pull origin
+            git merge --ff-only origin/${{ env.HEAD_REF }}
+          fi
           echo "COMMENT=\`${{ env.HEAD_REF }}\` merged into ${{ env.BASE_REF }}..." >> $GITHUB_ENV
 
       - name: Copy the changelogs from pr message to latest.md
