@@ -1,5 +1,5 @@
-name: Fast-forward
-# https://medium.com/@_samkitjain/override-githubs-merge-strategies-cea7eb789e23
+name: Fast Forward
+# Ref: https://medium.com/@_samkitjain/override-githubs-merge-strategies-cea7eb789e23
 
 on:
   issue_comment:
@@ -79,6 +79,7 @@ jobs:
           echo "$ISSUE_BODY" > pr_msg.txt
           cat ./pr_msg.txt | sed '/Changelog/,$!d' | cat > ./pr_msg.txt
           python ./copy_changelogs_to.py ./pr_msg.txt ./latest.md
+          rm ./pr_msg.txt
           cd ../../
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
@@ -86,11 +87,11 @@ jobs:
       - name: Commit the changes
         if: ${{ env.MERGE_STATUS == 'clean' }}
         run: |
-          git add docs/changelogs/latest.md
-          git commit -m "Add PR changelog"
+          git add .
+          git commit -m ":memo: Add PR changelogs to latest.md"
           echo "COMMENT=${{ env.COMMENT }}\nCopied the changelogs from pull request body to docs/changelogs/latest.md..." >> $GITHUB_ENV
 
-      - name: Push
+      - name: Push to origin
         if: ${{ env.MERGE_STATUS == 'clean' }}
         run: |
           git push origin
