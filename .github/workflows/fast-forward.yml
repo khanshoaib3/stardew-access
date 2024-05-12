@@ -56,7 +56,7 @@ jobs:
           echo "${{ fromJson(steps.get-pr-details.outputs.data).mergeable }}"
 
       - name: Fast-forward
-        if: ${{ env.MERGE_STATUS == "clean" }}
+        if: ${{ env.MERGE_STATUS == 'clean' }}
         run: |
           git config --global user.email "<>"
           git config --global user.name "GitHub Actions [Bot]"
@@ -66,7 +66,7 @@ jobs:
           echo "COMMENT=\`${{ env.HEAD_REF }}\` merged into ${{ env.BASE_REF }}..." >> $GITHUB_ENV
 
       - name: Copy the changelogs from pr message to latest.md
-        if: ${{ env.MERGE_STATUS == "clean" }}
+        if: ${{ env.MERGE_STATUS == 'clean' }}
         run: |
           cd ./docs/changelogs
           echo "$ISSUE_BODY" > pr_msg.txt
@@ -77,14 +77,14 @@ jobs:
 
 
       - name: Commit the changes
-        if: ${{ env.MERGE_STATUS == "clean" }}
+        if: ${{ env.MERGE_STATUS == 'clean' }}
         run: |
           git add docs/changelogs/latest.md
           git commit -m "Add PR changelog"
           echo "COMMENT=\`${{ env.COMMENT }}\`\nCopied the changelogs from pull request's body to \`docs/changelogs/latest.md\`..." >> $GITHUB_ENV
 
       - name: Push
-        if: ${{ env.MERGE_STATUS == "clean" }}
+        if: ${{ env.MERGE_STATUS == 'clean' }}
         run: |
           echo '${{ github.event.review.state }}'
           git --no-pager log --oneline -n 10
