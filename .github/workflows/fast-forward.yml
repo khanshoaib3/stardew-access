@@ -12,50 +12,61 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event.issue.pull_request &&
-      !github.event.issue.closed_at &&
-      github.event.issue.state == 'open' &&
       (github.event.comment.author_association == 'OWNER' || github.event.comment.author_association == 'COLLABORATOR') && 
       contains(github.event.comment.body, '/fast-forward')
 
     steps:
-      - name: Generate access token
-        uses: tibdex/github-app-token@v2
-        id: generate-token
-        with:
-          app_id: ${{ secrets.LOKSMITH_ID }}
-          private_key: ${{ secrets.LOCKSMITH_PRIVATE_KEY }}
-
       - name: Fetch repository
         uses: actions/checkout@v4
         with:
           token: ${{ steps.generate-token.outputs.token }}
           fetch-depth: 0
 
-      - name: Checkout pull request
-        run: gh pr checkout ${{ github.event.issue.number }}
+      - name: Get PR deatils
+        uses: octokit/request-action@v2.x
+        id: get-pr-details
+        with:
+          route: GET /repos/{repository}/pulls/{pull_number}
+          repository: ${{ github.repository }}
+          pull_number: ${{ github.event.issue.number }}
         env:
-          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: View the github context
-      #   run: echo "$GITHUB_CONTEXT"
-      #   env:
-      #     GITHUB_CONTEXT: ${{ toJson(github) }}
+      - name: View PR Details
+        run: echo '${{ steps.get-pr-details.outputs.data }}'
+
+      - name: View the github context
+        run: echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
 
       - name: Install python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Fast-forward
+      - name: Set environment variables
         run: |
-          export PR_COMMIT=$(git rev-parse HEAD)
-          echo '${{ github.event.pull_request.base.ref }}'
-          echo '$PR_COMMIT'
-          echo "$PR_COMMIT"
-          git checkout ${{ github.event.pull_request.base.ref }}
-          git merge --ff-only "$PR_COMMIT"
+          MERGE_STATUS=${{ fromJson(steps.get-pr-details.outputs.data).mergeable_state }}
+          echo $MERGE_STATUS
+          if [ "$MERGE_STATUS" != "clean" ]; then echo "COMMENT=\`${{ env.HEAD_REF }}\` cannot be merged into \`${{ env.BASE_REF }}\`." >> $GITHUB_ENV; fi
+          echo "MERGE_STATUS=$MERGE_STATUS" >> $GITHUB_ENV
+          echo "BASE_REF=${{ fromJson(steps.get-pr-details.outputs.data).base.ref }}" >> $GITHUB_ENV
+          echo "HEAD_REF=${{ fromJson(steps.get-pr-details.outputs.data).head.ref }}" >> $GITHUB_ENV
+          echo "${{ fromJson(steps.get-pr-details.outputs.data).mergeable }}"
+
+      - name: Fast-forward
+        if: ${{ env.MERGE_STATUS == "clean" }}
+        run: |
+          git config --global user.email "<>"
+          git config --global user.name "GitHub Actions [Bot]"
+          git checkout ${{ env.BASE_REF }}
+          git pull origin ${{ env.BASE_REF }}
+          git merge --ff-only ${{ env.HEAD_REF }}
+          echo "COMMENT=\`${{ env.HEAD_REF }}\` merged into ${{ env.BASE_REF }}..." >> $GITHUB_ENV
 
       - name: Copy the changelogs from pr message to latest.md
+        if: ${{ env.MERGE_STATUS == "clean" }}
         run: |
           cd ./docs/changelogs
           echo "$ISSUE_BODY" > pr_msg.txt
@@ -65,14 +76,39 @@ jobs:
           ISSUE_BODY: ${{ github.event.issue.body }}
 
 
-      - name: Add a commit
+      - name: Commit the changes
+        if: ${{ env.MERGE_STATUS == "clean" }}
         run: |
-          git config --global user.email "<>"
-          git config --global user.name "GitHub Actions [Bot]"
           git add docs/changelogs/latest.md
           git commit -m "Add PR changelog"
+          echo "COMMENT=\`${{ env.COMMENT }}\`\nCopied the changelogs from pull request's body to \`docs/changelogs/latest.md\`..." >> $GITHUB_ENV
 
       - name: Push
+        if: ${{ env.MERGE_STATUS == "clean" }}
         run: |
           echo '${{ github.event.review.state }}'
           git --no-pager log --oneline -n 10
+          echo "COMMENT=\`${{ env.COMMENT }}\`\nPushed the changes to remote." >> $GITHUB_ENV
+
+      # Post a success/failure comment to the PR.
+      - name: Add comment to PR
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{repository}/issues/{issue_number}/comments
+          repository: ${{ github.repository }}
+          issue_number: ${{ github.event.issue.number }}
+          body: ${{ env.COMMENT }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Post a failure message when any of the previous steps fail.
+      - name: Add failure comment to PR
+        if: ${{ failure() }}
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{repository}/issues/{issue_number}/comments
+          repository: ${{ github.repository }}
+          issue_number: ${{ github.event.issue.number }}
+          body: PR cannot be merged in. Check the Actions tab for details.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
