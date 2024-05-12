@@ -77,7 +77,7 @@ jobs:
         run: |
           cd ./docs/changelogs
           echo "$ISSUE_BODY" > pr_msg.txt
-          cat ./pr_msg.txt | sed '/Changelog/,$!d' | cat > ./pr_msg.txt
+          sed -i '/## Changelog/,$!d' ./pr_msg.txt
           python ./copy_changelogs_to.py ./pr_msg.txt ./latest.md
           rm ./pr_msg.txt
           cd ../../
@@ -87,7 +87,7 @@ jobs:
       - name: Commit the changes
         if: ${{ env.MERGE_STATUS == 'clean' }}
         run: |
-          git add .
+          git add docs/changelogs/latest.md
           git commit -m ":memo: Add PR changelogs to latest.md"
           echo "COMMENT=${{ env.COMMENT }}\nCopied the changelogs from pull request body to docs/changelogs/latest.md..." >> $GITHUB_ENV
 
