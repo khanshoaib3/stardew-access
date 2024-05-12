@@ -369,13 +369,19 @@ public class DynamicTiles
 
             if (offsetX is not 4 || offsetY is not 2)
             {
+                // Prepend cabin's owner name to the cabin
                 if (cabin.HasOwner && !cabin.IsOwnedByCurrentPlayer && !string.IsNullOrWhiteSpace(ownerName))
                     name = $"{cabin.owner.Name} {name}";
                 goto PassableTilesCheck;
             }
 
+            // Cabin Mail Box
+
+            category = CATEGORY.Interactables;
+
             if (!cabin.IsOwnedByCurrentPlayer)
             {
+                // Prepend the owner's name to mail box
                 name = string.IsNullOrWhiteSpace(ownerName)
                     ? $"{name} {Translator.Instance.Translate("tile_name-mail_box")}" // Cabin Mail Box
                     : $"{cabin.owner.Name} {Translator.Instance.Translate("tile_name-mail_box")}"; // [Owner] Mail Box
@@ -384,7 +390,6 @@ public class DynamicTiles
 
             // Mail Box (with unread status)
             name = Translator.Instance.Translate("tile_name-mail_box");
-            category = CATEGORY.Interactables;
             var mailbox = Game1.player.mailbox;
             if (mailbox is not null && mailbox.Count > 0)
             {
