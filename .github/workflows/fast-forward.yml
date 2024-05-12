@@ -36,15 +36,24 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
 
-      - name: View the github context
-        run: echo "$GITHUB_CONTEXT"
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
+      # - name: View the github context
+      #   run: echo "$GITHUB_CONTEXT"
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJson(github) }}
 
       - name: Install python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Fast-forward
+        run: |
+          export PR_COMMIT=$(git rev-parse HEAD)
+          echo '${{ github.event.pull_request.base.ref }}'
+          echo '$PR_COMMIT'
+          echo "$PR_COMMIT"
+          git checkout ${{ github.event.pull_request.base.ref }}
+          git merge --ff-only "$PR_COMMIT"
 
       - name: Copy the changelogs from pr message to latest.md
         run: |
@@ -58,14 +67,12 @@ jobs:
 
       - name: Add a commit
         run: |
+          git config --global user.email "<>"
+          git config --global user.name "GitHub Actions [Bot]"
           git add docs/changelogs/latest.md
           git commit -m "Add PR changelog"
 
-      - name: Fast-forward & push
+      - name: Push
         run: |
-          export PR_COMMIT=$(git rev-parse HEAD)
-          echo '${{ github.event.pull_request.base.ref }}'
-          echo '$PR_COMMIT'
-          echo "$PR_COMMIT"
           echo '${{ github.event.review.state }}'
           git --no-pager log --oneline -n 10
