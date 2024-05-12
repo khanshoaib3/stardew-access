@@ -23,12 +23,17 @@ def main():
     src_file = [line.rstrip() for line in src_file]  # Remove trailing spaces
     dest_file = [line.rstrip() for line in dest_file]  # Remove trailing spaces
 
+    flag = True
+
     for heading in headings:
         if (heading not in src_file):
             continue
         print(f"Heading ({heading}) found...")
 
         change_logs = get_changelogs_for_heading_in_file(heading, src_file)
+        if len(change_logs) == 0:
+            continue
+        flag = False
 
         if heading in dest_file:
             insert_index = get_next_heading_index_in_file(dest_file.index(heading), dest_file) - 1
@@ -46,11 +51,14 @@ def main():
         print(f"Inserting following lines at index {insert_index}:\n\t{change_logs}")
         dest_file = dest_file[:insert_index] + change_logs + dest_file[insert_index:]
 
-    dest_file_w = open(dest_path, "w")
-    dest_file = [line+"\n" for line in dest_file]  # Add trailing line break
-    print("\n\nOverwriting destination file with the content:")
-    print(*dest_file)
-    dest_file_w.writelines(dest_file)
+    if flag:
+        print("\n\nNo changes to write!")
+    else:
+        dest_file_w = open(dest_path, "w")
+        dest_file = [line+"\n" for line in dest_file]  # Add trailing line break
+        print("\n\nOverwriting destination file with the content:")
+        print(*dest_file)
+        dest_file_w.writelines(dest_file)
 
 
 def get_changelogs_for_heading_in_file(heading: str, file_contents: list) -> list:

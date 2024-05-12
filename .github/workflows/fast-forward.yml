@@ -7,8 +7,23 @@ on:
 
 jobs:
   fast_forward:
-    name: Fast-forward
+    name: fast-forward
+
+    # Ref: https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+    # contents: For adding the commit
+    # issues: For adding the success/failure comments
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: read
+
     runs-on: ubuntu-latest
+
+    # Only run the job if:-
+    # 1. It is a pull request
+    # 2. It's not closed
+    # 3. The comment was by the owner or one of the collaborator
+    # 4. The comment message is "/fast-forward"
     if: |
       github.event.issue.pull_request &&
       !github.event.issue.closed_at &&
@@ -21,8 +36,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
+      # API: https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#get-a-pull-request
       - name: Get PR deatils
         uses: octokit/request-action@v2.x
         id: get-pr-details
@@ -31,8 +47,9 @@ jobs:
           repository: ${{ github.repository }}
           pull_number: ${{ github.event.issue.number }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # For running the script that copies the changelogs to docs/changelogs/latest.md file
       - name: Install python
         uses: actions/setup-python@v5
         with:
@@ -54,7 +71,10 @@ jobs:
           echo "BASE_REF=${{ fromJson(steps.get-pr-details.outputs.data).base.ref }}" >> $GITHUB_ENV
           echo "HEAD_REF=${{ fromJson(steps.get-pr-details.outputs.data).head.ref }}" >> $GITHUB_ENV
 
-      - name: Fast-forward
+      # Merges the head branch into base branch
+      # Only runs if the merge status is "clean", clean might refer to when the merge button is green in the PR's page, there's no clear indication of it's values in docs
+      # For forks the following script adds the fork as a remote, them merges it into base
+      - name: Merge the head branch into base in a fast forward manner only
         if: ${{ env.MERGE_STATUS == 'clean' }}
         run: |
           git config --global user.email "<>"
@@ -70,26 +90,36 @@ jobs:
             git pull origin ${{ env.HEAD_REF }}
             git merge --ff-only origin/${{ env.HEAD_REF }}
           fi
-          echo "COMMENT=[Fast Forward CI] ${{ env.HEAD_REF }} merged into ${{ env.BASE_REF }}..." >> $GITHUB_ENV
+          echo "COMMENT=\[Fast Forward CI\] ${{ env.HEAD_REF }} merged into ${{ env.BASE_REF }}..." >> $GITHUB_ENV
 
+      # Executes the python script to copy the changelog from the PR's body to docs/changelogs/latest.md file
+      # It also saves the response into response.txt at the repo's base
+      # Cuts the lines before "## Changelog" line in the PR's body using the "sed" command
+      # Ref: https://stackoverflow.com/a/35966027
       - name: Copy the changelogs from pr message to latest.md
         if: ${{ env.MERGE_STATUS == 'clean' }}
         run: |
           cd ./docs/changelogs
           echo "$ISSUE_BODY" > pr_msg.txt
           sed -i '/## Changelog/,$!d' ./pr_msg.txt
-          python ./copy_changelogs_to.py ./pr_msg.txt ./latest.md
+          python ./scripts/copy_changelogs_to.py ./pr_msg.txt ./latest.md > ../../response.txt
+          cat ../../response.txt
           rm ./pr_msg.txt
           cd ../../
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
 
-      - name: Commit the changes
+      # Commit the changes if there was no error i.e., there was no issue in fetching the files and there was actually a changelog found/copied
+      - name: Commit the changes (if any)
         if: ${{ env.MERGE_STATUS == 'clean' }}
         run: |
-          git add docs/changelogs/latest.md
-          git commit -m ":memo: Add PR changelogs to latest.md"
-          echo "COMMENT=${{ env.COMMENT }}\nCopied the changelogs from pull request body to docs/changelogs/latest.md..." >> $GITHUB_ENV
+          if [[ "$( tail ./response.txt -n 1 )" = "No changes to write\!" ]] || [[ "$( tail ./response.txt -n 1 )" =~ "File \`(.*?)\` not found\!" ]]; then
+            echo "COMMENT=${{ env.COMMENT }}\nNo changelogs found..." >> $GITHUB_ENV
+          else
+            git add docs/changelogs/latest.md
+            git commit -m ":memo: Add changelogs from #${{ github.event.issue.number }} to latest.md"
+            echo "COMMENT=${{ env.COMMENT }}\nCopied the changelogs from pull request body to docs/changelogs/latest.md..." >> $GITHUB_ENV
+          fi
 
       - name: Push to origin
         if: ${{ env.MERGE_STATUS == 'clean' }}
@@ -106,7 +136,7 @@ jobs:
           issue_number: ${{ github.event.issue.number }}
           body: ${{ env.COMMENT }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Post a failure message when any of the previous steps fail.
       - name: Add failure comment to PR
@@ -118,4 +148,4 @@ jobs:
           issue_number: ${{ github.event.issue.number }}
           body: \[Fast Forward CI\] PR cannot be merged in. Check the Actions tab for details.
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
