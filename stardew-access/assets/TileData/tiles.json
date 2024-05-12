@@ -425,20 +425,6 @@
       "Category": "other"
     }
   ],
-  "BathHouse_WomensLocker": [
-    {
-      "NameOrTranslationKey": "static_tile-bathhouse_locker-entry_room_door",
-      "X": [13],
-      "Y": [27],
-      "Category": "doors"
-    },
-    {
-      "NameOrTranslationKey": "static_tile-bathhouse_locker-pool_entrance",
-      "X": [2],
-      "Y": [27],
-      "Category": "doors"
-    }
-  ],
   "Beach": [
     {
       "NameOrTranslationKey": "static_tile-beach-beach_warp_statue",
