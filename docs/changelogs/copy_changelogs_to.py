@@ -1,4 +1,5 @@
 # Copies the changelogs from one file to another
+# Test change
 
 import argparse
 import os
