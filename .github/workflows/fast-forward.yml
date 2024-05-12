@@ -19,8 +19,8 @@ jobs:
       - name: Fetch repository
         uses: actions/checkout@v4
         with:
-          token: ${{ steps.generate-token.outputs.token }}
           fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Get PR deatils
         uses: octokit/request-action@v2.x
@@ -30,7 +30,7 @@ jobs:
           repository: ${{ github.repository }}
           pull_number: ${{ github.event.issue.number }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: View PR Details
         run: echo '${{ steps.get-pr-details.outputs.data }}'
@@ -99,7 +99,7 @@ jobs:
           issue_number: ${{ github.event.issue.number }}
           body: ${{ env.COMMENT }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       # Post a failure message when any of the previous steps fail.
       - name: Add failure comment to PR
@@ -111,4 +111,4 @@ jobs:
           issue_number: ${{ github.event.issue.number }}
           body: PR cannot be merged in. Check the Actions tab for details.
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
