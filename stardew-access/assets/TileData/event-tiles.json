@@ -6,7 +6,8 @@
     "28,37": "event_tile-flower_dance_shop-name"
   },
   "Luau": {
-    "35,13": "event_tile-soup_pot-name"
+    "24,11": "event_tile-soup_pot-name",
+    "13,6": "event_tile-luau-pierre_booth"
   },
   "Spirit's Eve": {
    "25,49": "event_tile-spirits_eve_shop-name"

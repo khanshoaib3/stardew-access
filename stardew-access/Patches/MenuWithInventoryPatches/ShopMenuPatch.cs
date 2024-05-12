@@ -125,6 +125,6 @@ internal class ShopMenuPatch : IPatch
         string toSpeak = string.Join(", ",
             new string[] { name, requirements, price, description, healthAndStamina, buffs, ingredients }.Where(c => !string.IsNullOrEmpty(c)));
 
-        MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+        MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, customQuery: $"{__instance.currentItemIndex}:{__instance.currentlySnappedComponent.myID}:{toSpeak}");
     }
 }

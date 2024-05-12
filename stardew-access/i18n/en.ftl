@@ -354,6 +354,7 @@ monster_name-truffle_crab = Truffle Crab
 event_tile-egg_festival_shop-name = Egg Festival Shop
 event_tile-flower_dance_shop-name = Flower Dance Shop
 event_tile-soup_pot-name = Soup Pot
+event_tile-luau-pierre_booth = Pierre's Booth
 event_tile-spirits_eve_shop-name = Spirit's Eve Shop
 event_tile-stardew_valley_fair_shop-name = Stardew Valley Fair Shop
 event_tile-slingshot_game-name = Slingshot Game

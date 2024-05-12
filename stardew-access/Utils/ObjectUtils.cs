@@ -1,6 +1,5 @@
 using StardewValley;
 using StardewValley.GameData.Objects;
-using System;
 using System.Text.RegularExpressions;
 
 namespace stardew_access.Utils;
@@ -16,7 +15,7 @@ public static class ObjectUtils
             objectId = objectId[3..]; // "(O)" is 3 characters long, so start after it
 
         if (!Game1.objectData.TryGetValue(objectId, out ObjectData? objectInfo) || objectInfo is null)
-            Log.Error($"Object ID {objectId} does not exist.");
+            Log.Error($"Object ID {objectId} does not exist.", once: true);
 
         return objectInfo;
     }
