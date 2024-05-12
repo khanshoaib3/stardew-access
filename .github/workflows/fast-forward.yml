@@ -14,7 +14,6 @@ jobs:
       github.event.issue.pull_request &&
       !github.event.issue.closed_at &&
       github.event.issue.state == 'open' &&
-      # github.event.review.state == 'approved' &&
       (github.event.comment.author_association == 'OWNER' || github.event.comment.author_association == 'COLLABORATOR') && 
       contains(github.event.comment.body, '/fast-forward')
 
@@ -67,6 +66,3 @@ jobs:
           echo '$PR_COMMIT'
           echo '${{ github.event.review.state }}'
           git --no-pager log --oneline -n 10
-          # git checkout ${{ github.event.pull_request.base.ref }}
-          # git merge --ff-only "$PR_COMMIT"
-          # git push origin ${{ github.event.pull_request.base.ref }}
