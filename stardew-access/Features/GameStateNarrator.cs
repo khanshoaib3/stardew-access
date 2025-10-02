@@ -15,7 +15,7 @@ internal class GameStateNarrator : FeatureBase
     private static GameLocation? currentLocation;
     private static GameLocation? previousLocation;
 
-    private static string hudMessageQueryKey = "";
+    private static string lastNormalizedHudMessage = "";
     private static DateTime lastHudMessageTime = DateTime.MinValue;
     private static bool isNarratingHudMessage = false;
 
@@ -126,14 +126,14 @@ internal class GameStateNarrator : FeatureBase
             int lastIndex = Game1.hudMessages.Count - 1;
             HUDMessage lastMessage = Game1.hudMessages[lastIndex];
             string toSpeak = lastMessage.message;
-            var searchQuery = (Regex.Replace(toSpeak, @"[\d+]", string.Empty)).Trim();
-            var now = DateTime.Now;            
-            bool isDuplicate = hudMessageQueryKey == searchQuery;
-            bool withinTimeout = (now - lastHudMessageTime) < TimeSpan.FromMilliseconds(MainClass.Config.HudDuplicateMessageTimeout);
+            string normalized = Regex.Replace(toSpeak, "[0-9]+", "").Trim();
+            var now = DateTime.Now;
+            bool isSimilar = normalized == lastNormalizedHudMessage;
+            bool timeoutExpired = (now - lastHudMessageTime) >= TimeSpan.FromMilliseconds(MainClass.Config.HudDuplicateMessageTimeout);
 
-            if (!isDuplicate || !withinTimeout)
+            if (!isSimilar || timeoutExpired)
             {
-                hudMessageQueryKey = searchQuery;
+                lastNormalizedHudMessage = normalized;
                 lastHudMessageTime = now;
                 MainClass.ScreenReader.Say(toSpeak, true);
                 HudMessagesBuffer.Add(toSpeak);
