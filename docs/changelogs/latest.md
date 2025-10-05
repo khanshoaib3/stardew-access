@@ -10,6 +10,7 @@
 
 ### Bug Fixes
 
+- HUD messages are no longer read out multiple times for the same event.
 
 ### Tile Tracker Changes
 
