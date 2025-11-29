@@ -143,6 +143,6 @@ If you cannot move an animal to a new building, ensure that the following are tr
 - [General Guides](general-guides.md)
 - [Mining Guides](mining-guides.md)
 
-**[Back to guides home](guides-home.md)
+**[Back to guides home](index.md)**
 
-**[Back to readme...](../README.md)**
+**[Back to setup](/docs/setup)**

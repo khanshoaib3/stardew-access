@@ -70,7 +70,18 @@ const config: Config = {
 				path: "./guides",
 				routeBasePath: "guides",
 				sidebarPath: require.resolve("./sidebarsGuides.ts"),
-				editUrl: "https://github.com/stardew-access/stardew-access/website/guides/",
+				editUrl:
+					"https://github.com/stardew-access/stardew-access/website/guides/",
+			},
+		],
+		[
+			"@cmfcmf/docusaurus-search-local",
+			{
+				indexDocs: true,
+				indexBlog: false,
+				indexPages: true,
+				// The plugin will index all docs plugins by default
+				language: "en",
 			},
 		],
 	],

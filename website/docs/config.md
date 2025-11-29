@@ -56,4 +56,5 @@ Once you have found the Stardew Valley installation directory, navigate to the f
 - [Notepad++ – Windows](https://notepad-plus-plus.org/)
 - [Visual Studio Code – Windows, Linux, Mac OS](https://code.visualstudio.com/)
 - [TextEdit – Mac OS, iOS](https://apps.apple.com/us/app/textedit/id1070883678)
-- [nano – Linux](https://www.nano-editor.org- [Json Editor Online - Web](https://jsoneditoronline.org/)
+- [nano – Linux](https://www.nano-editor.org)
+- [Json Editor Online - Web](https://jsoneditoronline.org/)

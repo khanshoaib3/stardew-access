@@ -35,15 +35,15 @@ The mods in this section are not required to mine, but they can help make the ex
 
 ## Object Tracker Configuration Options
 
-By default, the object tracker will provide descriptions for the various stones that you will come across. It will also give specific colors of slimes. Some users may find these descriptions overwhelming. They can be turned off in the [config](../config.md) if desired.
+By default, the object tracker will provide descriptions for the various stones that you will come across. It will also give specific colors of slimes. Some users may find these descriptions overwhelming. They can be turned off in the [config](https://stardew-access.github.io/docs/config) if desired.
 
 ## The Mines
 
 With exception to farm maps such as the Hilltop Farm and Four Corners Farm, the first place you will gain access to mineable resources is in the mines in the mountains. This guide will focus on navigating the mines as a Stardew Access player. You can read general info on [the mines wiki page](https://stardewvalleywiki.com/The_Mines).
 
-- [Accessing the Mines](#accessing-the-mines)
-- [Navigating The Mines](#navigating-the-mines)
-- [back to top](#mining)
+    - [Accessing the Mines](#accessing-the-mines)
+    - [Navigating The Mines](#navigating-the-mines)
+    - [back to top](#mining)
 
 ### Accessing The Mines
 
@@ -79,8 +79,8 @@ Navigating the quarry mine will rely almost entirely on exploration as the path 
 
 [The Skull Cavern](https://stardewvalleywiki.com/Skull_Cavern) will become accessible once you reach the bottom of the mines and gain access to the desert. It presents many of the same navigation challenges as the mines, but there is no elevator, infinite levels, and it is much more difficult. Besides the difficulty and lack of elevator, there is one key difference: you now have a chance of finding either a down ladder which takes you down 1 level as usual or a shaft which will take you down several levels at a time. The deeper you go, the more valuable loot you will find. Be wary of the monsters here. They are much more dangerous than in the mines.
 
-- [Accessing the Skull Cavern](#accessing-the-skull--cavern)
-- [back to top](#mining)
+    - [Accessing the Skull Cavern](#accessing-the-skull--cavern)
+    - [back to top](#mining)
 
 ### Accessing the Skull  cavern
 
@@ -92,10 +92,10 @@ Once in the desert, proceed to "skull cave entrance" and then to "skull cavern d
 
 ## Other guides
 
-- [Stardew Access Guides](stardew-access-guides.md)
-- [General Guides](general-guides.md)
-- [Farming Guides](farming-guides.md)
+    - [Stardew Access Guides](stardew-access-guides.md)
+    - [General Guides](general-guides.md)
+    - [Farming Guides](farming-guides.md)
 
-**[Back to guides home](guides-home.md)
+**[Back to guides home](index.md)**
 
-**[Back to readme...](../README.md)**
+**[Back to setup](/docs/setup)**

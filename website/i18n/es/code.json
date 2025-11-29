@@ -1,4 +1,4 @@
 {
-	"label": "Español",
-	"direction": "ltr"
+	"label": { "message": "Español" },
+	"direction": { "message": "ltr" }
 }

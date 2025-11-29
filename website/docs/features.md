@@ -25,8 +25,8 @@ Warnings are also included for full inventory, low health, low energy, and being
 
 For more information, see the following pages:
 
-- [Keys](keybindings.md#global-keys)
-- [Narration & Verbosity Configs](config.md#narration--verbosity-configs)
+- [Keys](/docs/keybindings#global-keys)
+- [Narration & Verbosity Configs](/docs/config#narration--verbosity-configs)
 
 ## Tile Reader
 

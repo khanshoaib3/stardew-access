@@ -4,12 +4,9 @@ This guide covers all core user features added by Stardew Access, how they work,
 
 ## Table of Contents
 
-- [Using The Tile Viewer](#using-the-tile-viewer)
-- [Using The Object Tracker](#using-the-object-tracker)
     - [Object Tracker](#object-tracker)
     - [Object Tracker Favorites](#object-tracker-favorites)
         - [Tracking Coordinates With Favorites](#tracking-coordinates-with-favorites)
-- [Other Guides](#other-guides)
 
 ## Using The Tile Viewer
 
@@ -28,14 +25,12 @@ This will open a dialogue which provides you with various options:
 3. Speak detailed tile info
     - Get more information about the selected tile
 
-This feature can be remapped to a controller/gamepad via the `config.json` file. More info available in [keybindings](../keybindings.md#tile-viewer-keys) and [configs](../config.md#tile-viewer-configs).
+This feature can be remapped to a controller/gamepad via the `config.json` file. More info available in [keybindings](/docs/keybindings#tile-viewer-keys) and [configs](/docs/config#tile-viewer-configs).
 
 ## Using The Object Tracker
 
-The object tracker is an extremely helpful feature of Stardew Access. It lets you browse all of the items, NPCs, interactable items, and other points of interest on the current map. For a full list of keys and config options, check out the relevant sections in [keybinds](../keybindings.md#object-tracker-keys) and [configs](../config.md#object-tracker-configs).
+The object tracker is an extremely helpful feature of Stardew Access. It lets you browse all of the items, NPCs, interactable items, and other points of interest on the current map. For a full list of keys and config options, check out the relevant sections in [keybindings](/docs/keybindings#object-tracker-keys) and [configs](/docs/config#object-tracker-configs).
 
-- [Object Tracker](#object-tracker)
-- [Object Tracker Favorites](#object-tracker-favorites)
     - [Tracking Coordinates With Favorites](#tracking-coordinates-with-favorites)
 
 ### Object Tracker
@@ -64,10 +59,20 @@ To track a specific tile coordinate, press `tab + ~` to toggle saving coordinate
 
 ## Other guides
 
-- [General Guides](general-guides.md)
-- [Farming Guides](farming-guides.md)
-- [Mining Guides](mining-guides.md)
 
-**[Back to guides home](guides-home.md)
+**[Back to guides home](./index.md)
 
-**[Back to readme...](../README.md)**
+**[Back to setup](/docs/setup)**
+
+# Stardew Access Guides
+
+## Tile Viewer
+This feature can be remapped to a controller/gamepad via the `config.json` file. More info available in [keybindings](/docs/keybindings#tile-viewer-keys) and [configs](/docs/config#tile-viewer-configs).
+
+## Object Tracker
+For a full list of keys and config options, check out the relevant sections in [keybindings](/docs/keybindings#object-tracker-keys) and [configs](/docs/config#object-tracker-configs).
+The object tracker is an extremely helpful feature of Stardew Access. It lets you browse all of the items, NPCs, interactable items, and other points of interest on the current map. For a full list of keys and config options, check out the relevant sections in [keybindings](/docs/keybindings#object-tracker-keys) and [configs](/docs/config#object-tracker-configs).
+
+**[Back to guides home](index.md)**
+
+

@@ -31,7 +31,7 @@ In order to use Stardew Access, you must first own a copy of Stardew Valley on W
 
 ## Official Guide
 
-Check out the [official guide](guides/guides-home.md) for tutorials on creating a game, farming, constructing farm buildings, raising animals, buying and selling, mining, and more with Stardew Access!
+Check out the [official guide](/guides/index.md) for tutorials on creating a game, farming, constructing farm buildings, raising animals, buying and selling, mining, and more with Stardew Access!
 
 ## Useful Links
 
