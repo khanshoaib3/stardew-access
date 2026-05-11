@@ -19,39 +19,40 @@ Thank you for your interest in contributing! We welcome improvements, bug fixes,
 To set up Stardew Access locally:
 
 1. **Clone your fork:**
-	```sh
-	git clone https://github.com/your-username/stardew-access.git
-	cd stardew-access
-	```
+
+   ```sh
+   git clone https://github.com/your-username/stardew-access.git
+   cd stardew-access
+   ```
 
 2. **Install dependencies:**
-	 - Ensure you have [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) installed.
-	 - You will need [Ruby](https://www.ruby-lang.org/en/downloads/) for compiling docs (see `docs/compiler_script.rb`).
-	 - Install the required Ruby gem for documentation:
-		 ```sh
-		 gem install kramdown
-		 ```
-	 - You need [Project Fluent](https://www.nexusmods.com/stardewvalley/mods/12638) (required for translations/localization).
-			 Download and extract it so your folder structure looks like:
-			 ```
-			 <GamePath>/Mods/ProjectFluent/ProjectFluent.dll
-			 ```
-			 Where `<GamePath>` is the location of your Stardew Valley installation.
+   - Ensure you have [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) installed.
+   - You will need [Ruby](https://www.ruby-lang.org/en/downloads/) for compiling docs (see `docs/compiler_script.rb`).
+   - Install the required Ruby gem for documentation:
+     ```sh
+     gem install kramdown
+     ```
+   - You need [Project Fluent](https://www.nexusmods.com/stardewvalley/mods/12638) (required for translations/localization).
+     Download and extract it so your folder structure looks like:
+     `	 <GamePath>/Mods/ProjectFluent/ProjectFluent.dll
+	`
+     Where `<GamePath>` is the location of your Stardew Valley installation.
 
 3. **Build the project:**
-	```sh
-	dotnet build stardew-access.sln
-	```
+
+   ```sh
+   dotnet build stardew-access.sln
+   ```
 
 4. **Run or test the mod:**
-	- Place the built files in your Stardew Valley `Mods` folder.
-	- Follow instructions in [docs/setup.md](docs/setup.md) for more details.
+   - Place the built files in your Stardew Valley `Mods` folder.
+   - Follow instructions in [docs/setup.md](docs/setup.md) for more details.
 
 5. **Compile documentation (optional):**
-	```sh
-	cd docs
-	ruby compiler_script.rb
-	```
+   ```sh
+   cd docs
+   ruby compiler_script.rb
+   ```
 
 ---
 
