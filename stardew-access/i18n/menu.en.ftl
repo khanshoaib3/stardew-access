@@ -768,3 +768,22 @@ menu-co_op-host_tab_button = Host tab {$is_selected ->
     *[1] selected
   }
 menu-co_op-friend_hosted_farm_details = {$farm_name}, Owner: {$owner_name}, {$date}
+
+## Navigator Menu
+
+menu-navigator-choose_map = Choose map:
+menu-navigator-choose_point = Choose point - {$map_name}:
+menu-navigator-indicator_map = [Map]
+menu-navigator-indicator_point = [Point]
+menu-navigator-choose_map_speak = Choose map. {$map_name}
+menu-navigator-choose_point_speak = Points of {$map_name}. {$poi_name}
+menu-navigator-no_destinations = Navigation menu. No destinations available.
+menu-navigator-no_point = No points
+menu-navigator-navigating_to = Navigating to {$map_name} - {$poi_name}
+menu-navigator-unreachable = {$map_name} is unreachable from your current position.
+menu-navigator-cancelled = Navigation cancelled.
+menu-navigator-resetted = Navigation resetted.
+menu-navigator-arrived_at_map = Arrived at {$map_name}
+menu-navigator-arrived_at_poi = Arrived at {$poi_name}
+menu-navigator-crossing_map = Crossing {$map_name}
+
