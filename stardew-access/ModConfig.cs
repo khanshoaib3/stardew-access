@@ -547,4 +547,11 @@ internal class ModConfig
 
     // TODO Add the exclusion and focus list too
     // public String ExclusionList { get; set; } = "test";
+
+    #region Navigator
+
+    /// <summary>Keybind to open the Navigator menu.</summary>
+    public KeybindList NavigatorMenuKey { get; set; } = new(StardewModdingAPI.SButton.G);
+
+    #endregion
 }

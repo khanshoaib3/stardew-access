@@ -1,3 +1,4 @@
+using stardew_access.Features.Navigator;
 using stardew_access.Patches;
 using stardew_access.Utils;
 using StardewModdingAPI.Events;
@@ -19,6 +20,7 @@ public class FeatureManager
         GameStateNarrator.Instance,
         Warnings.Instance,
         Radar.Instance,
+        new NavigatorFeature(),
     ];
 
     public static void UpdateEvent(object? sender, UpdateTickedEventArgs e)

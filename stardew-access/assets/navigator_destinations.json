@@ -1,0 +1,155 @@
+[
+  {
+    "MapDisplayName": "Fattoria",
+    "MapLocationName": "Farm",
+    "PointsOfInterest": [
+      {
+        "DisplayName": "Casa del Fattore",
+        "TargetLocationName": "FarmHouse"
+      }
+    ]
+  },
+  {
+    "MapDisplayName": "Pelican Town",
+    "MapLocationName": "Town",
+    "PointsOfInterest": [
+      {
+        "DisplayName": "Negozio di Pierre",
+        "TargetLocationName": "SeedShop"
+      },
+      {
+        "DisplayName": "Clinica di Harvey",
+        "TargetLocationName": "Hospital"
+      },
+      {
+        "DisplayName": "Officina di Clint",
+        "TargetLocationName": "Blacksmith"
+      },
+      {
+        "DisplayName": "Taverna di Gus",
+        "TargetLocationName": "Saloon"
+      },
+      {
+        "DisplayName": "Biblioteca",
+        "TargetLocationName": "ArchaeologyHouse"
+      },
+      {
+        "DisplayName": "Municipio",
+        "TargetLocationName": "ManorHouse"
+      },
+      {
+        "DisplayName": "Centro Comunitario",
+        "TargetLocationName": "CommunityCenter"
+      },
+      {
+        "DisplayName": "Casa di Haley ed Emily",
+        "TargetLocationName": "HaleyHouse"
+      },
+      {
+        "DisplayName": "Casa di Sam e Vincent",
+        "TargetLocationName": "SamHouse"
+      },
+      {
+        "DisplayName": "Casa di Alex e famiglia",
+        "TargetLocationName": "JoshHouse"
+      },
+      {
+        "DisplayName": "Roulotte di Pam",
+        "TargetLocationName": "Trailer"
+      }
+    ]
+  },
+  {
+    "MapDisplayName": "Spiaggia",
+    "MapLocationName": "Beach",
+    "PointsOfInterest": [
+      {
+        "DisplayName": "Negozio di Willy",
+        "TargetLocationName": "FishShop"
+      },
+      {
+        "DisplayName": "Capanna di Elliott",
+        "TargetLocationName": "ElliottHouse"
+      }
+    ]
+  },
+  {
+    "MapDisplayName": "Montagna",
+    "MapLocationName": "Mountain",
+    "PointsOfInterest": [
+      {
+        "DisplayName": "Miniera - Ingresso",
+        "TargetLocationName": "Mine"
+      },
+      {
+        "DisplayName": "Gilda degli Avventurieri",
+        "TargetLocationName": "AdventureGuild"
+      },
+      {
+        "DisplayName": "Casa di Robin e famiglia",
+        "TargetLocationName": "ScienceHouse"
+      }
+    ]
+  },
+  {
+    "MapDisplayName": "Foresta di Cindersap",
+    "MapLocationName": "Forest",
+    "PointsOfInterest": [
+      {
+        "DisplayName": "Capanna di Leah",
+        "TargetLocationName": "LeahHouse"
+      },
+      {
+        "DisplayName": "Fattoria di Marnie",
+        "TargetLocationName": "AnimalShop"
+      },
+      {
+        "DisplayName": "Torre del Mago",
+        "TargetLocationName": "WizardHouse"
+      }
+    ]
+  },
+  {
+    "MapDisplayName": "Fermata Bus",
+    "MapLocationName": "BusStop",
+    "PointsOfInterest": [
+      {
+        "DisplayName": "Area partenza",
+        "ArrivalX": 4,
+        "ArrivalY": 4
+      }
+    ]
+  },
+  {
+    "MapDisplayName": "Ferrovia",
+    "MapLocationName": "Railroad",
+    "PointsOfInterest": [
+      {
+        "DisplayName": "Terme",
+        "TargetLocationName": "BathHouse_Entry"
+      }
+    ]
+  },
+  {
+    "MapDisplayName": "Bosco di Retro Fattoria",
+    "MapLocationName": "Backwoods",
+    "PointsOfInterest": [
+      {
+        "DisplayName": "Sentiero settentrionale",
+        "ArrivalX": 40,
+        "ArrivalY": 15
+      }
+    ]
+  },
+  {
+    "MapDisplayName": "Bosco Segreto",
+    "MapLocationName": "Woods",
+    "PointsOfInterest": [
+      {
+        "DisplayName": "Radura",
+        "ArrivalX": 30,
+        "ArrivalY": 15
+      }
+    ]
+  }
+]

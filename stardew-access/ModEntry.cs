@@ -2,6 +2,7 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using stardew_access.Commands;
 using stardew_access.Features;
+using stardew_access.Features.Navigator;
 using stardew_access.Framework;
 using stardew_access.Patches;
 using stardew_access.ScreenReader;
