@@ -111,10 +111,18 @@ namespace stardew_access.Utils
 				StopTimers();
 				StartTimers();
 
-				player.controller = new PathFindController(player, location, targetTile, direction.Value, (Character farmer, GameLocation location) =>
+				try
 				{
+					player.controller = new PathFindController(player, location, targetTile, direction.Value, (Character farmer, GameLocation location) =>
+					{
+						StopPathfinding();
+					});
+				}
+				catch (System.Exception ex)
+				{
+					Log.Debug($"[Pathfinder] Pathfinding failed: {ex.Message}");
 					StopPathfinding();
-				});
+				}
 			}
 		}
 

@@ -439,37 +439,46 @@ public class Navigator
 
         _state = State.PhaseA_Pathfinding;
 
-        _activeController = new PathFindController(
-            player,
-            location,
-            targetTile,
-            -1,
-            endBehaviorFunction: (character, loc) =>
-            {
-                _stepJustCompleted = true;
-
-                // Fix race condition: se il giocatore è già in una mappa diversa da quella
-                // in cui lo step è stato avviato, il warp naturale SDV è già avvenuto
-                // e OnPlayerWarped ha già pulito lo stato. Non sovrascrivere con stato obsoleto!
-                if (Game1.player?.currentLocation != location)
+        try
+        {
+            _activeController = new PathFindController(
+                player,
+                location,
+                targetTile,
+                -1,
+                endBehaviorFunction: (character, loc) =>
                 {
-                    Log.Debug("endBehaviorFunction bypassato: warp già avvenuto.");
-                    return;
+                    _stepJustCompleted = true;
+
+                    // Fix race condition: se il giocatore è già in una mappa diversa da quella
+                    // in cui lo step è stato avviato, il warp naturale SDV è già avvenuto
+                    // e OnPlayerWarped ha già pulito lo stato. Non sovrascrivere con stato obsoleto!
+                    if (Game1.player?.currentLocation != location)
+                    {
+                        Log.Debug("endBehaviorFunction bypassato: warp già avvenuto.");
+                        return;
+                    }
+
+                    // Essendo isBorderWarp = true, eseguiamo sempre il warp manuale via Game1.warpFarmer()
+                    _state = State.PhaseA_WaitingWarp;
+                    _warpWaitTicks = 0;
+                    _pendingBorderWarp = true;
+                    _pendingBorderWarpTarget = step.NextLocationName;
+                    _pendingBorderWarpTargetX = step.WarpTargetX;
+                    _pendingBorderWarpTargetY = step.WarpTargetY;
+                    Log.Debug($"Fase A step completato: warp forzato verso {step.NextLocationName} ({step.WarpTargetX},{step.WarpTargetY})");
                 }
+            );
 
-                // Essendo isBorderWarp = true, eseguiamo sempre il warp manuale via Game1.warpFarmer()
-                _state = State.PhaseA_WaitingWarp;
-                _warpWaitTicks = 0;
-                _pendingBorderWarp = true;
-                _pendingBorderWarpTarget = step.NextLocationName;
-                _pendingBorderWarpTargetX = step.WarpTargetX;
-                _pendingBorderWarpTargetY = step.WarpTargetY;
-                Log.Debug($"Fase A step completato: warp forzato verso {step.NextLocationName} ({step.WarpTargetX},{step.WarpTargetY})");
-            }
-        );
-
-        player.controller = _activeController;
-        _controllerImmuneTicksRemaining = 5;
+            player.controller = _activeController;
+            _controllerImmuneTicksRemaining = 5;
+        }
+        catch (System.Exception ex)
+        {
+            Log.Error($"[Navigator] Eccezione nell'istanziazione di PathFindController in Fase A: {ex.Message}");
+            CancelNavigation("Eccezione nell'avvio del pathfinder di Fase A");
+            return;
+        }
 
         string logSuffix = step.IsBorderWarp ? " [bordo]" : " [bordo forzato runtime]";
         Log.Debug($"Fase A step {_currentStepIndex + 1}/{_phaseARoute.Count}: '{step.LocationName}' → tile ({targetTile.X},{targetTile.Y})" + logSuffix);
@@ -496,26 +505,34 @@ public class Navigator
         _phaseBTicks = 0;
         _controllerReassignCount = 0;
 
-        _activeController = new PathFindController(
-            player,
-            location,
-            _phaseBTargetTile,
-            -1,
-            endBehaviorFunction: (character, loc) =>
-            {
-                // Fase B completata: annuncio arrivo al POI
-                _stepJustCompleted = true;
-                _state = State.Arrived;
-                MainClass.ScreenReader.Say(Translator.Instance.Translate("menu-navigator-arrived_at_poi", new { poi_name = _poiDisplayName }, TranslationCategory.Menu), true);
-                Log.Debug($"Fase B completata. Arrivato a '{_poiDisplayName}' @ ({_phaseBTargetTile.X},{_phaseBTargetTile.Y})");
-                _state = State.Idle;
-                _activeController = null;
-            }
-        );
+        try
+        {
+            _activeController = new PathFindController(
+                player,
+                location,
+                _phaseBTargetTile,
+                -1,
+                endBehaviorFunction: (character, loc) =>
+                {
+                    // Fase B completata: annuncio arrivo al POI
+                    _stepJustCompleted = true;
+                    _state = State.Arrived;
+                    MainClass.ScreenReader.Say(Translator.Instance.Translate("menu-navigator-arrived_at_poi", new { poi_name = _poiDisplayName }, TranslationCategory.Menu), true);
+                    Log.Debug($"Fase B completata. Arrivato a '{_poiDisplayName}' @ ({_phaseBTargetTile.X},{_phaseBTargetTile.Y})");
+                    _state = State.Idle;
+                    _activeController = null;
+                }
+            );
 
-        player.controller = _activeController;
-        _controllerImmuneTicksRemaining = 5;
-        Log.Debug($"Fase B avviata: tile ({_phaseBTargetTile.X},{_phaseBTargetTile.Y}) in '{_phaseBTargetLocation}'");
+            player.controller = _activeController;
+            _controllerImmuneTicksRemaining = 5;
+            Log.Debug($"Fase B avviata: tile ({_phaseBTargetTile.X},{_phaseBTargetTile.Y}) in '{_phaseBTargetLocation}'");
+        }
+        catch (System.Exception ex)
+        {
+            Log.Error($"[Navigator] Eccezione nell'istanziazione di PathFindController in Fase B: {ex.Message}");
+            CancelNavigation("Eccezione nell'avvio del pathfinder di Fase B");
+        }
     }
 
     // ─── Utility ─────────────────────────────────────────────────────────────

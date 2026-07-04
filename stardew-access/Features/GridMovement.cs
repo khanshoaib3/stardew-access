@@ -246,14 +246,21 @@ internal class GridMovement : FeatureBase
         Farmer player = Game1.player;
         GameLocation location = Game1.currentLocation;
 
-        PathFindController pathfinder = new(player, location, tileLocation.ToPoint(), direction);
-        if (pathfinder.pathToEndPoint != null)
+        try
         {
-            //valid point
-            player.Position = tileLocation * Game1.tileSize;
-            if (++StepCounter % tilesPerStep == 0)
-                location.playTerrainSound(tileLocation);
-            CenterPlayer();
+            PathFindController pathfinder = new(player, location, tileLocation.ToPoint(), direction);
+            if (pathfinder.pathToEndPoint != null)
+            {
+                //valid point
+                player.Position = tileLocation * Game1.tileSize;
+                if (++StepCounter % tilesPerStep == 0)
+                    location.playTerrainSound(tileLocation);
+                CenterPlayer();
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Log.Debug($"[GridMovement] Pathfinding failed: {ex.Message}");
         }
     }
 
