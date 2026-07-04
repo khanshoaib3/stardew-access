@@ -86,7 +86,7 @@ Il pacchetto `Pathoschild.Stardew.ModBuildConfig` copia automaticamente l'output
 - **Must** usare Project Fluent per ogni stringa rivolta all'utente, posizionando le traduzioni nei file `.ftl` dentro `stardew-access/i18n/`.
 - **Always** chiedere conferma esplicita all'utente prima di applicare refactoring architetturali o modifiche strutturali ai patch Harmony.
 - **Never** introdurre nuove dipendenze NuGet esterne non approvate dall'upstream.
-- **Never** effettuare modifiche strutturali ai patch Harmony core senza una verifica/approvazione esplicita dell'utente.
+- **Must** ottenere approvazione esplicita e testare accuratamente ogni modifica strutturale ai patch Harmony core, preservando la compatibilità con le logiche originali di gioco.
 - **Never** assumere dettagli di gioco non documentati: in caso di dubbi sui tile o logiche di warp, investigare o chiedere chiarimenti.
 
 ---
