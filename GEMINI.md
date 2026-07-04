@@ -79,12 +79,14 @@ Il pacchetto `Pathoschild.Stardew.ModBuildConfig` copia automaticamente l'output
 
 ## 4. Regole di sviluppo permanenti
 
-- **Always** verificare che la compilazione Release termini con 0 errori e 0 avvisi prima di committare.
-- **Never** committare modifiche a file machine-specific come `stardew-access.csproj.user`. Devono rimanere untracked.
-- **Must** utilizzare **Conventional Commits** per ogni commit (es. `feat(navigator): ...`, `fix(patches): ...`).
+- **Always** verificare che la compilazione Release termini con 0 errori e 0 avvisi (inclusi sia compiler warnings che analyzer warnings) prima di committare.
+- **Never** committare modifiche a file machine-specific come `stardew-access.csproj.user`. Devono rimanere untracked. Se un file machine-specific o temporaneo (es. `*.csproj.user`, cartelle `bin/`, `obj/`) viene tracciato per errore, va rimosso dall'indice di git usando `git rm --cached <file>`.
+- **Must** utilizzare **Conventional Commits** in **lingua inglese** per ogni commit (es. `feat(navigator): ...`, `fix(patches): ...`). I messaggi non devono essere generici e devono descrivere chiaramente il cambiamento.
 - **Must** ereditare da `FeatureBase` per implementare nuove caratteristiche e integrarle tramite `FeatureManager.cs`.
 - **Must** usare Project Fluent per ogni stringa rivolta all'utente, posizionando le traduzioni nei file `.ftl` dentro `stardew-access/i18n/`.
 - **Always** chiedere conferma esplicita all'utente prima di applicare refactoring architetturali o modifiche strutturali ai patch Harmony.
+- **Never** introdurre nuove dipendenze NuGet esterne non approvate dall'upstream.
+- **Never** effettuare modifiche strutturali ai patch Harmony core senza una verifica/approvazione esplicita dell'utente.
 - **Never** assumere dettagli di gioco non documentati: in caso di dubbi sui tile o logiche di warp, investigare o chiedere chiarimenti.
 
 ---
@@ -116,9 +118,14 @@ Log.Error("errore");
 ## 6. Git workflow e release management
 
 ### Convenzioni Commit
-Tutti i commit devono seguire il formato:
+Tutti i commit devono essere scritti in **lingua inglese**, essere descrittivi e seguire il formato:
 `<tipo>(<ambito>): <descrizione>`
 Tipi supportati: `feat`, `fix`, `docs`, `refactor`, `perf`, `chore`.
+
+### Checklist Pre-Push
+Prima di effettuare il push sul fork remoto:
+1. Eseguire `git status` per verificare che non ci siano file machine-specific (`csproj.user`) o cartelle temporanee (`bin/`, `obj/`) nello stage.
+2. Qualora presenti nell'indice, rimuoverli con `git rm --cached <file>`.
 
 ### Semantic Versioning & Tags
 - La versione è determinata da `manifest.json`.
