@@ -2,6 +2,7 @@ using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using StardewValley.TokenizableStrings;
 using stardew_access.Translation;
 using HarmonyLib;
 
@@ -11,6 +12,7 @@ internal class JunimoNoteMenuPatch : IPatch
 {
     internal static bool firstTimeInMenu = true;
     internal static bool isUsingCustomKeyBinds = false;
+    private static bool _announcedBundlePage = false;
 
     internal static int currentIngredientListItem = -1,
         currentIngredientInputSlot = -1,
@@ -62,6 +64,7 @@ internal class JunimoNoteMenuPatch : IPatch
 
         currentIngredientListItem = -1;
         isUsingCustomKeyBinds = false;
+        _announcedBundlePage = false;
 
         string areaName = __instance.scrambledText
             ? CommunityCenter.getAreaEnglishDisplayNameFromNumber(___whichArea)
@@ -111,14 +114,17 @@ internal class JunimoNoteMenuPatch : IPatch
                     continue;
 
                 translationKey = "menu-junimo_note-bundle_open_button";
-                translationToken = new { bundle_name = __instance.bundles[i].name };
+                // Use localized display name (label), not the internal English name.
+                translationToken = new { bundle_name = GetBundleDisplayName(__instance.bundles[i]) };
                 break;
             }
         }
 
-        MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationToken);
+        if (string.IsNullOrWhiteSpace(translationKey))
+            return false;
 
-        return !string.IsNullOrWhiteSpace(translationKey);
+        MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationToken);
+        return true;
     }
 
     private static void NarrateBundlePage(
@@ -141,40 +147,143 @@ internal class JunimoNoteMenuPatch : IPatch
         bool isLeftShiftPressed =
             Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
+        if (!_announcedBundlePage)
+        {
+            _announcedBundlePage = true;
+            MainClass.ScreenReader.MenuPrefixNoQueryText = Translator.Instance.Translate(
+                "menu-junimo_note-bundle_open_button",
+                new { bundle_name = GetBundleDisplayName(___currentPageBundle) },
+                TranslationCategory.Menu
+            ) + ", ";
+        }
+
         if (isIPressed && !isUsingCustomKeyBinds)
         {
             isUsingCustomKeyBinds = true;
             CycleThroughIngredientList(__instance, ___currentPageBundle, isLeftShiftPressed);
             Task.Delay(200).ContinueWith(_ => { isUsingCustomKeyBinds = false; });
+            return;
         }
-        else if (isVPressed && !isUsingCustomKeyBinds)
+
+        if (isVPressed && !isUsingCustomKeyBinds)
         {
             isUsingCustomKeyBinds = true;
             CycleThroughInputSlots(__instance, ___currentPageBundle, isLeftShiftPressed);
             Task.Delay(200).ContinueWith(_ => { isUsingCustomKeyBinds = false; });
+            return;
         }
-        else if (isCPressed && !isUsingCustomKeyBinds)
+
+        if (isCPressed && !isUsingCustomKeyBinds)
         {
             isUsingCustomKeyBinds = true;
             CycleThroughInventorySlots(__instance, ___currentPageBundle, isLeftShiftPressed);
             Task.Delay(200).ContinueWith(_ => { isUsingCustomKeyBinds = false; });
+            return;
         }
-        else if (isBackPressed && __instance.backButton != null
+
+        if (isBackPressed && __instance.backButton != null
                                && !__instance.backButton.containsPoint(x, y))
         {
             __instance.backButton.snapMouseCursorToCenter();
             MainClass.ScreenReader.Say(
                 Translator.Instance.Translate("menu-junimo_note-back_button", TranslationCategory.Menu), true);
+            return;
         }
-        else if (isPPressed && __instance.purchaseButton != null
+
+        if (isPPressed && __instance.purchaseButton != null
                             && !__instance.purchaseButton.containsPoint(x, y))
         {
             __instance.purchaseButton.snapMouseCursorToCenter();
             MainClass.ScreenReader.Say(
                 Translator.Instance.Translate("menu-junimo_note-purchase_button", TranslationCategory.Menu), true);
+            return;
         }
 
-        return;
+        NarrateBundlePageHover(__instance, ___currentPageBundle, x, y);
+    }
+
+    private static void NarrateBundlePageHover(
+        JunimoNoteMenu __instance,
+        Bundle ___currentPageBundle,
+        int x,
+        int y
+    )
+    {
+        if (__instance.backButton != null && __instance.backButton.containsPoint(x, y))
+        {
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-junimo_note-back_button", true);
+            return;
+        }
+
+        if (__instance.purchaseButton != null && __instance.purchaseButton.containsPoint(x, y))
+        {
+            MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-junimo_note-purchase_button", true);
+            return;
+        }
+
+        for (int i = 0; i < __instance.ingredientList.Count; i++)
+        {
+            ClickableTextureComponent ingredient = __instance.ingredientList[i];
+            if (!ingredient.containsPoint(x, y))
+                continue;
+
+            string toSpeak = !string.IsNullOrWhiteSpace(ingredient.hoverText)
+                ? ingredient.hoverText
+                : ingredient.item?.DisplayName ?? "";
+
+            if (i < ___currentPageBundle.ingredients.Count)
+            {
+                BundleIngredientDescription description = ___currentPageBundle.ingredients[i];
+                if (description.completed)
+                {
+                    toSpeak = Translator.Instance.Translate(
+                        "menu-bundle-completed-prefix",
+                        new { content = toSpeak },
+                        TranslationCategory.Menu
+                    );
+                }
+                else if (ingredient.item != null)
+                {
+                    toSpeak =
+                        $"{InventoryUtils.GetPluralNameOfItem(ingredient.item)}, {InventoryUtils.GetQualityFromIndex(description.quality)}";
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(toSpeak))
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            return;
+        }
+
+        for (int i = 0; i < __instance.ingredientSlots.Count; i++)
+        {
+            ClickableTextureComponent slot = __instance.ingredientSlots[i];
+            if (!slot.containsPoint(x, y))
+                continue;
+
+            string toSpeak = slot.item == null
+                ? Translator.Instance.Translate(
+                    "menu-junimo_note-input_slot",
+                    new { index = i + 1 },
+                    TranslationCategory.Menu
+                )
+                : slot.item.DisplayName;
+
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            return;
+        }
+
+        if (__instance.inventory != null
+            && !___currentPageBundle.complete
+            && ___currentPageBundle.completionTimer <= 0)
+        {
+            InventoryUtils.NarrateHoveredSlot(__instance.inventory);
+        }
+    }
+
+    private static string GetBundleDisplayName(Bundle bundle)
+    {
+        string displayName = string.IsNullOrWhiteSpace(bundle.label) ? bundle.name : bundle.label;
+        return TokenParser.ParseText(displayName) ?? displayName;
     }
 
     private static void CycleThroughIngredientList(
@@ -284,7 +393,6 @@ internal class JunimoNoteMenuPatch : IPatch
         if (__instance.inventory == null || __instance.inventory.actualInventory.Count <= 0)
             return;
 
-        int prevSlotIndex = currentInventorySlot;
         currentInventorySlot += (isLeftShiftPressed ? -1 : 1);
         if (currentInventorySlot >= __instance.inventory.actualInventory.Count)
             if (isLeftShiftPressed)
@@ -312,5 +420,6 @@ internal class JunimoNoteMenuPatch : IPatch
         currentIngredientInputSlot = -1;
         currentInventorySlot = -1;
         firstTimeInMenu = true;
+        _announcedBundlePage = false;
     }
 }

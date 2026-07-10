@@ -506,6 +506,7 @@ internal class IClickableMenuPatch : IPatch
                 break;
             case GameMenu:
                 CraftingPagePatch.Cleanup();
+                MapPagePatch.Cleanup();
                 break;
             case JunimoNoteMenu:
                 JunimoNoteMenuPatch.Cleanup();

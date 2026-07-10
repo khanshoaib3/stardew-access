@@ -246,6 +246,28 @@ internal class ModConfig
     /// </summary>
     public KeybindList CraftingMenuCycleThroughRecipesKey { get; set; } = KeybindList.Parse("C");
 
+    // Map page
+
+    /// <summary>
+    /// Move to the nearest map location to the left.
+    /// </summary>
+    public KeybindList MapPageMoveLeftKey { get; set; } = KeybindList.Parse("A");
+
+    /// <summary>
+    /// Move to the nearest map location to the right.
+    /// </summary>
+    public KeybindList MapPageMoveRightKey { get; set; } = KeybindList.Parse("D");
+
+    /// <summary>
+    /// Move to the nearest map location above.
+    /// </summary>
+    public KeybindList MapPageMoveUpKey { get; set; } = KeybindList.Parse("W");
+
+    /// <summary>
+    /// Move to the nearest map location below.
+    /// </summary>
+    public KeybindList MapPageMoveDownKey { get; set; } = KeybindList.Parse("S");
+
     #endregion
 
     #region GridMovement
