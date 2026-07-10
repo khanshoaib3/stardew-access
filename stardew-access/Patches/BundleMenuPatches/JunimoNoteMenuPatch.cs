@@ -150,11 +150,16 @@ internal class JunimoNoteMenuPatch : IPatch
         if (!_announcedBundlePage)
         {
             _announcedBundlePage = true;
-            MainClass.ScreenReader.MenuPrefixNoQueryText = Translator.Instance.Translate(
+            string bundleName = Translator.Instance.Translate(
                 "menu-junimo_note-bundle_open_button",
                 new { bundle_name = GetBundleDisplayName(___currentPageBundle) },
                 TranslationCategory.Menu
-            ) + ", ";
+            );
+            string layoutInfo = Translator.Instance.Translate(
+                "menu-junimo_note-bundle_layout_info",
+                TranslationCategory.Menu
+            );
+            MainClass.ScreenReader.MenuPrefixNoQueryText = $"{bundleName}, {layoutInfo}, ";
         }
 
         if (isIPressed && !isUsingCustomKeyBinds)
@@ -227,30 +232,7 @@ internal class JunimoNoteMenuPatch : IPatch
             if (!ingredient.containsPoint(x, y))
                 continue;
 
-            string toSpeak = !string.IsNullOrWhiteSpace(ingredient.hoverText)
-                ? ingredient.hoverText
-                : ingredient.item?.DisplayName ?? "";
-
-            if (i < ___currentPageBundle.ingredients.Count)
-            {
-                BundleIngredientDescription description = ___currentPageBundle.ingredients[i];
-                if (description.completed)
-                {
-                    toSpeak = Translator.Instance.Translate(
-                        "menu-bundle-completed-prefix",
-                        new { content = toSpeak },
-                        TranslationCategory.Menu
-                    );
-                }
-                else if (ingredient.item != null)
-                {
-                    toSpeak =
-                        $"{InventoryUtils.GetPluralNameOfItem(ingredient.item)}, {InventoryUtils.GetQualityFromIndex(description.quality)}";
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(toSpeak))
-                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            NarrateRequiredIngredient(___currentPageBundle, ingredient, i);
             return;
         }
 
@@ -260,15 +242,7 @@ internal class JunimoNoteMenuPatch : IPatch
             if (!slot.containsPoint(x, y))
                 continue;
 
-            string toSpeak = slot.item == null
-                ? Translator.Instance.Translate(
-                    "menu-junimo_note-input_slot",
-                    new { index = i + 1 },
-                    TranslationCategory.Menu
-                )
-                : slot.item.DisplayName;
-
-            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            NarrateDepositSlot(slot, i, useMenuChecker: true);
             return;
         }
 
@@ -276,7 +250,136 @@ internal class JunimoNoteMenuPatch : IPatch
             && !___currentPageBundle.complete
             && ___currentPageBundle.completionTimer <= 0)
         {
-            InventoryUtils.NarrateHoveredSlot(__instance.inventory);
+            NarrateInventorySlot(__instance.inventory, x, y, useMenuChecker: true);
+        }
+    }
+
+    private static void NarrateRequiredIngredient(
+        Bundle currentPageBundle,
+        ClickableTextureComponent ingredient,
+        int index
+    )
+    {
+        string itemDetails = !string.IsNullOrWhiteSpace(ingredient.hoverText)
+            ? ingredient.hoverText
+            : ingredient.item?.DisplayName ?? "";
+
+        bool completed = false;
+        if (index < currentPageBundle.ingredients.Count)
+        {
+            BundleIngredientDescription description = currentPageBundle.ingredients[index];
+            completed = description.completed;
+
+            if (!completed)
+            {
+                Item? item = ingredient.item;
+                if (item == null)
+                {
+                    string representativeItemId = JunimoNoteMenu.GetRepresentativeItemId(description);
+                    item = description.preservesId == null
+                        ? ItemRegistry.Create(representativeItemId, description.stack, description.quality)
+                        : Utility.CreateFlavoredItem(
+                            representativeItemId,
+                            description.preservesId,
+                            description.quality,
+                            description.stack
+                        );
+                }
+
+                itemDetails =
+                    $"{InventoryUtils.GetPluralNameOfItem(item)}, {InventoryUtils.GetQualityFromIndex(description.quality)}";
+            }
+            else if (string.IsNullOrWhiteSpace(itemDetails) && ingredient.item != null)
+            {
+                itemDetails = ingredient.item.DisplayName;
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(itemDetails))
+            return;
+
+        string translationKey = completed
+            ? "menu-junimo_note-required_ingredient_completed"
+            : "menu-junimo_note-required_ingredient";
+
+        MainClass.ScreenReader.TranslateAndSayWithMenuChecker(
+            translationKey,
+            true,
+            new { content = itemDetails }
+        );
+    }
+
+    private static void NarrateDepositSlot(
+        ClickableTextureComponent slot,
+        int index,
+        bool useMenuChecker
+    )
+    {
+        string toSpeak = slot.item == null
+            ? Translator.Instance.Translate(
+                "menu-junimo_note-deposit_slot_empty",
+                new { index = index + 1 },
+                TranslationCategory.Menu
+            )
+            : Translator.Instance.Translate(
+                "menu-junimo_note-deposit_slot_filled",
+                new { index = index + 1, item_name = slot.item.DisplayName },
+                TranslationCategory.Menu
+            );
+
+        if (useMenuChecker)
+            MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+        else
+            MainClass.ScreenReader.Say(toSpeak, true);
+    }
+
+    private static void NarrateInventorySlot(
+        InventoryMenu inventoryMenu,
+        int x,
+        int y,
+        bool useMenuChecker
+    )
+    {
+        List<ClickableComponent> inventory = inventoryMenu.inventory;
+        IList<Item> actualInventory = inventoryMenu.actualInventory;
+
+        for (int i = 0; i < inventory.Count; i++)
+        {
+            if (!inventory[i].containsPoint(x, y))
+                continue;
+
+            string content;
+            if ((inventoryMenu.playerInventory || inventoryMenu.showGrayedOutSlots) && i >= actualInventory.Count)
+            {
+                content = Translator.Instance.Translate("inventory_util-locked_slot");
+            }
+            else if (i >= actualInventory.Count || actualInventory[i] == null)
+            {
+                content = Translator.Instance.Translate("inventory_util-empty_slot");
+            }
+            else
+            {
+                bool? isHighlighted = inventoryMenu.highlightMethod(actualInventory[i]);
+                content = InventoryUtils.GetItemDetails(
+                    actualInventory[i],
+                    i,
+                    isHighlighted,
+                    giveExtraDetails: !MainClass.Config.DisableInventoryVerbosity,
+                    isHoveredItemBundleItem: isHighlighted == true
+                );
+            }
+
+            string toSpeak = Translator.Instance.Translate(
+                "menu-junimo_note-inventory_item",
+                new { content },
+                TranslationCategory.Menu
+            );
+
+            if (useMenuChecker)
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            else
+                MainClass.ScreenReader.Say(toSpeak, true);
+            return;
         }
     }
 
@@ -312,33 +415,8 @@ internal class JunimoNoteMenuPatch : IPatch
                 currentIngredientListItem = 0;
 
         ClickableTextureComponent c = __instance.ingredientList[currentIngredientListItem];
-        BundleIngredientDescription ingredient = ___currentPageBundle.ingredients[currentIngredientListItem];
-        string representativeItemId = JunimoNoteMenu.GetRepresentativeItemId(ingredient);
-        Item item = ingredient.preservesId == null
-            ? ItemRegistry.Create(representativeItemId, ingredient.stack, ingredient.quality)
-            : Utility.CreateFlavoredItem(representativeItemId, ingredient.preservesId, ingredient.quality, ingredient.stack);
-
-        bool completed = ___currentPageBundle != null && ___currentPageBundle.ingredients != null
-                                                      && currentIngredientListItem < ___currentPageBundle.ingredients.Count
-                                                      && ___currentPageBundle.ingredients[currentIngredientListItem].completed;
-
-        string toSpeak = item.DisplayName;
-
-        if (completed)
-        {
-            toSpeak = Translator.Instance.Translate(
-                "menu-bundle-completed-prefix",
-                new { content = toSpeak },
-                TranslationCategory.Menu
-            );
-        }
-        else
-        {
-            toSpeak = $"{InventoryUtils.GetPluralNameOfItem(item)}, {InventoryUtils.GetQualityFromIndex(ingredient.quality)}";
-        }
-
         c.snapMouseCursorToCenter();
-        MainClass.ScreenReader.Say(toSpeak, true);
+        NarrateRequiredIngredient(___currentPageBundle, c, currentIngredientListItem);
     }
 
     private static void CycleThroughInputSlots(
@@ -364,24 +442,8 @@ internal class JunimoNoteMenuPatch : IPatch
                 currentIngredientInputSlot = 0;
 
         ClickableTextureComponent c = __instance.ingredientSlots[currentIngredientInputSlot];
-        Item item = c.item;
-        string toSpeak;
-
-        if (item == null)
-        {
-            toSpeak = Translator.Instance.Translate(
-                "menu-junimo_note-input_slot",
-                new { index = currentIngredientInputSlot + 1 },
-                TranslationCategory.Menu
-            );
-        }
-        else
-        {
-            toSpeak = item.DisplayName;
-        }
-
         c.snapMouseCursorToCenter();
-        MainClass.ScreenReader.Say(toSpeak, true);
+        NarrateDepositSlot(c, currentIngredientInputSlot, useMenuChecker: false);
     }
 
     private static void CycleThroughInventorySlots(
@@ -407,11 +469,8 @@ internal class JunimoNoteMenuPatch : IPatch
                 currentInventorySlot = 0;
 
         ClickableComponent c = __instance.inventory.inventory[currentInventorySlot];
-        InventoryUtils.NarrateHoveredSlot(__instance.inventory,
-            hoverX: c.bounds.Center.X,
-            hoverY: c.bounds.Center.Y
-        );
         c.snapMouseCursorToCenter();
+        NarrateInventorySlot(__instance.inventory, c.bounds.Center.X, c.bounds.Center.Y, useMenuChecker: false);
     }
 
     internal static void Cleanup()
