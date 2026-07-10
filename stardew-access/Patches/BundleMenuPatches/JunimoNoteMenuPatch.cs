@@ -348,35 +348,56 @@ internal class JunimoNoteMenuPatch : IPatch
             if (!inventory[i].containsPoint(x, y))
                 continue;
 
-            string content;
+            // Skip invisible trailing slots.
+            if (!inventory[i].visible)
+                continue;
+
+            string toSpeak;
+            string customQuery;
+
             if ((inventoryMenu.playerInventory || inventoryMenu.showGrayedOutSlots) && i >= actualInventory.Count)
             {
-                content = Translator.Instance.Translate("inventory_util-locked_slot");
+                toSpeak = Translator.Instance.Translate(
+                    "menu-junimo_note-inventory_item",
+                    new { content = Translator.Instance.Translate("inventory_util-locked_slot") },
+                    TranslationCategory.Menu
+                );
+                customQuery = $"junimo-inventory-locked:{i}";
             }
             else if (i >= actualInventory.Count || actualInventory[i] == null)
             {
-                content = Translator.Instance.Translate("inventory_util-empty_slot");
+                toSpeak = Translator.Instance.Translate(
+                    "menu-junimo_note-inventory_empty_slot",
+                    TranslationCategory.Menu
+                );
+                customQuery = $"junimo-inventory-empty:{i}";
             }
             else
             {
-                bool? isHighlighted = inventoryMenu.highlightMethod(actualInventory[i]);
-                content = InventoryUtils.GetItemDetails(
+                // Pass isHighlighted: null so InventoryUtils does not play invalid-selection
+                // every draw frame (prevSlotIndex is only updated by NarrateHoveredSlot).
+                bool canDonate = inventoryMenu.highlightMethod(actualInventory[i]);
+                string itemDetails = InventoryUtils.GetItemDetails(
                     actualInventory[i],
                     i,
-                    isHighlighted,
-                    giveExtraDetails: !MainClass.Config.DisableInventoryVerbosity,
-                    isHoveredItemBundleItem: isHighlighted == true
+                    isHighlighted: null,
+                    giveExtraDetails: !MainClass.Config.DisableInventoryVerbosity
                 );
+
+                string translationKey = canDonate
+                    ? "menu-junimo_note-inventory_donatable"
+                    : "menu-junimo_note-inventory_not_donatable";
+
+                toSpeak = Translator.Instance.Translate(
+                    translationKey,
+                    new { content = itemDetails },
+                    TranslationCategory.Menu
+                );
+                customQuery = $"junimo-inventory-item:{i}:{canDonate}:{itemDetails}";
             }
 
-            string toSpeak = Translator.Instance.Translate(
-                "menu-junimo_note-inventory_item",
-                new { content },
-                TranslationCategory.Menu
-            );
-
             if (useMenuChecker)
-                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, customQuery);
             else
                 MainClass.ScreenReader.Say(toSpeak, true);
             return;
