@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -24,13 +25,17 @@ public class MapPagePatch : IPatch
             original: AccessTools.DeclaredMethod(typeof(MapPage), "draw"),
             postfix: new HarmonyMethod(typeof(MapPagePatch), nameof(DrawPatch))
         );
+        harmony.Patch(
+            original: AccessTools.DeclaredMethod(typeof(MapPage), "receiveKeyPress"),
+            prefix: new HarmonyMethod(typeof(MapPagePatch), nameof(ReceiveKeyPressPatch))
+        );
     }
 
     private static void DrawPatch(MapPage __instance)
     {
         try
         {
-            HandleKeyBinds(__instance);
+            HandleMovementInput(__instance);
             MainClass.ScreenReader.SayWithMenuChecker(__instance.hoverText, true);
         }
         catch (Exception e)
@@ -40,27 +45,60 @@ public class MapPagePatch : IPatch
         }
     }
 
-    private static void HandleKeyBinds(MapPage __instance)
+    // Suppress vanilla neighbor-based snapping for movement keys; we handle navigation spatially.
+    private static bool ReceiveKeyPressPatch(Keys key)
+    {
+        return !IsConfiguredMovementKey(key);
+    }
+
+    private static void HandleMovementInput(MapPage __instance)
     {
         if (_isCycling || __instance.points.Count == 0)
             return;
 
-        MapDirection? direction = null;
-        if (MainClass.Config.MapPageMoveRightKey.JustPressed())
-            direction = MapDirection.Right;
-        else if (MainClass.Config.MapPageMoveLeftKey.JustPressed())
-            direction = MapDirection.Left;
-        else if (MainClass.Config.MapPageMoveUpKey.JustPressed())
-            direction = MapDirection.Up;
-        else if (MainClass.Config.MapPageMoveDownKey.JustPressed())
-            direction = MapDirection.Down;
-
+        MapDirection? direction = GetPressedMovementDirection();
         if (direction == null)
             return;
 
         _isCycling = true;
         MoveToNearestLocation(__instance, direction.Value);
         Task.Delay(200).ContinueWith(_ => { _isCycling = false; });
+    }
+
+    private static MapDirection? GetPressedMovementDirection()
+    {
+        // Same idea as IClickableMenuPatch.HandleMenuMovementKeyPress: use the player's
+        // configured movement binds so keyboard remaps and gamepads work.
+        KeyboardState keyboardState = Game1.input.GetKeyboardState();
+        if (Game1.isOneOfTheseKeysDown(keyboardState, Game1.options.moveRightButton))
+            return MapDirection.Right;
+        if (Game1.isOneOfTheseKeysDown(keyboardState, Game1.options.moveLeftButton))
+            return MapDirection.Left;
+        if (Game1.isOneOfTheseKeysDown(keyboardState, Game1.options.moveUpButton))
+            return MapDirection.Up;
+        if (Game1.isOneOfTheseKeysDown(keyboardState, Game1.options.moveDownButton))
+            return MapDirection.Down;
+
+        GamePadState gamePadState = Game1.input.GetGamePadState();
+        if (gamePadState.IsButtonDown(Buttons.DPadRight) || gamePadState.IsButtonDown(Buttons.LeftThumbstickRight))
+            return MapDirection.Right;
+        if (gamePadState.IsButtonDown(Buttons.DPadLeft) || gamePadState.IsButtonDown(Buttons.LeftThumbstickLeft))
+            return MapDirection.Left;
+        if (gamePadState.IsButtonDown(Buttons.DPadUp) || gamePadState.IsButtonDown(Buttons.LeftThumbstickUp))
+            return MapDirection.Up;
+        if (gamePadState.IsButtonDown(Buttons.DPadDown) || gamePadState.IsButtonDown(Buttons.LeftThumbstickDown))
+            return MapDirection.Down;
+
+        return null;
+    }
+
+    private static bool IsConfiguredMovementKey(Keys key)
+    {
+        InputButton pressedInput = new(key);
+        return Game1.options.moveUpButton.Contains(pressedInput)
+            || Game1.options.moveRightButton.Contains(pressedInput)
+            || Game1.options.moveDownButton.Contains(pressedInput)
+            || Game1.options.moveLeftButton.Contains(pressedInput);
     }
 
     private static void MoveToNearestLocation(MapPage __instance, MapDirection direction)

@@ -421,41 +421,6 @@ internal static class ModConfigMenu
             getValue: () => config.CraftingMenuCycleThroughRecipesKey,
             setValue: value => config.CraftingMenuCycleThroughRecipesKey = value
         );
-
-        // --- Map Page ---
-        configMenu.AddSectionTitle(manifest, () => "Map Page");
-
-        configMenu.AddKeybindList(
-            manifest,
-            name: () => "Map Move Left",
-            tooltip: () => "Move to the nearest world map location to the left, including modded areas.",
-            getValue: () => config.MapPageMoveLeftKey,
-            setValue: value => config.MapPageMoveLeftKey = value
-        );
-
-        configMenu.AddKeybindList(
-            manifest,
-            name: () => "Map Move Right",
-            tooltip: () => "Move to the nearest world map location to the right, including modded areas.",
-            getValue: () => config.MapPageMoveRightKey,
-            setValue: value => config.MapPageMoveRightKey = value
-        );
-
-        configMenu.AddKeybindList(
-            manifest,
-            name: () => "Map Move Up",
-            tooltip: () => "Move to the nearest world map location above, including modded areas.",
-            getValue: () => config.MapPageMoveUpKey,
-            setValue: value => config.MapPageMoveUpKey = value
-        );
-
-        configMenu.AddKeybindList(
-            manifest,
-            name: () => "Map Move Down",
-            tooltip: () => "Move to the nearest world map location below, including modded areas.",
-            getValue: () => config.MapPageMoveDownKey,
-            setValue: value => config.MapPageMoveDownKey = value
-        );
     }
 
     private static void AddGridMovementPage(IGenericModConfigMenuApi configMenu, IManifest manifest, ModConfig config)
