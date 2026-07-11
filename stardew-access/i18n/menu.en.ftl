@@ -108,20 +108,27 @@ menu-junimo_note-scrambled_text = Scrambled text
 menu-junimo_note-current_area_info-prefix = Area: {$area_name}, {$completion_reward}, 
 menu-junimo_note-bundle_open_button = {$bundle_name} bundle
 menu-junimo_note-bundle_layout_info = Player inventory on the left. Required items and deposit slots on the right.
-menu-junimo_note-inventory_item = Inventory, {$content}
-menu-junimo_note-inventory_empty_slot = Inventory, empty slot
-menu-junimo_note-inventory_donatable = Inventory, {$content}, donatable
-menu-junimo_note-inventory_not_donatable = Inventory, {$content}, cannot donate
-menu-junimo_note-required_ingredient = Required for this bundle, {$content}
-menu-junimo_note-required_ingredient_completed = Required for this bundle, completed, {$content}
+menu-junimo_note-section_inventory = Inventory
+menu-junimo_note-section_required = Required items
+menu-junimo_note-section_deposit = Deposit slots
+menu-junimo_note-inventory_item = {$content}
+menu-junimo_note-inventory_empty_slot = Empty slot
+menu-junimo_note-inventory_donatable = Donatable {$content}
+menu-junimo_note-inventory_not_donatable = {$content}
+menu-junimo_note-required_ingredient = {$content}
+menu-junimo_note-required_ingredient_completed = Completed, {$content}
 menu-junimo_note-input_slot = Input Slot {$index}
-menu-junimo_note-deposit_slot_empty = Deposit slot {$index}, empty. Place required items here.
-menu-junimo_note-deposit_slot_filled = Deposit slot {$index}, {$item_name}
+menu-junimo_note-deposit_slot_empty = Slot {$index}, empty. Place required items here.
+menu-junimo_note-deposit_slot_filled = Slot {$index}, {$item_name}
 menu-junimo_note-collect_rewards = Collect rewards
 menu-junimo_note-next_area_button = Next area button
 menu-junimo_note-previous_area_button = Previous area button
 menu-junimo_note-back_button = Back button
 menu-junimo_note-purchase_button = Purchase button
+
+### Map Page
+
+menu-map_page-unknown_location = Unknown location
 
 ## Donation Menus
 

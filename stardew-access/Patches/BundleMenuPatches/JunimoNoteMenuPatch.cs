@@ -10,9 +10,18 @@ namespace stardew_access.Patches;
 
 internal class JunimoNoteMenuPatch : IPatch
 {
+    private enum BundleSection
+    {
+        None,
+        Inventory,
+        Required,
+        Deposit
+    }
+
     internal static bool firstTimeInMenu = true;
     internal static bool isUsingCustomKeyBinds = false;
     private static bool _announcedBundlePage = false;
+    private static BundleSection _lastSection = BundleSection.None;
 
     internal static int currentIngredientListItem = -1,
         currentIngredientInputSlot = -1,
@@ -65,6 +74,7 @@ internal class JunimoNoteMenuPatch : IPatch
         currentIngredientListItem = -1;
         isUsingCustomKeyBinds = false;
         _announcedBundlePage = false;
+        _lastSection = BundleSection.None;
 
         string areaName = __instance.scrambledText
             ? CommunityCenter.getAreaEnglishDisplayNameFromNumber(___whichArea)
@@ -204,14 +214,16 @@ internal class JunimoNoteMenuPatch : IPatch
             return;
         }
 
-        NarrateBundlePageHover(__instance, ___currentPageBundle, x, y);
+        // Legacy/vanilla hover navigation: no repeating section labels.
+        NarrateBundlePageHover(__instance, ___currentPageBundle, x, y, announceSections: false);
     }
 
     private static void NarrateBundlePageHover(
         JunimoNoteMenu __instance,
         Bundle ___currentPageBundle,
         int x,
-        int y
+        int y,
+        bool announceSections
     )
     {
         if (__instance.backButton != null && __instance.backButton.containsPoint(x, y))
@@ -232,7 +244,7 @@ internal class JunimoNoteMenuPatch : IPatch
             if (!ingredient.containsPoint(x, y))
                 continue;
 
-            NarrateRequiredIngredient(___currentPageBundle, ingredient, i);
+            NarrateRequiredIngredient(___currentPageBundle, ingredient, i, announceSections);
             return;
         }
 
@@ -242,7 +254,7 @@ internal class JunimoNoteMenuPatch : IPatch
             if (!slot.containsPoint(x, y))
                 continue;
 
-            NarrateDepositSlot(slot, i, useMenuChecker: true);
+            NarrateDepositSlot(slot, i, useMenuChecker: true, announceSections);
             return;
         }
 
@@ -250,14 +262,15 @@ internal class JunimoNoteMenuPatch : IPatch
             && !___currentPageBundle.complete
             && ___currentPageBundle.completionTimer <= 0)
         {
-            NarrateInventorySlot(__instance.inventory, x, y, useMenuChecker: true);
+            NarrateInventorySlot(__instance.inventory, x, y, useMenuChecker: true, announceSections);
         }
     }
 
     private static void NarrateRequiredIngredient(
         Bundle currentPageBundle,
         ClickableTextureComponent ingredient,
-        int index
+        int index,
+        bool announceSections
     )
     {
         string itemDetails = !string.IsNullOrWhiteSpace(ingredient.hoverText)
@@ -302,17 +315,21 @@ internal class JunimoNoteMenuPatch : IPatch
             ? "menu-junimo_note-required_ingredient_completed"
             : "menu-junimo_note-required_ingredient";
 
-        MainClass.ScreenReader.TranslateAndSayWithMenuChecker(
+        string toSpeak = Translator.Instance.Translate(
             translationKey,
-            true,
-            new { content = itemDetails }
+            new { content = itemDetails },
+            TranslationCategory.Menu
         );
+        toSpeak = WithSectionPrefix(BundleSection.Required, toSpeak, announceSections);
+
+        MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
     }
 
     private static void NarrateDepositSlot(
         ClickableTextureComponent slot,
         int index,
-        bool useMenuChecker
+        bool useMenuChecker,
+        bool announceSections
     )
     {
         string toSpeak = slot.item == null
@@ -327,6 +344,8 @@ internal class JunimoNoteMenuPatch : IPatch
                 TranslationCategory.Menu
             );
 
+        toSpeak = WithSectionPrefix(BundleSection.Deposit, toSpeak, announceSections);
+
         if (useMenuChecker)
             MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
         else
@@ -337,7 +356,8 @@ internal class JunimoNoteMenuPatch : IPatch
         InventoryMenu inventoryMenu,
         int x,
         int y,
-        bool useMenuChecker
+        bool useMenuChecker,
+        bool announceSections
     )
     {
         List<ClickableComponent> inventory = inventoryMenu.inventory;
@@ -396,12 +416,42 @@ internal class JunimoNoteMenuPatch : IPatch
                 customQuery = $"junimo-inventory-item:{i}:{canDonate}:{itemDetails}";
             }
 
+            toSpeak = WithSectionPrefix(BundleSection.Inventory, toSpeak, announceSections);
+
             if (useMenuChecker)
                 MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, customQuery);
             else
                 MainClass.ScreenReader.Say(toSpeak, true);
             return;
         }
+    }
+
+    /// <summary>
+    /// For custom keybinds only: speak the section name once when switching between
+    /// inventory / required items / deposit slots. Legacy hover skips this entirely.
+    /// </summary>
+    private static string WithSectionPrefix(BundleSection section, string content, bool announceSections)
+    {
+        if (!announceSections)
+            return content;
+
+        if (_lastSection == section)
+            return content;
+
+        _lastSection = section;
+        string sectionKey = section switch
+        {
+            BundleSection.Inventory => "menu-junimo_note-section_inventory",
+            BundleSection.Required => "menu-junimo_note-section_required",
+            BundleSection.Deposit => "menu-junimo_note-section_deposit",
+            _ => ""
+        };
+
+        if (string.IsNullOrWhiteSpace(sectionKey))
+            return content;
+
+        string sectionName = Translator.Instance.Translate(sectionKey, TranslationCategory.Menu);
+        return $"{sectionName}, {content}";
     }
 
     private static string GetBundleDisplayName(Bundle bundle)
@@ -437,7 +487,7 @@ internal class JunimoNoteMenuPatch : IPatch
 
         ClickableTextureComponent c = __instance.ingredientList[currentIngredientListItem];
         c.snapMouseCursorToCenter();
-        NarrateRequiredIngredient(___currentPageBundle, c, currentIngredientListItem);
+        NarrateRequiredIngredient(___currentPageBundle, c, currentIngredientListItem, announceSections: true);
     }
 
     private static void CycleThroughInputSlots(
@@ -464,7 +514,7 @@ internal class JunimoNoteMenuPatch : IPatch
 
         ClickableTextureComponent c = __instance.ingredientSlots[currentIngredientInputSlot];
         c.snapMouseCursorToCenter();
-        NarrateDepositSlot(c, currentIngredientInputSlot, useMenuChecker: false);
+        NarrateDepositSlot(c, currentIngredientInputSlot, useMenuChecker: false, announceSections: true);
     }
 
     private static void CycleThroughInventorySlots(
@@ -491,7 +541,13 @@ internal class JunimoNoteMenuPatch : IPatch
 
         ClickableComponent c = __instance.inventory.inventory[currentInventorySlot];
         c.snapMouseCursorToCenter();
-        NarrateInventorySlot(__instance.inventory, c.bounds.Center.X, c.bounds.Center.Y, useMenuChecker: false);
+        NarrateInventorySlot(
+            __instance.inventory,
+            c.bounds.Center.X,
+            c.bounds.Center.Y,
+            useMenuChecker: false,
+            announceSections: true
+        );
     }
 
     internal static void Cleanup()
@@ -501,5 +557,6 @@ internal class JunimoNoteMenuPatch : IPatch
         currentInventorySlot = -1;
         firstTimeInMenu = true;
         _announcedBundlePage = false;
+        _lastSection = BundleSection.None;
     }
 }

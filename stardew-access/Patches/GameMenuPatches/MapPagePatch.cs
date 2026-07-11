@@ -1,6 +1,7 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using stardew_access.Translation;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -36,13 +37,69 @@ public class MapPagePatch : IPatch
         try
         {
             HandleMovementInput(__instance);
-            MainClass.ScreenReader.SayWithMenuChecker(__instance.hoverText, true);
+
+            string hoverText = GetNarratableHoverText(__instance);
+            if (string.IsNullOrWhiteSpace(hoverText))
+                return;
+
+            // Include the hotspot id so two "???" / unknown areas don't collapse into one query.
+            string customQuery = GetHoverQuery(__instance, hoverText);
+            MainClass.ScreenReader.SayWithMenuChecker(hoverText, true, customQuery);
         }
         catch (Exception e)
         {
             Log.Error($"An error occurred in map page patch:\n{e.Message}\n{e.StackTrace}");
             throw;
         }
+    }
+
+    /// <summary>
+    /// Unrevealed map areas use "???" (see MapArea.GetTooltips when KnownCondition fails).
+    /// Screen readers usually skip question marks, so speak a real phrase instead.
+    /// </summary>
+    private static string GetNarratableHoverText(MapPage mapPage)
+    {
+        string hoverText = mapPage.hoverText;
+        if (string.IsNullOrWhiteSpace(hoverText))
+            return "";
+
+        if (IsUnknownLocationLabel(hoverText))
+        {
+            return Translator.Instance.Translate(
+                "menu-map_page-unknown_location",
+                TranslationCategory.Menu
+            );
+        }
+
+        return hoverText;
+    }
+
+    private static bool IsUnknownLocationLabel(string text)
+    {
+        string trimmed = text.Trim();
+        if (trimmed.Length == 0)
+            return false;
+
+        foreach (char c in trimmed)
+        {
+            if (c != '?')
+                return false;
+        }
+
+        return true;
+    }
+
+    private static string GetHoverQuery(MapPage mapPage, string narratedText)
+    {
+        ClickableComponent? hotspot = mapPage.currentlySnappedComponent;
+        if (hotspot == null || !mapPage.points.Values.Any(point => point.myID == hotspot.myID))
+        {
+            int mouseX = Game1.getMouseX(true);
+            int mouseY = Game1.getMouseY(true);
+            hotspot = mapPage.points.Values.FirstOrDefault(point => point.containsPoint(mouseX, mouseY));
+        }
+
+        return hotspot != null ? $"map:{hotspot.myID}:{narratedText}" : narratedText;
     }
 
     // Suppress vanilla neighbor-based snapping for movement keys; we handle navigation spatially.
