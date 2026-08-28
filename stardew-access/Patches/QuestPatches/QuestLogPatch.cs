@@ -84,14 +84,14 @@ namespace stardew_access.Patches
 
         private static void NarrateIndividualQuest(QuestLog __instance, int ___currentPage, IQuest ____shownQuest, List<string> ____objectiveText, int x, int y)
         {
-            if (____shownQuest == null)  return;
+            if (____shownQuest == null) return;
 
             bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
             bool containsReward = __instance.HasReward() || __instance.HasMoneyReward();
             string description = ____shownQuest.GetDescription();
             string translationKey = "";
 
-            if (firstTimeInIndividualQuest || (isPrimaryInfoKeyPressed && !isNarratingQuestInfo))
+            if (firstTimeInIndividualQuest || isPrimaryInfoKeyPressed)
             {
                 firstTimeInIndividualQuest = false;
 
@@ -120,10 +120,12 @@ namespace stardew_access.Patches
                     received_money = ____shownQuest.GetMoneyReward(),
                 };
 
-                MainClass.ScreenReader.MenuPrefixNoQueryText = $"{Translator.Instance.Translate("menu-quest_log-quest_detail", translationTokens, TranslationCategory.Menu)}\n";
-                MainClass.ScreenReader.PrevMenuQueryText = "";
-                isNarratingQuestInfo = true;
-                Task.Delay(200).ContinueWith(_ => { isNarratingQuestInfo = false; });
+                translationKey = "menu-quest_log-quest_detail";
+                MainClass.ScreenReader.TranslateAndSayWithMenuChecker(translationKey, true, translationTokens);
+                // MainClass.ScreenReader.MenuPrefixNoQueryText = $"{Translator.Instance.Translate("menu-quest_log-quest_detail", translationTokens, TranslationCategory.Menu)}\n";
+                // MainClass.ScreenReader.PrevMenuQueryText = "";
+                // isNarratingQuestInfo = true;
+                // Task.Delay(200).ContinueWith(_ => { isNarratingQuestInfo = false; });
             }
 
             if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
